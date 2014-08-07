@@ -9,6 +9,8 @@ After importing the library to your workspace, your application needs to be link
 
 Next, open the AndroidManifest.xml file in the root of the project. Add a 'Uses Permission' item named android.permission.INTERNET and android.permission.ACCESS_NETWORK_STATE.
 
+Finally, copy the superawesome directory fron the library's assets folder to your project's assets folder.
+
 Integrating the SuperAwesome Platform
 -------------------------------------
 
@@ -64,9 +66,9 @@ Integrating SuperAwesome Advertising
 	```
 	AdtechAdConfiguration adtechAdConfiguration = new AdtechAdConfiguration("MyApp");
 	adtechAdConfiguration.setAlias("simple_image_1");
-        adtechAdConfiguration.setDomain("a.adtech.de");
-        adtechAdConfiguration.setNetworkId(23);
-        adtechAdConfiguration.setSubnetworkId(4);
+	adtechAdConfiguration.setDomain("a.adtech.de");
+	adtechAdConfiguration.setNetworkId(23);
+	adtechAdConfiguration.setSubnetworkId(4);
 	adtechView.setAdConfiguration(adtechAdConfiguration);
 	```
 	
