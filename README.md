@@ -11,6 +11,14 @@ Next, open the AndroidManifest.xml file in the root of the project. Add a 'Uses 
 
 Finally, copy the superawesome directory fron the library's assets folder to your project's assets folder.
 
+Configure the Library
+---------------------
+To configure the SuperAwesome library you have to set your application ID in your project. Open the `AndroidManifest.xml` file in the root of the project and add a 'Meta Data' item called `tv.superawesome.sdk.ApplicationId`, with a value of your application ID that is shown on the dashboard site.
+
+![](images/eclipse_meta.png?raw=true "Setting the app ID in Eclipse")
+
+If you haven't got an appId go to [http://dashboard.superawesome.tv](http://dashboard.superawesome.tv) and register you app.
+
 Integrating the SuperAwesome Platform
 -------------------------------------
 
