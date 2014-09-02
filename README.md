@@ -49,54 +49,30 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 ###Awarding SuperAwesome Points
 
+Coming soon
+
 Integrating SuperAwesome Advertising
 ------------------------------------
 ###Displaying a Banner Ad
-1. Declare the AdtechBannerView in the layout XML:
+Declare the BannerView in the layout XML:
 	
-	```
-	<com.adtech.mobilesdk.publisher.view.AdtechBannerView
-	android:id="@+id/ad_container"
-	android:layout_width="300dip"
-	android:layout_height="50dip"
-	android:layout_alignParentBottom="true" >
-	</com.adtech.mobilesdk.publisher.view.AdtechBannerView>
-	```
+```
+<tv.superawesome.mobile.BannerView
+android:id="@+id/ad_container"
+android:layout_width="300dip"
+android:layout_height="50dip"
+android:layout_alignParentBottom="true" >
+</tv.superawesome.mobile.BannerView>
+```
 	
-2. Fetch the view from the XML in the Activity:
+To fetch the view from the XML in the Activity:
 	
-	```
-	AdtechBannerView adtechView = (AdtechBannerView) findViewById(R.id.ad_container);
-	```
-	
-3. Configure the ad view:
-	
-	```
-	AdtechAdConfiguration adtechAdConfiguration = new AdtechAdConfiguration("MyApp");
-	adtechAdConfiguration.setAlias("simple_image_1");
-	adtechAdConfiguration.setDomain("a.adtech.de");
-	adtechAdConfiguration.setNetworkId(23);
-	adtechAdConfiguration.setSubnetworkId(4);
-	adtechView.setAdConfiguration(adtechAdConfiguration);
-	```
-	
-4. Start the fetching of the ads:
-	
-	```
-	@Override
-	protected void onResume() {
-		super.onResume();
-		adtechView.load();
-	}
-	```
-	
-5. Stop the fetching of the ads:
-	
-	```
-	@Override
-	protected void onPause() {
-		super.onPause();
-		adtechView.stop();
-	}
-	```
+```
+BannerView bannerView = (BannerView) findViewById(R.id.ad_container);
+```
+
+The following banner sizes are supported:
+ - 320x50
+ - 300x50
+ - 728x90 (tablet)
 	
