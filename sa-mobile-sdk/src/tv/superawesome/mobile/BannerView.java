@@ -4,7 +4,6 @@ import com.adtech.mobilesdk.publisher.configuration.AdtechAdConfiguration;
 import com.adtech.mobilesdk.publisher.view.AdtechBannerView;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
