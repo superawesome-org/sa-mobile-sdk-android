@@ -75,7 +75,7 @@ public class LoginActivity extends Activity {
         webSettings.setJavaScriptEnabled(true);
         webview1.getSettings().setSupportMultipleWindows(true);
         webview1.addJavascriptInterface(new LoginWebAppInterface(this), "Android");
-        webview1.loadUrl("file:///android_asset/login/index.html");
+        webview1.loadUrl("file:///android_asset/superawesome/login/index.html");
 	}
 	
 	public void handleToken(String token){
