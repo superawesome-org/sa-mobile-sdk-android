@@ -1,18 +1,18 @@
 package tv.superawesome.mobile;
 
-import com.adtech.mobilesdk.publisher.configuration.AdtechAdConfiguration;
-import com.adtech.mobilesdk.publisher.view.AdtechBannerView;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.FrameLayout;
 
+import com.adtech.mobilesdk.publisher.configuration.AdtechAdConfiguration;
+import com.adtech.mobilesdk.publisher.view.AdtechBannerView;
 
-public class BannerView extends FrameLayout {
+
+public class BannerView extends FrameLayout implements Observer {
 	
 	public AdtechBannerView adtechView;
 	
@@ -20,7 +20,9 @@ public class BannerView extends FrameLayout {
 	    SMALL, MEDIUM, LARGE
 	}
 	
-	private AdtechAdConfiguration getDefaultConfiguration(BannerSize size){
+	private BannerSize size;
+	
+	private AdtechAdConfiguration getDefaultConfiguration(){
 		if(size == BannerSize.SMALL){
 			AdtechAdConfiguration config = new AdtechAdConfiguration("MyApp");
 			config.setAlias("706332-300x50-5");
@@ -46,6 +48,30 @@ public class BannerView extends FrameLayout {
 		return null;
 	}
 	
+	private AdtechAdConfiguration getConfiguration(){
+		int width = 0, height = 0;
+		if(size == BannerSize.SMALL){
+			width = 300;
+			height = 50;
+		}else if(size == BannerSize.MEDIUM){
+			width = 320;
+			height = 50;
+		}else if(size == BannerSize.LARGE){
+			width = 728;
+			height = 90;
+		}
+		Placement placement = SuperAwesome.getInstance().getPlacement(width, height);
+		if(placement == null){
+			return getDefaultConfiguration();
+		}
+		AdtechAdConfiguration config = new AdtechAdConfiguration("MyApp");
+		config.setAlias(placement.alias);
+		config.setDomain("a.adtech.de");
+		config.setNetworkId(placement.networkId);
+		config.setSubnetworkId(placement.subNetworkId);
+		return config;
+	}
+	
 	private BannerSize getBannerSize(int width, int height){
 		if(height>=90 && width>=728){
 	        return BannerSize.LARGE;
@@ -64,10 +90,15 @@ public class BannerView extends FrameLayout {
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		adtechView.setLayoutParams(params);
 		addView(adtechView);
+		
+		SuperAwesome.getInstance().addObserver(this);
+		SuperAwesome.getInstance().setContext(context);
 	}
 	
 	public void load(){
-		Log.v("BannerView", "BannerView - Load");
+		Log.v("SuperAwesome SDK", "BannerView - Load");
+		AdtechAdConfiguration adtechAdConfiguration = getConfiguration();
+		adtechView.setAdConfiguration(adtechAdConfiguration);
 		adtechView.load();
 	}
 	
@@ -77,13 +108,20 @@ public class BannerView extends FrameLayout {
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh){
-		Log.v("BannerView", "BannerView w=" + w + " h="+h);
+		Log.v("SuperAwesome SDK", "BannerView w=" + w + " h="+h);
+		size = getBannerSize(w/3, h/3);
 		
-		BannerSize size = getBannerSize(w/3, h/3);
-		AdtechAdConfiguration adtechAdConfiguration = getDefaultConfiguration(size);
-		adtechView.setAdConfiguration(adtechAdConfiguration);
-		load();
+		//Load banner if configuration has been loaded
+		if(!SuperAwesome.getInstance().getIsLoadingConfiguration()){
+			load();
+		}
 		
 		super.onSizeChanged(w, h, oldw, oldh);
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		Log.v("SuperAwesome SDK", "observed");
+		load();
 	}
 }
