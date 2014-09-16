@@ -3,16 +3,13 @@ package tv.superawesome.mobile;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.adtech.mobilesdk.publisher.configuration.AdtechAdConfiguration;
-import com.adtech.mobilesdk.publisher.view.AdtechBannerView;
-
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.FrameLayout;
+
+import com.adtech.mobilesdk.publisher.configuration.AdtechAdConfiguration;
+import com.adtech.mobilesdk.publisher.view.AdtechBannerView;
 
 
 public class BannerView extends FrameLayout implements Observer {
@@ -95,12 +92,13 @@ public class BannerView extends FrameLayout implements Observer {
 		addView(adtechView);
 		
 		SuperAwesome.getInstance().addObserver(this);
-		int appId = SuperAwesome.getInstance().getAppId(context);
-		SuperAwesome.getInstance().getSettings(appId);
+		SuperAwesome.getInstance().setContext(context);
 	}
 	
 	public void load(){
 		Log.v("SuperAwesome SDK", "BannerView - Load");
+		AdtechAdConfiguration adtechAdConfiguration = getConfiguration();
+		adtechView.setAdConfiguration(adtechAdConfiguration);
 		adtechView.load();
 	}
 	
@@ -111,11 +109,12 @@ public class BannerView extends FrameLayout implements Observer {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh){
 		Log.v("SuperAwesome SDK", "BannerView w=" + w + " h="+h);
-		
 		size = getBannerSize(w/3, h/3);
-		AdtechAdConfiguration adtechAdConfiguration = getConfiguration();
-		adtechView.setAdConfiguration(adtechAdConfiguration);
-		load();
+		
+		//Load banner if configuration has been loaded
+		if(!SuperAwesome.getInstance().getIsLoadingConfiguration()){
+			load();
+		}
 		
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
@@ -123,9 +122,6 @@ public class BannerView extends FrameLayout implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Log.v("SuperAwesome SDK", "observed");
-		
-		AdtechAdConfiguration adtechAdConfiguration = getConfiguration();
-		adtechView.setAdConfiguration(adtechAdConfiguration);
 		load();
 	}
 }

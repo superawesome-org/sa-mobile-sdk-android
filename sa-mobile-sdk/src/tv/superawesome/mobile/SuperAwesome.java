@@ -13,16 +13,29 @@ import android.util.Log;
 public class SuperAwesome extends Observable implements ISettingsResponse{
 	
 	private static SuperAwesome instance = null;
+	
+	private Context context;
+	private int appId;
 	private List<Placement> placements;
+	private boolean isLoadingConfiguration = true;
 	
 	public static SuperAwesome getInstance() {
       if(instance == null) {
          instance = new SuperAwesome();
       }
       return instance;
-   }
+	}
 	
-	public int getAppId(Context context){
+	public void setContext(Context context){
+		if(this.context == null){
+			this.context = context;
+			this.appId = getAppId();
+			getSettings();
+		}
+		this.context = context;
+	}
+	
+	private int getAppId(){
 		try {
 			Log.d("SuperAwesome SDK", "Starting SDK");
             ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
@@ -38,16 +51,21 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 		return 0;
 	}
 	
-	public void getSettings(int appId){
+	public void getSettings(){
 		SettingsAsyncTask task = new SettingsAsyncTask();
 		task.delegate = this;
 		task.execute(""+appId);
+	}
+	
+	public boolean getIsLoadingConfiguration(){
+		return isLoadingConfiguration;
 	}
 
 	@Override
 	public void receivedPlacements(List<Placement> placements) {
 		Log.v("SuperAwesome SDK", "receivedPlacements");
 		this.placements = placements;
+		this.isLoadingConfiguration = false;
 		this.setChanged();
 		this.notifyObservers();
 	}
