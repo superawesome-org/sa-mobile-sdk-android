@@ -18,6 +18,7 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	private int appId;
 	private List<Placement> placements;
 	private boolean isLoadingConfiguration = true;
+	private boolean useParentalGate = false;
 	
 	public static SuperAwesome getInstance() {
       if(instance == null) {
@@ -33,6 +34,14 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 			getSettings();
 		}
 		this.context = context;
+	}
+	
+	public boolean getUseParentalGate(){
+		return useParentalGate;
+	}
+	
+	public void setUseParentalgate(boolean useParentalGate){
+		this.useParentalGate = useParentalGate;
 	}
 	
 	private int getAppId(){
