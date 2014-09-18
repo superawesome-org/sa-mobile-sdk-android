@@ -30,7 +30,7 @@ public class ParentalGate {
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
 		alert.setTitle("Parental Gate");
-		alert.setMessage("Solve the following sum to continue: "+i1+" + "+i2+" = ?");
+		alert.setMessage("Solve the following problem to continue: "+i1+" + "+i2+" = ?");
 
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(context);
