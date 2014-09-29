@@ -29,6 +29,7 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
 	public ISettingsResponse delegate=null;
 	private String response;
 	private List<Placement> placements;
+	private List<Preroll> prerolls;
 	
 	 private String readStream(InputStream is) {
 	    try {
@@ -63,7 +64,8 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost("http://dashboard.superawesome.tv/api/sdk/ads/");
-
+	    httppost = new HttpPost("http://staging.dashboard.superawesome.tv/api/sdk/ads");
+	    
 	    try {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -83,7 +85,7 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
 	    }
 	}
 	
-	private void processResponse() throws JSONException{
+	private void processPlacements() throws JSONException{
 		JSONObject json = new JSONObject(this.response);
         boolean success = (Boolean) json.get("success");
         JSONArray ads = json.getJSONArray("ads");
@@ -102,18 +104,40 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
     	}
 	}
 	
+	private void processPrerolls() throws JSONException{
+		JSONObject json = new JSONObject(this.response);
+		JSONArray prerollsJson = json.getJSONArray("prerolls");
+        prerolls = new ArrayList<Preroll>();
+        for (int i = 0; i < prerollsJson.length(); i++) {
+        	JSONObject prerollJson = prerollsJson.getJSONObject(i);
+        	Preroll preroll = new Preroll();
+        	preroll.id = prerollJson.getInt("id");
+        	preroll.vast = prerollJson.getString("vast");
+        	prerolls.add(preroll);
+        	Log.d("SuperAwesome SDK", "preroll: "+preroll.id+ " vast:"+preroll.vast);
+        }
+	}
+	
 	@Override
 	protected List<Placement> doInBackground(String... params) {
 		try {
 			postData(params[0]);
-			processResponse();
-			delegate.receivedPlacements(placements);
-			return placements;
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			processPlacements();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		try {
+			processPrerolls();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		delegate.receivedConfiguration(placements, prerolls);
+			
+		return placements;
 	}
 
 }

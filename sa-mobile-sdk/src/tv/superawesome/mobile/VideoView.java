@@ -85,7 +85,13 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	  container.setAdContainer(videoPlayer.getUiContainer());
 	  
 	  AdsRequest request = sdkFactory.createAdsRequest();
-	  request.setAdTagUrl("http://u-ads.adap.tv/a/h/0A9CJKYei5h0XHk2xFl36YvivtZ9NIb4jSZkKFRs7AQ=?cb=%7Bcachebreaker%7D&pageUrl=http%3A%2F%2Fadap.tv&eov=eov");
+	  
+	  Preroll preroll = SuperAwesome.getInstance().getPreroll();
+	  if(preroll == null){
+		  request.setAdTagUrl("http://u-ads.adap.tv/a/h/0A9CJKYei5h0XHk2xFl36YvivtZ9NIb4jSZkKFRs7AQ=?cb=%7Bcachebreaker%7D&pageUrl=http%3A%2F%2Fadap.tv&eov=eov");
+	  }else{
+		  request.setAdTagUrl(preroll.vast);
+	  }
 	  request.setAdDisplayContainer(container);
 	  adsLoader.requestAds(request);
 	  Log.v("SuperAwesome SDK", "Ad requested");
