@@ -77,9 +77,9 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
 	        Log.d("SuperAwesome SDK", "response: "+this.response);
 	        
 	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
+	    	Log.d("SuperAwesome SDK", "Error "+e.getLocalizedMessage());
 	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
+	    	Log.d("SuperAwesome SDK", "Error "+e.getLocalizedMessage());
 	    }
 	}
 	
