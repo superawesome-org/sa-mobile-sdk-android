@@ -17,6 +17,7 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	private Context context;
 	private int appId;
 	private List<Placement> placements;
+	private List<Preroll> prerolls;
 	private boolean isLoadingConfiguration = true;
 	private boolean useParentalGate = false;
 	
@@ -70,15 +71,6 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 		return isLoadingConfiguration;
 	}
 
-	@Override
-	public void receivedPlacements(List<Placement> placements) {
-		Log.v("SuperAwesome SDK", "receivedPlacements");
-		this.placements = placements;
-		this.isLoadingConfiguration = false;
-		this.setChanged();
-		this.notifyObservers();
-	}
-
 	public Placement getPlacement(int width, int height) {
 		if(placements == null) return null;
 		for(Placement p : placements){
@@ -88,5 +80,23 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 			}
 		}
 		return null;
+	}
+	
+	public Preroll getPreroll(){
+		if(prerolls == null) return null;
+		if(prerolls.size() == 0) return null;
+		return prerolls.get(0);
+	}
+
+	@Override
+	public void receivedConfiguration(List<Placement> placements,
+			List<Preroll> prerolls) {
+		Log.v("SuperAwesome SDK", "receivedPlacements");
+		this.placements = placements;
+		this.prerolls = prerolls;
+		this.isLoadingConfiguration = false;
+		this.setChanged();
+		this.notifyObservers();
+		
 	}
 }
