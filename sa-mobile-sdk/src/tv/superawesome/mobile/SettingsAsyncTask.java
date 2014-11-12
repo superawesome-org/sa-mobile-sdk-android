@@ -64,7 +64,7 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost("http://dashboard.superawesome.tv/api/sdk/ads/");
-	    httppost = new HttpPost("http://staging.dashboard.superawesome.tv/api/sdk/ads");
+	    // httppost = new HttpPost("http://staging.dashboard.superawesome.tv/api/sdk/ads");
 	    
 	    try {
 	        // Add your data
