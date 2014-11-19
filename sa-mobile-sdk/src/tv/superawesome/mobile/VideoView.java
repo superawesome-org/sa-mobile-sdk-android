@@ -125,7 +125,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	@Override
 	public void onComplete() {
 		if(listener != null){
-    		listener.onPLaybackCompleted();
+    		listener.onPlaybackCompleted();
     	}
 	}
 
