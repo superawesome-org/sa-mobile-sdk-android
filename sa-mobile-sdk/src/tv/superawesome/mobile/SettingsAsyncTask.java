@@ -135,9 +135,12 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		delegate.receivedConfiguration(placements, prerolls);
 			
 		return placements;
+	}
+
+	protected void onPostExecute(List<Placement> result) {
+		delegate.receivedConfiguration(placements, prerolls);
 	}
 
 }
