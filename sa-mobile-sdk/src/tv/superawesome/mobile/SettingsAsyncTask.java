@@ -26,6 +26,7 @@ import android.util.Log;
 
 public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>> {
 	
+	private static final String TAG = "SuperAwesome SDK";
 	public ISettingsResponse delegate=null;
 	private String response;
 	private List<Placement> placements;
@@ -60,10 +61,10 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
     	return false;
 	}
 	
-	private void postData(String appId) throws JSONException {
+	private void postData(String appId){
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost("http://dashboard.superawesome.tv/api/sdk/ads/");
+	    HttpPost httppost = new HttpPost("http://dashboard.superawesome.tv/api/sdk/ads");
 	    // httppost = new HttpPost("http://staging.dashboard.superawesome.tv/api/sdk/ads");
 	    
 	    try {
@@ -100,7 +101,7 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
     	  placement.width = ad.getInt("width");
     	  placement.height = ad.getInt("height");
     	  placements.add(placement);
-    	  Log.d("SuperAwesome SDK", "ad: "+placement.alias+ " w:"+placement.width+ " h:"+placement.height);
+    	  Log.d(TAG, "ad: "+placement.alias+ " w:"+placement.width+ " h:"+placement.height);
     	}
 	}
 	
@@ -114,7 +115,7 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
         	preroll.id = prerollJson.getInt("id");
         	preroll.vast = prerollJson.getString("vast");
         	prerolls.add(preroll);
-        	Log.d("SuperAwesome SDK", "preroll: "+preroll.id+ " vast:"+preroll.vast);
+        	Log.d(TAG, "preroll: "+preroll.id+ " vast:"+preroll.vast);
         }
 	}
 	
@@ -122,20 +123,22 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
 	protected List<Placement> doInBackground(String... params) {
 		try {
 			postData(params[0]);
-		} catch (JSONException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			processPlacements();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		try {
-			processPrerolls();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 			
+			try {
+				processPlacements();
+			} catch (JSONException e) {
+				Log.d(TAG, "Could not process display placements");
+			}
+			try {
+				processPrerolls();
+			} catch (JSONException e) {
+				Log.d(TAG, "Could not process video placements");
+			}
+			
+		} catch (Exception ex) {
+			Log.d(TAG, "Could not post data to server");
+		}
+
 		return placements;
 	}
 
