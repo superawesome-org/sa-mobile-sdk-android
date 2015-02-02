@@ -57,13 +57,16 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	}
 	
 	public void setListener(VideoViewListener listener){
-	 this.listener = listener;
+		this.listener = listener;
 	}
 
 	@Override
 	public void onAdError(AdErrorEvent event) {
 	  // An error occurred.
-	  Log.v("SuperAwesome SDK", "Video Ad Error"+event.getError().getMessage());
+	  Log.v("SuperAwesome SDK", "Video Ad Error "+event.getError().getMessage());
+	  if(listener != null){
+  		listener.onAdError();
+  	}
 	}
 
 	@Override
@@ -108,10 +111,10 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	public void onAdEvent(AdEvent event) {
 		switch (event.getType()) {
 	      case LOADED:
-	    	Log.v("SuperAwesome SDK", "Calling start");
-	    	if(listener != null){
-	    		listener.onLoaded();
-	    	}
+	      	Log.v("SuperAwesome SDK", "Received LOADED event");
+	      	if(listener != null){
+	      		listener.onLoaded();
+	      	}
 	        break;
 	      default:
 			break;
