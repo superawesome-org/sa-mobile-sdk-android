@@ -70,12 +70,11 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	public boolean getIsLoadingConfiguration(){
 		return isLoadingConfiguration;
 	}
-
-	public Placement getPlacement(int width, int height) {
+	
+	public Placement getPlacement(String placementID){
 		if(placements == null) return null;
 		for(Placement p : placements){
-			if(p.width == width && p.height == height){
-				Log.v("SuperAwesome SDK", "found placement for size");
+			if(p.id.equals(placementID)){
 				return p;
 			}
 		}

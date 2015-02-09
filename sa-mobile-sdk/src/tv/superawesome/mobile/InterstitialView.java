@@ -1,5 +1,8 @@
 package tv.superawesome.mobile;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import tv.superawesome.mobile.ParentalGate.ParentalGateViewCallback;
 
 import com.adtech.mobilesdk.publisher.configuration.AdtechAdConfiguration;
@@ -8,14 +11,28 @@ import com.adtech.mobilesdk.publisher.view.AdtechInterstitialViewCallback;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 
-public class InterstitialView extends FrameLayout {
+public class InterstitialView extends DisplayAdView implements Observer{
 	
 	public AdtechInterstitialView adtechView;
+	
+	public InterstitialView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		
+		adtechView = new AdtechInterstitialView(context);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		adtechView.setLayoutParams(params);
+		addView(adtechView);
+		
+		//Set observer
+		SuperAwesome.getInstance().addObserver(this);
+		SuperAwesome.getInstance().setContext(context);
+	}
 	
 	private AdtechInterstitialViewCallback atcb = new AdtechInterstitialViewCallback(){
     	@Override
@@ -44,26 +61,20 @@ public class InterstitialView extends FrameLayout {
 			return true;
     	}
 	};
-
-	public InterstitialView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		
-		adtechView = new AdtechInterstitialView(context);
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		adtechView.setLayoutParams(params);
-		addView(adtechView);
-	}
 	
 	public void present(){
-        AdtechAdConfiguration adtechAdConfiguration = new AdtechAdConfiguration("MyApp");
-        adtechAdConfiguration.setAlias("706332-320x480-5");
-        adtechAdConfiguration.setDomain("a.adtech.de");
-        adtechAdConfiguration.setNetworkId(1486);
-        adtechAdConfiguration.setSubnetworkId(1);
-        adtechView.setAdConfiguration(adtechAdConfiguration);
-        adtechView.setViewCallback(atcb);
-        
-        adtechView.load();
+		AdtechAdConfiguration conf = getConfiguration();
+		if(conf != null){
+			adtechView.setAdConfiguration(conf);
+			adtechView.setViewCallback(atcb);
+    	adtechView.load();
+		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
