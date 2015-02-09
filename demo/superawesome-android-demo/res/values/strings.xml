@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SuperAwesome Demo App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="show_interstitial">Show Interstitial</string>
+    <string name="play_video_ad">Play Video</string>
+
+</resources>

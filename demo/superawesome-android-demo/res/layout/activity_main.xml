@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}"  android:id="@+id/layout">
+
+     
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical" >
+    
+	     <Button
+	     android:layout_height="wrap_content"
+	     android:layout_width="wrap_content"
+	     android:text="@string/show_interstitial"
+	     android:onClick="presentInterstitial" />
+     
+	     <Button
+	     android:layout_height="wrap_content"
+	     android:layout_width="wrap_content"
+	     android:text="@string/play_video_ad"
+	     android:onClick="playVideoAd" />
+    </LinearLayout>>
+    
+    <tv.superawesome.mobile.BannerView
+		android:id="@+id/banner_container"
+		android:layout_width="320dip"
+		android:layout_height="50dip"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" >
+		</tv.superawesome.mobile.BannerView>
+
+	  <tv.superawesome.mobile.InterstitialView
+		android:id="@+id/interstitial_container"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		</tv.superawesome.mobile.InterstitialView>
+
+</RelativeLayout>
