@@ -20,6 +20,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.superawesome.mobile.model.Placement;
+import tv.superawesome.mobile.model.Preroll;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -94,6 +97,7 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
         for (int i = 0; i < ads.length(); i++) {
     	  JSONObject ad = ads.getJSONObject(i);
     	  Placement placement = new Placement();
+    	  placement.id = ad.getString("id");
     	  placement.name = ad.getString("name");
     	  placement.networkId = ad.getInt("networkId");
     	  placement.subNetworkId = ad.getInt("subNetworkId");
@@ -101,7 +105,7 @@ public class SettingsAsyncTask extends AsyncTask<String, String, List<Placement>
     	  placement.width = ad.getInt("width");
     	  placement.height = ad.getInt("height");
     	  placements.add(placement);
-    	  Log.d(TAG, "ad: "+placement.alias+ " w:"+placement.width+ " h:"+placement.height);
+    	  Log.d(TAG, "ad: "+placement.id+ " w:"+placement.width+ " h:"+placement.height);
     	}
 	}
 	
