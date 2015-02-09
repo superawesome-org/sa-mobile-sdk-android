@@ -1,9 +1,11 @@
-package tv.superawesome.mobile;
+package tv.superawesome.mobile.view;
 
 import java.util.Observable;
 import java.util.Observer;
 
+import tv.superawesome.mobile.ParentalGate;
 import tv.superawesome.mobile.ParentalGate.ParentalGateViewCallback;
+import tv.superawesome.mobile.SuperAwesome;
 
 import android.content.Context;
 import android.content.Intent;

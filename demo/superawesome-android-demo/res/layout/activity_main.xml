@@ -6,7 +6,7 @@
     tools:context="${relativePackage}.${activityClass}"  android:id="@+id/layout">
 
      
-     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
@@ -26,20 +26,20 @@
 	     android:onClick="playVideoAd" />
     </LinearLayout>>
     
-		<tv.superawesome.mobile.BannerView
+		<tv.superawesome.mobile.view.BannerView
 		android:id="@+id/banner_container"
 		android:layout_width="300dip"
 		android:layout_height="50dip"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
 		custom:placementID="5247930">
-		</tv.superawesome.mobile.BannerView>
+		</tv.superawesome.mobile.view.BannerView>
 
-	  <tv.superawesome.mobile.InterstitialView
+	  <tv.superawesome.mobile.view.InterstitialView
 		android:id="@+id/interstitial_container"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		custom:placementID="5247931">
-		</tv.superawesome.mobile.InterstitialView>
+		</tv.superawesome.mobile.view.InterstitialView>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package tv.superawesome.mobile;
+package tv.superawesome.mobile.view;
 
 public interface VideoViewListener {
 	public void onLoaded();

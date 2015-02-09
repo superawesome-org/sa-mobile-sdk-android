@@ -3,6 +3,9 @@ package tv.superawesome.mobile;
 import java.util.List;
 import java.util.Observable;
 
+import tv.superawesome.mobile.model.Placement;
+import tv.superawesome.mobile.model.Preroll;
+
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -54,9 +57,9 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
             Log.d("SuperAwesome SDK", "appID=" + appId);
             return appId;
         } catch (NameNotFoundException e) {
-        	Log.d("SuperAwesome SDK", "tv.superawesome.sdk.ApplicationId is not set");
+        	Log.e("SuperAwesome SDK", "tv.superawesome.sdk.ApplicationId is not set");
         } catch (NullPointerException e) {
-        	Log.d("SuperAwesome SDK", "tv.superawesome.sdk.ApplicationId is null");
+        	Log.e("SuperAwesome SDK", "tv.superawesome.sdk.ApplicationId is null");
         }
 		return 0;
 	}

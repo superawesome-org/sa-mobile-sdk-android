@@ -20,6 +20,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.superawesome.mobile.model.Placement;
+import tv.superawesome.mobile.model.Preroll;
+
 import android.os.AsyncTask;
 import android.util.Log;
 

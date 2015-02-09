@@ -1,7 +1,10 @@
-package tv.superawesome.mobile;
+package tv.superawesome.mobile.view;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import tv.superawesome.mobile.SuperAwesome;
+import tv.superawesome.mobile.model.Preroll;
 
 import android.content.Context;
 import android.util.AttributeSet;

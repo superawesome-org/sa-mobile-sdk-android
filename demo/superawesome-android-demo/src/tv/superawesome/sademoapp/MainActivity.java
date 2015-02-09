@@ -1,9 +1,10 @@
 package tv.superawesome.sademoapp;
 
-import tv.superawesome.mobile.BannerView;
-import tv.superawesome.mobile.InterstitialView;
-import tv.superawesome.mobile.VideoView;
-import tv.superawesome.mobile.VideoViewListener;
+
+import tv.superawesome.mobile.view.BannerView;
+import tv.superawesome.mobile.view.InterstitialView;
+import tv.superawesome.mobile.view.VideoView;
+import tv.superawesome.mobile.view.VideoViewListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;

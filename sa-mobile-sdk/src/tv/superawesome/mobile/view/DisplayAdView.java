@@ -1,4 +1,9 @@
-package tv.superawesome.mobile;
+package tv.superawesome.mobile.view;
+
+import tv.superawesome.mobile.R;
+import tv.superawesome.mobile.SuperAwesome;
+import tv.superawesome.mobile.R.styleable;
+import tv.superawesome.mobile.model.Placement;
 
 import com.adtech.mobilesdk.publisher.configuration.AdtechAdConfiguration;
 

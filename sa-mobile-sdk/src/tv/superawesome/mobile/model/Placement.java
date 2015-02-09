@@ -1,4 +1,4 @@
-package tv.superawesome.mobile;
+package tv.superawesome.mobile.model;
 
 public class Placement {
 	public String id;
