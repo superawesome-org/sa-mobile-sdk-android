@@ -11,7 +11,19 @@
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:orientation="vertical" >
+    android:orientation="vertical" android:id="@+id/linearlayout">
+    
+       <Button
+	     android:layout_height="wrap_content"
+	     android:layout_width="wrap_content"
+	     android:text="@string/create_banner"
+	     android:onClick="createBanner" />
+       
+       <Button
+	     android:layout_height="wrap_content"
+	     android:layout_width="wrap_content"
+	     android:text="@string/create_interstitial"
+	     android:onClick="createInterstitial" />
     
 	     <Button
 	     android:layout_height="wrap_content"
@@ -28,7 +40,7 @@
     
 		<tv.superawesome.mobile.view.BannerView
 		android:id="@+id/banner_container"
-		android:layout_width="300dip"
+		android:layout_width="320dip"
 		android:layout_height="50dip"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"

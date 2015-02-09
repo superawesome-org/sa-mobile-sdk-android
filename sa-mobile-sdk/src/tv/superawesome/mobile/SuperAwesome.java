@@ -91,14 +91,12 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	}
 
 	@Override
-	public void receivedConfiguration(List<Placement> placements,
-			List<Preroll> prerolls) {
+	public void receivedConfiguration(List<Placement> placements, List<Preroll> prerolls) {
 		Log.v("SuperAwesome SDK", "receivedPlacements");
 		this.placements = placements;
 		this.prerolls = prerolls;
 		this.isLoadingConfiguration = false;
 		this.setChanged();
 		this.notifyObservers();
-		
 	}
 }

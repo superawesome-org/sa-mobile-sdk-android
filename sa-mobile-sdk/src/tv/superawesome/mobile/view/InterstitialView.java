@@ -16,11 +16,15 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 
 public class InterstitialView extends DisplayAdView implements Observer{
 	
+	private static final String TAG = "SuperAwesome SDK - Interstitial";
+	private InterstitialViewListener listener;
+	private boolean shouldPresentOnLoad = false;
 	public AdtechInterstitialView adtechView;
 	
 	public InterstitialView(Context context, AttributeSet attrs) {
@@ -36,35 +40,64 @@ public class InterstitialView extends DisplayAdView implements Observer{
 		SuperAwesome.getInstance().setContext(context);
 	}
 	
+	public InterstitialViewListener getListener() {
+		return listener;
+	}
+
+	public void setListener(InterstitialViewListener listener) {
+		this.listener = listener;
+	}
+
 	private AdtechInterstitialViewCallback atcb = new AdtechInterstitialViewCallback(){
     	@Override
     	public void onAdSuccess() {
-    		
+    		if(getListener() != null){
+    			getListener().onLoaded();
+    		}
+    	}
+    	
+    	@Override
+    	public void onAdDismiss(){
+    		if(getListener() != null){
+    			getListener().onAdDismiss();
+    		}
+    	}
+    	
+    	@Override
+    	public void onAdLeave() {
+    		if(getListener() != null){
+    			getListener().onAdLeave();
+    		}
     	}
     	
     	@Override
     	public void onAdFailure() {
-    		// This method is called when an ad download failed. This could happen because of networking reasons or other
-    		//server communication reasons.
+    		if(getListener() != null){
+    			getListener().onAdError();
+    		}
     	}
     	
     	@Override
     	public boolean shouldInterceptLandingPageOpening(final String url, NonModalLandingPageHandlerCallback callback) {
     		if(!SuperAwesome.getInstance().getUseParentalGate()) return false;
 			
-			ParentalGate gate = new ParentalGate(getContext());
-			ParentalGateViewCallback cb = new ParentalGateViewCallback(){
-				public void onCorrectAnswer(){
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-					getContext().startActivity(browserIntent);
-				}
-			};
-			gate.setViewCallback(cb);
-			return true;
+				ParentalGate gate = new ParentalGate(getContext());
+				ParentalGateViewCallback cb = new ParentalGateViewCallback(){
+					public void onCorrectAnswer(){
+						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+						getContext().startActivity(browserIntent);
+					}
+				};
+				gate.setViewCallback(cb);
+				return true;
     	}
 	};
 	
 	public void present(){
+		if(SuperAwesome.getInstance().getIsLoadingConfiguration()){
+			shouldPresentOnLoad = true;
+			return;
+		}
 		AdtechAdConfiguration conf = getConfiguration();
 		if(conf != null){
 			adtechView.setAdConfiguration(conf);
@@ -75,8 +108,12 @@ public class InterstitialView extends DisplayAdView implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
+		Log.v(TAG, "Config loaded notification received");
+		if(shouldPresentOnLoad){
+			Log.v(TAG, "Presenting now");
+			present();
+			shouldPresentOnLoad = false;
+		}
 	}
 
 }

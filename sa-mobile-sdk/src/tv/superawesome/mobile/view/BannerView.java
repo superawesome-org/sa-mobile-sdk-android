@@ -23,23 +23,44 @@ import com.adtech.mobilesdk.publisher.view.AdtechBannerViewCallback;
 public class BannerView extends DisplayAdView implements Observer {
 	
 	private static final String TAG = "SuperAwesome SDK - Banner";
+	private BannerViewListener listener;
 	public AdtechBannerView adtechView;
 	
 	public BannerView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
+		SuperAwesome.getInstance().setContext(context);
 		
 		//Add adtech view
 		adtechView = new AdtechBannerView(context);
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		adtechView.setLayoutParams(params);
 		addView(adtechView);
-		
-		//Set observer
-		SuperAwesome.getInstance().addObserver(this);
-		SuperAwesome.getInstance().setContext(context);
+	}
+	
+	public BannerViewListener getListener() {
+		return listener;
+	}
+
+	public void setListener(BannerViewListener listener) {
+		this.listener = listener;
 	}
 	
 	private AdtechBannerViewCallback adTechViewCallback = new AdtechBannerViewCallback() {
+		@Override
+		public void onAdLeave() {
+			if(getListener() != null){
+  			getListener().onAdLeave();
+  		}
+		}
+		
+		@Override
+		public void onAdFailure() {
+			if(getListener() != null){
+  			getListener().onAdError();
+  		}
+		}
+		
 		@Override
 		public boolean shouldInterceptLandingPageOpening(final String url, NonModalLandingPageHandlerCallback callback) {
 			if(!SuperAwesome.getInstance().getUseParentalGate()) return false;
@@ -55,6 +76,15 @@ public class BannerView extends DisplayAdView implements Observer {
 			return true;
 		};
 	};
+	
+	public void setPlacementID(String placementID){
+		super.setPlacementID(placementID);
+		if(!SuperAwesome.getInstance().getIsLoadingConfiguration()){
+			load();
+		}else{
+			SuperAwesome.getInstance().addObserver(this);
+		}
+	}
 
 	public void load(){
 		AdtechAdConfiguration conf = getConfiguration();
@@ -71,7 +101,7 @@ public class BannerView extends DisplayAdView implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Log.v("SuperAwesome SDK", "observed");
+		Log.v(TAG, "Config loaded notification received");
 		load();
 	}
 }
