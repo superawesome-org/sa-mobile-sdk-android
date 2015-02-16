@@ -28,6 +28,7 @@ import com.google.ads.interactivemedia.v3.samples.demoapp.player.TrackingVideoVi
 
 public class VideoView extends FrameLayout implements AdErrorListener, AdsLoadedListener, AdEventListener, CompleteCallback, Observer{
 	
+	private static final String TAG = "SuperAwesome SDK - Video";
 	private ImaSdkFactory sdkFactory;
 	private AdsLoader adsLoader;
 	protected ImaSdkSettings sdkSettings;
@@ -39,7 +40,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	public VideoView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		Log.v("SuperAwesome SDK", "VideoView created");
+		Log.v(TAG, "VideoView created");
 		
 		videoPlayer = new DemoPlayer(context);
 		videoPlayer.setCompletionCallback(this);
@@ -66,7 +67,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	@Override
 	public void onAdError(AdErrorEvent event) {
 	  // An error occurred.
-	  Log.v("SuperAwesome SDK", "Video Ad Error "+event.getError().getMessage());
+	  Log.v(TAG, "Video Ad Error "+event.getError().getMessage());
 	  if(listener != null){
   		listener.onAdError();
   	}
@@ -75,7 +76,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	@Override
 	public void onAdsManagerLoaded(AdsManagerLoadedEvent event) {
 	  // Ads were successfully loaded
-	  Log.v("SuperAwesome SDK", "Video Ad Loaded "+event.toString());
+	  Log.v(TAG, "Video Ad Loaded "+event.toString());
 
 	  adsManager = event.getAdsManager();
 	  adsManager.addAdErrorListener(this);
@@ -99,7 +100,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	  }
 	  request.setAdDisplayContainer(container);
 	  adsLoader.requestAds(request);
-	  Log.v("SuperAwesome SDK", "Ad requested");
+	  Log.v(TAG, "Ad requested");
 	}
 	
 	protected ImaSdkSettings getImaSdkSettings() {
@@ -113,7 +114,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	public void onAdEvent(AdEvent event) {
 		switch (event.getType()) {
 	      case LOADED:
-	      	Log.v("SuperAwesome SDK", "Received LOADED event");
+	      	Log.v(TAG, "Received LOADED event");
 	      	if(listener != null){
 	      		listener.onLoaded();
 	      	}
@@ -136,7 +137,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		Log.v("SuperAwesome SDK", "observed");
+		Log.v(TAG, "observed");
 		
 		requestAd();
 	}
