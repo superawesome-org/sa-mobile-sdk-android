@@ -24,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="tv.superawesome.mobile.view.VideoAdActivity"></activity>
         <meta-data android:value="14" android:name="tv.superawesome.sdk.ApplicationId"/>
     </application>
 

@@ -76,8 +76,7 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	public void onAdsManagerLoaded(AdsManagerLoadedEvent event) {
 	  // Ads were successfully loaded
 	  Log.v("SuperAwesome SDK", "Video Ad Loaded "+event.toString());
-	  adsManager = event.getAdsManager();
-	  
+
 	  adsManager = event.getAdsManager();
 	  adsManager.addAdErrorListener(this);
 	  adsManager.addAdEventListener(this);
@@ -104,10 +103,10 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	}
 	
 	protected ImaSdkSettings getImaSdkSettings() {
-	    if (sdkSettings == null) {
-	      sdkSettings = sdkFactory.createImaSdkSettings();
-	    }
-	    return sdkSettings;
+    if (sdkSettings == null) {
+      sdkSettings = sdkFactory.createImaSdkSettings();
+    }
+    return sdkSettings;
 	}
 
 	@Override
@@ -131,8 +130,8 @@ public class VideoView extends FrameLayout implements AdErrorListener, AdsLoaded
 	@Override
 	public void onComplete() {
 		if(listener != null){
-    		listener.onPlaybackCompleted();
-    	}
+			listener.onPlaybackCompleted();
+    }
 	}
 
 	@Override

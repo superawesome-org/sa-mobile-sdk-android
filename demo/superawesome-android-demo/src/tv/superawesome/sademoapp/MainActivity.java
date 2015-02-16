@@ -5,9 +5,11 @@ import tv.superawesome.mobile.view.BannerView;
 import tv.superawesome.mobile.view.BannerViewListener;
 import tv.superawesome.mobile.view.InterstitialView;
 import tv.superawesome.mobile.view.InterstitialViewListener;
+import tv.superawesome.mobile.view.VideoAdActivity;
 import tv.superawesome.mobile.view.VideoView;
 import tv.superawesome.mobile.view.VideoViewListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,10 +45,9 @@ public class MainActivity extends Activity {
 	}
 	
 	public void presentInterstitial(View view) {
-		 interstitialView2.present();
+		 interstitialView.present();
 	 }
-	
-	
+
 	
 	
 	public void createBanner(View view) {
@@ -116,5 +117,10 @@ public class MainActivity extends Activity {
 		    	 layout.removeView(videoView);
 		     }
 		 });
+	 }
+	 
+	 public void playFullscreenVideoAd(View view){
+		 Intent intent = new Intent(this, VideoAdActivity.class);
+		 startActivity(intent);
 	 }
 }
