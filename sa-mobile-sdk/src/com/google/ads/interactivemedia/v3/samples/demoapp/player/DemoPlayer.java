@@ -168,7 +168,6 @@ public class DemoPlayer extends RelativeLayout implements VideoAdPlayer {
       return VideoProgressUpdate.VIDEO_TIME_NOT_READY;
     }
     VideoProgressUpdate vpu = new VideoProgressUpdate(video.getCurrentPosition(), durationMs);
-    Log.i("PLAYER", vpu.toString());
     return vpu;
 	}
 }

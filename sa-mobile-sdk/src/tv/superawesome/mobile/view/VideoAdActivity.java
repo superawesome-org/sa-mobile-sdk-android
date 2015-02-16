@@ -19,6 +19,9 @@ public class VideoAdActivity extends Activity{
 	   @Override
 	   public void onPlaybackCompleted() {
 	  	 Log.v(TAG, "Video ad playback has completed");
+	  	 if(progressDialog != null){
+	  		 progressDialog.dismiss();
+	  	 }
 	  	 finish();
 	   }
 	
@@ -26,7 +29,7 @@ public class VideoAdActivity extends Activity{
 	   public void onLoaded() {
 	  	 Log.v(TAG, "Video ad has loaded");
 	  	 if(progressDialog != null){
-	  		 progressDialog.hide();
+	  		 progressDialog.dismiss();
 	  	 }
 	     videoView.play();
 	   }
@@ -34,6 +37,9 @@ public class VideoAdActivity extends Activity{
 	   @Override
 	   public void onAdError(){
 	  	 Log.v(TAG, "Video ad error");
+	  	 if(progressDialog != null){
+	  		 progressDialog.dismiss();
+	  	 }
 	  	 finish();
 	   }
 	 };
