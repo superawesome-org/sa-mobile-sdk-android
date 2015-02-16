@@ -50,8 +50,7 @@ public class DemoPlayer extends RelativeLayout implements VideoAdPlayer {
 
     // Center the video in the parent layout (when video ratio doesn't match the
     // layout size it will by default position to the left).
-    LayoutParams videoLayouyParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
-                                                                     LayoutParams.FILL_PARENT);
+    LayoutParams videoLayouyParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
     videoLayouyParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
     videoLayouyParams.addRule(RelativeLayout.CENTER_IN_PARENT);
     video = new TrackingVideoView(getContext());
@@ -160,15 +159,15 @@ public class DemoPlayer extends RelativeLayout implements VideoAdPlayer {
     video.removeCallback(callback);
   }
 
-  @Override
-  public VideoProgressUpdate getProgress() {
-    int durationMs =  video.getDuration();
+
+	@Override
+	public VideoProgressUpdate getAdProgress() {
+		int durationMs =  video.getDuration();
 
     if (durationMs <= 0) {
       return VideoProgressUpdate.VIDEO_TIME_NOT_READY;
     }
     VideoProgressUpdate vpu = new VideoProgressUpdate(video.getCurrentPosition(), durationMs);
-    Log.i("PLAYER", vpu.toString());
     return vpu;
-  }
+	}
 }

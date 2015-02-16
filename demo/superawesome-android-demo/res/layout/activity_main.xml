@@ -36,6 +36,12 @@
 	     android:layout_width="wrap_content"
 	     android:text="@string/play_video_ad"
 	     android:onClick="playVideoAd" />
+	     
+	     <Button
+	     android:layout_height="wrap_content"
+	     android:layout_width="wrap_content"
+	     android:text="@string/play_fullscreen_video_ad"
+	     android:onClick="playFullscreenVideoAd" />
     </LinearLayout>>
     
 		<tv.superawesome.mobile.view.BannerView

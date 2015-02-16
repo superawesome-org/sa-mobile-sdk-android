@@ -15,6 +15,9 @@ import android.util.Log;
 
 public class SuperAwesome extends Observable implements ISettingsResponse{
 	
+	private static final String TAG = "SuperAwesome SDK";
+	private static final String VERSION = "1.2.0";
+
 	private static SuperAwesome instance = null;
 	
 	private Context context;
@@ -29,6 +32,10 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
          instance = new SuperAwesome();
       }
       return instance;
+	}
+	
+	public SuperAwesome(){
+		Log.v(TAG, "SuperAwesome SDK version "+VERSION);
 	}
 	
 	public void setContext(Context context){
@@ -50,16 +57,16 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	
 	private int getAppId(){
 		try {
-			Log.d("SuperAwesome SDK", "Starting SDK");
+			Log.d(TAG, "Starting SDK");
             ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
             Integer appId = bundle.getInt("tv.superawesome.sdk.ApplicationId");
-            Log.d("SuperAwesome SDK", "appID=" + appId);
+            Log.d(TAG, "appID=" + appId);
             return appId;
         } catch (NameNotFoundException e) {
-        	Log.e("SuperAwesome SDK", "tv.superawesome.sdk.ApplicationId is not set");
+        	Log.e(TAG, "tv.superawesome.sdk.ApplicationId is not set");
         } catch (NullPointerException e) {
-        	Log.e("SuperAwesome SDK", "tv.superawesome.sdk.ApplicationId is null");
+        	Log.e(TAG, "tv.superawesome.sdk.ApplicationId is null");
         }
 		return 0;
 	}
@@ -92,7 +99,7 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 
 	@Override
 	public void receivedConfiguration(List<Placement> placements, List<Preroll> prerolls) {
-		Log.v("SuperAwesome SDK", "receivedPlacements");
+		Log.v(TAG, "receivedPlacements");
 		this.placements = placements;
 		this.prerolls = prerolls;
 		this.isLoadingConfiguration = false;

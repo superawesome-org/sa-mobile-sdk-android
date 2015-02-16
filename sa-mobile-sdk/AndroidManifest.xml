@@ -18,6 +18,8 @@
             android:label="@string/title_activity_fagyi" >
         </activity>
         <activity android:name=".LoginActivity"></activity>
+        
+        <activity android:name=".VideoAdActivity"></activity>
     </application>
 
 </manifest>
