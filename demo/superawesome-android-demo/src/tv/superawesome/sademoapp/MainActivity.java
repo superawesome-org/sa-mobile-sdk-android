@@ -1,6 +1,8 @@
 package tv.superawesome.sademoapp;
 
 
+import java.io.Serializable;
+
 import tv.superawesome.mobile.view.BannerView;
 import tv.superawesome.mobile.view.BannerViewListener;
 import tv.superawesome.mobile.view.InterstitialView;
@@ -46,7 +48,7 @@ public class MainActivity extends Activity {
 	
 	public void presentInterstitial(View view) {
 		 interstitialView.present();
-	 }
+	}
 
 	
 	
@@ -121,6 +123,9 @@ public class MainActivity extends Activity {
 	 
 	 public void playFullscreenVideoAd(View view){
 		 Intent intent = new Intent(this, VideoAdActivity.class);
+//		 Bundle params = new Bundle();
+//		 params.putBoolean("disable_loading_dialog", true);
+//		 intent.putExtras(params);
 		 startActivity(intent);
 	 }
 }
