@@ -10,6 +10,7 @@ import tv.superawesome.mobile.view.InterstitialViewListener;
 import tv.superawesome.mobile.view.VideoAdActivity;
 import tv.superawesome.mobile.view.VideoView;
 import tv.superawesome.mobile.view.VideoViewListener;
+import tv.superawesome.mobile.view.VideoViewLoader;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -127,5 +128,7 @@ public class MainActivity extends Activity {
 //		 params.putBoolean("disable_loading_dialog", true);
 //		 intent.putExtras(params);
 		 startActivity(intent);
+		 
+		 
 	 }
 }
