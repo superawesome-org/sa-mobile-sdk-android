@@ -10,6 +10,8 @@ import tv.superawesome.mobile.view.InterstitialViewListener;
 import tv.superawesome.mobile.view.VideoAdActivity;
 import tv.superawesome.mobile.view.VideoView;
 import tv.superawesome.mobile.view.VideoViewListener;
+import tv.superawesome.mobile.view.VideoViewLoader;
+import tv.superawesome.mobile.view.VideoViewLoaderListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -122,10 +124,39 @@ public class MainActivity extends Activity {
 	 }
 	 
 	 public void playFullscreenVideoAd(View view){
+		 
+		 // Play video
 		 Intent intent = new Intent(this, VideoAdActivity.class);
+		 startActivity(intent);
+		 
+		 // Play video with preloading		 
+//		 final Intent intent = new Intent(this, VideoAdActivity.class);
+//		 
+//		 final VideoViewLoader loader = new VideoViewLoader(this);
+//		 loader.setListener(new VideoViewLoaderListener(){
+//
+//			@Override
+//			public void onLoaded() {
+//			  Bundle params = new Bundle();
+//			  params.putBoolean("disable_loading_dialog", true);
+//			  params.putInt("loader_id", loader.getInstanceId());
+//			  intent.putExtras(params);
+//			  startActivity(intent);
+//			}
+//
+//			@Override
+//			public void onAdError() {
+//				
+//			}
+//			 
+//		 });
+		 
+		 //Play video without loading dialog
+//		 
+//		 Intent intent = new Intent(this, VideoAdActivity.class);
 //		 Bundle params = new Bundle();
 //		 params.putBoolean("disable_loading_dialog", true);
 //		 intent.putExtras(params);
-		 startActivity(intent);
+//		 startActivity(intent);
 	 }
 }
