@@ -1,6 +1,5 @@
 package tv.superawesome.mobile.view;
 
-import android.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -13,6 +12,7 @@ public class VideoAdActivity extends Activity{
 	
 	protected static final String TAG = "SuperAwesome SDK - VideoViewActivity";
 	private VideoView videoView;
+	private VideoViewLoader loader;
 	private ProgressDialog progressDialog;
 	
 	private VideoViewListener listener = new VideoViewListener() {
@@ -54,6 +54,7 @@ public class VideoAdActivity extends Activity{
       boolean disableLoadingDialog = false;
       if(getIntent().getExtras() != null){
       	disableLoadingDialog = getIntent().getExtras().getBoolean("disable_loading_dialog");
+      	loader = VideoViewLoader.popInstance(getIntent().getExtras().getInt("loader_id"));
 			}
       if(!disableLoadingDialog){
 	      progressDialog = new ProgressDialog(this);
@@ -66,10 +67,17 @@ public class VideoAdActivity extends Activity{
  	}
 	
 	private void addVideoView(){
-		videoView = new VideoView(this, null);
+		if(loader == null){
+			videoView = new VideoView(this, null);
+		}else{
+			videoView = new VideoView(this, null, loader);
+		}
     videoView.setBackgroundColor(Color.BLACK);
 		videoView.setListener(listener);
 		setContentView(videoView);
+		if(loader != null && loader.isLoaded()){
+			listener.onLoaded();
+		}
 	}
 	
 	@Override

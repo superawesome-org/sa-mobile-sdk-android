@@ -1,5 +1,7 @@
 package tv.superawesome.mobile.view;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,40 +12,60 @@ import android.util.Log;
 
 import com.google.ads.interactivemedia.v3.api.AdDisplayContainer;
 import com.google.ads.interactivemedia.v3.api.AdErrorEvent;
+import com.google.ads.interactivemedia.v3.api.AdErrorEvent.AdErrorListener;
 import com.google.ads.interactivemedia.v3.api.AdEvent;
 import com.google.ads.interactivemedia.v3.api.AdEvent.AdEventListener;
 import com.google.ads.interactivemedia.v3.api.AdsLoader;
+import com.google.ads.interactivemedia.v3.api.AdsLoader.AdsLoadedListener;
 import com.google.ads.interactivemedia.v3.api.AdsManager;
+import com.google.ads.interactivemedia.v3.api.AdsManagerLoadedEvent;
 import com.google.ads.interactivemedia.v3.api.AdsRequest;
 import com.google.ads.interactivemedia.v3.api.ImaSdkFactory;
 import com.google.ads.interactivemedia.v3.api.ImaSdkSettings;
-import com.google.ads.interactivemedia.v3.api.AdErrorEvent.AdErrorListener;
-import com.google.ads.interactivemedia.v3.api.AdsLoader.AdsLoadedListener;
-import com.google.ads.interactivemedia.v3.api.AdsManagerLoadedEvent;
-import com.google.ads.interactivemedia.v3.samples.demoapp.player.DemoPlayer;
+import com.google.ads.interactivemedia.v3.samples.demoapp.player.DefaultVideoAdPlayer;
 
 public class VideoViewLoader  implements AdErrorListener, AdsLoadedListener, Observer, AdEventListener{
-	
+
 	private static final String TAG = "SuperAwesome SDK - Video Loader";
+	private static int INSTANCE_COUNTER = 0;
+	private static Map<Integer,VideoViewLoader> savedInstances = new HashMap<Integer,VideoViewLoader>();
 	
-	protected VideoViewLoaderListener listener;
+	private VideoViewLoaderListener listener = null;
+	private boolean isLoaded = false;
+	private int instanceId;
 	
 	protected ImaSdkFactory sdkFactory;
 	protected AdsLoader adsLoader;
 	protected ImaSdkSettings sdkSettings;
-	protected DemoPlayer videoPlayer;
+	protected DefaultVideoAdPlayer videoPlayer;
 	protected AdsManager adsManager;
 	
 
+	public static VideoViewLoader popInstance(int instanceId){
+		VideoViewLoader instance = savedInstances.get(instanceId);
+		savedInstances.remove(instanceId);
+		return instance; 
+	}
+	
 	public VideoViewLoader(Context context){
+		this(context, true);
+	}
+	
+	public VideoViewLoader(Context context, boolean saveInstance){
 		Log.v(TAG, "VideoViewLoader created");
+		
+		if(saveInstance){
+			instanceId = INSTANCE_COUNTER;
+			INSTANCE_COUNTER++;
+			savedInstances.put(instanceId, this);
+		}
 		
 		sdkFactory = ImaSdkFactory.getInstance();
 		adsLoader = sdkFactory.createAdsLoader(context, getImaSdkSettings());
 		adsLoader.addAdErrorListener(this);
 		adsLoader.addAdsLoadedListener(this);
 		
-		videoPlayer = new DemoPlayer(context);
+		videoPlayer = new DefaultVideoAdPlayer(context);
 		
 		SuperAwesome.getInstance().addObserver(this);
 		SuperAwesome.getInstance().setContext(context);
@@ -51,6 +73,10 @@ public class VideoViewLoader  implements AdErrorListener, AdsLoadedListener, Obs
 		if(!SuperAwesome.getInstance().getIsLoadingConfiguration()){
 			requestAd();
 		}
+	}
+	
+	public int getInstanceId(){
+		return instanceId;
 	}
 	
 	public VideoViewLoaderListener getListener() {
@@ -61,12 +87,16 @@ public class VideoViewLoader  implements AdErrorListener, AdsLoadedListener, Obs
 		this.listener = listener;
 	}
 	
-	public DemoPlayer getVideoPlayer(){
+	public DefaultVideoAdPlayer getVideoPlayer(){
 		return videoPlayer;
 	}
 
 	public AdsManager getAdsManager() {
 		return adsManager;
+	}
+	
+	public boolean isLoaded(){
+		return isLoaded;
 	}
 
 	protected ImaSdkSettings getImaSdkSettings() {
@@ -123,6 +153,7 @@ public class VideoViewLoader  implements AdErrorListener, AdsLoadedListener, Obs
 		switch (event.getType()) {
     	case LOADED:
     		Log.v(TAG, "Received LOADED event");
+    		isLoaded = true;
     		if(listener != null){
     			listener.onLoaded();
     		}

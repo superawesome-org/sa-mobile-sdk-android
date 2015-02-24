@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.FrameLayout;
 
-import com.google.ads.interactivemedia.v3.samples.demoapp.player.DemoPlayer;
+import com.google.ads.interactivemedia.v3.samples.demoapp.player.DefaultVideoAdPlayer;
 import com.google.ads.interactivemedia.v3.samples.demoapp.player.TrackingVideoView.CompleteCallback;
 
 public class VideoView extends FrameLayout implements VideoViewLoaderListener, CompleteCallback {
@@ -15,19 +15,35 @@ public class VideoView extends FrameLayout implements VideoViewLoaderListener, C
 	protected VideoViewListener listener; 
 	
 	private VideoViewLoader loader;
-	private DemoPlayer player;
+	private DefaultVideoAdPlayer player;
 
 	public VideoView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		Log.v(TAG, "VideoView created");
 		
-		loader = new VideoViewLoader(context);
-		loader.setListener(this);
+		setLoader(new VideoViewLoader(context, false));
+	}
+	
+	public VideoView(Context context, AttributeSet attrs, VideoViewLoader loader) {
+		super(context, attrs);
+		
+		Log.v(TAG, "VideoView created with loader");
+		
+		setLoader(loader);
 	}
 	
 	public void setListener(VideoViewListener listener){
 		this.listener = listener;
+	}
+	
+	private void setLoader(VideoViewLoader loader){
+		this.loader = loader;
+		loader.setListener(this);
+		
+		if(loader.isLoaded()){
+			onLoaded();
+		}
 	}
 	
 	@Override
