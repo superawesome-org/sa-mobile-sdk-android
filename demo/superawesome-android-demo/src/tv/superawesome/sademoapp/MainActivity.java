@@ -1,8 +1,6 @@
 package tv.superawesome.sademoapp;
 
 
-import java.io.Serializable;
-
 import tv.superawesome.mobile.view.BannerView;
 import tv.superawesome.mobile.view.BannerViewListener;
 import tv.superawesome.mobile.view.InterstitialView;
@@ -131,7 +129,6 @@ public class MainActivity extends Activity {
 		 
 		 // Play video with preloading		 
 //		 final Intent intent = new Intent(this, VideoAdActivity.class);
-//		 
 //		 final VideoViewLoader loader = new VideoViewLoader(this);
 //		 loader.setListener(new VideoViewLoaderListener(){
 //
@@ -148,7 +145,6 @@ public class MainActivity extends Activity {
 //			public void onAdError() {
 //				
 //			}
-//			 
 //		 });
 		 
 		 //Play video without loading dialog

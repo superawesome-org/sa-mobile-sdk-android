@@ -47,24 +47,36 @@ public class VideoAdActivity extends Activity{
 	@Override
   public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-      // remove title
-      requestWindowFeature(Window.FEATURE_NO_TITLE);
-      getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      
-      boolean disableLoadingDialog = false;
-      if(getIntent().getExtras() != null){
-      	disableLoadingDialog = getIntent().getExtras().getBoolean("disable_loading_dialog");
-      	loader = VideoViewLoader.popInstance(getIntent().getExtras().getInt("loader_id"));
-			}
-      if(!disableLoadingDialog){
-	      progressDialog = new ProgressDialog(this);
-	      progressDialog.setMessage("Loading...");
-	      progressDialog.setCancelable(false);
-	      progressDialog.show();
-      }
-      
-      addVideoView();
+    // remove title		
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    
+    boolean disableLoadingDialog = false;
+    if(getIntent().getExtras() != null){
+    	disableLoadingDialog = getIntent().getExtras().getBoolean("disable_loading_dialog");
+    	loader = VideoViewLoader.popInstance(getIntent().getExtras().getInt("loader_id"));
+		}
+    if(!disableLoadingDialog){
+      progressDialog = new ProgressDialog(this);
+      progressDialog.setMessage("Loading...");
+      progressDialog.setCancelable(false);
+      progressDialog.show();
+    }
+    
+    addVideoView();
  	}
+	
+	@Override
+	public void onRestart(){
+		super.onRestart();
+		
+		videoView.play();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+	}
 	
 	private void addVideoView(){
 		if(loader == null){
@@ -80,8 +92,5 @@ public class VideoAdActivity extends Activity{
 		}
 	}
 	
-	@Override
-	public void onBackPressed() {
-		
-	}
+	
 }
