@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
+import android.content.Intent;
 import android.view.WindowManager;
 
 public class VideoAdActivity extends Activity{
@@ -70,6 +71,11 @@ public class VideoAdActivity extends Activity{
     videoView.setBackgroundColor(Color.BLACK);
 		videoView.setListener(listener);
 		setContentView(videoView);
+	}
+
+	public static void openInActivity(Activity activity){
+		Intent intent = new Intent(activity, VideoAdActivity.class);
+		activity.startActivity(intent);
 	}
 	
 	@Override

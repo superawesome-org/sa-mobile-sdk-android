@@ -17,15 +17,20 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	
 	private static final String TAG = "SuperAwesome SDK";
 	private static final String VERSION = "1.2.0";
+	private static final int DEFAULT_APP_ID = 14;
 
 	private static SuperAwesome instance = null;
 	
 	private Context context;
-	private int appId;
+	private int appId = 0;
 	private List<Placement> placements;
 	private List<Preroll> prerolls;
 	private boolean isLoadingConfiguration = true;
 	private boolean useParentalGate = false;
+	
+	public static String getVersion(){
+		return VERSION;
+	}
 	
 	public static SuperAwesome getInstance() {
       if(instance == null) {
@@ -55,20 +60,26 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 		this.useParentalGate = useParentalGate;
 	}
 	
-	private int getAppId(){
+	public void setAppId(int appId){
+		this.appId = appId;
+	}
+	
+	public int getAppId(){
+		Log.d(TAG, "Looking for app ID...");
+		if(this.appId != 0) return appId;
 		try {
-			Log.d(TAG, "Starting SDK");
-            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = ai.metaData;
-            Integer appId = bundle.getInt("tv.superawesome.sdk.ApplicationId");
-            Log.d(TAG, "appID=" + appId);
-            return appId;
-        } catch (NameNotFoundException e) {
-        	Log.e(TAG, "tv.superawesome.sdk.ApplicationId is not set");
-        } catch (NullPointerException e) {
-        	Log.e(TAG, "tv.superawesome.sdk.ApplicationId is null");
-        }
-		return 0;
+      ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+      Bundle bundle = ai.metaData;
+      Integer appId = bundle.getInt("tv.superawesome.sdk.ApplicationId");
+      Log.d(TAG, "appID=" + appId);
+      return appId;
+    } catch (NameNotFoundException e) {
+    	Log.e(TAG, "tv.superawesome.sdk.ApplicationId is not set");
+    } catch (NullPointerException e) {
+    	Log.e(TAG, "tv.superawesome.sdk.ApplicationId is null");
+    }
+    	Log.d(TAG, "Using default app ID (" + DEFAULT_APP_ID + ")");
+		return DEFAULT_APP_ID;
 	}
 	
 	public void getSettings(){
