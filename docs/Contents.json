@@ -1,0 +1,82 @@
+{
+    "name": "Android SDK",
+    "text": "00 Intro.md",
+    "sections":[
+        {
+            "name": "Getting Started",
+            "sections": [
+                {
+                    "name":"Registering Your App on the Dashboard",
+                    "text":"01 Getting Started/01 GettingStarted.md"
+                },
+                {
+                    "name": "Adding the Library to Your Project",
+                    "text": "01 Getting Started/02 SettingUp.md"
+                },
+                {
+                    "name": "Configuring the Library",
+                    "text": "01 Getting Started/03 Configure.md"
+                }
+            ]
+        },
+        {
+            "name":"Banner Ads",
+            "sections":[
+                {
+                    "name": "Banner Ads As Resources",
+                    "text": "02 Banner Ads/01 AddBanner.md"
+                },
+                {
+                    "name": "Banner Ads With Code",
+                    "text": "02 Banner Ads/02 AddBannerCode.md"
+                },
+                {
+                    "name": "Advanced Configuration",
+                    "text": "02 Banner Ads/03 BannerAdvanced.md"
+                }
+            ]
+        },
+        {
+            "name": "Interstitial Ads",
+            "sections": [
+                {
+                    "name": "Interstitial Ads As Resources",
+                    "text": "03 Interstitial Ads/01 Interstitial.md"
+                },
+                {
+                    "name": "Interstitial Ads With Code",
+                    "text": "03 Interstitial Ads/02 InterstitialCode.md"
+                },
+                {
+                    "name": "Advanced Configuration",
+                    "text": "03 Interstitial Ads/03 InterstitialAdvanced.md"
+                }
+            ]
+        },
+        {
+            "name": "Video Ads",
+            "sections": [
+                {
+                    "name": "How to Use Video Ads",
+                    "text": "04 Video Ads/01 AddVideo.md"
+                },
+                {
+                    "name": "Fullscreen Video Ads",
+                    "text": "04 Video Ads/02 FullscreenVideo.md"
+                }
+            ]
+        },
+        {
+            "name": "Parental Gate",
+            "text": "05 ParentalGate.md"
+        },
+        {
+            "name": "Technical Support",
+            "text": "06 Support.md"
+        },
+        {
+            "name": "License",
+            "text": "07 License.md"
+        }
+    ]
+}
