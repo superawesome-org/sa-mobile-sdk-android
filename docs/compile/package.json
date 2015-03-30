@@ -1,6 +1,6 @@
 {
-  "name": "sa-unity-sdk-docs",
-  "version": "1.1.0",
+  "name": "sa-mobile-sdk-android-docs",
+  "version": "1.2.1",
   "description": "SuperAwesome SDK for Unity",
   "main": "index.js",
   "dependencies":{
@@ -23,14 +23,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SuperAwesomeLTD/sa-unity-sdk-sdk.git"
+    "url": "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SuperAwesomeLTD/sa-unity-sdk-sdk/issues"
+    "url": "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues"
   },
-  "homepage": "https://github.com/SuperAwesomeLTD/sa-unity-sdk-sdk",
+  "homepage": "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android",
   "files":[
     "docs"
   ]
