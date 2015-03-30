@@ -4,7 +4,7 @@ After importing the library to your workspace, your application needs to be link
 
 Next, open the AndroidManifest.xml file in the root of the project. Add a 'Uses Permission' item named android.permission.INTERNET and android.permission.ACCESS_NETWORK_STATE.
 
-![](/doc_files/AndroidSDK/eclipse_permissions.png?raw=true "Setting the permissions in Eclipse")
+![](img/eclipse_permissions.png "Setting the permissions in Eclipse")
 
 Finally, copy the superawesome directory from the library's assets folder to your project's assets folder.
 
