@@ -72,7 +72,7 @@
         },
         {
             "name": "Demo Placements",
-            "text": "<h3 id=\"api-documentation\">API Documentation</h3>\n<p>The following placements can be used for testing. These placements have a 100% fill rate.</p>\n<table>\n<thead>\n<tr>\n<th>App ID</th>\n<th>Placement ID</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>14</td>\n<td>5247930</td>\n<td>320x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513681</td>\n<td>300x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513680</td>\n<td>728x90 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513682</td>\n<td>300x250 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5247931</td>\n<td>320x480 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513683</td>\n<td>768x1024 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>314228</td>\n<td>video</td>\n</tr>\n</tbody>\n</table>\n"
+            "text": "<p>The following placements can be used for testing. These placements have a 100% fill rate.</p>\n<table>\n<thead>\n<tr>\n<th>App ID</th>\n<th>Placement ID</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>14</td>\n<td>5247930</td>\n<td>320x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513681</td>\n<td>300x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513680</td>\n<td>728x90 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513682</td>\n<td>300x250 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5247931</td>\n<td>320x480 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513683</td>\n<td>768x1024 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>314228</td>\n<td>video</td>\n</tr>\n</tbody>\n</table>\n"
         },
         {
             "name": "Technical Support",

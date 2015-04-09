@@ -1,5 +1,3 @@
-###API Documentation
-
 The following placements can be used for testing. These placements have a 100% fill rate.
 
 | App ID | Placement ID | Description |
