@@ -41,11 +41,12 @@ public class AdLoader extends AsyncTask<String, Integer, JSONObject> {
 
     @Override
     protected void onPostExecute(JSONObject response) {
-        delegate.onAdLoaded(response);
+        this.delegate.onAdLoaded(response);
     }
 
 
     private JSONObject getJson(URL url) throws IOException, JSONException {
+        this.delegate.onAdBeginLoad();
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {

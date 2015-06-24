@@ -1,14 +1,15 @@
 package tv.superawesome.superawesomesdk.view;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import tv.superawesome.superawesomesdk.SuperAwesome;
-import tv.superawesome.superawesomesdk.view.AdView;
 
 
 public class BannerView implements AdView {
 
-	private static final String TAG = "SuperAwesome SDK - Banner";
+	private static final String TAG = "SA SDK - Banner";
     private String placementID;
     private boolean testMode = false;
 
@@ -26,6 +27,16 @@ public class BannerView implements AdView {
     @Override
     public void onAdLoaded(JSONObject response) {
         System.out.println(response);
+    }
+
+    @Override
+    public void onAdBeginLoad() {
+        Log.d(TAG, "Ad loading");
+    }
+
+    @Override
+    public void onAdError() {
+        Log.d(TAG, "Error loading ad");
     }
 
 }

@@ -7,4 +7,6 @@ import org.json.JSONObject;
  */
 public interface AdView {
     void onAdLoaded(JSONObject response);
+    void onAdBeginLoad();
+    void onAdError();
 }
