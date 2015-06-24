@@ -1,5 +1,6 @@
 package tv.superawesome.sademoapp;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -15,29 +16,20 @@ import tv.superawesome.superawesomesdk.SuperAwesome;
 import tv.superawesome.superawesomesdk.view.BannerView;
 
 
-public class MainActivity extends ActionBarActivity implements MRAIDViewListener, MRAIDNativeFeatureListener{
+public class MainActivity extends Activity implements MRAIDViewListener, MRAIDNativeFeatureListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getVersion());
-        BannerView bv = new BannerView("38");
+        BannerView bv = new BannerView(this);
+        bv.setPlacementID("38");
+        bv.loadAd();
 
         RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
 
-        String[] supportedNativeFeatures = {
-                MRAIDNativeFeature.CALENDAR,
-                MRAIDNativeFeature.INLINE_VIDEO,
-                MRAIDNativeFeature.SMS,
-                MRAIDNativeFeature.STORE_PICTURE,
-                MRAIDNativeFeature.TEL,
-        };
-
-        MRAIDView mraidView = new MRAIDView(this, "http://superawesome.tv", "<h1>Rich Media Content</h1>", supportedNativeFeatures, this, this);
-//        mraidView.setLayoutParams(params);
-
-        rootView.addView(mraidView);
+        rootView.addView(bv.getView());
     }
 
     @Override
