@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import tv.superawesome.superawesomesdk.SuperAwesome;
+import tv.superawesome.superawesomesdk.view.BannerView;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -14,6 +15,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getVersion());
+        BannerView bv = new BannerView("38");
     }
 
     @Override
@@ -37,4 +39,5 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

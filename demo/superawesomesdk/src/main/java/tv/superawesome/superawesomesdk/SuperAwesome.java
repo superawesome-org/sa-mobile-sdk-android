@@ -20,6 +20,8 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	private static final int DEFAULT_APP_ID = 14;
 
 	private static SuperAwesome instance = null;
+
+	private AdManager adManager;
 	
 	private Context context;
 	private int appId = 0;
@@ -41,6 +43,15 @@ public class SuperAwesome extends Observable implements ISettingsResponse{
 	
 	public SuperAwesome(){
 		Log.v(TAG, "SuperAwesome SDK version "+VERSION);
+		this.adManager = new AdManager("https://beta.ads.superawesome.tv/v2");
+	}
+
+	public AdManager getAdManager () {
+		return this.adManager;
+	}
+
+	public void setAdManager (AdManager am) {
+		this.adManager = am;
 	}
 	
 	public void setContext(Context context){
