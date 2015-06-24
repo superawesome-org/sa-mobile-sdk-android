@@ -4,11 +4,18 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
+
+import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
+import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
+import org.nexage.sourcekit.mraid.MRAIDView;
+import org.nexage.sourcekit.mraid.MRAIDViewListener;
+
 import tv.superawesome.superawesomesdk.SuperAwesome;
 import tv.superawesome.superawesomesdk.view.BannerView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements MRAIDViewListener, MRAIDNativeFeatureListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +23,21 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getVersion());
         BannerView bv = new BannerView("38");
+
+        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
+
+        String[] supportedNativeFeatures = {
+                MRAIDNativeFeature.CALENDAR,
+                MRAIDNativeFeature.INLINE_VIDEO,
+                MRAIDNativeFeature.SMS,
+                MRAIDNativeFeature.STORE_PICTURE,
+                MRAIDNativeFeature.TEL,
+        };
+
+        MRAIDView mraidView = new MRAIDView(this, "http://superawesome.tv", "<h1>Rich Media Content</h1>", supportedNativeFeatures, this, this);
+//        mraidView.setLayoutParams(params);
+
+        rootView.addView(mraidView);
     }
 
     @Override
@@ -40,4 +62,53 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void mraidNativeFeatureCallTel(String url) {
+
+    }
+
+    @Override
+    public void mraidNativeFeatureCreateCalendarEvent(String eventJSON) {
+
+    }
+
+    @Override
+    public void mraidNativeFeaturePlayVideo(String url) {
+
+    }
+
+    @Override
+    public void mraidNativeFeatureOpenBrowser(String url) {
+
+    }
+
+    @Override
+    public void mraidNativeFeatureStorePicture(String url) {
+
+    }
+
+    @Override
+    public void mraidNativeFeatureSendSms(String url) {
+
+    }
+
+    @Override
+    public void mraidViewLoaded(MRAIDView mraidView) {
+
+    }
+
+    @Override
+    public void mraidViewExpand(MRAIDView mraidView) {
+
+    }
+
+    @Override
+    public void mraidViewClose(MRAIDView mraidView) {
+
+    }
+
+    @Override
+    public boolean mraidViewResize(MRAIDView mraidView, int width, int height, int offsetX, int offsetY) {
+        return false;
+    }
 }
