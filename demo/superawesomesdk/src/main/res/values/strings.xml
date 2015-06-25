@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SuperAwesome SDK</string>
+    <string name="banner_image_html"><div><a href="%1$"><img src="%2$" /></a></div></string>
+
 </resources>

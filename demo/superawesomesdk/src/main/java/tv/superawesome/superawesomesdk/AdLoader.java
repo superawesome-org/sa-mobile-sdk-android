@@ -1,10 +1,7 @@
 package tv.superawesome.superawesomesdk;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,16 +13,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import tv.superawesome.superawesomesdk.view.AdView;
+import tv.superawesome.superawesomesdk.view.PlacementView;
 
 /**
  * Created by connor.leigh-smith on 24/06/15.
  */
 public class AdLoader extends AsyncTask<String, Integer, JSONObject> {
 
-    private AdView delegate;
+    private PlacementView delegate;
 
-    public AdLoader(AdView delegate) {
+    public AdLoader(PlacementView delegate) {
         this.delegate = delegate;
     }
 
@@ -33,8 +30,10 @@ public class AdLoader extends AsyncTask<String, Integer, JSONObject> {
     protected JSONObject doInBackground(String[] params) {
         try {
             return getJson(new URL(params[0]));
-        } catch (Exception ex) {
-            System.out.println("Could not fetch JSON from server");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -46,7 +45,7 @@ public class AdLoader extends AsyncTask<String, Integer, JSONObject> {
 
 
     private JSONObject getJson(URL url) throws IOException, JSONException {
-        this.delegate.onAdBeginLoad();
+        this.delegate.onAdBeginLoad(url);
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {

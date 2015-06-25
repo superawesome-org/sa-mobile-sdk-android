@@ -2,11 +2,14 @@ package tv.superawesome.superawesomesdk.view;
 
 import org.json.JSONObject;
 
+import java.net.URL;
+
 /**
  * Created by connor.leigh-smith on 24/06/15.
  */
-public interface AdView {
+public interface PlacementView {
     void onAdLoaded(JSONObject response);
     void onAdBeginLoad();
+    void onAdBeginLoad(URL url);
     void onAdError();
 }
