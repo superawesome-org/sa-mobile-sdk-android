@@ -1,13 +1,9 @@
 package tv.superawesome.superawesomesdk.view;
 
-import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
-import org.nexage.sourcekit.mraid.MRAIDViewListener;
-
+/**
+ * Created by connor.leigh-smith on 26/06/15.
+ */
 public interface BannerViewListener {
-	public void onAdLeave();
-
-	public void onAdError();
-
-	public void onAdLoaded();
-
+    public void onLoaded();
+    public void onAdError();
 }

@@ -14,23 +14,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import tv.superawesome.superawesomesdk.view.AdLoaderListener;
-import tv.superawesome.superawesomesdk.view.PlacementView;
 
 /**
  * Created by connor.leigh-smith on 24/06/15.
  */
-public class AdLoader extends AsyncTask<String, Integer, JSONObject> {
+public class RichMediaLoader extends AsyncTask<String, Integer, String> {
 
     private AdLoaderListener listener;
 
-    public AdLoader(AdLoaderListener listener) {
+    public RichMediaLoader(AdLoaderListener listener) {
         this.listener = listener;
     }
 
     @Override
-    protected JSONObject doInBackground(String[] params) {
+    protected String doInBackground(String[] params) {
         try {
-            return getJson(new URL(params[0]));
+            return getContent(new URL(params[0]));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -40,13 +39,13 @@ public class AdLoader extends AsyncTask<String, Integer, JSONObject> {
     }
 
     @Override
-    protected void onPostExecute(JSONObject response) {
-        this.listener.onResponse(response);
+    protected void onPostExecute(String response) {
+        this.listener.onRichMediaLoaded(response);
     }
 
 
-    private JSONObject getJson(URL url) throws IOException, JSONException {
-        this.listener.onAdBeginLoad(url.toString());
+    private String getContent(URL url) throws IOException, JSONException {
+        this.listener.onRichMediaBeginLoad(url.toString());
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
@@ -57,10 +56,8 @@ public class AdLoader extends AsyncTask<String, Integer, JSONObject> {
 
                 while ((inputStr = streamReader.readLine()) != null) responseStrBuilder.append(inputStr);
 
-                JSONObject response = new JSONObject("{\"line_item_id\":1, \"campaign_id\":1,\"creative\":{\"id\":1,\"format\":\"rich_media\",\"details\": {\"url\":\"https://s3-eu-west-1.amazonaws.com/beta-ads-uploads/rich-media/demo-floor/index.html\",\"width\":970,\"height\":90}}}");
-//                JSONObject response = new JSONObject(responseStrBuilder.toString());
+                return responseStrBuilder.toString();
 
-                return response;
             } catch (Exception e) {
                 throw e;
             } finally {

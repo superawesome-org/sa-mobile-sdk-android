@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import org.json.JSONObject;
 
 import tv.superawesome.superawesomesdk.SuperAwesome;
 import tv.superawesome.superawesomesdk.view.BannerView;
+import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 import tv.superawesome.superawesomesdk.view.BannerViewListener;
 
 
@@ -22,7 +24,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getVersion());
 
-        this.bv = new BannerView(this, "5504");
+        this.bv = new BannerView(this, "5662");
+        this.bv.setListener(new BannerViewListener() {
+            @Override
+            public void onLoaded() {
+
+            }
+
+            @Override
+            public void onAdError() {
+
+            }
+        });
 //        this.bv.setLayoutParams(new FrameLayout.LayoutParams(500,500));
 
         RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);

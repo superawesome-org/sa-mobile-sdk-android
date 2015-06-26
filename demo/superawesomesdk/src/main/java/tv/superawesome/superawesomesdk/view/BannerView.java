@@ -2,16 +2,10 @@ package tv.superawesome.superawesomesdk.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
@@ -20,7 +14,6 @@ import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
 import java.net.URL;
 
-import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 
 
@@ -31,13 +24,61 @@ public class BannerView extends FrameLayout implements PlacementView, MRAIDViewL
     private boolean testMode = false;
     private Context context;
     private BannerViewListener listener = null;
+    private AdLoaderListener adLoaderListener;
     private MRAIDView mraidView;
     private Ad ad = null;
+    private String baseUrl = "http://superawesome.tv";
 
 	public BannerView(Context context, String placementID) {
         super(context);
         this.context = context;
         this.placementID = placementID;
+        this.adLoaderListener = new AdLoaderListener() {
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+                if (listener != null) listener.onLoaded();
+                Log.d(TAG, "Ad loaded");
+                try {
+                    ad = new Ad(response);
+                    if (!ad.error) {
+                        if (ad.format == Ad.Format.RICH_MEDIA) {
+                            ad.retrieveRichMediaContent(adLoaderListener);
+                            baseUrl = ad.richMediaUrl;
+                        } else {
+                            String content = String.format("<div><a href=\"%s\"><img src=\"%s\" /></a></div>", ad.clickURL, ad.imageURL);
+                            Log.d(TAG, content);
+                            setView(content);
+                        }
+                    } else {
+                        Log.d(TAG, "Error: " + ad.error_message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onRichMediaLoaded(String content) {
+                Log.d(TAG, "Setting content: " + content);
+                setView(content);
+            }
+
+            @Override
+            public void onAdBeginLoad(String url) {
+
+            }
+
+            @Override
+            public void onRichMediaBeginLoad(String url) {
+
+            }
+        };
         this.loadAd();
 	}
 
@@ -52,39 +93,31 @@ public class BannerView extends FrameLayout implements PlacementView, MRAIDViewL
             MRAIDNativeFeature.STORE_PICTURE,
             MRAIDNativeFeature.TEL,
         };
-        this.mraidView = new MRAIDView(this.context, "http://superawesome.tv", content,
+        this.mraidView = new MRAIDView(this.context, baseUrl, content,
                 supportedNativeFeatures, this, this);
-//        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-//        mraidView.setLayoutParams(params);
-//        this.mraidView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 100));
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        mraidView.setLayoutParams(params);
         this.addView(mraidView);
     }
 
-    public BannerViewListener getListener() {
-        return this.listener;
+    public void setListener(BannerViewListener listener) {
+        this.listener = listener;
     }
 
     public void loadAd()
     {
-        SuperAwesome.getInstance().getAdManager().getAd(this.placementID, this.testMode, this);
+        SuperAwesome.getInstance().getAdManager().getAd(this.placementID, this.testMode, this.adLoaderListener);
     }
 
     @Override
-    public void onAdLoaded(JSONObject response) {
-        Log.d(TAG, "Ad loaded");
-        try {
-            this.ad = new Ad(response);
-            if (!this.ad.error) {
-                String contents = String.format("<div><a href=\"%s\"><img src=\"%s\" /></a></div>", ad.clickURL, ad.imageURL);
-                Log.d(TAG, contents);
-                this.setView(contents);
-            } else {
-                Log.d(TAG, "Error: " + ad.error_message);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void onAdResponse(JSONObject response) {
 
+    }
+
+    @Override
+    public void onAdLoaded(String content) {
+        Log.d(TAG, "Setting content: " + content);
+        this.setView(content);
     }
 
     @Override

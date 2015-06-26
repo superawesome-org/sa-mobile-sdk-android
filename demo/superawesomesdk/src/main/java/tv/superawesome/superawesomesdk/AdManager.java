@@ -1,5 +1,6 @@
 package tv.superawesome.superawesomesdk;
 
+import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 import tv.superawesome.superawesomesdk.view.PlacementView;
 
 /**
@@ -14,12 +15,12 @@ public class AdManager {
         this.baseUrl = baseUrl;
     }
 
-    public void getAd(String placementID, boolean testMode, PlacementView delegate)
+    public void getAd(String placementID, boolean testMode, AdLoaderListener listener)
     {
         String url = this.baseUrl + "/ad/" + placementID;
         url = testMode ? url + "?test=true" : url;
 
-        AdLoader adLoader = new AdLoader(delegate);
+        AdLoader adLoader = new AdLoader(listener);
         adLoader.execute(url);
     }
 
