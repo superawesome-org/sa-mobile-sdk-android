@@ -50,6 +50,7 @@ public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDN
                         if (ad.richMediaUrl != null) baseUrl = ad.richMediaUrl;
                         setView(ad.getContent());
                     } else {
+                        if (listener != null) listener.onAdError(ad.error_message);
                         Log.d(TAG, "Error: " + ad.error_message);
                     }
                 } catch (Exception e) {

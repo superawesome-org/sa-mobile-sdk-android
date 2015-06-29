@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dcd6cfe6-8bb4-4dc1-a112-48cde6fb539a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/RichMediaLoader.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/Ad.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/Ad.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdLoader.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/AdLoaderListener.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/AdLoaderListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdManager.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerView.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerViewListener.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerViewListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/app/src/main/java/tv/superawesome/sademoapp/MainActivity.java" afterPath="$PROJECT_DIR$/demo/app/src/main/java/tv/superawesome/sademoapp/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/PlacementView.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/PlacementView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
     <ignored path=".idea/workspace.xml" />
