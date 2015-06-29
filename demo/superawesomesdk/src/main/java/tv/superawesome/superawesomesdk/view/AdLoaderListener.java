@@ -1,19 +1,11 @@
 package tv.superawesome.superawesomesdk.view;
 
-import org.json.JSONObject;
-import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
-import org.nexage.sourcekit.mraid.MRAIDViewListener;
-
 public interface AdLoaderListener {
 
-	public void onError();
+	void onBeginLoad(String url);
 
-	public void onResponse(JSONObject response);
+	void onError(String message);
 
-	public void onRichMediaLoaded(String content);
-
-	public void onAdBeginLoad(String url);
-
-	public void onRichMediaBeginLoad(String url);
+	void onLoaded(Ad ad);
 
 }

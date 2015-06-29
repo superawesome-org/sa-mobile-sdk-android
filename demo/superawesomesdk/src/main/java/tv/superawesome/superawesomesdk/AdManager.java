@@ -1,7 +1,6 @@
 package tv.superawesome.superawesomesdk;
 
 import tv.superawesome.superawesomesdk.view.AdLoaderListener;
-import tv.superawesome.superawesomesdk.view.PlacementView;
 
 /**
  * Created by connor.leigh-smith on 23/06/15.
@@ -21,7 +20,7 @@ public class AdManager {
         url = testMode ? url + "?test=true" : url;
 
         AdLoader adLoader = new AdLoader(listener);
-        adLoader.execute(url);
+        adLoader.loadAd(url);
     }
 
 }

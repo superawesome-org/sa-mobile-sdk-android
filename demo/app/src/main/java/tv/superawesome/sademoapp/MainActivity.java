@@ -6,11 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
-import org.json.JSONObject;
-
 import tv.superawesome.superawesomesdk.SuperAwesome;
 import tv.superawesome.superawesomesdk.view.BannerView;
-import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 import tv.superawesome.superawesomesdk.view.BannerViewListener;
 
 
@@ -27,12 +24,12 @@ public class MainActivity extends Activity {
         this.bv = new BannerView(this, "5662");
         this.bv.setListener(new BannerViewListener() {
             @Override
-            public void onLoaded() {
+            public void onAdLoaded() {
 
             }
 
             @Override
-            public void onAdError() {
+            public void onAdError(String message) {
 
             }
         });

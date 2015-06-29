@@ -12,5 +12,5 @@ public interface PlacementView {
     void onAdLoaded(String content);
     void onAdBeginLoad();
     void onAdBeginLoad(URL url);
-    void onAdError();
+    void onAdError(String message);
 }

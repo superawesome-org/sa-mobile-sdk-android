@@ -2,14 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dcd6cfe6-8bb4-4dc1-a112-48cde6fb539a" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/RichMediaLoader.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/Ad.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/Ad.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdLoader.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdLoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/AdLoaderListener.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/AdLoaderListener.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdManager.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/AdManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerView.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerViewListener.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/BannerViewListener.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/app/src/main/java/tv/superawesome/sademoapp/MainActivity.java" afterPath="$PROJECT_DIR$/demo/app/src/main/java/tv/superawesome/sademoapp/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/PlacementView.java" afterPath="$PROJECT_DIR$/demo/superawesomesdk/src/main/java/tv/superawesome/superawesomesdk/view/PlacementView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/demo/app/app.iml" afterPath="$PROJECT_DIR$/demo/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
@@ -35,6 +36,13 @@
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Bundled (Maven 3)" />
+      </MavenGeneralSettings>
     </option>
   </component>
   <component name="NamedScopeManager">
@@ -68,9 +76,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -91,6 +98,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane />
       </pane>
@@ -220,13 +228,13 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">

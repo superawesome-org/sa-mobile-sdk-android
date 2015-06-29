@@ -1,25 +1,18 @@
 package tv.superawesome.superawesomesdk.view;
 
 import android.media.Image;
-import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import tv.superawesome.superawesomesdk.AdLoader;
-import tv.superawesome.superawesomesdk.RichMediaLoader;
+import tv.superawesome.superawesomesdk.UrlLoader;
 
 /**
  * Created by connor.leigh-smith on 24/06/15.
  */
 public class Ad {
+    private static final String TAG = "SA SDK - Ad object";
     public String imageURL;
     public String clickURL;
     public int width;
@@ -37,7 +30,7 @@ public class Ad {
     private JSONObject creative;
     private JSONObject details;
 
-    public String content;
+    private String content;
     public String richMediaUrl;
 
 
@@ -52,13 +45,13 @@ public class Ad {
             this.details = creative.getJSONObject("details");
             this.width = this.details.getInt("width");
             this.height = this.details.getInt("height");
+            Log.d(TAG, "AD FORMAT: " + this.creative.getString("format"));
             switch (this.creative.getString("format")) {
                 case "rich_media":
                     this.format = Format.RICH_MEDIA;
                     this.richMediaUrl = this.details.getString("url");
                     break;
                 case "image_with_link":
-                default:
                     this.format = Format.IMAGE_WITH_LINK;
                     this.imageURL = this.details.getString("image");
                     if (ad.getBoolean("test")) {
@@ -66,6 +59,9 @@ public class Ad {
                     } else {
                         this.clickURL = creative.getString("click_url");
                     }
+                    this.setContent(String.format("<div><a href=\"%s\"><img src=\"%s\" /></a></div>", this.clickURL, this.imageURL));
+                    break;
+                default:
                     break;
             }
 
@@ -74,14 +70,11 @@ public class Ad {
         }
     }
 
-    public void retrieveRichMediaContent(AdLoaderListener listener) {
-
-        RichMediaLoader adLoader = new RichMediaLoader(listener);
-        try {
-            adLoader.execute(this.details.getString("url"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public String getContent() {
+        return this.content;
     }
 
 }
