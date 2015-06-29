@@ -1,3 +1,5 @@
-include ':app', ':superawesomesdk'
+include ':app'
+include 'superawesomesdk'
+project(':superawesomesdk').projectDir=new File('../superawesomesdk')
 include 'mRAID'
-project(':mRAID').projectDir = new File('superawesomesdk/mRAID')
+project(':mRAID').projectDir = new File('../superawesomesdk/mRAID')

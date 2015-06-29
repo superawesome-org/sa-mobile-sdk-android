@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo.iml" filepath="$PROJECT_DIR$/demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/superawesomesdk/mRAID/mRAID.iml" filepath="$PROJECT_DIR$/superawesomesdk/mRAID/mRAID.iml" />
-      <module fileurl="file://$PROJECT_DIR$/superawesomesdk/superawesomesdk.iml" filepath="$PROJECT_DIR$/superawesomesdk/superawesomesdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../superawesomesdk/mRAID/mRAID.iml" filepath="$PROJECT_DIR$/../superawesomesdk/mRAID/mRAID.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../superawesomesdk/superawesomesdk.iml" filepath="$PROJECT_DIR$/../superawesomesdk/superawesomesdk.iml" />
     </modules>
   </component>
 </project>
