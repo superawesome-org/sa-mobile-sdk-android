@@ -11,54 +11,28 @@ import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
 import org.nexage.sourcekit.mraid.MRAIDView;
 import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
+import tv.superawesome.superawesomesdk.AdManager;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 
 
 public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDNativeFeatureListener {
 
 	private static final String TAG = "SA SDK - Banner";
-    private String placementID;
-    private boolean testMode = false;
-    private Context context;
-    private BannerViewListener listener = null;
-    private AdLoaderListener adLoaderListener;
-    private MRAIDView mraidView;
-    private Ad ad = null;
-    private String baseUrl = "http://superawesome.tv";
+    protected String placementID;
+    protected boolean testMode = false;
+    protected Context context;
+    protected AdManager adManager;
+    protected BannerViewListener listener = null;
+    protected AdLoaderListener adLoaderListener;
+    protected MRAIDView mraidView;
+    protected Ad ad = null;
+    protected String baseUrl = "http://superawesome.tv";
 
-	public BannerView(Context context, String placementID) {
+	public BannerView(Context context, String placementID, AdManager adManager) {
         super(context);
         this.context = context;
         this.placementID = placementID;
-        this.adLoaderListener = new AdLoaderListener() {
-            @Override
-            public void onBeginLoad(String url) {
-
-            }
-
-            @Override
-            public void onError(String message) {
-                if (listener != null) listener.onAdError(message);
-            }
-
-            @Override
-            public void onLoaded(Ad ad) {
-                if (listener != null) listener.onAdLoaded();
-                Log.d(TAG, "Ad loaded");
-                try {
-                    if (!ad.error) {
-                        if (ad.richMediaUrl != null) baseUrl = ad.richMediaUrl;
-                        setView(ad.getContent());
-                    } else {
-                        if (listener != null) listener.onAdError(ad.error_message);
-                        Log.d(TAG, "Error: " + ad.error_message);
-                    }
-                } catch (Exception e) {
-                    if (listener != null) listener.onAdError(e.getMessage());
-                }
-            }
-        };
-        this.loadAd();
+        this.adManager = adManager;
 	}
 
     private void setView(String content) {
@@ -83,9 +57,39 @@ public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDN
         this.listener = listener;
     }
 
-    public void loadAd()
-    {
-        SuperAwesome.getInstance().getAdManager().getAd(this.placementID, this.testMode, this.adLoaderListener);
+    public void loadAd() {
+        try {
+            this.adManager.getAd(this.placementID, this.testMode, new AdLoaderListener() {
+                @Override
+                public void onBeginLoad(String url) {
+
+                }
+
+                @Override
+                public void onError(String message) {
+                    if (listener != null) listener.onAdError(message);
+                }
+
+                @Override
+                public void onLoaded(Ad ad) {
+                    if (listener != null) listener.onAdLoaded();
+                    Log.d(TAG, "Ad loaded");
+                    try {
+                        if (!ad.error) {
+                            if (ad.richMediaUrl != null) baseUrl = ad.richMediaUrl;
+                            setView(ad.getContent());
+                        } else {
+                            if (listener != null) listener.onAdError(ad.error_message);
+                            Log.d(TAG, "Error: " + ad.error_message);
+                        }
+                    } catch (Exception e) {
+                        if (listener != null) listener.onAdError(e.getMessage());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            if (listener != null) listener.onAdError(e.getMessage());
+        }
     }
 
     @Override

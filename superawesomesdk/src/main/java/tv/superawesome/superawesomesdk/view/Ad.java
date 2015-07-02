@@ -41,6 +41,7 @@ public class Ad {
                 this.error_message = ad.getString("error_message");
                 return;
             }
+
             this.creative = ad.getJSONObject("creative");
             this.details = creative.getJSONObject("details");
             this.width = this.details.getInt("width");
@@ -54,7 +55,7 @@ public class Ad {
                 case "image_with_link":
                     this.format = Format.IMAGE_WITH_LINK;
                     this.imageURL = this.details.getString("image");
-                    if (ad.getBoolean("test")) {
+                    if (ad.has("test") && ad.getBoolean("test")) {
                         this.clickURL = null;
                     } else {
                         this.clickURL = creative.getString("click_url");

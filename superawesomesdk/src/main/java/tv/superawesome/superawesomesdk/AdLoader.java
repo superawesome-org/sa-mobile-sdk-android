@@ -14,14 +14,16 @@ public class AdLoader {
 
     private static final String TAG = "SA SDK - AdLoader";
     private AdLoaderListener listener;
+    private UrlLoader urlLoader;
     private Ad ad;
 
-    public AdLoader(AdLoaderListener listener) {
+    public AdLoader(AdLoaderListener listener, UrlLoader urlLoader) {
         this.listener = listener;
+        this.urlLoader = urlLoader;
     }
 
     public void loadAd(String url) {
-        UrlLoader loader = new UrlLoader(new UrlLoaderListener() {
+        this.urlLoader.setListener(new UrlLoaderListener() {
             @Override
             public void onBeginLoad(String url) {
                 Log.d(TAG, "Beginning to load ad; URL: " + url);
@@ -37,7 +39,7 @@ public class AdLoader {
                 processLoadedAd(response);
             }
         });
-        loader.execute(url);
+        this.urlLoader.execute(url);
     }
 
     private void processLoadedAd(String response) {
@@ -60,8 +62,7 @@ public class AdLoader {
     }
 
     private void loadRichMediaContent(String url) {
-
-        UrlLoader loader = new UrlLoader(new UrlLoaderListener() {
+        this.urlLoader.setListener(new UrlLoaderListener() {
             @Override
             public void onBeginLoad(String url) {
                 Log.d(TAG, "Beginning to load rich media content; URL: " + url);
@@ -79,6 +80,6 @@ public class AdLoader {
                 listener.onLoaded(ad);
             }
         });
-        loader.execute(url);
+        this.urlLoader.execute(url);
     }
 }

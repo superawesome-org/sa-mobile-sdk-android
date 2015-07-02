@@ -14,9 +14,13 @@ import java.net.URL;
  */
 public class UrlLoader extends AsyncTask<String, Integer, String> {
 
-    private UrlLoaderListener listener;
+    protected UrlLoaderListener listener;
 
-    public UrlLoader(UrlLoaderListener listener) {
+    public UrlLoader() {
+
+    }
+
+    public void setListener(UrlLoaderListener listener) {
         this.listener = listener;
     }
 

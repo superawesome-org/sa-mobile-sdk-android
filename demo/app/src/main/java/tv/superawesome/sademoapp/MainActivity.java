@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getVersion());
 
-        this.bv = new BannerView(this, "5662");
+        this.bv = SuperAwesome.createBannerView(this, "5662");
         this.bv.setListener(new BannerViewListener() {
             @Override
             public void onAdLoaded() {
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
             }
         });
 //        this.bv.setLayoutParams(new FrameLayout.LayoutParams(500,500));
-
+        this.bv.loadAd();
         RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
         rootView.addView(this.bv);
     }
