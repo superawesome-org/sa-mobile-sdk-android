@@ -4,6 +4,8 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Constructor;
+
 import tv.superawesome.superawesomesdk.view.Ad;
 import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 
@@ -14,16 +16,18 @@ public class AdLoader {
 
     private static final String TAG = "SA SDK - AdLoader";
     private AdLoaderListener listener;
-    private UrlLoader urlLoader;
+    private UrlLoader urlLoaderAd;
+    private UrlLoader urlLoaderRichMedia;
     private Ad ad;
 
-    public AdLoader(AdLoaderListener listener, UrlLoader urlLoader) {
+    public AdLoader(AdLoaderListener listener, UrlLoader urlLoaderAd, UrlLoader urlLoaderRichMedia) {
         this.listener = listener;
-        this.urlLoader = urlLoader;
+        this.urlLoaderAd = urlLoaderAd;
+        this.urlLoaderRichMedia = urlLoaderRichMedia;
     }
 
     public void loadAd(String url) {
-        this.urlLoader.setListener(new UrlLoaderListener() {
+        this.urlLoaderAd.setListener(new UrlLoaderListener() {
             @Override
             public void onBeginLoad(String url) {
                 Log.d(TAG, "Beginning to load ad; URL: " + url);
@@ -39,7 +43,7 @@ public class AdLoader {
                 processLoadedAd(response);
             }
         });
-        this.urlLoader.execute(url);
+        this.urlLoaderAd.execute(url);
     }
 
     private void processLoadedAd(String response) {
@@ -62,7 +66,7 @@ public class AdLoader {
     }
 
     private void loadRichMediaContent(String url) {
-        this.urlLoader.setListener(new UrlLoaderListener() {
+        this.urlLoaderRichMedia.setListener(new UrlLoaderListener() {
             @Override
             public void onBeginLoad(String url) {
                 Log.d(TAG, "Beginning to load rich media content; URL: " + url);
@@ -80,6 +84,6 @@ public class AdLoader {
                 listener.onLoaded(ad);
             }
         });
-        this.urlLoader.execute(url);
+        this.urlLoaderRichMedia.execute(url);
     }
 }

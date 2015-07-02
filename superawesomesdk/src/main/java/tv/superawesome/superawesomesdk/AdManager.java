@@ -19,7 +19,7 @@ public class AdManager {
         String url = this.baseUrl + "/ad/" + placementID;
         url = testMode ? url + "?test=true" : url;
 
-        AdLoader adLoader = new AdLoader(listener, SuperAwesome.createUrlLoader());
+        AdLoader adLoader = new AdLoader(listener, SuperAwesome.createUrlLoader(), SuperAwesome.createUrlLoader());
         adLoader.loadAd(url);
     }
 

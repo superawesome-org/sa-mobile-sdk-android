@@ -6,6 +6,7 @@ import android.test.UiThreadTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -27,15 +28,37 @@ import static org.mockito.Mockito.*;
 /**
  * Created by connor.leigh-smith on 01/07/15.
  */
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class AdLoaderTest extends InstrumentationTestCase {
-    private String ApiResponse_1 = "{\"line_item_id\":1, \"campaign_id\":1,\"creative\":{\"id\":1,\"format\":\"rich_media\",\"details\": {\"url\":\"https://s3-eu-west-1.amazonaws.com/beta-ads-uploads/rich-media/demo-floor/index.html\",\"width\":970,\"height\":90}}}";
+    private static final String JSON_IMAGE_WITH_LINK = "{\n" +
+            "  \"line_item_id\":1,\n" +
+            "  \"campaign_id\":1,\n" +
+            "  \"creative\":{\n" +
+            "    \"id\":1,\n" +
+            "    \"format\":\"image_with_link\",\n" +
+            "    \"click_url\": \"http://superawesome.tv\",\n" +
+            "    \"details\": {\n" +
+            "      \"image\":\"http://www.helpinghomelesscats.com/images/cat1.jpg\",\n" +
+            "      \"width\":728,\n" +
+            "      \"height\":90\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+    private static final String JSON_RICHMEDIA = "{\n" +
+            "  \"line_item_id\":1,\n" +
+            "  \"campaign_id\":1,\n" +
+            "  \"creative\":{\n" +
+            "    \"id\":1,\n" +
+            "    \"format\":\"rich_media\",\n" +
+            "    \"details\": {\n" +
+            "      \"url\":\"https://s3-eu-west-1.amazonaws.com/beta-ads-uploads/rich-media/demo-floor/index.html\",\n" +
+            "      \"width\":728,\n" +
+            "      \"height\":90\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
 
-    private static final int SLEEP_TIME = 500;
-
-    AdLoaderListener listener;
-    UrlLoader urlLoader;
-    AdLoader adLoader;
+    private static final int SLEEP_TIME = 200;
 
     @Override
     protected void setUp() throws Exception {
@@ -43,35 +66,45 @@ public class AdLoaderTest extends InstrumentationTestCase {
         System.setProperty("dexmaker.dexcache", getInstrumentation().getTargetContext().getCacheDir().getPath());
     }
 
-    public void testShouldCallOnLoaded() throws java.lang.InterruptedException{
-        listener = mock(AdLoaderListener.class);
-        urlLoader = new FakeUrlLoader("{\n" +
-                "  \"line_item_id\":1,\n" +
-                "  \"campaign_id\":1,\n" +
-                "  \"creative\":{\n" +
-                "    \"id\":1,\n" +
-                "    \"format\":\"image_with_link\",\n" +
-                "    \"click_url\": \"http://superawesome.tv\",\n" +
-                "    \"details\": {\n" +
-                "      \"image\":\"http://www.helpinghomelesscats.com/images/cat1.jpg\",\n" +
-                "      \"width\":728,\n" +
-                "      \"height\":90\n" +
-                "    }\n" +
-                "  }\n" +
-                "}");
-        adLoader = new AdLoader(listener, urlLoader);
+    public void testShouldLoadValidDisplayAd() throws java.lang.InterruptedException{
+        AdLoaderListener listener = mock(AdLoaderListener.class);
+        UrlLoader urlLoader = new FakeUrlLoader(JSON_IMAGE_WITH_LINK);
+        AdLoader adLoader = new AdLoader(listener, urlLoader, null);
 
         adLoader.loadAd("https://beta.ads.superawesome.tv/v2/ad/5222/");
         Thread.sleep(SLEEP_TIME);
-        verify(listener, times(1)).onLoaded(any(Ad.class));
+        ArgumentCaptor<Ad> adArgumentCaptor = ArgumentCaptor.forClass(Ad.class);
+        verify(listener, times(1)).onLoaded(adArgumentCaptor.capture());
         verify(listener, times(0)).onError(any(String.class));
+
+        assertFalse(adArgumentCaptor.getValue().error);
+        assertEquals(Ad.Format.IMAGE_WITH_LINK, adArgumentCaptor.getValue().format);
+        assertEquals("http://www.helpinghomelesscats.com/images/cat1.jpg", adArgumentCaptor.getValue().imageURL);
+    }
+
+    public void testShouldLoadValidRichMediaAd() throws java.lang.InterruptedException{
+        AdLoaderListener listener = mock(AdLoaderListener.class);
+        UrlLoader urlLoader = new FakeUrlLoader(JSON_RICHMEDIA);
+        UrlLoader urlLoader2 = new FakeUrlLoader("Dummy Response");
+        AdLoader adLoader = new AdLoader(listener, urlLoader, urlLoader2);
+
+        adLoader.loadAd("https://beta.ads.superawesome.tv/v2/ad/5222/");
+        Thread.sleep(SLEEP_TIME*2);
+        ArgumentCaptor<Ad> adArgumentCaptor = ArgumentCaptor.forClass(Ad.class);
+        verify(listener, times(1)).onLoaded(adArgumentCaptor.capture());
+        verify(listener, times(0)).onError(any(String.class));
+
+        assertFalse(adArgumentCaptor.getValue().error);
+        assertEquals(Ad.Format.RICH_MEDIA, adArgumentCaptor.getValue().format);
+        assertEquals("https://s3-eu-west-1.amazonaws.com/beta-ads-uploads/rich-media/demo-floor/index.html", adArgumentCaptor.getValue().richMediaUrl);
+        assertEquals("Dummy Response", adArgumentCaptor.getValue().getContent());
     }
 
 
     public void testShouldCallErrorOnEmptyString() throws java.lang.InterruptedException{
-        listener = mock(AdLoaderListener.class);
-        urlLoader = new FakeUrlLoader("");
-        adLoader = new AdLoader(listener, urlLoader);
+        AdLoaderListener listener = mock(AdLoaderListener.class);
+        FakeUrlLoader urlLoader = new FakeUrlLoader("");
+        AdLoader adLoader = new AdLoader(listener, urlLoader, null);
 
         adLoader.loadAd("https://beta.ads.superawesome.tv/v2/ad/5222/");
         Thread.sleep(SLEEP_TIME);
@@ -80,9 +113,9 @@ public class AdLoaderTest extends InstrumentationTestCase {
     }
 
     public void testShouldCallErrorOnEmptyJSONObject() throws java.lang.InterruptedException{
-        listener = mock(AdLoaderListener.class);
-        urlLoader = new FakeUrlLoader("{}");
-        adLoader = new AdLoader(listener, urlLoader);
+        AdLoaderListener listener = mock(AdLoaderListener.class);
+        FakeUrlLoader urlLoader = new FakeUrlLoader("{}");
+        AdLoader adLoader = new AdLoader(listener, urlLoader, null);
 
         adLoader.loadAd("https://beta.ads.superawesome.tv/v2/ad/5222/");
         Thread.sleep(SLEEP_TIME);
