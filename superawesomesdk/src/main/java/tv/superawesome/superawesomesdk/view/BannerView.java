@@ -3,6 +3,7 @@ package tv.superawesome.superawesomesdk.view;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.FrameLayout;
 
@@ -25,15 +26,23 @@ public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDN
     protected BannerViewListener listener = null;
     protected AdLoaderListener adLoaderListener;
     protected MRAIDView mraidView;
-    protected Ad ad = null;
+    protected Ad loadedAd = null;
     protected String baseUrl = "http://superawesome.tv";
 
-	public BannerView(Context context, String placementID, AdManager adManager) {
+    public BannerView(Context context, String placementID, AdManager adManager) {
         super(context);
         this.context = context;
         this.placementID = placementID;
         this.adManager = adManager;
-	}
+    }
+
+    public void enableTestMode() {
+        this.testMode = true;
+    }
+
+    public void disableTestMode() {
+        this.testMode = false;
+    }
 
     private void setView(String content) {
         if (this.mraidView != null) {
@@ -48,7 +57,12 @@ public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDN
         };
         this.mraidView = new MRAIDView(this.context, baseUrl, content,
                 supportedNativeFeatures, this, this);
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = this.loadedAd.width * metrics.densityDpi / 160;
+        int height = this.loadedAd.height * metrics.densityDpi / 160;
+
+        LayoutParams params = new LayoutParams(width, height);
         mraidView.setLayoutParams(params);
         this.addView(mraidView);
     }
@@ -72,7 +86,8 @@ public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDN
 
                 @Override
                 public void onLoaded(Ad ad) {
-                    if (listener != null) listener.onAdLoaded();
+                    if (listener != null) listener.onAdLoaded(ad);
+                    loadedAd = ad;
                     Log.d(TAG, "Ad loaded");
                     try {
                         if (!ad.error) {

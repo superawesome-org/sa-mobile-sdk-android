@@ -1,21 +1,10 @@
 package tv.superawesome.sademoapp;
 
 import android.test.InstrumentationTestCase;
-import android.test.UiThreadTest;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import junit.framework.TestCase;
+
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
-
-import java.util.concurrent.CountDownLatch;
 
 import tv.superawesome.sademoapp.mocks.FakeUrlLoader;
 import tv.superawesome.superawesomesdk.AdLoader;
@@ -29,7 +18,7 @@ import static org.mockito.Mockito.*;
  * Created by connor.leigh-smith on 01/07/15.
  */
 //@RunWith(MockitoJUnitRunner.class)
-public class AdLoaderTest extends InstrumentationTestCase {
+public class AdLoaderTest extends TestCase {
     private static final String JSON_IMAGE_WITH_LINK = "{\n" +
             "  \"line_item_id\":1,\n" +
             "  \"campaign_id\":1,\n" +
@@ -63,7 +52,6 @@ public class AdLoaderTest extends InstrumentationTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        System.setProperty("dexmaker.dexcache", getInstrumentation().getTargetContext().getCacheDir().getPath());
     }
 
     public void testShouldLoadValidDisplayAd() throws java.lang.InterruptedException{

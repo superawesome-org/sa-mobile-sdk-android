@@ -2,11 +2,15 @@ package tv.superawesome.sademoapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.superawesomesdk.SuperAwesome;
+import tv.superawesome.superawesomesdk.view.Ad;
 import tv.superawesome.superawesomesdk.view.BannerView;
 import tv.superawesome.superawesomesdk.view.BannerViewListener;
 
@@ -21,19 +25,21 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getVersion());
 
-        this.bv = SuperAwesome.createBannerView(this, "5662");
+//        this.bv = SuperAwesome.createBannerView(this, "5662");
+//        this.bv = SuperAwesome.createBannerView(this, "5222");
+        this.bv = SuperAwesome.createBannerView(this, "5687");
+        this.bv.enableTestMode();
         this.bv.setListener(new BannerViewListener() {
             @Override
-            public void onAdLoaded() {
-
+            public void onAdLoaded(Ad ad) {
+                Log.d("Main APP", "Loaded ad");
             }
 
             @Override
             public void onAdError(String message) {
-
+                Log.d("Main APP", message);
             }
         });
-//        this.bv.setLayoutParams(new FrameLayout.LayoutParams(500,500));
         this.bv.loadAd();
         RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
         rootView.addView(this.bv);
@@ -62,53 +68,4 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void mraidNativeFeatureCallTel(String url) {
-//
-//    }
-//
-//    @Override
-//    public void mraidNativeFeatureCreateCalendarEvent(String eventJSON) {
-//
-//    }
-//
-//    @Override
-//    public void mraidNativeFeaturePlayVideo(String url) {
-//
-//    }
-//
-//    @Override
-//    public void mraidNativeFeatureOpenBrowser(String url) {
-//
-//    }
-//
-//    @Override
-//    public void mraidNativeFeatureStorePicture(String url) {
-//
-//    }
-//
-//    @Override
-//    public void mraidNativeFeatureSendSms(String url) {
-//
-//    }
-//
-//    @Override
-//    public void mraidViewLoaded(MRAIDView mraidView) {
-//
-//    }
-//
-//    @Override
-//    public void mraidViewExpand(MRAIDView mraidView) {
-//
-//    }
-//
-//    @Override
-//    public void mraidViewClose(MRAIDView mraidView) {
-//
-//    }
-//
-//    @Override
-//    public boolean mraidViewResize(MRAIDView mraidView, int width, int height, int offsetX, int offsetY) {
-//        return false;
-//    }
 }
