@@ -37,11 +37,8 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
             this.removeView(mraidView);
         }
         String[] supportedNativeFeatures = {
-                MRAIDNativeFeature.CALENDAR,
                 MRAIDNativeFeature.INLINE_VIDEO,
-                MRAIDNativeFeature.SMS,
                 MRAIDNativeFeature.STORE_PICTURE,
-                MRAIDNativeFeature.TEL,
         };
         this.mraidView = new MRAIDView(this.context, baseUrl, content,
                 supportedNativeFeatures, this, this);

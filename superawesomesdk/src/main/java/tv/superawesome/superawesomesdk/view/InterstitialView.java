@@ -28,11 +28,8 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     protected void setView(String content) {
         this.mraidInterstitial = null;
         String[] supportedNativeFeatures = {
-                MRAIDNativeFeature.CALENDAR,
                 MRAIDNativeFeature.INLINE_VIDEO,
-                MRAIDNativeFeature.SMS,
                 MRAIDNativeFeature.STORE_PICTURE,
-                MRAIDNativeFeature.TEL,
         };
         this.mraidInterstitial = new MRAIDInterstitial(this.context, baseUrl, content,
                 supportedNativeFeatures, this, this);
