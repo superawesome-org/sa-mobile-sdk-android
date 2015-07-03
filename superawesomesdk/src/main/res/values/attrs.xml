@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BannerView">
+        <attr name="placementID" format="string" />
+        <attr name="testMode" format="boolean" />
+    </declare-styleable>
+</resources>

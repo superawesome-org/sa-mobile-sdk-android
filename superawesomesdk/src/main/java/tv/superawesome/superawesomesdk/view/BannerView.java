@@ -44,7 +44,7 @@ public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDN
         this.context = context;
         this.adManager = SuperAwesome.createAdManager();
 
-        //Get attributes from resources file if they exist
+        //Get attributes from resources file
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.BannerView,
