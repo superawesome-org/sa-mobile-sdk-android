@@ -23,12 +23,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="org.nexage.sourcekit.mraid.MRAIDBrowser"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-
-
     </application>
 
 </manifest>

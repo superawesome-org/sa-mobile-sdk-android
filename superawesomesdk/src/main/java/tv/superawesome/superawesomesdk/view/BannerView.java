@@ -20,7 +20,7 @@ import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 
 
-public class BannerView extends PlacementView implements MRAIDViewListener, MRAIDNativeFeatureListener {
+public class BannerView extends PlacementView implements MRAIDViewListener {
 
 	protected static final String TAG = "SA SDK - Banner";
 
@@ -53,6 +53,27 @@ public class BannerView extends PlacementView implements MRAIDViewListener, MRAI
         LayoutParams params = new LayoutParams(width, height);
         mraidView.setLayoutParams(params);
         this.addView(mraidView);
+    }
+
+
+    @Override
+    public void mraidViewLoaded(MRAIDView mraidView) {
+
+    }
+
+    @Override
+    public void mraidViewExpand(MRAIDView mraidView) {
+
+    }
+
+    @Override
+    public void mraidViewClose(MRAIDView mraidView) {
+
+    }
+
+    @Override
+    public boolean mraidViewResize(MRAIDView mraidView, int width, int height, int offsetX, int offsetY) {
+        return false;
     }
 
 }

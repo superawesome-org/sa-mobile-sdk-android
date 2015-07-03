@@ -1,115 +1,55 @@
-//package tv.superawesome.mobile.view;
-//
-//import java.util.Observable;
-//import java.util.Observer;
-//
-//import tv.superawesome.superawesomesdk.ParentalGate;
-//import tv.superawesome.superawesomesdk.SuperAwesome;
-//import tv.superawesome.superawesomesdk.ParentalGate.ParentalGateViewCallback;
-//
-//import android.content.Context;
-//import android.content.Intent;
-//import android.content.res.TypedArray;
-//import android.net.Uri;
-//import android.util.AttributeSet;
-//import android.util.Log;
-//import android.widget.FrameLayout;
-//
-//
-//public class InterstitialView extends DisplayAdView implements Observer{
-//
-//	private static final String TAG = "SuperAwesome SDK - Interstitial";
-//	private InterstitialViewListener listener;
-//	private boolean shouldPresentOnLoad = false;
-//	public AdtechInterstitialView adtechView;
-//
-//	public InterstitialView(Context context, AttributeSet attrs) {
-//		super(context, attrs);
-//
-//		adtechView = new AdtechInterstitialView(context);
-//		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-//		adtechView.setLayoutParams(params);
-//		addView(adtechView);
-//
-//		//Set observer
-//		SuperAwesome.getInstance().addObserver(this);
-//		SuperAwesome.getInstance().setContext(context);
-//	}
-//
-//	public InterstitialViewListener getListener() {
-//		return listener;
-//	}
-//
-//	public void setListener(InterstitialViewListener listener) {
-//		this.listener = listener;
-//	}
-//
-//	private AdtechInterstitialViewCallback atcb = new AdtechInterstitialViewCallback(){
-//    	@Override
-//    	public void onAdSuccess() {
-//    		if(getListener() != null){
-//    			getListener().onLoaded();
-//    		}
-//    	}
-//
-//    	@Override
-//    	public void onAdDismiss(){
-//    		if(getListener() != null){
-//    			getListener().onAdDismiss();
-//    		}
-//    	}
-//
-//    	@Override
-//    	public void onAdLeave() {
-//    		if(getListener() != null){
-//    			getListener().onAdLeave();
-//    		}
-//    	}
-//
-//    	@Override
-//    	public void onAdFailure(ErrorCause cause) {
-//    		if(getListener() != null){
-//    			getListener().onAdError();
-//    		}
-//    	}
-//
-//    	@Override
-//    	public boolean shouldInterceptLandingPageOpening(final String url, NonModalLandingPageHandlerCallback callback) {
-//    		if(!SuperAwesome.getInstance().getUseParentalGate()) return false;
-//
-//				ParentalGate gate = new ParentalGate(getContext());
-//				ParentalGateViewCallback cb = new ParentalGateViewCallback(){
-//					public void onCorrectAnswer(){
-//						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//						getContext().startActivity(browserIntent);
-//					}
-//				};
-//				gate.setViewCallback(cb);
-//				return true;
-//    	}
-//	};
-//
-//	public void present(){
-//		if(SuperAwesome.getInstance().getIsLoadingConfiguration()){
-//			shouldPresentOnLoad = true;
-//			return;
-//		}
-//		AdtechAdConfiguration conf = getConfiguration();
-//		if(conf != null){
-//			adtechView.setAdConfiguration(conf);
-//			adtechView.setViewCallback(atcb);
-//    	adtechView.load();
-//		}
-//	}
-//
-//	@Override
-//	public void update(Observable arg0, Object arg1) {
-//		Log.v(TAG, "Config loaded notification received");
-//		if(shouldPresentOnLoad){
-//			Log.v(TAG, "Presenting now");
-//			present();
-//			shouldPresentOnLoad = false;
-//		}
-//	}
-//
-//}
+package tv.superawesome.superawesomesdk.view;
+
+import tv.superawesome.superawesomesdk.AdManager;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+
+import org.nexage.sourcekit.mraid.MRAIDInterstitial;
+import org.nexage.sourcekit.mraid.MRAIDInterstitialListener;
+import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
+import org.nexage.sourcekit.mraid.MRAIDView;
+
+
+public class InterstitialView extends PlacementView implements MRAIDInterstitialListener {
+
+    protected static final String TAG = "SA SDK - Interstitial";
+    private MRAIDInterstitial mraidInterstitial;
+
+    public InterstitialView(Context context, String placementID, AdManager adManager) {
+        super(context, placementID, adManager);
+    }
+
+    public InterstitialView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    protected void setView(String content) {
+        this.mraidInterstitial = null;
+        String[] supportedNativeFeatures = {
+                MRAIDNativeFeature.CALENDAR,
+                MRAIDNativeFeature.INLINE_VIDEO,
+                MRAIDNativeFeature.SMS,
+                MRAIDNativeFeature.STORE_PICTURE,
+                MRAIDNativeFeature.TEL,
+        };
+        this.mraidInterstitial = new MRAIDInterstitial(this.context, baseUrl, content,
+                supportedNativeFeatures, this, this);
+    }
+
+    @Override
+    public void mraidInterstitialLoaded(MRAIDInterstitial mraidInterstitial) {
+        this.mraidInterstitial.show();
+    }
+
+    @Override
+    public void mraidInterstitialShow(MRAIDInterstitial mraidInterstitial) {
+
+    }
+
+    @Override
+    public void mraidInterstitialHide(MRAIDInterstitial mraidInterstitial) {
+
+    }
+}

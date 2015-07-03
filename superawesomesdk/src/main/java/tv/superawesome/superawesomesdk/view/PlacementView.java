@@ -20,7 +20,7 @@ import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 
 
-public abstract class PlacementView extends FrameLayout implements MRAIDViewListener, MRAIDNativeFeatureListener {
+public abstract class PlacementView extends FrameLayout implements MRAIDNativeFeatureListener {
 
 	protected static final String TAG = "SA SDK - Placement";
     protected String placementID;
@@ -143,23 +143,4 @@ public abstract class PlacementView extends FrameLayout implements MRAIDViewList
 
     }
 
-    @Override
-    public void mraidViewLoaded(MRAIDView mraidView) {
-
-    }
-
-    @Override
-    public void mraidViewExpand(MRAIDView mraidView) {
-
-    }
-
-    @Override
-    public void mraidViewClose(MRAIDView mraidView) {
-
-    }
-
-    @Override
-    public boolean mraidViewResize(MRAIDView mraidView, int width, int height, int offsetX, int offsetY) {
-        return false;
-    }
 }
