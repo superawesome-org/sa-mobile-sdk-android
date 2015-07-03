@@ -2,6 +2,7 @@ package tv.superawesome.superawesomesdk.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -38,7 +39,6 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.context = context;
         this.placementID = placementID;
         this.adManager = adManager;
-        this.loadAd();
     }
 
     public PlacementView(Context context, AttributeSet attrs) {
@@ -47,6 +47,24 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.adManager = SuperAwesome.createAdManager();
         this.fetchXmlAttrs(attrs);
         this.loadAd();
+    }
+
+    private boolean checkAppPermissions() {
+        int res = getContext().checkCallingOrSelfPermission("android.permission.INTERNET");
+        if (res != PackageManager.PERMISSION_GRANTED) {
+            String message = "Error: Your app does not have a required permission: INTERNET. Not requesting ad.";
+            if (this.listener != null) this.listener.onAdError(message);
+            Log.d(TAG, message);
+            return false;
+        }
+        res = getContext().checkCallingOrSelfPermission("android.permission.ACCESS_NETWORK_STATE");
+        if (res != PackageManager.PERMISSION_GRANTED) {
+            String message = "Error: Your app does not have a required permission: ACCESS_NETWORK_STATE. Not requesting ad.";
+            if (this.listener != null) this.listener.onAdError(message);
+            Log.d(TAG, message);
+            return false;
+        }
+        return true;
     }
 
     protected abstract void fetchXmlAttrs(AttributeSet attrs);
@@ -66,6 +84,9 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
     }
 
     public void loadAd() {
+        if (!this.checkAppPermissions()) {
+            return;
+        }
         try {
             this.adManager.getAd(this.placementID, this.testMode, new AdLoaderListener() {
                 @Override
