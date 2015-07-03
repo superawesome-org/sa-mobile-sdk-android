@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -50,6 +52,13 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
         LayoutParams params = new LayoutParams(width, height);
         mraidView.setLayoutParams(params);
         this.addView(mraidView);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                loadAd();
+            }
+        }, 30000);
     }
 
     protected void fetchXmlAttrs(AttributeSet attrs) {
