@@ -45,20 +45,11 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         super(context);
         this.context = context;
         this.adManager = SuperAwesome.createAdManager();
-
-        //Get attributes from resources file
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.BannerView,
-                0, 0);
-        try {
-            this.placementID = a.getString(R.styleable.BannerView_placementID);
-            this.testMode = a.getBoolean(R.styleable.BannerView_testMode, false);
-        } finally {
-            a.recycle();
-        }
+        this.fetchXmlAttrs(attrs);
         this.loadAd();
     }
+
+    protected abstract void fetchXmlAttrs(AttributeSet attrs);
 
     public void enableTestMode() {
         this.testMode = true;

@@ -52,6 +52,19 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
         this.addView(mraidView);
     }
 
+    protected void fetchXmlAttrs(AttributeSet attrs) {
+        //Get attributes from resources file
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.PlacementView,
+                0, 0);
+        try {
+            this.placementID = a.getString(R.styleable.PlacementView_placementID);
+            this.testMode = a.getBoolean(R.styleable.PlacementView_testMode, false);
+        } finally {
+            a.recycle();
+        }
+    }
 
     @Override
     public void mraidViewLoaded(MRAIDView mraidView) {

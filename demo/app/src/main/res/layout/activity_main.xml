@@ -33,7 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             custom:placementID="5692"
-            custom:testMode="true">
+            custom:testMode="true"
+            custom:showInstantly="true">
         </tv.superawesome.superawesomesdk.view.InterstitialView>
 
     </RelativeLayout>
