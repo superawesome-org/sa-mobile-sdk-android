@@ -1,4 +1,4 @@
-package tv.superawesome.superawesomesdk.view;
+package tv.superawesome.superawesomesdk;
 
 import android.media.Image;
 import android.util.Log;

@@ -1,6 +1,6 @@
 package tv.superawesome.superawesomesdk.view;
 
-public interface InterstitialViewListener {
+public interface InterstitialViewListener extends PlacementViewListener {
 	public void onLoaded();
 	
 	public void onAdDismiss();

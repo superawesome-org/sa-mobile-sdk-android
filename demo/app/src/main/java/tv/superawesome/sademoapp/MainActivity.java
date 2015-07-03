@@ -2,17 +2,11 @@ package tv.superawesome.sademoapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import tv.superawesome.superawesomesdk.SuperAwesome;
-import tv.superawesome.superawesomesdk.view.Ad;
 import tv.superawesome.superawesomesdk.view.BannerView;
-import tv.superawesome.superawesomesdk.view.BannerViewListener;
 
 
 public class MainActivity extends Activity {
@@ -29,7 +23,7 @@ public class MainActivity extends Activity {
 //        this.bv = SuperAwesome.createBannerView(this, "5222");
 //        this.bv = SuperAwesome.createBannerView(this, "5687");
 //        this.bv.enableTestMode();
-//        this.bv.setListener(new BannerViewListener() {
+//        this.bv.setListener(new PlacementViewListener() {
 //            @Override
 //            public void onAdLoaded(Ad ad) {
 //                Log.d("Main APP", "Loaded ad");
@@ -40,7 +34,6 @@ public class MainActivity extends Activity {
 //                Log.d("Main APP", message);
 //            }
 //        });
-//        this.bv.loadAd();
 //        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
 //        rootView.addView(this.bv);
     }

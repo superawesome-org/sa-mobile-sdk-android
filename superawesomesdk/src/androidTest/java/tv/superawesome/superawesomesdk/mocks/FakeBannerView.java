@@ -5,7 +5,7 @@
 //import org.json.JSONObject;
 //
 //import tv.superawesome.superawesomesdk.SuperAwesome;
-//import tv.superawesome.superawesomesdk.view.Ad;
+//import tv.superawesome.superawesomesdk.Ad;
 //import tv.superawesome.superawesomesdk.view.BannerView;
 //
 ///**

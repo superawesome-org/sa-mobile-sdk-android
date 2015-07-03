@@ -1,7 +1,5 @@
 package tv.superawesome.sademoapp;
 
-import android.test.InstrumentationTestCase;
-
 import junit.framework.TestCase;
 
 import org.mockito.ArgumentCaptor;
@@ -9,7 +7,7 @@ import org.mockito.ArgumentCaptor;
 import tv.superawesome.sademoapp.mocks.FakeUrlLoader;
 import tv.superawesome.superawesomesdk.AdLoader;
 import tv.superawesome.superawesomesdk.UrlLoader;
-import tv.superawesome.superawesomesdk.view.Ad;
+import tv.superawesome.superawesomesdk.Ad;
 import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 
 import static org.mockito.Mockito.*;
@@ -17,7 +15,6 @@ import static org.mockito.Mockito.*;
 /**
  * Created by connor.leigh-smith on 01/07/15.
  */
-//@RunWith(MockitoJUnitRunner.class)
 public class AdLoaderTest extends TestCase {
     private static final String JSON_IMAGE_WITH_LINK = "{\n" +
             "  \"line_item_id\":1,\n" +
