@@ -2,7 +2,9 @@ package tv.superawesome.superawesomesdk.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.Uri;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -13,6 +15,7 @@ import org.nexage.sourcekit.mraid.MRAIDView;
 import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
 import tv.superawesome.superawesomesdk.AdManager;
+import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 
 
@@ -34,6 +37,25 @@ public class BannerView extends FrameLayout implements MRAIDViewListener, MRAIDN
         this.context = context;
         this.placementID = placementID;
         this.adManager = adManager;
+    }
+
+    public BannerView(Context context, AttributeSet attrs) {
+        super(context);
+        this.context = context;
+        this.adManager = SuperAwesome.createAdManager();
+
+        //Get attributes from resources file if they exist
+        TypedArray a = context.getTheme().obtainStyledAttributes(
+                attrs,
+                R.styleable.BannerView,
+                0, 0);
+        try {
+            this.placementID = a.getString(R.styleable.BannerView_placementID);
+            this.testMode = a.getBoolean(R.styleable.BannerView_testMode, false);
+        } finally {
+            a.recycle();
+        }
+        this.loadAd();
     }
 
     public void enableTestMode() {

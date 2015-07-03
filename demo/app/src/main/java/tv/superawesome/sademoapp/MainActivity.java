@@ -27,22 +27,22 @@ public class MainActivity extends Activity {
 
 //        this.bv = SuperAwesome.createBannerView(this, "5662");
 //        this.bv = SuperAwesome.createBannerView(this, "5222");
-        this.bv = SuperAwesome.createBannerView(this, "5687");
-        this.bv.enableTestMode();
-        this.bv.setListener(new BannerViewListener() {
-            @Override
-            public void onAdLoaded(Ad ad) {
-                Log.d("Main APP", "Loaded ad");
-            }
-
-            @Override
-            public void onAdError(String message) {
-                Log.d("Main APP", message);
-            }
-        });
-        this.bv.loadAd();
-        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
-        rootView.addView(this.bv);
+//        this.bv = SuperAwesome.createBannerView(this, "5687");
+//        this.bv.enableTestMode();
+//        this.bv.setListener(new BannerViewListener() {
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//                Log.d("Main APP", "Loaded ad");
+//            }
+//
+//            @Override
+//            public void onAdError(String message) {
+//                Log.d("Main APP", message);
+//            }
+//        });
+//        this.bv.loadAd();
+//        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
+//        rootView.addView(this.bv);
     }
 
 
