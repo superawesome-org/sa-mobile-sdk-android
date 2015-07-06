@@ -33,6 +33,7 @@ public class AdLoader {
             @Override
             public void onError(String message) {
                 listener.onError(message);
+                Log.d(TAG, "Beginning to load ad; URL: " + message);
             }
 
             @Override

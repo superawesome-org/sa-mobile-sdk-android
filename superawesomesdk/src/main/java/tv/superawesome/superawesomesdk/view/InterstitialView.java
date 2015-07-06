@@ -46,7 +46,7 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     }
 
     protected void setView(String content) {
-        this.mraidInterstitial = null;
+        this.removeAllViews();
         String[] supportedNativeFeatures = {
                 MRAIDNativeFeature.INLINE_VIDEO,
                 MRAIDNativeFeature.STORE_PICTURE,
@@ -59,6 +59,8 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
         this.display = true;
         if (this.isReady) {
             this.mraidInterstitial.show();
+
+            this.showPadlock();
         }
     }
 
@@ -68,6 +70,8 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
         Log.d(TAG, ""+this.display);
         if (this.display) {
             this.mraidInterstitial.show();
+
+            this.showPadlock();
         }
     }
 

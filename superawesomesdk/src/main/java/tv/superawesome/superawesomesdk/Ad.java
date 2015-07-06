@@ -46,7 +46,6 @@ public class Ad {
             this.details = creative.getJSONObject("details");
             this.width = this.details.getInt("width");
             this.height = this.details.getInt("height");
-            Log.d(TAG, "AD FORMAT: " + this.creative.getString("format"));
             switch (this.creative.getString("format")) {
                 case "rich_media":
                     this.format = Format.RICH_MEDIA;

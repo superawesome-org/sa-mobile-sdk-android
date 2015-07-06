@@ -8,7 +8,9 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
@@ -33,12 +35,19 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
     protected MRAIDView mraidView;
     protected Ad loadedAd = null;
     protected String baseUrl = "http://superawesome.tv";
+    protected ImageView padlockImage;
 
     public PlacementView(Context context, String placementID, AdManager adManager) {
         super(context);
         this.context = context;
         this.placementID = placementID;
         this.adManager = adManager;
+
+        this.padlockImage = new ImageView(this.context);
+        padlockImage.setImageResource(R.drawable.sa_padlock);
+        LayoutParams padlockParams = new LayoutParams(50, 50);
+        padlockParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+        this.padlockImage.setLayoutParams(padlockParams);
     }
 
     public PlacementView(Context context, AttributeSet attrs) {
@@ -47,6 +56,12 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.adManager = SuperAwesome.createAdManager();
         this.fetchXmlAttrs(attrs);
         this.loadAd();
+
+        this.padlockImage = new ImageView(this.context);
+        padlockImage.setImageResource(R.drawable.sa_padlock);
+        LayoutParams padlockParams = new LayoutParams(50, 50);
+        padlockParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+        this.padlockImage.setLayoutParams(padlockParams);
     }
 
     private boolean checkAppPermissions() {
@@ -65,6 +80,10 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
             return false;
         }
         return true;
+    }
+
+    protected void showPadlock() {
+        this.addView(padlockImage);
     }
 
     protected abstract void fetchXmlAttrs(AttributeSet attrs);

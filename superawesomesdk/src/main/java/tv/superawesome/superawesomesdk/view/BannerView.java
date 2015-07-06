@@ -3,13 +3,16 @@ package tv.superawesome.superawesomesdk.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
@@ -35,9 +38,7 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
     }
 
     protected void setView(String content) {
-        if (this.mraidView != null) {
-            this.removeView(mraidView);
-        }
+        this.removeAllViews();
         String[] supportedNativeFeatures = {
                 MRAIDNativeFeature.INLINE_VIDEO,
                 MRAIDNativeFeature.STORE_PICTURE,
@@ -52,6 +53,8 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
         LayoutParams params = new LayoutParams(width, height);
         mraidView.setLayoutParams(params);
         this.addView(mraidView);
+
+        this.showPadlock();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
