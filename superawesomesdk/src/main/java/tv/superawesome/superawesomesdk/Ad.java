@@ -21,6 +21,7 @@ public class Ad {
 
     public boolean error = false;
     public String error_message;
+    public boolean isFallback;
 
     public enum Format {
         RICH_MEDIA, IMAGE_WITH_LINK

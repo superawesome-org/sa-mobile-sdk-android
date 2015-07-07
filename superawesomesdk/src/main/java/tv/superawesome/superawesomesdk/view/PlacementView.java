@@ -99,6 +99,10 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
 
     protected void showPadlock(View view)
     {
+        // If ad isn't loaded for some reason, or ad is a fallback ad, do not show the padlock.
+        if (this.loadedAd == null || this.loadedAd.isFallback) {
+            return;
+        }
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int width = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
         int height = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;

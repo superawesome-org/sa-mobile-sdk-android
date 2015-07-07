@@ -32,6 +32,7 @@ public class Ad {
 
     private String content;
     public String richMediaUrl;
+    public boolean isFallback;
 
 
     public Ad(JSONObject ad) throws Exception {
@@ -46,6 +47,7 @@ public class Ad {
             this.details = creative.getJSONObject("details");
             this.width = this.details.getInt("width");
             this.height = this.details.getInt("height");
+            this.isFallback = ad.getBoolean("is_fallback");
             switch (this.creative.getString("format")) {
                 case "rich_media":
                     this.format = Format.RICH_MEDIA;
