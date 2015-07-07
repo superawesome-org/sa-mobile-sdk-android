@@ -16,6 +16,6 @@ public interface MRAIDInterstitialListener {
 
 	public void mraidInterstitialHide(MRAIDInterstitial mraidInterstitial);
 
-    public void mraidInterstitialAddPadlock(View view, ImageButton padlockRegion);
+    public void mraidInterstitialLayoutChange(View view);
 
 }

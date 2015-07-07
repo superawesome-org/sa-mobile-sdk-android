@@ -16,8 +16,7 @@ public interface MRAIDViewListener {
 
     public void mraidViewClose(MRAIDView mraidView);
 
-    public void mraidViewAddPadlock(View view, ImageButton padlockRegion);
-
     public boolean mraidViewResize(MRAIDView mraidView, int width, int height, int offsetX, int offsetY);
 
+    public void mraidViewLayoutChange(View view);
 }

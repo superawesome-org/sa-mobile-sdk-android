@@ -100,8 +100,8 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
     }
 
     @Override
-    public void mraidViewAddPadlock(View view, ImageButton padlockRegion) {
-        showPadlock(view, padlockRegion);
+    public void mraidViewLayoutChange(View view) {
+        this.showPadlock(view);
     }
 
     @Override

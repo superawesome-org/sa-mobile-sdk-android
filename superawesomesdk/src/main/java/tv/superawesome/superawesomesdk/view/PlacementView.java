@@ -97,34 +97,28 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         return true;
     }
 
-    protected void showPadlock(View view, ImageButton padlockRegion)
+    protected void showPadlock(View view)
     {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+        int height = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+        int x = view.getMeasuredWidth() - width;
+        int y = view.getMeasuredHeight() - height;
 
-        ((WebView)view).addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        WebView.LayoutParams padlockParams = new WebView.LayoutParams(width, height, x, y);
 
-                DisplayMetrics metrics = getResources().getDisplayMetrics();
-                int width = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
-                int height = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
-                int x = v.getMeasuredWidth() - width;
-                int y = v.getMeasuredHeight() - height;
+        padlockImage.setLayoutParams(padlockParams);
+        padlockImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        padlockImage.setPadding(0, 0, 0, 0);
 
-                WebView.LayoutParams padlockParams = new WebView.LayoutParams(width, height, x, y);
+        ViewGroup padlockParent = (ViewGroup)padlockImage.getParent();
+        if (padlockParent != null) padlockParent.removeView(padlockImage);
+        ((ViewGroup) view).addView(padlockImage);
 
-                padlockImage.setLayoutParams(padlockParams);
-                padlockImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                padlockImage.setPadding(0, 0, 0, 0);
-
-                ViewGroup padlockParent = (ViewGroup)padlockImage.getParent();
-                if (padlockParent != null) padlockParent.removeView(padlockImage);
-                ((ViewGroup) v).addView(padlockImage);
-            }
-        });
     }
 
     private void onPadlockClick() {
-
+        /* What should happen when the padlock is tapped? */
     }
 
     protected abstract void fetchXmlAttrs(AttributeSet attrs);

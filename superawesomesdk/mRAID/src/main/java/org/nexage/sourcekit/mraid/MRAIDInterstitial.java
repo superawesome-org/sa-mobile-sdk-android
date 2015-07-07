@@ -68,9 +68,9 @@ public class MRAIDInterstitial implements MRAIDViewListener {
 	}
 
     @Override
-    public void mraidViewAddPadlock(View view, ImageButton padlockRegion) {
+    public void mraidViewLayoutChange(View view) {
         if (listener != null) {
-            listener.mraidInterstitialAddPadlock(view, padlockRegion);
+            listener.mraidInterstitialLayoutChange(view);
         }
     }
 

@@ -226,7 +226,6 @@ public class MRAIDView extends RelativeLayout {
 //		webView.setBackgroundColor(Color.TRANSPARENT);
 
 		addView(webView);
-        showPadlock();
 
         injectMraidJs(webView);
         data = MRAIDHtmlProcessor.processRawHtml(data);
@@ -303,21 +302,29 @@ public class MRAIDView extends RelativeLayout {
 		wv.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 		wv.setFocusableInTouchMode(false);
 		wv.setOnTouchListener(new OnTouchListener() {
-			@SuppressLint("ClickableViewAccessibility")
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-				case MotionEvent.ACTION_UP:
-					// isTouched = true;
-					if (!v.hasFocus()) {
-						v.requestFocus();
-					}
-					break;
-				}
-				return false;
-			}
-		});
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                        // isTouched = true;
+                        if (!v.hasFocus()) {
+                            v.requestFocus();
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
+        wv.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (listener != null) {
+                    listener.mraidViewLayoutChange(view);
+                }
+            }
+        });
 		wv.getSettings().setJavaScriptEnabled(true);
 		wv.setWebChromeClient(mraidWebChromeClient);
 		wv.setWebViewClient(mraidWebViewClient);
@@ -423,7 +430,7 @@ public class MRAIDView extends RelativeLayout {
 	
     private void close() {
 		MRAIDLog.d(TAG + "-JS callback", "close");
-    	handler.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 if (state == STATE_LOADING || (state == STATE_DEFAULT && !isInterstitial) || state == STATE_HIDDEN) {
@@ -586,7 +593,7 @@ public class MRAIDView extends RelativeLayout {
         handler.post(new Runnable() {
             @Override
             public void run() {
-				fireStateChangeEvent();
+                fireStateChangeEvent();
 			}
 		});
 	}
@@ -790,7 +797,7 @@ public class MRAIDView extends RelativeLayout {
 		FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)resizedView.getLayoutParams();
         params.leftMargin = x;
         params.topMargin = y;
-		resizedView.setLayoutParams(params);
+        resizedView.setLayoutParams(params);
 		if (x != currentPosition.left || y != currentPosition.top || width != currentPosition.width() || height != currentPosition.height()) {
 			currentPosition.left = x;
 			currentPosition.top = y;
@@ -975,10 +982,6 @@ public class MRAIDView extends RelativeLayout {
         }
 
         ((ViewGroup) view).addView(closeRegion);
-    }
-
-    private void showPadlock() {
-        if (this.listener != null) this.listener.mraidViewAddPadlock(webView, padlockRegion);
     }
 
     private void showDefaultCloseButton() {

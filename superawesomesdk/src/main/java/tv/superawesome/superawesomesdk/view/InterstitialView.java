@@ -85,7 +85,7 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     }
 
     @Override
-    public void mraidInterstitialAddPadlock(View view, ImageButton padlockRegion) {
-        showPadlock(view, padlockRegion);
+    public void mraidInterstitialLayoutChange(View view) {
+        this.showPadlock(view);
     }
 }
