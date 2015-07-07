@@ -4,6 +4,9 @@ import org.nexage.sourcekit.mraid.internal.MRAIDLog;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.ImageButton;
 
 public class MRAIDInterstitial implements MRAIDViewListener {
 	
@@ -64,7 +67,14 @@ public class MRAIDInterstitial implements MRAIDViewListener {
         }
 	}
 
-	@Override
+    @Override
+    public void mraidViewAddPadlock(View view, ImageButton padlockRegion) {
+        if (listener != null) {
+            listener.mraidInterstitialAddPadlock(view, padlockRegion);
+        }
+    }
+
+    @Override
 	public boolean mraidViewResize(MRAIDView mraidView, int width, int height, int offsetX, int offsetY) {
 		return true;
 	}

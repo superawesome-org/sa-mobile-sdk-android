@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.ImageButton;
 
 import org.nexage.sourcekit.mraid.MRAIDInterstitial;
 import org.nexage.sourcekit.mraid.MRAIDInterstitialListener;
@@ -59,8 +62,6 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
         this.display = true;
         if (this.isReady) {
             this.mraidInterstitial.show();
-
-            this.showPadlock();
         }
     }
 
@@ -70,8 +71,6 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
         Log.d(TAG, ""+this.display);
         if (this.display) {
             this.mraidInterstitial.show();
-
-            this.showPadlock();
         }
     }
 
@@ -83,5 +82,10 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     @Override
     public void mraidInterstitialHide(MRAIDInterstitial mraidInterstitial) {
 
+    }
+
+    @Override
+    public void mraidInterstitialAddPadlock(View view, ImageButton padlockRegion) {
+        showPadlock(view, padlockRegion);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -11,8 +12,13 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
@@ -47,14 +53,14 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
                 supportedNativeFeatures, this, this);
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = this.loadedAd.width * metrics.densityDpi / 160;
-        int height = this.loadedAd.height * metrics.densityDpi / 160;
+        int width = this.loadedAd.width * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+        int height = this.loadedAd.height * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
 
         LayoutParams params = new LayoutParams(width, height);
         mraidView.setLayoutParams(params);
         this.addView(mraidView);
 
-        this.showPadlock();
+//        this.showPadlock();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -91,6 +97,11 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
     @Override
     public void mraidViewClose(MRAIDView mraidView) {
 
+    }
+
+    @Override
+    public void mraidViewAddPadlock(View view, ImageButton padlockRegion) {
+        showPadlock(view, padlockRegion);
     }
 
     @Override

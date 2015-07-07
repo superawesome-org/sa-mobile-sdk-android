@@ -4,13 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
@@ -35,19 +42,13 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
     protected MRAIDView mraidView;
     protected Ad loadedAd = null;
     protected String baseUrl = "http://superawesome.tv";
-    protected ImageView padlockImage;
+    protected ImageButton padlockImage;
 
     public PlacementView(Context context, String placementID, AdManager adManager) {
         super(context);
         this.context = context;
         this.placementID = placementID;
         this.adManager = adManager;
-
-        this.padlockImage = new ImageView(this.context);
-        padlockImage.setImageResource(R.drawable.sa_padlock);
-        LayoutParams padlockParams = new LayoutParams(50, 50);
-        padlockParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
-        this.padlockImage.setLayoutParams(padlockParams);
     }
 
     public PlacementView(Context context, AttributeSet attrs) {
@@ -56,12 +57,6 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.adManager = SuperAwesome.createAdManager();
         this.fetchXmlAttrs(attrs);
         this.loadAd();
-
-        this.padlockImage = new ImageView(this.context);
-        padlockImage.setImageResource(R.drawable.sa_padlock);
-        LayoutParams padlockParams = new LayoutParams(50, 50);
-        padlockParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
-        this.padlockImage.setLayoutParams(padlockParams);
     }
 
     private boolean checkAppPermissions() {
@@ -82,8 +77,43 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         return true;
     }
 
-    protected void showPadlock() {
-        this.addView(padlockImage);
+    protected void showPadlock(View view, ImageButton padlockRegion)
+    {
+        // The input parameter should be either expandedView or resizedView.
+        padlockImage = new ImageButton(context);
+        padlockImage.setBackgroundColor(Color.TRANSPARENT);
+        padlockImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPadlockClick();
+            }
+        });
+        padlockImage.setImageResource(getPadlockImageResource());
+
+        ((WebView)view).addOnLayoutChangeListener(new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                DisplayMetrics metrics = getResources().getDisplayMetrics();
+                int width = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+                int height = 20 * metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+                int x = v.getMeasuredWidth() - width;
+                int y = v.getMeasuredHeight() - height;
+
+                WebView.LayoutParams padlockParams = new WebView.LayoutParams(width, height, x, y);
+
+                padlockImage.setLayoutParams(padlockParams);
+                padlockImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                padlockImage.setPadding(0, 0, 0, 0);
+
+                ((WebView) v).removeView(padlockImage);
+                ((ViewGroup) v).addView(padlockImage);
+            }
+        });
+    }
+
+    private void onPadlockClick() {
+
     }
 
     protected abstract void fetchXmlAttrs(AttributeSet attrs);
@@ -139,6 +169,10 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         } catch (Exception e) {
             if (listener != null) listener.onAdError(e.getMessage());
         }
+    }
+
+    protected int getPadlockImageResource() {
+        return R.drawable.sa_padlock;
     }
 
     @Override

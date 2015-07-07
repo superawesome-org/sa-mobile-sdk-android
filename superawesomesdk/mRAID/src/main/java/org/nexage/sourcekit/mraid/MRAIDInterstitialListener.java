@@ -1,5 +1,9 @@
 package org.nexage.sourcekit.mraid;
 
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.ImageButton;
+
 public interface MRAIDInterstitialListener {
 
 	/******************************************************************************
@@ -11,5 +15,7 @@ public interface MRAIDInterstitialListener {
 	public void mraidInterstitialShow(MRAIDInterstitial mraidInterstitial);
 
 	public void mraidInterstitialHide(MRAIDInterstitial mraidInterstitial);
+
+    public void mraidInterstitialAddPadlock(View view, ImageButton padlockRegion);
 
 }

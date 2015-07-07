@@ -17,15 +17,22 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" >
-        
-        <!--<tv.superawesome.superawesomesdk.view.BannerView-->
-            <!--android:id="@+id/banner"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--custom:placementID="5687"-->
-            <!--custom:testMode="true">-->
-        <!--</tv.superawesome.superawesomesdk.view.BannerView>-->
+
+        <!--<ListView android:id="@android:id/list"-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="match_parent"-->
+                  <!--android:background="#00FF00"-->
+                  <!--android:layout_weight="1"-->
+                  <!--android:drawSelectorOnTop="false"/>-->
+
+        <tv.superawesome.superawesomesdk.view.BannerView
+            android:id="@+id/banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            custom:placementID="5687"
+            custom:testMode="true">
+        </tv.superawesome.superawesomesdk.view.BannerView>
 
         <tv.superawesome.superawesomesdk.view.InterstitialView
             android:id="@+id/interstitial"
