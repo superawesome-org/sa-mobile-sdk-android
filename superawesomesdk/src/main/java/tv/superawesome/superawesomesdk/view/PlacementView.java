@@ -49,6 +49,16 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.context = context;
         this.placementID = placementID;
         this.adManager = adManager;
+
+        padlockImage = new ImageButton(context);
+        padlockImage.setBackgroundColor(Color.TRANSPARENT);
+        padlockImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPadlockClick();
+            }
+        });
+        padlockImage.setImageResource(getPadlockImageResource());
     }
 
     public PlacementView(Context context, AttributeSet attrs) {
@@ -57,6 +67,16 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.adManager = SuperAwesome.createAdManager();
         this.fetchXmlAttrs(attrs);
         this.loadAd();
+
+        padlockImage = new ImageButton(context);
+        padlockImage.setBackgroundColor(Color.TRANSPARENT);
+        padlockImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPadlockClick();
+            }
+        });
+        padlockImage.setImageResource(getPadlockImageResource());
     }
 
     private boolean checkAppPermissions() {
@@ -79,16 +99,6 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
 
     protected void showPadlock(View view, ImageButton padlockRegion)
     {
-        // The input parameter should be either expandedView or resizedView.
-        padlockImage = new ImageButton(context);
-        padlockImage.setBackgroundColor(Color.TRANSPARENT);
-        padlockImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPadlockClick();
-            }
-        });
-        padlockImage.setImageResource(getPadlockImageResource());
 
         ((WebView)view).addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override
@@ -106,7 +116,8 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
                 padlockImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                 padlockImage.setPadding(0, 0, 0, 0);
 
-                ((WebView) v).removeView(padlockImage);
+                ViewGroup padlockParent = (ViewGroup)padlockImage.getParent();
+                if (padlockParent != null) padlockParent.removeView(padlockImage);
                 ((ViewGroup) v).addView(padlockImage);
             }
         });
