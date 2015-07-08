@@ -16,6 +16,6 @@ public interface MRAIDInterstitialListener {
 
 	public void mraidInterstitialHide(MRAIDInterstitial mraidInterstitial);
 
-    public void mraidInterstitialLayoutChange(View view);
+    public void mraidInterstitialPageFinished(View view);
 
 }

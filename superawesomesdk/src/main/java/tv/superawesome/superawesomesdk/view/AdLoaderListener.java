@@ -1,6 +1,6 @@
 package tv.superawesome.superawesomesdk.view;
 
-import tv.superawesome.superawesomesdk.Ad;
+import tv.superawesome.superawesomesdk.model.Ad;
 
 public interface AdLoaderListener {
 

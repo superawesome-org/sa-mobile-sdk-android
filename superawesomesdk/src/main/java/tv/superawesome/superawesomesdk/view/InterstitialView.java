@@ -85,7 +85,7 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     }
 
     @Override
-    public void mraidInterstitialLayoutChange(View view) {
+    public void mraidInterstitialPageFinished(View view) {
         this.showPadlock(view);
     }
 }

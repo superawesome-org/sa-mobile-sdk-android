@@ -317,14 +317,6 @@ public class MRAIDView extends RelativeLayout {
                 return false;
             }
         });
-        wv.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (listener != null) {
-                    listener.mraidViewLayoutChange(view);
-                }
-            }
-        });
 		wv.getSettings().setJavaScriptEnabled(true);
 		wv.setWebChromeClient(mraidWebChromeClient);
 		wv.setWebViewClient(mraidWebViewClient);
@@ -1271,21 +1263,24 @@ public class MRAIDView extends RelativeLayout {
 			if (isExpandingPart2) {
 				isExpandingPart2 = false;
 				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						injectJavaScript("mraid.setPlacementType('" + (isInterstitial ? "interstitial" : "inline") + "');");
-						setSupportedServices();
-						setScreenSize();
-						setDefaultPosition();
-					    MRAIDLog.d(TAG, "calling fireStateChangeEvent 2");
-						fireStateChangeEvent();
-						fireReadyEvent();
-						if (isViewable) {
-							fireViewableChangeEvent();
-						}
-					}
-				});
+                    @Override
+                    public void run() {
+                        injectJavaScript("mraid.setPlacementType('" + (isInterstitial ? "interstitial" : "inline") + "');");
+                        setSupportedServices();
+                        setScreenSize();
+                        setDefaultPosition();
+                        MRAIDLog.d(TAG, "calling fireStateChangeEvent 2");
+                        fireStateChangeEvent();
+                        fireReadyEvent();
+                        if (isViewable) {
+                            fireViewableChangeEvent();
+                        }
+                    }
+                });
 			}
+            if (listener != null) {
+                listener.mraidViewPageFinished(view);
+            }
 		}
 		
 		@Override

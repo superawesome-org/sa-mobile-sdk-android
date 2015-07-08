@@ -30,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             custom:placementID="5687"
             custom:testMode="true">
         </tv.superawesome.superawesomesdk.view.BannerView>

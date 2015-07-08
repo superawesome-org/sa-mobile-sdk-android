@@ -1,17 +1,13 @@
 package tv.superawesome.sademoapp;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 
-import tv.superawesome.superawesomesdk.Ad;
+import tv.superawesome.superawesomesdk.model.Ad;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 import tv.superawesome.superawesomesdk.view.BannerView;
-import tv.superawesome.superawesomesdk.view.PlacementViewListener;
 
 
 public class MainActivity extends Activity {

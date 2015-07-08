@@ -61,7 +61,7 @@ public class Ad {
                     } else {
                         this.clickURL = creative.getString("click_url");
                     }
-                    this.setContent(String.format("<div style=\"background-color: red;\"><a href=\"%s\"><img src=\"%s\" /></a></div>", this.clickURL, this.imageURL));
+                    this.setContent(String.format("<div><a href=\"%s\"><img src=\"%s\" /></a></div>", this.clickURL, this.imageURL));
                     break;
                 default:
                     break;

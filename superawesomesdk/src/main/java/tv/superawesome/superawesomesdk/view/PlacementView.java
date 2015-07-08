@@ -3,28 +3,22 @@ package tv.superawesome.superawesomesdk.view;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
 import org.nexage.sourcekit.mraid.MRAIDView;
-import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
-import tv.superawesome.superawesomesdk.Ad;
+import tv.superawesome.superawesomesdk.model.Ad;
 import tv.superawesome.superawesomesdk.AdManager;
 import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
@@ -49,16 +43,7 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.context = context;
         this.placementID = placementID;
         this.adManager = adManager;
-
-        padlockImage = new ImageButton(context);
-        padlockImage.setBackgroundColor(Color.TRANSPARENT);
-        padlockImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPadlockClick();
-            }
-        });
-        padlockImage.setImageResource(getPadlockImageResource());
+        this.createPadlockImage();
     }
 
     public PlacementView(Context context, AttributeSet attrs) {
@@ -66,8 +51,11 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.context = context;
         this.adManager = SuperAwesome.createAdManager();
         this.fetchXmlAttrs(attrs);
+        this.createPadlockImage();
         this.loadAd();
+    }
 
+    protected void createPadlockImage() {
         padlockImage = new ImageButton(context);
         padlockImage.setBackgroundColor(Color.TRANSPARENT);
         padlockImage.setOnClickListener(new OnClickListener() {
@@ -76,8 +64,9 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
                 onPadlockClick();
             }
         });
-        padlockImage.setImageResource(getPadlockImageResource());
+        padlockImage.setImageResource(R.drawable.sa_padlock);
     }
+
 
     private boolean checkAppPermissions() {
         int res = getContext().checkCallingOrSelfPermission("android.permission.INTERNET");
@@ -99,7 +88,7 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
 
     protected void showPadlock(View view)
     {
-        // If ad isn't loaded for some reason, or ad is a fallback ad, do not show the padlock.
+        //If ad isn't loaded for some reason, or ad is a fallback ad, do not show the padlock.
         if (this.loadedAd == null || this.loadedAd.isFallback) {
             return;
         }
@@ -117,7 +106,9 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
 
         ViewGroup padlockParent = (ViewGroup)padlockImage.getParent();
         if (padlockParent != null) padlockParent.removeView(padlockImage);
+        Log.d(TAG, "Showing padlock");
         ((ViewGroup) view).addView(padlockImage);
+        padlockImage.bringToFront();
 
     }
 
@@ -178,10 +169,6 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         } catch (Exception e) {
             if (listener != null) listener.onAdError(e.getMessage());
         }
-    }
-
-    protected int getPadlockImageResource() {
-        return R.drawable.sa_padlock;
     }
 
     @Override

@@ -18,5 +18,5 @@ public interface MRAIDViewListener {
 
     public boolean mraidViewResize(MRAIDView mraidView, int width, int height, int offsetX, int offsetY);
 
-    public void mraidViewLayoutChange(View view);
+    public void mraidViewPageFinished(View view);
 }

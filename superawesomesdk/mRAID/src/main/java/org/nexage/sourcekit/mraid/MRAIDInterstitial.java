@@ -5,8 +5,6 @@ import org.nexage.sourcekit.mraid.internal.MRAIDLog;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.ImageButton;
 
 public class MRAIDInterstitial implements MRAIDViewListener {
 	
@@ -68,9 +66,9 @@ public class MRAIDInterstitial implements MRAIDViewListener {
 	}
 
     @Override
-    public void mraidViewLayoutChange(View view) {
+    public void mraidViewPageFinished(View view) {
         if (listener != null) {
-            listener.mraidInterstitialLayoutChange(view);
+            listener.mraidInterstitialPageFinished(view);
         }
     }
 

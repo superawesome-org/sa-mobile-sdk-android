@@ -4,6 +4,7 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import tv.superawesome.superawesomesdk.model.Ad;
 import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 
 /**

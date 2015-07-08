@@ -1,34 +1,20 @@
 package tv.superawesome.superawesomesdk.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
-import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
 import org.nexage.sourcekit.mraid.MRAIDView;
 import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
-import tv.superawesome.superawesomesdk.Ad;
+import tv.superawesome.superawesomesdk.model.Ad;
 import tv.superawesome.superawesomesdk.AdManager;
 import tv.superawesome.superawesomesdk.R;
-import tv.superawesome.superawesomesdk.SuperAwesome;
 
 
 public class BannerView extends PlacementView implements MRAIDViewListener {
@@ -60,11 +46,10 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
         mraidView.setLayoutParams(params);
         this.addView(mraidView);
 
-//        this.showPadlock();
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                Log.d(TAG, "Loading ad in handler");
                 loadAd();
             }
         }, 30000);
@@ -100,8 +85,8 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
     }
 
     @Override
-    public void mraidViewLayoutChange(View view) {
-        this.showPadlock(view);
+    public void mraidViewPageFinished(View view) {
+        showPadlock(view);
     }
 
     @Override
