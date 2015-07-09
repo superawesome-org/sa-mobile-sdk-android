@@ -47,7 +47,7 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
     }
 
     public PlacementView(Context context, AttributeSet attrs) {
-        super(context);
+        super(context, attrs);
         this.context = context;
         this.adManager = SuperAwesome.createAdManager();
         this.fetchXmlAttrs(attrs);

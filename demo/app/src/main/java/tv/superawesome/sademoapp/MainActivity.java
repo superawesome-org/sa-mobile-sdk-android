@@ -1,9 +1,14 @@
 package tv.superawesome.sademoapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import tv.superawesome.superawesomesdk.model.Ad;
 import tv.superawesome.superawesomesdk.SuperAwesome;
@@ -19,6 +24,45 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getVersion());
+
+        String[] ads = {
+                "Banner ad - code",
+                "Banner ad - XML",
+                "Interstitial - code",
+                "Interstitial - XML"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.activity_listview, ads);
+
+        ListView list = (ListView) findViewById(R.id.list);
+        list.setAdapter(adapter);
+
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                switch (position) {
+                    case 0:
+                        startActivity(new Intent(MainActivity.this, BannerAdCodeActivity.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(MainActivity.this, BannerAdXmlActivity.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(MainActivity.this, InterstitialAdCodeActivity.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(MainActivity.this, InterstitialAdXmlActivity.class));
+                        break;
+                }
+
+            }
+
+            @SuppressWarnings("unused")
+            public void onClick(View v) {
+            };
+        });
 
 //        this.bv = SuperAwesome.createBannerView(this, "5662");
 //        this.bv = SuperAwesome.createBannerView(this, "5222");

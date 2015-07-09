@@ -7,6 +7,7 @@ import java.net.URLClassLoader;
 
 import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 import tv.superawesome.superawesomesdk.view.BannerView;
+import tv.superawesome.superawesomesdk.view.InterstitialView;
 
 public class SuperAwesome {
 	
@@ -36,9 +37,13 @@ public class SuperAwesome {
 		return new AdManager(baseUrl);
 	}
 
-	public static BannerView createBannerView(Context context, String placementID) {
-		return new BannerView(context, placementID, createAdManager());
-	}
+    public static BannerView createBannerView(Context context, String placementID) {
+        return new BannerView(context, placementID, createAdManager());
+    }
+
+    public static InterstitialView createInterstitialView(Context context, String placementID) {
+        return new InterstitialView(context, placementID, createAdManager());
+    }
 
 	public static UrlLoader createUrlLoader() {
 		return new UrlLoader();

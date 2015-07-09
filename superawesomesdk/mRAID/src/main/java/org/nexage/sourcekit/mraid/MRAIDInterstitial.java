@@ -34,6 +34,7 @@ public class MRAIDInterstitial implements MRAIDViewListener {
 			return;
 		}
 		mraidView.showAsInterstitial();
+
 	}
 	
 	// MRAIDViewListener implementation
@@ -58,10 +59,12 @@ public class MRAIDInterstitial implements MRAIDViewListener {
 	@Override
 	public void mraidViewClose(MRAIDView mraidView) {
         Log.d(TAG + "-MRAIDViewListener", "mraidViewClose");
-		isReady = false;
-		mraidView = null;
-        if (listener != null) {
-        	listener.mraidInterstitialHide(this);
+        if (isReady) {
+            isReady = false;
+            mraidView = null;
+            if (listener != null) {
+                listener.mraidInterstitialHide(this);
+            }
         }
 	}
 

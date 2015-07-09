@@ -20,6 +20,8 @@ import tv.superawesome.superawesomesdk.R;
 public class BannerView extends PlacementView implements MRAIDViewListener {
 
 	protected static final String TAG = "SA SDK - Banner";
+    private static final int AD_RELOAD_INTERVAL = 30000;
+    private Handler handler;
 
     public BannerView(Context context, String placementID, AdManager adManager) {
         super(context, placementID, adManager);
@@ -46,13 +48,13 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
         mraidView.setLayoutParams(params);
         this.addView(mraidView);
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        this.handler = new Handler();
+        this.handler.postDelayed(new Runnable() {
             public void run() {
                 Log.d(TAG, "Loading ad in handler");
                 loadAd();
             }
-        }, 30000);
+        }, AD_RELOAD_INTERVAL);
     }
 
     protected void fetchXmlAttrs(AttributeSet attrs) {
@@ -94,4 +96,10 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
         return false;
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        /* Remove the handler callback so the ad stops reloading every x seconds. */
+        this.handler.removeCallbacksAndMessages(null);
+    }
 }

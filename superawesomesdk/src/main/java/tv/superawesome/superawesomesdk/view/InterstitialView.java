@@ -5,6 +5,7 @@ import tv.superawesome.superawesomesdk.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,8 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     /* Set when the user calls display(); the interstitial is shown when both 'isReady' and 'display' are true. */
     private boolean display;
     private MRAIDInterstitial mraidInterstitial;
+
+    private View webView;
 
     public InterstitialView(Context context, String placementID, AdManager adManager) {
         super(context, placementID, adManager);
@@ -76,16 +79,29 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
 
     @Override
     public void mraidInterstitialShow(MRAIDInterstitial mraidInterstitial) {
-
+        this.showPadlock(this.webView);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                showPadlock(webView);
+            }
+        }, 1000);
     }
 
     @Override
     public void mraidInterstitialHide(MRAIDInterstitial mraidInterstitial) {
-
+        this.display = false;
+        this.loadAd();
     }
 
     @Override
     public void mraidInterstitialPageFinished(View view) {
-        this.showPadlock(view);
+        this.webView = view;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                showPadlock(webView);
+            }
+        }, 1000);
     }
 }

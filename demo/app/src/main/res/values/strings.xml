@@ -3,4 +3,22 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_banner_ad_code">BannerAdCodeActivity</string>
+    <string name="title_activity_banner_ad_xml">BannerAdXmlActivity</string>
+    <string name="banner_ad_xml_code">
+        Ad created using: \n\n
+        <![CDATA[
+            <tv.superawesome.superawesomesdk.view.BannerView \n
+                android:id="@+id/banner" \n
+                android:layout_width="wrap_content" \n
+                android:layout_height="wrap_content" \n
+                android:layout_alignParentBottom="true" \n
+                android:layout_centerHorizontal="true" \n
+                custom:placementID="5687" \n
+                custom:testMode="true"> \n
+            </tv.superawesome.superawesomesdk.view.BannerView>
+        ]]>
+    </string>
+    <string name="title_activity_interstitial_ad_code">InterstitialAdCodeActivity</string>
+    <string name="title_activity_interstitial_ad_xml">InterstitialAdXmlActivity</string>
 </resources>

@@ -19,7 +19,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".BannerAdCodeActivity"
+            android:label="@string/title_activity_banner_ad_code"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".BannerAdXmlActivity"
+            android:label="@string/title_activity_banner_ad_xml"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".InterstitialAdCodeActivity"
+            android:label="@string/title_activity_interstitial_ad_code"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".InterstitialAdXmlActivity"
+            android:label="@string/title_activity_interstitial_ad_xml"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
