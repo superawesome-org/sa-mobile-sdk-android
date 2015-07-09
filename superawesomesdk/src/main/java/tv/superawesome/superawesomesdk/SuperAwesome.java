@@ -3,9 +3,6 @@ package tv.superawesome.superawesomesdk;
 import android.content.Context;
 import android.util.Log;
 
-import java.net.URLClassLoader;
-
-import tv.superawesome.superawesomesdk.view.AdLoaderListener;
 import tv.superawesome.superawesomesdk.view.BannerView;
 import tv.superawesome.superawesomesdk.view.InterstitialView;
 

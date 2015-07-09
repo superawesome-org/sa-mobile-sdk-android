@@ -16,7 +16,7 @@
 //	private VideoViewLoader loader;
 //	private ProgressDialog progressDialog;
 //
-//	private VideoViewListener listener = new VideoViewListener() {
+//	private VideoView_oldListener listener = new VideoView_oldListener() {
 //	   @Override
 //	   public void onPlaybackCompleted() {
 //	  	 Log.v(TAG, "Video ad playback has completed");

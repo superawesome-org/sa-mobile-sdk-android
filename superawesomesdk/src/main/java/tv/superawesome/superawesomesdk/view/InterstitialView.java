@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.ImageButton;
 
 import org.nexage.sourcekit.mraid.MRAIDInterstitial;
 import org.nexage.sourcekit.mraid.MRAIDInterstitialListener;

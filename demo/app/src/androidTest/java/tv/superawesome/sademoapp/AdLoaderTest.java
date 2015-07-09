@@ -8,7 +8,7 @@ import tv.superawesome.sademoapp.mocks.FakeUrlLoader;
 import tv.superawesome.superawesomesdk.AdLoader;
 import tv.superawesome.superawesomesdk.UrlLoader;
 import tv.superawesome.superawesomesdk.model.Ad;
-import tv.superawesome.superawesomesdk.view.AdLoaderListener;
+import tv.superawesome.superawesomesdk.AdLoaderListener;
 
 import static org.mockito.Mockito.*;
 

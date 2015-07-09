@@ -29,7 +29,8 @@ public class MainActivity extends Activity {
                 "Banner ad - code",
                 "Banner ad - XML",
                 "Interstitial - code",
-                "Interstitial - XML"
+                "Interstitial - XML",
+                "Video test"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, ads);
@@ -54,6 +55,9 @@ public class MainActivity extends Activity {
                         break;
                     case 3:
                         startActivity(new Intent(MainActivity.this, InterstitialAdXmlActivity.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(MainActivity.this, VideoAdCodeActivity.class));
                         break;
                 }
 

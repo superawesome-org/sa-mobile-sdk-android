@@ -1,7 +1,5 @@
 package tv.superawesome.superawesomesdk;
 
-import tv.superawesome.superawesomesdk.view.AdLoaderListener;
-
 /**
  * Created by connor.leigh-smith on 23/06/15.
  */

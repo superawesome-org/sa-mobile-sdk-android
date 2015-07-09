@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile files('libs/ima-android-sdk-beta9.jar')
     compile project(':mRAID')
+    compile files('libs/google-ima-android-v3-3.b11.4.jar')
 }
