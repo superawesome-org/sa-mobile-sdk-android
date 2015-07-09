@@ -5,15 +5,21 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import tv.superawesome.superawesomesdk.view.BannerView;
+import tv.superawesome.superawesomesdk.view.InterstitialView;
+
 
 public class BannerAdXmlActivity extends ActionBarActivity {
+
+    private BannerView bannerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner_ad_xml);
+        setResult(RESULT_OK);
 
-        setTitle("Banner Ad (set with XML)");
+        this.bannerView = (BannerView) findViewById(R.id.banner_container);
     }
 
     @Override

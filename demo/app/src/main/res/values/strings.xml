@@ -3,13 +3,17 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_banner_ad_code">BannerAdCodeActivity</string>
-    <string name="title_activity_banner_ad_xml">BannerAdXmlActivity</string>
+
+    <string name="title_activity_banner_ad_code">Banner Ad (set with code)</string>
+    <string name="title_activity_banner_ad_xml">Banner Ad (set with XML)</string>
+    <string name="title_activity_interstitial_ad_code">Interstitial Ad (set with code)</string>
+    <string name="title_activity_interstitial_ad_xml">Interstitial Ad (set with XML)</string>
+
     <string name="banner_ad_xml_code">
         Ad created using: \n\n
         <![CDATA[
             <tv.superawesome.superawesomesdk.view.BannerView \n
-                android:id="@+id/banner" \n
+                android:id="@+id/banner_container" \n
                 android:layout_width="wrap_content" \n
                 android:layout_height="wrap_content" \n
                 android:layout_alignParentBottom="true" \n
@@ -19,6 +23,19 @@
             </tv.superawesome.superawesomesdk.view.BannerView>
         ]]>
     </string>
-    <string name="title_activity_interstitial_ad_code">InterstitialAdCodeActivity</string>
-    <string name="title_activity_interstitial_ad_xml">InterstitialAdXmlActivity</string>
+
+    <string name="interstitial_ad_xml_code">
+        Ad created using: \n\n
+        <![CDATA[
+            <tv.superawesome.superawesomesdk.view.InterstitialView \n
+                android:id="@+id/interstitial_container" \n
+                android:layout_width="wrap_content" \n
+                android:layout_height="wrap_content" \n
+                android:layout_alignParentBottom="true" \n
+                custom:placementID="5692" \n
+                custom:testMode="true" \n
+                custom:showInstantly="false"> \n
+            </tv.superawesome.superawesomesdk.view.InterstitialView>
+        ]]>
+    </string>
 </resources>

@@ -21,8 +21,6 @@ public class BannerAdCodeActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner_ad_code);
-        setTitle("Banner Ad (set with code)");
-
         setResult(RESULT_OK);
 
         BannerView bannerView = SuperAwesome.createBannerView(this, "5687");

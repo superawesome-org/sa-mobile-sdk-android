@@ -27,8 +27,7 @@ public class InterstitialAdXmlActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interstitial_ad_xml);
-
-        setTitle("Interstitial Ad (set with XML)");
+        setResult(RESULT_OK);
 
         this.interstitialView = (InterstitialView) findViewById(R.id.interstitial_container);
     }

@@ -19,10 +19,11 @@
             android:singleLine="false"
             android:scrollbars="horizontal"
             android:scrollHorizontally="true"/>
+
     </HorizontalScrollView>
 
     <tv.superawesome.superawesomesdk.view.BannerView
-    android:id="@+id/banner"
+    android:id="@+id/banner_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"

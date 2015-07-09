@@ -23,8 +23,7 @@ public class InterstitialAdCodeActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interstitial_ad_code);
-
-        setTitle("Interstitial Ad (set with code)");
+        setResult(RESULT_OK);
 
         interstitialView = SuperAwesome.createInterstitialView(this, "5692");
         interstitialView.enableTestMode();

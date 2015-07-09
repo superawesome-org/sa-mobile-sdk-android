@@ -80,6 +80,8 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     @Override
     public void mraidInterstitialShow(MRAIDInterstitial mraidInterstitial) {
         this.showPadlock(this.webView);
+
+       /* Ought to change this from a timeout... */
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -97,6 +99,9 @@ public class InterstitialView extends PlacementView implements MRAIDInterstitial
     @Override
     public void mraidInterstitialPageFinished(View view) {
         this.webView = view;
+        showPadlock(webView);
+
+       /* Ought to change this from a timeout... */
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
