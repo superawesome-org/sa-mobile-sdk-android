@@ -2,22 +2,16 @@ package tv.superawesome.sademoapp;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import tv.superawesome.superawesomesdk.SuperAwesome;
-import tv.superawesome.superawesomesdk.model.Ad;
-import tv.superawesome.superawesomesdk.view.BannerView;
-import tv.superawesome.superawesomesdk.view.InterstitialView;
-import tv.superawesome.superawesomesdk.view.PlacementViewListener;
+import tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment;
 
 
 public class InterstitialAdCodeActivity extends ActionBarActivity {
 
-    InterstitialView interstitialView;
+    private static SAInterstitialFragment interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,26 +19,29 @@ public class InterstitialAdCodeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_interstitial_ad_code);
         setResult(RESULT_OK);
 
-        interstitialView = SuperAwesome.createInterstitialView(this, "5692");
-        interstitialView.enableTestMode();
-        interstitialView.setListener(new PlacementViewListener() {
-            @Override
-            public void onAdLoaded(Ad ad) {
-                Log.d("Main APP", "Loaded ad");
-            }
+//        if (interstitial == null) {
+//            interstitial = SAInterstitialFragment.newInstance("5692", true);
+//            interstitial.setListener(new SAPlacementListener() {
+//                @Override
+//                public void onAdLoaded(SAAd superAwesomeAd) {
+//                    Log.d("Main APP", "Loaded Ad");
+//                }
+//
+//                @Override
+//                public void onAdError(String message) {
+//                    Log.d("Main APP", message);
+//                }
+//            });
+//
+//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.ad_placeholder, interstitial);
+//            fragmentTransaction.commit();
+//        }
 
-            @Override
-            public void onAdError(String message) {
-                Log.d("Main APP", message);
-            }
-        });
-        interstitialView.loadAd();
-        ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
-        rootView.addView(interstitialView);
     }
 
     public void showInterstitial(View view) {
-        interstitialView.show();
+        interstitial.show();
     }
 
     @Override

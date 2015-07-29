@@ -8,6 +8,8 @@
     <string name="title_activity_banner_ad_xml">Banner Ad (set with XML)</string>
     <string name="title_activity_interstitial_ad_code">Interstitial Ad (set with code)</string>
     <string name="title_activity_interstitial_ad_xml">Interstitial Ad (set with XML)</string>
+    <string name="title_activity_video_ad_code">Video Ad (set with code)</string>
+    <string name="title_activity_video_ad_xml">Video Ad (set with XML)</string>
 
     <string name="banner_ad_xml_code">
         Ad created using: \n\n
@@ -38,5 +40,4 @@
             </tv.superawesome.superawesomesdk.view.InterstitialView>
         ]]>
     </string>
-    <string name="title_activity_video_ad_code">VideoAdCodeActivity</string>
 </resources>

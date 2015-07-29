@@ -16,14 +16,14 @@
         android:layout_height="wrap_content"
         android:onClick="showInterstitial"/>
 
-    <tv.superawesome.superawesomesdk.view.InterstitialView
-    android:id="@+id/interstitial_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    custom:placementID="5692"
-    custom:testMode="true"
-    custom:showInstantly="false">
-    </tv.superawesome.superawesomesdk.view.InterstitialView>
+    <fragment
+        android:name="tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment"
+        android:id="@+id/sa_interstitial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:placementID="5692"
+        custom:testMode="true"
+        custom:showInstantly="false" />
+
 
 </RelativeLayout>

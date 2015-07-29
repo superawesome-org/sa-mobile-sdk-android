@@ -1,7 +1,6 @@
-package tv.superawesome.superawesomesdk.view;
+package tv.superawesome.superawesomesdk.views;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -12,22 +11,20 @@ import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 import org.nexage.sourcekit.mraid.MRAIDView;
 import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
-import tv.superawesome.superawesomesdk.model.Ad;
 import tv.superawesome.superawesomesdk.AdManager;
-import tv.superawesome.superawesomesdk.R;
 
 
-public class BannerView extends PlacementView implements MRAIDViewListener {
+public class SABannerView extends SAPlacementView implements MRAIDViewListener {
 
 	protected static final String TAG = "SA SDK - Banner";
     private static final int AD_RELOAD_INTERVAL = 30000;
     private Handler handler;
 
-    public BannerView(Context context, String placementID, AdManager adManager) {
+    public SABannerView(Context context, String placementID, AdManager adManager) {
         super(context, placementID, adManager);
     }
 
-    public BannerView(Context context, AttributeSet attrs) {
+    public SABannerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -55,20 +52,6 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
                 loadAd();
             }
         }, AD_RELOAD_INTERVAL);
-    }
-
-    protected void fetchXmlAttrs(AttributeSet attrs) {
-        //Get attributes from resources file
-        TypedArray a = context.getTheme().obtainStyledAttributes(
-                attrs,
-                R.styleable.PlacementView,
-                0, 0);
-        try {
-            this.placementID = a.getString(R.styleable.PlacementView_placementID);
-            this.testMode = a.getBoolean(R.styleable.PlacementView_testMode, false);
-        } finally {
-            a.recycle();
-        }
     }
 
     @Override
@@ -99,7 +82,21 @@ public class BannerView extends PlacementView implements MRAIDViewListener {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        /* Remove the handler callback so the ad stops reloading every x seconds. */
-        this.handler.removeCallbacksAndMessages(null);
+        this.paused();
+    }
+
+    @Override
+    public void paused() {
+        if (this.handler != null) {
+            /* Remove the handler callback so the ad stops reloading every x seconds. */
+            this.handler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    @Override
+    public void resumed() {
+        if (this.loadedAd != null) {
+            this.setView(this.loadedAd.getContent());
+        }
     }
 }

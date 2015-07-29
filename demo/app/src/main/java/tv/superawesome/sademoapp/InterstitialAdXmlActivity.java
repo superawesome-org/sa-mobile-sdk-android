@@ -1,27 +1,19 @@
 package tv.superawesome.sademoapp;
 
-import android.content.Context;
-import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
-import tv.superawesome.superawesomesdk.view.InterstitialView;
+import tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment;
+import tv.superawesome.superawesomesdk.views.SAInterstitialView;
 
 
 public class InterstitialAdXmlActivity extends AppCompatActivity {
 
-    private InterstitialView interstitialView;
+    private SAInterstitialFragment interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +21,11 @@ public class InterstitialAdXmlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interstitial_ad_xml);
         setResult(RESULT_OK);
 
-        this.interstitialView = (InterstitialView) findViewById(R.id.interstitial_container);
+        this.interstitial = (SAInterstitialFragment)getSupportFragmentManager().findFragmentById(R.id.sa_interstitial);
     }
 
     public void showInterstitial(View view) {
-        this.interstitialView.show();
+        this.interstitial.show();
     }
 
     @Override

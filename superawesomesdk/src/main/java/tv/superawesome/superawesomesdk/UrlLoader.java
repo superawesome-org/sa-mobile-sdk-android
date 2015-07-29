@@ -1,9 +1,11 @@
 package tv.superawesome.superawesomesdk;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -16,37 +18,47 @@ public class UrlLoader extends AsyncTask<String, Integer, String> {
 
     protected UrlLoaderListener listener;
 
-    public UrlLoader() {
-
-    }
-
     public void setListener(UrlLoaderListener listener) {
         this.listener = listener;
     }
 
     @Override
     protected String doInBackground(String[] params) {
+        HttpURLConnection urlConnection = null;
+        InputStream in = null;
+        BufferedReader streamReader = null;
+        StringBuilder responseStrBuilder = new StringBuilder();
+
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(params[0]).openConnection();
-            listener.onBeginLoad(params[0]);
-            try {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String inputStr;
-                BufferedReader streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-                StringBuilder responseStrBuilder = new StringBuilder();
-
-                while ((inputStr = streamReader.readLine()) != null) responseStrBuilder.append(inputStr);
-
-                return responseStrBuilder.toString();
-            } catch (Exception e) {
-                listener.onError(e.getMessage());
-            } finally {
-                urlConnection.disconnect();
-            }
-        } catch (Exception e) {
-            listener.onError(e.getMessage());
+            urlConnection = (HttpURLConnection) new URL(params[0]).openConnection();
+        } catch (IOException e) {
+            listener.onBeginLoad(e.getMessage());
         }
-        return "";
+
+        listener.onBeginLoad(params[0]);
+
+        try {
+            in = new BufferedInputStream(urlConnection.getInputStream());
+        } catch (IOException e) {
+            listener.onBeginLoad(e.getMessage());
+        }
+
+        if (in != null) {
+            String inputStr;
+            streamReader = new BufferedReader(new InputStreamReader(in));
+
+            try {
+                while ((inputStr = streamReader.readLine()) != null) responseStrBuilder.append(inputStr);
+            } catch (IOException e) {
+                listener.onBeginLoad(e.getMessage());
+            }
+        }
+
+        if (urlConnection != null) {
+            urlConnection.disconnect();
+        }
+
+        return responseStrBuilder.toString();
     }
 
     @Override

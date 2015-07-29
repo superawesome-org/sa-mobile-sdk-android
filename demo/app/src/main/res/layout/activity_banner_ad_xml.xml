@@ -9,27 +9,15 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="tv.superawesome.sademoapp.BannerAdXmlActivity">
 
-    <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content" >
-        <TextView
-            android:text="@string/banner_ad_xml_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:scrollbars="horizontal"
-            android:scrollHorizontally="true"/>
-
-    </HorizontalScrollView>
-
-    <tv.superawesome.superawesomesdk.view.BannerView
-    android:id="@+id/banner_container"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    custom:placementID="5687"
-    custom:testMode="true">
-    </tv.superawesome.superawesomesdk.view.BannerView>
+    <fragment
+        android:name="tv.superawesome.superawesomesdk.fragments.SABannerFragment"
+        android:id="@+id/sa_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        custom:placementID="5687"
+        custom:testMode="true"
+        custom:showInstantly="true" />
 
 </RelativeLayout>

@@ -2,9 +2,10 @@ package tv.superawesome.superawesomesdk;
 
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import tv.superawesome.superawesomesdk.model.Ad;
+import tv.superawesome.superawesomesdk.models.SAAd;
 
 /**
  * Created by connor.leigh-smith on 29/06/15.
@@ -15,7 +16,7 @@ public class AdLoader {
     private AdLoaderListener listener;
     private UrlLoader urlLoaderAd;
     private UrlLoader urlLoaderRichMedia;
-    private Ad ad;
+    private SAAd superAwesomeAd;
 
     public AdLoader(AdLoaderListener listener, UrlLoader urlLoaderAd, UrlLoader urlLoaderRichMedia) {
         this.listener = listener;
@@ -27,13 +28,13 @@ public class AdLoader {
         this.urlLoaderAd.setListener(new UrlLoaderListener() {
             @Override
             public void onBeginLoad(String url) {
-                Log.d(TAG, "Beginning to load ad; URL: " + url);
+                Log.d(TAG, "Beginning to load superAwesomeAd; URL: " + url);
             }
 
             @Override
             public void onError(String message) {
+                Log.d(TAG, "Error:" + message);
                 listener.onError(message);
-                Log.d(TAG, "Beginning to load ad; URL: " + message);
             }
 
             @Override
@@ -45,29 +46,34 @@ public class AdLoader {
     }
 
     private void processLoadedAd(String response) {
+
         try {
-            this.ad = new Ad(new JSONObject(response));
-            switch (ad.format) {
-                case RICH_MEDIA:
-                    this.loadRichMediaContent(ad.richMediaUrl);
-                    break;
-                case IMAGE_WITH_LINK:
-                    listener.onLoaded(this.ad);
-                    break;
-                default:
-                    listener.onError("Ad type not yet supported");
-                    break;
-            }
-        } catch (Exception e) {
-            listener.onError(e.getMessage());
+            this.superAwesomeAd = SAAd.generateAd(new JSONObject(response));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            listener.onError("Bad response from server! JSON format likely incorrect.");
+            return;
+        }
+
+        switch (superAwesomeAd.format) {
+            case RICH_MEDIA:
+            case VIDEO:
+                this.loadExtraContent(superAwesomeAd.url);
+                break;
+            case IMAGE_WITH_LINK:
+                listener.onLoaded(this.superAwesomeAd);
+                break;
+            default:
+                listener.onError("Ad type not yet supported");
+                break;
         }
     }
 
-    private void loadRichMediaContent(String url) {
+    private void loadExtraContent(String url) {
         this.urlLoaderRichMedia.setListener(new UrlLoaderListener() {
             @Override
             public void onBeginLoad(String url) {
-                Log.d(TAG, "Beginning to load rich media content; URL: " + url);
+                Log.d(TAG, "Beginning to load extra content; URL: " + url);
             }
 
             @Override
@@ -78,8 +84,8 @@ public class AdLoader {
             @Override
             public void onLoaded(String response) {
                 Log.d(TAG, response);
-                ad.setContent(response);
-                listener.onLoaded(ad);
+                superAwesomeAd.setContent(response);
+                listener.onLoaded(superAwesomeAd);
             }
         });
         this.urlLoaderRichMedia.execute(url);

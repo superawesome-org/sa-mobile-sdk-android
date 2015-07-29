@@ -10,14 +10,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import tv.superawesome.superawesomesdk.model.Ad;
 import tv.superawesome.superawesomesdk.SuperAwesome;
-import tv.superawesome.superawesomesdk.view.BannerView;
+import tv.superawesome.superawesomesdk.views.SABannerView;
 
 
 public class MainActivity extends Activity {
 
-    BannerView bv;
+    SABannerView bv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,8 @@ public class MainActivity extends Activity {
                 "Banner ad - XML",
                 "Interstitial - code",
                 "Interstitial - XML",
-                "Video test"
+                "Video ad - code",
+                "Video ad - XML"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, ads);
@@ -59,6 +59,9 @@ public class MainActivity extends Activity {
                     case 4:
                         startActivity(new Intent(MainActivity.this, VideoAdCodeActivity.class));
                         break;
+                    case 5:
+                        startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
+                        break;
                 }
 
             }
@@ -72,9 +75,9 @@ public class MainActivity extends Activity {
 //        this.bv = SuperAwesome.createBannerView(this, "5222");
 //        this.bv = SuperAwesome.createBannerView(this, "5687");
 //        this.bv.enableTestMode();
-//        this.bv.setListener(new PlacementViewListener() {
+//        this.bv.setListener(new SAPlacementListener() {
 //            @Override
-//            public void onAdLoaded(Ad ad) {
+//            public void onAdLoaded(SAAd ad) {
 //                Log.d("Main APP", "Loaded ad");
 //            }
 //

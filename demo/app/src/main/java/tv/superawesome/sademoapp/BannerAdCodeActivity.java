@@ -6,16 +6,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
-import tv.superawesome.superawesomesdk.SuperAwesome;
-import tv.superawesome.superawesomesdk.model.Ad;
-import tv.superawesome.superawesomesdk.view.BannerView;
-import tv.superawesome.superawesomesdk.view.PlacementViewListener;
-
+import tv.superawesome.superawesomesdk.fragments.SABannerFragment;
+import tv.superawesome.superawesomesdk.views.SAPlacementListener;
+import tv.superawesome.superawesomesdk.models.SAAd;
 
 public class BannerAdCodeActivity extends ActionBarActivity {
+
+    private SABannerFragment bannerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +21,13 @@ public class BannerAdCodeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_banner_ad_code);
         setResult(RESULT_OK);
 
-        BannerView bannerView = SuperAwesome.createBannerView(this, "5687");
-        bannerView.enableTestMode();
-        bannerView.setListener(new PlacementViewListener() {
+
+        findViewById(R.id.stub_import).setVisibility(View.VISIBLE);
+        bannerFragment = (SABannerFragment)getSupportFragmentManager().findFragmentById(R.id.sa_banner);
+        bannerFragment.setListener(new SAPlacementListener() {
             @Override
-            public void onAdLoaded(Ad ad) {
-                Log.d("Main APP", "Loaded ad");
+            public void onAdLoaded(SAAd superAwesomeAd) {
+                Log.d("Main APP", "TEST LOADED AD");
             }
 
             @Override
@@ -36,9 +35,29 @@ public class BannerAdCodeActivity extends ActionBarActivity {
                 Log.d("Main APP", message);
             }
         });
-        bannerView.loadAd();
-        ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
-        rootView.addView(bannerView);
+
+
+
+
+//        bannerFragment = SABannerFragment.newInstance("5687", true, true);
+//        bannerFragment.setListener(new SAPlacementListener() {
+//            @Override
+//            public void onAdLoaded(SAAd superAwesomeAd) {
+//                Log.d("Main APP", "Loaded Ad");
+//            }
+//
+//            @Override
+//            public void onAdError(String message) {
+//                Log.d("Main APP", message);
+//            }
+//        });
+//
+//
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.ad_placeholder, bannerFragment);
+//        fragmentTransaction.commit();
+
+
     }
 
     @Override

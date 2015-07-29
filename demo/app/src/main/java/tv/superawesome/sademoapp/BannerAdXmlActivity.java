@@ -1,17 +1,15 @@
 package tv.superawesome.sademoapp;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import tv.superawesome.superawesomesdk.view.BannerView;
-import tv.superawesome.superawesomesdk.view.InterstitialView;
-
 
 public class BannerAdXmlActivity extends ActionBarActivity {
 
-    private BannerView bannerView;
+    private Fragment banner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +17,7 @@ public class BannerAdXmlActivity extends ActionBarActivity {
         setContentView(R.layout.activity_banner_ad_xml);
         setResult(RESULT_OK);
 
-        this.bannerView = (BannerView) findViewById(R.id.banner_container);
+        this.banner = getSupportFragmentManager().findFragmentById(R.id.sa_banner);
     }
 
     @Override

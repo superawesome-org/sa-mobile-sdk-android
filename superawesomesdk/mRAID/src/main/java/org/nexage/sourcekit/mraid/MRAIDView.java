@@ -420,7 +420,7 @@ public class MRAIDView extends RelativeLayout {
     // These are methods in the MRAID API.
     ///////////////////////////////////////////////////////
 	
-    private void close() {
+    public void close() {
 		MRAIDLog.d(TAG + "-JS callback", "close");
         handler.post(new Runnable() {
             @Override
@@ -555,7 +555,7 @@ public class MRAIDView extends RelativeLayout {
 	}
 
     @SuppressWarnings("unused")
-	private void resize() {
+	public void resize() {
 		MRAIDLog.d(TAG + "-JS callback", "resize");
 		
 		// We need the cooperation of the app in order to do a resize. 
@@ -589,6 +589,11 @@ public class MRAIDView extends RelativeLayout {
 			}
 		});
 	}
+
+    public void destroyRootView() {
+        FrameLayout rootView = (FrameLayout)getRootView().findViewById(android.R.id.content);
+        rootView.removeView(resizedView);
+    }
 
     @SuppressWarnings("unused")
 	private void setOrientationProperties(Map<String, String> properties) {

@@ -5,7 +5,7 @@
 //import org.json.JSONObject;
 //
 //import tv.superawesome.superawesomesdk.SuperAwesome;
-//import tv.superawesome.superawesomesdk.Ad;
+//import tv.superawesome.superawesomesdk.SAAd;
 //import tv.superawesome.superawesomesdk.view.BannerView;
 //
 ///**
@@ -52,7 +52,7 @@
 //                        "  }\n" +
 //                        "}");
 //            }
-//            if (this.adLoaderListener != null && json != null) this.adLoaderListener.onLoaded(new Ad(json));
+//            if (this.adLoaderListener != null && json != null) this.adLoaderListener.onLoaded(new SAAd(json));
 //        } catch (Exception e) {
 //            if (listener != null) listener.onAdError(e.getMessage());
 //        }

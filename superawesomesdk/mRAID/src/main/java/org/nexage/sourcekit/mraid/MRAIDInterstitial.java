@@ -34,7 +34,6 @@ public class MRAIDInterstitial implements MRAIDViewListener {
 			return;
 		}
 		mraidView.showAsInterstitial();
-
 	}
 	
 	// MRAIDViewListener implementation

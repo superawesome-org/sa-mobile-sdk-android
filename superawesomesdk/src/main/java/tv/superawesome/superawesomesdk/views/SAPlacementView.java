@@ -1,4 +1,4 @@
-package tv.superawesome.superawesomesdk.view;
+package tv.superawesome.superawesomesdk.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,27 +19,27 @@ import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
 import org.nexage.sourcekit.mraid.MRAIDView;
 
 import tv.superawesome.superawesomesdk.AdLoaderListener;
-import tv.superawesome.superawesomesdk.model.Ad;
+import tv.superawesome.superawesomesdk.models.SAAd;
 import tv.superawesome.superawesomesdk.AdManager;
 import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 
 
-public abstract class PlacementView extends FrameLayout implements MRAIDNativeFeatureListener {
+public abstract class SAPlacementView extends FrameLayout implements MRAIDNativeFeatureListener {
 
 	protected static final String TAG = "SA SDK - Placement";
     protected String placementID;
     protected boolean testMode = false;
     protected Context context;
     protected AdManager adManager;
-    protected PlacementViewListener listener = null;
+    protected SAPlacementListener listener = null;
     protected AdLoaderListener adLoaderListener;
     protected MRAIDView mraidView;
-    protected Ad loadedAd = null;
+    protected SAAd loadedAd = null;
     protected String baseUrl = "http://superawesome.tv";
     protected ImageButton padlockImage;
 
-    public PlacementView(Context context, String placementID, AdManager adManager) {
+    public SAPlacementView(Context context, String placementID, AdManager adManager) {
         super(context);
         this.context = context;
         this.placementID = placementID;
@@ -47,25 +47,31 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         this.createPadlockImage();
     }
 
-    public PlacementView(Context context, AttributeSet attrs) {
+    public SAPlacementView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         this.adManager = SuperAwesome.createAdManager();
-        this.fetchXmlAttrs(attrs);
         this.createPadlockImage();
-        this.loadAd();
     }
 
     protected void createPadlockImage() {
-        padlockImage = new ImageButton(context);
-        padlockImage.setBackgroundColor(Color.TRANSPARENT);
-        padlockImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPadlockClick();
-            }
-        });
-        padlockImage.setImageResource(R.drawable.sa_padlock);
+//        padlockImage = new ImageButton(context);
+//        padlockImage.setBackgroundColor(Color.TRANSPARENT);
+//        padlockImage.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onPadlockClick();
+//            }
+//        });
+//        padlockImage.setImageResource(R.drawable.sa_padlock);
+    }
+
+    public void setPlacementID(String placementID) {
+        this.placementID = placementID;
+    }
+
+    public void setTestMode(boolean testMode) {
+        this.testMode = testMode;
     }
 
 
@@ -110,14 +116,12 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
         Log.d(TAG, "Showing padlock");
         ((ViewGroup) view).addView(padlockImage);
         padlockImage.bringToFront();
-
     }
 
-    private void onPadlockClick() {
+    protected void onPadlockClick(View view) {
         /* What should happen when the padlock is tapped? */
+        Log.d(TAG, "Padlock clicked!");
     }
-
-    protected abstract void fetchXmlAttrs(AttributeSet attrs);
 
     public void enableTestMode() {
         this.testMode = true;
@@ -129,7 +133,7 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
 
     protected abstract void setView(String content);
 
-    public void setListener(PlacementViewListener listener) {
+    public void setListener(SAPlacementListener listener) {
         this.listener = listener;
     }
 
@@ -146,21 +150,22 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
 
                 @Override
                 public void onError(String message) {
+                    Log.d(TAG, "Error:" + message);
                     if (listener != null) listener.onAdError(message);
                 }
 
                 @Override
-                public void onLoaded(Ad ad) {
-                    if (listener != null) listener.onAdLoaded(ad);
-                    loadedAd = ad;
-                    Log.d(TAG, "Ad loaded");
+                public void onLoaded(SAAd superAwesomeAd) {
+                    if (listener != null) listener.onAdLoaded(superAwesomeAd);
+                    loadedAd = superAwesomeAd;
+                    Log.d(TAG, "SAAd loaded");
                     try {
-                        if (!ad.error) {
-                            if (ad.richMediaUrl != null) baseUrl = ad.richMediaUrl;
-                            setView(ad.getContent());
+                        if (!superAwesomeAd.error) {
+                            if (superAwesomeAd.url != null) baseUrl = superAwesomeAd.url;
+                            setView(superAwesomeAd.getContent());
                         } else {
-                            if (listener != null) listener.onAdError(ad.error_message);
-                            Log.d(TAG, "Error: " + ad.error_message);
+                            if (listener != null) listener.onAdError(superAwesomeAd.error_message);
+                            Log.d(TAG, "Error: " + superAwesomeAd.error_message);
                         }
                     } catch (Exception e) {
                         if (listener != null) listener.onAdError(e.getMessage());
@@ -205,4 +210,7 @@ public abstract class PlacementView extends FrameLayout implements MRAIDNativeFe
 
     }
 
+    public abstract void paused();
+
+    public abstract void resumed();
 }
