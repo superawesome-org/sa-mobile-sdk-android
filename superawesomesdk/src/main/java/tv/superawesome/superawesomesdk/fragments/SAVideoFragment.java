@@ -50,7 +50,7 @@ public class SAVideoFragment extends SAFragment {
                     if (listener != null) listener.onAdError(message);
                 }
             });
-                ((SAVideoView)this.placementView).setVideoListener(new SAVideoViewListener() {
+            ((SAVideoView)this.placementView).setVideoListener(new SAVideoViewListener() {
                 @Override
                 public void onAdStart() {
                     Log.d(TAG, "SAVideoFragment onAdStart");

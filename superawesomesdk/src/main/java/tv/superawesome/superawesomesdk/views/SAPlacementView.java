@@ -1,10 +1,12 @@
 package tv.superawesome.superawesomesdk.views;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -55,15 +57,15 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     }
 
     protected void createPadlockImage() {
-//        padlockImage = new ImageButton(context);
-//        padlockImage.setBackgroundColor(Color.TRANSPARENT);
-//        padlockImage.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onPadlockClick();
-//            }
-//        });
-//        padlockImage.setImageResource(R.drawable.sa_padlock);
+        padlockImage = new ImageButton(context);
+        padlockImage.setBackgroundColor(Color.TRANSPARENT);
+        padlockImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPadlockClick(v);
+            }
+        });
+        padlockImage.setImageResource(R.drawable.sa_padlock);
     }
 
     public void setPlacementID(String placementID) {
@@ -121,6 +123,28 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     protected void onPadlockClick(View view) {
         /* What should happen when the padlock is tapped? */
         Log.d(TAG, "Padlock clicked!");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setView(R.layout.dialog_padlock);
+
+//        builder.setMessage("Message here... blah blah blah")
+//                .setTitle("Title");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
     }
 
     public void enableTestMode() {
