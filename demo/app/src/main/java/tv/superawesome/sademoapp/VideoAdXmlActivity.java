@@ -1,11 +1,11 @@
 package tv.superawesome.sademoapp;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import tv.superawesome.superawesomesdk.fragments.SAVideoFragment;
 import tv.superawesome.superawesomesdk.models.SAAd;
@@ -57,6 +57,8 @@ public class VideoAdXmlActivity extends ActionBarActivity {
             @Override
             public void onAdComplete() {
                 Log.d(TAG, "onAdComplete");
+                Toast toastMessage = Toast.makeText(getApplicationContext(), "Video Ad Completed", Toast.LENGTH_SHORT);
+                toastMessage.show();
             }
 
             @Override

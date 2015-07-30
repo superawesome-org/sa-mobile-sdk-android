@@ -2,11 +2,15 @@ package tv.superawesome.sademoapp;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import tv.superawesome.superawesomesdk.fragments.SABannerFragment;
 import tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment;
+import tv.superawesome.superawesomesdk.models.SAAd;
+import tv.superawesome.superawesomesdk.views.SAPlacementListener;
 
 
 public class InterstitialAdCodeActivity extends ActionBarActivity {
@@ -19,25 +23,19 @@ public class InterstitialAdCodeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_interstitial_ad_code);
         setResult(RESULT_OK);
 
-//        if (interstitial == null) {
-//            interstitial = SAInterstitialFragment.newInstance("5692", true);
-//            interstitial.setListener(new SAPlacementListener() {
-//                @Override
-//                public void onAdLoaded(SAAd superAwesomeAd) {
-//                    Log.d("Main APP", "Loaded Ad");
-//                }
-//
-//                @Override
-//                public void onAdError(String message) {
-//                    Log.d("Main APP", message);
-//                }
-//            });
-//
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.ad_placeholder, interstitial);
-//            fragmentTransaction.commit();
-//        }
+        findViewById(R.id.stub_import).setVisibility(View.VISIBLE);
+        interstitial = (SAInterstitialFragment)getSupportFragmentManager().findFragmentById(R.id.sa_interstitial);
+        interstitial.setListener(new SAPlacementListener() {
+            @Override
+            public void onAdLoaded(SAAd superAwesomeAd) {
+                Log.d("Main APP", "TEST LOADED AD");
+            }
 
+            @Override
+            public void onAdError(String message) {
+                Log.d("Main APP", message);
+            }
+        });
     }
 
     public void showInterstitial(View view) {

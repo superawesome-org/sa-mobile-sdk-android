@@ -36,28 +36,6 @@ public class BannerAdCodeActivity extends ActionBarActivity {
             }
         });
 
-
-
-
-//        bannerFragment = SABannerFragment.newInstance("5687", true, true);
-//        bannerFragment.setListener(new SAPlacementListener() {
-//            @Override
-//            public void onAdLoaded(SAAd superAwesomeAd) {
-//                Log.d("Main APP", "Loaded Ad");
-//            }
-//
-//            @Override
-//            public void onAdError(String message) {
-//                Log.d("Main APP", message);
-//            }
-//        });
-//
-//
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(R.id.ad_placeholder, bannerFragment);
-//        fragmentTransaction.commit();
-
-
     }
 
     @Override

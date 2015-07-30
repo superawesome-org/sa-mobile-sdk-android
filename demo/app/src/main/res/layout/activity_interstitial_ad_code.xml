@@ -14,9 +14,15 @@
         android:layout_height="wrap_content"
         android:onClick="showInterstitial"/>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:id="@+id/ad_placeholder"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent" />
+    <ViewStub
+        android:id="@+id/stub_import"
+        android:inflatedId="@+id/sa_interstitial"
+
+        android:layout="@layout/stub_interstitial"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
 
 </RelativeLayout>
