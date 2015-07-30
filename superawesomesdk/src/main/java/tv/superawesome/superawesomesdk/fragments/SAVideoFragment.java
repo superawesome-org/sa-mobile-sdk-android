@@ -98,6 +98,7 @@ public class SAVideoFragment extends SAFragment {
 
                 @Override
                 public void onAdComplete() {
+                    Log.d(TAG, "AD COMPLETE TEST");
                     if (listener != null) listener.onAdComplete();
                     ((ViewGroup)placementView.getParent()).removeView(placementView);
                     placementView.setVisibility(View.GONE);
@@ -134,7 +135,8 @@ public class SAVideoFragment extends SAFragment {
             this.placementView = (SAVideoView)rootView.findViewById(R.id.ad_container);
             this.placementView.setPlacementID(this.placementID);
             this.placementView.setTestMode(this.testMode);
-            this.placementView.setListener(this.listener);
+
+            this.setListener(this.listener);
 
             if (this.showInstantly) {
                 this.placementView.loadAd();
@@ -143,6 +145,7 @@ public class SAVideoFragment extends SAFragment {
             if (this.playInstantly) {
                 ((SAVideoView)this.placementView).setPlayInstantly(true);
             }
+            this.placementView.bringToFront();
         } else {
             ((ViewGroup) this.rootView.getParent()).removeView(this.rootView);
         }

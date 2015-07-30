@@ -40,4 +40,5 @@
             </tv.superawesome.superawesomesdk.view.InterstitialView>
         ]]>
     </string>
+    <string name="title_activity_all_ads">AllAdsActivity</string>
 </resources>

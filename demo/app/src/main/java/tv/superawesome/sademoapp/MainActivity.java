@@ -30,7 +30,8 @@ public class MainActivity extends Activity {
                 "Interstitial - code",
                 "Interstitial - XML",
                 "Video ad - code",
-                "Video ad - XML"
+                "Video ad - XML",
+                "All ads in one activity"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.activity_listview, ads);
@@ -61,6 +62,9 @@ public class MainActivity extends Activity {
                         break;
                     case 5:
                         startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
+                        break;
+                    case 6:
+                        startActivity(new Intent(MainActivity.this, AllAdsActivity.class));
                         break;
                 }
 
