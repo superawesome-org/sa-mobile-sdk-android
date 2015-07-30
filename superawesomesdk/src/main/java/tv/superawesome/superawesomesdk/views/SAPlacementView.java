@@ -136,11 +136,6 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
                 // User clicked OK button
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-            }
-        });
 
         AlertDialog dialog = builder.create();
 
