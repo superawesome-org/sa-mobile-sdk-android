@@ -35,6 +35,7 @@ public class SAVideoView extends SAPlacementView {
     private boolean isReady;
     /* Set when the user calls display(); the interstitial is shown when both 'isReady' and 'display' are true. */
     private boolean display;
+    private boolean playInstantly;
 
 
     protected VideoPlayerController mVideoPlayerController;
@@ -54,6 +55,10 @@ public class SAVideoView extends SAPlacementView {
         }
     }
 
+    public void setPlayInstantly(boolean playInstantly) {
+        this.playInstantly = playInstantly;
+    }
+
     public void setVideoListener(SAVideoViewListener vl) {
         this.videoListener = vl;
     }
@@ -64,7 +69,7 @@ public class SAVideoView extends SAPlacementView {
 
         rootView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.video_ad_view, null);
         mVideoPlayer = (VideoPlayer) rootView.findViewById(R.id.videoPlayer);
-        ImageButton playButton = (ImageButton) rootView.findViewById(R.id.playButton);
+        playButton = (ImageButton) rootView.findViewById(R.id.playButton);
         final ProgressBar spinner = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         mVideoPlayerController = new VideoPlayerController(context, mVideoPlayer, rootView, content);
@@ -129,6 +134,13 @@ public class SAVideoView extends SAPlacementView {
                 if (listener != null) videoListener.onAdError(message);
             }
         });
+
+        if (this.playInstantly) {
+            mVideoPlayerController.play();
+            spinner.setVisibility(View.VISIBLE);
+        } else {
+            playButton.setVisibility(View.VISIBLE);
+        }
 
         // When Play is clicked, request ads and hide the button.
         playButton.setOnClickListener(new View.OnClickListener() {

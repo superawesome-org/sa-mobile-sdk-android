@@ -9,13 +9,13 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="tv.superawesome.sademoapp.BannerAdXmlActivity">
 
-    <fragment
-        android:name="tv.superawesome.superawesomesdk.fragments.SAVideoFragment"
-        android:id="@+id/sa_video_ad"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        custom:placementID="5740"
-        custom:testMode="true"
-        custom:showInstantly="true" />
+    <fragment android:name="tv.superawesome.superawesomesdk.fragments.SAVideoFragment"
+            android:id="@+id/sa_video_ad"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            custom:placementID="5740"
+            custom:testMode="true"
+            custom:showInstantly="true"
+            custom:playInstantly="true" />
 
 </RelativeLayout>

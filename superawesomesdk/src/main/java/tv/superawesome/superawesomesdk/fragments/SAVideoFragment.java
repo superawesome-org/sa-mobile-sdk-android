@@ -4,7 +4,10 @@ package tv.superawesome.superawesomesdk.fragments;
  * Created by connor.leigh-smith on 22/07/15.
  */
 
+import android.app.Activity;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +29,19 @@ import tv.superawesome.superawesomesdk.views.video.SAVideoViewListener;
 public class SAVideoFragment extends SAFragment {
 
     protected SAVideoViewListener listener;
+    protected boolean playInstantly;
+
+    /**
+     * Parse attributes during inflation from a view hierarchy into the
+     * arguments we handle.
+     */
+    @Override
+    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
+        super.onInflate(activity, attrs, savedInstanceState);
+        TypedArray a = activity.obtainStyledAttributes(attrs, R.styleable.SAVideoFragment);
+        this.playInstantly = a.getBoolean(R.styleable.SAVideoFragment_playInstantly, true);
+        a.recycle();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +55,6 @@ public class SAVideoFragment extends SAFragment {
 
         if (this.placementView != null) {
             this.placementView.setListener(new SAPlacementListener() {
-
                 @Override
                 public void onAdLoaded(SAAd superAwesomeAd) {
                     if (listener != null) listener.onAdLoaded(superAwesomeAd);
@@ -53,13 +68,11 @@ public class SAVideoFragment extends SAFragment {
             ((SAVideoView)this.placementView).setVideoListener(new SAVideoViewListener() {
                 @Override
                 public void onAdStart() {
-                    Log.d(TAG, "SAVideoFragment onAdStart");
                     if (listener != null) listener.onAdStart();
                 }
 
                 @Override
                 public void onAdPause() {
-                    Log.d(TAG, "SAVideoFragment onAdPause");
                     if (listener != null) listener.onAdPause();
                 }
 
@@ -70,7 +83,6 @@ public class SAVideoFragment extends SAFragment {
 
                 @Override
                 public void onAdFirstQuartile() {
-                    Log.d(TAG, "SAVideoFragment onAdFQ");
                     if (listener != null) listener.onAdFirstQuartile();
                 }
 
@@ -86,7 +98,6 @@ public class SAVideoFragment extends SAFragment {
 
                 @Override
                 public void onAdComplete() {
-                    Log.d(TAG, "COMPLETE TEST");
                     if (listener != null) listener.onAdComplete();
                     ((ViewGroup)placementView.getParent()).removeView(placementView);
                     placementView.setVisibility(View.GONE);
@@ -116,7 +127,7 @@ public class SAVideoFragment extends SAFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView called.");
+//        Log.d(TAG, "onCreateView called.");
         if (this.rootView == null) {
             // Inflate the layout for this fragment
             this.rootView = inflater.inflate(fragmentId, container, false);
@@ -129,6 +140,9 @@ public class SAVideoFragment extends SAFragment {
                 this.placementView.loadAd();
                 ((SAVideoView)this.placementView).show();
             }
+            if (this.playInstantly) {
+                ((SAVideoView)this.placementView).setPlayInstantly(true);
+            }
         } else {
             ((ViewGroup) this.rootView.getParent()).removeView(this.rootView);
         }
@@ -138,7 +152,7 @@ public class SAVideoFragment extends SAFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause called.");
+//        Log.d(TAG, "onPause called.");
         if (placementView != null) {
             placementView.paused();
         }
@@ -147,7 +161,7 @@ public class SAVideoFragment extends SAFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume called.");
+//        Log.d(TAG, "onResume called.");
         if (placementView != null) {
             placementView.resumed();
         }
