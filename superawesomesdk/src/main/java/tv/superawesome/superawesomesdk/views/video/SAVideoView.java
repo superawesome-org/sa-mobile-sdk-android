@@ -162,7 +162,7 @@ public class SAVideoView extends SAPlacementView {
 
     private void showPadlock() {
         Log.d(TAG, "Showing padlock");
-//        If ad isn't loaded for some reason, or ad is a fallback ad, do not show the padlock.
+        //If ad isn't loaded for some reason, or ad is a fallback ad, do not show the padlock.
         if (this.loadedAd == null || this.loadedAd.isFallback) {
             return;
         }
@@ -172,14 +172,9 @@ public class SAVideoView extends SAPlacementView {
         int x = getMeasuredWidth() - width;
         int y = getMeasuredHeight() - height;
 
-
-//        RelativeLayout.LayoutParams padlockParams = new RelativeLayout.LayoutParams(width, height);
-
         this.padlockImage = (ImageButton)rootView.findViewById(R.id.sa_padlock);
 
-//        padlockImage.setLayoutParams(padlockParams);
         padlockImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//        padlockImage.setPadding(0, 0, 0, 0);
         padlockImage.setVisibility(View.VISIBLE);
 
         padlockImage.setOnClickListener(new OnClickListener() {

@@ -1,15 +1,12 @@
 package tv.superawesome.sademoapp;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment;
-import tv.superawesome.superawesomesdk.views.SAInterstitialView;
-
 
 public class InterstitialAdXmlActivity extends AppCompatActivity {
 

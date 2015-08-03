@@ -16,8 +16,6 @@ import tv.superawesome.superawesomesdk.views.SABannerView;
 
 public class MainActivity extends Activity {
 
-    SABannerView bv;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +31,7 @@ public class MainActivity extends Activity {
                 "Video ad - XML",
                 "All ads in one activity"
         };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.activity_listview, ads);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, ads);
 
         ListView list = (ListView) findViewById(R.id.list);
         list.setAdapter(adapter);
@@ -74,25 +71,6 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
             };
         });
-
-//        this.bv = SuperAwesome.createBannerView(this, "5662");
-//        this.bv = SuperAwesome.createBannerView(this, "5222");
-//        this.bv = SuperAwesome.createBannerView(this, "5687");
-//        this.bv.enableTestMode();
-//        this.bv.setListener(new SAPlacementListener() {
-//            @Override
-//            public void onAdLoaded(SAAd ad) {
-//                Log.d("Main APP", "Loaded ad");
-//            }
-//
-//            @Override
-//            public void onAdError(String message) {
-//                Log.d("Main APP", message);
-//            }
-//        });
-//        this.bv.loadAd();
-//        RelativeLayout rootView = (RelativeLayout) findViewById(R.id.relative_layout);
-//        rootView.addView(this.bv);
     }
 
 
