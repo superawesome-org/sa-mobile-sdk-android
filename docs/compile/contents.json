@@ -1,0 +1,86 @@
+{
+    "name": "Android SDK",
+    "text": "<p>The SuperAwesome Mobile SDK (Software Development Kit) lets you to easily add COPPA compliant advertisements and other platform features, like user authentication and registration, to your apps. We try to make integration as easy as possible, so we provide all the necessary tools such as this guide, API documentation, screencasts and demo apps.</p>\n<p>This project is hosted on GitHub: <a href=\"https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android\">https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android</a></p>\n",
+    "sections": [
+        {
+            "name": "Getting Started",
+            "sections": [
+                {
+                    "name": "Registering Your App on the Dashboard",
+                    "text": "<p>If you haven&#39;t already registered your app on the SuperAwesome Dashboard, you can do that by going to <a href=\"http://dashboard.superawesome.tv\">http://dashboard.superawesome.tv</a> and creating a new app. Before we approve your user, you can start testing with our <a href=\"/docs/androidsdk/Demo%20Placements\">demo placements</a>.</p>\n<p><img src=\"img/dashboard.png\" alt=\"\" title=\"Registering an app on the dashboard\"></p>\n<p>Once your app is created, or if you already had an app registered, the app ID is shown in the dashboard page. Furthermore, if you are planning to use the advertising features of the SDK, you can customise the ad placements on this site.</p>\n"
+                },
+                {
+                    "name": "Adding the Library to Your Project",
+                    "text": "<p>First, you have to add the library to your workspace. To do this, download the library from <a href=\"https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android\">here</a> then go to Eclipse&#39;s &#39;File&#39; &gt; &#39;Import&#39; menu, expand the &#39;Android&#39; section and choose &#39;Existing Android Code into Workspace&#39;.</p>\n<p>After importing the library to your workspace, your application needs to be linked to the SDK library project. View the properties for the project, and navigate to the &#39;Android&#39; tab. In the lower part of the dialog, click &#39;Add&#39; and choose the &#39;SAMobileSDK&#39; project from the workspace.</p>\n<p>Next, open the AndroidManifest.xml file in the root of the project. Add a &#39;Uses Permission&#39; item named android.permission.INTERNET and android.permission.ACCESS_NETWORK_STATE.</p>\n<p><img src=\"img/eclipse_permissions.png\" alt=\"\" title=\"Setting the permissions in Eclipse\"></p>\n<p>Finally, copy the superawesome directory from the library&#39;s assets folder to your project&#39;s assets folder.</p>\n<p>After you&#39;ve set up the library the following lines should be present in your <code>AndroidManifest.xml</code> file:</p>\n<pre><code>&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot;/&gt;\n&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;\n</code></pre>"
+                },
+                {
+                    "name": "Configuring the Library",
+                    "text": "<p>To configure the SuperAwesome library you have to set your application ID in your project. Open the <code>AndroidManifest.xml</code> file in the root of the project and add a &#39;Meta Data&#39; item called <code>tv.superawesome.sdk.ApplicationId</code>, with a value of your application ID that is shown on the dashboard site.</p>\n<p><img src=\"img/eclipse_meta.png\" alt=\"\" title=\"Setting the app ID in Eclipse\"></p>\n<p>If you haven&#39;t got an app ID go to <a href=\"http://dashboard.superawesome.tv\">http://dashboard.superawesome.tv</a> and register you app.</p>\n<p>After you&#39;ve configured the library the following line should be present in your <code>AndroidManifest.xml</code> file (with your own app ID):</p>\n<pre><code>&lt;meta-data android:value=&quot;__APP_ID__&quot; android:name=&quot;tv.superawesome.sdk.ApplicationId&quot;/&gt;\n</code></pre>"
+                }
+            ]
+        },
+        {
+            "name": "Banner Ads",
+            "sections": [
+                {
+                    "name": "Banner Ads As Resources",
+                    "text": "<p>Declare the BannerView in the layout XML:</p>\n<pre><code>&lt;tv.superawesome.mobile.view.BannerView\nandroid:id=&quot;@+id/banner&quot;\nandroid:layout_width=&quot;320dip&quot;\nandroid:layout_height=&quot;50dip&quot;\nandroid:layout_alignParentBottom=&quot;true&quot;\nandroid:layout_centerHorizontal=&quot;true&quot;\ncustom:placementID=&quot;__PLACEMENT_ID__&quot;&gt;\n&lt;/tv.superawesome.mobile.view.BannerView&gt;\n</code></pre><p>Do not forget to replace <code>__PLACEMENT_ID__</code> with you own.</p>\n<p>The &#39;custom&#39; namespace is defined in XML by the following attribute:</p>\n<pre><code>xmlns:custom=&quot;http://schemas.android.com/apk/res-auto&quot;\n</code></pre><p>If you want to access the banner view in the Activity, you can do so this way:</p>\n<pre><code>BannerView bannerView = (BannerView) findViewById(R.id.banner);\n</code></pre><p>The following banner sizes are supported:</p>\n<ul>\n<li>320x50</li>\n<li>300x50</li>\n<li>300x250</li>\n<li>728x90 (tablet)</li>\n</ul>\n"
+                },
+                {
+                    "name": "Banner Ads With Code",
+                    "text": "<p>If you prefer using code in order to add banners to your app, you can use the following code snippet to do so:</p>\n<pre><code>private BannerView bannerView;\n\npublic void createBanner(View view) {\n    bannerView = new BannerView(this, null);\n    bannerView.setPlacementID(&quot;__PLACEMENT_ID__&quot;);\n    linearlayout.addView(bannerView2);\n}\n</code></pre><p>Do not forget to replace the <code>__YOUR_PLACEMENT_ID__</code> string with your placement ID.</p>\n"
+                },
+                {
+                    "name": "Advanced Configuration",
+                    "text": "<p>If you want to be notified of various events in the banner lifecycle, you can set its listener to an object instance that implements the BannerViewListener interface.</p>\n<p>The following methods are available in the interface:</p>\n<table>\n<thead>\n<tr>\n<th>Method</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>onAdLeave()</td>\n<td>This method is called when the current application is left because the user clicked a banner which will be opened in a the external browser.</td>\n</tr>\n<tr>\n<td>onAdError()</td>\n<td>This method is called when an ad download failed. This could happen because of networking reasons or other server communication reasons.</td>\n</tr>\n</tbody>\n</table>\n<p>Example implementation:</p>\n<pre><code>bannerView.setListener(new BannerViewListener() {\n    @Override\n    public void onAdLeave() {\n        Log.d(TAG, &quot;Banner clicked&quot;);\n    }\n\n    @Override\n    public void onAdError() {\n        Log.d(TAG, &quot;Banner error&quot;);\n    }\n});\n</code></pre>"
+                }
+            ]
+        },
+        {
+            "name": "Interstitial Ads",
+            "sections": [
+                {
+                    "name": "Interstitial Ads As Resources",
+                    "text": "<p>Declare the InterstitialView in the layout XML:</p>\n<pre><code>&lt;tv.superawesome.mobile.view.InterstitialView\nandroid:id=&quot;@+id/interstitial&quot;\nandroid:layout_width=&quot;fill_parent&quot;\nandroid:layout_height=&quot;fill_parent&quot;\ncustom:placementID=&quot;__PLACEMENT_ID__&quot;&gt;\n&lt;/tv.superawesome.mobile.view.InterstitialView&gt;\n</code></pre><p>Do not forget to replace <code>__PLACEMENT_ID__</code> with you own.</p>\n<p>The &#39;custom&#39; namespace is defined in XML by the following attribute:</p>\n<pre><code>xmlns:custom=&quot;http://schemas.android.com/apk/res-auto&quot;\n</code></pre><p>To present the interstitial ad you have to call the <code>present</code> method:</p>\n<pre><code>InterstitialView iv = (InterstitialView) findViewById(R.id.interstitial);\niv.present();\n</code></pre>"
+                },
+                {
+                    "name": "Interstitial Ads With Code",
+                    "text": "<p>If you prefer using code in order to add banners to your app, you can use the following code snippet to do so:</p>\n<pre><code>private InterstitialView interstitialView;\n\npublic void createInterstitial(View view) {\n    interstitialView = new InterstitialView(this, null);\n    interstitialView.setPlacementID(&quot;__PLACEMENT_ID__&quot;);\n    layout.addView(interstitialView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));\n    interstitialView.present();\n}\n</code></pre><p>Do not forget to replace the <code>__YOUR_PLACEMENT_ID__</code> string with your placement ID.</p>\n"
+                },
+                {
+                    "name": "Advanced Configuration",
+                    "text": "<p>If you want to be notified of various events in the interstitial lifecycle, you can set its listener to an object instance that implements the InterstitialViewListener interface.</p>\n<p>The following methods are available in the interface:</p>\n<table>\n<thead>\n<tr>\n<th>Method</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>onLoaded()</td>\n<td>This method is called when an ad was downloaded successfully.</td>\n</tr>\n<tr>\n<td>onAdLeave()</td>\n<td>This method is called when the current application is left because the user clicked a banner which will be opened in a the external browser.</td>\n</tr>\n<tr>\n<td>onAdDismiss()</td>\n<td>This method is called when the expires and the interstitial view is dismissed.</td>\n</tr>\n<tr>\n<td>onAdError()</td>\n<td>This method is called when an ad download failed. This could happen because of networking reasons or other server communication reasons.</td>\n</tr>\n</tbody>\n</table>\n<p>Example implementation:</p>\n<pre><code>interstitialView.setListener(new InterstitialViewListener() {\n    @Override\n    public void onLoaded() {\n        Log.d(TAG, &quot;Interstitial loaded&quot;);\n    }\n\n    @Override\n    public void onAdLeave() {\n        Log.d(TAG, &quot;Interstitial ad clicked&quot;);\n    }\n\n    @Override\n    public void onAdError() {\n        Log.d(TAG, &quot;Interstitial error&quot;);\n    }\n\n    @Override\n    public void onAdDismiss() {\n        Log.d(TAG, &quot;Interstitial dismissed&quot;);\n    }\n});\n</code></pre>"
+                }
+            ]
+        },
+        {
+            "name": "Video Ads",
+            "sections": [
+                {
+                    "name": "How to Use Video Ads",
+                    "text": "<p>The VideoAd class requires Google Play Services. You can find more information about setting up Google Play Services <a href=\"http://developer.android.com/google/play-services/setup.html\">here</a>.</p>\n<p>In order to use video ads in your app, first you have to add a preroll placement on the dashboard site. Then, add a VideoView instance to your view.</p>\n<p>Once the ad has been loaded you can start the playback by calling the <code>play</code> method on the VideoView. By implementing the VideoViewListener interface your app can react to events that are emitted by the VideoView instance.</p>\n<pre><code>private VideoView videoView;\n\npublic void playVideoAd(View view) {\n    videoView = new VideoView(this, null);\n    content.addView(videoView);\n    videoView.setListener(new VideoViewListener() {\n        @Override\n        public void onPlaybackCompleted() {\n            Log.v(TAG, &quot;Video ad playback has completed&quot;);\n        }\n\n        @Override\n        public void onLoaded() {\n            videoView.play();\n        }\n\n        @Override\n         public void onAdError(){\n             Log.v(TAG, &quot;Video ad error&quot;);\n             layout.removeView(videoView);\n         }\n    });\n}\n</code></pre>"
+                },
+                {
+                    "name": "Fullscreen Video Ads",
+                    "text": "<p>If you just want to display a fullscreen video ad and not to worry about the listener interface, this is the easiest way to show a video ad.</p>\n<p>Add the following line to you <code>AndroidManifest.xml</code> file so you can access the VideoAdActivity class from your code:</p>\n<pre><code>&lt;activity android:name=&quot;tv.superawesome.mobile.view.VideoAdActivity&quot; android:configChanges=&quot;orientation|screenSize&quot;&gt;&lt;/activity&gt;\n</code></pre><p>Use the following code to display the fullscreen video ad (&#39;this&#39; refers to the current activity):</p>\n<pre><code>Intent intent = new Intent(this, VideoAdActivity.class);\nstartActivity(intent);\n</code></pre><p>If you want to hide the loading dialog, you can pass the <code>disable_loading_dialog</code> flag to the activity:</p>\n<pre><code>Intent intent = new Intent(this, VideoAdActivity.class);\nBundle params = new Bundle();\nparams.putBoolean(&quot;disable_loading_dialog&quot;, true);\nintent.putExtras(params);\nstartActivity(intent);\n</code></pre>"
+                }
+            ]
+        },
+        {
+            "name": "Parental Gate",
+            "text": "<p>Parental gates are used in apps targeted towards kids to prevent them from engaging in commerce or following links out of an app to websites, social networks, or other apps without the knowledge of their parent or guardian. A parental gate presents an adult level task which must be completed in order to continue.</p>\n<p>To enable the parental gate, use the following code in your project:</p>\n<pre><code>SuperAwesome.getInstance().setUseParentalgate(true);\n</code></pre><p><img src=\"img/parental_gate.png\" alt=\"\" title=\"Parental Gate on Android\"></p>\n"
+        },
+        {
+            "name": "Demo Placements",
+            "text": "<p>The following placements can be used for testing. These placements have a 100% fill rate.</p>\n<table>\n<thead>\n<tr>\n<th>App ID</th>\n<th>Placement ID</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>14</td>\n<td>5247930</td>\n<td>320x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513681</td>\n<td>300x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513680</td>\n<td>728x90 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513682</td>\n<td>300x250 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5247931</td>\n<td>320x480 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513683</td>\n<td>768x1024 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>314228</td>\n<td>video</td>\n</tr>\n</tbody>\n</table>\n"
+        },
+        {
+            "name": "Technical Support",
+            "text": "<p>If you have any questions or you need technical support, please, do not hesitate to contact us at <a href=\"mailto:devsupport@superawesome.tv\">devsupport@superawesome.tv</a>. We will make every attempt to answer your inquiry as quickly as possible.</p>\n"
+        },
+        {
+            "name": "License",
+            "text": "<p>See the LICENSE.txt file for more information.</p>\n"
+        }
+    ]
+}

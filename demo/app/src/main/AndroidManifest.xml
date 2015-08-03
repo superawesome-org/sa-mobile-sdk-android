@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tv.superawesome.sademoapp" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".BannerAdCodeActivity"
+            android:label="@string/title_activity_banner_ad_code"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".BannerAdXmlActivity"
+            android:label="@string/title_activity_banner_ad_xml"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".InterstitialAdCodeActivity"
+            android:label="@string/title_activity_interstitial_ad_code"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".InterstitialAdXmlActivity"
+            android:label="@string/title_activity_interstitial_ad_xml"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".VideoAdCodeActivity"
+            android:label="@string/title_activity_video_ad_code"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".VideoAdXmlActivity"
+            android:label="@string/title_activity_video_ad_xml"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AllAdsActivity"
+            android:label="@string/title_activity_all_ads"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tv.superawesome.sademoapp.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

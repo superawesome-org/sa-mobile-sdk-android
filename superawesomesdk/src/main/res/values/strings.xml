@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SuperAwesome SDK</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="about_sa_ads">About SA Ads</string>
+    <string name="about_sa_ads_content">This is a SuperAwesome kid-safe ad.\nClick <a href="https://superawesome.tv/">here</a> for more information.</string>
+
+    <string name="rate_ad">Rate This Ad</string>
+    <string name="rate_ad_content">Rate this ad:</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>

@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.1'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.google.android.gms:play-services-ads:7.0.0'
+    compile files('libs/google-ima-android-v3-3.b11.4.jar')
+}

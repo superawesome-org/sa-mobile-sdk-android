@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="tv.superawesome.sademoapp.AllAdsActivity">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:text="Open Interstitial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showInterstitial"/>
+    </FrameLayout>
+
+    <fragment
+        android:name="tv.superawesome.superawesomesdk.fragments.SABannerFragment"
+        android:id="@+id/sa_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        custom:placementID="5687"
+        custom:testMode="true"
+        custom:showInstantly="true" />
+
+    <fragment
+        android:name="tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment"
+        android:id="@+id/sa_interstitial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:placementID="5692"
+        custom:testMode="true"
+        custom:showInstantly="false" />
+
+    <fragment android:name="tv.superawesome.superawesomesdk.fragments.SAVideoFragment"
+        android:id="@+id/sa_video_ad"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        custom:placementID="5740"
+        custom:testMode="true"
+        custom:showInstantly="true"
+        custom:playInstantly="true" />
+
+</RelativeLayout>
