@@ -14,6 +14,8 @@ import com.google.ads.interactivemedia.v3.api.AdsManagerLoadedEvent;
 import com.google.ads.interactivemedia.v3.api.AdsRequest;
 import com.google.ads.interactivemedia.v3.api.ImaSdkFactory;
 
+import tv.superawesome.superawesomesdk.models.SAAd;
+
 /**
  * Ads logic for handling the IMA SDK integration code and events.
  */
@@ -57,7 +59,7 @@ public class VideoPlayerController implements AdErrorEvent.AdErrorListener,
     /**
      * Request video ads from the given VAST ad tag.
      */
-    private void requestAds() {
+    private void requestAds(String tag) {
         mAdDisplayContainer = mSdkFactory.createAdDisplayContainer();
         mAdDisplayContainer.setPlayer(mVideoPlayerWithAdPlayback.getVideoAdPlayer());
         mAdDisplayContainer.setAdContainer(mVideoPlayerWithAdPlayback.getAdUiContainer());
@@ -68,7 +70,8 @@ public class VideoPlayerController implements AdErrorEvent.AdErrorListener,
         //Swap these out to use the vast content instead of the hardcoded URL below.
 //        request.setAdTagUrl("http://pubads.g.doubleclick.net/gampad/ads?sz=640x360&iu=/6062/iab_vast_samples/skippable&ciu_szs=300x250,728x90&impl=s&gdfp_req=1&env=vp&output=xml_vast3&unviewed_position_start=1&url=[referrer_url]&correlator=[timestamp]");
 //        request.setAdTagUrl("http://ad3.liverail.com/?LR_PUBLISHER_ID=1331&LR_CAMPAIGN_ID=229&LR_SCHEMA=vast2");
-        request.setAdTagUrl("https://beta.ads.superawesome.tv/v2/video/vast/5740/-1/-1/");
+//        request.setAdTagUrl("https://beta.ads.superawesome.tv/v2/video/vast/5740/-1/-1/");
+        request.setAdTagUrl(tag);
 
 
         request.setAdDisplayContainer(mAdDisplayContainer);
@@ -165,8 +168,8 @@ public class VideoPlayerController implements AdErrorEvent.AdErrorListener,
     /**
      * Starts ad playback.
      */
-    public void play() {
-        requestAds();
+    public void play(String tag) {
+        requestAds(tag);
     }
 
     /**

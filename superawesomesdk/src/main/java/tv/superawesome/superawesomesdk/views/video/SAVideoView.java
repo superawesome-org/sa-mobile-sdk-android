@@ -136,7 +136,7 @@ public class SAVideoView extends SAPlacementView {
         });
 
         if (this.playInstantly) {
-            mVideoPlayerController.play();
+            mVideoPlayerController.play(loadedAd.url);
             spinner.setVisibility(View.VISIBLE);
         } else {
             playButton.setVisibility(View.VISIBLE);
@@ -146,7 +146,7 @@ public class SAVideoView extends SAPlacementView {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mVideoPlayerController.play();
+                mVideoPlayerController.play(loadedAd.url);
                 view.setVisibility(View.GONE);
                 spinner.setVisibility(View.VISIBLE);
             }
