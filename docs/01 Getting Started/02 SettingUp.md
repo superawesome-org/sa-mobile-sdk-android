@@ -1,3 +1,9 @@
+There are two ways of including the SDK in your Android project using Android Studio.
+
+
+TODO: FINISH
+
+
 First, you have to add the library to your workspace. To do this, download the library from [here](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android) then go to Eclipse's 'File' > 'Import' menu, expand the 'Android' section and choose 'Existing Android Code into Workspace'.
 
 After importing the library to your workspace, your application needs to be linked to the SDK library project. View the properties for the project, and navigate to the 'Android' tab. In the lower part of the dialog, click 'Add' and choose the 'SAMobileSDK' project from the workspace.
