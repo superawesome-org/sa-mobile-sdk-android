@@ -37,7 +37,6 @@ public class SAVideoActivity extends FragmentActivity {
         Intent intent = this.getIntent();
         this.placementId = intent.getStringExtra("placementId");
 
-
         this.videoAd = (SAVideoFragment)getSupportFragmentManager().findFragmentById(R.id.sa_video_ad);
         this.videoAd.setListener(new SAVideoViewListener() {
             @Override
