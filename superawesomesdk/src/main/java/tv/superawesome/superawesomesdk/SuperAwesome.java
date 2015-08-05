@@ -7,7 +7,7 @@ public class SuperAwesome {
 	private static final String TAG = "SuperAwesome SDK";
 	private static final String VERSION = "2.0";
 
-	protected static final String baseUrl = "https://staging.beta.ads.superawesome.tv/v2";
+	protected static final String baseUrl = "https://beta.ads.superawesome.tv/v2";
 
 	public static String getVersion(){
 		return VERSION;
