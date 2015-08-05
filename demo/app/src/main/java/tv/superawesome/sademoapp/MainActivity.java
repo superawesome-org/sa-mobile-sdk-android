@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import tv.superawesome.superawesomesdk.SuperAwesome;
+import tv.superawesome.superawesomesdk.activities.SAVideoActivity;
 import tv.superawesome.superawesomesdk.views.SABannerView;
 
 
@@ -29,6 +30,7 @@ public class MainActivity extends Activity {
                 "Interstitial - XML",
                 "Video ad - code",
                 "Video ad - XML",
+                "Video ad - fullscreen activity",
                 "All ads in one activity"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, ads);
@@ -61,6 +63,9 @@ public class MainActivity extends Activity {
                         startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
                         break;
                     case 6:
+                        SAVideoActivity.start(MainActivity.this, "1445");
+                        break;
+                    case 7:
                         startActivity(new Intent(MainActivity.this, AllAdsActivity.class));
                         break;
                 }
