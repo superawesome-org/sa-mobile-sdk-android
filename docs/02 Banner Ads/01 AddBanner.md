@@ -1,14 +1,16 @@
-Declare the BannerView in the layout XML:
+Declare the banner fragment in the layout XML:
 	
 ```
-<tv.superawesome.mobile.view.BannerView
-android:id="@+id/banner"
-android:layout_width="320dip"
-android:layout_height="50dip"
-android:layout_alignParentBottom="true"
-android:layout_centerHorizontal="true"
-custom:placementID="__PLACEMENT_ID__">
-</tv.superawesome.mobile.view.BannerView>
+<fragment
+	android:name="tv.superawesome.superawesomesdk.fragments.SABannerFragment"
+	android:id="@+id/sa_banner"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	custom:placementID="__PLACEMENT_ID__"
+	custom:testMode="true"
+	custom:showInstantly="true" />
 ```
 
 Do not forget to replace `__PLACEMENT_ID__` with you own.
@@ -22,11 +24,7 @@ xmlns:custom="http://schemas.android.com/apk/res-auto"
 If you want to access the banner view in the Activity, you can do so this way:
 	
 ```
-BannerView bannerView = (BannerView) findViewById(R.id.banner);
+SABannerFragment banner = (SABannerFragment)getSupportFragmentManager().findFragmentById(R.id.sa_banner);
 ```
 
-The following banner sizes are supported:
- - 320x50
- - 300x50
- - 300x250
- - 728x90 (tablet)
+The dimensions of the banner will be the same as your selected size when you created the placement in the Dashboard.

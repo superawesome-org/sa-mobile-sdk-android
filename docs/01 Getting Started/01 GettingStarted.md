@@ -2,4 +2,5 @@ If you haven't already registered your app on the SuperAwesome Dashboard, you ca
 
 ![](img/dashboard.png "Registering an app on the dashboard")
 
-Once your app is created, or if you already had an app registered, the app ID is shown in the dashboard page (as highlighted above). You can customise your ad placements on this site and add features such as fallback placements.
+Once your app is registered, you can create placements for it and use the documentation provided below to integrate these placements into your website.
+You can customise your ad placements on this site and add features such as fallback placements.

@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import tv.superawesome.superawesomesdk.fragments.SABannerFragment;
+import tv.superawesome.superawesomesdk.models.SAAd;
+import tv.superawesome.superawesomesdk.views.SAPlacementListener;
+
 
 public class BannerAdXmlActivity extends ActionBarActivity {
 
-    private Fragment banner;
+    private SABannerFragment banner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +21,18 @@ public class BannerAdXmlActivity extends ActionBarActivity {
         setContentView(R.layout.activity_banner_ad_xml);
         setResult(RESULT_OK);
 
-        this.banner = getSupportFragmentManager().findFragmentById(R.id.sa_banner);
+        this.banner = (SABannerFragment)getSupportFragmentManager().findFragmentById(R.id.sa_banner);
+        banner.setListener(new SAPlacementListener() {
+            @Override
+            public void onAdLoaded(SAAd superAwesomeAd) {
+
+            }
+
+            @Override
+            public void onAdError(String message) {
+
+            }
+        });
     }
 
     @Override
