@@ -9,11 +9,11 @@ Declare the banner fragment in the layout XML:
 	android:layout_alignParentBottom="true"
 	android:layout_centerHorizontal="true"
 	custom:placementID="__PLACEMENT_ID__"
-	custom:testMode="true"
-	custom:showInstantly="true" />
+	custom:testMode="true" />
 ```
 
 Do not forget to replace `__PLACEMENT_ID__` with you own.
+'testMode' will make your placements show demo ads for as long as the parameter is set to 'true'; this is recommended for while you are testing.
 
 The 'custom' namespace is defined in XML by the following attribute:
 

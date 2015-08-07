@@ -23,10 +23,6 @@
                     "text": "02 Banner Ads/01 AddBanner.md"
                 },
                 {
-                    "name": "Banner Ads With Code",
-                    "text": "02 Banner Ads/02 AddBannerCode.md"
-                },
-                {
                     "name": "Advanced Configuration",
                     "text": "02 Banner Ads/03 BannerAdvanced.md"
                 }
@@ -38,10 +34,6 @@
                 {
                     "name": "Interstitial Ads As Resources",
                     "text": "03 Interstitial Ads/01 Interstitial.md"
-                },
-                {
-                    "name": "Interstitial Ads With Code",
-                    "text": "03 Interstitial Ads/02 InterstitialCode.md"
                 },
                 {
                     "name": "Advanced Configuration",

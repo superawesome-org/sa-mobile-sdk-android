@@ -13,12 +13,9 @@ Example implementation:
 banner.setListener(new SAPlacementListener() {
     @Override
     public void onAdLoaded(SAAd superAwesomeAd) {
-
     }
-
     @Override
     public void onAdError(String message) {
-
     }
 });
 ```
