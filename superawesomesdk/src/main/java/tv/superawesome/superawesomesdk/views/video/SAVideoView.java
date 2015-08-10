@@ -4,10 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -16,7 +14,6 @@ import android.widget.RelativeLayout;
 import tv.superawesome.superawesomesdk.AdManager;
 import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.models.SAAd;
-import tv.superawesome.superawesomesdk.views.SAPlacementListener;
 import tv.superawesome.superawesomesdk.views.SAPlacementView;
 
 /**

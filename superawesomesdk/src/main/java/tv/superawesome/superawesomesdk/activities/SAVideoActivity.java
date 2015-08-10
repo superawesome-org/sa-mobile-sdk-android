@@ -1,16 +1,10 @@
 package tv.superawesome.superawesomesdk.activities;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.fragments.SAVideoFragment;

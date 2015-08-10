@@ -1,7 +1,5 @@
 package tv.superawesome.superawesomesdk.views;
 
-import tv.superawesome.superawesomesdk.AdManager;
-
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -10,6 +8,8 @@ import android.view.View;
 import org.nexage.sourcekit.mraid.MRAIDInterstitial;
 import org.nexage.sourcekit.mraid.MRAIDInterstitialListener;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
+
+import tv.superawesome.superawesomesdk.AdManager;
 
 
 public class SAInterstitialView extends SAPlacementView implements MRAIDInterstitialListener {

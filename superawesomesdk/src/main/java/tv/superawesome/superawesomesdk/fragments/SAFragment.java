@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.View;
 
 import tv.superawesome.superawesomesdk.R;
-import tv.superawesome.superawesomesdk.views.SAPlacementView;
 import tv.superawesome.superawesomesdk.views.SAPlacementListener;
+import tv.superawesome.superawesomesdk.views.SAPlacementView;
 
 /**
  * Created by connor.leigh-smith on 14/07/15.

@@ -1,7 +1,5 @@
 package tv.superawesome.superawesomesdk.models;
 
-import android.media.Image;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

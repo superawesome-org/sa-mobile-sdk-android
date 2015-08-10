@@ -8,14 +8,10 @@ import android.app.Activity;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.models.SAAd;

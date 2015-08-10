@@ -21,10 +21,10 @@ import org.nexage.sourcekit.mraid.MRAIDNativeFeatureListener;
 import org.nexage.sourcekit.mraid.MRAIDView;
 
 import tv.superawesome.superawesomesdk.AdLoaderListener;
-import tv.superawesome.superawesomesdk.models.SAAd;
 import tv.superawesome.superawesomesdk.AdManager;
 import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
+import tv.superawesome.superawesomesdk.models.SAAd;
 
 
 public abstract class SAPlacementView extends FrameLayout implements MRAIDNativeFeatureListener {

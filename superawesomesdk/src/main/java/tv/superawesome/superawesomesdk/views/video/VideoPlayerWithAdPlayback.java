@@ -2,7 +2,6 @@
 
 package tv.superawesome.superawesomesdk.views.video;
 
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.google.ads.interactivemedia.v3.api.player.ContentProgressProvider;
