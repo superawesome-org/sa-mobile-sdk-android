@@ -124,7 +124,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
         /* What should happen when the padlock is tapped? */
         Log.d(TAG, "Padlock clicked!");
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
 
         builder.setView(R.layout.dialog_padlock);
 
