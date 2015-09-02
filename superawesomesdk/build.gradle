@@ -39,15 +39,16 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
-    compile ('com.google.android.gms:play-services-ads:7.5.0') {
+    compile('com.google.android.gms:play-services-ads:7.5.0') {
         exclude module: 'support-v4'
         exclude module: 'play-services-base'
         exclude module: 'play-services-analytics'
     }
-    compile ('com.google.android.gms:play-services-base:7.5.0') {
+    compile('com.google.android.gms:play-services-base:7.5.0') {
         exclude module: 'support-v4'
     }
-    compile ('com.google.android.gms:play-services-analytics:7.5.0') {
+    compile('com.google.android.gms:play-services-analytics:7.5.0') {
         exclude module: 'play-services-base'
     }
+    compile project(':bee7androidsdkgamewall')
 }

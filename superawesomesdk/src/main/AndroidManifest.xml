@@ -13,6 +13,18 @@
             android:name=".activities.SAVideoActivity"
             android:label="@string/title_activity_savideo" >
         </activity>
+        <activity
+            android:name=".activities.SAGamewallActivity"
+            android:label="@string/title_activity_sagamewall" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="bee7superawesomedemo" android:host="publisher"/>
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

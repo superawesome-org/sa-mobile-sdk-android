@@ -61,6 +61,7 @@ public class AdLoader {
                 this.loadExtraContent(superAwesomeAd.url);
                 break;
             case IMAGE_WITH_LINK:
+            case GAMEWALL:
                 listener.onLoaded(this.superAwesomeAd);
                 break;
             default:

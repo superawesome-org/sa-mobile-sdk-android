@@ -7,7 +7,9 @@ The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
+* .DS_Store
 * proguard-project.txt
+* settings.gradle
 
 Replaced Jars with Dependencies:
 --------------------------------
@@ -19,20 +21,32 @@ the .jar file in your project was of an older version than the
 dependency we picked, which could render the project not compileable.
 You can disable the jar replacement in the import wizard and try again:
 
-android-support-v4.jar => com.android.support:support-v4:19.+
+android-support-v4.jar => com.android.support:support-v4:21.+
+
+Replaced Libraries with Dependencies:
+-------------------------------------
+The importer recognized the following library projects as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the source files in your project were of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the library replacement in the import wizard and try
+again:
+
+bee7-android-google-play-services-lib => [com.google.android.gms:play-services:+]
 
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => mRAID/src/main/AndroidManifest.xml
-* lint.xml => mRAID/lint.xml
-* res/ => mRAID/src/main/res/
-* src/ => mRAID/src/main/java/
-* src/org/nexage/sourcekit/mraid/assets/drawable/close_button_normal.png => mRAID/src/main/resources/org/nexage/sourcekit/mraid/assets/drawable/close_button_normal.png
-* src/org/nexage/sourcekit/mraid/assets/drawable/close_button_pressed.png => mRAID/src/main/resources/org/nexage/sourcekit/mraid/assets/drawable/close_button_pressed.png
-* src/org/nexage/sourcekit/mraid/assets/mraid.js => mRAID/src/main/resources/org/nexage/sourcekit/mraid/assets/mraid.js
+* AndroidManifest.xml => bee7androidsdkgamewall/src/main/AndroidManifest.xml
+* assets/ => bee7androidsdkgamewall/src/main/assets/
+* libs/bee7-android-sdk-2.1.5-proguard.jar => bee7androidsdkgamewall/libs/bee7-android-sdk-2.1.5-proguard.jar
+* res/ => bee7androidsdkgamewall/src/main/res/
+* src/ => bee7androidsdkgamewall/src/main/java/
+* src/.DS_Store => bee7androidsdkgamewall/src/main/resources/.DS_Store
 
 Missing Android Support Repository:
 -----------------------------------
@@ -47,6 +61,17 @@ To install it, open the SDK manager, and in the Extras category,
 select "Android Support Repository". You may also want to install the
 "Google Repository" if you want to use libraries like Google Play
 Services.
+
+Missing Google Repository:
+--------------------------
+The Google Play Services library is installed from a special Maven
+Repository, which should be installed via the SDK manager.
+
+It looks like this library is missing from your SDK installation at:
+null
+
+To install it, open the SDK manager, and in the Extras category,
+select "Google Repository".
 
 Next Steps:
 -----------

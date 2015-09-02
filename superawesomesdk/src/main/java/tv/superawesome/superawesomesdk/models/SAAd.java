@@ -14,7 +14,7 @@ public abstract class SAAd {
 
 
     public enum Format {
-        RICH_MEDIA, IMAGE_WITH_LINK, VIDEO
+        RICH_MEDIA, IMAGE_WITH_LINK, VIDEO, GAMEWALL
     }
     public Format format;
 
@@ -55,6 +55,8 @@ public abstract class SAAd {
                 return new SAVideoAd(adResponse);
             case "image_with_link":
                 return new SAImageWithLinkAd(adResponse);
+            case "gamewall":
+                return new SAGamewallAd(adResponse);
             default:
                 return null;
         }

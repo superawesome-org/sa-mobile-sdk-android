@@ -25,6 +25,8 @@ import tv.superawesome.superawesomesdk.AdManager;
 import tv.superawesome.superawesomesdk.R;
 import tv.superawesome.superawesomesdk.SuperAwesome;
 import tv.superawesome.superawesomesdk.models.SAAd;
+import tv.superawesome.superawesomesdk.parentalgate.SAParentalGate;
+import tv.superawesome.superawesomesdk.parentalgate.SAParentalGateListener;
 
 
 public abstract class SAPlacementView extends FrameLayout implements MRAIDNativeFeatureListener {
@@ -40,6 +42,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     protected SAAd loadedAd = null;
     protected String baseUrl = "http://superawesome.tv";
     protected ImageButton padlockImage;
+    protected SAParentalGate gate;
 
     public SAPlacementView(Context context, String placementID, AdManager adManager) {
         super(context);
@@ -212,11 +215,42 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     }
 
     @Override
-    public void mraidNativeFeatureOpenBrowser(String url) {
+    public void mraidNativeFeatureOpenBrowser(final String url) {
         Log.d(TAG, "mraidNativeFeatureOpenBrowser " + url);
 
-        // Demo will open the URL in an external browser
-        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        // create new and show
+        gate = new SAParentalGate(context);
+//        gate.setListener(this);
+        gate.setListener(new SAParentalGateListener() {
+            @Override
+            public void onPressCancel() {
+                // do nothing
+            }
+
+            @Override
+            public void onPressContinueWithError() {
+                // show error
+                /* we have an alert dialog builder */
+                android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(context);
+                // set title and message
+                alert.setTitle("Error");
+                alert.setMessage("The sum is wrong. Please ask an adult for help!");
+
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // do nothing
+                        return;
+                    }
+                });
+                alert.show();
+            }
+
+            @Override
+            public void onPressContinueWithSuccess() {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            }
+        });
+        gate.show();
     }
 
     @Override
@@ -232,4 +266,5 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     public abstract void paused();
 
     public abstract void resumed();
+
 }

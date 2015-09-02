@@ -40,5 +40,9 @@
             </tv.superawesome.superawesomesdk.view.InterstitialView>
         ]]>
     </string>
-    <string name="title_activity_all_ads">AllAdsActivity</string>
+    <string name="title_activity_all_ads">All Ads</string>
+    <string name="title_activity_gamewall">GameWall</string>
+    <string name="gamewall_description">This activity uses a gamewall. There is a button below that only shows when the gamewall has items available to display.</string>
+    <string name="gamewall_button">Open GameWall</string>
+    <string name="gamewall_reward">Total Currency earned:</string>
 </resources>
