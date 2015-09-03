@@ -84,20 +84,6 @@
                 android:value="tv.superawesome.demoapp.MainActivity" />
         </activity>
 
-
-        <receiver android:name="tv.superawesome.superawesomesdk.gamewall.RewardReceiver" android:enabled="true" android:exported="true">
-            <intent-filter>
-                <action android:name="com.bee7.action.REWARD" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="tv.superawesome.superawesomesdk.gamewall.RewardingServiceReceiver" android:enabled="true" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-        <service android:name="tv.superawesome.superawesomesdk.gamewall.RewardingService" android:process=":rewardingservice" android:enabled="true" />
-
     </application>
 
 </manifest>
