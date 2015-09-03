@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import tv.superawesome.superawesomesdk.fragments.SABannerFragment;
-import tv.superawesome.superawesomesdk.models.SAAd;
-import tv.superawesome.superawesomesdk.views.SAPlacementListener;
+import tv.superawesome.sdk.fragments.SABannerFragment;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.views.SAPlacementListener;
 
 
 public class BannerAdXmlActivity extends ActionBarActivity {

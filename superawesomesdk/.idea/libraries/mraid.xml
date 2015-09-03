@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="mraid">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/mraid.jar!/" />
+      <root url="jar://$PROJECT_DIR$/sa-sdk/libs/mraid.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

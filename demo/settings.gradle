@@ -1,4 +1,4 @@
 include ':app', ':tests'
-include 'superawesomesdk'
-project(':superawesomesdk').projectDir=new File('../superawesomesdk')
-include ':bee7androidsdkgamewall'
+include 'sa-sdk', ':bee7androidsdkgamewall'
+project(':sa-sdk').projectDir=new File('../SuperAwesomeSDK/sa-sdk')
+project(':bee7androidsdkgamewall').projectDir=new File('../SuperAwesomeSDK/bee7androidsdkgamewall')

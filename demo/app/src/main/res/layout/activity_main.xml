@@ -23,7 +23,7 @@
                   android:drawSelectorOnTop="false">
             </ListView>
 
-        <!--<tv.superawesome.superawesomesdk.view.BannerView-->
+        <!--<tv.superawesome.sdk.view.BannerView-->
             <!--android:id="@+id/banner"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
@@ -31,9 +31,9 @@
             <!--android:layout_centerHorizontal="true"-->
             <!--custom:placementID="5687"-->
             <!--custom:testMode="true">-->
-        <!--</tv.superawesome.superawesomesdk.view.BannerView>-->
+        <!--</tv.superawesome.sdk.view.BannerView>-->
 
-        <!--<tv.superawesome.superawesomesdk.view.InterstitialView-->
+        <!--<tv.superawesome.sdk.view.InterstitialView-->
             <!--android:id="@+id/interstitial"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
@@ -41,7 +41,7 @@
             <!--custom:placementID="5692"-->
             <!--custom:testMode="true"-->
             <!--custom:showInstantly="true">-->
-        <!--</tv.superawesome.superawesomesdk.view.InterstitialView>-->
+        <!--</tv.superawesome.sdk.view.InterstitialView>-->
 
     </RelativeLayout>
 

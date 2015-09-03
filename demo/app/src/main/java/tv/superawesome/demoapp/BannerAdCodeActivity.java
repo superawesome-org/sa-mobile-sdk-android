@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.superawesomesdk.fragments.SABannerFragment;
-import tv.superawesome.superawesomesdk.views.SAPlacementListener;
-import tv.superawesome.superawesomesdk.models.SAAd;
+import tv.superawesome.sdk.fragments.SABannerFragment;
+import tv.superawesome.sdk.views.SAPlacementListener;
+import tv.superawesome.sdk.models.SAAd;
 
 public class BannerAdCodeActivity extends ActionBarActivity {
 

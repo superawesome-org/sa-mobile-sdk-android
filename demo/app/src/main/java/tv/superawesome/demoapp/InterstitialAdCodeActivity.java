@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment;
-import tv.superawesome.superawesomesdk.models.SAAd;
-import tv.superawesome.superawesomesdk.views.SAPlacementListener;
+import tv.superawesome.sdk.fragments.SAInterstitialFragment;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.views.SAPlacementListener;
 
 
 public class InterstitialAdCodeActivity extends ActionBarActivity {

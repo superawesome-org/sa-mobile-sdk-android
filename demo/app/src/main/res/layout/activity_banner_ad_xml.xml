@@ -10,7 +10,7 @@
                 tools:context="tv.superawesome.demoapp.BannerAdXmlActivity">
 
     <fragment
-        android:name="tv.superawesome.superawesomesdk.fragments.SABannerFragment"
+        android:name="tv.superawesome.sdk.fragments.SABannerFragment"
         android:id="@+id/sa_banner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

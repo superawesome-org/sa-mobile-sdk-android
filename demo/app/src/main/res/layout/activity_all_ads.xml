@@ -20,7 +20,7 @@
     </FrameLayout>
 
     <fragment
-        android:name="tv.superawesome.superawesomesdk.fragments.SABannerFragment"
+        android:name="tv.superawesome.sdk.fragments.SABannerFragment"
         android:id="@+id/sa_banner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         custom:showInstantly="true" />
 
     <fragment
-        android:name="tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment"
+        android:name="tv.superawesome.sdk.fragments.SAInterstitialFragment"
         android:id="@+id/sa_interstitial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         custom:testMode="true"
         custom:showInstantly="false" />
 
-    <fragment android:name="tv.superawesome.superawesomesdk.fragments.SAVideoFragment"
+    <fragment android:name="tv.superawesome.sdk.fragments.SAVideoFragment"
         android:id="@+id/sa_video_ad"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

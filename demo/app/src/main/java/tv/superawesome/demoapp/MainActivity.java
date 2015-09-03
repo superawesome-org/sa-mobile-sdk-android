@@ -10,9 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import tv.superawesome.superawesomesdk.SuperAwesome;
-import tv.superawesome.superawesomesdk.activities.SAGamewallActivity;
-import tv.superawesome.superawesomesdk.activities.SAVideoActivity;
+import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.activities.SAGamewallActivity;
+import tv.superawesome.sdk.activities.SAVideoActivity;
 
 
 public class MainActivity extends Activity {

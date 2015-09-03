@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import tv.superawesome.superawesomesdk.fragments.SAVideoFragment;
-import tv.superawesome.superawesomesdk.models.SAAd;
-import tv.superawesome.superawesomesdk.views.video.SAVideoViewListener;
+import tv.superawesome.sdk.fragments.SAVideoFragment;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.views.video.SAVideoViewListener;
 
 public class VideoAdXmlActivity extends ActionBarActivity {
 

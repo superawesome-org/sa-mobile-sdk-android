@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.games.Game;
 
-import tv.superawesome.superawesomesdk.AdManager;
-import tv.superawesome.superawesomesdk.gamewall.SAGamewall;
-import tv.superawesome.superawesomesdk.models.SAAd;
+import tv.superawesome.sdk.AdManager;
+import tv.superawesome.sdk.gamewall.SAGamewall;
+import tv.superawesome.sdk.models.SAAd;
 
 public class GamewallActivity extends AppCompatActivity {
 

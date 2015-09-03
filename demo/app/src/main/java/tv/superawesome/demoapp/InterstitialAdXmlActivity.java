@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment;
+import tv.superawesome.sdk.fragments.SAInterstitialFragment;
 
 public class InterstitialAdXmlActivity extends AppCompatActivity {
 

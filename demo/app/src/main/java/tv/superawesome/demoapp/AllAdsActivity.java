@@ -6,9 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.superawesomesdk.fragments.SABannerFragment;
-import tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment;
-import tv.superawesome.superawesomesdk.fragments.SAVideoFragment;
+import tv.superawesome.sdk.fragments.SABannerFragment;
+import tv.superawesome.sdk.fragments.SAInterstitialFragment;
+import tv.superawesome.sdk.fragments.SAVideoFragment;
 
 public class AllAdsActivity extends ActionBarActivity {
 
