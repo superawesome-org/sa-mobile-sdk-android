@@ -8,11 +8,11 @@
         <option name="gradleJvm" value="1.7" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../SuperAwesomeSDK/bee7androidsdkgamewall" />
-            <option value="$PROJECT_DIR$/../SuperAwesomeSDK/sa-sdk" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/tests" />
+            <option value="$PROJECT_DIR$/../superawesomesdk/bee7androidsdkgamewall" />
+            <option value="$PROJECT_DIR$/../superawesomesdk/sa-sdk" />
           </set>
         </option>
       </GradleProjectSettings>

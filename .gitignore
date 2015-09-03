@@ -25,6 +25,6 @@ proguard/
 # Unity meta files
 *.meta
 
-/.idea/workspace.xml
-/.idea/libraries
+.idea/workspace.xml
+.idea/libraries
 .DS_Store
