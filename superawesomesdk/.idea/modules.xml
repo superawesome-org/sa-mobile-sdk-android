@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SuperAwesomeSDK.iml" filepath="$PROJECT_DIR$/SuperAwesomeSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/bee7androidsdkgamewall/bee7androidsdkgamewall.iml" filepath="$PROJECT_DIR$/bee7androidsdkgamewall/bee7androidsdkgamewall.iml" />
       <module fileurl="file://$PROJECT_DIR$/sa-sdk/sa-sdk.iml" filepath="$PROJECT_DIR$/sa-sdk/sa-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/superawesomesdk.iml" filepath="$PROJECT_DIR$/superawesomesdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/superawesomesdk.iml" filepath="$PROJECT_DIR$/superawesomesdk.iml" />
     </modules>
   </component>
