@@ -1,9 +1,15 @@
-First, you have to add the library to your workspace; it can be found at https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android
+First, you have to add the library to your workspace. The easiest way to do this is to use Gradle; just include the following in your module's `build.gradle' file:
 
-To do this in Android Studio, you can either include the superawesomesdk-*.aar file in your project or download the entire 'superawesomesdk' directory and include it using Gradle by inserting the following into your 'settings.gradle' file:
 ```
-include 'superawesomesdk'
-project(':superawesomesdk').projectDir=new File('../superawesomesdk')
+repositories {
+    maven {
+        url  "http://dl.bintray.com/sharkofmirkwood/maven"
+    }
+}
+
+dependencies {
+    compile 'tv.superawesome.sdk:sa-sdk:2.1.0'
+}
 ```
 
 Next, open the AndroidManifest.xml file in the root of the project. Add two 'Uses Permission' items, named android.permission.INTERNET and android.permission.ACCESS_NETWORK_STATE, by copying the following into the root node of your manifest file:
