@@ -127,22 +127,19 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
         /* What should happen when the padlock is tapped? */
         Log.d(TAG, "Padlock clicked!");
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
-
-        builder.setView(R.layout.dialog_padlock);
-
-//        builder.setMessage("Message here... blah blah blah")
-//                .setTitle("Title");
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
+//
+//        builder.setView(R.layout.dialog_padlock);
+//
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                // User clicked OK button
+//            }
+//        });
+//
+//        AlertDialog dialog = builder.create();
+//
+//        dialog.show();
     }
 
     public void enableTestMode() {
@@ -229,20 +226,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 
             @Override
             public void onPressContinueWithError() {
-                // show error
-                /* we have an alert dialog builder */
-                android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(context);
-                // set title and message
-                alert.setTitle("Error");
-                alert.setMessage("The sum is wrong. Please ask an adult for help!");
-
-                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // do nothing
-                        return;
-                    }
-                });
-                alert.show();
+                // do nothing
             }
 
             @Override
