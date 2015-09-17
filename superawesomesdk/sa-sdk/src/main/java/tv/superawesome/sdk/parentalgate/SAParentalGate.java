@@ -72,7 +72,9 @@ public class SAParentalGate {
 
                     if (userValue == (startNum + endNum)) {
                         // go on success way
-                        listener.onPressContinueWithSuccess();
+                        if (listener != null) {
+                            listener.onPressContinueWithSuccess();
+                        }
                     } else {
 
                         // go on error way
@@ -84,7 +86,9 @@ public class SAParentalGate {
                         alert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // do nothing
-                                listener.onPressContinueWithError();
+                                if (listener != null) {
+                                    listener.onPressContinueWithError();
+                                }
                                 return;
                             }
                         });
@@ -102,8 +106,9 @@ public class SAParentalGate {
             public void onClick(DialogInterface dialog, int which) {
 
                 // go on cancel way
-                listener.onPressCancel();
-
+                if (listener != null) {
+                    listener.onPressCancel();
+                }
                 return;
             }
         });

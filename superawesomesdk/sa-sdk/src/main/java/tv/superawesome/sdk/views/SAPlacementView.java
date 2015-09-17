@@ -217,7 +217,6 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 
         // create new and show
         gate = new SAParentalGate(context);
-//        gate.setListener(this);
         gate.setListener(new SAParentalGateListener() {
             @Override
             public void onPressCancel() {
