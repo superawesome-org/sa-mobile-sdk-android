@@ -25,6 +25,7 @@ import tv.superawesome.sdk.AdManager;
 import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.padlock.SAPadlock;
 import tv.superawesome.sdk.parentalgate.SAParentalGate;
 import tv.superawesome.sdk.parentalgate.SAParentalGateListener;
 
@@ -124,22 +125,8 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     }
 
     protected void onPadlockClick(View view) {
-        /* What should happen when the padlock is tapped? */
-        Log.d(TAG, "Padlock clicked!");
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
-//
-//        builder.setView(R.layout.dialog_padlock);
-//
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                // User clicked OK button
-//            }
-//        });
-//
-//        AlertDialog dialog = builder.create();
-//
-//        dialog.show();
+        SAPadlock padlock = new SAPadlock();
+        padlock.createPadlock(context);
     }
 
     public void enableTestMode() {
