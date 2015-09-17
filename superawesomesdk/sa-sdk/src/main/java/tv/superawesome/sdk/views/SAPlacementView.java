@@ -230,6 +230,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 
             @Override
             public void onPressContinueWithSuccess() {
+                // do nothing
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             }
         });
