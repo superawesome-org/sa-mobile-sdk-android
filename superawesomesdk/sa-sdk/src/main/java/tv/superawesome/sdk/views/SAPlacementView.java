@@ -35,6 +35,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 	protected static final String TAG = "SA SDK - Placement";
     protected String placementID;
     protected boolean testMode = false;
+    protected boolean parentalGateEnabled = false;
     protected Context context;
     protected AdManager adManager;
     protected SAPlacementListener listener = null;
@@ -61,14 +62,15 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     }
 
     protected void createPadlockImage() {
+        // only display this when ad is not fallback
         padlockImage = new ImageButton(context);
         padlockImage.setBackgroundColor(Color.TRANSPARENT);
         padlockImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPadlockClick(v);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    onPadlockClick(v);
+                }
+            });
         padlockImage.setImageResource(R.drawable.sa_padlock);
     }
 
@@ -80,6 +82,9 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
         this.testMode = testMode;
     }
 
+    public void setParentalGateEnabled(boolean parentalGateEnabled){
+        this.parentalGateEnabled = parentalGateEnabled;
+    }
 
     private boolean checkAppPermissions() {
         int res = getContext().checkCallingOrSelfPermission("android.permission.INTERNET");
@@ -202,26 +207,33 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     public void mraidNativeFeatureOpenBrowser(final String url) {
         Log.d(TAG, "mraidNativeFeatureOpenBrowser " + url);
 
-        // create new and show
-        gate = new SAParentalGate(context);
-        gate.setListener(new SAParentalGateListener() {
-            @Override
-            public void onPressCancel() {
-                // do nothing
-            }
+        // with parental gate
+        if (this.parentalGateEnabled) {
+            // create new and show
+            gate = new SAParentalGate(context);
+            gate.setListener(new SAParentalGateListener() {
+                @Override
+                public void onPressCancel() {
+                    // do nothing
+                }
 
-            @Override
-            public void onPressContinueWithError() {
-                // do nothing
-            }
+                @Override
+                public void onPressContinueWithError() {
+                    // do nothing
+                }
 
-            @Override
-            public void onPressContinueWithSuccess() {
-                // do nothing
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            }
-        });
-        gate.show();
+                @Override
+                public void onPressContinueWithSuccess() {
+                    // do nothing
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                }
+            });
+            gate.show();
+        }
+        // case with no parental gate
+        else {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        }
     }
 
     @Override
