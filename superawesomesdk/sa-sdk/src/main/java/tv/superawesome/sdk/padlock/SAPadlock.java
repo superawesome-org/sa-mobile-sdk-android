@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +42,12 @@ public class SAPadlock{
             }
         });
 
+        RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingsBar);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(0).setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(1).setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(2).setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
         builder.setView(v);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -48,40 +58,5 @@ public class SAPadlock{
 
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
-//        /* What should happen when the padlock is tapped? */
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
-//
-//        // create the view
-////        View v = View.inflate(context, R.layout.dialog_padlock, null);
-////
-////        // get the text view and add listeners
-////        TextView t = (TextView)v.findViewById(R.id.clickHereTextView);
-//
-//
-//        // set view and other builder stuff
-//        builder.setView(R.layout.dialog_padlock);
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-////                 User clicked OK button
-//            }
-//        });
-//
-//        // create the dialog and show the dialog
-//        AlertDialog dialog = builder.create();
-//
-//        LayoutInflater inflater = dialog.getLayoutInflater();
-//        View v = inflater.inflate(R.layout.dialog_padlock, null);
-//        TextView t = (TextView) v.findViewById(R.id.clickHereTextView);
-//
-//        t.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-//            }
-//        });
-//
-//        dialog.show();
     }
 }
