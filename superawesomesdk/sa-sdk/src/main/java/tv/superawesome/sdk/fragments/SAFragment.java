@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import tv.superawesome.sdk.R;
+import tv.superawesome.sdk.events.SABannerEventManager;
 import tv.superawesome.sdk.views.SAPlacementListener;
 import tv.superawesome.sdk.views.SAPlacementView;
 

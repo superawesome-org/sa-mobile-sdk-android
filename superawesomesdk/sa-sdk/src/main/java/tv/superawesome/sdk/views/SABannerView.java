@@ -12,6 +12,9 @@ import org.nexage.sourcekit.mraid.MRAIDView;
 import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
 import tv.superawesome.sdk.AdManager;
+import tv.superawesome.sdk.events.SABannerEventManager;
+import tv.superawesome.sdk.events.SAInterstitialEventManager;
+import tv.superawesome.sdk.events.SAVideoEventManager;
 
 
 public class SABannerView extends SAPlacementView implements MRAIDViewListener {
@@ -56,6 +59,9 @@ public class SABannerView extends SAPlacementView implements MRAIDViewListener {
 
     @Override
     public void mraidViewLoaded(MRAIDView mraidView) {
+        SABannerEventManager.getIntance().LogSAEventAdFailed(super.loadedAd);
+        SAInterstitialEventManager.getIntance().LogSAEventUserCanceledParentalGate(super.loadedAd);
+        SAVideoEventManager.getIntance().LogSAEventAdReady(super.loadedAd);
 
     }
 
