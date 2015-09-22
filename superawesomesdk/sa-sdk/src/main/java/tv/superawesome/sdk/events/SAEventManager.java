@@ -19,7 +19,6 @@ public class SAEventManager {
     protected SAEventManager(){
         // do nothing
         request = new SAEventRequest();
-        request.evtype = SAEventType.SAEventTypeImpression;
     }
 
     // singleton function
@@ -46,20 +45,11 @@ public class SAEventManager {
             e.printStackTrace();
         }
         try {
-            j.put("evtype", _request.evtype.toString());
+            j.put("type", _request.type.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        try {
-            j.put("adtype", _request.adtype.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            j.put("eventname", _request.evtname.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         return j;
     }
 
@@ -79,68 +69,63 @@ public class SAEventManager {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // The main functions that actually send the event
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void LogSAEventAdFetched(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventAdFetched;
+
+    public void LogAdFetched(SAAd ad) {
+        this.request.type = SAEventType.AdFetched;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventAdLoaded(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventAdLoaded;
+    public void LogAdLoaded(SAAd ad) {
+        this.request.type = SAEventType.AdLoaded;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventAdReady(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventAdReady;
+    public void LogAdReady(SAAd ad) {
+        this.request.type = SAEventType.AdReady;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventAdFailed(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventAdFailed;
+    public void LogAdFailed(SAAd ad) {
+        this.request.type = SAEventType.AdFailed;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventAdStart(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventAdStart;
+    public void LogAdStart(SAAd ad) {
+        this.request.type = SAEventType.AdStart;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventAdStop(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventAdStop;
+    public void LogAdStop(SAAd ad) {
+        this.request.type = SAEventType.AdStop;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventAdResume(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventAdResume;
+    public void LogAdResume(SAAd ad) {
+        this.request.type = SAEventType.AdResume;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventUserCanceledParentalGate(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventUserCanceledParentalGate;
+    public void LogUserCanceledParentalGate(SAAd ad) {
+        this.request.type = SAEventType.UserCanceledParentalGate;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventUserSuccessWithParentalGate(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventUserSuccessWithParentalGate;
+    public void LogUserSuccessWithParentalGate(SAAd ad) {
+        this.request.type = SAEventType.UserSuccessWithParentalGate;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }
 
-    public void LogSAEventUserErrorWithParentalGate(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventUserErrorWithParentalGate;
-        assignRequestFromResponse(ad);
-        sendRequestWithEvent(this.request);
-    }
-
-    public void LogSAEventUserClickedOnAd(SAAd ad) {
-        this.request.evtname = SAAdEventName.SAEventUserClickedOnAd;
+    public void LogUserErrorWithParentalGate(SAAd ad) {
+        this.request.type = SAEventType.UserErrorWithParentalGate;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }

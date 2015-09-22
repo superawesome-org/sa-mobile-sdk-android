@@ -1,8 +1,6 @@
 package tv.superawesome.sdk.models;
 //package tv.superawesome.sdk.events.SAAdEventName;
 
-import tv.superawesome.sdk.events.SAAdEventName;
-import tv.superawesome.sdk.events.SAAdType;
 import tv.superawesome.sdk.events.SAEventType;
 
 /**
@@ -13,10 +11,7 @@ public class SAEventRequest {
     public String placementID;
     public String creativeId;
     public String lineItemId;
-
-    public SAAdEventName evtname;
-    public SAAdType adtype;
-    public SAEventType evtype;
+    public SAEventType type;
 
     public SAEventRequest() {
         // do nothing
