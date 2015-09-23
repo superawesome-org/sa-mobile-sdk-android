@@ -10,6 +10,7 @@ import org.nexage.sourcekit.mraid.MRAIDInterstitialListener;
 import org.nexage.sourcekit.mraid.MRAIDNativeFeature;
 
 import tv.superawesome.sdk.AdManager;
+import tv.superawesome.sdk.events.SAEventManager;
 
 
 public class SAInterstitialView extends SAPlacementView implements MRAIDInterstitialListener {
@@ -49,6 +50,7 @@ public class SAInterstitialView extends SAPlacementView implements MRAIDIntersti
         this.display = true;
         if (this.isReady) {
             this.mraidInterstitial.show();
+            SAEventManager.getIntance().LogAdReady(super.loadedAd);
         }
     }
 

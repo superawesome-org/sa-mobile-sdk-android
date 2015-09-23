@@ -65,7 +65,8 @@ public class SABannerView extends SAPlacementView implements MRAIDViewListener {
 
     @Override
     public void mraidViewExpand(MRAIDView mraidView) {
-
+        System.out.println("VIEW WILL EXPAND");
+        SAEventManager.getIntance().LogAdReady(super.loadedAd);
     }
 
     @Override

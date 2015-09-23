@@ -24,6 +24,7 @@ import tv.superawesome.sdk.AdLoaderListener;
 import tv.superawesome.sdk.AdManager;
 import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.events.SAEventManager;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.padlock.SAPadlock;
 import tv.superawesome.sdk.parentalgate.SAParentalGate;
@@ -161,6 +162,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 
                 @Override
                 public void onError(String message) {
+                    SAEventManager.getIntance().LogAdFailed(loadedAd);
                     Log.d(TAG, "Error:" + message);
                     if (listener != null) listener.onAdError(message);
                 }
@@ -214,17 +216,19 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
             gate.setListener(new SAParentalGateListener() {
                 @Override
                 public void onPressCancel() {
-                    // do nothing
+                    SAEventManager.getIntance().LogUserCanceledParentalGate(loadedAd);
                 }
 
                 @Override
                 public void onPressContinueWithError() {
-                    // do nothing
+                    SAEventManager.getIntance().LogUserErrorWithParentalGate(loadedAd);
                 }
 
                 @Override
                 public void onPressContinueWithSuccess() {
                     // do nothing
+                    SAEventManager.getIntance().LogUserSuccessWithParentalGate(loadedAd);
+                    SAEventManager.getIntance().LogClick(loadedAd);
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 }
             });
@@ -232,6 +236,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
         }
         // case with no parental gate
         else {
+            SAEventManager.getIntance().LogClick(loadedAd);
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         }
     }

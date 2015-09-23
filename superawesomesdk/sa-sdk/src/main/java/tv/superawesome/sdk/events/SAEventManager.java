@@ -75,7 +75,7 @@ public class SAEventManager {
     }
 
     private void sendRequestWithEvent(SAEventRequest request) {
-        String finalUrl = SuperAwesome.getBaseUrl() + "/event";
+        final String finalUrl = SuperAwesome.getBaseUrl() + "/event";
 
         final JSONObject obj = TransformRequestIntoJSON(request);
 
@@ -91,6 +91,7 @@ public class SAEventManager {
             @Override
             public void onError(String message) {
                 // do this
+                System.out.println("Error at data send to " + finalUrl + " with data " + obj);
             }
 
             @Override
@@ -103,9 +104,9 @@ public class SAEventManager {
     }
 
     private void sendClickWithEvent(SAEventRequest request) {
-        String finalUrl = SuperAwesome.getBaseUrl() + "/click";
+        final String finalUrl = SuperAwesome.getBaseUrl() + "/click";
 
-        JSONObject obj = TransformRequestIntoJSON(request);
+        final JSONObject obj = TransformRequestIntoJSON(request);
 
         UrlPoster poster = new UrlPoster();
         poster.setPOSTParams(obj);
@@ -113,12 +114,13 @@ public class SAEventManager {
             @Override
             public void onBeginLoad(String url) {
                 // do this
-                System.out.println("Begin send of event data");
+                System.out.println("Begin send of event data to " + url + " with data " + obj);
             }
 
             @Override
             public void onError(String message) {
                 // do this
+                System.out.println("Error at data send to " + finalUrl + " with data " + obj);
             }
 
             @Override
