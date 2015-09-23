@@ -12,8 +12,14 @@ public class SAEventRequest {
     public String creativeId;
     public String lineItemId;
     public SAEventType type;
+    public int detailValue;
 
+    // constructor that initialises data to some init value
     public SAEventRequest() {
-        // do nothing
+        this.placementID = null;
+        this.creativeId = null;
+        this.lineItemId = null;
+        this.type = SAEventType.NoAd;
+        this.detailValue = -1;
     }
 }

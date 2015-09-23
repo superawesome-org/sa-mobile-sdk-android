@@ -21,5 +21,4 @@ public class AdManager {
         adLoader.placementId = placementID;
         adLoader.loadAd(url);
     }
-
 }

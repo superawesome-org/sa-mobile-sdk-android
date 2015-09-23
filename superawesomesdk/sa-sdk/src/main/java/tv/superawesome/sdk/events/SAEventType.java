@@ -6,6 +6,10 @@ package tv.superawesome.sdk.events;
 
 public enum SAEventType {
 
+    NoAd {
+        @Override
+        public String toString(){ return "NoAd"; }
+    },
     AdFetched {
         @Override
         public String toString() { return "AdFetched"; }
@@ -33,6 +37,10 @@ public enum SAEventType {
     AdResume {
         @Override
         public String toString() { return "AdResume"; }
+    },
+    AdRate {
+        @Override
+        public String toString() { return "AdRate"; }
     },
     UserCanceledParentalGate {
         @Override

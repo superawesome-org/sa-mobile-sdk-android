@@ -3,6 +3,9 @@ package tv.superawesome.sdk.events;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.UrlLoaderListener;
+import tv.superawesome.sdk.UrlPoster;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.models.SAEventRequest;
 
@@ -30,24 +33,35 @@ public class SAEventManager {
     private JSONObject TransformRequestIntoJSON(SAEventRequest _request) {
         JSONObject j = new JSONObject();
         try {
-            j.put("creative", _request.creativeId);
+            j.put("creative", Integer.parseInt(_request.creativeId));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            j.put("placement", _request.placementID);
+            j.put("placement", Integer.parseInt(_request.placementID));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            j.put("line_item", _request.lineItemId);
+            j.put("line_item", Integer.parseInt(_request.lineItemId));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        try {
-            j.put("type", _request.type.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (_request.type != SAEventType.NoAd) {
+            try {
+                j.put("type", _request.type.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        if (_request.detailValue > 0){
+            try {
+                JSONObject mj = new JSONObject();
+                mj.put("value", _request.detailValue);
+                j.put("details", mj);
+            } catch (JSONException e){
+                e.printStackTrace();;
+            }
         }
 
         return j;
@@ -57,13 +71,63 @@ public class SAEventManager {
         request.creativeId = ad.creativeId;
         request.lineItemId = ad.lineItemId;
         request.placementID = ad.placementId;
+        request.detailValue = -1;   // just reset the detail value here
     }
 
     private void sendRequestWithEvent(SAEventRequest request) {
+        String finalUrl = SuperAwesome.getBaseUrl() + "/event";
+
+        final JSONObject obj = TransformRequestIntoJSON(request);
+
+        UrlPoster poster = new UrlPoster();
+        poster.setPOSTParams(obj);
+        poster.setListener(new UrlLoaderListener() {
+            @Override
+            public void onBeginLoad(String url) {
+                // do this
+                System.out.println("Begin send of event data to " + url + " with data " + obj);
+            }
+
+            @Override
+            public void onError(String message) {
+                // do this
+            }
+
+            @Override
+            public void onLoaded(String content) {
+                // do this
+                System.out.println("Sent event data " + content);
+            }
+        });
+        poster.execute(finalUrl);
+    }
+
+    private void sendClickWithEvent(SAEventRequest request) {
+        String finalUrl = SuperAwesome.getBaseUrl() + "/click";
+
         JSONObject obj = TransformRequestIntoJSON(request);
 
-        // perform data sending function to server
-        System.out.println("Writing " + obj + " to event server");
+        UrlPoster poster = new UrlPoster();
+        poster.setPOSTParams(obj);
+        poster.setListener(new UrlLoaderListener() {
+            @Override
+            public void onBeginLoad(String url) {
+                // do this
+                System.out.println("Begin send of event data");
+            }
+
+            @Override
+            public void onError(String message) {
+                // do this
+            }
+
+            @Override
+            public void onLoaded(String content) {
+                // do this
+                System.out.println("Sent click data " + content);
+            }
+        });
+        poster.execute(finalUrl);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,6 +191,19 @@ public class SAEventManager {
     public void LogUserErrorWithParentalGate(SAAd ad) {
         this.request.type = SAEventType.UserErrorWithParentalGate;
         assignRequestFromResponse(ad);
+        sendRequestWithEvent(this.request);
+    }
+
+    public void LogClick(SAAd ad) {
+        this.request.type = SAEventType.NoAd;
+        assignRequestFromResponse(ad);
+        sendClickWithEvent(this.request);
+    }
+
+    public void LogRating(SAAd ad, int rating) {
+        assignRequestFromResponse(ad);
+        this.request.type = SAEventType.AdRate;
+        this.request.detailValue = rating;
         sendRequestWithEvent(this.request);
     }
 }
