@@ -48,10 +48,20 @@ public class SAEventManager {
             e.printStackTrace();
         }
         if (_request.type != SAEventType.NoAd) {
-            try {
-                j.put("type", _request.type.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (_request.type == SAEventType.viewable_impression){
+                try {
+                    j.put("type", _request.type.toString());
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    j.put("type", "custom." + _request.type.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
         if (_request.detailValue > 0){
@@ -148,8 +158,8 @@ public class SAEventManager {
         sendRequestWithEvent(this.request);
     }
 
-    public void LogAdReady(SAAd ad) {
-        this.request.type = SAEventType.AdReady;
+    public void LogViewableImpression(SAAd ad) {
+        this.request.type = SAEventType.viewable_impression;
         assignRequestFromResponse(ad);
         sendRequestWithEvent(this.request);
     }

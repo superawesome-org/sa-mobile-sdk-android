@@ -18,9 +18,9 @@ public enum SAEventType {
         @Override
         public String toString() { return "AdLoaded"; }
     },
-    AdReady {
+    viewable_impression {
         @Override
-        public String toString() { return "AdReady"; }
+        public String toString() { return "viewable_impression"; }
     },
     AdFailed {
         @Override
