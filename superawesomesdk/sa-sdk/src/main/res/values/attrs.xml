@@ -4,6 +4,7 @@
         <attr name="placementID" format="string" />
         <attr name="testMode" format="boolean" />
         <attr name="showInstantly" format="boolean" />
+        <attr name="isParentalGateEnabled" format="boolean" />
     </declare-styleable>
     <declare-styleable name="SAVideoFragment">
         <attr name="playInstantly" format="boolean" />

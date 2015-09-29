@@ -31,6 +31,7 @@ public class SAInterstitialFragment extends SAFragment {
         this.placementView = (SAInterstitialView)rootView.findViewById(R.id.ad_container);
         this.placementView.setPlacementID(this.placementID);
         this.placementView.setTestMode(this.testMode);
+        this.placementView.setParentalGateEnabled(this.isParentalGateEnabled);
         this.placementView.loadAd();
         if (this.showInstantly || ((SAInterstitialView)this.placementView).isDisplay()) {
             Log.d(TAG, "Showing interstitial...");
