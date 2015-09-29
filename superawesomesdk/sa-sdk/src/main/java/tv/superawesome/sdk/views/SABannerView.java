@@ -57,10 +57,7 @@ public class SABannerView extends SAPlacementView implements MRAIDViewListener {
 
     @Override
     public void mraidViewLoaded(MRAIDView mraidView) {
-        SAEventManager.getIntance().LogAdFailed(super.loadedAd);
-        SAEventManager.getIntance().LogUserCanceledParentalGate(super.loadedAd);
-        SAEventManager.getIntance().LogAdResume(super.loadedAd);
-        SAEventManager.getIntance().LogRating(super.loadedAd, 3);
+
     }
 
     @Override
