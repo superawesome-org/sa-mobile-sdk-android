@@ -17,6 +17,7 @@ public class AdLoader {
     private UrlLoader urlLoaderAd;
     private UrlLoader urlLoaderRichMedia;
     private SAAd superAwesomeAd;
+    public String placementId;
 
     public AdLoader(AdLoaderListener listener, UrlLoader urlLoaderAd, UrlLoader urlLoaderRichMedia) {
         this.listener = listener;
@@ -25,6 +26,7 @@ public class AdLoader {
     }
 
     public void loadAd(String url) {
+
         this.urlLoaderAd.setListener(new UrlLoaderListener() {
             @Override
             public void onBeginLoad(String url) {
@@ -54,6 +56,8 @@ public class AdLoader {
             listener.onError("Bad response from server! JSON format likely incorrect.");
             return;
         }
+
+        this.superAwesomeAd.placementId = this.placementId;
 
         switch (superAwesomeAd.format) {
             case RICH_MEDIA:

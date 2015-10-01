@@ -26,6 +26,10 @@ public abstract class SAAd {
     public String clickURL;
     public String url;
 
+    public String creativeId;
+    public String placementId;
+    public String lineItemId;
+
     protected String content;
     public boolean error = false;
     public String error_message;
@@ -35,6 +39,8 @@ public abstract class SAAd {
 
     public SAAd (JSONObject adResponse) throws JSONException {
         this.creative = adResponse.getJSONObject("creative");
+        this.creativeId = this.creative.getString("id");
+        this.lineItemId = adResponse.getString("line_item_id");
         this.details = creative.getJSONObject("details");
 
         if (adResponse.has("error")) {

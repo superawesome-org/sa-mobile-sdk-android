@@ -22,14 +22,18 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="#000000" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/clickHereTextView"
         android:text="@string/superawesome__about_sa_ads_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:autoLink="web"/>
+        android:clickable="true"
+        android:autoLink="web"
+        android:textColor="#000000" />
 
 
     <TextView
@@ -39,17 +43,20 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="#000000" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/superawesome__rate_ad_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:textColor="#000000" />
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/ratingsBar"
         android:numStars="5"
         android:stepSize="1"/>
 

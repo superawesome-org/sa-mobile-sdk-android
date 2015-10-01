@@ -3,9 +3,6 @@ package tv.superawesome.sdk;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,15 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -32,21 +25,26 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * Created by connor.leigh-smith on 24/06/15.
+ * Created by gabriel.coman on 22/09/15.
  */
-public class UrlLoader extends AsyncTask<String, Integer, String> {
+public class UrlPoster extends AsyncTask<String, Integer, String> {
 
     protected UrlLoaderListener listener;
+    protected JSONObject postParams;
 
     public void setListener(UrlLoaderListener listener) {
         this.listener = listener;
     }
+    public void setPOSTParams(JSONObject params) { this.postParams = params; }
 
     @Override
     protected String doInBackground(String[] params) {
         HttpsURLConnection urlConnection = null;
         InputStream in = null;
+        OutputStream out = null;
         BufferedReader streamReader = null;
+        BufferedWriter streamWriter = null;
+        Uri.Builder builder = new Uri.Builder();
         StringBuilder responseStrBuilder = new StringBuilder();
 
         try {
@@ -67,9 +65,29 @@ public class UrlLoader extends AsyncTask<String, Integer, String> {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
             urlConnection = (HttpsURLConnection) new URL(params[0]).openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            String query = "";
+            if (postParams != null){
+                query = postParams.toString();
+            }
+            out = urlConnection.getOutputStream();
+            streamWriter = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+
+            streamWriter.write(query);
+            streamWriter.flush();
+            out.close();
+
         } catch (Exception e) {
             listener.onBeginLoad(e.getMessage());
         }
+
+        //////////////////////////////////////////////////////////////////////
+        // Begin response from server / input part
+        //////////////////////////////////////////////////////////////////////
 
         listener.onBeginLoad(params[0]);
 
