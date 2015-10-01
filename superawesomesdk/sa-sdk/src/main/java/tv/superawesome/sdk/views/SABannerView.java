@@ -12,6 +12,7 @@ import org.nexage.sourcekit.mraid.MRAIDView;
 import org.nexage.sourcekit.mraid.MRAIDViewListener;
 
 import tv.superawesome.sdk.AdManager;
+import tv.superawesome.sdk.events.SAEventManager;
 
 
 public class SABannerView extends SAPlacementView implements MRAIDViewListener {
@@ -61,7 +62,8 @@ public class SABannerView extends SAPlacementView implements MRAIDViewListener {
 
     @Override
     public void mraidViewExpand(MRAIDView mraidView) {
-
+        System.out.println("VIEW WILL EXPAND");
+        SAEventManager.getIntance().LogViewableImpression(super.loadedAd);
     }
 
     @Override

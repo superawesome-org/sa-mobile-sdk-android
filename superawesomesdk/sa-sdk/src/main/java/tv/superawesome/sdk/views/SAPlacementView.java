@@ -24,7 +24,9 @@ import tv.superawesome.sdk.AdLoaderListener;
 import tv.superawesome.sdk.AdManager;
 import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.events.SAEventManager;
 import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.padlock.SAPadlock;
 import tv.superawesome.sdk.parentalgate.SAParentalGate;
 import tv.superawesome.sdk.parentalgate.SAParentalGateListener;
 
@@ -34,6 +36,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 	protected static final String TAG = "SA SDK - Placement";
     protected String placementID;
     protected boolean testMode = false;
+    protected boolean parentalGateEnabled = false;
     protected Context context;
     protected AdManager adManager;
     protected SAPlacementListener listener = null;
@@ -60,14 +63,15 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     }
 
     protected void createPadlockImage() {
+        // only display this when ad is not fallback
         padlockImage = new ImageButton(context);
         padlockImage.setBackgroundColor(Color.TRANSPARENT);
         padlockImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPadlockClick(v);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    onPadlockClick(v);
+                }
+            });
         padlockImage.setImageResource(R.drawable.sa_padlock);
     }
 
@@ -79,6 +83,9 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
         this.testMode = testMode;
     }
 
+    public void setParentalGateEnabled(boolean parentalGateEnabled){
+        this.parentalGateEnabled = parentalGateEnabled;
+    }
 
     private boolean checkAppPermissions() {
         int res = getContext().checkCallingOrSelfPermission("android.permission.INTERNET");
@@ -124,22 +131,8 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     }
 
     protected void onPadlockClick(View view) {
-        /* What should happen when the padlock is tapped? */
-        Log.d(TAG, "Padlock clicked!");
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Base_Theme_AppCompat_Light_Dialog_Alert);
-//
-//        builder.setView(R.layout.dialog_padlock);
-//
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                // User clicked OK button
-//            }
-//        });
-//
-//        AlertDialog dialog = builder.create();
-//
-//        dialog.show();
+        SAPadlock padlock = new SAPadlock();
+        padlock.createPadlock(context);
     }
 
     public void enableTestMode() {
@@ -169,6 +162,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 
                 @Override
                 public void onError(String message) {
+                    SAEventManager.getIntance().LogAdFailed(loadedAd);
                     Log.d(TAG, "Error:" + message);
                     if (listener != null) listener.onAdError(message);
                 }
@@ -215,26 +209,36 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
     public void mraidNativeFeatureOpenBrowser(final String url) {
         Log.d(TAG, "mraidNativeFeatureOpenBrowser " + url);
 
-        // create new and show
-        gate = new SAParentalGate(context);
-//        gate.setListener(this);
-        gate.setListener(new SAParentalGateListener() {
-            @Override
-            public void onPressCancel() {
-                // do nothing
-            }
+        // with parental gate
+        if (this.parentalGateEnabled) {
+            // create new and show
+            gate = new SAParentalGate(context);
+            gate.setListener(new SAParentalGateListener() {
+                @Override
+                public void onPressCancel() {
+                    SAEventManager.getIntance().LogUserCanceledParentalGate(loadedAd);
+                }
 
-            @Override
-            public void onPressContinueWithError() {
-                // do nothing
-            }
+                @Override
+                public void onPressContinueWithError() {
+                    SAEventManager.getIntance().LogUserErrorWithParentalGate(loadedAd);
+                }
 
-            @Override
-            public void onPressContinueWithSuccess() {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-            }
-        });
-        gate.show();
+                @Override
+                public void onPressContinueWithSuccess() {
+                    // do nothing
+                    SAEventManager.getIntance().LogUserSuccessWithParentalGate(loadedAd);
+                    SAEventManager.getIntance().LogClick(loadedAd);
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                }
+            });
+            gate.show();
+        }
+        // case with no parental gate
+        else {
+            SAEventManager.getIntance().LogClick(loadedAd);
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        }
     }
 
     @Override

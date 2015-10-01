@@ -22,6 +22,7 @@ public abstract class SAFragment extends Fragment {
     protected int fragmentId;
     public String placementID;
     public boolean testMode;
+    public boolean isParentalGateEnabled;
     public boolean showInstantly;
     protected SAPlacementView placementView;
     protected SAPlacementListener listener;
@@ -55,6 +56,7 @@ public abstract class SAFragment extends Fragment {
         this.placementID = a.getString(R.styleable.SAFragment_placementID);
         this.testMode = a.getBoolean(R.styleable.SAFragment_testMode, false);
         this.showInstantly = a.getBoolean(R.styleable.SAFragment_showInstantly, true);
+        this.isParentalGateEnabled = a.getBoolean(R.styleable.SAFragment_isParentalGateEnabled, true);
 
         a.recycle();
     }

@@ -129,12 +129,14 @@ public class SAVideoFragment extends SAFragment {
             // Inflate the layout for this fragment
             this.rootView = inflater.inflate(fragmentId, container, false);
             this.placementView = (SAVideoView)rootView.findViewById(R.id.ad_container);
+
             if (this.getActivity().getIntent().getStringExtra("placementId") != null) {
                 this.placementView.setPlacementID(this.getActivity().getIntent().getStringExtra("placementId"));
             } else {
                 this.placementView.setPlacementID(this.placementID);
             }
-            this.placementView.setTestMode(this.testMode);
+            ((SAVideoView)this.placementView).setTestMode(this.testMode);
+            ((SAVideoView)this.placementView).setParentalGateEnabled(this.isParentalGateEnabled);
 
             this.setListener(this.listener);
 

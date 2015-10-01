@@ -12,6 +12,8 @@ public class SAVideoAd extends SAAd {
         super(adResponse);
         this.format = Format.VIDEO;
         this.url = this.details.getString("vast");
+        // this is always set to false for the moment, because somehow the
+        // server response for SAVideoAd does not return a fallback field
         this.isFallback = false;
     }
 }

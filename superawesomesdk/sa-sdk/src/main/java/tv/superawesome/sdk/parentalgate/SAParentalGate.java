@@ -3,6 +3,8 @@ package tv.superawesome.sdk.parentalgate;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.InputType;
 //import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -72,7 +74,9 @@ public class SAParentalGate {
 
                     if (userValue == (startNum + endNum)) {
                         // go on success way
-                        listener.onPressContinueWithSuccess();
+                        if (listener != null) {
+                            listener.onPressContinueWithSuccess();
+                        }
                     } else {
 
                         // go on error way
@@ -84,7 +88,9 @@ public class SAParentalGate {
                         alert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // do nothing
-                                listener.onPressContinueWithError();
+                                if (listener != null) {
+                                    listener.onPressContinueWithError();
+                                }
                                 return;
                             }
                         });
@@ -102,8 +108,9 @@ public class SAParentalGate {
             public void onClick(DialogInterface dialog, int which) {
 
                 // go on cancel way
-                listener.onPressCancel();
-
+                if (listener != null) {
+                    listener.onPressCancel();
+                }
                 return;
             }
         });

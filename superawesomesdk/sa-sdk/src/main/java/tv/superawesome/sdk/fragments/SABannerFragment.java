@@ -29,6 +29,7 @@ public class SABannerFragment extends SAFragment {
             this.rootView = inflater.inflate(fragmentId, container, false);
             this.placementView = (SABannerView)rootView.findViewById(R.id.ad_container);
             this.placementView.setPlacementID(this.placementID);
+            this.placementView.setParentalGateEnabled(this.isParentalGateEnabled);
             this.placementView.setTestMode(this.testMode);
             if (this.listener != null) {
                 this.placementView.setListener(this.listener);

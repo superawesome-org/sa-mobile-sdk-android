@@ -18,7 +18,7 @@ public class AdManager {
         url = testMode ? url + "?test=true" : url;
 
         AdLoader adLoader = new AdLoader(listener, SuperAwesome.createUrlLoader(), SuperAwesome.createUrlLoader());
+        adLoader.placementId = placementID;
         adLoader.loadAd(url);
     }
-
 }

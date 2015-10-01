@@ -25,4 +25,5 @@ public class SuperAwesome {
 		return new UrlLoader();
 	}
 
+	public static String getBaseUrl() { return baseUrl; }
 }
