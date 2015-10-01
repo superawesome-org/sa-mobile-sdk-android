@@ -19,13 +19,15 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/bee7_footer_title"
-            android:textColor="@color/bee7_footer_text_color"/>
+            android:textColor="@color/bee7_footer_text_color"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/bee7_gamewall_footer_logo_icon"
             android:layout_width="@dimen/bee7_stop_video_dialog_header_logo_width"
             android:layout_height="@dimen/bee7_stop_video_dialog_header_logo_height"
-            android:src="@drawable/bee7_logo" />
+            android:src="@drawable/bee7_logo"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 
