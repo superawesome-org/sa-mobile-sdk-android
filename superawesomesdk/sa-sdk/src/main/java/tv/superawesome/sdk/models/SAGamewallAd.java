@@ -8,7 +8,6 @@ import org.json.JSONObject;
  */
 public class SAGamewallAd extends SAAd {
 
-    public String apiKey;
     public String scheme;
     public String appId;
     public String platform;
@@ -16,7 +15,6 @@ public class SAGamewallAd extends SAAd {
     public SAGamewallAd(JSONObject adResponse) throws JSONException {
         super(adResponse);
         this.format = Format.GAMEWALL;
-        this.apiKey = this.details.getString("api_key");
         this.appId = this.details.getString("app_id");
         this.platform = this.details.getString("platform");
     }

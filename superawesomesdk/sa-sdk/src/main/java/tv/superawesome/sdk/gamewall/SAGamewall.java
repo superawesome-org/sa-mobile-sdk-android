@@ -28,12 +28,14 @@ public class SAGamewall {
     private SAGamewallAd loadedAd;
     private Bee7GameWallManager gamewallManager;
     private Activity activity;
+    private String apiKey;
 
-    public SAGamewall(Activity a, SAGamewall.Listener l, String placementID) {
+    public SAGamewall(Activity a, SAGamewall.Listener l, String placementID, String apiKey) {
         this.activity = a;
         this.listener = l;
         this.placementID = placementID;
         this.adManager = SuperAwesome.createAdManager();
+        this.apiKey = apiKey;
 
         this.gamewallManager = new Bee7GameWallManager() {
             @Override
@@ -120,11 +122,12 @@ public class SAGamewall {
                     loadedAd = (SAGamewallAd)superAwesomeAd;
                     Log.d(TAG, "SAAd loaded");
                     try {
-                        if (!superAwesomeAd.error) {
-                            gameWall = new GameWallImpl(activity, gamewallManager, loadedAd.apiKey);
-                        } else {
+                        if (superAwesomeAd.error) {
                             if (listener != null) listener.onAdError(superAwesomeAd.error_message);
-                            Log.d(TAG, "Error: " + superAwesomeAd.error_message);
+                        } else if (!loadedAd.platform.equals("android") || !loadedAd.appId.equals(activity.getPackageName())) {
+                            if (listener != null) listener.onAdError("Gamewall response is not for Android or app ID is incorrect!");
+                        } else {
+                            gameWall = new GameWallImpl(activity, gamewallManager, apiKey);
                         }
                     } catch (Exception e) {
                         if (listener != null) listener.onAdError(e.getMessage());

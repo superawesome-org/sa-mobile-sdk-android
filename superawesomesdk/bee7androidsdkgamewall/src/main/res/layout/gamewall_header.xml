@@ -34,7 +34,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/bee7_gamewall_header_icon_margin"
             android:adjustViewBounds="true"
-            android:src="@drawable/bee7_icon_reward" />
+            android:src="@drawable/bee7_icon_reward"
+            android:tint="#ffffff"/>
     </LinearLayout>
 
     <com.bee7.gamewall.views.Bee7ImageView
@@ -47,6 +48,8 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical|right"
         android:layout_marginRight="@dimen/bee7_gamewall_header_text_horizontal_margin"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:tint="#ffffff"
+        />
 
 </com.bee7.gamewall.GameWallHeader>

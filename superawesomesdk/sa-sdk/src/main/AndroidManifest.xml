@@ -15,14 +15,6 @@
         <activity
             android:name=".activities.SAGamewallActivity"
             android:label="@string/superawesome__title_activity_sagamewall" >
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="bee7superawesomedemo" android:host="publisher"/>
-            </intent-filter>
-
         </activity>
 
         <receiver android:name="tv.superawesome.sdk.gamewall.RewardReceiver" android:enabled="true" android:exported="true">
