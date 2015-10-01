@@ -69,7 +69,7 @@ public class GamewallActivity extends AppCompatActivity {
         };
 
         gamewallButton = (Button)findViewById(R.id.gamewall_button);
-        gamewall = new SAGamewall(this, gamewallListener, "99999", "45A865F2-9D6D-11E4-89D3-123B93F75CBA");
+        gamewall = new SAGamewall(this, gamewallListener, "10040", "45A865F2-9D6D-11E4-89D3-123B93F75CBA");
     }
 
     public void showGamewall(View v) {
