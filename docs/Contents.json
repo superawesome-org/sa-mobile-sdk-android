@@ -53,9 +53,14 @@
                     "text": "04 Video Ads/02 FullscreenVideo.md"
                 }
             ]
-        },        {
-            "name": "Demo Placements",
-            "text": "06 Demo Placements.md"
+        },        
+        {
+            "name":"Parental Gate",
+            "text":"05 ParentalGate.md"
+        },
+        {
+            "name": "Testing Placements",
+            "text": "06 Testing Placements.md"
         },
         {
             "name": "Technical Support",

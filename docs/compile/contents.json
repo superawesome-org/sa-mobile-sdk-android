@@ -55,8 +55,12 @@
             ]
         },
         {
-            "name": "Demo Placements",
-            "text": "<p>The following placements can be used for testing. These placements have a 100% fill rate.</p>\n<table>\n<thead>\n<tr>\n<th>App ID</th>\n<th>Placement ID</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>14</td>\n<td>5247930</td>\n<td>320x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513681</td>\n<td>300x50 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513680</td>\n<td>728x90 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513682</td>\n<td>300x250 banner</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5247931</td>\n<td>320x480 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>5513683</td>\n<td>768x1024 interstitial</td>\n</tr>\n<tr>\n<td>14</td>\n<td>314228</td>\n<td>video</td>\n</tr>\n</tbody>\n</table>\n"
+            "name": "Parental Gate",
+            "text": "<p>Parental gates are used in apps targeted towards kids to prevent them from engaging in commerce or following links out of an app to websites, social networks, or other apps without the knowledge of their parent or guardian. A parental gate presents an adult level task which must be completed in order to continue.</p>\n<p>To enable the parental gate, use the following code in your project:</p>\n<pre><code>AdFragment.isParentalGateEnabled = true;\n</code></pre><p><img src=\"img/parental_gate.png\" alt=\"\" title=\"Parental Gate on Android\"></p>\n"
+        },
+        {
+            "name": "Testing Placements",
+            "text": "<p>Our SDK has a test mode flag that if set, causes your placements to display our demo ads. This way you can easily test the production and the development version of your app separately. To enable test mode call the following method:</p>\n<pre><code>AdFragment.testMode = true;\n</code></pre><p>We also provide some demo placements that can be used for testing. These placements have a 100% fill rate.</p>\n<table>\n<thead>\n<tr>\n<th>Placement ID</th>\n<th>Description</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>5687</td>\n<td>320x50 banner</td>\n</tr>\n<tr>\n<td>5692</td>\n<td>320x480 interstitial</td>\n</tr>\n<tr>\n<td>5740</td>\n<td>video</td>\n</tr>\n</tbody>\n</table>\n"
         },
         {
             "name": "Technical Support",
