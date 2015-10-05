@@ -38,4 +38,4 @@ SAGamewall.Listener gamewallListener = new SAGamewall.Listener() {
 };
 ```
 
-In this example the `gamewallButton' has an `onClick' event that calls `this.gamewall.show();'. This method opens the gamewall, though if desired could be called directly in `onAvailableChange' to show the gamewall instantly.
+In this example the `gamewallButton` has an `onClick` event that calls `this.gamewall.show();`. This method opens the gamewall, though if desired could be called directly in `onAvailableChange` to show the gamewall instantly.
