@@ -2,7 +2,7 @@ Parental gates are used in apps targeted towards kids to prevent them from engag
 
 To enable the parental gate, use the following code in your project:
 ```
-SuperAwesome.getInstance().setUseParentalgate(true);
+AdFragment.isParentalGateEnabled = true;
 ```
 
 ![](img/parental_gate.png "Parental Gate on Android")

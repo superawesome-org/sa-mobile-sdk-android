@@ -3,20 +3,21 @@
   "version": "1.2.1",
   "description": "SuperAwesome SDK for Unity",
   "main": "index.js",
-  "dependencies":{
+  "dependencies": {
     "sa-docs-to-json": "SuperAwesomeLTD/sa-docs-to-json"
   },
   "devDependencies": {
-    "gulp-imports": "MarcusLongmuir/gulp-imports",
-    "gulp-nodemon": "*",
-    "gulp-util": "^2.2.14",
-    "gulp": "^3.6.1",
-    "gulp-less": "^1.2.3",
-    "gulp-uglify": "^0.2.1",
-    "gulp-concat": "^2.2.0",
-    "gulp-watch": "^0.6.2",
-    "gulp-rename": "^1.2.0",
-    "gulp-plumber": "^0.6.1"
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-imports": "0.0.3",
+    "gulp-less": "^3.0.3",
+    "gulp-nodemon": "^2.0.4",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.1",
+    "gulp-util": "^3.0.6",
+    "gulp-watch": "^4.3.5",
+    "sa-docs-to-json": "superawesomeltd/sa-docs-to-json"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -31,7 +32,7 @@
     "url": "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues"
   },
   "homepage": "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android",
-  "files":[
+  "files": [
     "docs"
   ]
 }

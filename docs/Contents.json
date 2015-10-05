@@ -74,14 +74,22 @@
                     "text": "05 Gamewall/04 Advanced.md"
                 }
             ]
+        },        
+        {
+            "name":"Parental Gate",
+            "text":"06 ParentalGate.md"
+        },
+        {
+            "name": "Testing Placements",
+            "text": "07 Testing Placements.md"
         },
         {
             "name": "Technical Support",
-            "text": "07 Support.md"
+            "text": "08 Support.md"
         },
         {
             "name": "License",
-            "text": "08 License.md"
+            "text": "09 License.md"
         }
     ]
 }
