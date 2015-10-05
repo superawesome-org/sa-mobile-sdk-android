@@ -53,9 +53,27 @@
                     "text": "04 Video Ads/02 FullscreenVideo.md"
                 }
             ]
-        },        {
-            "name": "Demo Placements",
-            "text": "06 Demo Placements.md"
+        },
+        {
+            "name": "Gamewall",
+            "sections": [
+                {
+                    "name": "Introduction",
+                    "text": "05 Gamewall/01 Intro.md"
+                },
+                {
+                    "name": "Placement Creation",
+                    "text": "05 Gamewall/02 PlacementCreation.md"
+                },
+                {
+                    "name": "Integration",
+                    "text": "05 Gamewall/03 Integration.md"
+                },
+                {
+                    "name": "Advanced Integration",
+                    "text": "05 Gamewall/04 Advanced.md"
+                }
+            ]
         },
         {
             "name": "Technical Support",
