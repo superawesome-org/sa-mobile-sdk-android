@@ -1,4 +1,4 @@
-First, you have to add the library to your workspace. The easiest way to do this is to use Gradle; just include the following in your module's `build.gradle` file (usually the file under `MyApplication/app/`:
+First, you have to add the library to your workspace. The easiest way to do this is to use Gradle; just include the following in your module's `build.gradle` file (usually the file under `MyApplication/app/`):
 
 ```
 repositories {
