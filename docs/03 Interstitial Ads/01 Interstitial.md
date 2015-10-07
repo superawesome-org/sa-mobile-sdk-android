@@ -2,7 +2,7 @@ Declare the InterstitialView in the layout XML:
 	
 ```
 <fragment
-    android:name="tv.superawesome.superawesomesdk.fragments.SAInterstitialFragment"
+    android:name="tv.superawesome.sdk.fragments.SAInterstitialFragment"
     android:id="@+id/sa_interstitial"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

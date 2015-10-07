@@ -5,7 +5,7 @@ In order to use video ads in your app, first you have to add a preroll placement
 Declare the banner fragment in the layout XML:
 	
 ```
-<fragment android:name="tv.superawesome.superawesomesdk.fragments.SAVideoFragment"
+<fragment android:name="tv.superawesome.sdk.fragments.SAVideoFragment"
             android:id="@+id/sa_video_ad"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
