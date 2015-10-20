@@ -126,6 +126,8 @@ public class SAVideoFragment extends SAFragment {
                              Bundle savedInstanceState) {
 //        Log.d(TAG, "onCreateView called.");
         if (this.rootView == null) {
+//            Log.d("LIVIU - I", this.testMode);
+
             // Inflate the layout for this fragment
             this.rootView = inflater.inflate(fragmentId, container, false);
             this.placementView = (SAVideoView)rootView.findViewById(R.id.ad_container);
@@ -135,7 +137,17 @@ public class SAVideoFragment extends SAFragment {
             } else {
                 this.placementView.setPlacementID(this.placementID);
             }
-            ((SAVideoView)this.placementView).setTestMode(this.testMode);
+            if (this.getActivity().getIntent().getStringExtra("testMode") != null ){
+                if (this.getActivity().getIntent().getStringExtra("testMode").equals("true")){
+                    this.placementView.setTestMode(true);
+                }
+                else {
+                    this.placementView.setTestMode(false);
+                }
+            }
+            else {
+                ((SAVideoView) this.placementView).setTestMode(this.testMode);
+            }
             ((SAVideoView)this.placementView).setParentalGateEnabled(this.isParentalGateEnabled);
 
             this.setListener(this.listener);

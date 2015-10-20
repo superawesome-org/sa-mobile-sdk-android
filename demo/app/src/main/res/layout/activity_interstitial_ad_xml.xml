@@ -21,8 +21,8 @@
         android:id="@+id/sa_interstitial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        custom:placementID="5692"
-        custom:testMode="true"
+        custom:placementID="19310"
+        custom:testMode="false"
         custom:showInstantly="false" />
 
 

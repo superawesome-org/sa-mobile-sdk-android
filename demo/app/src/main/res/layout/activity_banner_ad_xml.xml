@@ -17,7 +17,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         custom:placementID="5687"
-        custom:testMode="true"
+        custom:testMode="false"
         custom:showInstantly="true" />
 
 </RelativeLayout>
