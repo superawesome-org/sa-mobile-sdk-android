@@ -65,10 +65,8 @@ public class MainActivity extends Activity {
                         break;
                     case 6:
                         SAVideoActivity.start(MainActivity.this, "21022", "false");
-//                        SAVideoActivity
                         break;
                     case 7:
-//                        startActivity(new Intent(MainActivity.this, SAGamewallActivity.class));
                         startActivity(new Intent(MainActivity.this, GamewallActivity.class));
                         break;
                     case 8:
