@@ -16,13 +16,14 @@ public class SAVideoActivity extends FragmentActivity {
     private static final String TAG = "SAVideoActivity";
     private String placementId;
     private String testMode;
+    private String isParentalGateEnabled;
     private SAVideoFragment videoAd;
 
-    public static void start(Context context, String placementId, String testMode) {
+    public static void start(Context context, String placementId, String testMode, String isParentalGateEnabled) {
         Intent intent = new Intent(context, SAVideoActivity.class);
         intent.putExtra("placementId", placementId);
-        Log.d("LIVIU - AB", testMode);
         intent.putExtra("testMode", testMode);
+        intent.putExtra("isParentalGateEnabled", isParentalGateEnabled);
         context.startActivity(intent);
     }
 
@@ -34,10 +35,9 @@ public class SAVideoActivity extends FragmentActivity {
         Intent intent = this.getIntent();
         this.placementId = intent.getStringExtra("placementId");
         this.testMode = intent.getStringExtra("testMode");
-        Log.d("LIVIU - B", this.testMode);
+        this.isParentalGateEnabled = intent.getStringExtra("isParentalGateEnabled");
 
         this.videoAd = (SAVideoFragment)getSupportFragmentManager().findFragmentById(R.id.sa_video_ad);
-//        this.videoAd.testMode = false;
         this.videoAd.setListener(new SAVideoViewListener() {
             @Override
             public void onAdStart() {

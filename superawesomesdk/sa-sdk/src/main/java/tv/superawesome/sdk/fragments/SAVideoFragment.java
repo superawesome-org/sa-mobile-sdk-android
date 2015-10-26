@@ -124,19 +124,21 @@ public class SAVideoFragment extends SAFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        Log.d(TAG, "onCreateView called.");
         if (this.rootView == null) {
-//            Log.d("LIVIU - I", this.testMode);
+
 
             // Inflate the layout for this fragment
             this.rootView = inflater.inflate(fragmentId, container, false);
             this.placementView = (SAVideoView)rootView.findViewById(R.id.ad_container);
 
+            // placement Id
             if (this.getActivity().getIntent().getStringExtra("placementId") != null) {
                 this.placementView.setPlacementID(this.getActivity().getIntent().getStringExtra("placementId"));
             } else {
                 this.placementView.setPlacementID(this.placementID);
             }
+
+            // test mode
             if (this.getActivity().getIntent().getStringExtra("testMode") != null ){
                 if (this.getActivity().getIntent().getStringExtra("testMode").equals("true")){
                     this.placementView.setTestMode(true);
@@ -148,7 +150,18 @@ public class SAVideoFragment extends SAFragment {
             else {
                 ((SAVideoView) this.placementView).setTestMode(this.testMode);
             }
-            ((SAVideoView)this.placementView).setParentalGateEnabled(this.isParentalGateEnabled);
+
+            // parental gate
+            if (this.getActivity().getIntent().getStringExtra("isParentalGateEnabled") != null){
+                if (this.getActivity().getIntent().getStringExtra("isParentalGateEnabled").equals("true")){
+                    this.placementView.setParentalGateEnabled(true);
+                } else {
+                    this.placementView.setParentalGateEnabled(false);
+                }
+            }
+            else {
+                ((SAVideoView) this.placementView).setParentalGateEnabled(this.isParentalGateEnabled);
+            }
 
             this.setListener(this.listener);
 
