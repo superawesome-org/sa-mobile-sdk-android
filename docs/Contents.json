@@ -80,16 +80,20 @@
             "text":"06 ParentalGate.md"
         },
         {
+            "name":"MoPub Integration",
+            "text":"07 MoPub Integration.md"
+        },
+        {
             "name": "Testing Placements",
-            "text": "07 Testing Placements.md"
+            "text": "08 Testing Placements.md"
         },
         {
             "name": "Technical Support",
-            "text": "08 Support.md"
+            "text": "09 Support.md"
         },
         {
             "name": "License",
-            "text": "09 License.md"
+            "text": "10 License.md"
         }
     ]
 }

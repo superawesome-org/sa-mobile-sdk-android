@@ -1,4 +1,4 @@
-package tv.superawesome.mopub;
+package com.mopub.mobileads;
 
 import android.content.Context;
 import com.mopub.mobileads.CustomEventBanner;
@@ -14,16 +14,11 @@ import tv.superawesome.sdk.views.SAPlacementListener;
 /**
  * Created by gabriel.coman on 27/10/15.
  */
-public class SABannerViewCustomEvent extends CustomEventBanner{
+public class SuperAwesomeBannerCustomEvent extends CustomEventBanner{
 
     // private vars
     private SABannerView banner;
     private AdManager manager;
-
-    // constructor
-    public SABannerViewCustomEvent(){
-
-    }
 
     @Override
     protected void loadBanner(Context context, final CustomEventBannerListener customEventBannerListener, Map<String, Object> map, Map<String, String> map1) {

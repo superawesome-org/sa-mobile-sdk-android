@@ -1,4 +1,4 @@
-package tv.superawesome.mopub;
+package com.mopub.mobileads;
 
 import android.content.Context;
 
@@ -16,7 +16,7 @@ import tv.superawesome.sdk.views.SAPlacementListener;
 /**
  * Created by gabriel.coman on 27/10/15.
  */
-public class SAInterstitialViewCustomEvent extends CustomEventInterstitial {
+public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial {
 
     private SAInterstitialView interstitial;
     private AdManager manager;
