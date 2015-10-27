@@ -10,12 +10,11 @@ This will add the SDK to your current project.
 
 Next, you'll need to download a list of files called Adapters:
 
-  * [SuperAwesomeBannerCustomEvent.h](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-ios/develop_v3/SuperAwesome/MoPubIntegration/SuperAwesomeBannerCustomEvent.h)
-  * [SuperAwesomeBannerCustomEvent.m](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-ios/develop_v3/SuperAwesome/MoPubIntegration/SuperAwesomeBannerCustomEvent.m)
-  * [SuperAwesomeInterstitialCustomEvent.h](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-ios/develop_v3/SuperAwesome/MoPubIntegration/SuperAwesomeInterstitialCustomEvent.h)
-  * [SuperAwesomeInterstitialCustomEvent.m](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-ios/develop_v3/SuperAwesome/MoPubIntegration/SuperAwesomeInterstitialCustomEvent.m)
+  * [SuperAwesomeBannerCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/master/superawesomesdk/sa-sdk/mopub/SuperAwesomeBannerCustomEvent.java)
+  * [SuperAwesomeInterstitialCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/master/superawesomesdk/sa-sdk/mopub/SuperAwesomeInterstitialCustomEvent.java)
 
 These will act as a convenient bridge between SuperAwesome and MoPub, so that you don't have to write any aditional line of code.
+You'll also need to place them in your project. To do this, in your `/app/src/main/java/com` folder, create a folder called `mopub` and inside it another one called `mobileads`. Here copy the two files.
 
 #### Setup a MoPub Custom Network
 
@@ -36,8 +35,8 @@ And assign custom inventory details for Banner and Interstitial ads:
 ![](img/IMG_07_MoPub_4.png "Setup custom inventory")
 
 Custom Event Class is:
-  * for Banner Ads: `SuperAwesomeBannerCustomEvent`
-  * for Interstitial Ads: `SuperAwesomeInterstitialCustomEvent`
+  * for Banner Ads: `com.mopub.mobileads.SuperAwesomeBannerCustomEvent`
+  * for Interstitial Ads: `com.mopub.mobileads.SuperAwesomeInterstitialCustomEvent`
 
 Notice these are identical to the names of the four files you downloaded in step one.
 
@@ -46,9 +45,10 @@ Custom Event Data is always required, and must be given in the form of  JSON:
 ```
 {
 	"placementId": 5692,
-	"testMode": true
+	"testMode": true,
+	"parentalGateEnabled": true
 }
 
 ```
 
-If you don't yet have a Placement ID for Awesome Ads, check out the [Getting Started / Registering Your App on the Dashboard](https://developers.superawesome.tv/docs/iossdk/Getting%20Started/Registering%20Your%20App%20on%20the%20Dashboard?version=3) section.
+If you don't yet have a Placement ID for Awesome Ads, check out the [Getting Started / Registering Your App on the Dashboard](https://developers.superawesome.tv/docs/androidsdk/Getting%20Started/Registering%20Your%20App%20on%20the%20Dashboard?version=2) section.
