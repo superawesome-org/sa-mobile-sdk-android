@@ -10,10 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.activities.SAGamewallActivity;
-import tv.superawesome.sdk.activities.SAVideoActivity;
-
 
 public class MainActivity extends Activity {
 
@@ -21,7 +17,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println(SuperAwesome.getVersion());
 
         String[] ads = {
                 "Banner ad - code",
@@ -64,7 +59,7 @@ public class MainActivity extends Activity {
                         startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
                         break;
                     case 6:
-                        SAVideoActivity.start(MainActivity.this, "21022", "false", "true");
+//                        SAVideoActivity.start(MainActivity.this, "21022", "false", "true");
                         break;
                     case 7:
                         startActivity(new Intent(MainActivity.this, GamewallActivity.class));

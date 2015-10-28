@@ -7,35 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.sdk.fragments.SABannerFragment;
-import tv.superawesome.sdk.views.SAPlacementListener;
-import tv.superawesome.sdk.models.SAAd;
-
 public class BannerAdCodeActivity extends ActionBarActivity {
-
-    private SABannerFragment bannerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner_ad_code);
         setResult(RESULT_OK);
-
-
-        findViewById(R.id.stub_import).setVisibility(View.VISIBLE);
-        bannerFragment = (SABannerFragment)getSupportFragmentManager().findFragmentById(R.id.sa_banner);
-        bannerFragment.setListener(new SAPlacementListener() {
-            @Override
-            public void onAdLoaded(SAAd superAwesomeAd) {
-                Log.d("Main APP", "TEST LOADED AD");
-            }
-
-            @Override
-            public void onAdError(String message) {
-                Log.d("Main APP", message);
-            }
-        });
-
     }
 
     @Override

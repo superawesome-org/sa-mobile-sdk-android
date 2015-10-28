@@ -6,30 +6,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.sdk.fragments.SABannerFragment;
-import tv.superawesome.sdk.fragments.SAInterstitialFragment;
-import tv.superawesome.sdk.fragments.SAVideoFragment;
-
 public class AllAdsActivity extends ActionBarActivity {
 
     private static final String TAG = "All Ads Activity";
-    private SABannerFragment bannerAd;
-    private SAInterstitialFragment interstitialAd;
-    private SAVideoFragment videoAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_ads);
 
-        this.bannerAd = (SABannerFragment)getSupportFragmentManager().findFragmentById(R.id.sa_banner);
-        this.interstitialAd = (SAInterstitialFragment)getSupportFragmentManager().findFragmentById(R.id.sa_interstitial);
-        this.videoAd = (SAVideoFragment)getSupportFragmentManager().findFragmentById(R.id.sa_video_ad);
-
     }
 
     public void showInterstitial(View view) {
-        interstitialAd.show();
+
     }
 
     @Override

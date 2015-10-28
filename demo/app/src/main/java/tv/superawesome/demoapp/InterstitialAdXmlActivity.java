@@ -6,23 +6,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.sdk.fragments.SAInterstitialFragment;
-
 public class InterstitialAdXmlActivity extends AppCompatActivity {
-
-    private SAInterstitialFragment interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interstitial_ad_xml);
         setResult(RESULT_OK);
-
-        this.interstitial = (SAInterstitialFragment)getSupportFragmentManager().findFragmentById(R.id.sa_interstitial);
     }
 
     public void showInterstitial(View view) {
-        this.interstitial.show();
+        
     }
 
     @Override

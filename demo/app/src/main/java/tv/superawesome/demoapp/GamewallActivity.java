@@ -15,14 +15,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.games.Game;
 
-import tv.superawesome.sdk.AdManager;
-import tv.superawesome.sdk.gamewall.SAGamewall;
-import tv.superawesome.sdk.models.SAAd;
-
 public class GamewallActivity extends AppCompatActivity {
 
     private static final String TAG = "GameWall Activity";
-    private SAGamewall gamewall;
     private Button gamewallButton;
 
     @Override
@@ -34,46 +29,10 @@ public class GamewallActivity extends AppCompatActivity {
         final TextView textAmount = (TextView) findViewById(R.id.text_amount);
         textAmount.setText(String.valueOf(preferences.getInt("currency", 0)));
 
-        SAGamewall.Listener gamewallListener = new SAGamewall.Listener() {
-            @Override
-            public void onAdError(String message) {
-                Log.d(TAG, message);
-            }
-
-            @Override
-            public void onAdLoaded(SAAd ad) {
-
-            }
-
-            @Override
-            public void onGiveReward(int amount) {
-                // Retrieve currency so far from preferences and add & save new amount rewarded.
-                int currency = preferences.getInt("currency", 0);
-                currency += amount;
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt("currency", currency);
-                editor.apply();
-                textAmount.setText(String.valueOf(currency));
-            }
-
-            @Override
-            public void onAvailableChange(boolean available) {
-                if (available) {
-                    // Show button
-                    gamewallButton.setVisibility(View.VISIBLE);
-                } else {
-                    // Hide button
-                    gamewallButton.setVisibility(View.INVISIBLE);
-                }
-            }
-        };
-
-        gamewallButton = (Button)findViewById(R.id.gamewall_button);
-        gamewall = new SAGamewall(this, gamewallListener, "21090", "45A865F2-9D6D-11E4-89D3-123B93F75CBA");
     }
 
     public void showGamewall(View v) {
-        this.gamewall.show();
+
     }
 
     @Override
@@ -97,40 +56,4 @@ public class GamewallActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        gamewall.checkForClaimData(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        gamewall.resume();
-    }
-
-    @Override
-    protected void onPause() {
-        gamewall.pause();
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        gamewall.destroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!gamewall.onBackPressed()) {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        gamewall.updateView();
-    }
-
 }

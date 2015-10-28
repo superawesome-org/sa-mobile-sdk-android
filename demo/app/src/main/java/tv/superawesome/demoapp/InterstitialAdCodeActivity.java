@@ -7,38 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import tv.superawesome.sdk.fragments.SAInterstitialFragment;
-import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.views.SAPlacementListener;
-
-
 public class InterstitialAdCodeActivity extends ActionBarActivity {
-
-    private static SAInterstitialFragment interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interstitial_ad_code);
         setResult(RESULT_OK);
-
-        findViewById(R.id.stub_import).setVisibility(View.VISIBLE);
-        interstitial = (SAInterstitialFragment)getSupportFragmentManager().findFragmentById(R.id.sa_interstitial);
-        interstitial.setListener(new SAPlacementListener() {
-            @Override
-            public void onAdLoaded(SAAd superAwesomeAd) {
-                Log.d("Main APP", "TEST LOADED AD");
-            }
-
-            @Override
-            public void onAdError(String message) {
-                Log.d("Main APP", message);
-            }
-        });
     }
 
     public void showInterstitial(View view) {
-        interstitial.show();
+
     }
 
     @Override

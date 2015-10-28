@@ -5,13 +5,6 @@ import junit.framework.TestCase;
 import org.mockito.ArgumentCaptor;
 
 import tv.superawesome.demoapp.mocks.FakeUrlLoader;
-import tv.superawesome.sdk.AdLoader;
-import tv.superawesome.sdk.AdLoaderListener;
-import tv.superawesome.sdk.UrlLoader;
-//import tv.superawesome.superawesomesdk.AdLoader;
-//import tv.superawesome.superawesomesdk.UrlLoader;
-//import tv.superawesome.superawesomesdk.models.SAAd;
-//import tv.superawesome.superawesomesdk.AdLoaderListener;
 
 import static org.mockito.Mockito.*;
 
