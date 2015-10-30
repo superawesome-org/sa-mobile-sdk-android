@@ -10,6 +10,7 @@ package tv.superawesome.sdk.data.Parser;
 /**
  * Imports needed for this implementation
  */
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import tv.superawesome.sdk.data.Models.SAAd;
 
@@ -29,13 +30,13 @@ public class SASerializer {
         JsonObject dict = new JsonObject();
 
         if (ad != null) {
-            dict.add("placement", ad.placementId);
-            dict.add("line_item", ad.lineItemId);
-            dict.add("creative", ad.creative.creativeId);
+            dict.addProperty("placement", ad.placementId);
+            dict.addProperty("line_item", ad.lineItemId);
+            dict.addProperty("creative", ad.creative.creativeId);
         }
 
         return dict;
-        
+
     }
 
 }

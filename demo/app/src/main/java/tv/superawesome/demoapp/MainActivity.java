@@ -21,9 +21,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import tv.superawesome.sdk.data.Network.SAGet;
-import tv.superawesome.sdk.data.Network.SANetListener;
-import tv.superawesome.sdk.data.Network.SANetwork;
+import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.data.Loader.SALoader;
+import tv.superawesome.sdk.data.Loader.SALoaderListener;
+import tv.superawesome.sdk.data.Models.SAAd;
 
 public class MainActivity extends Activity {
 
@@ -32,44 +33,64 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        HashMap<String, Object> m = new HashMap<>();
-        m.put("test", true);
-        SANetwork.sendGET("https://ads.superawesome.tv/v2/ad/24532", m, new SANetListener() {
+        SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().enableTestMode();
+
+        SALoader.getInstance().loadAd(21022, new SALoaderListener() {
             @Override
-            public void success(Object data) {
-                System.out.println("GET " + data);
-
-                JsonParser p = new JsonParser();
-                JsonObject jo = p.parse(data.toString()).getAsJsonObject();
-                System.out.println(jo.get("creative"));
-                System.out.println(jo.get("line_item_id"));
-                System.out.println(jo.get("whazza"));
-
+            public void didPreloadAd(SAAd ad, int placementId) {
+                System.out.println(ad.placementId);
+                System.out.println(ad.creative.creativeId);
+                System.out.println(ad.creative.clickURL);
+                System.out.println(ad.creative.details.video);
+                System.out.println(ad.creative.details.vast);
+                System.out.println(ad.creative.format);
             }
 
             @Override
-            public void failure() {
-                System.out.println("failure");
-            }
-        });
-
-        HashMap<String, Object> m2 = new HashMap<>();
-        m2.put("placement", "24532");
-        m2.put("line_item", "26050");
-        m2.put("creative", "23350");
-        m2.put("type", "viewable_impression");
-
-        SANetwork.sendPOST("https://ads.superawesome.tv/v2/event", m2, new SANetListener() {
-            @Override
-            public void success(Object data) {
-                System.out.println("POST: " + data);
-            }
-
-            @Override
-            public void failure() {
-                System.out.println("failure");
+            public void didFailToPreloadAd(int placementId) {
+                System.out.println("FAILURE");
             }
         });
+
+//        HashMap<String, Object> m = new HashMap<>();
+//        m.put("test", true);
+//        SANetwork.sendGET("https://ads.superawesome.tv/v2/ad/24532", m, new SANetListener() {
+//            @Override
+//            public void success(Object data) {
+//                System.out.println("GET " + data);
+//
+//                JsonParser p = new JsonParser();
+//                JsonObject jo = p.parse(data.toString()).getAsJsonObject();
+//                System.out.println(jo.get("creative"));
+//                System.out.println(jo.get("line_item_id"));
+//                System.out.println(jo.get("whazza"));
+//
+//            }
+//
+//            @Override
+//            public void failure() {
+//                System.out.println("failure");
+//            }
+//        });
+//
+//        HashMap<String, Object> m2 = new HashMap<>();
+//        m2.put("placement", "24532");
+//        m2.put("line_item", "26050");
+//        m2.put("creative", "23350");
+//        m2.put("type", "viewable_impression");
+//
+//        SANetwork.sendPOST("https://ads.superawesome.tv/v2/event", m2, new SANetListener() {
+//            @Override
+//            public void success(Object data) {
+//                System.out.println("POST: " + data);
+//            }
+//
+//            @Override
+//            public void failure() {
+//                System.out.println("failure");
+//            }
+//        });
 
         String[] ads = {
                 "Banner ad - code",

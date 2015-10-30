@@ -11,21 +11,16 @@ package tv.superawesome.sdk.data.Network;
  * Imports needed for this implementation
  */
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import org.apache.http.NameValuePair;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-
-import tv.superawesome.sdk.data.Utils.Utils;
 
 /**
  * SANetwork is a simple class with two static methods, sendGet and sendPost, that
@@ -39,14 +34,14 @@ public class SANetwork {
      * @param querydict - a map of values that will be transformed into a proper GET query ?=parm1=val1&param2=val2, etc
      * @param listener - another SANetListener object, that just passes what SAGet sends him
      */
-    public static void sendGET(String endpoint, Map<String, Object> querydict, final SANetListener listener) {
+    public static void sendGET(String endpoint, JsonObject querydict, final SANetListener listener) {
 
         /** get a reference to the final endpoint so I can change it */
         String finalEndpoint = endpoint;
 
         /** form the GET params */
         ArrayList<String> queryArray = new ArrayList<>();
-        for (Map.Entry<String, Object> e : querydict.entrySet()) {
+        for (Map.Entry<String, JsonElement> e : querydict.entrySet()) {
             queryArray.add(e.getKey() + "=" + e.getValue().toString());
         }
 
@@ -69,21 +64,10 @@ public class SANetwork {
      * @param postparams - a map that will be transformed into a series of POST body params
      * @param listener - another SANetListener object, that just passes what SAPost sends him
      */
-    public static void sendPOST(String endpoint, Map<String, Object> postparams, final SANetListener listener) {
+    public static void sendPOST(String endpoint, JsonObject postparams, final SANetListener listener) {
 
-        JSONObject postJSON = null;
         StringEntity postJSONString = null;
-
-        System.out.println(postparams);
         String json = new GsonBuilder().create().toJson(postparams);
-        System.out.println("JSON DATA: " + json);
-
-//        /** Form a JSON pairs from the postparams map */
-//        try {
-//            postJSON = Utils.getJsonObjectFromMap(postparams);
-//        } catch (JSONException e) {
-//            listener.failure();
-//        }
 
         /** passes the results to a string builder/entity */
         try {

@@ -75,24 +75,24 @@ public class SAParser {
         Object approvedObj = dict.get("approved");
 
         creative.creativeId = (creativeIdObj != null ? Integer.parseInt(creativeIdObj.toString()) : -1);
-        creative.name = (nameObj != null ? nameObj.toString() : null);
+        creative.name = (nameObj != null ? nameObj.toString().replace("\"","") : null);
         creative.cpm = (cpmObj != null ? Integer.parseInt(cpmObj.toString()) : 0);
-        creative.impressionURL = (impressionUrlObj != null ? impressionUrlObj.toString() : null);
-        creative.clickURL = (clickUrlObj != null ? clickUrlObj.toString() : "http://superawesome.tv");
+        creative.impressionURL = (impressionUrlObj != null ? impressionUrlObj.toString().replace("\"", "") : null);
+        creative.clickURL = (clickUrlObj != null ? clickUrlObj.toString().replace("\"", "") : "http://superawesome.tv");
         creative.approved = (approvedObj != null ? Boolean.parseBoolean(approvedObj.toString()) : false);
         creative.format = SACreativeFormat.format_unknown;
 
-        if (formatObj.toString().equals(SACreativeFormat.image_with_link.toString())) {
+        if (formatObj.toString().replace("\"", "").equalsIgnoreCase(SACreativeFormat.image_with_link.toString())) {
             creative.format = SACreativeFormat.image_with_link;
-        } else if (formatObj.toString().equals(SACreativeFormat.video.toString())) {
+        } else if (formatObj.toString().replace("\"", "").equalsIgnoreCase(SACreativeFormat.video.toString())) {
             creative.format = SACreativeFormat.video;
-        } else if (formatObj.toString().equals(SACreativeFormat.rich_media.toString())) {
+        } else if (formatObj.toString().replace("\"", "").equalsIgnoreCase(SACreativeFormat.rich_media.toString())) {
             creative.format = SACreativeFormat.rich_media;
-        } else if (formatObj.toString().equals(SACreativeFormat.rich_media_resizing.toString())) {
+        } else if (formatObj.toString().replace("\"", "").equalsIgnoreCase(SACreativeFormat.rich_media_resizing.toString())) {
             creative.format = SACreativeFormat.rich_media_resizing;
-        } else if (formatObj.toString().equals(SACreativeFormat.swf.toString())) {
+        } else if (formatObj.toString().replace("\"", "").equalsIgnoreCase(SACreativeFormat.swf.toString())) {
             creative.format = SACreativeFormat.swf;
-        } else if (formatObj.toString().equals(SACreativeFormat.tag.toString())) {
+        } else if (formatObj.toString().replace("\"","").equalsIgnoreCase(SACreativeFormat.tag.toString())) {
             creative.format = SACreativeFormat.tag;
         }
 
@@ -136,21 +136,21 @@ public class SAParser {
 
         details.width = (widthObj != null ? Integer.parseInt(widthObj.toString()) : 0);
         details.height = (heightObj != null ? Integer.parseInt(heightObj.toString()) : 0);
-        details.image = (imageObj != null ? imageObj.toString() : null);
+        details.image = (imageObj != null ? imageObj.toString().replace("\"", "") : null);
         details.value = (valueObj != null ? Integer.parseInt(valueObj.toString()) : 0);
-        details.name = (nameObj != null ? nameObj.toString() : null);
-        details.video = (videoObj != null ? videoObj.toString() : null);
+        details.name = (nameObj != null ? nameObj.toString().replace("\"", "") : null);
+        details.video = (videoObj != null ? videoObj.toString().replace("\"", "") : null);
         details.bitrate = (bitrateObj != null ? Integer.parseInt(bitrateObj.toString()) : 0);
         details.duration = (durationObj != null ? Integer.parseInt(durationObj.toString()) : 0);
-        details.vast = (vastObj != null ? vastObj.toString() : null);
-        details.tag = (tagObj != null ? tagObj.toString() : null);
-        details.zip = (zipFileObj != null ? zipFileObj.toString() : null);
-        details.url = (urlObj != null ? urlObj.toString() : null);
+        details.vast = (vastObj != null ? vastObj.toString().replace("\"", "") : null);
+        details.tag = (tagObj != null ? tagObj.toString().replace("\"", "") : null);
+        details.zip = (zipFileObj != null ? zipFileObj.toString().replace("\"", "") : null);
+        details.url = (urlObj != null ? urlObj.toString().replace("\"", "") : null);
 
         if (placementFormatObj != null) {
-            if (placementFormatObj.toString().equals(SAPlacementFormat.web_display)) {
+            if (placementFormatObj.toString().replace("\"","").equalsIgnoreCase(SAPlacementFormat.web_display.toString())) {
                 details.placementFormat = SAPlacementFormat.web_display;
-            } else if (placementFormatObj.toString().equals(SAPlacementFormat.floor_display)) {
+            } else if (placementFormatObj.toString().replace("\"","").equalsIgnoreCase(SAPlacementFormat.floor_display.toString())) {
                 details.placementFormat = SAPlacementFormat.floor_display;
             }
         }

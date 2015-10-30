@@ -10,6 +10,6 @@ package tv.superawesome.sdk.data.Utils;
 /**
  * A class of static methods that perform different utility funcs
  */
-public class Utils {
+public class SAUtils {
 
 }
