@@ -37,6 +37,13 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/src/main/res/htmltemplates/displayImage.html" />
+    <file url="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/src/main/res/htmltemplates/displayRichMedia.html" />
+    <file url="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/src/main/res/htmltemplates/displaySWF.html" />
+    <file url="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/src/main/res/htmltemplates/displayTag.html" />
+    <file url="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/src/main/res/htmltemplates/displayVideo.html" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
