@@ -50,7 +50,7 @@ public class SAInterstitialView extends SAPlacementView implements MRAIDIntersti
         this.display = true;
         if (this.isReady) {
             this.mraidInterstitial.show();
-            SAEventManager.getIntance().LogViewableImpression(super.loadedAd);
+            SAEventManager.getIntance().LogViewableImpression(loadedAd);
         }
     }
 

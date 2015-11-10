@@ -47,6 +47,8 @@ public class SABannerView extends SAPlacementView implements MRAIDViewListener {
         this.addView(mraidView);
 
         this.handler = new Handler();
+        SAEventManager.getIntance().LogViewableImpression(super.loadedAd);
+
         this.handler.postDelayed(new Runnable() {
             public void run() {
                 Log.d(TAG, "Loading ad in handler");
@@ -62,8 +64,7 @@ public class SABannerView extends SAPlacementView implements MRAIDViewListener {
 
     @Override
     public void mraidViewExpand(MRAIDView mraidView) {
-        System.out.println("VIEW WILL EXPAND");
-        SAEventManager.getIntance().LogViewableImpression(super.loadedAd);
+
     }
 
     @Override

@@ -87,6 +87,8 @@ public class SAEventManager {
     private void sendRequestWithEvent(SAEventRequest request) {
         final String finalUrl = SuperAwesome.getBaseUrl() + "/event";
 
+        System.out.println("????????????????? - Trying to send to " + finalUrl);
+
         final JSONObject obj = TransformRequestIntoJSON(request);
 
         UrlPoster poster = new UrlPoster();

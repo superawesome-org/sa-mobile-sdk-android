@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import tv.superawesome.sdk.AdManager;
 import tv.superawesome.sdk.R;
+import tv.superawesome.sdk.events.SAEventManager;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.views.SAPlacementView;
 
@@ -78,6 +79,7 @@ public class SAVideoView extends SAPlacementView {
                 spinner.setVisibility(View.GONE);
                 if (listener != null) videoListener.onAdStart();
                 padlockImage.bringToFront();
+                SAEventManager.getIntance().LogViewableImpression(loadedAd);
             }
 
             @Override
