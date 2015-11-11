@@ -63,6 +63,9 @@ public class SAVideoFragment extends SAFragment {
             });
             ((SAVideoView)this.placementView).setVideoListener(new SAVideoViewListener() {
                 @Override
+                public void onAdClick() { if (listener != null) listener.onAdClick(); }
+
+                @Override
                 public void onAdStart() {
                     if (listener != null) listener.onAdStart();
                 }

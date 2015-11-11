@@ -1,3 +1,6 @@
+2.1.9
+ - Fixed some remaining issues with new video click
+
 2.1.8
  - Moved the unity plugin code to the main library (but in a different folder than the main SDK)
 
