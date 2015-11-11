@@ -50,7 +50,7 @@
                 },
                 {
                     "name": "Fullscreen Video Ads",
-                    "text": "<p>If you just want to display a fullscreen video ad and not to worry about the listener interface, this is the easiest way to show a video ad.</p>\n<p>Use the following code within an activity to display the fullscreen video ad:</p>\n<pre><code>SAVideoActivity.start(MainActivity.this, &quot;__PLACEMENT_ID__&quot;);\n</code></pre>"
+                    "text": "<p>If you just want to display a fullscreen video ad and not to worry about the listener interface, this is the easiest way to show a video ad.</p>\n<p>Use the following code within an activity to display the fullscreen video ad:</p>\n<pre><code>\nString testAd = &quot;false&quot;;    // must be strings\nString isParentalGateEnabled = &quot;true&quot;; // must be strings\n\nSAVideoActivity.start(MainActivity.this, &quot;__PlacementId__&quot;, testAd, isParentalGateEnabled, new SAVideoViewListener() {\n    ....\n    Same SAVideoViewListener implementation as for SAVideoFragment \n    ....                       \n});\n</code></pre>"
                 }
             ]
         },

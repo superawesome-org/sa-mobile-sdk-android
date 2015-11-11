@@ -3,5 +3,14 @@ If you just want to display a fullscreen video ad and not to worry about the lis
 
 Use the following code within an activity to display the fullscreen video ad:
 ```
-SAVideoActivity.start(MainActivity.this, "__PLACEMENT_ID__");
+
+String testAd = "false";	// must be strings
+String isParentalGateEnabled = "true"; // must be strings
+
+SAVideoActivity.start(MainActivity.this, "__PlacementId__", testAd, isParentalGateEnabled, new SAVideoViewListener() {
+    ....
+    Same SAVideoViewListener implementation as for SAVideoFragment 
+    ....                       
+});
+
 ```
