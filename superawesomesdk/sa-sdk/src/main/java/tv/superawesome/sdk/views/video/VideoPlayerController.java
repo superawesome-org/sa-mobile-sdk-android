@@ -110,8 +110,9 @@ public class VideoPlayerController implements AdErrorEvent.AdErrorListener,
         // These are the suggested event types to handle. For full list of all ad event types,
         // see the documentation for AdEvent.AdEventType.
         switch (adEvent.getType()) {
+
             case CLICKED:
-                Log.d("CONTROLLER", "AD CLICKED");
+                if (listener != null) listener.onAdClick();
                 break;
             case STARTED:
                 if (listener != null) listener.onAdStart();

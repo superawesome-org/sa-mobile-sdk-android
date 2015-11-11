@@ -17,6 +17,12 @@ public class SAUnity {
     public static void playVideo(Context c, final String adName, String placementId, boolean testMode, boolean parentalGate) {
         SAVideoActivity.start(c, placementId, Boolean.toString(testMode), Boolean.toString(parentalGate), new SAVideoViewListener() {
             @Override
+            public void onAdClick() {
+                System.out.println("ANDROID - Sending message to videoAdClicked");
+                UnityPlayer.UnitySendMessage(adName, "videoAdClicked", "");
+            }
+
+            @Override
             public void onAdStart() {
                 System.out.println("ANDROID - Sending message to videoAdStartedPlaying");
                 UnityPlayer.UnitySendMessage(adName, "videoAdStartedPlaying", "");

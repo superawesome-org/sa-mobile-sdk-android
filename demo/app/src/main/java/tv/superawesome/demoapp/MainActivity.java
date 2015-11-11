@@ -69,6 +69,11 @@ public class MainActivity extends Activity {
                     case 6:
                         SAVideoActivity.start(MainActivity.this, "24532", "false", "true", new SAVideoViewListener() {
                             @Override
+                            public void onAdClick() {
+                                System.out.println("CUSTOM LISTNER - AD CLICK");
+                            }
+
+                            @Override
                             public void onAdStart() {
                                 System.out.println("CUSTOM LISTNER - AD START");
                             }

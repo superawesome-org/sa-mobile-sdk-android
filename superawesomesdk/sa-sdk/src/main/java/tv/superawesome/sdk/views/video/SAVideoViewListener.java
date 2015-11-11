@@ -7,6 +7,8 @@ import tv.superawesome.sdk.views.SAPlacementListener;
  */
 public interface SAVideoViewListener extends SAPlacementListener {
 
+    void onAdClick();
+
     void onAdStart();
 
     void onAdPause();

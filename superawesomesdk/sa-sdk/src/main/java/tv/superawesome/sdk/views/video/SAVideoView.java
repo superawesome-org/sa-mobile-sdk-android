@@ -74,6 +74,11 @@ public class SAVideoView extends SAPlacementView {
 
         mVideoPlayerController.setListener(new SAVideoViewListener() {
             @Override
+            public void onAdClick() {
+                if (listener != null) videoListener.onAdClick();
+            }
+
+            @Override
             public void onAdStart() {
                 Log.d(TAG, "SAVideoView ad start");
                 spinner.setVisibility(View.GONE);

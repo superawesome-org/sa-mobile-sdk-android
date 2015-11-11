@@ -9,6 +9,7 @@ import android.util.Log;
 import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.fragments.SAVideoFragment;
 import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.views.video.SAVideoView;
 import tv.superawesome.sdk.views.video.SAVideoViewListener;
 
 public class SAVideoActivity extends FragmentActivity {
@@ -43,44 +44,58 @@ public class SAVideoActivity extends FragmentActivity {
 
         this.videoAd.setListener(new SAVideoViewListener() {
             @Override
+            public void onAdClick() {
+                Log.d(TAG, "onAdClick");
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdClick();
+            }
+
+            @Override
             public void onAdStart() {
                 Log.d(TAG, "onAdStart");
-                SAVideoActivity.listener.onAdStart();;
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdStart();;
             }
 
             @Override
             public void onAdPause() {
                 Log.d(TAG, "onAdPause");
-                SAVideoActivity.listener.onAdPause();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdPause();
             }
 
             @Override
             public void onAdResume() {
                 Log.d(TAG, "onAdResume");
-                SAVideoActivity.listener.onAdResume();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdResume();
             }
 
             @Override
             public void onAdFirstQuartile() {
                 Log.d(TAG, "onAdFirstQuartile");
-                SAVideoActivity.listener.onAdFirstQuartile();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdFirstQuartile();
             }
 
             @Override
             public void onAdMidpoint() {
                 Log.d(TAG, "onAdMidpoint");
-                SAVideoActivity.listener.onAdMidpoint();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdMidpoint();
             }
 
             @Override
             public void onAdThirdQuartile() {
                 Log.d(TAG, "onAdThirdQuartile");
-                SAVideoActivity.listener.onAdThirdQuartile();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdThirdQuartile();
             }
 
             @Override
             public void onAdComplete() {
-                SAVideoActivity.listener.onAdComplete();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdComplete();
                 Log.d(TAG, "onAdComplete");
                 finish();
             }
@@ -88,25 +103,29 @@ public class SAVideoActivity extends FragmentActivity {
             @Override
             public void onAdClosed() {
                 Log.d(TAG, "onAdClosed");
-                SAVideoActivity.listener.onAdClosed();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdClosed();
             }
 
             @Override
             public void onAdSkipped() {
                 Log.d(TAG, "onAdSkipped");
-                SAVideoActivity.listener.onAdSkipped();
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdSkipped();
             }
 
             @Override
             public void onAdLoaded(SAAd superAwesomeAd) {
                 Log.d(TAG, "onAdLoaded");
-                SAVideoActivity.listener.onAdLoaded(superAwesomeAd);
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdLoaded(superAwesomeAd);
             }
 
             @Override
             public void onAdError(String message) {
                 Log.d(TAG, "onAdError");
-                SAVideoActivity.listener.onAdError(message);
+                if (SAVideoActivity.listener != null)
+                    SAVideoActivity.listener.onAdError(message);
             }
         });
     }
