@@ -6,6 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/../superawesomesdk/bee7androidsdkgamewall/bee7androidsdkgamewall.iml" filepath="$PROJECT_DIR$/../superawesomesdk/bee7androidsdkgamewall/bee7androidsdkgamewall.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo.iml" filepath="$PROJECT_DIR$/demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/sa-sdk.iml" filepath="$PROJECT_DIR$/../superawesomesdk/sa-sdk/sa-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sa-unity-bridge/sa-unity-bridge.iml" filepath="$PROJECT_DIR$/sa-unity-bridge/sa-unity-bridge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sa-unity-bridge/sa-unity-bridge.iml" filepath="$PROJECT_DIR$/sa-unity-bridge/sa-unity-bridge.iml" />
     </modules>
   </component>
 </project>

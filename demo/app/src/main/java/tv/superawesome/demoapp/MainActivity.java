@@ -13,6 +13,8 @@ import android.widget.ListView;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.activities.SAGamewallActivity;
 import tv.superawesome.sdk.activities.SAVideoActivity;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.views.video.SAVideoViewListener;
 
 
 public class MainActivity extends Activity {
@@ -64,7 +66,62 @@ public class MainActivity extends Activity {
                         startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
                         break;
                     case 6:
-                        SAVideoActivity.start(MainActivity.this, "24532", "false", "true");
+                        SAVideoActivity.start(MainActivity.this, "24532", "false", "true", new SAVideoViewListener() {
+                            @Override
+                            public void onAdStart() {
+                                System.out.println("CUSTOM LISTNER - AD START");
+                            }
+
+                            @Override
+                            public void onAdPause() {
+
+                            }
+
+                            @Override
+                            public void onAdResume() {
+
+                            }
+
+                            @Override
+                            public void onAdFirstQuartile() {
+
+                            }
+
+                            @Override
+                            public void onAdMidpoint() {
+                                System.out.println("CUSTOM LISTNER - AD MIDPOINT");
+                            }
+
+                            @Override
+                            public void onAdThirdQuartile() {
+
+                            }
+
+                            @Override
+                            public void onAdComplete() {
+
+                            }
+
+                            @Override
+                            public void onAdClosed() {
+
+                            }
+
+                            @Override
+                            public void onAdSkipped() {
+
+                            }
+
+                            @Override
+                            public void onAdLoaded(SAAd superAwesomeAd) {
+                                System.out.println("CUSTOM LISTNER - AD LOADED");
+                            }
+
+                            @Override
+                            public void onAdError(String message) {
+
+                            }
+                        });
                         break;
                     case 7:
                         startActivity(new Intent(MainActivity.this, GamewallActivity.class));

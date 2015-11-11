@@ -18,12 +18,14 @@ public class SAVideoActivity extends FragmentActivity {
     private String testMode;
     private String isParentalGateEnabled;
     private SAVideoFragment videoAd;
+    private static SAVideoViewListener listener;
 
-    public static void start(Context context, String placementId, String testMode, String isParentalGateEnabled) {
+    public static void start(Context context, String placementId, String testMode, String isParentalGateEnabled, SAVideoViewListener listener) {
         Intent intent = new Intent(context, SAVideoActivity.class);
         intent.putExtra("placementId", placementId);
         intent.putExtra("testMode", testMode);
         intent.putExtra("isParentalGateEnabled", isParentalGateEnabled);
+        SAVideoActivity.listener = listener;
         context.startActivity(intent);
     }
 
@@ -38,64 +40,68 @@ public class SAVideoActivity extends FragmentActivity {
         this.isParentalGateEnabled = intent.getStringExtra("isParentalGateEnabled");
 
         this.videoAd = (SAVideoFragment)getSupportFragmentManager().findFragmentById(R.id.sa_video_ad);
-        this.videoAd.setListener(new SAVideoViewListener() {
-            @Override
-            public void onAdStart() {
-                Log.d(TAG, "onAdStart");
-            }
 
-            @Override
-            public void onAdPause() {
-                Log.d(TAG, "onAdPause");
-            }
+        if (this.listener != null) {
+            this.videoAd.setListener(SAVideoActivity.listener);
+        } else {
+            this.videoAd.setListener(new SAVideoViewListener() {
+                @Override
+                public void onAdStart() {
+                    Log.d(TAG, "onAdStart");
+                }
 
-            @Override
-            public void onAdResume() {
-                Log.d(TAG, "onAdResume");
-            }
+                @Override
+                public void onAdPause() {
+                    Log.d(TAG, "onAdPause");
+                }
 
-            @Override
-            public void onAdFirstQuartile() {
-                Log.d(TAG, "onAdFirstQuartile");
-            }
+                @Override
+                public void onAdResume() {
+                    Log.d(TAG, "onAdResume");
+                }
 
-            @Override
-            public void onAdMidpoint() {
-                Log.d(TAG, "onAdMidpoint");
-            }
+                @Override
+                public void onAdFirstQuartile() {
+                    Log.d(TAG, "onAdFirstQuartile");
+                }
 
-            @Override
-            public void onAdThirdQuartile() {
-                Log.d(TAG, "onAdThirdQuartile");
-            }
+                @Override
+                public void onAdMidpoint() {
+                    Log.d(TAG, "onAdMidpoint");
+                }
 
-            @Override
-            public void onAdComplete() {
-                Log.d(TAG, "onAdComplete");
-                finish();
-            }
+                @Override
+                public void onAdThirdQuartile() {
+                    Log.d(TAG, "onAdThirdQuartile");
+                }
 
-            @Override
-            public void onAdClosed() {
-                Log.d(TAG, "onAdClosed");
-            }
+                @Override
+                public void onAdComplete() {
+                    Log.d(TAG, "onAdComplete");
+                    finish();
+                }
 
-            @Override
-            public void onAdSkipped() {
-                Log.d(TAG, "onAdSkipped");
-            }
+                @Override
+                public void onAdClosed() {
+                    Log.d(TAG, "onAdClosed");
+                }
 
-            @Override
-            public void onAdLoaded(SAAd superAwesomeAd) {
-                Log.d(TAG, "onAdLoaded");
-            }
+                @Override
+                public void onAdSkipped() {
+                    Log.d(TAG, "onAdSkipped");
+                }
 
-            @Override
-            public void onAdError(String message) {
-                Log.d(TAG, "onAdError");
-            }
-        });
+                @Override
+                public void onAdLoaded(SAAd superAwesomeAd) {
+                    Log.d(TAG, "onAdLoaded");
+                }
 
+                @Override
+                public void onAdError(String message) {
+                    Log.d(TAG, "onAdError");
+                }
+            });
+        }
     }
 
     @Override
