@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/sa-unity-bridge" />
             <option value="$PROJECT_DIR$/../superawesomesdk/bee7androidsdkgamewall" />
             <option value="$PROJECT_DIR$/../superawesomesdk/sa-sdk" />
           </set>

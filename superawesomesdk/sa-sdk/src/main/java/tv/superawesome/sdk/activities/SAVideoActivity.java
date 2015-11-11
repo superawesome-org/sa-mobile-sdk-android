@@ -41,67 +41,74 @@ public class SAVideoActivity extends FragmentActivity {
 
         this.videoAd = (SAVideoFragment)getSupportFragmentManager().findFragmentById(R.id.sa_video_ad);
 
-        if (this.listener != null) {
-            this.videoAd.setListener(SAVideoActivity.listener);
-        } else {
-            this.videoAd.setListener(new SAVideoViewListener() {
-                @Override
-                public void onAdStart() {
-                    Log.d(TAG, "onAdStart");
-                }
+        this.videoAd.setListener(new SAVideoViewListener() {
+            @Override
+            public void onAdStart() {
+                Log.d(TAG, "onAdStart");
+                SAVideoActivity.listener.onAdStart();;
+            }
 
-                @Override
-                public void onAdPause() {
-                    Log.d(TAG, "onAdPause");
-                }
+            @Override
+            public void onAdPause() {
+                Log.d(TAG, "onAdPause");
+                SAVideoActivity.listener.onAdPause();
+            }
 
-                @Override
-                public void onAdResume() {
-                    Log.d(TAG, "onAdResume");
-                }
+            @Override
+            public void onAdResume() {
+                Log.d(TAG, "onAdResume");
+                SAVideoActivity.listener.onAdResume();
+            }
 
-                @Override
-                public void onAdFirstQuartile() {
-                    Log.d(TAG, "onAdFirstQuartile");
-                }
+            @Override
+            public void onAdFirstQuartile() {
+                Log.d(TAG, "onAdFirstQuartile");
+                SAVideoActivity.listener.onAdFirstQuartile();
+            }
 
-                @Override
-                public void onAdMidpoint() {
-                    Log.d(TAG, "onAdMidpoint");
-                }
+            @Override
+            public void onAdMidpoint() {
+                Log.d(TAG, "onAdMidpoint");
+                SAVideoActivity.listener.onAdMidpoint();
+            }
 
-                @Override
-                public void onAdThirdQuartile() {
-                    Log.d(TAG, "onAdThirdQuartile");
-                }
+            @Override
+            public void onAdThirdQuartile() {
+                Log.d(TAG, "onAdThirdQuartile");
+                SAVideoActivity.listener.onAdThirdQuartile();
+            }
 
-                @Override
-                public void onAdComplete() {
-                    Log.d(TAG, "onAdComplete");
-                    finish();
-                }
+            @Override
+            public void onAdComplete() {
+                SAVideoActivity.listener.onAdComplete();
+                Log.d(TAG, "onAdComplete");
+                finish();
+            }
 
-                @Override
-                public void onAdClosed() {
-                    Log.d(TAG, "onAdClosed");
-                }
+            @Override
+            public void onAdClosed() {
+                Log.d(TAG, "onAdClosed");
+                SAVideoActivity.listener.onAdClosed();
+            }
 
-                @Override
-                public void onAdSkipped() {
-                    Log.d(TAG, "onAdSkipped");
-                }
+            @Override
+            public void onAdSkipped() {
+                Log.d(TAG, "onAdSkipped");
+                SAVideoActivity.listener.onAdSkipped();
+            }
 
-                @Override
-                public void onAdLoaded(SAAd superAwesomeAd) {
-                    Log.d(TAG, "onAdLoaded");
-                }
+            @Override
+            public void onAdLoaded(SAAd superAwesomeAd) {
+                Log.d(TAG, "onAdLoaded");
+                SAVideoActivity.listener.onAdLoaded(superAwesomeAd);
+            }
 
-                @Override
-                public void onAdError(String message) {
-                    Log.d(TAG, "onAdError");
-                }
-            });
-        }
+            @Override
+            public void onAdError(String message) {
+                Log.d(TAG, "onAdError");
+                SAVideoActivity.listener.onAdError(message);
+            }
+        });
     }
 
     @Override
