@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.fragments.SAVideoFragment;
@@ -19,6 +21,7 @@ public class SAVideoActivity extends FragmentActivity {
     private String testMode;
     private String isParentalGateEnabled;
     private SAVideoFragment videoAd;
+    private Button skipButton;
     private static SAVideoViewListener listener;
 
     public static void start(Context context, String placementId, String testMode, String isParentalGateEnabled, SAVideoViewListener listener) {
@@ -35,6 +38,15 @@ public class SAVideoActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sa_video);
 
+        // close button
+        this.skipButton = (Button)this.findViewById(R.id.sa_close_fscreen_video);
+        this.skipButton .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         Intent intent = this.getIntent();
         this.placementId = intent.getStringExtra("placementId");
         this.testMode = intent.getStringExtra("testMode");
@@ -43,6 +55,7 @@ public class SAVideoActivity extends FragmentActivity {
         this.videoAd = (SAVideoFragment)getSupportFragmentManager().findFragmentById(R.id.sa_video_ad);
 
         this.videoAd.setListener(new SAVideoViewListener() {
+
             @Override
             public void onAdClick() {
                 Log.d(TAG, "onAdClick");
@@ -74,6 +87,7 @@ public class SAVideoActivity extends FragmentActivity {
             @Override
             public void onAdFirstQuartile() {
                 Log.d(TAG, "onAdFirstQuartile");
+                skipButton.setVisibility(View.VISIBLE);
                 if (SAVideoActivity.listener != null)
                     SAVideoActivity.listener.onAdFirstQuartile();
             }

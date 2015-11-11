@@ -15,4 +15,14 @@
               custom:showInstantly="true"
               custom:playInstantly="true" />
 
+    <Button android:id="@+id/sa_close_fscreen_video"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:layout_alignParentBottom="true"
+            android:textColor="#ffffff"
+            android:background="#000000"
+            android:visibility="invisible"
+            android:text="Skip" />
+
+
 </RelativeLayout>

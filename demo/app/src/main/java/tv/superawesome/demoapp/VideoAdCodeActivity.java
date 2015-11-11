@@ -28,6 +28,11 @@ public class VideoAdCodeActivity extends ActionBarActivity {
         videoFragment = (SAVideoFragment)getSupportFragmentManager().findFragmentById(R.id.sa_banner);
         videoFragment.setListener(new SAVideoViewListener() {
             @Override
+            public void onAdClick() {
+
+            }
+
+            @Override
             public void onAdStart() {
                 Log.d(TAG, "onAdStart");
             }

@@ -1,3 +1,6 @@
+2.2.0
+ - Add Skip to fullscreen activity
+
 2.1.9
  - Fixed some remaining issues with new video click
 
