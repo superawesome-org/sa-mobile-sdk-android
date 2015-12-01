@@ -8,8 +8,8 @@ repositories {
 }
 
 dependencies {
-    compile 'tv.superawesome.sdk:sa-sdk:2.2.0@aar'
-    compile 'tv.superawesome.sdk:bee7androidsdkgamewall:2.2.0@aar'
+    compile 'tv.superawesome.sdk:sa-sdk:2.2.1@aar'
+    compile 'tv.superawesome.sdk:bee7androidsdkgamewall:2.2.1@aar'
 }
 ```
 
