@@ -41,36 +41,46 @@ public class AdLoader {
 
             @Override
             public void onLoaded(String response) {
-                processLoadedAd(response);
+                try {
+                    processLoadedAd(response);
+                } catch (JSONException e) {
+                    listener.onError("Error parsing the JSON");
+                }
             }
         });
         this.urlLoaderAd.execute(url);
     }
 
-    private void processLoadedAd(String response) {
+    private void processLoadedAd(String response) throws JSONException {
 
-        try {
-            this.superAwesomeAd = SAAd.generateAd(new JSONObject(response));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            listener.onError("Bad response from server! JSON format likely incorrect.");
+        System.out.println("JSON response " + response);
+
+        JSONObject json;
+        json = new JSONObject(response);
+
+        if (json.length() == 0) {
+            listener.onError("Json empty");
             return;
+        } else {
+            this.superAwesomeAd = SAAd.generateAd(json);
         }
 
-        this.superAwesomeAd.placementId = this.placementId;
+        if (this.superAwesomeAd != null) {
+            this.superAwesomeAd.placementId = this.placementId;
 
-        switch (superAwesomeAd.format) {
-            case RICH_MEDIA:
-            case VIDEO:
-                this.loadExtraContent(superAwesomeAd.url);
-                break;
-            case IMAGE_WITH_LINK:
-            case GAMEWALL:
-                listener.onLoaded(this.superAwesomeAd);
-                break;
-            default:
-                listener.onError("Ad type not yet supported");
-                break;
+            switch (superAwesomeAd.format) {
+                case RICH_MEDIA:
+                case VIDEO:
+                    this.loadExtraContent(superAwesomeAd.url);
+                    break;
+                case IMAGE_WITH_LINK:
+                case GAMEWALL:
+                    listener.onLoaded(this.superAwesomeAd);
+                    break;
+                default:
+                    listener.onError("Ad type not yet supported");
+                    break;
+            }
         }
     }
 

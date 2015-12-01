@@ -162,7 +162,7 @@ public abstract class SAPlacementView extends FrameLayout implements MRAIDNative
 
                 @Override
                 public void onError(String message) {
-                    SAEventManager.getIntance().LogAdFailed(loadedAd);
+//                    SAEventManager.getIntance().LogAdFailed(loadedAd);
                     Log.d(TAG, "Error:" + message);
                     if (listener != null) listener.onAdError(message);
                 }

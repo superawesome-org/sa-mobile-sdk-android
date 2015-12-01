@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
                         startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
                         break;
                     case 6:
-                        SAVideoActivity.start(MainActivity.this, "24532", "false", "true", new SAVideoViewListener() {
+                        SAVideoActivity.start(MainActivity.this, "30175", "false", "true", new SAVideoViewListener() {
                             @Override
                             public void onAdClick() {
                                 System.out.println("CUSTOM LISTNER - AD CLICK");

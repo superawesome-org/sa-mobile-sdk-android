@@ -1,3 +1,6 @@
+2.2.1
+ - Fixed the fatal error that appeared when JSON response was empty
+
 2.2.0
  - Add Skip to fullscreen activity
 
