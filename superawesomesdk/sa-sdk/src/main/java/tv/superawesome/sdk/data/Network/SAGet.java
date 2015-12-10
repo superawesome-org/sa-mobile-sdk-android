@@ -12,7 +12,6 @@ package tv.superawesome.sdk.data.Network;
  */
 import javax.net.ssl.HttpsURLConnection;
 import android.os.AsyncTask;
-import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -22,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.net.ssl.SSLContext;
+import tv.superawesome.sdk.aux.SALog;
 
 /**
  * In Java SAGet is a subclass of AsyncTask
@@ -66,8 +66,7 @@ public class SAGet extends AsyncTask<String, Integer, String> {
         HttpResponse response = null;
         try {
             response = client.execute(request);
-
-            Log.d("Response of GET request", response.toString());
+            SALog.Log(response.toString());
         } catch (IOException e ) {
             handleError(e);
         }

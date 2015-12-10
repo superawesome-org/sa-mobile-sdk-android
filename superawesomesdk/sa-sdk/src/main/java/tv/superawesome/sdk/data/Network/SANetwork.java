@@ -22,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import tv.superawesome.sdk.aux.SAAux;
+
 /**
  * SANetwork is a simple class with two static methods, sendGet and sendPost, that
  * acts as a useful wrapper against SAGet and SAPost classes
@@ -37,21 +39,8 @@ public class SANetwork {
     public static void sendGET(String endpoint, JsonObject querydict, final SANetListener listener) {
 
         /** get a reference to the final endpoint so I can change it */
-        String finalEndpoint = endpoint;
-
-        /** form the GET params */
-        ArrayList<String> queryArray = new ArrayList<>();
-        for (Map.Entry<String, JsonElement> e : querydict.entrySet()) {
-            queryArray.add(e.getKey() + "=" + e.getValue().toString());
-        }
-
-        /** form final endpoint */
-        if (queryArray.isEmpty() == false){
-            finalEndpoint += "?";
-            for (String queryObj : queryArray) {
-                finalEndpoint += queryObj;
-            }
-        }
+        String finalEndpoint = endpoint +
+                (SAAux.isJSONEmpty(querydict) ? "?" + SAAux.formGetQueryFromDict(querydict) : "");
 
         /** finally, execute */
         SAGet getOp = new SAGet();

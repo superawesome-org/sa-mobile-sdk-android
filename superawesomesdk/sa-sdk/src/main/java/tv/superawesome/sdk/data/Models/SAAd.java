@@ -7,6 +7,8 @@
  */
 package tv.superawesome.sdk.data.Models;
 
+import tv.superawesome.sdk.aux.SALog;
+
 /**
  * @brief:
  * This model class contains all information that is received from the server
@@ -45,4 +47,19 @@ public class SAAd {
 
     /** pointer to the creative data associated with the ad */
     public SACreative creative;
+
+    /** aux print function */
+    public void print(){
+        String printout = "";
+        printout += "error: " + error;
+        printout += "placementId: " + placementId;
+        printout += "lineItemId: " + lineItemId;
+        printout += "campaignId: " + campaignId;
+        printout += "isTest: " + isTest;
+        printout += "isFallback: " + isFallback;
+        printout += "isFill: " + isFill;
+        printout += "adHTML: " + adHTML;
+        SALog.Log(printout);
+        creative.print();
+    }
 }
