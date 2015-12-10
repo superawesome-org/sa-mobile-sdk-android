@@ -13,7 +13,7 @@ package tv.superawesome.sdk;
 public class SuperAwesome {
 
     /** other variables */
-    private final String BASE_URL_STAGING = "https://staging.beta.ads.superawesome.tv/v2";
+    private final String BASE_URL_STAGING = "https://ads.staging.superawesome.tv/v2";
     private final String BASE_URL_DEVELOPMENT = "https://ads.dev.superawesome.tv/v2";
     private final String BASE_URL_PRODUCTION = "https://ads.superawesome.tv/v2";
 
@@ -25,8 +25,8 @@ public class SuperAwesome {
 
     /** make the constructor private so that this class cannot be instantiated */
     private SuperAwesome(){
-        this.baseUrl = BASE_URL_PRODUCTION;
-        this.isTestEnabled = true;
+        this.setConfigurationProduction();
+        this.disableTestMode();
     }
 
     /** Get the only object available */
@@ -34,8 +34,17 @@ public class SuperAwesome {
         return instance;
     }
 
-    public String version() {
-        return "3.0 Beta";
+    /** provide versionin */
+    private String getVersion () {
+        return "3.0";
+    }
+
+    private String getSdk() {
+        return "android";
+    }
+
+    public String getSDKVersion() {
+        return SuperAwesome.getInstance().getSdk() + "_" + SuperAwesome.getInstance().getVersion();
     }
 
     /**

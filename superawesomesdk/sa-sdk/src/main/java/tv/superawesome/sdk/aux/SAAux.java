@@ -11,6 +11,8 @@
  * packaged and imports for this class
  */
 package tv.superawesome.sdk.aux;
+import android.util.Patterns;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -77,5 +79,16 @@ public class SAAux {
         } else {
             return queryString;
         }
+    }
+
+    /**
+     * @brief checks if an URL is valid
+     * @param url - the url in question
+     * @return true if valid, false otherwise
+     */
+    public static boolean isValidURL(String url){
+        if (url.equals("http://")) return false;
+        if (url.equals("https://")) return false;
+        return Patterns.WEB_URL.matcher(url).matches();
     }
 }

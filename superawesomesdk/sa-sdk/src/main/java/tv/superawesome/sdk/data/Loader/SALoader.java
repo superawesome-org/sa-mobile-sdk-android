@@ -10,6 +10,7 @@ package tv.superawesome.sdk.data.Loader;
 /**
  * Imports needed for this implementation
  */
+import com.bee7.gamewall.video.exoplayer.DemoPlayer;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,10 +20,12 @@ import junit.framework.Assert;
 import java.util.HashMap;
 
 import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.aux.SAAux;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Network.SANetListener;
 import tv.superawesome.sdk.data.Network.SANetwork;
 import tv.superawesome.sdk.data.Parser.SAParser;
+import tv.superawesome.sdk.data.Parser.SAParserListener;
 import tv.superawesome.sdk.data.Validator.SAValidator;
 
 /**
@@ -31,36 +34,19 @@ import tv.superawesome.sdk.data.Validator.SAValidator;
  */
 public class SALoader {
 
-    /** the singleton SALoader instance */
-    private static SALoader instance = new SALoader();
-
-    /** make the constructor private so that this class cannot be instantiated */
-    private SALoader(){}
-
-    /** Get the only object available */
-    public static SALoader getInstance(){
-        return instance;
-    }
-
-    /**
-     * @brief: publicly exposed function that pre-loads ads
-     * @param placementId - the placement ID a user might want to preload an Ad for
-     */
-    public void preloadAd(int placementId) {
-
-    }
-
     /**
      * @brief: the function that actually loads the Ad
      * @param placementId - the placement ID a user might want to preload an Ad for
      * @param listener - a reference to the listener
      */
-    public void loadAd(final int placementId, final SALoaderListener listener){
+    public static void loadAd(final int placementId, final SALoaderListener listener){
 
         /** form the endpoint */
         String endpoint = SuperAwesome.getInstance().getBaseURL() + "/ad/" + placementId;
         JsonObject queryJson = new JsonObject();
         queryJson.addProperty("test", SuperAwesome.getInstance().isTestingEnabled());
+        queryJson.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+        queryJson.addProperty("rnd", SAAux.getCacheBuster());
 
         /** send a standard GET request */
         SANetwork.sendGET(endpoint, queryJson, new SANetListener() {
@@ -74,28 +60,28 @@ public class SALoader {
                 JsonObject dataJson = (JsonObject)jsonParser.parse(data.toString());
 
                 if (dataJson != null) {
+                   SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
+                       @Override
+                       public void parsedAd(SAAd ad) {
+                           boolean isValid = SAValidator.isAdDataValid(ad);
 
-                    /** use the SAParser class to parse the generic Json to SA SDK models */
-                    SAAd ad = SAParser.parseAdWithMap(dataJson);
-                    ad.placementId = placementId;
-                    ad.creative = SAParser.parseCreativeWithMap(dataJson);
-                    if (ad.creative != null) {
-                        ad.creative.details = SAParser.parseDetailsWithMap(dataJson);
-                    }
+                           if (isValid){
+                               if (listener != null){
+                                   listener.didLoadAd(ad);
+                               }
+                           } else {
+                               if (listener != null){
+                                   listener.didFailToLoadAdForPlacementId(placementId);
+                               }
+                           }
+                       }
+                   });
 
-                    /** if everything is OK, validate Ad */
-                    if (SAValidator.isAdDataValid(ad) == true ){
-
-                        ad.adHTML = "";
-
-                        if (listener != null) {
-                            listener.didPreloadAd(ad, placementId);
-                        }
-                    }
-                    else {
-                        if (listener != null) {
-                            listener.didFailToPreloadAd(placementId);
-                        }
+                }
+                /** case json had some kind of error */
+                else {
+                    if (listener != null){
+                        listener.didFailToLoadAdForPlacementId(placementId);
                     }
                 }
             }
@@ -103,7 +89,7 @@ public class SALoader {
             @Override
             public void failure() {
                 if (listener != null) {
-                    listener.didFailToPreloadAd(placementId);
+                    listener.didFailToLoadAdForPlacementId(placementId);
                 }
             }
         });

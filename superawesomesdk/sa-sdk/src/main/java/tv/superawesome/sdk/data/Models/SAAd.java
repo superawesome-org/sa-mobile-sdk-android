@@ -7,6 +7,9 @@
  */
 package tv.superawesome.sdk.data.Models;
 
+/**
+ * Imports needed for this class
+ */
 import tv.superawesome.sdk.aux.SALog;
 
 /**

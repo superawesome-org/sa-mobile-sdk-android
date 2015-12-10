@@ -20,14 +20,13 @@ public interface SALoaderListener {
     /**
      * @brief: After SALoader pre-loads an Ad, this is the function that should be called
      * @param ad - sends back the Ad object that was loaded
-     * @param placementId - sends back the Ad's placement Id
      */
-    void didPreloadAd(SAAd ad, int placementId);
+    void didLoadAd(SAAd ad);
 
     /**
      * @brief: After SALoader fails to pre-loads an Ad, this is the function that should be called
      * @param placementId - sends back the Ad's placement Id
      */
-    void didFailToPreloadAd(int placementId);
+    void didFailToLoadAdForPlacementId(int placementId);
 
 }

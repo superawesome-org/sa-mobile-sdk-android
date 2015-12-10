@@ -27,13 +27,17 @@ public class SAValidator {
      */
     public static boolean isAdDataValid(SAAd ad) {
 
+        /** 0. If ad is not null */
+        if (ad == null)
+            return false;
+
         /** 1. if Ad has no Creative, data is not valid */
         if (ad.creative == null)
             return false;
 
         if (ad.creative != null) {
             /** 2. if format is unknown, data is not valid */
-            if (ad.creative.format == SACreativeFormat.format_unknown)
+            if (ad.creative.format == SACreativeFormat.invalid)
                 return false;
 
             /** 3. if creative has no details, data is not valid */
@@ -42,7 +46,7 @@ public class SAValidator {
 
             if (ad.creative.details != null) {
                 switch (ad.creative.format) {
-                    case image_with_link:{
+                    case image:{
                         /**
                          * if Ad is image with link, but no image filed could be found,
                          * data is not valid
@@ -56,31 +60,17 @@ public class SAValidator {
                          * 4.2. if Ad is video and either the video or the vast
                          * tags could not be found, data is not valid
                          */
-                        if (ad.creative.details.video == null)
-                            return false;
                         if (ad.creative.details.vast == null)
                             return false;
                         break;
                     }
-                    case rich_media:{
+                    case rich:{
                         /**
                          * 4.3. if Ad is rich media and no url can be found,
                          * then data is not valid
                          */
                         if (ad.creative.details.url == null)
                             return false;
-                        break;
-                    }
-                    case rich_media_resizing:{
-                        /**
-                         * 4.4. if Ad is rich media (resizing) and no url can be found,
-                         * then data is not valid
-                         */
-                        if (ad.creative.details.url == null)
-                            return false;
-                        break;
-                    }
-                    case swf:{
                         break;
                     }
                     case tag:{

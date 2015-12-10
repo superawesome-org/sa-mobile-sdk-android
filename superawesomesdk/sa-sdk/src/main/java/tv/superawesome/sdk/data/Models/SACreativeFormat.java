@@ -19,13 +19,13 @@ package tv.superawesome.sdk.data.Models;
  */
 public enum SACreativeFormat {
 
-    format_unknown {
+    invalid {
         @Override
         public String toString() {
             return "invalid";
         }
     },
-    image_with_link {
+    image {
         @Override
         public String toString() {
             return "image";
@@ -37,13 +37,13 @@ public enum SACreativeFormat {
             return "video";
         }
     },
-    rich_media {
+    rich{
         @Override
         public String toString() {
             return "rich";
         }
     },
-    rich_media_resizing {
+    tag {
         @Override
         public String toString() {
             return "tag";

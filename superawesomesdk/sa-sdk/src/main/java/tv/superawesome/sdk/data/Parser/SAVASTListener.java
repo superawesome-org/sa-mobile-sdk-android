@@ -5,7 +5,7 @@
  * @date: 29/10/2015
  *
  */
-package tv.superawesome.sdk.data.VAST;
+package tv.superawesome.sdk.data.Parser;
 
 /**
  * This is an interface used by SAVASTParser. Functions defined by SAVASTListner are used by the
