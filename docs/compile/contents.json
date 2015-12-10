@@ -15,7 +15,7 @@
                 },
                 {
                     "name": "Including the SDK classes",
-                    "text": "<p>Once you&#39;ve integrated the SuperAwesome SDK, you can access all functionality by including the SuperAwesome package:</p>\n<pre><code>import tv.superawesome.SuperAwesome\n</code></pre>"
+                    "text": "<p>Once you&#39;ve integrated the SuperAwesome SDK, you can access all functionality by importing the SuperAwesome class:</p>\n<pre><code>import tv.superawesome.sdk.SuperAwesome;\n</code></pre><p>Additionaly you can also include other classes from the SDK package:</p>\n<pre><code>import tv.superawesome.sdk.activities.SAVideoActivity;\nimport tv.superawesome.sdk.models.SAAd;\nimport tv.superawesome.sdk.views.video.SAVideoViewListener;\n</code></pre><p>But these should be automatically included by Android Studio for you.</p>\n"
                 }
             ]
         },
