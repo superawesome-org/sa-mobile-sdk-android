@@ -12,6 +12,10 @@
                 {
                     "name": "Adding the Library to Your Project",
                     "text": "01 Getting Started/02 SettingUp.md"
+                },
+                {
+                    "name": "Including the SDK classes",
+                    "text": "01 Getting Started/03 Include.md"
                 }
             ]
         },
@@ -84,8 +88,8 @@
             "text":"07 MoPub Integration.md"
         },
         {
-            "name": "Testing Placements",
-            "text": "08 Testing Placements.md"
+            "name": "Using the Test Placements",
+            "text": "08 Test Placements.md"
         },
         {
             "name": "Technical Support",

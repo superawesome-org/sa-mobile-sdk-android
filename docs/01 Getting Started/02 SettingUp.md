@@ -8,6 +8,7 @@ repositories {
 }
 
 dependencies {
+    compile 'com.google.android.gms:play-services-ads:7.0.0'
     compile 'tv.superawesome.sdk:sa-sdk:2.2.1@aar'
     compile 'tv.superawesome.sdk:bee7androidsdkgamewall:2.2.1@aar'
 }
