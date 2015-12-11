@@ -5,7 +5,7 @@ import android.util.Log;
 public class SuperAwesome {
 
 	private static final String TAG = "SuperAwesome SDK";
-	private static final String VERSION = "2.2.1";
+	private static final String VERSION = "2.2.2";
 	private static final String PLATFORM = "android";
 
 	protected static final String baseUrl = "https://ads.superawesome.tv/v2";
