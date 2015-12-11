@@ -30,8 +30,8 @@ public class SAParentalGate {
     private static final String SA_CHALLANGE_ALERTVIEW_CANCELBUTTON_TITLE = "Cancel";
     private static final String SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE = "Continue";
 
-    private static final String SA_ERROR_ALERTVIEW_TITLE = "Sorry, that was the wrong answer";
-    private static final String SA_ERROR_ALERTVIEW_MESSAGE = "Please talk to somebody more responsable so that he may guide you";
+    private static final String SA_ERROR_ALERTVIEW_TITLE = "Oops! That was the wrong answer.";
+    private static final String SA_ERROR_ALERTVIEW_MESSAGE = "Please seek guidance from a responsible adult to help you continue.";
     private static final String SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE = "Ok";
 
     // variables private
