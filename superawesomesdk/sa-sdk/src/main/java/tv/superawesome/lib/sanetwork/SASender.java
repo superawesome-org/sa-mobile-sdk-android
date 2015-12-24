@@ -5,14 +5,14 @@
  * @date: 29/10/2015
  *
  */
-package tv.superawesome.sdk.data.Sender;
+package tv.superawesome.lib.sanetwork;
 
 /**
  * Imports needed to implement this class
  */
 import com.google.gson.JsonObject;
-import tv.superawesome.sdk.data.Network.SANetListener;
-import tv.superawesome.sdk.data.Network.SANetwork;
+
+import tv.superawesome.lib.sautils.SALog;
 
 /**
  * Class that sends events to the server (click, viewable impression, etc)
@@ -23,11 +23,11 @@ public class SASender {
      * @brief: Fire-and-forget event function
      * @param url - the event url to send the data to
      */
-    public static void sendEventToURL(String url) {
+    public static void sendEventToURL(final String url) {
         SANetwork.sendGET(url, new JsonObject(), new SANetListener() {
             @Override
             public void success(Object data) {
-                // do nothing
+                SALog.Log("Success " + url);
             }
 
             @Override

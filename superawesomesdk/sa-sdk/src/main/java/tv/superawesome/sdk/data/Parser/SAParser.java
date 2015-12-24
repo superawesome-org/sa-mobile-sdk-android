@@ -13,14 +13,13 @@ package tv.superawesome.sdk.data.Parser;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
+import tv.superawesome.lib.sanetwork.*;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.aux.SAAux;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Models.SACreative;
 import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.data.Models.SADetails;
+import tv.superawesome.lib.sautils.*;
 
 /**
  * @brief: This is a class of static functions that make it easy to parse Ad responses from the
@@ -34,11 +33,11 @@ public class SAParser {
      * @param dict
      */
     private static boolean performIntegrityCheck(JsonObject dict){
-        if (SAAux.isJSONEmpty(dict) == false){
+        if (SAUtils.isJSONEmpty(dict) == false){
             JsonObject creative = dict.getAsJsonObject("creative");
-            if (SAAux.isJSONEmpty(creative) == false){
+            if (SAUtils.isJSONEmpty(creative) == false){
                 JsonObject details = creative.getAsJsonObject("details");
-                if (SAAux.isJSONEmpty(details) == false){
+                if (SAUtils.isJSONEmpty(details) == false){
                     return true;
                 }
                 return false;
@@ -179,8 +178,8 @@ public class SAParser {
         trackingDict.addProperty("line_item", ad.lineItemId);
         trackingDict.addProperty("creative", ad.creative.creativeId);
         trackingDict.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-        trackingDict.addProperty("rnd", SAAux.getCacheBuster());
-        ad.creative.trackingURL = SuperAwesome.getInstance().getBaseURL() + "/click?" + SAAux.formGetQueryFromDict(trackingDict);
+        trackingDict.addProperty("rnd", SAURLUtils.getCacheBuster());
+        ad.creative.trackingURL = SuperAwesome.getInstance().getBaseURL() + "/click?" + SAURLUtils.formGetQueryFromDict(trackingDict);
 
         /** create the viewable impression URL */
         JsonObject impressionDict1 = new JsonObject();
@@ -190,9 +189,9 @@ public class SAParser {
         impressionDict1.addProperty("type", "viewable_impression");
         JsonObject impressionDict2 = new JsonObject();
         impressionDict2.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-        impressionDict2.addProperty("rnd", SAAux.getCacheBuster());
+        impressionDict2.addProperty("rnd", SAURLUtils.getCacheBuster());
         impressionDict2.addProperty("data", new GsonBuilder().create().toJson(impressionDict1));
-        ad.creative.viewableImpressionURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAAux.formGetQueryFromDict(impressionDict2);
+        ad.creative.viewableImpressionURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAURLUtils.formGetQueryFromDict(impressionDict2);
 
         /** create the click URL */
         switch (ad.creative.format){
@@ -206,22 +205,23 @@ public class SAParser {
             }
             /** more complex video case */
             case video:{
-                SAVASTParser parser = new SAVASTParser();
-                parser.findCorrectVASTClick(ad.creative.details.vast, new SAVASTListener() {
-                    @Override
-                    public void findCorrectVASTClick(String clickURL) {
-                        ad.creative.fullClickURL = clickURL;
-                        ad.creative.isFullClickURLReliable = true;
-                        ad.adHTML = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
-                        listener.parsedAd(ad);
-                    }
-                });
+                listener.parsedAd(ad);
+//                SAVASTParser parser = new SAVASTParser();
+//                parser.findCorrectVASTClick(ad.creative.details.vast, new SAVASTListener() {
+//                    @Override
+//                    public void findCorrectVASTClick(String clickURL) {
+//                        ad.creative.fullClickURL = clickURL;
+//                        ad.creative.isFullClickURLReliable = true;
+//                        ad.adHTML = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
+//                        listener.parsedAd(ad);
+//                    }
+//                });
                 break;
             }
             /** the same - rich media and tag */
             case rich:
             case tag:{
-                if (ad.creative.clickURL != null && SAAux.isValidURL(ad.creative.clickURL)){
+                if (ad.creative.clickURL != null && SAURLUtils.isValidURL(ad.creative.clickURL)){
                     ad.creative.fullClickURL = ad.creative.trackingURL + "&redir=" + ad.creative.clickURL;
                     ad.creative.isFullClickURLReliable = true;
                 } else {

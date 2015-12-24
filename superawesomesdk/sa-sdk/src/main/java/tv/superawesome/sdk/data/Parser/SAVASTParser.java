@@ -14,8 +14,7 @@ import com.google.gson.JsonObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-import tv.superawesome.sdk.data.Network.SANetListener;
-import tv.superawesome.sdk.data.Network.SANetwork;
+import tv.superawesome.lib.sanetwork.*;
 
 /**
  * This class is used to parse VAST data and find the click URL

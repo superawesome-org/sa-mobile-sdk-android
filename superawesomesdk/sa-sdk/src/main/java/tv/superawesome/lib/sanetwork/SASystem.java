@@ -5,14 +5,11 @@
  * @date: 29/10/2015
  *
  */
-package tv.superawesome.sdk.system;
+package tv.superawesome.lib.sanetwork;
 
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
-
-import tv.superawesome.sdk.aux.SALog;
+import tv.superawesome.lib.sautils.SALog;
 
 /**
  * Type of aux functions
@@ -23,7 +20,7 @@ public class SASystem {
      * return "ios"
      * @return: constant - ios
      */
-    public SASystemType getSystemType() {
+    public static SASystemType getSystemType() {
         return SASystemType.android;
     }
 
@@ -31,7 +28,7 @@ public class SASystem {
      * @brief: function that gets the system size
      * @return: where either tablet or mobile
      */
-    public SASystemSize getSystemSize() {
+    public static SASystemSize getSystemSize() {
 
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         int width = dm.widthPixels;
@@ -42,8 +39,6 @@ public class SASystem {
         double x = Math.pow(wi,2);
         double y = Math.pow(hi,2);
         double screenInches = Math.sqrt(x+y);
-
-        SALog.Log("Screen Inches: " + screenInches);
 
         if (screenInches < 6){
             return SASystemSize.mobile.mobile;
@@ -56,7 +51,7 @@ public class SASystem {
      * @brief just return the verbose system
      * @return a string
      */
-    public String getVerboseSystemDetails() {
+    public static String getVerboseSystemDetails() {
         return getSystemType().toString() + "_" + getSystemSize().toString();
     }
 }

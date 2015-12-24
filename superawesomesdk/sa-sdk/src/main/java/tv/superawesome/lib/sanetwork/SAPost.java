@@ -5,7 +5,7 @@
  * @date: 28/09/2015
  *
  */
-package tv.superawesome.sdk.data.Network;
+package tv.superawesome.lib.sanetwork;
 
 /**
  * Needed imports for the implementation
@@ -13,6 +13,7 @@ package tv.superawesome.sdk.data.Network;
 import android.os.AsyncTask;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -56,6 +57,7 @@ public class SAPost extends AsyncTask <String, Integer, String> {
         httpPost.setEntity(postParamsString);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type","application/json");
+        httpPost.setHeader("User-Agent", SAUserAgent.getUserAgent());
 
         /** try to obtain a response from the server */
         HttpResponse response = null;

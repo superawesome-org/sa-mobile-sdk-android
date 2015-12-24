@@ -6,7 +6,7 @@
  * @date: 09/12/15
  *
  */
-package tv.superawesome.sdk.aux;
+package tv.superawesome.lib.sautils;
 
 /**
  * Imports needed by the class

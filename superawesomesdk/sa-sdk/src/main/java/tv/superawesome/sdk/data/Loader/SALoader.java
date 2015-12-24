@@ -10,20 +10,13 @@ package tv.superawesome.sdk.data.Loader;
 /**
  * Imports needed for this implementation
  */
-import com.bee7.gamewall.video.exoplayer.DemoPlayer;
-import com.google.gson.GsonBuilder;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import junit.framework.Assert;
-
-import java.util.HashMap;
-
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.aux.SAAux;
+import tv.superawesome.lib.sanetwork.*;
 import tv.superawesome.sdk.data.Models.SAAd;
-import tv.superawesome.sdk.data.Network.SANetListener;
-import tv.superawesome.sdk.data.Network.SANetwork;
 import tv.superawesome.sdk.data.Parser.SAParser;
 import tv.superawesome.sdk.data.Parser.SAParserListener;
 import tv.superawesome.sdk.data.Validator.SAValidator;
@@ -46,7 +39,7 @@ public class SALoader {
         JsonObject queryJson = new JsonObject();
         queryJson.addProperty("test", SuperAwesome.getInstance().isTestingEnabled());
         queryJson.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-        queryJson.addProperty("rnd", SAAux.getCacheBuster());
+        queryJson.addProperty("rnd", SAURLUtils.getCacheBuster());
 
         /** send a standard GET request */
         SANetwork.sendGET(endpoint, queryJson, new SANetListener() {

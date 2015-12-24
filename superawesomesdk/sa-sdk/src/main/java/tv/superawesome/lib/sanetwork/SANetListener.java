@@ -5,7 +5,7 @@
  * @date: 28/09/2015
  *
  */
-package tv.superawesome.sdk.data.Network;
+package tv.superawesome.lib.sanetwork;
 
 /**
  * @brief: This is a listener interface for SAGet and SAPost async task classes

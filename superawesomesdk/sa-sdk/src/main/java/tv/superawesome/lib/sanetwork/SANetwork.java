@@ -5,24 +5,22 @@
  * @date: 28/09/2015
  *
  */
-package tv.superawesome.sdk.data.Network;
+package tv.superawesome.lib.sanetwork;
 
 /**
  * Imports needed for this implementation
  */
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONObject;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Map;
 
-import tv.superawesome.sdk.aux.SAAux;
+import java.io.UnsupportedEncodingException;
+
+import tv.superawesome.lib.sanetwork.*;
+import tv.superawesome.lib.sautils.*;
 
 /**
  * SANetwork is a simple class with two static methods, sendGet and sendPost, that
@@ -40,7 +38,7 @@ public class SANetwork {
 
         /** get a reference to the final endpoint so I can change it */
         String finalEndpoint = endpoint +
-                (SAAux.isJSONEmpty(querydict) ? "?" + SAAux.formGetQueryFromDict(querydict) : "");
+                (SAUtils.isJSONEmpty(querydict) ? "?" + SAURLUtils.formGetQueryFromDict(querydict) : "");
 
         /** finally, execute */
         SAGet getOp = new SAGet();

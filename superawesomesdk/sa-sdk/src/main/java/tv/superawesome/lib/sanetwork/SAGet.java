@@ -5,7 +5,7 @@
  * @date: 28/09/2015
  *
  */
-package tv.superawesome.sdk.data.Network;
+package tv.superawesome.lib.sanetwork;
 
 /**
  * Needed imports for the implementation
@@ -21,7 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.net.ssl.SSLContext;
-import tv.superawesome.sdk.aux.SALog;
+import tv.superawesome.lib.sautils.*;
 
 /**
  * In Java SAGet is a subclass of AsyncTask
@@ -61,11 +61,12 @@ public class SAGet extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String[] url) {
 
         HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(url[0]);
+        HttpGet httpGet = new HttpGet(url[0]);
+        httpGet.setHeader("User-Agent", SAUserAgent.getUserAgent());
 
         HttpResponse response = null;
         try {
-            response = client.execute(request);
+            response = client.execute(httpGet );
             SALog.Log(response.toString());
         } catch (IOException e ) {
             handleError(e);

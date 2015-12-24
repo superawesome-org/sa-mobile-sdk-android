@@ -1,26 +1,32 @@
 /**
- * @class: SASystemType.java
+ * @class: SASystemSize.java
  * @copyright: (c) 2015 SuperAwesome Ltd. All rights reserved.
  * @author: Gabriel Coman
  * @date: 29/10/2015
  *
  */
-package tv.superawesome.sdk.system;
+package tv.superawesome.lib.sanetwork;
 
 /**
- * enum with types - for this case it's just android or undefined
+ * system size - mobile or tablet basically
  */
-public enum SASystemType {
+public enum SASystemSize {
     undefined {
         @Override
         public String toString() {
             return "undefined";
         }
     },
-    android {
+    mobile {
         @Override
         public String toString() {
-            return "android";
+            return "mobile";
+        }
+    },
+    tablet {
+        @Override
+        public String toString() {
+            return "tablet";
         }
     }
 }
