@@ -29,7 +29,7 @@ import tv.superawesome.lib.sautils.*;
 public class SANetwork {
 
     /**
-     * @brief: This is just a wrapper over SAGet, that ads some more fluff and has static methods so you don't have to alloc a new instance
+     * This is just a wrapper over SAGet, that ads some more fluff and has static methods so you don't have to alloc a new instance
      * @param endpoint - the primary, unaltered endpoint to send data to
      * @param querydict - a map of values that will be transformed into a proper GET query ?=parm1=val1&param2=val2, etc
      * @param listener - another SANetListener object, that just passes what SAGet sends him
@@ -46,7 +46,7 @@ public class SANetwork {
     }
 
     /**
-     * @brief: this function acts as a wrapper around SAPost, in the sense that forms POST body params
+     * this function acts as a wrapper around SAPost, in the sense that forms POST body params
      * @param endpoint - the final endpoint to send the POST request to
      * @param postparams - a map that will be transformed into a series of POST body params
      * @param listener - another SANetListener object, that just passes what SAPost sends him

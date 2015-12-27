@@ -33,7 +33,7 @@ public class SAVASTParser {
     }
 
     /**
-     * @brief: This function parses the VAST Tag downloaded from vastURL and uses listener to
+     * This function parses the VAST Tag downloaded from vastURL and uses listener to
      * get back the result as a callback
      * @param vastURL - the URL of the VAST Tag
      * @param listener - a reference to a listnere

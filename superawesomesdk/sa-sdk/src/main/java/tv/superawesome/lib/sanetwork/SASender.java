@@ -20,7 +20,7 @@ import tv.superawesome.lib.sautils.SALog;
 public class SASender {
 
     /**
-     * @brief: Fire-and-forget event function
+     * Fire-and-forget event function
      * @param url - the event url to send the data to
      */
     public static void sendEventToURL(final String url) {

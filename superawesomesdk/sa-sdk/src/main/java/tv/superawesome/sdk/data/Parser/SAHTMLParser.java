@@ -18,7 +18,7 @@ import tv.superawesome.sdk.data.Models.SAAd;
 public class SAHTMLParser {
 
     /**
-     * @brief: This static function uses ad data to return a formatted HTML string
+     * This static function uses ad data to return a formatted HTML string
      * @param ad - the ad
      * @return - a HTML string for the Ad to be rendered
      */
@@ -50,7 +50,7 @@ public class SAHTMLParser {
     }
 
     /**
-     * @brief: load a special HTML file and parse & format it so that later on webviews will be
+     * load a special HTML file and parse & format it so that later on webviews will be
      * able to use it to display proper image data
      * @param ad - ad data
      * @return - the formatted HTML string to be used by a WebView
@@ -60,7 +60,7 @@ public class SAHTMLParser {
     }
 
     /**
-     * @brief: load a special HTML file and parse & format it so that later on webviews will be
+     * load a special HTML file and parse & format it so that later on webviews will be
      * able to use it to display proper rich media data
      * @param ad - ad data
      * @return - the formatted HTML string to be used by a WebView
@@ -70,7 +70,7 @@ public class SAHTMLParser {
     }
 
     /**
-     * @brief: load a special HTML file and parse & format it so that later on webviews will be
+     * load a special HTML file and parse & format it so that later on webviews will be
      * able to use it to display proper tag data
      * @param ad - ad data
      * @return - the formatted HTML string to be used by a WebView

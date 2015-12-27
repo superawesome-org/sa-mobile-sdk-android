@@ -21,7 +21,7 @@ import java.util.Random;
 public class SAUtils {
 
     /**
-     * @brief Function that returns a random number between two limits
+     * Function that returns a random number between two limits
      * @param min - min edge
      * @param max - max edge
      * @return a random integer
@@ -32,7 +32,7 @@ public class SAUtils {
     }
 
     /**
-     * @brief return true if json is empty, false otherwise
+     * return true if json is empty, false otherwise
      * @param dict a json dict
      */
     public static boolean isJSONEmpty(JsonObject dict) {
@@ -43,9 +43,9 @@ public class SAUtils {
     }
 
     /**
-     * @brief: Function that checks if the value of an string is actually integer
+     * Function that checks if the value of an string is actually integer
      * @param s
-     * @return
+     * @return boolean
      */
     public static boolean isInteger(String s) {
         return isInteger(s,10);

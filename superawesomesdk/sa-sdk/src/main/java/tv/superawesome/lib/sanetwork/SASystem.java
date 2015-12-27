@@ -16,17 +16,17 @@ import tv.superawesome.lib.sautils.SALog;
  */
 public class SASystem {
     /**
-     * @brief: function that gets the system type - because it's iOS - it will only
+     * function that gets the system type - because it's iOS - it will only
      * return "ios"
-     * @return: constant - ios
+     * @return constant - ios
      */
     public static SASystemType getSystemType() {
         return SASystemType.android;
     }
 
     /**
-     * @brief: function that gets the system size
-     * @return: where either tablet or mobile
+     * function that gets the system size
+     * @return where either tablet or mobile
      */
     public static SASystemSize getSystemSize() {
 
@@ -48,7 +48,7 @@ public class SASystem {
     }
 
     /**
-     * @brief just return the verbose system
+     * just return the verbose system
      * @return a string
      */
     public static String getVerboseSystemDetails() {

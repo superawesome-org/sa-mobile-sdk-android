@@ -62,7 +62,7 @@ public class SAVASTParser extends AsyncTask<String, Integer, String> {
     }
 
     /**
-     * @brief: this function will be called everytime the SAGet class should return
+     * this function will be called everytime the SAGet class should return
      * some kind of error
      * @param e - the exception
      */
@@ -79,7 +79,7 @@ public class SAVASTParser extends AsyncTask<String, Integer, String> {
     }
 
     /**
-     * @brief The main parseing function
+     * The main parseing function
      * @param url - URL to the VAST
      * @return an array of VAST ads
      */

@@ -13,7 +13,6 @@ package tv.superawesome.sdk.data.Models;
 import tv.superawesome.lib.sautils.*;
 
 /**
- * @brief:
  * This model class contains all information that is received from the server
  * when an Ad is requested, as well as some aux fields that will be generated
  * by the SDK

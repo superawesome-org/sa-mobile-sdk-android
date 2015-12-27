@@ -13,7 +13,7 @@ package tv.superawesome.sdk.data.Parser;
  */
 public interface SAVASTListener {
     /**
-     * @brief: After SALVASTParser parses a VAST Tag and finds the click URL, this function is
+     * After SALVASTParser parses a VAST Tag and finds the click URL, this function is
      * called to send a callback param vastURL
      * @param clickURL - sends back the VAST click URL that was found
      */

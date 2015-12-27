@@ -29,7 +29,7 @@ import tv.superawesome.sdk.data.Validator.SAValidator;
 public class SALoader {
 
     /**
-     * @brief: the function that actually loads the Ad
+     * the function that actually loads the Ad
      * @param placementId - the placement ID a user might want to preload an Ad for
      * @param listener - a reference to the listener
      */

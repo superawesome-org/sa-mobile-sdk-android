@@ -31,8 +31,8 @@ public class SAPost extends AsyncTask <String, Integer, String> {
     private StringEntity postParamsString;
 
     /**
-     * @brief: This function acts as a wrapper around AsyncTask's execute(url) function,
-     *         that adds the possibility to input a list of post params and a SANetListener reference
+     * This function acts as a wrapper around AsyncTask's execute(url) function,
+     * that adds the possibility to input a list of post params and a SANetListener reference
      * @param url - the URL to make the POST request to
      * @param postParamsString - the list of post params
      * @param listener - the listner reference
@@ -86,7 +86,7 @@ public class SAPost extends AsyncTask <String, Integer, String> {
     }
 
     /**
-     * @brief: this function will be called every time the SAPost class should return
+     * this function will be called every time the SAPost class should return
      * some kind of error
      * @param e - the exception
      * */

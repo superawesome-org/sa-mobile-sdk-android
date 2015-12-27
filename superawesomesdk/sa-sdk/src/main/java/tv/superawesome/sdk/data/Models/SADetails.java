@@ -13,7 +13,6 @@ package tv.superawesome.sdk.data.Models;
 import tv.superawesome.lib.sautils.*;
 
 /**
- * @brief:
  * The SADetails class contains fine grained information about the creative
  * of an ad (such as width, iamge, vast, tag, etc)
  * Depending on the format of the creative, some fields are essential,

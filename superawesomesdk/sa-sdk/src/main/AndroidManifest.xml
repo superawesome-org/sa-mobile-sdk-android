@@ -5,31 +5,9 @@
     <application
         android:allowBackup="true" >
         <activity
-            android:name="org.nexage.sourcekit.mraid.MRAIDBrowser"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
             android:name=".views.SAVideoActivity"
             android:label="@string/superawesome__title_activity_savideo" >
         </activity>
-        <activity
-            android:name=".activities.SAGamewallActivity"
-            android:label="@string/superawesome__title_activity_sagamewall" >
-        </activity>
-
-        <receiver android:name="tv.superawesome.sdk.gamewall.RewardReceiver" android:enabled="true" android:exported="true">
-            <intent-filter>
-                <action android:name="com.bee7.action.REWARD" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="tv.superawesome.sdk.gamewall.RewardingServiceReceiver" android:enabled="true" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-        <service android:name="tv.superawesome.sdk.gamewall.RewardingService" android:process=":rewardingservice" android:enabled="true" />
-
 
     </application>
 

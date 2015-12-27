@@ -64,7 +64,7 @@ public class SAVASTPlayer extends Fragment {
     }
 
     /**
-     * @brief Main playing function
+     * Main playing function
      * @param videoURL the URL to play
      */
     public void playWithMediaURL(String videoURL){
@@ -207,7 +207,7 @@ public class SAVASTPlayer extends Fragment {
     }
 
     /**
-     * @brief: Function used by other components to update the listener
+     * Function used by other components to update the listener
      * @param listener
      */
     public void setListener(SAVASTPlayerListener listener){
@@ -215,7 +215,7 @@ public class SAVASTPlayer extends Fragment {
     }
 
     /**
-     * @brief: function used by other components to update the URL
+     * function used by other components to update the URL
      * @param url
      */
     public void setupClickURL(String url) {

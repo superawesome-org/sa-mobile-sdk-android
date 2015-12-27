@@ -9,7 +9,6 @@
 package tv.superawesome.sdk.data.Models;
 
 /**
- * @brief:
  * An enum that defines the number of formats an ad can be in
  *  - invalid: defined by the SDK in case of some error
  *  - image: the creative is a simple banner image

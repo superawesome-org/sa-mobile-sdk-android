@@ -1,1 +1,1 @@
-include ':sa-sdk', ':bee7androidsdkgamewall'
+include ':sa-sdk', 'com.google.code.gson:gson:2.4'

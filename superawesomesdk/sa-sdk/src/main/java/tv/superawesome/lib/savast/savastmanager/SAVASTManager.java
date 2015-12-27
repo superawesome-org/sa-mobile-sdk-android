@@ -56,7 +56,7 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
     }
 
     /**
-     * @brief Main Manager public function
+     * Main Manager public function
      * @param url
      */
     public void parseVASTURL(String url) {

@@ -18,13 +18,13 @@ import tv.superawesome.sdk.data.Models.SAAd;
 public interface SALoaderListener {
 
     /**
-     * @brief: After SALoader pre-loads an Ad, this is the function that should be called
+     * After SALoader pre-loads an Ad, this is the function that should be called
      * @param ad - sends back the Ad object that was loaded
      */
     void didLoadAd(SAAd ad);
 
     /**
-     * @brief: After SALoader fails to pre-loads an Ad, this is the function that should be called
+     * After SALoader fails to pre-loads an Ad, this is the function that should be called
      * @param placementId - sends back the Ad's placement Id
      */
     void didFailToLoadAdForPlacementId(int placementId);

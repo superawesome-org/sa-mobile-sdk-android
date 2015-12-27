@@ -13,7 +13,6 @@ package tv.superawesome.sdk.data.Models;
 import tv.superawesome.lib.sautils.*;
 
 /**
- * @brief:
  * The creative contains essential ad information like format, click url
  * and such
  */

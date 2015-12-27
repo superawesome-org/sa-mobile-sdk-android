@@ -25,7 +25,7 @@ public class SALog {
     private static final String ERR_TAG = "[AA :: ERROR]";
 
     /**
-     * @brief: just a thin wrapper around Log.d
+     * just a thin wrapper around Log.d
      * @param message - the message to be printed out
      */
     public static void Log(String message){
@@ -33,7 +33,7 @@ public class SALog {
     }
 
     /**
-     * @brief just a thin wrapper around Log.e
+     * just a thin wrapper around Log.e
      * @param message - the message to be printed out
      */
     public static void Err(String message) {

@@ -43,12 +43,18 @@ import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
 import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.listeners.SAAdListener;
+import tv.superawesome.sdk.listeners.SAParentalGateListener;
+import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.views.SAVideoActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SAAdListener, SAParentalGateListener, SAVideoAdListener {
 
     private static final int CONTENT_VIEW_ID = 10101010;
     private SAVASTPlayer newFragment;
+    private SAAdListener adListener = this;
+    private SAParentalGateListener parentalGateListener = this;
+    private SAVideoAdListener videoAdListener = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +72,7 @@ public class MainActivity extends Activity {
         SALoader.loadAd(ad1, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
-                SAVideoActivity.start(MainActivity.this, ad, false);
+                SAVideoActivity.start(MainActivity.this, ad, false, adListener, parentalGateListener, videoAdListener);
             }
 
             @Override
@@ -134,26 +140,83 @@ public class MainActivity extends Activity {
 //        });
     }
 
+    @Override
+    public void adWasShown(int placementId) {
+        SALog.Log("adWasShown");
+    }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public void adFailedToShow(int placementId) {
+        SALog.Log("adFailedToShow");
+    }
+
+    @Override
+    public void adWasClosed(int placementId) {
+        SALog.Log("adWasClosed");
+    }
+
+    @Override
+    public void adWasClicked(int placementId) {
+        SALog.Log("adWasClicked");
+    }
+
+    @Override
+    public void adHasIncorrectPlacement(int placementId) {
+        SALog.Log("adHasIncorrectPlacement");
+    }
+
+    @Override
+    public void parentalGateWasCanceled(int placementId) {
+        SALog.Log("parentalGateWasCanceled");
+    }
+
+    @Override
+    public void parentalGateWasFailed(int placementId) {
+        SALog.Log("parentalGateWasFailed");
+    }
+
+    @Override
+    public void parentalGateWasSucceded(int placementId) {
+        SALog.Log("parentalGateWasSucceded");
+    }
+
+    @Override
+    public void adStarted(int placementId) {
+        SALog.Log("adStarted");
+    }
+
+    @Override
+    public void videoStarted(int placementId) {
+        SALog.Log("videoStarted");
+    }
+
+    @Override
+    public void videoReachedFirstQuartile(int placementId) {
+        SALog.Log("videoReachedFirstQuartile");
+    }
+
+    @Override
+    public void videoReachedMidpoint(int placementId) {
+        SALog.Log("videoReachedMidpoint");
+    }
+
+    @Override
+    public void videoReachedThirdQuartile(int placementId) {
+        SALog.Log("videoReachedThirdQuartile");
+    }
+
+    @Override
+    public void videoEnded(int placementId) {
+        SALog.Log("videoEnded");
+    }
+
+    @Override
+    public void adEnded(int placementId) {
+        SALog.Log("adEnded");
+    }
+
+    @Override
+    public void allAdsEnded(int placementId) {
+        SALog.Log("allAdsEnded");
+    }
 }

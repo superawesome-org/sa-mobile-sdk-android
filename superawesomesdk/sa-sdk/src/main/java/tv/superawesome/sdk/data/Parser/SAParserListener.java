@@ -17,7 +17,7 @@ import tv.superawesome.sdk.data.Models.SAAd;
  */
 public interface SAParserListener {
     /**
-     * @brief Callback function that's called when an ad has been parsed OK
+     * Callback function that's called when an ad has been parsed OK
      * @param ad
      */
     public void parsedAd(SAAd ad);

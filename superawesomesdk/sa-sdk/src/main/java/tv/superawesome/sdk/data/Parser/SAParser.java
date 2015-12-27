@@ -22,13 +22,13 @@ import tv.superawesome.sdk.data.Models.SADetails;
 import tv.superawesome.lib.sautils.*;
 
 /**
- * @brief: This is a class of static functions that make it easy to parse Ad responses from the
+ * This is a class of static functions that make it easy to parse Ad responses from the
  * server into SuperAwesome SDK models
  */
 public class SAParser {
 
     /**
-     * @brief This function performs the Basic integrity check on a piece of data loaded from the
+     * This function performs the Basic integrity check on a piece of data loaded from the
      * internet
      * @param dict
      */
@@ -48,7 +48,7 @@ public class SAParser {
     }
 
     /**
-     * @brief: This static function parses the general Ad info (passed as a map) into a SAAd object
+     * This static function parses the general Ad info (passed as a map) into a SAAd object
      * @param dict a json of values from the server
      * @return a SAAd object
      */
@@ -74,7 +74,7 @@ public class SAParser {
     }
 
     /**
-     * @brief: This static function parses the creative Ad info (passed as a map) into a SACreative object
+     * This static function parses the creative Ad info (passed as a map) into a SACreative object
      * @param cdict a json of values from the server
      * @return a SACreative object
      */
@@ -102,7 +102,7 @@ public class SAParser {
     }
 
     /**
-     * @brief: This static function parses the creative details Ad info (passed as a map) into a SADetails object
+     * This static function parses the creative details Ad info (passed as a map) into a SADetails object
      * @param ddict a json of values from the server
      * @return a SADetails object
      */
@@ -142,7 +142,7 @@ public class SAParser {
     }
 
     /**
-     * @brief Parses a dictionary received from the server into a valid Ad object
+     * Parses a dictionary received from the server into a valid Ad object
      * @param dict - the dictionary to parse
      * @param placementId = the placement id - just used because it's not returned by the ad server
      * @param listener - the listener that actually calls the callback to finish the method

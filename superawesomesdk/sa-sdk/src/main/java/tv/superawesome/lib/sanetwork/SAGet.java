@@ -45,7 +45,6 @@ public class SAGet extends AsyncTask<String, Integer, String> {
      *
      * @param url - the URL to get the data from
      * @param listener - a reference to the SANetListner object
-     * @return void
      */
     public void execute (String url, SANetListener listener) {
         /** assign listener reference */
@@ -97,7 +96,7 @@ public class SAGet extends AsyncTask<String, Integer, String> {
     }
 
     /**
-     * @brief: this function will be called everytime the SAGet class should return
+     * this function will be called everytime the SAGet class should return
      * some kind of error
      * @param e - the exception
      */

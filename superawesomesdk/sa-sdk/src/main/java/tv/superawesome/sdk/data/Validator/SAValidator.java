@@ -20,7 +20,7 @@ import tv.superawesome.sdk.data.Models.SACreativeFormat;
 public class SAValidator {
 
     /**
-     * @brief: This function tests wherer an Ad is valid; It does so by looking at some crucial ad
+     * This function tests wherer an Ad is valid; It does so by looking at some crucial ad
      * data that has to be there, as well as data that has to exist depending on the actual type
      * of the ad
      * @param ad - the ad that you want to test

@@ -47,15 +47,19 @@ public class SAVideoActivity extends Activity{
     private static Context refContext;
 
     /**
-     * @brief Function that starts up an activity
+     * Function that starts up an activity
      * @param context - the context
      * @param _ad - the add to be passed down to get info from
      * @param _isParentalGateEnabled - whether the parental gate should be on or off
      */
-    public static void start(Context context, SAAd _ad, boolean _isParentalGateEnabled) {
+    public static void start(Context context, SAAd _ad, boolean _isParentalGateEnabled,
+                             SAAdListener adListener, SAParentalGateListener parentalGateListener, SAVideoAdListener videoAdListener) {
         /** get data to send */
         AdDataHolder.getInstance()._refAd = _ad;
         AdDataHolder.getInstance()._refIsParentalGateEnabled = _isParentalGateEnabled;
+        AdDataHolder.getInstance()._refAdListener = adListener;
+        AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
+        AdDataHolder.getInstance()._refVideoAdListener = videoAdListener;
 
         /** get ref context */
         refContext = context;
@@ -74,6 +78,9 @@ public class SAVideoActivity extends Activity{
         /** assign data from AdDataHolder */
         ad = AdDataHolder.getInstance()._refAd;
         isParentalGateEnabled = AdDataHolder.getInstance()._refIsParentalGateEnabled;
+        adListener = AdDataHolder.getInstance()._refAdListener;
+        parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
+        videoAdListener = AdDataHolder.getInstance()._refVideoAdListener;
 
         /** get padlock */
         padlock = (ImageView) findViewById(R.id.padlock_image);

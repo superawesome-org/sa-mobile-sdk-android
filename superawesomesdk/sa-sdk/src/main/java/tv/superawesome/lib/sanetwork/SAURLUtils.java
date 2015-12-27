@@ -21,8 +21,7 @@ import tv.superawesome.lib.sautils.SAUtils;
  */
 public class SAURLUtils {
     /**
-     * @brief Cachebuster is just a big random number
-     * @return
+     * Cache buster is just a big random number
      */
     public static int getCacheBuster() {
         int min = 1000000;
@@ -32,9 +31,8 @@ public class SAURLUtils {
     }
 
     /**
-     * @brief Function that forms a query string from a dict
+     * Function that forms a query string from a dict
      * @param dict
-     * @return
      */
     public static String formGetQueryFromDict(JsonObject dict) {
         String queryString = "";
@@ -56,9 +54,8 @@ public class SAURLUtils {
     }
 
     /**
-     * @brief: Function that encodes a dict
+     * Function that encodes a dict
      * @param dict
-     * @return
      */
     public static String encodeDictAsJsonDict(JsonObject dict) {
         String dictString = "";
@@ -88,7 +85,7 @@ public class SAURLUtils {
     }
 
     /**
-     * @brief checks if an URL is valid
+     * checks if an URL is valid
      * @param url - the url in question
      * @return true if valid, false otherwise
      */
