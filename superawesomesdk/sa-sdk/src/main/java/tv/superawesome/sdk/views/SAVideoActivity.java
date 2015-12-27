@@ -43,6 +43,9 @@ public class SAVideoActivity extends Activity{
     /** the padlock part */
     private ImageView padlock;
 
+    /** ref to current context */
+    private static Context refContext;
+
     /**
      * @brief Function that starts up an activity
      * @param context - the context
@@ -53,6 +56,9 @@ public class SAVideoActivity extends Activity{
         /** get data to send */
         AdDataHolder.getInstance()._refAd = _ad;
         AdDataHolder.getInstance()._refIsParentalGateEnabled = _isParentalGateEnabled;
+
+        /** get ref context */
+        refContext = context;
 
         /** start a new intent */
         Intent intent = new Intent(context, SAVideoActivity.class);
@@ -171,13 +177,24 @@ public class SAVideoActivity extends Activity{
                 ad.creative.isFullClickURLReliable = true;
                 ad.creative.fullClickURL = url;
 
-                SASender.sendEventToURL(ad.creative.trackingURL);
-                SALog.Log("Tracking to " + ad.creative.trackingURL);
-                SALog.Log("Going to " + url);
+                /** open the parental gate */
+                if (isParentalGateEnabled) {
+                    SALog.Log("PG here we go!!!!");
+                    SAParentalGate gate = new SAParentalGate(refContext, ad);
+                    gate.show();
+                    gate.setListener(parentalGateListener);
 
-                // go-to-url
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
-                startActivity(browserIntent);
+                }
+                /** go directly to the URL */
+                else {
+                    SASender.sendEventToURL(ad.creative.trackingURL);
+                    SALog.Log("Tracking to " + ad.creative.trackingURL);
+                    SALog.Log("Going to " + url);
+
+                    // go-to-url
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
+                    startActivity(browserIntent);
+                }
             }
         });
         /** send the message to parse the VAST part */

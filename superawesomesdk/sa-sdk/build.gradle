@@ -91,7 +91,6 @@ dependencies {
     compile('com.google.android.gms:play-services-analytics:7.5.0') {
         exclude module: 'play-services-base'
     }
-    compile project(':bee7androidsdkgamewall')
 }
 
 task sourcesJar(type: Jar) {
