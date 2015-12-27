@@ -75,19 +75,19 @@ public class SACreative {
 
     /** aux print function */
     public void print() {
-        String printout = "";
-        printout += "\t creativeId: " + creativeId;
-        printout += "\t name: " + name;
-        printout += "\t cpm: " + cpm;
-        printout += "\t baseFormat: " + baseFormat;
-        printout += "\t format: " + format.toString();
-        printout += "\t impressionURL: " + impressionURL;
-        printout += "\t viewableImpressionURL: " + viewableImpressionURL;
-        printout += "\t clickURL: " + clickURL;
-        printout += "\t trackingURL: " + trackingURL;
-        printout += "\t fullClickURL: " + fullClickURL;
-        printout += "\t isFullClickURLReliable: " + isFullClickURLReliable;
-        printout += "\t approved: " + approved;
+        String printout = " \nCREATIVE:\n";
+        printout += "\t creativeId: " + creativeId + "\n";
+        printout += "\t name: " + name + "\n";
+        printout += "\t cpm: " + cpm + "\n";
+        printout += "\t baseFormat: " + baseFormat + "\n";
+        printout += "\t format: " + format.toString() + "\n";
+        printout += "\t impressionURL: " + impressionURL + "\n";
+        printout += "\t viewableImpressionURL: " + viewableImpressionURL + "\n";
+        printout += "\t clickURL: " + clickURL + "\n";
+        printout += "\t trackingURL: " + trackingURL + "\n";
+        printout += "\t fullClickURL: " + fullClickURL + "\n";
+        printout += "\t isFullClickURLReliable: " + isFullClickURLReliable + "\n";
+        printout += "\t approved: " + approved + "\n";
         SALog.Log(printout);
         details.print();
     }

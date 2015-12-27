@@ -9,7 +9,7 @@
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
-            android:name=".activities.SAVideoActivity"
+            android:name=".views.SAVideoActivity"
             android:label="@string/superawesome__title_activity_savideo" >
         </activity>
         <activity

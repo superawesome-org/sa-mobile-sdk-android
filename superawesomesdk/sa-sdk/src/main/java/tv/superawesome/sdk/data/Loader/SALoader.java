@@ -14,6 +14,7 @@ package tv.superawesome.sdk.data.Loader;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.sanetwork.*;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -57,6 +58,12 @@ public class SALoader {
                        @Override
                        public void parsedAd(SAAd ad) {
                            boolean isValid = SAValidator.isAdDataValid(ad);
+
+                           if (ad != null) {
+                               ad.print();
+                           } else  {
+                               SALog.Log("Ad " + placementId + " is empty");
+                           }
 
                            if (isValid){
                                if (listener != null){

@@ -36,9 +36,30 @@ public class SAUtils {
      * @param dict a json dict
      */
     public static boolean isJSONEmpty(JsonObject dict) {
-        if (dict == null) return false;
-        if (dict.entrySet().isEmpty()) return false;
-        if (dict.toString().equals("{}")) return false;
+        if (dict == null) return true;
+        if (dict.entrySet().isEmpty()) return true;
+        if (dict.toString().equals("{}")) return true;
+        return false;
+    }
+
+    /**
+     * @brief: Function that checks if the value of an string is actually integer
+     * @param s
+     * @return
+     */
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    private static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
         return true;
     }
 }

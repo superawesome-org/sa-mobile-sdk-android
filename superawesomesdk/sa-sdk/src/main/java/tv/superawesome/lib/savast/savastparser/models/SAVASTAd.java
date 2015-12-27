@@ -19,11 +19,14 @@ public class SAVASTAd extends SAGenericVAST {
 
     @Override
     public void print() {
-        SALog.Log(type.toString() +  " Ad("+id+")");
-        SALog.Log("Sequence: " + sequence);
-        SALog.Log("Errors[" + Errors.size() + "]");
-        SALog.Log("Impressions[" + Impressions.size() + "]");
-        SALog.Log("Creatives[" + Creatives.size() + "]");
+        String printout = " \n";
+        printout += type.toString() + " Ad(" + id + ")" + "\n";
+        printout += "Sequence: " + sequence + "\n";
+        printout += "Errors[" + Errors.size() + "]" + "\n";
+        printout += "Impressions[" + Impressions.size() + "]" + "\n";
+        printout += "Creatives[" + Creatives.size() + "]" + "\n";
+        SALog.Log(printout);
+
         for (Iterator<SAVASTCreative> i = Creatives.iterator(); i.hasNext(); ) {
             SAVASTCreative item = i.next();
             item.print();

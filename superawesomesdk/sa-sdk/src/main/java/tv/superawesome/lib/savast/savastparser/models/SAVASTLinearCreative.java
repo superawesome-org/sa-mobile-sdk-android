@@ -22,14 +22,16 @@ public class SAVASTLinearCreative extends SAVASTCreative{
 
     @Override
     public void print() {
-        SALog.Log("\t" + type.toString() + " Creative(" + id + ")");
-        SALog.Log("\tSequence: " + sequence);
-        SALog.Log("\tDuration: " + Duration);
-        SALog.Log("\tClickThrough: " + ClickThrough);
-        SALog.Log("\tMediaFiles[" + MediaFiles.size() + "]");
-        SALog.Log("\tTrackingEvents[" + TrackingEvents.size() + "]");
-        SALog.Log("\tClickTracking[" + ClickTracking.size() + "]");
-        SALog.Log("\tCustomClicks[" + CustomClicks.size() + "]");
+        String printout = " \n";
+        printout += "\tCreative(" + id + ")" + "\n";
+        printout += "\tsequence: " + sequence + "\n";
+        printout += "\tDuration: " + Duration + "\n";
+        printout += "\tClickThrough: " + ClickThrough + "\n";
+        printout += "\tMediaFiles[" + MediaFiles.size() + "]" + "\n";
+        printout += "\tTrackingEvents[" + TrackingEvents.size() + "]" + "\n";
+        printout += "\tClickTracking[" + ClickTracking.size() + "]" + "\n";
+        printout += "\tCustomClicks[" + CustomClicks.size() + "]" + "\n";
+        SALog.Log(printout);
     }
 
     public void sumCreative(SAVASTLinearCreative creative) {

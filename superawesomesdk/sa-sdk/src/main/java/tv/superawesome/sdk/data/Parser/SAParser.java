@@ -33,11 +33,11 @@ public class SAParser {
      * @param dict
      */
     private static boolean performIntegrityCheck(JsonObject dict){
-        if (SAUtils.isJSONEmpty(dict) == false){
+        if (!SAUtils.isJSONEmpty(dict)){
             JsonObject creative = dict.getAsJsonObject("creative");
-            if (SAUtils.isJSONEmpty(creative) == false){
+            if (!SAUtils.isJSONEmpty(creative)){
                 JsonObject details = creative.getAsJsonObject("details");
-                if (SAUtils.isJSONEmpty(details) == false){
+                if (!SAUtils.isJSONEmpty(details)){
                     return true;
                 }
                 return false;
@@ -62,13 +62,13 @@ public class SAParser {
         Object isFallbackObj = dict.get("is_fallback");
         Object isFillObj = dict.get("is_fill");
 
-        ad.error = (errorObj != null ? Integer.parseInt(errorObj.toString()) : -1);
-        ad.lineItemId = (lineItemIdObj != null ? Integer.parseInt(lineItemIdObj.toString()) : -1);
-        ad.campaignId = (campaignIdObj != null ? Integer.parseInt(campaignIdObj.toString()) : -1);
+        ad.error = (errorObj != null ? Integer.parseInt(errorObj.toString().replace("\"","")) : -1);
+        ad.lineItemId = (lineItemIdObj != null ? Integer.parseInt(lineItemIdObj.toString().replace("\"","")) : -1);
+        ad.campaignId = (campaignIdObj != null ? Integer.parseInt(campaignIdObj.toString().replace("\"","")) : -1);
 
-        ad.isTest = (isTestObj != null ? Boolean.parseBoolean(isTestObj.toString()) : true);
-        ad.isFallback = (isFallbackObj != null ? Boolean.parseBoolean(isFallbackObj.toString()) : true);
-        ad.isFill = (isFillObj != null ? Boolean.parseBoolean(isFillObj.toString()) : false);
+        ad.isTest = (isTestObj == null || Boolean.parseBoolean(isTestObj.toString().replace("\"","")));
+        ad.isFallback = (isFallbackObj == null || Boolean.parseBoolean(isFallbackObj.toString().replace("\"","")));
+        ad.isFill = (isFillObj != null && Boolean.parseBoolean(isFillObj.toString().replace("\"","")));
 
         return ad;
     }
@@ -90,12 +90,12 @@ public class SAParser {
         Object clickUrlObj = cdict.get("click_url");
         Object approvedObj = cdict.get("approved");
 
-        creative.creativeId = (creativeIdObj != null ? Integer.parseInt(creativeIdObj.toString()) : -1);
+        creative.creativeId = (creativeIdObj != null ? Integer.parseInt(creativeIdObj.toString().replace("\"","")) : -1);
         creative.name = (nameObj != null ? nameObj.toString().replace("\"", "") : null);
-        creative.cpm = (cpmObj != null ? Integer.parseInt(cpmObj.toString()) : 0);
+        creative.cpm = (cpmObj != null ? Integer.parseInt(cpmObj.toString().replace("\"", "")) : 0);
         creative.impressionURL = (impressionUrlObj != null ? impressionUrlObj.toString().replace("\"", "") : null);
         creative.clickURL = (clickUrlObj != null ? clickUrlObj.toString().replace("\"", "") : null);
-        creative.approved = (approvedObj != null ? Boolean.parseBoolean(approvedObj.toString()) : false);
+        creative.approved = (approvedObj != null ? Boolean.parseBoolean(approvedObj.toString().replace("\"", "")) : false);
         creative.baseFormat = (baseFormatObj != null ? baseFormatObj.toString().replace("\"", "") : null);
 
         return creative;
@@ -124,14 +124,14 @@ public class SAParser {
         Object zipFileObj = ddict.get("zip_file");
         Object urlObj = ddict.get("url");
 
-        details.width = (widthObj != null ? Integer.parseInt(widthObj.toString()) : 0);
-        details.height = (heightObj != null ? Integer.parseInt(heightObj.toString()) : 0);
+        details.width = (widthObj != null ? Integer.parseInt(widthObj.toString().replace("\"","")) : 0);
+        details.height = (heightObj != null ? Integer.parseInt(heightObj.toString().replace("\"","")) : 0);
         details.image = (imageObj != null ? imageObj.toString().replace("\"", "") : null);
-        details.value = (valueObj != null ? Integer.parseInt(valueObj.toString()) : 0);
+        details.value = (valueObj != null ? Integer.parseInt(valueObj.toString().replace("\"","")) : 0);
         details.name = (nameObj != null ? nameObj.toString().replace("\"", "") : null);
         details.video = (videoObj != null ? videoObj.toString().replace("\"", "") : null);
-        details.bitrate = (bitrateObj != null ? Integer.parseInt(bitrateObj.toString()) : 0);
-        details.duration = (durationObj != null ? Integer.parseInt(durationObj.toString()) : 0);
+        details.bitrate = (bitrateObj != null ? Integer.parseInt(bitrateObj.toString().replace("\"","")) : 0);
+        details.duration = (durationObj != null ? Integer.parseInt(durationObj.toString().replace("\"","")) : 0);
         details.vast = (vastObj != null ? vastObj.toString().replace("\"", "") : null);
         details.tag = (tagObj != null ? tagObj.toString().replace("\"", "") : null);
         details.zip = (zipFileObj != null ? zipFileObj.toString().replace("\"", "") : null);
@@ -149,7 +149,8 @@ public class SAParser {
      */
     public static void parseDictionaryIntoAd(JsonObject dict, int placementId, final SAParserListener listener) {
         /** perform integrity check */
-        if (SAParser.performIntegrityCheck(dict) == false){
+        if (!SAParser.performIntegrityCheck(dict)){
+            SALog.Log("Did not pass integrity check");
             listener.parsedAd(null);
             return;
         }
@@ -190,7 +191,7 @@ public class SAParser {
         JsonObject impressionDict2 = new JsonObject();
         impressionDict2.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
         impressionDict2.addProperty("rnd", SAURLUtils.getCacheBuster());
-        impressionDict2.addProperty("data", new GsonBuilder().create().toJson(impressionDict1));
+        impressionDict2.addProperty("data", SAURLUtils.encodeDictAsJsonDict(impressionDict1));
         ad.creative.viewableImpressionURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAURLUtils.formGetQueryFromDict(impressionDict2);
 
         /** create the click URL */
@@ -203,19 +204,12 @@ public class SAParser {
                 listener.parsedAd(ad);
                 break;
             }
-            /** more complex video case */
+            /**
+             * simple video case here - the burden will be on the vast player to deal with all
+             * the complexities of vast stuff
+             * */
             case video:{
                 listener.parsedAd(ad);
-//                SAVASTParser parser = new SAVASTParser();
-//                parser.findCorrectVASTClick(ad.creative.details.vast, new SAVASTListener() {
-//                    @Override
-//                    public void findCorrectVASTClick(String clickURL) {
-//                        ad.creative.fullClickURL = clickURL;
-//                        ad.creative.isFullClickURLReliable = true;
-//                        ad.adHTML = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
-//                        listener.parsedAd(ad);
-//                    }
-//                });
                 break;
             }
             /** the same - rich media and tag */

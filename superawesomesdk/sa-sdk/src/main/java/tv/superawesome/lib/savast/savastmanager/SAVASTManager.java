@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import tv.superawesome.lib.sanetwork.SASender;
+import tv.superawesome.lib.sanetwork.SAURLUtils;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastparser.SAVASTParser;
 import tv.superawesome.lib.savast.savastparser.SAVASTParserListener;
@@ -67,7 +68,7 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
     @Override
     public void didParseVASTAndHasResponse(List<SAVASTAd> ads) {
 
-        // give ref to adQueue fro the returned ads list
+        // give ref to adQueue from the returned ads list
         adQueue = ads;
 
         // set the ad queue playhead
@@ -280,6 +281,21 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
     }
 
     private void playCurrentAdWithCurrentCreative() {
+        // setup the current click URL
+        if (_cCreative.ClickThrough != null && SAURLUtils.isValidURL(_cCreative.ClickThrough)){
+            refPlayer.setupClickURL(_cCreative.ClickThrough);
+        }
+        // if no click through is there - just go through the ClickTracking URLs and
+        // maybe one is good
+        else {
+            for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
+                if (SAURLUtils.isValidURL(i.next())){
+                    refPlayer.setupClickURL(i.next());
+                    break;
+                }
+            }
+        }
+
         // get URL
         String url = _cCreative.MediaFiles.get(0).URL;
 

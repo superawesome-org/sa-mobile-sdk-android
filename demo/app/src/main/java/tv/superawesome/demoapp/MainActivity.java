@@ -43,6 +43,7 @@ import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
 import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.views.SAVideoActivity;
 
 public class MainActivity extends Activity {
 
@@ -52,92 +53,27 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
-        FrameLayout frame = new FrameLayout(this);
-        frame.setId(CONTENT_VIEW_ID);
-        setContentView(frame, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().enableTestMode();
+        SALog.Log(SuperAwesome.getInstance().getSDKVersion());
+        SALog.Log(SASystem.getVerboseSystemDetails());
 
-        if (savedInstanceState == null) {
-            newFragment = new SAVASTPlayer();
+        int ad1 = 30245;
+        int ad2 = 21022;
 
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(CONTENT_VIEW_ID, newFragment).commit();
-            getFragmentManager().executePendingTransactions();
-        }
+        SALoader.loadAd(ad1, new SALoaderListener() {
+            @Override
+            public void didLoadAd(SAAd ad) {
+                SAVideoActivity.start(MainActivity.this, ad, false);
+            }
 
-//        SuperAwesome.getInstance().setConfigurationProduction();
-//        SuperAwesome.getInstance().enableTestMode();
-//        SALog.Log(SuperAwesome.getInstance().getSDKVersion());
-//        SALog.Log(SASystem.getVerboseSystemDetails());
-
-//        SALoader.loadAd(21022, new SALoaderListener() {
-//            @Override
-//            public void didLoadAd(SAAd ad) {
-//                System.out.println(ad.placementId);
-//                System.out.println(ad.creative.creativeId);
-//                System.out.println(ad.creative.clickURL);
-//                System.out.println(ad.creative.details.video);
-//                System.out.println(ad.creative.details.vast);
-//                System.out.println(ad.creative.format);
-//            }
-//
-//            @Override
-//            public void didFailToLoadAdForPlacementId(int placementId) {
-//                System.out.println("FAILURE " + placementId);
-//            }
-//        });
-
-        String inlineAdURL = "https://ads.superawesome.tv/v2/video/vast/30244/30369/30222/?sdkVersion=ios_3.3.1&rnd=430832557";
-        String wrapperAdURL = "https://ads.superawesome.tv/v2/video/vast/30245/30370/30223/?sdkVersion=ios_3.3.1&rnd=489478975";
-
-
-        SAVASTManager manager = new SAVASTManager(newFragment, null);
-        manager.parseVASTURL(inlineAdURL);
-
-//        SAVASTParser parser1 = new SAVASTParser();
-//        parser1.execute(wrapperAdURL, new SAVASTParserListener() {
-//            @Override
-//            public void didParseVASTAndHasResponse(List<SAVASTAd> ads) {
-//                SALog.Log("End of parsing: Ads[" + ads.size() + "]");
-//                for (Iterator<SAVASTAd> i = ads.iterator(); i.hasNext(); ){
-//                    SAVASTAd ad = i.next();
-//                    ad.print();
-//                }
-//            }
-//
-//            @Override
-//            public void didNotFindAnyValidAds() {
-//
-//            }
-//
-//            @Override
-//            public void didFindInvalidVASTResponse() {
-//
-//            }
-//        });
-//
-//        SAVASTParser parser2 = new SAVASTParser();
-//        parser2.execute(inlineAdURL, new SAVASTParserListener() {
-//            @Override
-//            public void didParseVASTAndHasResponse(List<SAVASTAd> ads) {
-//                SALog.Log("End of parsing: Ads[" + ads.size() + "]");
-//                for (Iterator<SAVASTAd> i = ads.iterator(); i.hasNext(); ){
-//                    SAVASTAd ad = i.next();
-//                    ad.print();
-//                }
-//            }
-//
-//            @Override
-//            public void didNotFindAnyValidAds() {
-//
-//            }
-//
-//            @Override
-//            public void didFindInvalidVASTResponse() {
-//
-//            }
-//        });
+            @Override
+            public void didFailToLoadAdForPlacementId(int placementId) {
+                SALog.Log("Failed to load " + placementId);
+            }
+        });
 
 //        String[] ads = {
 //                "Banner ad - code",

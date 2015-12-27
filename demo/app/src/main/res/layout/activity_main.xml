@@ -6,44 +6,5 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/relative_layout"
-        android:orientation="vertical"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" >
-
-        <!--<ListView android:id="@+id/list"-->
-                  <!--android:layout_width="match_parent"-->
-                  <!--android:layout_height="wrap_content"-->
-                  <!--android:background="@color/listview_background"-->
-                  <!--android:layout_weight="1"-->
-                  <!--android:drawSelectorOnTop="false">-->
-            <!--</ListView>-->
-
-        <!--<tv.superawesome.sdk.view.BannerView-->
-            <!--android:id="@+id/banner"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--custom:placementID="5687"-->
-            <!--custom:testMode="true">-->
-        <!--</tv.superawesome.sdk.view.BannerView>-->
-
-        <!--<tv.superawesome.sdk.view.InterstitialView-->
-            <!--android:id="@+id/interstitial"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--custom:placementID="5692"-->
-            <!--custom:testMode="true"-->
-            <!--custom:showInstantly="true">-->
-        <!--</tv.superawesome.sdk.view.InterstitialView>-->
-
-    </RelativeLayout>
-
 
 </RelativeLayout>

@@ -9,8 +9,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
 
 /**
  * Created by gabriel.coman on 22/12/15.
@@ -48,6 +52,38 @@ public class SAURLUtils {
             return queryString.substring(0, queryString.length() - 1);
         } else {
             return queryString;
+        }
+    }
+
+    /**
+     * @brief: Function that encodes a dict
+     * @param dict
+     * @return
+     */
+    public static String encodeDictAsJsonDict(JsonObject dict) {
+        String dictString = "";
+
+        for (Map.Entry<String, JsonElement> e: dict.entrySet()) {
+            String val = e.getValue().toString();
+            if (SAUtils.isInteger(val)){
+                dictString += "\"" + e.getKey().toString() + "\":" + Integer.parseInt(val) + ",";
+            } else {
+                dictString += "\"" + e.getKey().toString() + "\":\"" + val.replace("\"","") + "\",";
+            }
+        }
+
+        if (dictString.length() > 0) {
+            dictString = "{" + dictString;
+            dictString = dictString.substring(0, dictString.length() - 1);
+            dictString += "}";
+            dictString = dictString.replace("\"","%22");
+            dictString = dictString.replace("}","%7D");
+            dictString = dictString.replace("{","%7B");
+            dictString = dictString.replace(":","%3A");
+            dictString = dictString.replace(",","%2C");
+            return dictString;
+        } else  {
+            return dictString;
         }
     }
 

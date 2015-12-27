@@ -20,6 +20,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+
 import javax.net.ssl.SSLContext;
 import tv.superawesome.lib.sautils.*;
 
@@ -37,6 +39,7 @@ public class SAGet extends AsyncTask<String, Integer, String> {
 
     /** Private net listener */
     private SANetListener listener;
+    private String URL = null;
 
     /**
      *
@@ -60,8 +63,11 @@ public class SAGet extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String[] url) {
 
+        // assign URL
+        this.URL = url[0];
+
         HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url[0]);
+        HttpGet httpGet = new HttpGet(URL);
         httpGet.setHeader("User-Agent", SAUserAgent.getUserAgent());
 
         HttpResponse response = null;
@@ -96,6 +102,8 @@ public class SAGet extends AsyncTask<String, Integer, String> {
      * @param e - the exception
      */
     private void handleError(Exception e) {
+        SALog.Err("Error to " + this.URL);
+
         /** print stack */
         if (e != null) {
             e.printStackTrace();

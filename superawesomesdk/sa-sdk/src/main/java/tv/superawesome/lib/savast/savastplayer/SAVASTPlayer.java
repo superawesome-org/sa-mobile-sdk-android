@@ -7,14 +7,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.VideoView;
 
-import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.sdk.R;
 
 /**
  * Created by gabriel.coman on 23/12/15.
@@ -26,6 +26,11 @@ public class SAVASTPlayer extends Fragment {
     private VideoView videoPlayer;
     private String videoURL;
     private SAVASTPlayerListener listener;
+    private String clickURL;
+
+    // aux views
+    private TextView chronographer;
+    private Button findOutMore;
 
     // other helper private vars
     private int duration = 0;
@@ -45,20 +50,17 @@ public class SAVASTPlayer extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
 
-        videoPlayer = new VideoView(getActivity().getBaseContext());
-        FrameLayout.LayoutParams linearLayout = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//      FrameLayout.LayoutParams linearLayout = new FrameLayout.LayoutParams(640, 480);
-        videoPlayer.setLayoutParams(linearLayout);
+        // retain instance
+        setRetainInstance(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        // return the video Player view
-        return videoPlayer;
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_sa_vastplayer, container, false);
     }
 
     /**
@@ -66,13 +68,28 @@ public class SAVASTPlayer extends Fragment {
      * @param videoURL the URL to play
      */
     public void playWithMediaURL(String videoURL){
+        // get the by now inflated video player
+        videoPlayer = (VideoView)getActivity().findViewById(R.id.video_view);
+        chronographer = (TextView)getActivity().findViewById(R.id.cronographer);
+        findOutMore = (Button)getActivity().findViewById(R.id.find_out_more);
+
+        // set on click listener
+        findOutMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.didGoToURL(clickURL);
+                }
+            }
+        });
+
+        // set the video URL
         this.videoURL = videoURL;
 
         try {
             // Get the URL from String VideoURL
             Uri video = Uri.parse(videoURL);
             videoPlayer.setVideoURI(video);
-            videoPlayer.setBackgroundColor(0xff0000);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,11 +123,17 @@ public class SAVASTPlayer extends Fragment {
                     listener.didFindPlayerReady();
                 }
 
+                // set out text
+                chronographer.setText("Ad: " + duration + "s");
+
                 // part with seconds and stuff
                 final Runnable onEverySecond = new Runnable() {
                     public void run() {
                         // get current time
                         currentTime = videoPlayer.getCurrentPosition() / 1000;
+
+                        // update text
+                        chronographer.setText("Ad: " + (duration - currentTime) + "s");
 
                         if (currentTime >= 1 && !isStartHandled){
                             isStartHandled = true;
@@ -158,6 +181,10 @@ public class SAVASTPlayer extends Fragment {
         videoPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                // text
+                chronographer.setText("Ad: 0s");
+
+                // call listener function
                 if (listener != null) {
                     listener.didReachEnd();
                 }
@@ -167,6 +194,10 @@ public class SAVASTPlayer extends Fragment {
         videoPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
+                // text
+                chronographer.setText("Ad: Error");
+
+                // call listener function
                 if (listener != null){
                     listener.didPlayWithError();
                 }
@@ -175,7 +206,19 @@ public class SAVASTPlayer extends Fragment {
         });
     }
 
+    /**
+     * @brief: Function used by other components to update the listener
+     * @param listener
+     */
     public void setListener(SAVASTPlayerListener listener){
         this.listener = listener;
+    }
+
+    /**
+     * @brief: function used by other components to update the URL
+     * @param url
+     */
+    public void setupClickURL(String url) {
+        clickURL = url;
     }
 }

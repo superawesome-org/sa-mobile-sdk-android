@@ -74,20 +74,20 @@ public class SADetails {
 
     /** aux print function */
     public void print() {
-        String printout = "";
-        printout += "\t\t width: " + width;
-        printout += "\t\t height: " + height;
-        printout += "\t\t image: " + image;
-        printout += "\t\t name: " + name;
-        printout += "\t\t video: " + video;
-        printout += "\t\t bitrate: " + bitrate;
-        printout += "\t\t duration: " + duration;
-        printout += "\t\t vast: " + vast;
-        printout += "\t\t tag: " + tag;
-        printout += "\t\t placementFormat: " + placementFormat;
-        printout += "\t\t zip: " + zip;
-        printout += "\t\t url: " + url;
-        printout += "\t\t value: " + value;
+        String printout = " \nDETAILS:\n";
+        printout += "\t\t width: " + width + "\n";
+        printout += "\t\t height: " + height + "\n";
+        printout += "\t\t image: " + image + "\n";
+        printout += "\t\t name: " + name + "\n";
+        printout += "\t\t video: " + video + "\n";
+        printout += "\t\t bitrate: " + bitrate + "\n";
+        printout += "\t\t duration: " + duration + "\n";
+        printout += "\t\t vast: " + vast + "\n";
+        printout += "\t\t tag: " + tag + "\n";
+        printout += "\t\t placementFormat: " + placementFormat + "\n";
+        printout += "\t\t zip: " + zip + "\n";
+        printout += "\t\t url: " + url + "\n";
+        printout += "\t\t value: " + value + "\n";
         SALog.Log(printout);
     }
 }

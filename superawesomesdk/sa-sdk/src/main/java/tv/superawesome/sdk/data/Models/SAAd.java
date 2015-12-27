@@ -53,15 +53,15 @@ public class SAAd {
 
     /** aux print function */
     public void print(){
-        String printout = "";
-        printout += "error: " + error;
-        printout += "placementId: " + placementId;
-        printout += "lineItemId: " + lineItemId;
-        printout += "campaignId: " + campaignId;
-        printout += "isTest: " + isTest;
-        printout += "isFallback: " + isFallback;
-        printout += "isFill: " + isFill;
-        printout += "adHTML: " + adHTML;
+        String printout = " \nAD:\n";
+        printout += "error: " + error + "\n";
+        printout += "placementId: " + placementId + "\n";
+        printout += "lineItemId: " + lineItemId + "\n";
+        printout += "campaignId: " + campaignId + "\n";
+        printout += "isTest: " + isTest + "\n";
+        printout += "isFallback: " + isFallback + "\n";
+        printout += "isFill: " + isFill + "\n";
+        printout += "adHTML: " + adHTML + "\n";
         SALog.Log(printout);
         creative.print();
     }
