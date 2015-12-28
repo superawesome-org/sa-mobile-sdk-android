@@ -8,6 +8,10 @@ import android.util.Patterns;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -94,5 +98,12 @@ public class SAURLUtils {
         if (url.equals("http://")) return false;
         if (url.equals("https://")) return false;
         return Patterns.WEB_URL.matcher(url).matches();
+    }
+
+    public static String encodeURL(String urlStr) throws URISyntaxException, MalformedURLException {
+        URL url = new URL(urlStr);
+        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+
+        return uri.toString();
     }
 }

@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import tv.superawesome.lib.sanetwork.SAApplication;
+import tv.superawesome.lib.sanetwork.SAGet;
+import tv.superawesome.lib.sanetwork.SAGetResultsReceiver;
+import tv.superawesome.lib.sanetwork.SANetListener;
+import tv.superawesome.lib.sanetwork.SANetwork;
 import tv.superawesome.lib.sanetwork.SASystem;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
@@ -49,13 +55,16 @@ import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.views.SAParentalGate;
 import tv.superawesome.sdk.views.SAVideoActivity;
 
-public class MainActivity extends Activity implements SAAdListener, SAParentalGateListener, SAVideoAdListener {
+public class MainActivity extends Activity implements
+        SAAdListener, SAParentalGateListener, SAVideoAdListener {
 
     private SAAdListener adListener = this;
     private SAParentalGateListener parentalGateListener = this;
     private SAVideoAdListener videoAdListener = this;
 
     private SAParentalGate parentalGate;
+
+    private SAGetResultsReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +111,44 @@ public class MainActivity extends Activity implements SAAdListener, SAParentalGa
     public void showPG(View v) {
         parentalGate = new SAParentalGate(MainActivity.this, null);
         parentalGate.show();
+    }
+
+    public void sendNewGet(View v){
+        SANetwork network = new SANetwork();
+        network.sendGET("https://ads.superawesome.tv/v2/ad/21022", new JsonObject(), new SANetListener() {
+            @Override
+            public void success(Object data) {
+                SALog.Log("Final success");
+            }
+
+            @Override
+            public void failure() {
+                SALog.Log("Final failure");
+            }
+        });
+
+        SANetwork network2 = new SANetwork();
+        network2.sendGET("https://ads.superawesome.tv/v2/video/tracking?event=thirdQuartile&placement=21022&creative=-2&line_item=-2&sdkVersion=undefined&rnd=553497", new JsonObject(), new SANetListener() {
+            @Override
+            public void success(Object data) {
+
+            }
+
+            @Override
+            public void failure() {
+
+            }
+        });
+
+//        mReceiver = new SAGetResultsReceiver(new Handler());
+//        mReceiver.setReceiver(this);
+//        Intent intent = new Intent(Intent.ACTION_SYNC, null, SAApplication.getInstance().getApplicationContext(), SAGet.class);
+//        /* Send optional extras to Download IntentService */
+//        intent.putExtra("url", "https://ads.superawesome.tv/v2/ad/21022");
+//        intent.putExtra("receiver", mReceiver);
+//
+////        startService(intent);
+//        SAApplication.getInstance().startService(intent);
     }
 
     @Override
@@ -183,4 +230,21 @@ public class MainActivity extends Activity implements SAAdListener, SAParentalGa
     public void allAdsEnded(int placementId) {
         SALog.Log("allAdsEnded");
     }
+
+//    @Override
+//    public void onReceiveResult(int resultCode, Bundle resultData) {
+//        switch (resultCode) {
+//            case SAGet.STATUS_RUNNING:
+//                SALog.Log("Still running");
+//                break;
+//            case SAGet.STATUS_FINISHED: {
+//                String[] results = resultData.getStringArray("result");
+//                SALog.Log("GET RESULTS: " + results[0]);
+//                break;
+//            }
+//            case SAGet.STATUS_ERROR:
+//
+//                break;
+//        }
+//    }
 }

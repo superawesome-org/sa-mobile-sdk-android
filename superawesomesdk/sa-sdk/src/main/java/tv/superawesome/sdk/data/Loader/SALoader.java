@@ -43,7 +43,8 @@ public class SALoader {
         queryJson.addProperty("rnd", SAURLUtils.getCacheBuster());
 
         /** send a standard GET request */
-        SANetwork.sendGET(endpoint, queryJson, new SANetListener() {
+        SANetwork network = new SANetwork();
+        network.sendGET(endpoint, queryJson, new SANetListener() {
             @Override
             public void success(Object data) {
 

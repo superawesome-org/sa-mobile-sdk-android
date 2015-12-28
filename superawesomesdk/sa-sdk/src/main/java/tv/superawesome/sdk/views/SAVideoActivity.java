@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;

@@ -24,7 +24,8 @@ public class SASender {
      * @param url - the event url to send the data to
      */
     public static void sendEventToURL(final String url) {
-        SANetwork.sendGET(url, new JsonObject(), new SANetListener() {
+        SANetwork network = new SANetwork();
+        network.sendGET(url, new JsonObject(), new SANetListener() {
             @Override
             public void success(Object data) {
                 SALog.Log("Success " + url);
