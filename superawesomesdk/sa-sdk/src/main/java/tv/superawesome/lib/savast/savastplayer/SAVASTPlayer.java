@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.R;
 
 /**
@@ -51,6 +52,8 @@ public class SAVASTPlayer extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SALog.Log("FRAGMENT ON CREATE");
+
         // retain instance
         setRetainInstance(true);
     }
@@ -58,7 +61,7 @@ public class SAVASTPlayer extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        SALog.Log("FRAGMENT onCreateView");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sa_vastplayer, container, false);
     }
@@ -119,7 +122,7 @@ public class SAVASTPlayer extends Fragment {
                 currentTime = 0;
 
                 // call listeners
-                if (listener != null){
+                if (listener != null) {
                     listener.didFindPlayerReady();
                 }
 
@@ -129,7 +132,7 @@ public class SAVASTPlayer extends Fragment {
                 // part with seconds and stuff
                 final Runnable onEverySecond = new Runnable() {
                     public void run() {
-                        if (!videoPlayer.isPlaying()){
+                        if (!videoPlayer.isPlaying()) {
                             return;
                         }
 
@@ -139,34 +142,34 @@ public class SAVASTPlayer extends Fragment {
                         // update text
                         chronographer.setText("Ad: " + (duration - currentTime) + "s");
 
-                        if (currentTime >= 1 && !isStartHandled){
+                        if (currentTime >= 1 && !isStartHandled) {
                             isStartHandled = true;
 
-                            if (listener != null){
+                            if (listener != null) {
                                 listener.didStartPlayer();
                             }
                         }
 
-                        if (currentTime >= firstQuartileTime && !isFirstQuartileHandled){
+                        if (currentTime >= firstQuartileTime && !isFirstQuartileHandled) {
                             isFirstQuartileHandled = true;
 
-                            if (listener != null){
+                            if (listener != null) {
                                 listener.didReachFirstQuartile();
                             }
                         }
 
-                        if (currentTime >= midpointTime && !isMidpointHandled){
+                        if (currentTime >= midpointTime && !isMidpointHandled) {
                             isMidpointHandled = true;
 
-                            if (listener != null){
+                            if (listener != null) {
                                 listener.didReachMidpoint();
                             }
                         }
 
-                        if (currentTime >= thirdQuartileTime && !isThirdQuartileHandled){
+                        if (currentTime >= thirdQuartileTime && !isThirdQuartileHandled) {
                             isThirdQuartileHandled = true;
 
-                            if (listener != null){
+                            if (listener != null) {
                                 listener.didReachThirdQuartile();
                             }
                         }
@@ -201,12 +204,30 @@ public class SAVASTPlayer extends Fragment {
                 chronographer.setText("Ad: Error");
 
                 // call listener function
-                if (listener != null){
+                if (listener != null) {
                     listener.didPlayWithError();
                 }
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SALog.Log("Fragment PAUSE");
+        if (videoPlayer != null) {
+            videoPlayer.pause();
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SALog.Log("Fragment RESUME");
+        if (videoPlayer != null) {
+            videoPlayer.resume();
+        }
     }
 
     /**

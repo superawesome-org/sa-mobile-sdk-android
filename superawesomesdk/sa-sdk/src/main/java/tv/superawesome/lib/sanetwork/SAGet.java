@@ -50,6 +50,8 @@ public class SAGet extends AsyncTask<String, Integer, String> {
         /** assign listener reference */
         this.listener = listener;
 
+        SALog.Log("[Trying] " + url);
+
         /** call the super execute */
         super.execute(url);
     }
@@ -72,7 +74,6 @@ public class SAGet extends AsyncTask<String, Integer, String> {
         HttpResponse response = null;
         try {
             response = client.execute(httpGet );
-            SALog.Log(response.toString());
         } catch (IOException e ) {
             handleError(e);
         }
@@ -93,6 +94,12 @@ public class SAGet extends AsyncTask<String, Integer, String> {
         if (listener != null) {
             listener.success(response);
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        SALog.Log("Progressing!!!");
     }
 
     /**

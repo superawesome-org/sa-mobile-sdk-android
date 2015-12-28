@@ -44,30 +44,4 @@ public class SANetwork {
         SAGet getOp = new SAGet();
         getOp.execute(finalEndpoint, listener);
     }
-
-    /**
-     * this function acts as a wrapper around SAPost, in the sense that forms POST body params
-     * @param endpoint - the final endpoint to send the POST request to
-     * @param postparams - a map that will be transformed into a series of POST body params
-     * @param listener - another SANetListener object, that just passes what SAPost sends him
-     */
-    public static void sendPOST(String endpoint, JsonObject postparams, final SANetListener listener) {
-
-        StringEntity postJSONString = null;
-        String json = new GsonBuilder().create().toJson(postparams);
-
-        /** passes the results to a string builder/entity */
-        try {
-            postJSONString = new StringEntity(json);
-            postJSONString.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-
-        } catch (UnsupportedEncodingException e) {
-            /** call to failure */
-            listener.failure();
-        }
-
-        /** execute */
-        SAPost post = new SAPost();
-        post.execute(endpoint, postJSONString, listener);
-    }
 }

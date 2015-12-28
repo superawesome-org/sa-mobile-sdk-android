@@ -70,6 +70,7 @@ public class MainActivity extends Activity implements SAAdListener, SAParentalGa
 
     /** Open buttons */
     public void showVideo1(View v) {
+        SALog.Log("CDE");
         SALoader.loadAd(21022, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
@@ -84,10 +85,11 @@ public class MainActivity extends Activity implements SAAdListener, SAParentalGa
     }
 
     public void showVideo2(View v){
+        SALog.Log("ABC");
         SALoader.loadAd(30245, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
-                SAVideoActivity.start(MainActivity.this, ad, false, adListener, parentalGateListener, videoAdListener);
+                SAVideoActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener, videoAdListener);
             }
 
             @Override

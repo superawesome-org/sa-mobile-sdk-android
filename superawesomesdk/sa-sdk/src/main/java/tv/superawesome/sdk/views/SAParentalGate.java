@@ -10,6 +10,8 @@ import android.widget.EditText;
 
 import java.util.Random;
 
+import tv.superawesome.lib.sanetwork.SASender;
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
@@ -59,7 +61,7 @@ public class SAParentalGate {
         endNum = randInt(RAND_MIN, RAND_MAX);
 
         /* we have an alert dialog builder */
-        AlertDialog.Builder alert = new AlertDialog.Builder(c);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(c);
         // set title and message
         alert.setTitle(SA_CHALLANGE_ALERTVIEW_TITLE);
         alert.setMessage(SA_CHALLANGE_ALERTVIEW_MESSAGE + startNum + " + " + endNum + " = ? ");
@@ -69,20 +71,26 @@ public class SAParentalGate {
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         alert.setView(input);
 
-//        input.requestFocus();
-//        InputMethodManager imm = (InputMethodManager) c.getSystemService(c.INPUT_METHOD_SERVICE);
-//        imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
-
         final AlertDialog.Builder aContinue = alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 if (!input.getText().toString().equals("")) {
                     int userValue = Integer.parseInt(input.getText().toString());
 
+                    // dismiss
+                    dialog.dismiss();
+
                     if (userValue == (startNum + endNum)) {
                         // go on success way
                         if (listener != null) {
                             listener.parentalGateWasSucceded(refAd.placementId);
+                        }
+
+                        SALog.Log("Going from PG to: " + refAd.creative.fullClickURL);
+
+                        // first send this
+                        if (!refAd.creative.isFullClickURLReliable) {
+                            SASender.sendEventToURL(refAd.creative.trackingURL);
                         }
 
                         // and go to URL
@@ -91,13 +99,17 @@ public class SAParentalGate {
                     } else {
 
                         // go on error way
-                        AlertDialog.Builder alert = new android.app.AlertDialog.Builder(c);
-                        alert.setTitle(SA_ERROR_ALERTVIEW_TITLE);
-                        alert.setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
+                        AlertDialog.Builder erroralert = new android.app.AlertDialog.Builder(c);
+                        erroralert .setTitle(SA_ERROR_ALERTVIEW_TITLE);
+                        erroralert .setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
 
                         // set button action
-                        alert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
+                        erroralert .setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+
+                                // dismiss this
+                                dialog.dismiss();
+
                                 // do nothing
                                 if (listener != null) {
                                     listener.parentalGateWasFailed(refAd.placementId);
@@ -105,7 +117,7 @@ public class SAParentalGate {
                                 return;
                             }
                         });
-                        alert.show();
+                        erroralert.show();
 
                     }
                 }
@@ -117,6 +129,9 @@ public class SAParentalGate {
         alert.setNegativeButton(SA_CHALLANGE_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+
+                // dismiss
+                dialog.dismiss();
 
                 // go on cancel way
                 if (listener != null) {

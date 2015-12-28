@@ -2,6 +2,7 @@ package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,9 +44,6 @@ public class SAVideoActivity extends Activity{
     /** the padlock part */
     private ImageView padlock;
 
-    /** ref to current context */
-    private static Context refContext;
-
     /**
      * Function that starts up an activity
      * @param context - the context
@@ -61,12 +59,15 @@ public class SAVideoActivity extends Activity{
         AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
         AdDataHolder.getInstance()._refVideoAdListener = videoAdListener;
 
-        /** get ref context */
-        refContext = context;
-
         /** start a new intent */
         Intent intent = new Intent(context, SAVideoActivity.class);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -178,7 +179,7 @@ public class SAVideoActivity extends Activity{
                 }
 
                 // call finish on this activity
-                finish();
+                onBackPressed();
             }
 
             @Override
@@ -194,11 +195,9 @@ public class SAVideoActivity extends Activity{
 
                 /** open the parental gate */
                 if (isParentalGateEnabled) {
-                    SALog.Log("PG here we go!!!!");
-                    SAParentalGate gate = new SAParentalGate(refContext, ad);
+                    SAParentalGate gate = new SAParentalGate(SAVideoActivity.this, ad);
                     gate.show();
                     gate.setListener(parentalGateListener);
-
                 }
                 /** go directly to the URL */
                 else {
@@ -217,6 +216,43 @@ public class SAVideoActivity extends Activity{
         });
         /** send the message to parse the VAST part */
         manager.parseVASTURL(ad.creative.details.vast);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        SALog.Log("ON START");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SALog.Log("ON RESUME");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SALog.Log("ON PAUSE");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SALog.Log("ON STOP");
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        videoPlayer = null;
+        manager = null;
+        ad = null;
+        adListener = null;
+        videoAdListener = null;
+        parentalGateListener = null;
+        SALog.Log("ON DESTROY");
     }
 
     /**
