@@ -180,7 +180,9 @@ public class SAParser {
         trackingDict.addProperty("creative", ad.creative.creativeId);
         trackingDict.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
         trackingDict.addProperty("rnd", SAURLUtils.getCacheBuster());
-        ad.creative.trackingURL = SuperAwesome.getInstance().getBaseURL() + "/click?" + SAURLUtils.formGetQueryFromDict(trackingDict);
+        ad.creative.trackingURL = SuperAwesome.getInstance().getBaseURL() +
+                (ad.creative.format == SACreativeFormat.video ? "/video/click/?" : "/click?") +
+                SAURLUtils.formGetQueryFromDict(trackingDict);
 
         /** create the viewable impression URL */
         JsonObject impressionDict1 = new JsonObject();

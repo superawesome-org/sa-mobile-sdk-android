@@ -47,6 +47,10 @@ public class SAParentalGate {
         super();
         this.c = c;
         this.refAd = _refAd;
+
+        if (this.refAd == null){
+            this.refAd = new SAAd();
+        }
     }
 
     /** show function */

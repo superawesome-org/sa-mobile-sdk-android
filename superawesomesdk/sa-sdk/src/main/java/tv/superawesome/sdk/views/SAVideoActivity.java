@@ -176,13 +176,21 @@ public class SAVideoActivity extends Activity{
                 if (videoAdListener != null){
                     videoAdListener.allAdsEnded(ad.placementId);
                 }
+
+                // call finish on this activity
+                finish();
             }
 
             @Override
             public void didGoToURL(String url) {
                 // make these ok
-                ad.creative.isFullClickURLReliable = true;
                 ad.creative.fullClickURL = url;
+                // do a final checkup
+                if (!ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/")) {
+                    ad.creative.isFullClickURLReliable = true;
+                } else {
+                    ad.creative.isFullClickURLReliable = false;
+                }
 
                 /** open the parental gate */
                 if (isParentalGateEnabled) {
@@ -194,9 +202,12 @@ public class SAVideoActivity extends Activity{
                 }
                 /** go directly to the URL */
                 else {
-                    SASender.sendEventToURL(ad.creative.trackingURL);
-                    SALog.Log("Tracking to " + ad.creative.trackingURL);
-                    SALog.Log("Going to " + url);
+                    SALog.Log("Going to " + ad.creative.fullClickURL);
+
+                    // first send this
+                    if (!ad.creative.isFullClickURLReliable) {
+                        SASender.sendEventToURL(ad.creative.trackingURL);
+                    }
 
                     // go-to-url
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));

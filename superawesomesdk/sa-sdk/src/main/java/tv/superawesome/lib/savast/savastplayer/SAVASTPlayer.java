@@ -129,6 +129,10 @@ public class SAVASTPlayer extends Fragment {
                 // part with seconds and stuff
                 final Runnable onEverySecond = new Runnable() {
                     public void run() {
+                        if (!videoPlayer.isPlaying()){
+                            return;
+                        }
+
                         // get current time
                         currentTime = videoPlayer.getCurrentPosition() / 1000;
 
@@ -167,9 +171,8 @@ public class SAVASTPlayer extends Fragment {
                             }
                         }
 
-                        if (videoPlayer.isPlaying()) {
-                            videoPlayer.postDelayed(this, 1000);
-                        }
+                        // go again
+                        videoPlayer.postDelayed(this, 1000);
                     }
                 };
                 // start monitoring
@@ -182,7 +185,7 @@ public class SAVASTPlayer extends Fragment {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 // text
-                chronographer.setText("Ad: 0s");
+                 chronographer.setText("Ad: 0s");
 
                 // call listener function
                 if (listener != null) {

@@ -46,15 +46,16 @@ import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
+import tv.superawesome.sdk.views.SAParentalGate;
 import tv.superawesome.sdk.views.SAVideoActivity;
 
 public class MainActivity extends Activity implements SAAdListener, SAParentalGateListener, SAVideoAdListener {
 
-    private static final int CONTENT_VIEW_ID = 10101010;
-    private SAVASTPlayer newFragment;
     private SAAdListener adListener = this;
     private SAParentalGateListener parentalGateListener = this;
     private SAVideoAdListener videoAdListener = this;
+
+    private SAParentalGate parentalGate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +66,11 @@ public class MainActivity extends Activity implements SAAdListener, SAParentalGa
         SuperAwesome.getInstance().enableTestMode();
         SALog.Log(SuperAwesome.getInstance().getSDKVersion());
         SALog.Log(SASystem.getVerboseSystemDetails());
+    }
 
-        int ad1 = 30245;
-        int ad2 = 21022;
-
-        SALoader.loadAd(ad1, new SALoaderListener() {
+    /** Open buttons */
+    public void showVideo1(View v) {
+        SALoader.loadAd(21022, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
                 SAVideoActivity.start(MainActivity.this, ad, false, adListener, parentalGateListener, videoAdListener);
@@ -80,64 +81,25 @@ public class MainActivity extends Activity implements SAAdListener, SAParentalGa
                 SALog.Log("Failed to load " + placementId);
             }
         });
+    }
 
-//        String[] ads = {
-//                "Banner ad - code",
-//                "Banner ad - XML",
-//                "Interstitial - code",
-//                "Interstitial - XML",
-//                "Video ad - code",
-//                "Video ad - XML",
-//                "Video ad - fullscreen activity",
-//                "Gamewall",
-//                "All ads in one activity"
-//        };
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, ads);
-//
-//        ListView list = (ListView) findViewById(R.id.list);
-//        list.setAdapter(adapter);
-//
-//
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                switch (position) {
-//                    case 0:
-//                        startActivity(new Intent(MainActivity.this, BannerAdCodeActivity.class));
-//                        break;
-//                    case 1:
-//                        startActivity(new Intent(MainActivity.this, BannerAdXmlActivity.class));
-//                        break;
-//                    case 2:
-//                        startActivity(new Intent(MainActivity.this, InterstitialAdCodeActivity.class));
-//                        break;
-//                    case 3:
-//                        startActivity(new Intent(MainActivity.this, InterstitialAdXmlActivity.class));
-//                        break;
-//                    case 4:
-//                        startActivity(new Intent(MainActivity.this, VideoAdCodeActivity.class));
-//                        break;
-//                    case 5:
-//                        startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
-//                        break;
-//                    case 6:
-////                        SAVideoActivity.start(MainActivity.this, "21022", "false", "true");
-//                        break;
-//                    case 7:
-//                        startActivity(new Intent(MainActivity.this, GamewallActivity.class));
-//                        break;
-//                    case 8:
-//                        startActivity(new Intent(MainActivity.this, AllAdsActivity.class));
-//                        break;
-//                }
-//
-//            }
-//
-//            @SuppressWarnings("unused")
-//            public void onClick(View v) {
-//            };
-//        });
+    public void showVideo2(View v){
+        SALoader.loadAd(30245, new SALoaderListener() {
+            @Override
+            public void didLoadAd(SAAd ad) {
+                SAVideoActivity.start(MainActivity.this, ad, false, adListener, parentalGateListener, videoAdListener);
+            }
+
+            @Override
+            public void didFailToLoadAdForPlacementId(int placementId) {
+                SALog.Log("Failed to load " + placementId);
+            }
+        });
+    }
+
+    public void showPG(View v) {
+        parentalGate = new SAParentalGate(MainActivity.this, null);
+        parentalGate.show();
     }
 
     @Override
