@@ -8,8 +8,8 @@ repositories {
 }
 
 dependencies {
-    compile 'tv.superawesome.sdk:sa-sdk:2.1.5@aar'
-    compile 'tv.superawesome.sdk:bee7androidsdkgamewall:2.1.5@aar'
+    compile 'tv.superawesome.sdk:sa-sdk:3.0.6@aar'
+    compile 'com.google.code.gson:gson:2.4'
 }
 ```
 
@@ -20,4 +20,14 @@ Next, open the AndroidManifest.xml file in the root of the project. Add two 'Use
 ```
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 <uses-permission android:name="android.permission.INTERNET"/>
+
+```
+
+Last, in the Activity or Fragment you'll want to add AwesomeAds, you'll need to add:
+
+```
+SuperAwesome.getInstance().setConfigurationProduction();
+SuperAwesome.getInstance().enableTestMode();
+// or SuperAwesome.getInstance().disableTestMode() once you're running real production
+
 ```

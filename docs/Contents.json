@@ -16,84 +16,28 @@
             ]
         },
         {
-            "name":"Banner Ads",
-            "sections":[
-                {
-                    "name": "Banner Ads As Resources",
-                    "text": "02 Banner Ads/01 AddBanner.md"
-                },
-                {
-                    "name": "Advanced Configuration",
-                    "text": "02 Banner Ads/03 BannerAdvanced.md"
-                }
-            ]
+            "name":"Video Ad Activity",
+            "text": "02 Video Ad Activity.md"
         },
         {
-            "name": "Interstitial Ads",
-            "sections": [
-                {
-                    "name": "Interstitial Ads As Resources",
-                    "text": "03 Interstitial Ads/01 Interstitial.md"
-                },
-                {
-                    "name": "Advanced Configuration",
-                    "text": "03 Interstitial Ads/03 InterstitialAdvanced.md"
-                }
-            ]
+            "name":"Video Ad Events",
+            "text": "03 Video Ad Events.md"
         },
-        {
-            "name": "Video Ads",
-            "sections": [
-                {
-                    "name": "How to Use Video Ads",
-                    "text": "04 Video Ads/01 AddVideo.md"
-                },
-                {
-                    "name": "Fullscreen Video Ads",
-                    "text": "04 Video Ads/02 FullscreenVideo.md"
-                }
-            ]
-        },
-        {
-            "name": "Gamewall",
-            "sections": [
-                {
-                    "name": "Introduction",
-                    "text": "05 Gamewall/01 Intro.md"
-                },
-                {
-                    "name": "Placement Creation",
-                    "text": "05 Gamewall/02 PlacementCreation.md"
-                },
-                {
-                    "name": "Integration",
-                    "text": "05 Gamewall/03 Integration.md"
-                },
-                {
-                    "name": "Advanced Integration",
-                    "text": "05 Gamewall/04 Advanced.md"
-                }
-            ]
-        },        
         {
             "name":"Parental Gate",
-            "text":"06 ParentalGate.md"
+            "text": "04 ParentalGate.md"
         },
         {
             "name":"MoPub Integration",
-            "text":"07 MoPub Integration.md"
+            "text": "05 MoPub Integration.md"
         },
         {
-            "name": "Testing Placements",
-            "text": "08 Testing Placements.md"
+            "name":"Support",
+            "text": "06 Support.md"
         },
         {
-            "name": "Technical Support",
-            "text": "09 Support.md"
-        },
-        {
-            "name": "License",
-            "text": "10 License.md"
+            "name":"License",
+            "text": "07 License.md"
         }
     ]
 }
