@@ -2,6 +2,7 @@ package tv.superawesome.lib.sawebview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -33,7 +34,11 @@ public class SAWebView extends WebView {
         super(context, attrs, defStyle);
         /** any initialisation work here */
 
+        this.setInitialScale(1);
         this.getSettings().setJavaScriptEnabled(true);
+        this.getSettings().setLoadWithOverviewMode(true);
+        this.getSettings().setUseWideViewPort(true);
+        this.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
         this.setWebViewClient(new WebViewClient() {
             @Override
