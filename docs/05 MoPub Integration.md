@@ -8,12 +8,14 @@ This will add the SDK to your current project.
 
 #### Download Adapters
 
-Next, you'll need to download a files called Adapter:
+Next, you'll need to download three .java files called Adapters:
 
+  * [SuperAwesomeBannerCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/superawesomesdk/sa-sdk/mopub/SuperAwesomeBannerCustomEvent.java)
+  * [SuperAwesomeInterstitialCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/superawesomesdk/sa-sdk/mopub/SuperAwesomeInterstitialCustomEvent.java)
   * [SuperAwesomeRewardedVideoCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/superawesomesdk/sa-sdk/mopub/SuperAwesomeRewardedVideoCustomEvent.java)
 
 These will act as a convenient bridge between SuperAwesome and MoPub, so that you don't have to write any aditional line of code.
-You'll also need to place them in your project. To do this, in your `/app/src/main/java/com` folder, create a folder called `mopub` and inside it another one called `mobileads`. Here copy the file.
+You'll also need to place them in your project. To do this, in your `/app/src/main/java/com` folder, create a folder called `mopub` and inside it another one called `mobileads`. Here copy the files.
 
 #### Setup a MoPub Custom Network
 
@@ -31,12 +33,15 @@ You'll be taken to a new page. Here select the title of the new network
 
 And assign custom inventory details for Banner and Interstitial ads:
 
+![](img/IMG_07_MoPub_5.png "Setup custom inventory")
 ![](img/IMG_07_MoPub_4.png "Setup custom inventory")
 
 Custom Event Class is:
+  * for Banner Ads: `com.mopub.mobileads.SuperAwesomeBannerCustomEvent`
+  * for Interstitial Ads: `com.mopub.mobileads.SuperAwesomeInterstitialCustomEvent`
   * for Rewarded Video Ads: `com.mopub.mobileads.SuperAwesomeRewardedVideoCustomEvent`
 
-Notice these are identical to the name of the file you downloaded in step one.
+Notice these are identical to the name of the files you downloaded in step one.
 
 Custom Event Data is always required, and must be given in the form of  JSON:
 
