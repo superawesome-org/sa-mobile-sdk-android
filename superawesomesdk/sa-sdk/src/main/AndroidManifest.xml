@@ -7,8 +7,10 @@
         android:name="tv.superawesome.lib.sanetwork.SAApplication">
         <activity
             android:name=".views.SAVideoActivity"
-            android:label="@string/superawesome__title_activity_savideo" >
-        </activity>
+            android:label="@string/superawesome__title_activity_savideo"></activity>
+        <activity
+            android:name=".views.SAInterstitialActivity"
+            android:label="SAInterstitialActivity"></activity>
 
         <!-- Declaring Service in Manifest -->
         <service

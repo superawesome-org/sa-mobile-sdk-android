@@ -45,6 +45,7 @@ import tv.superawesome.lib.savast.savastparser.models.SAVASTAd;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayerListener;
 import tv.superawesome.lib.savast.saxml.SAXML;
+import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
@@ -52,6 +53,8 @@ import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
+import tv.superawesome.sdk.views.SABannerAd;
+import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAParentalGate;
 import tv.superawesome.sdk.views.SAVideoActivity;
 
@@ -139,17 +142,39 @@ public class MainActivity extends Activity implements
 
             }
         });
-
-//        mReceiver = new SAGetResultsReceiver(new Handler());
-//        mReceiver.setReceiver(this);
-//        Intent intent = new Intent(Intent.ACTION_SYNC, null, SAApplication.getInstance().getApplicationContext(), SAGet.class);
-//        /* Send optional extras to Download IntentService */
-//        intent.putExtra("url", "https://ads.superawesome.tv/v2/ad/21022");
-//        intent.putExtra("receiver", mReceiver);
-//
-////        startService(intent);
-//        SAApplication.getInstance().startService(intent);
     }
+
+    public void loadBanner(View v) {
+        SALoader.loadAd(9549, new SALoaderListener() {
+            @Override
+            public void didLoadAd(SAAd ad) {
+                SABannerAd myBanner = (SABannerAd) getFragmentManager().findFragmentById(R.id.myBannerAd1);
+                myBanner.setAd(ad);
+                myBanner.play();
+            }
+
+            @Override
+            public void didFailToLoadAdForPlacementId(int placementId) {
+                SALog.Log("failed to load " + placementId);
+            }
+        });
+    }
+
+    public void loadTag(View v){
+        SALoader.loadAd(10213, new SALoaderListener() {
+            @Override
+            public void didLoadAd(SAAd ad) {
+                SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
+            }
+
+            @Override
+            public void didFailToLoadAdForPlacementId(int placementId) {
+                SALog.Log("failed to load " + placementId);
+            }
+        });
+    }
+
+    /** <DELEGATES> */
 
     @Override
     public void adWasShown(int placementId) {
@@ -230,21 +255,4 @@ public class MainActivity extends Activity implements
     public void allAdsEnded(int placementId) {
         SALog.Log("allAdsEnded");
     }
-
-//    @Override
-//    public void onReceiveResult(int resultCode, Bundle resultData) {
-//        switch (resultCode) {
-//            case SAGet.STATUS_RUNNING:
-//                SALog.Log("Still running");
-//                break;
-//            case SAGet.STATUS_FINISHED: {
-//                String[] results = resultData.getStringArray("result");
-//                SALog.Log("GET RESULTS: " + results[0]);
-//                break;
-//            }
-//            case SAGet.STATUS_ERROR:
-//
-//                break;
-//        }
-//    }
 }

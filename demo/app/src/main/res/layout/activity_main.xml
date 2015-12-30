@@ -37,4 +37,24 @@
         android:text="Send New Get"
         android:onClick="sendNewGet"/>
 
+    <Button
+        android:id="@+id/getBanner"
+        android:text="Load Banner 9549"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="loadBanner"/>
+
+    <Button
+        android:id="@+id/getTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load 3rd party tag 10213"
+        android:onClick="loadTag"/>
+
+    <fragment
+        android:id="@+id/myBannerAd1"
+        android:name="tv.superawesome.sdk.views.SABannerAd"
+        android:layout_width="match_parent"
+        android:layout_height="500px" />
+
 </LinearLayout>

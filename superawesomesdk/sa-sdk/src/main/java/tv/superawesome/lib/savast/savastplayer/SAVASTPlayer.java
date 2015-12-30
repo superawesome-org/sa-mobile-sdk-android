@@ -51,19 +51,20 @@ public class SAVASTPlayer extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SALog.Log("FRAGMENT ON CREATE");
-
-        // retain instance
         setRetainInstance(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        SALog.Log("FRAGMENT onCreateView");
+        View v = inflater.inflate(R.layout.fragment_sa_vastplayer, container, false);
+
+        videoPlayer = (VideoView)v.findViewById(R.id.video_view);
+        chronographer = (TextView)v.findViewById(R.id.cronographer);
+        findOutMore = (Button)v.findViewById(R.id.find_out_more);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sa_vastplayer, container, false);
+        return v;
     }
 
     /**
@@ -71,10 +72,6 @@ public class SAVASTPlayer extends Fragment {
      * @param videoURL the URL to play
      */
     public void playWithMediaURL(String videoURL){
-        // get the by now inflated video player
-        videoPlayer = (VideoView)getActivity().findViewById(R.id.video_view);
-        chronographer = (TextView)getActivity().findViewById(R.id.cronographer);
-        findOutMore = (Button)getActivity().findViewById(R.id.find_out_more);
 
         // set on click listener
         findOutMore.setOnClickListener(new View.OnClickListener() {

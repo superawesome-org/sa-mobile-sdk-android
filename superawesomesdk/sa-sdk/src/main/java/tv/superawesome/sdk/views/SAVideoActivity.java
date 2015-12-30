@@ -50,6 +50,9 @@ public class SAVideoActivity extends Activity{
      * @param context - the context
      * @param _ad - the add to be passed down to get info from
      * @param _isParentalGateEnabled - whether the parental gate should be on or off
+     * @param adListener
+     * @param parentalGateListener
+     * @param videoAdListener
      */
     public static void start(Context context, SAAd _ad, boolean _isParentalGateEnabled,
                              SAAdListener adListener, SAParentalGateListener parentalGateListener, SAVideoAdListener videoAdListener) {
@@ -89,6 +92,8 @@ public class SAVideoActivity extends Activity{
 
         if (ad.isFallback) {
             padlock.setVisibility(View.GONE);
+        } else {
+            padlock.setVisibility(View.VISIBLE);
         }
 
         /** get player */
@@ -223,25 +228,21 @@ public class SAVideoActivity extends Activity{
     @Override
     public void onStart() {
         super.onStart();
-        SALog.Log("ON START");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        SALog.Log("ON RESUME");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        SALog.Log("ON PAUSE");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        SALog.Log("ON STOP");
     }
 
     @Override
@@ -253,7 +254,6 @@ public class SAVideoActivity extends Activity{
         adListener = null;
         videoAdListener = null;
         parentalGateListener = null;
-        SALog.Log("ON DESTROY");
     }
 
     /**

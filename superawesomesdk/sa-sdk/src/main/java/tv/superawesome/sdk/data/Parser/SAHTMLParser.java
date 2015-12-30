@@ -10,6 +10,16 @@ package tv.superawesome.sdk.data.Parser;
 /**
  * Imports needed for this class
  */
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import tv.superawesome.lib.sanetwork.SAURLUtils;
+import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.R;
+import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
 
 /**
@@ -56,7 +66,13 @@ public class SAHTMLParser {
      * @return - the formatted HTML string to be used by a WebView
      */
     private static String formatCreativeIntoImageHTML(SAAd ad) {
-        return "";
+        try {
+            String htmlString = SAUtils.openAssetAsString("html/displayImage.html");
+            return htmlString.replace("imageURL", ad.creative.details.image);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**
@@ -66,7 +82,23 @@ public class SAHTMLParser {
      * @return - the formatted HTML string to be used by a WebView
      */
     private static String formatCreativeIntoRichMediaHTML(SAAd ad) {
-        return "";
+        try {
+            String htmlString = SAUtils.openAssetAsString("html/displayRichMEdia.html");
+
+            String richMediaURL = ad.creative.details.url;
+            JsonObject richMediaDict = new JsonObject();
+            richMediaDict.addProperty("placement", ad.placementId);
+            richMediaDict.addProperty("line_item", ad.lineItemId);
+            richMediaDict.addProperty("creative", ad.creative.creativeId);
+            richMediaDict.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+            richMediaDict.addProperty("rnd", SAURLUtils.getCacheBuster());
+            richMediaURL += "?" + SAURLUtils.encodeDictAsJsonDict(richMediaDict);
+
+            return htmlString.replace("richMediaURL", richMediaURL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**
@@ -76,6 +108,25 @@ public class SAHTMLParser {
      * @return - the formatted HTML string to be used by a WebView
      */
     private  static String formatCreativeIntoTagHTML(SAAd ad) {
-        return "";
+        try {
+            String htmlString = SAUtils.openAssetAsString("html/displayTag.html");
+
+            String tagString = ad.creative.details.tag;
+            tagString = tagString.replace("[click]", ad.creative.trackingURL + "&redir=");
+            try {
+                tagString = tagString.replace("[click_enc]", SAURLUtils.encodeURL(ad.creative.trackingURL));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            tagString = tagString.replace("[keywords]", "");
+            tagString = tagString.replace("[timestamp]", "");
+            tagString = tagString.replace("target=\"_blank\"", "");
+            tagString = tagString.replace("“", "\"");
+
+            return htmlString.replace("tagdata", tagString);
+        } catch (IOException e){
+            e.printStackTrace();
+            return "";
+        }
     }
 }

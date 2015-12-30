@@ -12,8 +12,18 @@
  */
 package tv.superawesome.lib.sautils;
 
+import android.util.Log;
+
 import com.google.gson.JsonObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Random;
+
+import tv.superawesome.lib.sanetwork.SAApplication;
 
 /**
  * Class that contains a lot of static aux functions
@@ -61,5 +71,30 @@ public class SAUtils {
             if(Character.digit(s.charAt(i),radix) < 0) return false;
         }
         return true;
+    }
+
+    /**
+     * Get an .txt/.html file from the Assets folder and return a String with its content
+     * @param assetPath - the path to the asset
+     * @return - the string contents
+     */
+
+    public static String openAssetAsString(String assetPath) throws IOException {
+        /** create the input streams and all that stuff */
+        StringBuilder builder = new StringBuilder();
+        InputStream text = SAApplication.getInstance().getApplicationContext().getAssets().open(assetPath);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(text, "UTF-8"));
+
+        /** go through all the file and append */
+        String str;
+        while ((str = reader.readLine()) != null) {
+            builder.append(str);
+        }
+
+        /** close the reader */
+        reader.close();
+
+        /** return the new string */
+        return builder.toString();
     }
 }
