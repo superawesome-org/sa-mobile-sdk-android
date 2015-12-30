@@ -23,4 +23,17 @@
         android:maxWidth="20dp"
         android:maxHeight="20dp"/>
 
+    <Button
+        android:id="@+id/interstitial_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:width="30dp"
+        android:height="30dp"
+        android:background="@drawable/sa_close"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:onClick="closeInterstitial"/>
+
 </RelativeLayout>

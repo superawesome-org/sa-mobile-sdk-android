@@ -77,6 +77,7 @@ public class SAInterstitialActivity extends Activity {
         interstitialBanner.setAd(ad);
         interstitialBanner.setAdListener(adListener);
         interstitialBanner.setParentalGateListener(parentalGateListener);
+        interstitialBanner.setIsParentalGateEnabled(isParentalGateEnabled);
         interstitialBanner.play();
 
         /** show or hide the padlock */
@@ -88,6 +89,15 @@ public class SAInterstitialActivity extends Activity {
         }
     }
 
+    public void closeInterstitial(View v){
+        /** close listener */
+        if (adListener != null){
+            adListener.adWasClosed(ad.placementId);
+        }
+
+        /** call finish on this activity */
+        onBackPressed();
+    }
 
     @Override
     public void onStart() {

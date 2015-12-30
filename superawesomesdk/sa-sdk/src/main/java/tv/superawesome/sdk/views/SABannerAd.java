@@ -54,12 +54,11 @@ public class SABannerAd extends Fragment implements SAWebViewListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sa_banner, container, false);
-        v.setBackgroundColor(Color.RED);
 
         // create / assign the subviews
         webView = (SAWebView)v.findViewById(R.id.web_view);
         webView.setListener(this);
-        webView.setBackgroundColor(Color.YELLOW);
+
         padlock = (ImageView)v.findViewById(R.id.padlock_image);
 
         return v;
