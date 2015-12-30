@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
 
         SuperAwesome.getInstance().setConfigurationProduction();
-        SuperAwesome.getInstance().enableTestMode();
+        SuperAwesome.getInstance().disableTestMode();
         SALog.Log(SuperAwesome.getInstance().getSDKVersion());
         SALog.Log(SASystem.getVerboseSystemDetails());
     }

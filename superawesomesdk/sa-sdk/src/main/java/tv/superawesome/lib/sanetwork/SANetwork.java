@@ -51,7 +51,7 @@ public class SANetwork implements SAGetResultsReceiver.Receiver {
 
         /** get a reference to the final endpoint so I can change it */
         String finalEndpoint = endpoint +
-                (SAUtils.isJSONEmpty(querydict) ? "?" + SAURLUtils.formGetQueryFromDict(querydict) : "");
+                (!SAUtils.isJSONEmpty(querydict) ? "?" + SAURLUtils.formGetQueryFromDict(querydict) : "");
 
         /** Starting Download Service */
         mReceiver = new SAGetResultsReceiver(new Handler());

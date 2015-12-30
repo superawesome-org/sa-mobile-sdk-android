@@ -54,6 +54,8 @@ public class SAGet extends IntentService {
         final ResultReceiver receiver = intent.getParcelableExtra("receiver");
         String url = intent.getStringExtra("url");
 
+        SALog.Log("Trying to load: " + url);
+
         Bundle bundle = new Bundle();
 
         if (SAURLUtils.isValidURL(url)) {
