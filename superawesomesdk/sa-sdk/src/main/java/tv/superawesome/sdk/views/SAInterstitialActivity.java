@@ -73,7 +73,7 @@ public class SAInterstitialActivity extends Activity {
         parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
 
         /** get the banner */
-        interstitialBanner = (SABannerAd) getFragmentManager().findFragmentById(R.id.interstitial_banner);
+        interstitialBanner = (SABannerAd) findViewById(R.id.interstitial_banner);
         interstitialBanner.setAd(ad);
         interstitialBanner.setAdListener(adListener);
         interstitialBanner.setParentalGateListener(parentalGateListener);

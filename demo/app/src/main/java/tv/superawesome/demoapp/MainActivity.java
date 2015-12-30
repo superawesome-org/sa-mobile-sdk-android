@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -148,7 +149,7 @@ public class MainActivity extends Activity implements
         SALoader.loadAd(9549, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
-                SABannerAd myBanner = (SABannerAd) getFragmentManager().findFragmentById(R.id.myBannerAd1);
+                SABannerAd myBanner = (SABannerAd) findViewById(R.id.myBannerAd1);
                 myBanner.setAd(ad);
                 myBanner.play();
             }

@@ -4,11 +4,16 @@
              android:layout_height="match_parent"
              tools:context="tv.superawesome.sdk.views.SAInterstitialActivity">
 
-   <fragment
-       android:id="@+id/interstitial_banner"
-       android:name="tv.superawesome.sdk.views.SABannerAd"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+    <tv.superawesome.sdk.views.SABannerAd
+        android:id="@+id/interstitial_banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+   <!--<fragment-->
+       <!--android:id="@+id/interstitial_banner"-->
+       <!--android:name="tv.superawesome.sdk.views.SABannerAd"-->
+       <!--android:layout_width="match_parent"-->
+       <!--android:layout_height="match_parent"/>-->
 
     <ImageView
         android:layout_width="wrap_content"

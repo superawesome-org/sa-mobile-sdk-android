@@ -2,17 +2,20 @@ package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
@@ -29,7 +32,7 @@ import tv.superawesome.sdk.listeners.SAParentalGateListener;
  * Created by gabriel.coman on 30/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SABannerAd extends Fragment implements SAWebViewListener {
+public class SABannerAd extends RelativeLayout implements SAWebViewListener {
 
     /** Private variables */
     private boolean isParentalGateEnabled = true; /** init with default value */
@@ -43,36 +46,66 @@ public class SABannerAd extends Fragment implements SAWebViewListener {
     private SAAdListener adListener;
     private SAParentalGateListener parentalGateListener;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    /** Constructors */
+    public SABannerAd(Context context) {
+        this(context, null, 0);
+        SALog.Log("COnstructor 1");
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_sa_banner, container, false);
+    public SABannerAd(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+        SALog.Log("COnstructor 2");
+    }
+
+    public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        inflater.inflate(R.layout.fragment_sa_banner, this);
 
         // create / assign the subviews
-        webView = (SAWebView)v.findViewById(R.id.web_view);
+        webView = (SAWebView)findViewById(R.id.web_view);
         webView.setListener(this);
+        padlock = (ImageView)findViewById(R.id.padlock_image);
 
-        padlock = (ImageView)v.findViewById(R.id.padlock_image);
-
-        return v;
+        SALog.Log("COnstructor 3");
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
+//    public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//
+//
+//    }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setRetainInstance(true);
+//    }
+//
+//    @Nullable
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        View v = inflater.inflate(R.layout.fragment_sa_banner, container, false);
+//
+//        // create / assign the subviews
+//        webView = (SAWebView)v.findViewById(R.id.web_view);
+//        webView.setListener(this);
+//        padlock = (ImageView)v.findViewById(R.id.padlock_image);
+//
+//        return v;
+//    }
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//    }
+//
+//    @Override
+//    public void onResume(){
+//        super.onResume();
+//    }
 
     /**
      * This function is used to set the ad reference to a new, loaded Ad
@@ -146,7 +179,7 @@ public class SABannerAd extends Fragment implements SAWebViewListener {
 
         /** check for PG */
         if (isParentalGateEnabled) {
-            SAParentalGate gate = new SAParentalGate(getActivity(), ad);
+            SAParentalGate gate = new SAParentalGate(getContext(), ad);
             gate.show();
             gate.setListener(parentalGateListener);
         } else {
@@ -156,7 +189,7 @@ public class SABannerAd extends Fragment implements SAWebViewListener {
 
             /** go-to-url */
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
-            startActivity(browserIntent);
+            getContext().startActivity(browserIntent);
         }
     }
 
