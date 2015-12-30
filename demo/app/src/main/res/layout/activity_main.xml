@@ -56,10 +56,4 @@
         android:layout_width="match_parent"
         android:layout_height="500px" />
 
-    <!--<fragment-->
-        <!--android:id="@+id/myBannerAd1"-->
-        <!--android:name="tv.superawesome.sdk.views.SABannerAd"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="500px" />-->
-
 </LinearLayout>

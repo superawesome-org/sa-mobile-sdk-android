@@ -1,25 +1,17 @@
 package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
 import tv.superawesome.sdk.R;
@@ -49,63 +41,24 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
     /** Constructors */
     public SABannerAd(Context context) {
         this(context, null, 0);
-        SALog.Log("COnstructor 1");
     }
 
     public SABannerAd(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        SALog.Log("COnstructor 2");
     }
 
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        /** inflate view */
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.fragment_sa_banner, this);
+        inflater.inflate(R.layout.view_sa_banner, this);
 
-        // create / assign the subviews
+        /** create / assign the subviews */
         webView = (SAWebView)findViewById(R.id.web_view);
         webView.setListener(this);
         padlock = (ImageView)findViewById(R.id.padlock_image);
-
-        SALog.Log("COnstructor 3");
     }
-
-//    public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//
-//
-//    }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setRetainInstance(true);
-//    }
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        View v = inflater.inflate(R.layout.fragment_sa_banner, container, false);
-//
-//        // create / assign the subviews
-//        webView = (SAWebView)v.findViewById(R.id.web_view);
-//        webView.setListener(this);
-//        padlock = (ImageView)v.findViewById(R.id.padlock_image);
-//
-//        return v;
-//    }
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onResume(){
-//        super.onResume();
-//    }
 
     /**
      * This function is used to set the ad reference to a new, loaded Ad
