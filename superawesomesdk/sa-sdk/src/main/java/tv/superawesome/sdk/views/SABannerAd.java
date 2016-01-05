@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
 import tv.superawesome.sdk.R;
@@ -52,7 +54,8 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
 
         /** inflate view */
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.view_sa_banner, this);
+        int resourceId = SAUtils.getResourceIdByName(context.getPackageName(), "layout", "view_sa_banner");
+        inflater.inflate(resourceId, this);
 
         /** create / assign the subviews */
         webView = (SAWebView)findViewById(R.id.web_view);

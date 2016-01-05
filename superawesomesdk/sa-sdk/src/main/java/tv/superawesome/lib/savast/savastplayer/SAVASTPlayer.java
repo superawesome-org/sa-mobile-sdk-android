@@ -14,7 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import tv.superawesome.lib.sanetwork.SAApplication;
+import tv.superawesome.lib.sanetwork.SAURLUtils;
 import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.R;
 
 /**
@@ -57,7 +60,13 @@ public class SAVASTPlayer extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_sa_vastplayer, container, false);
+
+        /** load resource */
+        int resourceId = SAUtils.getResourceIdByName(
+                SAApplication.getSAApplicationContext().getPackageName(),
+                "layout",
+                "fragment_sa_vastplayer");
+        View v = inflater.inflate(resourceId, container, false);
 
         videoPlayer = (VideoView)v.findViewById(R.id.video_view);
         chronographer = (TextView)v.findViewById(R.id.cronographer);

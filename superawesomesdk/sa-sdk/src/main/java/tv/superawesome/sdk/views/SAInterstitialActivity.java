@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import tv.superawesome.lib.sanetwork.SAApplication;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
@@ -64,7 +66,14 @@ public class SAInterstitialActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         /** call super and layout */
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sa_interstitial);
+
+        /** load resource */
+        int resourceId = SAUtils.getResourceIdByName(
+                SAApplication.getSAApplicationContext().getPackageName(),
+                "layout",
+                "activity_sa_interstitial"
+        );
+        setContentView(resourceId);
 
         /** assign data from AdDataHolder */
         ad = AdDataHolder.getInstance()._refAd;

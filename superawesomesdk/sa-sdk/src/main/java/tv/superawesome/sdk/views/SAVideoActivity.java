@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
@@ -78,7 +79,14 @@ public class SAVideoActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sa_video);
+
+        /** load resources */
+        int resourceId = SAUtils.getResourceIdByName(
+                SAApplication.getSAApplicationContext().getPackageName(),
+                "layout",
+                "activity_sa_video"
+        );
+        setContentView(resourceId);
 
         /** assign data from AdDataHolder */
         ad = AdDataHolder.getInstance()._refAd;
