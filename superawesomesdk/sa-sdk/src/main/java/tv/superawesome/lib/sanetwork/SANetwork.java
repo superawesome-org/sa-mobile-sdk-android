@@ -56,13 +56,12 @@ public class SANetwork implements SAGetResultsReceiver.Receiver {
         /** Starting Download Service */
         mReceiver = new SAGetResultsReceiver(new Handler());
         mReceiver.setReceiver(this);
-        Intent intent = new Intent(Intent.ACTION_SYNC, null, SAApplication.getInstance().getApplicationContext(), SAGet.class);
-
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, SAApplication.getSAApplicationContext(), SAGet.class);
         /* Send optional extras to Download IntentService */
         intent.putExtra("url", finalEndpoint);
         intent.putExtra("receiver", mReceiver);
 
-        SAApplication.getInstance().getApplicationContext().startService(intent);
+        SAApplication.getSAApplicationContext().startService(intent);
     }
 
     @Override
@@ -72,7 +71,6 @@ public class SANetwork implements SAGetResultsReceiver.Receiver {
                 break;
             case SAGet.STATUS_FINISHED: {
                 String[] results = resultData.getStringArray("result");
-                SALog.Log("GET RESULTS: " + results[0]);
 
                 if (listener != null){
                     listener.success(results[0]);

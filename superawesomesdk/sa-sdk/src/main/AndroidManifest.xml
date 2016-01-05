@@ -3,8 +3,7 @@
     package="tv.superawesome.sdk">
 
     <application
-        android:allowBackup="true"
-        android:name="tv.superawesome.lib.sanetwork.SAApplication">
+        android:allowBackup="true">
         <activity
             android:name=".views.SAVideoActivity"
             android:label="@string/superawesome__title_activity_savideo"></activity>

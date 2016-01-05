@@ -77,6 +77,7 @@ public class MainActivity extends Activity implements
 
         SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().disableTestMode();
+        SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         SALog.Log(SuperAwesome.getInstance().getSDKVersion());
         SALog.Log(SASystem.getVerboseSystemDetails());
     }

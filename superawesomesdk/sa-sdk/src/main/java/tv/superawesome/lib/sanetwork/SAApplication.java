@@ -1,19 +1,19 @@
 package tv.superawesome.lib.sanetwork;
 
-import android.app.Application;
+import android.content.Context;
 
 /**
  * Created by gabriel.coman on 28/12/15.
  */
-public class SAApplication extends Application {
+public class SAApplication {
 
-    private static Application sInstance;
+    private static Context applicationContext;
 
-    public SAApplication() {
-        sInstance = this;
+    public static void setSAApplicationContext(Context _applicationContext){
+        applicationContext = _applicationContext;
     }
 
-    public static Application getInstance() {
-        return sInstance;
+    public static Context getSAApplicationContext(){
+        return applicationContext;
     }
 }

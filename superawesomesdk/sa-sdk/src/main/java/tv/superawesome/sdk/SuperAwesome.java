@@ -7,6 +7,10 @@
  */
 package tv.superawesome.sdk;
 
+import android.content.Context;
+
+import tv.superawesome.lib.sanetwork.SAApplication;
+
 /**
  * This is a Singleton class through which SDK users setup their AwesomeAds instance
  */
@@ -79,5 +83,16 @@ public class SuperAwesome {
 
     public boolean isTestingEnabled() {
         return this.isTestEnabled;
+    }
+
+    /**
+     * Group of functions that encapsulate the SAApplication functionality
+     */
+    public void setApplicationContext(Context _appContext){
+        SAApplication.setSAApplicationContext(_appContext);
+    }
+
+    public Context getApplicationContext(){
+        return SAApplication.getSAApplicationContext();
     }
 }

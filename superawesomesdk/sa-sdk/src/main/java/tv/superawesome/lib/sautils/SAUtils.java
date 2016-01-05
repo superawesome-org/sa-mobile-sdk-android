@@ -82,7 +82,7 @@ public class SAUtils {
     public static String openAssetAsString(String assetPath) throws IOException {
         /** create the input streams and all that stuff */
         StringBuilder builder = new StringBuilder();
-        InputStream text = SAApplication.getInstance().getApplicationContext().getAssets().open(assetPath);
+        InputStream text = SAApplication.getSAApplicationContext().getAssets().open(assetPath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(text, "UTF-8"));
 
         /** go through all the file and append */
