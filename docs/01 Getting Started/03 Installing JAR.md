@@ -25,7 +25,7 @@ This will register two new activities and one service for your application, all 
 
 Finally, the sa-sdk-3.1.4.jar library will depend on some external resources, such as assets, layouts, etc, to correctly display Ads.
 
-Download[sa-sdk-res.zip](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-res.zip?raw=true)
+Download [sa-sdk-res.zip](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-res.zip?raw=true)
 
 and unzip it. You'll find three folders inside:
  * layout - containing a buch of XML files; copy the XML files inside your projects' layout folder
