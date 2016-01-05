@@ -62,15 +62,17 @@ public class SAVASTPlayer extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         /** load resource */
-        int resourceId = SAUtils.getResourceIdByName(
-                SAApplication.getSAApplicationContext().getPackageName(),
-                "layout",
-                "fragment_sa_vastplayer");
-        View v = inflater.inflate(resourceId, container, false);
+        String packageName = SAApplication.getSAApplicationContext().getPackageName();
+        int fragment_sa_vastplayerId = SAUtils.getResourceIdByName(packageName, "layout", "fragment_sa_vastplayer");
+        int video_viewId = SAUtils.getResourceIdByName(packageName, "id", "video_view");
+        int cronographerId = SAUtils.getResourceIdByName(packageName, "id", "cronographer");
+        int find_out_moreId = SAUtils.getResourceIdByName(packageName, "id", "find_out_more");
 
-        videoPlayer = (VideoView)v.findViewById(R.id.video_view);
-        chronographer = (TextView)v.findViewById(R.id.cronographer);
-        findOutMore = (Button)v.findViewById(R.id.find_out_more);
+        View v = inflater.inflate(fragment_sa_vastplayerId, container, false);
+
+        videoPlayer = (VideoView)v.findViewById(video_viewId);
+        chronographer = (TextView)v.findViewById(cronographerId);
+        findOutMore = (Button)v.findViewById(find_out_moreId);
 
         // Inflate the layout for this fragment
         return v;

@@ -68,12 +68,12 @@ public class SAInterstitialActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         /** load resource */
-        int resourceId = SAUtils.getResourceIdByName(
-                SAApplication.getSAApplicationContext().getPackageName(),
-                "layout",
-                "activity_sa_interstitial"
-        );
-        setContentView(resourceId);
+        String packageName = SAApplication.getSAApplicationContext().getPackageName();
+        int activity_sa_interstitialId = SAUtils.getResourceIdByName(packageName, "layout", "activity_sa_interstitial");
+        int interstitial_bannerId = SAUtils.getResourceIdByName(packageName, "id", "interstitial_banner");
+        int interstitial_padlock_imageId = SAUtils.getResourceIdByName(packageName, "id", "interstitial_padlock_image");
+
+        setContentView(activity_sa_interstitialId);
 
         /** assign data from AdDataHolder */
         ad = AdDataHolder.getInstance()._refAd;
@@ -82,7 +82,7 @@ public class SAInterstitialActivity extends Activity {
         parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
 
         /** get the banner */
-        interstitialBanner = (SABannerAd) findViewById(R.id.interstitial_banner);
+        interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
         interstitialBanner.setAd(ad);
         interstitialBanner.setAdListener(adListener);
         interstitialBanner.setParentalGateListener(parentalGateListener);
@@ -90,7 +90,7 @@ public class SAInterstitialActivity extends Activity {
         interstitialBanner.play();
 
         /** show or hide the padlock */
-        padlock = (ImageView) findViewById(R.id.interstitial_padlock_image);
+        padlock = (ImageView) findViewById(interstitial_padlock_imageId);
         if (ad.isFallback) {
             padlock.setVisibility(View.GONE);
         } else {

@@ -52,15 +52,19 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        /** inflate view */
-        LayoutInflater inflater = LayoutInflater.from(context);
-        int resourceId = SAUtils.getResourceIdByName(context.getPackageName(), "layout", "view_sa_banner");
-        inflater.inflate(resourceId, this);
+        /** get ids */
+        String packageName = context.getPackageName();
+        int view_sa_bannerId = SAUtils.getResourceIdByName(packageName, "layout", "view_sa_banner");
+        int web_viewId = SAUtils.getResourceIdByName(packageName, "id", "web_view");
+        int padlockId = SAUtils.getResourceIdByName(packageName, "id", "padlock_image");
 
         /** create / assign the subviews */
-        webView = (SAWebView)findViewById(R.id.web_view);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        inflater.inflate(view_sa_bannerId, this);
+
+        webView = (SAWebView)findViewById(web_viewId);
         webView.setListener(this);
-        padlock = (ImageView)findViewById(R.id.padlock_image);
+        padlock = (ImageView)findViewById(padlockId);
     }
 
     /**

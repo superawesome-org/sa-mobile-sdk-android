@@ -81,12 +81,12 @@ public class SAVideoActivity extends Activity{
         super.onCreate(savedInstanceState);
 
         /** load resources */
-        int resourceId = SAUtils.getResourceIdByName(
-                SAApplication.getSAApplicationContext().getPackageName(),
-                "layout",
-                "activity_sa_video"
-        );
-        setContentView(resourceId);
+        String packageName = SAApplication.getSAApplicationContext().getPackageName();
+        int activity_sa_videoId = SAUtils.getResourceIdByName(packageName, "layout", "activity_sa_video");
+        int padlock_imageId = SAUtils.getResourceIdByName(packageName, "id", "padlock_image");
+        int video_playerId = SAUtils.getResourceIdByName(packageName, "id", "video_player");
+
+        setContentView(activity_sa_videoId);
 
         /** assign data from AdDataHolder */
         ad = AdDataHolder.getInstance()._refAd;
@@ -96,7 +96,7 @@ public class SAVideoActivity extends Activity{
         videoAdListener = AdDataHolder.getInstance()._refVideoAdListener;
 
         /** get padlock */
-        padlock = (ImageView) findViewById(R.id.padlock_image);
+        padlock = (ImageView) findViewById(padlock_imageId);
 
         if (ad.isFallback) {
             padlock.setVisibility(View.GONE);
@@ -105,7 +105,7 @@ public class SAVideoActivity extends Activity{
         }
 
         /** get player */
-        videoPlayer = (SAVASTPlayer) getFragmentManager().findFragmentById(R.id.video_player);
+        videoPlayer = (SAVASTPlayer) getFragmentManager().findFragmentById(video_playerId);
 
         /** create the VAST manager */
         manager = new SAVASTManager(videoPlayer, new SAVASTManagerListener() {
