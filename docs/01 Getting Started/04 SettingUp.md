@@ -8,7 +8,7 @@ Open the AndroidManifest.xml file in the root of the project. Add two 'Uses Perm
 
 ```
 
-Last, in the Activity or Fragment you'll want to add display an ad, you'll need to add:
+Last, in the Activity or Fragment you'll want to display an Ad:
 
 ```
 SuperAwesome.getInstance().setApplicationContext(getApplicationContext());

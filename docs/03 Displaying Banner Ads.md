@@ -14,8 +14,8 @@ Then, in your activity code:
 
 ```
 SALoader.loadAd(__BANNER_PLACEMENT_ID__, new SALoaderListener() {
-   	@Override
-    public void didLoadAd(SAAd ad) {
+	@Override
+	public void didLoadAd(SAAd ad) {
     	// find the Banner
      	SABannerAd myBanner = (SABannerAd) findViewById(R.id.myBannerAd1);
 

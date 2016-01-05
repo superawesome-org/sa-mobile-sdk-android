@@ -7,7 +7,7 @@ The syntax for such a call is as follows:
 
 ```
 SALoader.loadAd(__PLACEMENT_ID__, new SALoaderListener() {
-   	@Override
+	@Override
     public void didLoadAd(SAAd ad) {
     	// print the ad details
      	ad.print();
@@ -22,7 +22,7 @@ SALoader.loadAd(__PLACEMENT_ID__, new SALoaderListener() {
 ```
 
 The loadAd() function has two parameters:
- * the __PLACEMENT_ID__, which is the integer ID of your placement. You can use one of the test ones or your own, once you set it up on the Dashboard.
+ * the __PLACEMENT_ID__, which is the integer ID of your placement. You can use one of the test ones or your own, once you set them up in the Dashboard.
  * a new instance of the SALoaderListener Java interface, which must always implement two functions: `didLoadAd()` and `didFailToLoadAdForPlacementId()`.
 
 The `didLoadAd(SAAd ad)` function acts as a callback letting you know that an ad has been successfully loaded. You can then use the `ad` object passed as parameter to print ad details, pass it further down to be rendered, etc.

@@ -2,8 +2,8 @@ Once you've loaded the interstitial Ad, you can display it. In the Awesome Ads S
 
 ```
 SALoader.loadAd(__INTERSTITIAL_PLACEMENT_ID__, new SALoaderListener() {
-   	@Override
-    public void didLoadAd(SAAd ad) {
+	@Override
+	public void didLoadAd(SAAd ad) {
      	// start the interstitial activity
     	SAInterstitialActivity.start(MainActivity.this, ad, true, null, null);
     }
