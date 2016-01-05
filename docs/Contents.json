@@ -10,8 +10,16 @@
                     "text":"01 Getting Started/01 GettingStarted.md"
                 },
                 {
-                    "name": "Adding the Library to Your Project",
-                    "text": "01 Getting Started/02 SettingUp.md"
+                    "name": "Adding the Library to Your Project - AAR Library",
+                    "text": "01 Getting Started/02 Installing AAR.md"
+                },
+                {
+                    "name": "Adding the Library to Your Project - JAR Library",
+                    "text": "01 Getting Started/03 Installing JAR.md"
+                },
+                {
+                    "name": "Final setup",
+                    "text": "01 Getting Started/04 SettingUp.md"
                 }
             ]
         },
