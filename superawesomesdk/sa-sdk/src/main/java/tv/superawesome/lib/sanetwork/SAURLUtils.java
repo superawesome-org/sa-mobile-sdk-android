@@ -5,9 +5,6 @@ package tv.superawesome.lib.sanetwork;
  */
 import android.util.Patterns;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;

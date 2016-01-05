@@ -10,10 +10,7 @@ package tv.superawesome.lib.sanetwork;
 /**
  * Imports needed to implement this class
  */
-import com.google.gson.JsonObject;
-
 import org.json.JSONObject;
-
 import tv.superawesome.lib.sautils.SALog;
 
 /**

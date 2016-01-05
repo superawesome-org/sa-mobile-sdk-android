@@ -14,8 +14,6 @@ package tv.superawesome.lib.sautils;
 
 import android.util.Log;
 
-import com.google.gson.JsonObject;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

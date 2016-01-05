@@ -11,14 +11,10 @@ package tv.superawesome.sdk.data.Loader;
  * Imports needed for this implementation
  */
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.sanetwork.*;
 import tv.superawesome.sdk.data.Models.SAAd;

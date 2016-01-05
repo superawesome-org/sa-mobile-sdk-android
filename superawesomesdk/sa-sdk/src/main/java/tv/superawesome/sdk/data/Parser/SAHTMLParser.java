@@ -10,8 +10,6 @@ package tv.superawesome.sdk.data.Parser;
 /**
  * Imports needed for this class
  */
-import com.google.gson.JsonObject;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
