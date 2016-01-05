@@ -13,6 +13,9 @@ package tv.superawesome.sdk.data.Parser;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.superawesome.lib.sanetwork.*;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -32,11 +35,11 @@ public class SAParser {
      * internet
      * @param dict
      */
-    private static boolean performIntegrityCheck(JsonObject dict){
+    private static boolean performIntegrityCheck(JSONObject dict){
         if (!SAUtils.isJSONEmpty(dict)){
-            JsonObject creative = dict.getAsJsonObject("creative");
+            JSONObject creative = dict.optJSONObject("creative");
             if (!SAUtils.isJSONEmpty(creative)){
-                JsonObject details = creative.getAsJsonObject("details");
+                JSONObject details = creative.optJSONObject("details");
                 if (!SAUtils.isJSONEmpty(details)){
                     return true;
                 }
@@ -52,15 +55,15 @@ public class SAParser {
      * @param dict a json of values from the server
      * @return a SAAd object
      */
-    private static SAAd parseAdWithDictionary(JsonObject dict) {
+    private static SAAd parseAdWithDictionary(JSONObject dict) {
         SAAd ad = new SAAd();
 
-        Object errorObj = dict.get("error");
-        Object lineItemIdObj = dict.get("line_item_id");
-        Object campaignIdObj = dict.get("campaign_id");
-        Object isTestObj = dict.get("test");
-        Object isFallbackObj = dict.get("is_fallback");
-        Object isFillObj = dict.get("is_fill");
+        Object errorObj = dict.opt("error");
+        Object lineItemIdObj = dict.opt("line_item_id");
+        Object campaignIdObj = dict.opt("campaign_id");
+        Object isTestObj = dict.opt("test");
+        Object isFallbackObj = dict.opt("is_fallback");
+        Object isFillObj = dict.opt("is_fill");
 
         ad.error = (errorObj != null ? Integer.parseInt(errorObj.toString().replace("\"","")) : -1);
         ad.lineItemId = (lineItemIdObj != null ? Integer.parseInt(lineItemIdObj.toString().replace("\"","")) : -1);
@@ -78,17 +81,17 @@ public class SAParser {
      * @param cdict a json of values from the server
      * @return a SACreative object
      */
-    private static SACreative parseCreativeWithDictionary(JsonObject cdict) {
+    private static SACreative parseCreativeWithDictionary(JSONObject cdict){
 
         SACreative creative = new SACreative();
 
-        Object creativeIdObj = cdict.get("id");
-        Object nameObj = cdict.get("name");
-        Object cpmObj = cdict.get("cpm");
-        Object baseFormatObj = cdict.get("format");
-        Object impressionUrlObj = cdict.get("impression_url");
-        Object clickUrlObj = cdict.get("click_url");
-        Object approvedObj = cdict.get("approved");
+        Object creativeIdObj = cdict.opt("id");
+        Object nameObj = cdict.opt("name");
+        Object cpmObj = cdict.opt("cpm");
+        Object baseFormatObj = cdict.opt("format");
+        Object impressionUrlObj = cdict.opt("impression_url");
+        Object clickUrlObj = cdict.opt("click_url");
+        Object approvedObj = cdict.opt("approved");
 
         creative.creativeId = (creativeIdObj != null ? Integer.parseInt(creativeIdObj.toString().replace("\"","")) : -1);
         creative.name = (nameObj != null ? nameObj.toString().replace("\"", "") : null);
@@ -106,23 +109,23 @@ public class SAParser {
      * @param ddict a json of values from the server
      * @return a SADetails object
      */
-    private static SADetails parseDetailsWithDictionary(JsonObject ddict) {
+    private static SADetails parseDetailsWithDictionary(JSONObject ddict){
 
         SADetails details = new SADetails();
 
-        Object widthObj = ddict.get("width");
-        Object heightObj = ddict.get("height");
-        Object imageObj = ddict.get("image");
-        Object valueObj = ddict.get("value");
-        Object nameObj = ddict.get("name");
-        Object videoObj = ddict.get("video");
-        Object bitrateObj = ddict.get("bitrate");
-        Object durationObj = ddict.get("duration");
-        Object vastObj = ddict.get("vast");
-        Object tagObj = ddict.get("tag");
-        Object placementFormatObj = ddict.get("placement_format");
-        Object zipFileObj = ddict.get("zip_file");
-        Object urlObj = ddict.get("url");
+        Object widthObj = ddict.opt("width");
+        Object heightObj = ddict.opt("height");
+        Object imageObj = ddict.opt("image");
+        Object valueObj = ddict.opt("value");
+        Object nameObj = ddict.opt("name");
+        Object videoObj = ddict.opt("video");
+        Object bitrateObj = ddict.opt("bitrate");
+        Object durationObj = ddict.opt("duration");
+        Object vastObj = ddict.opt("vast");
+        Object tagObj = ddict.opt("tag");
+        Object placementFormatObj = ddict.opt("placement_format");
+        Object zipFileObj = ddict.opt("zip_file");
+        Object urlObj = ddict.opt("url");
 
         details.width = (widthObj != null ? Integer.parseInt(widthObj.toString().replace("\"","")) : 0);
         details.height = (heightObj != null ? Integer.parseInt(heightObj.toString().replace("\"","")) : 0);
@@ -147,7 +150,7 @@ public class SAParser {
      * @param placementId = the placement id - just used because it's not returned by the ad server
      * @param listener - the listener that actually calls the callback to finish the method
      */
-    public static void parseDictionaryIntoAd(JsonObject dict, int placementId, final SAParserListener listener) {
+    public static void parseDictionaryIntoAd(JSONObject dict, int placementId, final SAParserListener listener) {
         /** perform integrity check */
         if (!SAParser.performIntegrityCheck(dict)){
             SALog.Log("Did not pass integrity check");
@@ -156,9 +159,9 @@ public class SAParser {
         }
 
         /** extract dicts */
-        JsonObject adict = dict;
-        JsonObject cdict = dict.getAsJsonObject("creative");
-        JsonObject ddict = cdict.getAsJsonObject("details");
+        JSONObject adict = dict;
+        JSONObject cdict = dict.optJSONObject("creative");
+        JSONObject ddict = cdict.optJSONObject("details");
 
         /** parse base ad stuff */
         SAAd ad = SAParser.parseAdWithDictionary(adict);
@@ -174,26 +177,40 @@ public class SAParser {
         else if (ad.creative.baseFormat.contains("tag")) ad.creative.format = SACreativeFormat.tag;
 
         /** create the tracking URL */
-        JsonObject trackingDict = new JsonObject();
-        trackingDict.addProperty("placement", ad.placementId);
-        trackingDict.addProperty("line_item", ad.lineItemId);
-        trackingDict.addProperty("creative", ad.creative.creativeId);
-        trackingDict.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-        trackingDict.addProperty("rnd", SAURLUtils.getCacheBuster());
+        JSONObject trackingDict = new JSONObject();
+        try {
+            trackingDict.put("placement", ad.placementId);
+            trackingDict.put("line_item", ad.lineItemId);
+            trackingDict.put("creative", ad.creative.creativeId);
+            trackingDict.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+            trackingDict.put("rnd", SAURLUtils.getCacheBuster());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         ad.creative.trackingURL = SuperAwesome.getInstance().getBaseURL() +
                 (ad.creative.format == SACreativeFormat.video ? "/video/click/?" : "/click?") +
                 SAURLUtils.formGetQueryFromDict(trackingDict);
 
         /** create the viewable impression URL */
-        JsonObject impressionDict1 = new JsonObject();
-        impressionDict1.addProperty("placement", ad.placementId);
-        impressionDict1.addProperty("line_item", ad.lineItemId);
-        impressionDict1.addProperty("creative", ad.creative.creativeId);
-        impressionDict1.addProperty("type", "viewable_impression");
-        JsonObject impressionDict2 = new JsonObject();
-        impressionDict2.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-        impressionDict2.addProperty("rnd", SAURLUtils.getCacheBuster());
-        impressionDict2.addProperty("data", SAURLUtils.encodeDictAsJsonDict(impressionDict1));
+        JSONObject impressionDict1 = new JSONObject();
+        try {
+            impressionDict1.put("placement", ad.placementId);
+            impressionDict1.put("line_item", ad.lineItemId);
+            impressionDict1.put("creative", ad.creative.creativeId);
+            impressionDict1.put("type", "viewable_impression");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject impressionDict2 = new JSONObject();
+        try {
+            impressionDict2.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+            impressionDict2.put("rnd", SAURLUtils.getCacheBuster());
+            impressionDict2.put("data", SAURLUtils.encodeDictAsJsonDict(impressionDict1));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         ad.creative.viewableImpressionURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAURLUtils.formGetQueryFromDict(impressionDict2);
 
         /** create the click URL */

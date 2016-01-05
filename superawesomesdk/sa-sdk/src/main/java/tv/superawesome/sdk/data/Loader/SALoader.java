@@ -14,7 +14,11 @@ package tv.superawesome.sdk.data.Loader;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.sanetwork.*;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -37,10 +41,15 @@ public class SALoader {
 
         /** form the endpoint */
         String endpoint = SuperAwesome.getInstance().getBaseURL() + "/ad/" + placementId;
-        JsonObject queryJson = new JsonObject();
-        queryJson.addProperty("test", SuperAwesome.getInstance().isTestingEnabled());
-        queryJson.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-        queryJson.addProperty("rnd", SAURLUtils.getCacheBuster());
+        JSONObject queryJson = new JSONObject();
+        try {
+            queryJson.put("test", SuperAwesome.getInstance().isTestingEnabled());
+            queryJson.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+            queryJson.put("rnd", SAURLUtils.getCacheBuster());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Query JSON: " + queryJson);
 
         /** send a standard GET request */
         SANetwork network = new SANetwork();
@@ -51,48 +60,56 @@ public class SALoader {
                 System.out.println(data);
 
                 /** form the json object to parse */
-                JsonParser jsonParser = new JsonParser();
-                JsonObject dataJson = (JsonObject)jsonParser.parse(data.toString());
+                JSONObject dataJson = null;
+                try {
+                    dataJson = new JSONObject(data.toString());
 
-                if (dataJson != null) {
-                   SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
-                       @Override
-                       public void parsedAd(SAAd ad) {
-                           boolean isValid = SAValidator.isAdDataValid(ad);
+                    if (dataJson != null) {
+                        SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
+                            @Override
+                            public void parsedAd(SAAd ad) {
+                                boolean isValid = SAValidator.isAdDataValid(ad);
 
-                           if (ad != null) {
-                               ad.print();
-                           } else  {
-                               SALog.Log("Ad " + placementId + " is empty");
-                           }
+                                if (ad != null) {
+                                    ad.print();
+                                } else {
+                                    SALog.Log("Ad " + placementId + " is empty");
+                                }
 
-                           if (isValid){
-                               if (listener != null){
-                                   listener.didLoadAd(ad);
-                               }
-                           } else {
-                               if (listener != null){
-                                   listener.didFailToLoadAdForPlacementId(placementId);
-                               }
-                           }
-                       }
-                   });
-
-                }
-                /** case json had some kind of error */
-                else {
-                    if (listener != null){
-                        listener.didFailToLoadAdForPlacementId(placementId);
+                                if (isValid) {
+                                    if (listener != null) {
+                                        listener.didLoadAd(ad);
+                                    }
+                                } else {
+                                    if (listener != null) {
+                                        listener.didFailToLoadAdForPlacementId(placementId);
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        failAd(listener, placementId);
                     }
+                } catch (JSONException e) {
+                    failAd(listener, placementId);
                 }
             }
 
             @Override
             public void failure() {
-                if (listener != null) {
-                    listener.didFailToLoadAdForPlacementId(placementId);
-                }
+                failAd(listener, placementId);
             }
         });
+    }
+
+    /**
+     * Common failure function for all the myriad ways the class can fail
+     * @param _listener
+     * @param placementId
+     */
+    private static void failAd(SALoaderListener _listener, int placementId){
+        if (_listener != null){
+            _listener.didFailToLoadAdForPlacementId(placementId);
+        }
     }
 }

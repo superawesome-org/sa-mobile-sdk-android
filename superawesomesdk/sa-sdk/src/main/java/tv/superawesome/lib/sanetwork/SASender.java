@@ -12,6 +12,8 @@ package tv.superawesome.lib.sanetwork;
  */
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import tv.superawesome.lib.sautils.SALog;
 
 /**
@@ -25,7 +27,7 @@ public class SASender {
      */
     public static void sendEventToURL(final String url) {
         SANetwork network = new SANetwork();
-        network.sendGET(url, new JsonObject(), new SANetListener() {
+        network.sendGET(url, new JSONObject(), new SANetListener() {
             @Override
             public void success(Object data) {
                 SALog.Log("Success " + url);

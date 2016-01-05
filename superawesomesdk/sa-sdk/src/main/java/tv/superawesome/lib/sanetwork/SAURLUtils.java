@@ -8,11 +8,14 @@ import android.util.Patterns;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -38,12 +41,21 @@ public class SAURLUtils {
      * Function that forms a query string from a dict
      * @param dict
      */
-    public static String formGetQueryFromDict(JsonObject dict) {
+    public static String formGetQueryFromDict(JSONObject dict) {
         String queryString = "";
 
+        // System.out.println("Internal: " + dict);
+
         ArrayList<String> queryArray = new ArrayList<>();
-        for (Map.Entry<String, JsonElement> e : dict.entrySet()) {
-            queryArray.add(e.getKey() + "=" + e.getValue().toString().replace("\"","") + "&") ;
+        Iterator<String> keys = dict.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Object valObj = dict.opt(key);
+            String val = (valObj != null ? valObj.toString().replace("\"","") : "");
+
+            System.out.println("Key: " + key + " valObj: " + valObj + " val: " + val);
+
+            queryArray.add(key + "=" + val + "&");
         }
 
         for (String queryObj : queryArray) {
@@ -61,15 +73,18 @@ public class SAURLUtils {
      * Function that encodes a dict
      * @param dict
      */
-    public static String encodeDictAsJsonDict(JsonObject dict) {
+    public static String encodeDictAsJsonDict(JSONObject dict) {
         String dictString = "";
 
-        for (Map.Entry<String, JsonElement> e: dict.entrySet()) {
-            String val = e.getValue().toString();
+        Iterator<String> keys = dict.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Object valObj = dict.opt(key);
+            String val = (valObj != null ? valObj.toString() : "");
             if (SAUtils.isInteger(val)){
-                dictString += "\"" + e.getKey().toString() + "\":" + Integer.parseInt(val) + ",";
-            } else {
-                dictString += "\"" + e.getKey().toString() + "\":\"" + val.replace("\"","") + "\",";
+                dictString += "\"" + key + "\":" + Integer.parseInt(val) + ",";
+            } else  {
+                dictString += "\"" + key + "\":\"" + val.replace("\"","") + "\",";
             }
         }
 

@@ -12,6 +12,9 @@ package tv.superawesome.sdk.data.Parser;
  */
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -86,12 +89,16 @@ public class SAHTMLParser {
             String htmlString = SAUtils.openAssetAsString("html/displayRichMEdia.html");
 
             String richMediaURL = ad.creative.details.url;
-            JsonObject richMediaDict = new JsonObject();
-            richMediaDict.addProperty("placement", ad.placementId);
-            richMediaDict.addProperty("line_item", ad.lineItemId);
-            richMediaDict.addProperty("creative", ad.creative.creativeId);
-            richMediaDict.addProperty("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-            richMediaDict.addProperty("rnd", SAURLUtils.getCacheBuster());
+            JSONObject richMediaDict = new JSONObject();
+            try {
+                richMediaDict.put("placement", ad.placementId);
+                richMediaDict.put("line_item", ad.lineItemId);
+                richMediaDict.put("creative", ad.creative.creativeId);
+                richMediaDict.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+                richMediaDict.put("rnd", SAURLUtils.getCacheBuster());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             richMediaURL += "?" + SAURLUtils.encodeDictAsJsonDict(richMediaDict);
 
             return htmlString.replace("richMediaURL", richMediaURL);

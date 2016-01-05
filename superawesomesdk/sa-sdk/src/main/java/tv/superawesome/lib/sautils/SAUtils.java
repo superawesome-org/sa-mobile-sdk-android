@@ -16,6 +16,8 @@ import android.util.Log;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,9 +47,9 @@ public class SAUtils {
      * return true if json is empty, false otherwise
      * @param dict a json dict
      */
-    public static boolean isJSONEmpty(JsonObject dict) {
+    public static boolean isJSONEmpty(JSONObject dict) {
         if (dict == null) return true;
-        if (dict.entrySet().isEmpty()) return true;
+        if (dict.length() == 0) return true;
         if (dict.toString().equals("{}")) return true;
         return false;
     }

@@ -120,7 +120,7 @@ public class MainActivity extends Activity implements
 
     public void sendNewGet(View v){
         SANetwork network = new SANetwork();
-        network.sendGET("https://ads.superawesome.tv/v2/ad/21022", new JsonObject(), new SANetListener() {
+        network.sendGET("https://ads.superawesome.tv/v2/ad/21022", new JSONObject(), new SANetListener() {
             @Override
             public void success(Object data) {
                 SALog.Log("Final success");
@@ -133,7 +133,7 @@ public class MainActivity extends Activity implements
         });
 
         SANetwork network2 = new SANetwork();
-        network2.sendGET("https://ads.superawesome.tv/v2/video/tracking?event=thirdQuartile&placement=21022&creative=-2&line_item=-2&sdkVersion=undefined&rnd=553497", new JsonObject(), new SANetListener() {
+        network2.sendGET("https://ads.superawesome.tv/v2/video/tracking?event=thirdQuartile&placement=21022&creative=-2&line_item=-2&sdkVersion=undefined&rnd=553497", new JSONObject(), new SANetListener() {
             @Override
             public void success(Object data) {
 

@@ -21,6 +21,7 @@ import com.google.gson.JsonObject;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.logging.LogRecord;
@@ -44,7 +45,7 @@ public class SANetwork implements SAGetResultsReceiver.Receiver {
      * @param querydict - a map of values that will be transformed into a proper GET query ?=parm1=val1&param2=val2, etc
      * @param listener - another SANetListener object, that just passes what SAGet sends him
      */
-    public void sendGET(String endpoint, JsonObject querydict, final SANetListener listener) {
+    public void sendGET(String endpoint, JSONObject querydict, final SANetListener listener) {
 
         /** assign listener */
         this.listener = listener;
@@ -64,6 +65,11 @@ public class SANetwork implements SAGetResultsReceiver.Receiver {
         SAApplication.getSAApplicationContext().startService(intent);
     }
 
+    /**
+     * Receiver interface function
+     * @param resultCode - callback param
+     * @param resultData - callback param
+     */
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         switch (resultCode) {
