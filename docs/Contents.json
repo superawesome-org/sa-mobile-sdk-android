@@ -24,28 +24,40 @@
             ]
         },
         {
-            "name":"Video Ad Activity",
-            "text": "02 Video Ad Activity.md"
+            "name":"Loading Ads",
+            "text": "02 Loading Ads.md"
         },
         {
-            "name":"Video Ad Events",
-            "text": "03 Video Ad Events.md"
+            "name":"Displaying Banner Ads",
+            "text": "03 Displaying Banner Ads.md"
+        },
+        {
+            "name":"Displaying Interstitial Ads",
+            "text": "04 Displaying Interstitial Ads.md"
+        },
+        {
+            "name":"Displaying Video Ads",
+            "text": "05 Displaying Video Ads.md"
+        },
+        {
+            "name":"Ad Events",
+            "text": "06 Ad Events.md"
         },
         {
             "name":"Parental Gate",
-            "text": "04 ParentalGate.md"
+            "text": "07 ParentalGate.md"
         },
         {
             "name":"MoPub Integration",
-            "text": "05 MoPub Integration.md"
+            "text": "08 MoPub Integration.md"
         },
         {
             "name":"Support",
-            "text": "06 Support.md"
+            "text": "09 Support.md"
         },
         {
             "name":"License",
-            "text": "07 License.md"
+            "text": "10 License.md"
         }
     ]
 }
