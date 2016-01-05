@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import tv.superawesome.lib.sanetwork.SAURLUtils;
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
 

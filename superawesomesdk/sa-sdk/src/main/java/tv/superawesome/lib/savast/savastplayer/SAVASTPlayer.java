@@ -15,10 +15,8 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sanetwork.SAURLUtils;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.R;
 
 /**
  * Created by gabriel.coman on 23/12/15.

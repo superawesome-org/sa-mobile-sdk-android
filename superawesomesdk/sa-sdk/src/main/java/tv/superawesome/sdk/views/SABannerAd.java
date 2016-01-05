@@ -11,12 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
-import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;

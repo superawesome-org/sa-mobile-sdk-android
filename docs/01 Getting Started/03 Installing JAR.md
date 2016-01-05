@@ -1,13 +1,10 @@
 If you're running an environment which does not support Gradle, then you'll need to add the SDK manually.
 
-First, download two .jar files:
+First, download the JAR file [sa-sdk-3.1.4.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.1.5.jar?raw=true) 
 
- * [gson-2.4.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/gson-2.4.jar?raw=true)
- * [sa-sdk-3.1.4.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.1.4.jar?raw=true) 
+You'll need to add it to your project's `lib` folder, usually `MyApplication/app/libs`. The `libs` folder should be located on the same level as the `src` and `build` folders.
 
-You'll need to add these two to your project's `lib` folder, usually `MyApplication/app/libs`. The `libs` folder should be located on the same level as the `src` and `build` folders.
-
-Once they're there, in Android Studion you'll need to select each one, right-click and click on `Add as Library`.
+Once they're there, in Android Studio you'll need to select it, right-click it and then `Add as Library`.
 
 Secondly, you'll need to add the following items in you Manifest file, under the Application tag:
 
@@ -23,7 +20,7 @@ Secondly, you'll need to add the following items in you Manifest file, under the
 
 This will register two new activities and one service for your application, all needed by the SDK.
 
-Finally, the sa-sdk-3.1.4.jar library will depend on some external resources, such as assets, layouts, etc, to correctly display Ads.
+Finally, the sa-sdk-3.1.5.jar library will depend on some external resources, such as assets, layouts, etc, to correctly display Ads.
 
 Download [sa-sdk-res.zip](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-res.zip?raw=true)
 

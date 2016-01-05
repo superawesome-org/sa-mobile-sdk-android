@@ -11,7 +11,6 @@ import android.widget.ImageView;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;

@@ -10,8 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile 'tv.superawesome.sdk:sa-sdk:3.1.1@aar'
-    compile 'com.google.code.gson:gson:2.4'
+    compile 'tv.superawesome.sdk:sa-sdk:3.1.5@aar'
 }
 ```
 

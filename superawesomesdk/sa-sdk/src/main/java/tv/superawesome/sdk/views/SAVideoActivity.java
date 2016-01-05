@@ -18,8 +18,6 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
-import tv.superawesome.sdk.R;
-import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
