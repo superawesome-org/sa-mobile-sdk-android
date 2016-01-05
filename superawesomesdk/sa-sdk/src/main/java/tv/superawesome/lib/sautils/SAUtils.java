@@ -98,6 +98,14 @@ public class SAUtils {
         return builder.toString();
     }
 
+    /**
+     * Load a resource in a more dynamic way - good for .aar and .jar compatibility
+     * @param packageName - the current package name, usually context.getPackageName() or
+     *                    currentAppContext.getPackageName()
+     * @param className - the class name - layout, drawable, etc
+     * @param name - the name of the resource
+     * @return - the integer ID, as stored in the final project's R class
+     */
     public static int getResourceIdByName(String packageName, String className, String name) {
         Class r = null;
         int id = 0;
