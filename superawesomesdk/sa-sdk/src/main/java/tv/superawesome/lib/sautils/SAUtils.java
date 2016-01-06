@@ -107,6 +107,7 @@ public class SAUtils {
      * @return - the integer ID, as stored in the final project's R class
      */
     public static int getResourceIdByName(String packageName, String className, String name) {
+
         Class r = null;
         int id = 0;
         try {

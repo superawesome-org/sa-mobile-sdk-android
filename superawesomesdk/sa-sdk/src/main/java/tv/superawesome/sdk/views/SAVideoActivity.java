@@ -80,9 +80,9 @@ public class SAVideoActivity extends Activity{
 
         /** load resources */
         String packageName = SAApplication.getSAApplicationContext().getPackageName();
-        int activity_sa_videoId = SAUtils.getResourceIdByName(packageName, "layout", "activity_sa_video");
-        int padlock_imageId = SAUtils.getResourceIdByName(packageName, "id", "padlock_image");
-        int video_playerId = SAUtils.getResourceIdByName(packageName, "id", "video_player");
+        int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
+        int padlock_imageId = getResources().getIdentifier("padlock_image", "id", packageName);
+        int video_playerId = getResources().getIdentifier("video_player", "id", packageName);
 
         setContentView(activity_sa_videoId);
 

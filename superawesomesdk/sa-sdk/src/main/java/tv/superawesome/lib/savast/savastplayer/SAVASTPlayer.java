@@ -61,10 +61,10 @@ public class SAVASTPlayer extends Fragment {
 
         /** load resource */
         String packageName = SAApplication.getSAApplicationContext().getPackageName();
-        int fragment_sa_vastplayerId = SAUtils.getResourceIdByName(packageName, "layout", "fragment_sa_vastplayer");
-        int video_viewId = SAUtils.getResourceIdByName(packageName, "id", "video_view");
-        int cronographerId = SAUtils.getResourceIdByName(packageName, "id", "cronographer");
-        int find_out_moreId = SAUtils.getResourceIdByName(packageName, "id", "find_out_more");
+        int fragment_sa_vastplayerId = getResources().getIdentifier("fragment_sa_vastplayer", "layout", packageName);
+        int video_viewId = getResources().getIdentifier("video_view", "id", packageName);
+        int cronographerId = getResources().getIdentifier("cronographer", "id", packageName);
+        int find_out_moreId = getResources().getIdentifier("find_out_more", "id", packageName);
 
         View v = inflater.inflate(fragment_sa_vastplayerId, container, false);
 

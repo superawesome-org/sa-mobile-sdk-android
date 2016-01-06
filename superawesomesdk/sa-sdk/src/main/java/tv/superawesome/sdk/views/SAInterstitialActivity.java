@@ -68,9 +68,9 @@ public class SAInterstitialActivity extends Activity {
 
         /** load resource */
         String packageName = SAApplication.getSAApplicationContext().getPackageName();
-        int activity_sa_interstitialId = SAUtils.getResourceIdByName(packageName, "layout", "activity_sa_interstitial");
-        int interstitial_bannerId = SAUtils.getResourceIdByName(packageName, "id", "interstitial_banner");
-        int interstitial_padlock_imageId = SAUtils.getResourceIdByName(packageName, "id", "interstitial_padlock_image");
+        int activity_sa_interstitialId = getResources().getIdentifier("activity_sa_interstitial", "layout", packageName);
+        int interstitial_bannerId = getResources().getIdentifier("interstitial_banner", "id", packageName);
+        int interstitial_padlock_imageId = getResources().getIdentifier("interstitial_padlock_image", "id", packageName);
 
         setContentView(activity_sa_interstitialId);
 
