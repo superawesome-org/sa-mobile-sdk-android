@@ -5,14 +5,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.xml.sax.InputSource;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.sdk.data.Loader.SALoader;
 
 /**
  * Created by gabriel.coman on 22/12/15.
@@ -20,14 +20,15 @@ import tv.superawesome.lib.sautils.SALog;
 public class SASyncGet {
 
     public static String execute(String url) throws IOException {
+
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
         httpGet.setHeader("User-Agent", SAUserAgent.getUserAgent());
+        httpGet.setHeader("Content-Type", "application/json");
 
         HttpResponse response = null;
         try {
-            response = client.execute(httpGet );
-            SALog.Log(response.toString());
+            response = client.execute(httpGet);
         } catch (IOException e ) {
             return null;
         }
@@ -41,5 +42,4 @@ public class SASyncGet {
 
         return responseString;
     }
-
 }

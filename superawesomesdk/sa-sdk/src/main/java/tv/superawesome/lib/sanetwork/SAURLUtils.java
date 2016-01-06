@@ -7,10 +7,12 @@ import android.util.Patterns;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,8 +52,6 @@ public class SAURLUtils {
             Object valObj = dict.opt(key);
             String val = (valObj != null ? valObj.toString().replace("\"","") : "");
 
-            System.out.println("Key: " + key + " valObj: " + valObj + " val: " + val);
-
             queryArray.add(key + "=" + val + "&");
         }
 
@@ -71,33 +71,47 @@ public class SAURLUtils {
      * @param dict
      */
     public static String encodeDictAsJsonDict(JSONObject dict) {
-        String dictString = "";
-
-        Iterator<String> keys = dict.keys();
-        while (keys.hasNext()) {
-            String key = keys.next();
-            Object valObj = dict.opt(key);
-            String val = (valObj != null ? valObj.toString() : "");
-            if (SAUtils.isInteger(val)){
-                dictString += "\"" + key + "\":" + Integer.parseInt(val) + ",";
-            } else  {
-                dictString += "\"" + key + "\":\"" + val.replace("\"","") + "\",";
-            }
+        try {
+            return URLEncoder.encode(dict.toString(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
         }
 
-        if (dictString.length() > 0) {
-            dictString = "{" + dictString;
-            dictString = dictString.substring(0, dictString.length() - 1);
-            dictString += "}";
-            dictString = dictString.replace("\"","%22");
-            dictString = dictString.replace("}","%7D");
-            dictString = dictString.replace("{","%7B");
-            dictString = dictString.replace(":","%3A");
-            dictString = dictString.replace(",","%2C");
-            return dictString;
-        } else  {
-            return dictString;
-        }
+
+//        String dictString = "";
+//
+//        Iterator<String> keys = dict.keys();
+//        while (keys.hasNext()) {
+//            String key = keys.next();
+//            Object valObj = dict.opt(key);
+//            String val = (valObj != null ? valObj.toString() : "");
+//            if (SAUtils.isInteger(val)){
+//                dictString += "\"" + key + "\":" + Integer.parseInt(val) + ",";
+//            } else  {
+//                dictString += "\"" + key + "\":\"" + val.replace("\"","") + "\",";
+//            }
+//        }
+//
+//        if (dictString.length() > 0) {
+//            dictString = "{" + dictString;
+//            dictString = dictString.substring(0, dictString.length() - 1);
+//            dictString += "}";
+//            try {
+//                return URLEncoder.encode(dictString, "UTF-8");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//                return "";
+//            }
+////            dictString = dictString.replace("\"","%22");
+////            dictString = dictString.replace("}","%7D");
+////            dictString = dictString.replace("{","%7B");
+////            dictString = dictString.replace(":","%3A");
+////            dictString = dictString.replace(",","%2C");
+////            return dictString;
+//        } else  {
+//            return dictString;
+//        }
     }
 
     /**

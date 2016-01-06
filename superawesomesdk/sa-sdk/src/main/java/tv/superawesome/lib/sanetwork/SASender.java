@@ -27,7 +27,7 @@ public class SASender {
         network.sendGET(url, new JSONObject(), new SANetListener() {
             @Override
             public void success(Object data) {
-                SALog.Log("Success " + url);
+                // SALog.Log("Success " + url + " ==> " + data.toString());
             }
 
             @Override
