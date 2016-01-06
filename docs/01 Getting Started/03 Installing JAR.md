@@ -1,6 +1,6 @@
 If you're running an environment which does not support Gradle, then you'll need to add the SDK manually.
 
-First, download the JAR file [sa-sdk-3.1.5.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.1.5.jar?raw=true) 
+First, download the JAR file [sa-sdk-3.1.7.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.1.7.jar?raw=true) 
 
 You'll need to add it to your project's `lib` folder, usually `MyApplication/app/libs`. The `libs` folder should be located on the same level as the `src` and `build` folders.
 
@@ -20,7 +20,7 @@ Secondly, you'll need to add the following items in you Manifest file, under the
 
 This will register two new activities and one service for your application, all needed by the SDK.
 
-Finally, the sa-sdk-3.1.5.jar library will depend on some external resources, such as assets, layouts, etc, to correctly display Ads.
+Finally, the .jar library will depend on some external resources, such as assets, layouts, etc, to correctly display Ads.
 
 Download [sa-sdk-res.zip](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-res.zip?raw=true)
 
