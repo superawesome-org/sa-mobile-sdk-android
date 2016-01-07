@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SA Demo App</string>
+    <string name="app_name">SASDK - Android</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -45,4 +45,5 @@
     <string name="gamewall_description">This activity uses a gamewall. There is a button below that only shows when the gamewall has items available to display.</string>
     <string name="gamewall_button">Open GameWall</string>
     <string name="gamewall_reward">Total Currency earned:</string>
+    <string name="title_activity_activity_banner">activity_banner</string>
 </resources>

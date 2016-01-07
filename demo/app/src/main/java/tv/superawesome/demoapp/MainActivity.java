@@ -1,48 +1,29 @@
 package tv.superawesome.demoapp;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.ClipData;
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sanetwork.SAGet;
+import tv.superawesome.dataprovider.TestDataProvider;
 import tv.superawesome.lib.sanetwork.SAGetResultsReceiver;
 import tv.superawesome.lib.sanetwork.SANetListener;
 import tv.superawesome.lib.sanetwork.SANetwork;
 import tv.superawesome.lib.sanetwork.SASystem;
 import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
-import tv.superawesome.lib.savast.savastparser.SAVASTParser;
-import tv.superawesome.lib.savast.savastparser.SAVASTParserListener;
-import tv.superawesome.lib.savast.savastparser.models.SAVASTAd;
-import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
-import tv.superawesome.lib.savast.savastplayer.SAVASTPlayerListener;
-import tv.superawesome.lib.savast.saxml.SAXML;
-import tv.superawesome.lib.sawebview.SAWebView;
+import tv.superawesome.models.AdItem;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
@@ -62,114 +43,85 @@ public class MainActivity extends Activity implements
     private SAParentalGateListener parentalGateListener = this;
     private SAVideoAdListener videoAdListener = this;
 
-    private SAParentalGate parentalGate;
-
-    private SAGetResultsReceiver mReceiver;
+    /** the options list */
+    private ListView optionsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /** SA setup */
         SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SALog.Log(SuperAwesome.getInstance().getSDKVersion());
-        SALog.Log(SASystem.getVerboseSystemDetails());
-    }
 
-    /** Open buttons */
-    public void showVideo1(View v) {
-        SALog.Log("CDE");
-        SALoader.loadAd(21022, new SALoaderListener() {
+        /** set text info */
+        TextView saSDKLabel = (TextView)findViewById(R.id.sasdk_label);
+        saSDKLabel.setText("SA SDK");
+        TextView versionLabel = (TextView)findViewById(R.id.version_label);
+        versionLabel.setText("(" + SuperAwesome.getInstance().getSDKVersion() + " - " + SASystem.getVerboseSystemDetails() + ")");
+
+        /** setup the list */
+        optionsList = (ListView)findViewById(R.id.optionsList);
+
+        /** populate the data */
+        final List<AdItem> options = TestDataProvider.createTestData();
+        OptionsAdapter adapter = new OptionsAdapter(this, R.layout.listview_cell, options);
+        optionsList.setAdapter(adapter);
+
+        /** add listeners */
+        optionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void didLoadAd(SAAd ad) {
-                SAVideoActivity.start(MainActivity.this, ad, false, adListener, parentalGateListener, videoAdListener);
-            }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            @Override
-            public void didFailToLoadAdForPlacementId(int placementId) {
-                SALog.Log("Failed to load " + placementId);
-            }
-        });
-    }
+                /** get the current selected option and start doing something */
+                AdItem option = options.get(position);
+                if (option.testEnabled) {
+                    SuperAwesome.getInstance().enableTestMode();
+                } else {
+                    SuperAwesome.getInstance().disableTestMode();
+                }
 
-    public void showVideo2(View v){
-        SALog.Log("ABC");
-        SALoader.loadAd(30245, new SALoaderListener() {
-            @Override
-            public void didLoadAd(SAAd ad) {
-                SAVideoActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener, videoAdListener);
-            }
+                /** get the type */
+                switch (option.type){
+                    case fullscreen_video_item:{
+                        SALoader.loadAd(option.placementId, new SALoaderListener() {
+                            @Override
+                            public void didLoadAd(SAAd ad) {
+                                SAVideoActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener, videoAdListener);
+                            }
 
-            @Override
-            public void didFailToLoadAdForPlacementId(int placementId) {
-                SALog.Log("Failed to load " + placementId);
-            }
-        });
-    }
+                            @Override
+                            public void didFailToLoadAdForPlacementId(int placementId) {
+                                SALog.Log("Could not load: " + placementId);
+                            }
+                        });
 
-    public void showPG(View v) {
-        parentalGate = new SAParentalGate(MainActivity.this, null);
-        parentalGate.show();
-    }
+                        break;
+                    }
+                    case interstitial_item:{
+                        SALoader.loadAd(option.placementId, new SALoaderListener() {
+                            @Override
+                            public void didLoadAd(SAAd ad) {
+                                SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
+                            }
 
-    public void sendNewGet(View v){
-        SANetwork network = new SANetwork();
-        network.sendGET("https://ads.superawesome.tv/v2/event?sdkVersion=android_3.1.6&rnd=1020673", new JSONObject(), new SANetListener() {
-            @Override
-            public void success(Object data) {
-                SALog.Log("Final success");
-            }
-
-            @Override
-            public void failure() {
-                SALog.Log("Final failure");
-            }
-        });
-
-//        SANetwork network2 = new SANetwork();
-//        network2.sendGET("https://ads.superawesome.tv/v2/video/tracking?event=thirdQuartile&placement=21022&creative=-2&line_item=-2&sdkVersion=undefined&rnd=553497", new JSONObject(), new SANetListener() {
-//            @Override
-//            public void success(Object data) {
-//
-//            }
-//
-//            @Override
-//            public void failure() {
-//
-//            }
-//        });
-    }
-
-    public void loadBanner(View v) {
-        SALoader.loadAd(9549, new SALoaderListener() {
-            @Override
-            public void didLoadAd(SAAd ad) {
-                SABannerAd myBanner = (SABannerAd) findViewById(R.id.myBannerAd1);
-                myBanner.setAd(ad);
-                myBanner.play();
-            }
-
-            @Override
-            public void didFailToLoadAdForPlacementId(int placementId) {
-                SALog.Log("failed to load " + placementId);
+                            @Override
+                            public void didFailToLoadAdForPlacementId(int placementId) {
+                                SALog.Log("Could not load: " + placementId);
+                            }
+                        });
+                        break;
+                    }
+                    case banner_item:{
+                        BannerActivity.start(MainActivity.this, option.placementId, adListener, parentalGateListener);
+                        break;
+                    }
+                }
             }
         });
-    }
 
-    public void loadTag(View v){
-        SALoader.loadAd(10213, new SALoaderListener() {
-            @Override
-            public void didLoadAd(SAAd ad) {
-                SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
-            }
-
-            @Override
-            public void didFailToLoadAdForPlacementId(int placementId) {
-                SALog.Log("failed to load " + placementId);
-            }
-        });
     }
 
     /** <DELEGATES> */

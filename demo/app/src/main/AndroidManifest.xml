@@ -20,62 +20,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BannerAdCodeActivity"
-            android:label="@string/title_activity_banner_ad_code"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tv.superawesome.demoapp.MainActivity" />
+            android:name=".BannerActivity"
+            android:label="@string/title_activity_activity_banner" >
         </activity>
-        <activity
-            android:name=".BannerAdXmlActivity"
-            android:label="@string/title_activity_banner_ad_xml"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tv.superawesome.demoapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".InterstitialAdCodeActivity"
-            android:label="@string/title_activity_interstitial_ad_code"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tv.superawesome.demoapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".InterstitialAdXmlActivity"
-            android:label="@string/title_activity_interstitial_ad_xml"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tv.superawesome.demoapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".VideoAdCodeActivity"
-            android:label="@string/title_activity_video_ad_code"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tv.superawesome.demoapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".VideoAdXmlActivity"
-            android:label="@string/title_activity_video_ad_xml"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tv.superawesome.demoapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".AllAdsActivity"
-            android:label="@string/title_activity_all_ads"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tv.superawesome.demoapp.MainActivity" />
-        </activity>
-
     </application>
 
 </manifest>
