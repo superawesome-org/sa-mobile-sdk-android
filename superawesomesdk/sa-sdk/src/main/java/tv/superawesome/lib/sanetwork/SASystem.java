@@ -41,7 +41,7 @@ public class SASystem {
         double screenInches = Math.sqrt(x+y);
 
         if (screenInches < 6){
-            return SASystemSize.mobile.mobile;
+            return SASystemSize.mobile;
         } else {
             return SASystemSize.tablet;
         }

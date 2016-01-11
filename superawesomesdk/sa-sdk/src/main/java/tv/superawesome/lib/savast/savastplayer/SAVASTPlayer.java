@@ -146,7 +146,7 @@ public class SAVASTPlayer extends Fragment {
                         currentTime = videoPlayer.getCurrentPosition() / 1000;
 
                         // update text
-                        chronographer.setText("Ad: " + (duration - currentTime) + "s");
+                        chronographer.setText("Ad: " + (duration - currentTime));
 
                         if (currentTime >= 1 && !isStartHandled) {
                             isStartHandled = true;

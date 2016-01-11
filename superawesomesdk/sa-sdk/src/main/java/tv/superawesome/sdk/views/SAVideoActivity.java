@@ -262,6 +262,17 @@ public class SAVideoActivity extends Activity{
         parentalGateListener = null;
     }
 
+    /** button action to close the fullscreen video */
+    public void closeVideo(View v){
+        /** close listener */
+        if (adListener != null){
+            adListener.adWasClosed(ad.placementId);
+        }
+
+        /** call finish on this activity */
+        onBackPressed();
+    }
+
     /**
      * Private class that hold info to share between activities
      */
