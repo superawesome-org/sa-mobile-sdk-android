@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sanetwork.SASender;
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -82,10 +81,10 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
     }
 
     /**
-     * And this one the parental gate listener
+     * This function sets the parental gate listener
      * @param parentalGateListener
      */
-    public void setParentalGateListener (SAParentalGateListener parentalGateListener) {
+    public void setParentalGateListener(SAParentalGateListener parentalGateListener){
         this.parentalGateListener = parentalGateListener;
     }
 

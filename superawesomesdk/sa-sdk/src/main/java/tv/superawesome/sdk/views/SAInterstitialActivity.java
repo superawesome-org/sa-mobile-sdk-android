@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
 
 /**
  * Created by gabriel.coman on 30/12/15.
@@ -39,8 +37,8 @@ public class SAInterstitialActivity {
         AdDataHolder.getInstance()._refAdListener = adListener;
     }
 
-    public void setParentalGateListener (SAParentalGateListener parentalGateListener) {
-        AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
+    public void setParentalGateListener(SAParentalGateListener parentalGareListener){
+        AdDataHolder.getInstance()._refParentalGateListener = parentalGareListener;
     }
 
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) {
@@ -100,9 +98,12 @@ public class SAInterstitialActivity {
             } else {
                 padlock.setVisibility(View.VISIBLE);
             }
-            /** for the interstitial make the fallback always true so that it does not show up twice */
+            /**
+             * for the interstitial, make the fallback
+             * always true so that it does not show up twice
+             */
             ad.isFallback = true;
-            
+
             /** get the banner */
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
             interstitialBanner.setAd(ad);

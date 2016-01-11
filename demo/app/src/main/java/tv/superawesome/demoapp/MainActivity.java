@@ -1,26 +1,15 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONObject;
 
 import java.util.List;
 
 import tv.superawesome.dataprovider.TestDataProvider;
-import tv.superawesome.lib.sanetwork.SAGetResultsReceiver;
-import tv.superawesome.lib.sanetwork.SANetListener;
-import tv.superawesome.lib.sanetwork.SANetwork;
 import tv.superawesome.lib.sanetwork.SASystem;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.models.AdItem;
@@ -31,13 +20,11 @@ import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
-import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
-import tv.superawesome.sdk.views.SAParentalGate;
 import tv.superawesome.sdk.views.SAVideoActivity;
 
 public class MainActivity extends Activity implements
-        SAAdListener, SAParentalGateListener, SAVideoAdListener {
+        SAAdListener, SAVideoAdListener, SAParentalGateListener {
 
     private SAAdListener adListener = this;
     private SAParentalGateListener parentalGateListener = this;

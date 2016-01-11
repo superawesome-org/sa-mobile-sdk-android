@@ -19,20 +19,17 @@ import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.views.SAVideoActivity;
-import tv.superawesome.sdk.views.SAParentalGate;
 
 import java.util.Map;
-import java.util.Set;
 
 import static com.mopub.mobileads.MoPubRewardedVideoManager.*;
 
 /**
  * Created by gabriel.coman on 27/12/15.
  */
-public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVideo implements SAAdListener, SAParentalGateListener, SAVideoAdListener{
+public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVideo implements SAAdListener, SAVideoAdListener{
     /** private vars */
     private int placementId;
     private boolean testMode;

@@ -2,13 +2,11 @@ package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,7 +14,6 @@ import android.widget.ImageView;
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
@@ -48,12 +45,12 @@ public class SAVideoActivity {
         AdDataHolder.getInstance()._refAdListener = adListener;
     }
 
-    public void setParentalGateListener (SAParentalGateListener parentalGateListener) {
-        AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
-    }
-
     public void setVideoAdListener(SAVideoAdListener videoAdListener){
         AdDataHolder.getInstance()._refVideoAdListener = videoAdListener;
+    }
+
+    public void setParentalGateListener(SAParentalGateListener parentalGateListener){
+        AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
     }
 
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) {
@@ -122,8 +119,8 @@ public class SAVideoActivity {
             shouldShowCloseButton = AdDataHolder.getInstance()._refShouldShowCloseButton;
             shouldAutomaticallyCloseAtEnd = AdDataHolder.getInstance()._refShouldAutomaticallyCloseAtEnd;
             adListener = AdDataHolder.getInstance()._refAdListener;
-            parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
             videoAdListener = AdDataHolder.getInstance()._refVideoAdListener;
+            parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
 
             /** get close button */
             closeBtn = (Button) findViewById(close_btnId);
@@ -308,7 +305,6 @@ public class SAVideoActivity {
             ad = null;
             adListener = null;
             videoAdListener = null;
-            parentalGateListener = null;
         }
 
         /** public close function */

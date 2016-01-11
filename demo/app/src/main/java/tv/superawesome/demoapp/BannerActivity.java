@@ -14,7 +14,6 @@ import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.views.SABannerAd;
-import tv.superawesome.sdk.views.SAParentalGate;
 
 /**
  * Created by gabriel.coman on 07/01/16.
