@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
@@ -26,251 +28,299 @@ import tv.superawesome.sdk.listeners.SAVideoAdListener;
 /**
  * Created by gabriel.coman on 24/12/15.
  */
-public class SAVideoActivity extends Activity{
+public class SAVideoActivity {
 
-    /** private variables */
-    private boolean isParentalGateEnabled = true; /** init with default value */
-    private SAAd ad; /** private ad */
+    /** private activity object values */
+    private Context context;
+    private Intent intent;
 
-    /** sdk listeners */
-    private SAAdListener adListener;
-    private SAParentalGateListener parentalGateListener;
-    private SAVideoAdListener videoAdListener;
+    /** base constructor */
+    public SAVideoActivity(Context context){
+        this.context = context;
+    }
 
-    /** vast stuff */
-    private SAVASTManager manager;
-    private SAVASTPlayer videoPlayer;
+    /** setter functions */
+    public void setAd(SAAd ad){
+        AdDataHolder.getInstance()._refAd = ad;
+    }
 
-    /** the padlock part */
-    private ImageView padlock;
-
-    /**
-     * Function that starts up an activity
-     * @param context - the context
-     * @param _ad - the add to be passed down to get info from
-     * @param _isParentalGateEnabled - whether the parental gate should be on or off
-     * @param adListener
-     * @param parentalGateListener
-     * @param videoAdListener
-     */
-    public static void start(Context context, SAAd _ad, boolean _isParentalGateEnabled,
-                             SAAdListener adListener, SAParentalGateListener parentalGateListener, SAVideoAdListener videoAdListener) {
-        /** get data to send */
-        AdDataHolder.getInstance()._refAd = _ad;
-        AdDataHolder.getInstance()._refIsParentalGateEnabled = _isParentalGateEnabled;
+    public void setAdListener(SAAdListener adListener) {
         AdDataHolder.getInstance()._refAdListener = adListener;
-        AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
-        AdDataHolder.getInstance()._refVideoAdListener = videoAdListener;
+    }
 
-        /** start a new intent */
-        Intent intent = new Intent(context, SAVideoActivity.class);
+    public void setParentalGateListener (SAParentalGateListener parentalGateListener) {
+        AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
+    }
+
+    public void setVideoAdListener(SAVideoAdListener videoAdListener){
+        AdDataHolder.getInstance()._refVideoAdListener = videoAdListener;
+    }
+
+    public void setIsParentalGateEnabled (boolean isParentalGateEnabled) {
+        AdDataHolder.getInstance()._refIsParentalGateEnabled = isParentalGateEnabled;
+    }
+
+    public void setShouldShowCloseButton (boolean shouldShowCloseButton){
+        AdDataHolder.getInstance()._refShouldShowCloseButton = shouldShowCloseButton;
+    }
+
+    public void setShouldAutomaticallyCloseAtEnd (boolean shouldAutomaticallyCloseAtEnd){
+        AdDataHolder.getInstance()._refShouldAutomaticallyCloseAtEnd = shouldAutomaticallyCloseAtEnd;
+    }
+
+    /** play function */
+    public void play(){
+        intent = new Intent(context, SAVideoActivityInner.class);
         context.startActivity(intent);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
-    }
+    /** inner activity class */
+    public static class SAVideoActivityInner extends Activity{
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        /** private variables that control how the ad behaves */
+        private SAAd ad;
+        private boolean isParentalGateEnabled = true;
+        private boolean shouldShowCloseButton = false;
+        private boolean shouldAutomaticallyCloseAtEnd = true;
 
-        /** load resources */
-        String packageName = SAApplication.getSAApplicationContext().getPackageName();
-        int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
-        int padlock_imageId = getResources().getIdentifier("padlock_image", "id", packageName);
-        int video_playerId = getResources().getIdentifier("video_player", "id", packageName);
+        /** sdk listeners */
+        private SAAdListener adListener;
+        private SAParentalGateListener parentalGateListener;
+        private SAVideoAdListener videoAdListener;
 
-        setContentView(activity_sa_videoId);
+        /** vast stuff */
+        private SAVASTManager manager;
+        private SAVASTPlayer videoPlayer;
 
-        /** assign data from AdDataHolder */
-        ad = AdDataHolder.getInstance()._refAd;
-        isParentalGateEnabled = AdDataHolder.getInstance()._refIsParentalGateEnabled;
-        adListener = AdDataHolder.getInstance()._refAdListener;
-        parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
-        videoAdListener = AdDataHolder.getInstance()._refVideoAdListener;
+        /** the padlock part */
+        private ImageView padlock;
+        private Button closeBtn;
 
-        /** get padlock */
-        padlock = (ImageView) findViewById(padlock_imageId);
-
-        if (ad.isFallback) {
-            padlock.setVisibility(View.GONE);
-        } else {
-            padlock.setVisibility(View.VISIBLE);
+        @Override
+        public void onSaveInstanceState(Bundle savedInstanceState) {
+            // Always call the superclass so it can save the view hierarchy state
+            super.onSaveInstanceState(savedInstanceState);
         }
 
-        /** get player */
-        videoPlayer = (SAVASTPlayer) getFragmentManager().findFragmentById(video_playerId);
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
 
-        /** create the VAST manager */
-        manager = new SAVASTManager(videoPlayer, new SAVASTManagerListener() {
-            @Override
-            public void didParseVASTAndFindAds() {
-                // do nothing here
+            /** load resources */
+            String packageName = SAApplication.getSAApplicationContext().getPackageName();
+            int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
+            int padlock_imageId = getResources().getIdentifier("padlock_image", "id", packageName);
+            int video_playerId = getResources().getIdentifier("video_player", "id", packageName);
+            int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
+
+            setContentView(activity_sa_videoId);
+
+            /** assign data from AdDataHolder */
+            ad = AdDataHolder.getInstance()._refAd;
+            isParentalGateEnabled = AdDataHolder.getInstance()._refIsParentalGateEnabled;
+            shouldShowCloseButton = AdDataHolder.getInstance()._refShouldShowCloseButton;
+            shouldAutomaticallyCloseAtEnd = AdDataHolder.getInstance()._refShouldAutomaticallyCloseAtEnd;
+            adListener = AdDataHolder.getInstance()._refAdListener;
+            parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
+            videoAdListener = AdDataHolder.getInstance()._refVideoAdListener;
+
+            /** get close button */
+            closeBtn = (Button) findViewById(close_btnId);
+            closeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    close();
+                }
+            });
+            /** also check visibility of button */
+            if (shouldShowCloseButton){
+                closeBtn.setVisibility(View.VISIBLE);
+            } else {
+                closeBtn.setVisibility(View.GONE);
             }
 
-            @Override
-            public void didParseVASTButDidNotFindAnyAds() {
-                if (adListener != null){
-                    adListener.adFailedToShow(ad.placementId);
-                }
+            /** get padlock */
+            padlock = (ImageView) findViewById(padlock_imageId);
+
+            if (ad.isFallback) {
+                padlock.setVisibility(View.GONE);
+            } else {
+                padlock.setVisibility(View.VISIBLE);
             }
 
-            @Override
-            public void didNotParseVAST() {
-                if (adListener != null){
-                    adListener.adFailedToShow(ad.placementId);
-                }
-            }
+            /** get player */
+            videoPlayer = (SAVASTPlayer) getFragmentManager().findFragmentById(video_playerId);
 
-            @Override
-            public void didStartAd() {
-                // send thie event just to be sure
-                SASender.sendEventToURL(ad.creative.viewableImpressionURL);
-
-                // call listener
-                if (adListener != null){
-                    adListener.adWasShown(ad.placementId);
-                }
-            }
-
-            @Override
-            public void didStartCreative() {
-                if (videoAdListener != null){
-                    videoAdListener.videoStarted(ad.placementId);
-                }
-            }
-
-            @Override
-            public void didReachFirstQuartileOfCreative() {
-                if (videoAdListener != null){
-                    videoAdListener.videoReachedFirstQuartile(ad.placementId);
-                }
-            }
-
-            @Override
-            public void didReachMidpointOfCreative() {
-                if (videoAdListener != null){
-                    videoAdListener.videoReachedMidpoint(ad.placementId);
-                }
-            }
-
-            @Override
-            public void didReachThirdQuartileOfCreative() {
-                if (videoAdListener != null){
-                    videoAdListener.videoReachedThirdQuartile(ad.placementId);
-                }
-            }
-
-            @Override
-            public void didEndOfCreative() {
-                if (videoAdListener != null){
-                    videoAdListener.videoEnded(ad.placementId);
-                }
-            }
-
-            @Override
-            public void didHaveErrorForCreative() {
-                // do nothing here
-            }
-
-            @Override
-            public void didEndAd() {
-                if (videoAdListener != null){
-                    videoAdListener.adEnded(ad.placementId);
-                }
-            }
-
-            @Override
-            public void didEndAllAds() {
-                if (videoAdListener != null){
-                    videoAdListener.allAdsEnded(ad.placementId);
+            /** create the VAST manager */
+            manager = new SAVASTManager(videoPlayer, new SAVASTManagerListener() {
+                @Override
+                public void didParseVASTAndFindAds() {
+                    // do nothing here
                 }
 
-                // call finish on this activity
-                onBackPressed();
-            }
-
-            @Override
-            public void didGoToURL(String url) {
-                // make these ok
-                ad.creative.fullClickURL = url;
-                // do a final checkup
-                if (!ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/")) {
-                    ad.creative.isFullClickURLReliable = true;
-                } else {
-                    ad.creative.isFullClickURLReliable = false;
+                @Override
+                public void didParseVASTButDidNotFindAnyAds() {
+                    if (adListener != null){
+                        adListener.adFailedToShow(ad.placementId);
+                    }
                 }
 
-                /** open the parental gate */
-                if (isParentalGateEnabled) {
-                    SAParentalGate gate = new SAParentalGate(SAVideoActivity.this, ad);
-                    gate.show();
-                    gate.setListener(parentalGateListener);
+                @Override
+                public void didNotParseVAST() {
+                    if (adListener != null){
+                        adListener.adFailedToShow(ad.placementId);
+                    }
                 }
-                /** go directly to the URL */
-                else {
-                    SALog.Log("Going to " + ad.creative.fullClickURL);
 
-                    // first send this
-                    if (!ad.creative.isFullClickURLReliable) {
-                        SASender.sendEventToURL(ad.creative.trackingURL);
+                @Override
+                public void didStartAd() {
+                    // send thie event just to be sure
+                    SASender.sendEventToURL(ad.creative.viewableImpressionURL);
+
+                    // call listener
+                    if (adListener != null){
+                        adListener.adWasShown(ad.placementId);
+                    }
+                }
+
+                @Override
+                public void didStartCreative() {
+                    if (videoAdListener != null){
+                        videoAdListener.videoStarted(ad.placementId);
+                    }
+                }
+
+                @Override
+                public void didReachFirstQuartileOfCreative() {
+                    if (videoAdListener != null){
+                        videoAdListener.videoReachedFirstQuartile(ad.placementId);
+                    }
+                }
+
+                @Override
+                public void didReachMidpointOfCreative() {
+                    if (videoAdListener != null){
+                        videoAdListener.videoReachedMidpoint(ad.placementId);
+                    }
+                }
+
+                @Override
+                public void didReachThirdQuartileOfCreative() {
+                    if (videoAdListener != null){
+                        videoAdListener.videoReachedThirdQuartile(ad.placementId);
+                    }
+                }
+
+                @Override
+                public void didEndOfCreative() {
+                    if (videoAdListener != null){
+                        videoAdListener.videoEnded(ad.placementId);
+                    }
+                }
+
+                @Override
+                public void didHaveErrorForCreative() {
+                    // do nothing here
+                }
+
+                @Override
+                public void didEndAd() {
+                    if (videoAdListener != null){
+                        videoAdListener.adEnded(ad.placementId);
+                    }
+                }
+
+                @Override
+                public void didEndAllAds() {
+                    if (videoAdListener != null){
+                        videoAdListener.allAdsEnded(ad.placementId);
                     }
 
-                    // go-to-url
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
-                    startActivity(browserIntent);
+                    // call finish on this activity
+                    if (shouldAutomaticallyCloseAtEnd) {
+                        close();
+                    }
                 }
-            }
-        });
-        /** send the message to parse the VAST part */
-        manager.parseVASTURL(ad.creative.details.vast);
-    }
 
+                @Override
+                public void didGoToURL(String url) {
+                    // make these ok
+                    ad.creative.fullClickURL = url;
+                    // do a final checkup
+                    if (!ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/")) {
+                        ad.creative.isFullClickURLReliable = true;
+                    } else {
+                        ad.creative.isFullClickURLReliable = false;
+                    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+                    /** open the parental gate */
+                    if (isParentalGateEnabled) {
+                        SAParentalGate gate = new SAParentalGate(SAVideoActivityInner.this, ad);
+                        gate.show();
+                        gate.setListener(parentalGateListener);
+                    }
+                    /** go directly to the URL */
+                    else {
+                        SALog.Log("Going to " + ad.creative.fullClickURL);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
+                        // first send this
+                        if (!ad.creative.isFullClickURLReliable) {
+                            SASender.sendEventToURL(ad.creative.trackingURL);
+                        }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        videoPlayer = null;
-        manager = null;
-        ad = null;
-        adListener = null;
-        videoAdListener = null;
-        parentalGateListener = null;
-    }
-
-    /** button action to close the fullscreen video */
-    public void closeVideo(View v){
-        /** close listener */
-        if (adListener != null){
-            adListener.adWasClosed(ad.placementId);
+                        // go-to-url
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
+                        startActivity(browserIntent);
+                    }
+                }
+            });
+            /** send the message to parse the VAST part */
+            manager.parseVASTURL(ad.creative.details.vast);
         }
 
-        /** call finish on this activity */
-        onBackPressed();
+
+        @Override
+        public void onStart() {
+            super.onStart();
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+        }
+
+        @Override
+        public void onDestroy(){
+            super.onDestroy();
+            videoPlayer = null;
+            manager = null;
+            ad = null;
+            adListener = null;
+            videoAdListener = null;
+            parentalGateListener = null;
+        }
+
+        /** public close function */
+        public void close(){
+            /** close listener */
+            if (adListener != null){
+                adListener.adWasClosed(ad.placementId);
+            }
+
+            /** call finish on this activity */
+            onBackPressed();
+        }
     }
 
     /**
@@ -278,7 +328,9 @@ public class SAVideoActivity extends Activity{
      */
     private static class AdDataHolder {
         public SAAd _refAd;
-        public boolean _refIsParentalGateEnabled;
+        public boolean _refIsParentalGateEnabled = true;
+        public boolean _refShouldShowCloseButton = false;
+        public boolean _refShouldAutomaticallyCloseAtEnd = true;
         public SAAdListener _refAdListener;
         public SAParentalGateListener _refParentalGateListener;
         public SAVideoAdListener _refVideoAdListener;
@@ -287,5 +339,4 @@ public class SAVideoActivity extends Activity{
         private static final AdDataHolder holder = new AdDataHolder();
         public static AdDataHolder getInstance() {return holder;}
     }
-
 }

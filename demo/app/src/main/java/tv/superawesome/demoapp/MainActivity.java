@@ -89,7 +89,15 @@ public class MainActivity extends Activity implements
                         SALoader.loadAd(option.placementId, new SALoaderListener() {
                             @Override
                             public void didLoadAd(SAAd ad) {
-                                SAVideoActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener, videoAdListener);
+                                SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+                                vad.setAd(ad);
+                                vad.setIsParentalGateEnabled(true);
+                                vad.setShouldAutomaticallyCloseAtEnd(true);
+                                vad.setShouldShowCloseButton(true);
+                                vad.setAdListener(adListener);
+                                vad.setVideoAdListener(videoAdListener);
+                                vad.setParentalGateListener(parentalGateListener);
+                                vad.play();
                             }
 
                             @Override
@@ -104,7 +112,12 @@ public class MainActivity extends Activity implements
                         SALoader.loadAd(option.placementId, new SALoaderListener() {
                             @Override
                             public void didLoadAd(SAAd ad) {
-                                SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
+                                SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
+                                iad.setAd(ad);
+                                iad.setIsParentalGateEnabled(true);
+                                iad.setAdListener(adListener);
+                                iad.setParentalGateListener(parentalGateListener);
+                                iad.play();
                             }
 
                             @Override

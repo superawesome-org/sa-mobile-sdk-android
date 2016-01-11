@@ -6,7 +6,7 @@
                 android:layout_height="match_parent"
                 android:paddingLeft="0dp"
                 android:background="#000000"
-                tools:context="tv.superawesome.sdk.views.SAVideoActivity">
+                tools:context="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner">
 
     <fragment
         android:name="tv.superawesome.lib.savast.savastplayer.SAVASTPlayer"
@@ -26,8 +26,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:onClick="closeVideo"/>
+        android:adjustViewBounds="true"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -2,7 +2,8 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="tv.superawesome.sdk.views.SAInterstitialActivity">
+             tools:context="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner">
+
     <tv.superawesome.sdk.views.SABannerAd
         android:id="@+id/interstitial_banner"
         android:layout_width="match_parent"

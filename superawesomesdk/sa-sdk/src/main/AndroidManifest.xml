@@ -5,10 +5,10 @@
     <application
         android:allowBackup="true">
         <activity
-            android:name="tv.superawesome.sdk.views.SAVideoActivity"
+            android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner"
             android:label="SAVideoActivity"></activity>
         <activity
-            android:name="tv.superawesome.sdk.views.SAInterstitialActivity"
+            android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner"
             android:label="SAInterstitialActivity"></activity>
 
         <!-- Declaring Service in Manifest -->
