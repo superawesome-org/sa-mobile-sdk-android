@@ -13,6 +13,7 @@ import tv.superawesome.dataprovider.TestDataProvider;
 import tv.superawesome.lib.sanetwork.SASystem;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.models.AdItem;
+import tv.superawesome.plugins.unity.SAVideoActivityUnityLinker;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
