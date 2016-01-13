@@ -23,6 +23,9 @@ public class SAVideoActivityUnityLinker {
             SAApplication.setSAApplicationContext(c);
         }
 
+        /** test only */
+        SuperAwesome.getInstance().setConfigurationStaging();
+
         /** get placement as Id */
         int placement = Integer.parseInt(placementId);
 
