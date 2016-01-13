@@ -40,7 +40,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.2.0";
+        return "3.2.1";
     }
 
     private String getSdk() {
