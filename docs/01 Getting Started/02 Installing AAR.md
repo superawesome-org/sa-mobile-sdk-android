@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    compile 'tv.superawesome.sdk:sa-sdk:3.1.7@aar'
+    compile 'tv.superawesome.sdk:sa-sdk:3.2.3@aar'
 }
 ```
 
