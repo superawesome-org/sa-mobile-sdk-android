@@ -90,7 +90,6 @@ public class SAHTMLParser {
                 richMediaDict.put("placement", ad.placementId);
                 richMediaDict.put("line_item", ad.lineItemId);
                 richMediaDict.put("creative", ad.creative.creativeId);
-                richMediaDict.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
                 richMediaDict.put("rnd", SAURLUtils.getCacheBuster());
             } catch (JSONException e) {
                 e.printStackTrace();

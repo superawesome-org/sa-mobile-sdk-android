@@ -11,7 +11,7 @@
         android:id="@+id/web_view"
         android:layout_width="0px"
         android:layout_height="0px"
-        android:background="#ffff0000"/>
+        android:background="#ffffffff"/>
 
     <ImageView
         android:layout_width="wrap_content"

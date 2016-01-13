@@ -37,7 +37,7 @@ public class SAWebView extends WebView {
         /** any initialisation work here */
 
 //        this.getSettings().setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
-        this.setInitialScale(100);
+        // this.setInitialScale(62);
         this.getSettings().setJavaScriptEnabled(true);
         this.getSettings().setLoadWithOverviewMode(true);
         this.getSettings().setUseWideViewPort(true);
@@ -59,24 +59,15 @@ public class SAWebView extends WebView {
 
     public void loadHTML(String html, float adWidth, float adHeight, float frameWidth, float frameHeight){
         /** calc params */
-//        float xscale = adWidth / frameWidth;
-//        float yscale = adWidth/ frameHeight;
-//        float scale = Math.min(xscale, yscale);
-//        SALog.Log("Ad: " + adWidth + ", " + adHeight + " Frame: " + frameWidth + ", " + frameHeight);
-//        SALog.Log("scale: " + scale);
-//
-//        DisplayMetrics metrics = getResources().getDisplayMetrics();
-//        String ndpi = Math.floor((adWidth * metrics.densityDpi) / frameWidth) + "dpi";
-//
-//        SALog.Log("Metrics: " + metrics.xdpi + " " + metrics.ydpi + " " + metrics.densityDpi);
+        float xscale = frameWidth / adWidth;
+        float yscale = frameHeight / adHeight;
+        float scale = Math.min(xscale, yscale);
+        SALog.Log("Scale: " + (scale * 100));
+        this.setInitialScale((int)(scale * 100));
 
         String _html = html;
-        _html = _html.replace("_WIDTH_","" + adWidth);
-        _html = _html.replace("_HEIGHT_", "" + adHeight);
-//        _html = _html.replace("_PARAM_SCALE_", "1.5");
-//        _html = _html.replace("_PARAM_DPI_", ndpi);
-//
-//        SALog.Log(_html);
+        _html = _html.replace("_WIDTH_","" + (int)adWidth);
+        _html = _html.replace("_HEIGHT_", "" + (int)adHeight);
 
         /** get the context */
         Context context = this.getContext();
@@ -100,6 +91,7 @@ public class SAWebView extends WebView {
         }
 
         /** load HTML data */
+//        this.evaluateJavascript("document.body.style.zoom = 0.5;", null);
         this.loadUrl("file://" + file.getAbsolutePath());
 
         /** call success listener */

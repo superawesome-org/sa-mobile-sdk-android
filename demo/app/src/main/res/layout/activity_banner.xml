@@ -11,7 +11,7 @@
 
     <tv.superawesome.sdk.views.SABannerAd
         android:id="@+id/bannerView"
-        android:layout_width="match_parent"
-        android:layout_height="200pt"></tv.superawesome.sdk.views.SABannerAd>
+        android:layout_width="300px"
+        android:layout_height="300px"></tv.superawesome.sdk.views.SABannerAd>
 
 </RelativeLayout>

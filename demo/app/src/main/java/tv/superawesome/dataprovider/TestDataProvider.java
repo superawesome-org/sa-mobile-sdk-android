@@ -34,7 +34,7 @@ public class TestDataProvider {
         list.add(AdItem.create("Interstitial - 10198", 10198, false, AdItemType.interstitial_item));
         list.add(AdItem.create("Interstitial - 10324", 10324, false, AdItemType.interstitial_item));
         list.add(AdItem.create("Video - 30288", 30288, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("Fungus Amungus - 30302", 30302, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("Fungus Amungus - 30302", 30302, false, AdItemType.banner_item));
         list.add(AdItem.create("10305", 10305, false, AdItemType.interstitial_item));
         list.add(AdItem.create("25", 25, false, AdItemType.interstitial_item));
         return list;
