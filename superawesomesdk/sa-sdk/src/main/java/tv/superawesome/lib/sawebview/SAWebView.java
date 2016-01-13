@@ -2,6 +2,8 @@ package tv.superawesome.lib.sawebview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Size;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -34,11 +36,12 @@ public class SAWebView extends WebView {
         super(context, attrs, defStyle);
         /** any initialisation work here */
 
-        this.setInitialScale(1);
+//        this.getSettings().setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
+        this.setInitialScale(100);
         this.getSettings().setJavaScriptEnabled(true);
         this.getSettings().setLoadWithOverviewMode(true);
         this.getSettings().setUseWideViewPort(true);
-        this.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//        this.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
 
         this.setWebViewClient(new WebViewClient() {
             @Override
@@ -54,7 +57,27 @@ public class SAWebView extends WebView {
 
     }
 
-    public void loadHTML(String html){
+    public void loadHTML(String html, float adWidth, float adHeight, float frameWidth, float frameHeight){
+        /** calc params */
+//        float xscale = adWidth / frameWidth;
+//        float yscale = adWidth/ frameHeight;
+//        float scale = Math.min(xscale, yscale);
+//        SALog.Log("Ad: " + adWidth + ", " + adHeight + " Frame: " + frameWidth + ", " + frameHeight);
+//        SALog.Log("scale: " + scale);
+//
+//        DisplayMetrics metrics = getResources().getDisplayMetrics();
+//        String ndpi = Math.floor((adWidth * metrics.densityDpi) / frameWidth) + "dpi";
+//
+//        SALog.Log("Metrics: " + metrics.xdpi + " " + metrics.ydpi + " " + metrics.densityDpi);
+
+        String _html = html;
+        _html = _html.replace("_WIDTH_","" + adWidth);
+        _html = _html.replace("_HEIGHT_", "" + adHeight);
+//        _html = _html.replace("_PARAM_SCALE_", "1.5");
+//        _html = _html.replace("_PARAM_DPI_", ndpi);
+//
+//        SALog.Log(_html);
+
         /** get the context */
         Context context = this.getContext();
 
@@ -66,7 +89,7 @@ public class SAWebView extends WebView {
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(file);
-            stream.write(html.getBytes());
+            stream.write(_html.getBytes());
             stream.close();
         } catch (IOException e1){
             e1.printStackTrace();

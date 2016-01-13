@@ -133,7 +133,7 @@ public class SAParser {
         details.bitrate = (bitrateObj != null ? Integer.parseInt(bitrateObj.toString().replace("\"","")) : 0);
         details.duration = (durationObj != null ? Integer.parseInt(durationObj.toString().replace("\"","")) : 0);
         details.vast = (vastObj != null ? vastObj.toString().replace("\"", "") : null);
-        details.tag = (tagObj != null ? tagObj.toString().replace("\"", "") : null);
+        details.tag = (tagObj != null ? tagObj.toString() : null);
         details.zip = (zipFileObj != null ? zipFileObj.toString().replace("\"", "") : null);
         details.url = (urlObj != null ? urlObj.toString().replace("\"", "") : null);
         details.placementFormat = (placementFormatObj != null ? placementFormatObj.toString().replace("\"", "") : null);

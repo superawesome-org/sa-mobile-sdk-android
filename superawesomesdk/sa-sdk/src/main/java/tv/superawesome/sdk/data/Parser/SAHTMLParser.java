@@ -82,7 +82,7 @@ public class SAHTMLParser {
      */
     private static String formatCreativeIntoRichMediaHTML(SAAd ad) {
         try {
-            String htmlString = SAUtils.openAssetAsString("html/displayRichMEdia.html");
+            String htmlString = SAUtils.openAssetAsString("html/displayRichMedia.html");
 
             String richMediaURL = ad.creative.details.url;
             JSONObject richMediaDict = new JSONObject();

@@ -12,7 +12,9 @@
  */
 package tv.superawesome.lib.sautils;
 
+import android.graphics.Rect;
 import android.util.Log;
+import android.util.Size;
 
 import org.json.JSONObject;
 
@@ -141,5 +143,30 @@ public class SAUtils {
         }
 
         return id;
+    }
+
+    public static Rect arrangeAdInNewFrame(float newW, float newH, float oldW, float oldH) {
+        if (oldW == 1 || oldW == 0) { oldW = newW; }
+        if (oldH == 1 || oldH == 0) { oldH = newH; }
+
+        float oldR = oldW / oldH;
+        float newR = newW / newH;
+
+        float X = 0, Y = 0, W = 0, H = 0;
+
+        if (oldR > newR) {
+            W = newW;
+            H = W / oldR; // or oldH * oldR
+            X = 0;
+            Y = (newH - H) / 2.0f;
+        }
+        else {
+            H = newH;
+            W = H * oldR;
+            Y = 0;
+            X = (newW - W) / 2.0f;
+        }
+
+        return new Rect((int)X, (int)Y, (int)W, (int)H);
     }
 }

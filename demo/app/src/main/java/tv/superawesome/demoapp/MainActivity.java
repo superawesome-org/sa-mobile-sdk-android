@@ -39,7 +39,7 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
 
         /** SA setup */
-        SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
 

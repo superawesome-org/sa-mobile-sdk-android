@@ -3,15 +3,22 @@ package tv.superawesome.sdk.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sanetwork.SASender;
+import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -36,6 +43,11 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
     /** listeners */
     private SAAdListener adListener;
     private SAParentalGateListener parentalGateListener;
+
+    /** helper vars */
+    private float cWidth = 0;
+    private float cHeight = 0;
+    private boolean layoutOK = false;
 
     /** Constructors */
     public SABannerAd(Context context) {
@@ -62,6 +74,65 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
         webView = (SAWebView)findViewById(web_viewId);
         webView.setListener(this);
         padlock = (ImageView)findViewById(padlockId);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        cWidth = getWidth();
+        cHeight = getHeight();
+        delayLayout();
+    }
+
+    private void delayLayout() {
+        /**
+         * if the ad is ok (and implicitly the cWidth and cHeight params then start arranging the
+         * ad as we should!
+         */
+        if (ad != null && !layoutOK ) {
+            /** from this moment on the layout is OK */
+            layoutOK = true;
+
+            /** calc the new frame */
+            final Rect newframe = SAUtils.arrangeAdInNewFrame(
+                    cWidth,
+                    cHeight,
+                    ad.creative.details.width,
+                    ad.creative.details.height);
+            int w = newframe.right;
+            int h = newframe.bottom;
+
+            SALog.Log("And here: " + cWidth + ", " + cHeight + " New Ad: " + w + ", " + h);
+
+            android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            webView.setLayoutParams(params);
+
+            /** load the HTML with the custom SAWebView */
+            webView.loadHTML(
+                    ad.adHTML,
+                    ad.creative.details.width,
+                    ad.creative.details.height,
+                    w, h);
+
+            /** make the padlock visible or not */
+            if (ad.isFallback) {
+                padlock.setVisibility(View.GONE);
+            } else {
+                padlock.setVisibility(View.VISIBLE);
+            }
+
+            return;
+        }
+
+        /** if ad is still not OK - wait a little while longer */
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                delayLayout();
+            }
+        };
+        this.postDelayed(runnable, 250);
     }
 
     /**
@@ -108,16 +179,6 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
 
             return;
         }
-
-        /** make the padlock visible or not */
-        if (ad.isFallback) {
-            padlock.setVisibility(View.GONE);
-        } else {
-            padlock.setVisibility(View.VISIBLE);
-        }
-
-        /** load the HTML with the custom SAWebView */
-        webView.loadHTML(ad.adHTML);
     }
 
     /** <SAWebViewListener> */

@@ -45,15 +45,12 @@ public class SALoader {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Query JSON: " + queryJson);
 
         /** send a standard GET request */
         SANetwork network = new SANetwork();
         network.sendGET(endpoint, queryJson, new SANetListener() {
             @Override
             public void success(Object data) {
-
-                System.out.println(data);
 
                 /** form the json object to parse */
                 JSONObject dataJson = null;
@@ -65,12 +62,6 @@ public class SALoader {
                             @Override
                             public void parsedAd(SAAd ad) {
                                 boolean isValid = SAValidator.isAdDataValid(ad);
-
-                                if (ad != null) {
-                                    ad.print();
-                                } else {
-                                    SALog.Log("Ad " + placementId + " is empty");
-                                }
 
                                 if (isValid) {
                                     if (listener != null) {

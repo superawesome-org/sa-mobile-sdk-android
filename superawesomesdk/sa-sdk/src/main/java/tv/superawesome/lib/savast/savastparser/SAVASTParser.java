@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import tv.superawesome.lib.sanetwork.SASyncGet;
 import tv.superawesome.lib.sautils.ListFilters;
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastparser.models.SAVASTAd;
 import tv.superawesome.lib.savast.saxml.SAXML;
 import tv.superawesome.lib.savast.saxml.SAXMLIterator;
@@ -41,6 +42,7 @@ public class SAVASTParser extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String[] url) {
 
         try {
+            SALog.Log("And here URLs are: " + url[0]);
             ads = parseVAST(url[0]);
         } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -89,7 +91,6 @@ public class SAVASTParser extends AsyncTask<String, Integer, String> {
 
         // step 1: get the XML
         String VAST = SASyncGet.execute(url);
-        // SALog.Log("VAST " + VAST);
 
         // create the Doc builder factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

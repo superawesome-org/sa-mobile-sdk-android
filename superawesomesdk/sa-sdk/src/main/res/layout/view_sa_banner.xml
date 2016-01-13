@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/sa_banner_ad"
+    android:background="#ffffff00"
     tools:context="tv.superawesome.sdk.views.SABannerAd">
 
     <tv.superawesome.lib.sawebview.SAWebView
         android:id="@+id/web_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:background="#ffff0000"/>
 
     <ImageView
         android:layout_width="wrap_content"

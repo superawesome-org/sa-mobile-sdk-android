@@ -91,18 +91,18 @@ public class SAInterstitialActivity {
             adListener = AdDataHolder.getInstance()._refAdListener;
             parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
 
-            /** show or hide the padlock */
-            padlock = (ImageView) findViewById(interstitial_padlock_imageId);
-            if (ad.isFallback) {
-                padlock.setVisibility(View.GONE);
-            } else {
-                padlock.setVisibility(View.VISIBLE);
-            }
-            /**
-             * for the interstitial, make the fallback
-             * always true so that it does not show up twice
-             */
-            ad.isFallback = true;
+//            /** show or hide the padlock */
+//            padlock = (ImageView) findViewById(interstitial_padlock_imageId);
+//            if (ad.isFallback) {
+//                padlock.setVisibility(View.GONE);
+//            } else {
+//                padlock.setVisibility(View.VISIBLE);
+//            }
+//            /**
+//             * for the interstitial, make the fallback
+//             * always true so that it does not show up twice
+//             */
+//            ad.isFallback = true;
 
             /** get the banner */
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
