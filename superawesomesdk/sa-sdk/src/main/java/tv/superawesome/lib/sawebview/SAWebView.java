@@ -36,17 +36,13 @@ public class SAWebView extends WebView {
         super(context, attrs, defStyle);
         /** any initialisation work here */
 
-//        this.getSettings().setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
-        // this.setInitialScale(62);
         this.getSettings().setJavaScriptEnabled(true);
         this.getSettings().setLoadWithOverviewMode(true);
         this.getSettings().setUseWideViewPort(true);
-//        this.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-
         this.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
+                SALog.Log("ABC! goto " + url);
                 if (listener != null){
                     listener.saWebViewWillNavigate(url);
                 }
@@ -91,7 +87,6 @@ public class SAWebView extends WebView {
         }
 
         /** load HTML data */
-//        this.evaluateJavascript("document.body.style.zoom = 0.5;", null);
         this.loadUrl("file://" + file.getAbsolutePath());
 
         /** call success listener */

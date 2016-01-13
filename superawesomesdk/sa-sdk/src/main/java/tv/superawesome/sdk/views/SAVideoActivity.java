@@ -161,6 +161,9 @@ public class SAVideoActivity {
                     if (adListener != null){
                         adListener.adFailedToShow(ad.placementId);
                     }
+
+                    /** close when no ads */
+                    close();
                 }
 
                 @Override
@@ -168,6 +171,9 @@ public class SAVideoActivity {
                     if (adListener != null){
                         adListener.adFailedToShow(ad.placementId);
                     }
+
+                    /** close when no ads */
+                    close();
                 }
 
                 @Override
