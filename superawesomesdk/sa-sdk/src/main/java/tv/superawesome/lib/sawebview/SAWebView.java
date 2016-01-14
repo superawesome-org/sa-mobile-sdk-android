@@ -1,9 +1,12 @@
 package tv.superawesome.lib.sawebview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Size;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -39,15 +42,46 @@ public class SAWebView extends WebView {
         this.getSettings().setJavaScriptEnabled(true);
         this.getSettings().setLoadWithOverviewMode(true);
         this.getSettings().setUseWideViewPort(true);
+
+//        this.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+//        this.getSettings().setSupportMultipleWindows(true);
+
+//        this.setWebChromeClient(new WebChromeClient() {
+//            @Override
+//            public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+//                SALog.Log("onCreateWindow");
+//
+//                return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg);
+//            }
+//        });
+
         this.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                if (shouldOverrideUrlLoading(view, url)){
+                    view.stopLoading();
+                }
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                SALog.Log("onPageFinished");
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                SALog.Log("ABC! goto " + url);
-                if (listener != null){
-                    listener.saWebViewWillNavigate(url);
-                }
+                if (url.contains("file:///")) {
+                    return false;
+                } else {
+                    if (listener != null){
+                        listener.saWebViewWillNavigate(url);
+                    }
 
-                return true;
+                    return true;
+                }
             }
         });
 
@@ -58,7 +92,7 @@ public class SAWebView extends WebView {
         float xscale = frameWidth / adWidth;
         float yscale = frameHeight / adHeight;
         float scale = Math.min(xscale, yscale);
-        SALog.Log("Scale: " + (scale * 100));
+
         this.setInitialScale((int)(scale * 100));
 
         String _html = html;
@@ -67,6 +101,8 @@ public class SAWebView extends WebView {
 
         /** get the context */
         Context context = this.getContext();
+
+        SALog.Log(_html);
 
         /** start creating a temporary file */
         File path = context.getFilesDir();

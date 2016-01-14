@@ -84,17 +84,11 @@ public class SAHTMLParser {
         try {
             String htmlString = SAUtils.openAssetAsString("html/displayRichMedia.html");
 
-            String richMediaURL = ad.creative.details.url;
-            JSONObject richMediaDict = new JSONObject();
-            try {
-                richMediaDict.put("placement", ad.placementId);
-                richMediaDict.put("line_item", ad.lineItemId);
-                richMediaDict.put("creative", ad.creative.creativeId);
-                richMediaDict.put("rnd", SAURLUtils.getCacheBuster());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            richMediaURL += "?" + SAURLUtils.encodeDictAsJsonDict(richMediaDict);
+            String richMediaURL = ad.creative.details.url +
+            "?placement=" + ad.placementId +
+            "&line_item=" + ad.lineItemId +
+            "&creative=" + ad.creative.creativeId +
+            "&rnd=" + SAURLUtils.getCacheBuster();
 
             return htmlString.replace("richMediaURL", richMediaURL);
         } catch (IOException e) {
