@@ -133,7 +133,7 @@ public class SAVASTPlayer extends Fragment {
                 }
 
                 // set out text
-                chronographer.setText("Ad: " + duration + "s");
+                chronographer.setText("Ad: " + duration);
 
                 // part with seconds and stuff
                 final Runnable onEverySecond = new Runnable() {

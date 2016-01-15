@@ -299,7 +299,8 @@ public class SAVideoActivity {
                     // make these ok
                     ad.creative.fullClickURL = url;
                     // do a final checkup
-                    if (!ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/")) {
+                    if (!ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/") &&
+                            !ad.creative.fullClickURL.contains("ads.staging.superawesome.tv./v2/video/click/")) {
                         ad.creative.isFullClickURLReliable = true;
                     } else {
                         ad.creative.isFullClickURLReliable = false;

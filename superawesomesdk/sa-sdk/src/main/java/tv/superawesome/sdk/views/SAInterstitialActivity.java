@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -148,6 +149,7 @@ public class SAInterstitialActivity {
 
             /** get the banner */
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
+            interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
             interstitialBanner.setAd(ad);
             interstitialBanner.setAdListener(adListener);
             interstitialBanner.setParentalGateListener(parentalGateListener);

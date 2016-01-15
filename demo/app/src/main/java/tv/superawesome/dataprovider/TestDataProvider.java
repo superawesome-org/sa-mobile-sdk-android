@@ -19,25 +19,25 @@ public class TestDataProvider {
         List<AdItem> list = new ArrayList<>();
 
         /** actually add the test data */
-        list.add(AdItem.create("27 - AA - Mobile", 27, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("28 - AA - Tablet", 28, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("Image Interstitial - 43", 43, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("Image Banner - 45", 45, false, AdItemType.banner_item));
+        list.add(AdItem.create("Rich Media Interstitial - 44", 44, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("Tablet Preroll - 38", 38, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("Mobile Preroll - 40", 40, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("Rich Media MPU - 46", 46, false, AdItemType.banner_item));
+        list.add(AdItem.create("Third Party Tag - 47", 47, false, AdItemType.interstitial_item));
 
-        list.add(AdItem.create("20 - Video for Tablet", 20, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("21 - Video for Mobile", 21, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("22 - Video for Web only", 22, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("23 - Video for all devices", 23, false, AdItemType.fullscreen_video_item));
-
-        list.add(AdItem.create("Fullscreen Video - 21022", 21022, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("Interstitial - 9549", 9549, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("Banner - 9549", 9549, false, AdItemType.banner_item));
-        list.add(AdItem.create("Interstitial - 10213", 10213, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("Interstitial - 10198", 10198, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("Interstitial - 10324", 10324, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("Video - 30288", 30288, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("Fungus Amungus - 30302", 30302, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("10305", 10305, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("37", 37, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("30324", 30324, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("Fullscreen Video - 21022", 21022, false, AdItemType.fullscreen_video_item));
+//        list.add(AdItem.create("Interstitial - 9549", 9549, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("Banner - 9549", 9549, false, AdItemType.banner_item));
+//        list.add(AdItem.create("Interstitial - 10213", 10213, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("Interstitial - 10198", 10198, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("Interstitial - 10324", 10324, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("Video - 30288", 30288, false, AdItemType.fullscreen_video_item));
+//        list.add(AdItem.create("Fungus Amungus - 30302", 30302, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("10305", 10305, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("37", 37, false, AdItemType.interstitial_item));
+//        list.add(AdItem.create("30324", 30324, false, AdItemType.interstitial_item));
         return list;
     }
 }

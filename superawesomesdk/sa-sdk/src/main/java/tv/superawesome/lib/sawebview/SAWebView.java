@@ -2,6 +2,7 @@ package tv.superawesome.lib.sawebview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import tv.superawesome.lib.sautils.SALog;
 
@@ -43,24 +46,22 @@ public class SAWebView extends WebView {
         this.getSettings().setLoadWithOverviewMode(true);
         this.getSettings().setUseWideViewPort(true);
 
-//        this.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-//        this.getSettings().setSupportMultipleWindows(true);
-
-//        this.setWebChromeClient(new WebChromeClient() {
-//            @Override
-//            public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-//                SALog.Log("onCreateWindow");
-//
-//                return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg);
-//            }
-//        });
+        /** only for jelly bean */
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//            this.enablecrossdomain41();
+//            this.getSettings().setAllowUniversalAccessFromFileURLs(true);
+//            this.getSettings().setAllowFileAccessFromFileURLs(true);
+//        } else {
+//            this.enablecrossdomain();
+//        }
 
         this.setWebViewClient(new WebViewClient() {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                if (shouldOverrideUrlLoading(view, url)){
+                SALog.Log("On page started");
+                if (shouldOverrideUrlLoading(view, url)) {
                     view.stopLoading();
                 }
             }
@@ -68,15 +69,15 @@ public class SAWebView extends WebView {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                SALog.Log("onPageFinished");
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                SALog.Log("Called once!");
                 if (url.contains("file:///")) {
                     return false;
                 } else {
-                    if (listener != null){
+                    if (listener != null) {
                         listener.saWebViewWillNavigate(url);
                     }
 
@@ -138,4 +139,50 @@ public class SAWebView extends WebView {
     public void setListener(SAWebViewListener listener) {
         this.listener = listener;
     }
+
+//    public void enablecrossdomain()
+//    {
+//        try
+//        {
+//            Field field = WebView.class.getDeclaredField("mWebViewCore");
+//            field.setAccessible(true);
+//            Object webviewcore=field.get(this);
+//            Method method = webviewcore.getClass().getDeclaredMethod("nativeRegisterURLSchemeAsLocal", String.class);
+//            method.setAccessible(true);
+//            method.invoke(webviewcore, "http");
+//            method.invoke(webviewcore, "https");
+//        }
+//        catch(Exception e)
+//        {
+//            SALog.Log("enablecrossdomain error");
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    //for android 4.1+
+//    public void enablecrossdomain41()
+//    {
+//        try
+//        {
+//            Field webviewclassic_field = WebView.class.getDeclaredField("mProvider");
+//            webviewclassic_field.setAccessible(true);
+//            Object webviewclassic=webviewclassic_field.get(this);
+//            Field webviewcore_field = webviewclassic.getClass().getDeclaredField("mWebViewCore");
+//            webviewcore_field.setAccessible(true);
+//            Object mWebViewCore=webviewcore_field.get(webviewclassic);
+//            Field nativeclass_field = webviewclassic.getClass().getDeclaredField("mNativeClass");
+//            nativeclass_field.setAccessible(true);
+//            Object mNativeClass=nativeclass_field.get(webviewclassic);
+//
+//            Method method = mWebViewCore.getClass().getDeclaredMethod("nativeRegisterURLSchemeAsLocal",new Class[] {int.class,String.class});
+//            method.setAccessible(true);
+//            method.invoke(mWebViewCore,mNativeClass, "http");
+//            method.invoke(mWebViewCore,mNativeClass, "https");
+//        }
+//        catch(Exception e)
+//        {
+//            SALog.Log("enablecrossdomain error");
+//            e.printStackTrace();
+//        }
+//    }
 }

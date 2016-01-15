@@ -9,19 +9,16 @@
         div#center { text-align: center; width:100%; height: 100%; display: table-cell; vertical-align: middle;  }
         iframe { width: _WIDTH_px; height: _HEIGHT_px; border: 0; margin: 0; padding: 0; background-color: #efefef; }
     </style>
-    <script type='text/javascript'>
-        function onStart(){
-            var links = document.getElementsByTagName('a');
-            var len = links.length;
-
-            for (var i = 0; i < len; i++) {
-                links[i].target = "_blank";
+    <script type="text/javascript">
+        function change_links_target()
+        {
+            var all_document_links = document.getElementsByTagName("a");
+            for (i = 0; i < all_document_links.length; i++){
+                all_document_links[i].setAttribute("target", "_top");
             }
-
-            console.log('Changed ' + len + ' links');
         }
     </script>
 </head>
-<body onload='onStart()'>
+<body onload="change_links_target">
 <div id="center"><iframe src='richMediaURL'></iframe></div></body>
 </html>

@@ -3,6 +3,7 @@ package tv.superawesome.sdk.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
@@ -74,6 +75,8 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
         webView = (SAWebView)findViewById(web_viewId);
         webView.setListener(this);
         padlock = (ImageView)findViewById(padlockId);
+
+        this.setBackgroundColor(Color.rgb(191, 191, 191));
     }
 
     @Override
