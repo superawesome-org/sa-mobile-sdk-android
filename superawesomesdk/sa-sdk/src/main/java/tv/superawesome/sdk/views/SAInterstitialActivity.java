@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.lang.ref.WeakReference;
+
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
@@ -22,6 +24,7 @@ public class SAInterstitialActivity {
     /** private activity object values */
     private Context context;
     private Intent intent;
+    private static WeakReference<Activity> mActivityRef;
 
     /** base constructor */
     public SAInterstitialActivity(Context context){
@@ -45,10 +48,46 @@ public class SAInterstitialActivity {
         AdDataHolder.getInstance()._refIsParentalGateEnabled = isParentalGateEnabled;
     }
 
+    /** weak ref update function - needed mostly to get the close() function to work */
+    protected static void updateActivity(Activity activity){
+        mActivityRef = new WeakReference<Activity> (activity);
+    }
+
     /** play function */
     public void play(){
         intent = new Intent(context, SAInterstitialActivityInner.class);
         context.startActivity(intent);
+    }
+
+    /** close func */
+    public void close() {
+        if (mActivityRef != null) {
+            mActivityRef.get().onBackPressed();
+        }
+    }
+
+    /** shorthand start method for the lazy */
+    public static void start(Context c,
+                             SAAd ad,
+                             boolean isParentalGateEnabled,
+                             SAAdListener adListener,
+                             SAParentalGateListener parentalGateListener) {
+
+        /** create activity */
+        SAInterstitialActivity activity = new SAInterstitialActivity(c);
+
+        /** set ad */
+        activity.setAd(ad);
+
+        /** set ad parameters */
+        activity.setIsParentalGateEnabled(isParentalGateEnabled);
+
+        /** set listeners */
+        activity.setAdListener(adListener);
+        activity.setParentalGateListener(parentalGateListener);
+
+        /** start playing */
+        activity.play();
     }
 
     public static class SAInterstitialActivityInner extends Activity {
@@ -76,6 +115,9 @@ public class SAInterstitialActivity {
         protected void onCreate(Bundle savedInstanceState) {
             /** call super and layout */
             super.onCreate(savedInstanceState);
+
+            /** update parent class weak ref to point to this activity */
+            SAInterstitialActivity.updateActivity(this);
 
             /** load resource */
             String packageName = SAApplication.getSAApplicationContext().getPackageName();

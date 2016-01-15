@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.lang.ref.WeakReference;
+
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
@@ -30,6 +32,7 @@ public class SAVideoActivity {
     /** private activity object values */
     private Context context;
     private Intent intent;
+    private static WeakReference<Activity> mActivityRef;
 
     /** base constructor */
     public SAVideoActivity(Context context){
@@ -65,10 +68,51 @@ public class SAVideoActivity {
         AdDataHolder.getInstance()._refShouldAutomaticallyCloseAtEnd = shouldAutomaticallyCloseAtEnd;
     }
 
+    /** weak ref update function - needed mostly to get the close() function to work */
+    protected static void updateActivity(Activity activity){
+        mActivityRef = new WeakReference<Activity> (activity);
+    }
+
     /** play function */
     public void play(){
         intent = new Intent(context, SAVideoActivityInner.class);
         context.startActivity(intent);
+    }
+
+    /** close function */
+    public void close() {
+        if (mActivityRef != null) {
+            mActivityRef.get().onBackPressed();
+        }
+    }
+
+    /** shorthand start method for the lazy */
+    public static void start(Context c,
+                             SAAd ad,
+                             boolean isParentalGateEnabled,
+                             boolean shouldShowCloseButton,
+                             SAAdListener adListener,
+                             SAParentalGateListener parentalGateListener,
+                             SAVideoAdListener videoAdListener) {
+
+        /** create activity */
+        SAVideoActivity activity = new SAVideoActivity(c);
+
+        /** set ad */
+        activity.setAd(ad);
+
+        /** set ad parameters */
+        activity.setIsParentalGateEnabled(isParentalGateEnabled);
+        activity.setShouldShowCloseButton(shouldShowCloseButton);
+        activity.setShouldAutomaticallyCloseAtEnd(true);
+
+        /** set listeners */
+        activity.setAdListener(adListener);
+        activity.setParentalGateListener(parentalGateListener);
+        activity.setVideoAdListener(videoAdListener);
+
+        /** start playing */
+        activity.play();
     }
 
     /** inner activity class */
@@ -97,12 +141,16 @@ public class SAVideoActivity {
         public void onSaveInstanceState(Bundle savedInstanceState) {
             // Always call the superclass so it can save the view hierarchy state
             super.onSaveInstanceState(savedInstanceState);
+
         }
 
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            /** update parent class weak ref to point to this activity */
+            SAVideoActivity.updateActivity(this);
 
             /** load resources */
             String packageName = SAApplication.getSAApplicationContext().getPackageName();

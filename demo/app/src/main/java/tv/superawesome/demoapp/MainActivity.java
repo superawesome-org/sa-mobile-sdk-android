@@ -31,6 +31,8 @@ public class MainActivity extends Activity implements
     private SAParentalGateListener parentalGateListener = this;
     private SAVideoAdListener videoAdListener = this;
 
+    private SAVideoActivity vad;
+
     /** the options list */
     private ListView optionsList;
 
@@ -77,10 +79,11 @@ public class MainActivity extends Activity implements
                         SALoader.loadAd(option.placementId, new SALoaderListener() {
                             @Override
                             public void didLoadAd(SAAd ad) {
-                                SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+//                                SAVideoActivity.start(MainActivity.this, ad, true, false, adListener, parentalGateListener, videoAdListener);
+                                vad = new SAVideoActivity(MainActivity.this);
                                 vad.setAd(ad);
                                 vad.setIsParentalGateEnabled(true);
-                                vad.setShouldAutomaticallyCloseAtEnd(true);
+                                vad.setShouldAutomaticallyCloseAtEnd(false);
                                 vad.setShouldShowCloseButton(true);
                                 vad.setAdListener(adListener);
                                 vad.setVideoAdListener(videoAdListener);
@@ -100,12 +103,13 @@ public class MainActivity extends Activity implements
                         SALoader.loadAd(option.placementId, new SALoaderListener() {
                             @Override
                             public void didLoadAd(SAAd ad) {
-                                SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
-                                iad.setAd(ad);
-                                iad.setIsParentalGateEnabled(true);
-                                iad.setAdListener(adListener);
-                                iad.setParentalGateListener(parentalGateListener);
-                                iad.play();
+                                SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
+//                                SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
+//                                iad.setAd(ad);
+//                                iad.setIsParentalGateEnabled(true);
+//                                iad.setAdListener(adListener);
+//                                iad.setParentalGateListener(parentalGateListener);
+//                                iad.play();
                             }
 
                             @Override

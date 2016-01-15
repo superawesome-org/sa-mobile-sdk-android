@@ -42,7 +42,6 @@ public class SAVASTParser extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String[] url) {
 
         try {
-            SALog.Log("And here URLs are: " + url[0]);
             ads = parseVAST(url[0]);
         } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -86,23 +85,31 @@ public class SAVASTParser extends AsyncTask<String, Integer, String> {
      * @return an array of VAST ads
      */
     public static List<SAVASTAd> parseVAST(String url) throws IOException, ParserConfigurationException, SAXException {
-        // create the array of ads that should be returned
+        /** create the array of ads that should be returned */
         final List<SAVASTAd> lads = new ArrayList<SAVASTAd>();
 
-        // step 1: get the XML
+        /** step 1: get the XML */
         String VAST = SASyncGet.execute(url);
 
-        // create the Doc builder factory
+        if (VAST == null) {
+            /**
+             * return empty ads if  VAST string is NULL - this can sometimes happen because of
+             * SSL certificate issues
+             */
+            return lads;
+        }
+
+        /** create the Doc builder factory */
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        // Download the XML file
+        /** Parse the XML file */
         Document doc = db.parse(new InputSource(new ByteArrayInputStream(VAST.getBytes("utf-8"))));
         doc.getDocumentElement().normalize();
 
-        // step 2. get the correct reference to the root XML element
+        /** step 2. get the correct reference to the root XML element */
         final Element root = (Element) doc.getElementsByTagName("VAST").item(0);
 
-        // step 3. start finding ads and parsing them
+        /** step 3. start finding ads and parsing them */
         SAXML.searchSiblingsAndChildrenOf(root, "Ad", new SAXMLIterator() {
             @Override
             public void foundElement(Element e) {
@@ -126,13 +133,13 @@ public class SAVASTParser extends AsyncTask<String, Integer, String> {
                         List<SAVASTAd> foundAds = parseVAST(VASTAdTagURI);
                         wrapperAd.Creatives = ListFilters.removeAllButFirstElement(wrapperAd.Creatives);
 
-                        // merge foundAds with wrapper ad
+                        /** merge foundAds with wrapper ad */
                         for (Iterator<SAVASTAd> i = foundAds.iterator(); i.hasNext(); ){
                             SAVASTAd foundAd = i.next();
                             foundAd.sumAd(wrapperAd);
                         }
 
-                        // add to final return array
+                        /** add to final return array */
                         for (Iterator<SAVASTAd> i = foundAds.iterator(); i.hasNext(); ){
                             lads.add(i.next());
                         }
