@@ -79,12 +79,10 @@ install {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
-    compile files('extlibs/unity-classes.jar')
+    // compile files('extlibs/unity-classes.jar');
 }
 
-configurations {
-    compile.exclude group: 'com.unity3d.player'
-}
+
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
