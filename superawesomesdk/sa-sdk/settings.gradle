@@ -1,1 +1,2 @@
 include ':sa-sdk'
+includeFlat('extlibs/unity-classes.jar')
