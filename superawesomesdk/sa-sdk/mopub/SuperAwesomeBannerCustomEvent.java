@@ -9,13 +9,14 @@ import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
+import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.views.SABannerAd;
 
 
 /**
  * Created by gabriel.coman on 27/10/15.
  */
-public class SuperAwesomeBannerCustomEvent extends CustomEventBanner implements SAAdListener {
+public class SuperAwesomeBannerCustomEvent extends CustomEventBanner implements SAAdListener, SAParentalGateListener{
 
     /** listeners */
     private SAAdListener adListener = this;
@@ -59,6 +60,7 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner implements 
         } else {
             SuperAwesome.getInstance().disableTestMode();
         }
+        SuperAwesome.getInstance().setApplicationContext(context);
 
         /** start loading */
         SALoader.loadAd(placementId, new SALoaderListener() {

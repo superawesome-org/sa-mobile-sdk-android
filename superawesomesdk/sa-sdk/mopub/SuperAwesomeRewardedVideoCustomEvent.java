@@ -19,17 +19,20 @@ import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
+import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAParentalGate;
 
 import java.util.Map;
+import java.util.Set;
 
 import static com.mopub.mobileads.MoPubRewardedVideoManager.*;
 
 /**
  * Created by gabriel.coman on 27/12/15.
  */
-public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVideo implements SAAdListener, SAVideoAdListener{
+public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVideo implements SAAdListener, SAParentalGateListener, SAVideoAdListener{
     /** private vars */
     private int placementId;
     private boolean testMode;
@@ -110,6 +113,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
         /** before loading */
         SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().setApplicationContext(activity);
         if (testMode) {
             SuperAwesome.getInstance().enableTestMode();
         } else {
@@ -121,18 +125,13 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
             @Override
             public void didLoadAd(SAAd ad) {
 
-//                onRewardedVideoLoadSuccess(SuperAwesomeRewardedVideoCustomEvent.getClass(), moPubId);
-
-
-                // show ad interstitial
-                SAVideoActivity.start(activity, ad, false, adListener, parentalGateListener, videoAdListener);
+                // show video activity
+                SAVideoActivity.start(activity, ad, isParentalGateEnabled, closeButtonAppears, adListener, parentalGateListener, videoAdListener);
             }
 
             @Override
             public void didFailToLoadAdForPlacementId(int placementId) {
                 SALog.Log("Failed to load " + placementId);
-
-//                onRewardedVideoPlaybackError(SuperAwesomeRewardedVideoCustomEvent.getClass(), moPubId, MoPubErrorCode.VIDEO_NOT_AVAILABLE);
             }
         });
 

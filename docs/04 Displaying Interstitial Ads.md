@@ -1,4 +1,36 @@
-Once you've loaded the interstitial Ad, you can display it. In the Awesome Ads SDK, Interstitial Ads are subclasses of the Activity class, and are displayed much the same way an Activity would be.
+Once you've loaded the interstitial Ad, you can display it. 
+
+There are two ways to display an Interstitial Ad:
+
+First one is similar to the Banner Ad; You declare a interstitial object and set different parameters on it before calling the `play()` function to actually display it.
+
+```
+SALoader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
+    @Override
+    public void didLoadAd(SAAd saAd) {
+    	SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
+        iad.setAd(saAd);
+        iad.setIsParentalGateEnabled(true);
+        iad.setAdListener(new SAAdListener() {
+        	// implement ad listener functions
+        });
+        iad.setParentalGateListener(new SAParentalGateListener() {
+        	// implement parental gate listener functions
+        });
+        
+        // play
+        iad.play();
+    }
+
+    @Override
+    public void didFailToLoadAdForPlacementId(int placementID) {
+    	// failure to load due to various reasons
+    }
+});
+
+```
+
+The second one is a static shorthand method on the SAInterstitialActivity class:
 
 ```
 SALoader.loadAd(__INTERSTITIAL_PLACEMENT_ID__, new SALoaderListener() {
@@ -9,14 +41,13 @@ SALoader.loadAd(__INTERSTITIAL_PLACEMENT_ID__, new SALoaderListener() {
     }
 
     @Override
-    public void didFailToLoadAdForPlacementId(int placementId) {
-        System.out.println("Placement: " + placementId + " could not be loaded");
+    public void didFailToLoadAdForPlacementId(int placementID) {
+        // dom error happened
     }
 });
 
 ```
 
-Calling the SAInterstitialActivity static function `start` will display the interstitial ad.
 The `start` function takes five parameters:
 
  * any valid Activity context

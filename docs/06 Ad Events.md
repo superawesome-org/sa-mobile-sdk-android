@@ -1,83 +1,119 @@
 Banner Ads, Video Ads and Interstitial can be helped by up to three listeners in order to notify you of ad lifecycle events.
-In order to use them, your activity must implement one or all of the Listeners:
 
-```
-public class MyActivity extends Activity implements SAAdListener, SAParentalGateListener, SAVideoAdListener {
-
-	// private listener objects - assign the current Activity instance to them, since it promises to
-    // implement their Interfaces
-	private SAAdListener adListener = this;
-	private SAParentalGateListener parentalGateListener = this;
-	private SAVideoAdListener videoAdListener = this;
-
-	// rest of the activity implementation
-	// ....
-}
-
+The simplest way to use them is as in the following example:
 
 ```
 
-Once `MyActivity` declares that it implements the Listener interfaces, it must also implement all functions from
-`SAAdListener`:
+// just create a new video activity and setup its base parameters
+// like the ad unit, is parental gate enabled, etc
+SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+vad.setAd(saAd);
+vad.setIsParentalGateEnabled(true);
+vad.setShouldShowCloseButton(true);
+vad.setShouldAutomaticallyCloseAtEnd(false);
+
+// set the normal ad Listener
+// this returns callbacks for when an ad is shown or closed or when
+// it's URL link is clicked
+//
+// this can be set for Banner Ads, Interstitial Ads and Video Ads
+vad.setAdListener(new SAAdListener() {
+	@Override
+    public void adWasShown(int i) {
+
+    }
+
+	@Override
+   	public void adFailedToShow(int i) {
+
+    }
+
+    @Override
+    public void adWasClosed(int i) {
+
+    }
+
+    @Override
+    public void adWasClicked(int i) {
+
+    }
+
+    @Override
+    public void adHasIncorrectPlacement(int i) {
+
+    }
+});
+
+// set the parental gate listener
+// it's only active if the parental gate is enabled
+//
+// this can be set on Banner Ads, Interstitial Ads and Video Ads
+vad.setParentalGateListener(new SAParentalGateListener() {
+	@Override
+    public void parentalGateWasCanceled(int i) {
+
+    }
+
+    @Override
+    public void parentalGateWasFailed(int i) {
+
+    }
+
+    @Override
+    public void parentalGateWasSucceded(int i) {
+
+    }
+});
+
+// set the video ad listener
+// this has callbacks for when a video starts, reached first quartile, etc
+//
+// can only be set on video ads
+vad.setVideoAdListener(new SAVideoAdListener() {
+	@Override
+    public void adStarted(int i) {
+
+    }
+
+    @Override
+    public void videoStarted(int i) {
+
+	}
+
+    @Override
+    public void videoReachedFirstQuartile(int i) {
+
+    }
+
+    @Override
+    public void videoReachedMidpoint(int i) {
+
+    }
+
+    @Override
+    public void videoReachedThirdQuartile(int i) {
+
+    }
+
+    @Override
+    public void videoEnded(int i) {
+
+    }
+
+    @Override
+    public void adEnded(int i) {
+
+    }
+
+    @Override
+    public void allAdsEnded(int i) {
+
+    }
+});
+
+// finally play the ad
+vad.play();
 
 ```
-public void adWasShown(int placementId);
-public void adFailedToShow(int placementId);
-public void adWasClosed(int placementId);
-public void adWasClicked(int placementId);
-public void adHasIncorrectPlacement(int placementId);
 
-```
-
-And for `SAParentalGateListener`:
-
-```
-public void parentalGateWasCanceled(int placementId);
-public void parentalGateWasFailed(int placementId);
-public void parentalGateWasSucceded(int placementId);
-
-```
-
-And for `SAVideoAdListener`:
-
-```
-public void adStarted(int placementId);
-public void videoStarted(int placementId);
-public void videoReachedFirstQuartile(int placementId);
-public void videoReachedMidpoint(int placementId);
-public void videoReachedThirdQuartile(int placementId);
-public void videoEnded(int placementId);
-public void adEnded(int placementId);
-public void allAdsEnded(int placementId);
-
-```
-
-To assign a listener to a Banner ad, you'll need to:
-
-```
-// standard banner creation from XML
-SABannerAd myBanner = (SABannerAd) findViewById(R.id.myBannerAd1);
-
-// also assign the listeners
-myBanner.setAdListener(adListener);
-myBanner.setParentalGateListener(parentalGateListener);
-
-// set the ad object and play the Ad
-myBanner.setAd(ad);
-myBanner.play();
-
-```
-
-To assign listeners to an Interstitial ad, you'll need to change its `start()` function call to:
-
-```
-SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
-
-```
-
-To assign listeners to a Video ad, you'll need to change its `start()` function call to:
-
-```
-SAVideoActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener, videoAdListener);
-
-```
+You can set the same listeners for the Interstitial and Banner ads shorthand method `start()`.

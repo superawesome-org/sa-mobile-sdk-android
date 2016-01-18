@@ -9,12 +9,13 @@ import tv.superawesome.sdk.data.Loader.SALoader;
 import tv.superawesome.sdk.data.Loader.SALoaderListener;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
+import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
 
 /**
  * Created by gabriel.coman on 27/10/15.
  */
-public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial implements SAAdListener {
+public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial implements SAAdListener, SAParentalGateListener {
 
     private SAAdListener adListener = this;
     private SAParentalGateListener parentalGateListener = this;
@@ -46,6 +47,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
 
         /** before loading */
         SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().setApplicationContext(context);
         if (testMode) {
             SuperAwesome.getInstance().enableTestMode();
         } else {

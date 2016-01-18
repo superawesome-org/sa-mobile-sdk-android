@@ -1,4 +1,41 @@
-Once you've loaded the video Ad, you can display it. In the Android SDK Video Ads are fullscreen, and are displayed in much the same way as an Activity would be.
+Once you've loaded the video Ad, you can display it. 
+
+As with the interstitial ad, there are a two ways to display a video ad:
+
+First one is similar to the Banner Ad and Interstitial ad; You declare a video ad object and set different parameters on it before calling the `play()` function to actually display it.
+
+```
+SALoader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
+    @Override
+    public void didLoadAd(SAAd saAd) {
+    	SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+        vad.setAd(saAd);
+        vad.setIsParentalGateEnabled(true);
+        vad.setShouldShowCloseButton(true);
+        vad.setShouldAutomaticallyCloseAtEnd(false);
+        vad.setAdListener(new SAAdListener() {
+        	// ad listener implementation            
+        });
+        vad.setParentalGateListener(new SAParentalGateListener() {
+        	// parental gate listener implementation
+        });
+        vad.setVideoAdListener(new SAVideoAdListener() {
+        	// video ad listener
+        });
+        
+        // finally play
+        vad.play();
+    }
+
+    @Override
+    public void didFailToLoadAdForPlacementId(int placementID) {
+    	// some error happened
+    }
+});
+
+```
+
+There's also a shorthand way of calling a static member function of SAVideoActivity called `start()`.
 
 ```
 SALoader.loadAd(__VIDEO_PLACEMENT_ID__, new SALoaderListener() {
@@ -9,15 +46,14 @@ SALoader.loadAd(__VIDEO_PLACEMENT_ID__, new SALoaderListener() {
     }
 
     @Override
-    public void didFailToLoadAdForPlacementId(int placementId) {
-        System.out.println("Placement: " + placementId + " could not be loaded");
+    public void didFailToLoadAdForPlacementId(int placementID) {
+        // some error happened
     }
 });
 
 ```
 
-Calling the SAVideoActivity static function `start` will display the video ad.
-The `start` function takes six parameters:
+The `start()` function takes six parameters:
 
  * any valid Activity context
  * an object of type `SAAd`, which usually gets returned by the callback `didLoadAd` function
