@@ -103,8 +103,6 @@ public class SAWebView extends WebView {
         /** get the context */
         Context context = this.getContext();
 
-        SALog.Log(_html);
-
         /** start creating a temporary file */
         File path = context.getFilesDir();
         File file = new File(path, "tmpHTML.html");

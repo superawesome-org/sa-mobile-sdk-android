@@ -24,6 +24,7 @@ public class BannerActivity extends Activity {
     private int placementId;
     private SAAdListener adListener;
     private SAParentalGateListener parentalGateListener;
+    private SALoader loader;
 
     public static void start(Context context, int placementId, SAAdListener adListener, SAParentalGateListener parentalGateListener) {
 
@@ -56,7 +57,8 @@ public class BannerActivity extends Activity {
         adListener = DataHolder.getInstance()._refAdListener;
         parentalGateListener = DataHolder.getInstance()._refParentalGateListener;
 
-        SALoader.loadAd(placementId, new SALoaderListener() {
+        loader = new SALoader();
+        loader.loadAd(placementId, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
                 SABannerAd banner = (SABannerAd)findViewById(R.id.bannerView);

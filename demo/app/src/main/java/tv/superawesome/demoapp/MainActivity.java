@@ -33,6 +33,8 @@ public class MainActivity extends Activity implements
 
     private SAVideoActivity vad;
 
+    private SALoader loader;
+
     /** the options list */
     private ListView optionsList;
 
@@ -45,6 +47,7 @@ public class MainActivity extends Activity implements
         SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
+        loader = new SALoader();
 
         /** set text info */
         TextView saSDKLabel = (TextView)findViewById(R.id.sasdk_label);
@@ -76,10 +79,9 @@ public class MainActivity extends Activity implements
                 /** get the type */
                 switch (option.type){
                     case fullscreen_video_item:{
-                        SALoader.loadAd(option.placementId, new SALoaderListener() {
+                        loader.loadAd(option.placementId, new SALoaderListener() {
                             @Override
                             public void didLoadAd(SAAd ad) {
-//                                SAVideoActivity.start(MainActivity.this, ad, true, false, adListener, parentalGateListener, videoAdListener);
                                 vad = new SAVideoActivity(MainActivity.this);
                                 vad.setAd(ad);
                                 vad.setIsParentalGateEnabled(true);
@@ -100,16 +102,10 @@ public class MainActivity extends Activity implements
                         break;
                     }
                     case interstitial_item:{
-                        SALoader.loadAd(option.placementId, new SALoaderListener() {
+                        loader.loadAd(option.placementId, new SALoaderListener() {
                             @Override
                             public void didLoadAd(SAAd ad) {
                                 SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
-//                                SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
-//                                iad.setAd(ad);
-//                                iad.setIsParentalGateEnabled(true);
-//                                iad.setAdListener(adListener);
-//                                iad.setParentalGateListener(parentalGateListener);
-//                                iad.play();
                             }
 
                             @Override

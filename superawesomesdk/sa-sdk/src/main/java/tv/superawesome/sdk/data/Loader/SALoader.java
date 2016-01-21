@@ -33,7 +33,7 @@ public class SALoader {
      * @param placementId - the placement ID a user might want to preload an Ad for
      * @param listener - a reference to the listener
      */
-    public static void loadAd(final int placementId, final SALoaderListener listener){
+    public void loadAd(final int placementId, final SALoaderListener listener){
 
         /** form the endpoint */
         String endpoint = SuperAwesome.getInstance().getBaseURL() + "/ad/" + placementId;
@@ -94,7 +94,7 @@ public class SALoader {
      * @param _listener
      * @param placementId
      */
-    private static void failAd(SALoaderListener _listener, int placementId){
+    private void failAd(SALoaderListener _listener, int placementId){
         if (_listener != null){
             _listener.didFailToLoadAdForPlacementId(placementId);
         }
