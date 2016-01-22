@@ -47,6 +47,11 @@ public class SAAd {
      */
     public String adHTML;
 
+    /**
+     * the Json of the original Ad - as sent by the server
+     */
+    public String adJson;
+
     /** pointer to the creative data associated with the ad */
     public SACreative creative;
 

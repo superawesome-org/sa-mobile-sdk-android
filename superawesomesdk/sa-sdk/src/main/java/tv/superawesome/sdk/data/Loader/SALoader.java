@@ -50,7 +50,7 @@ public class SALoader {
         SANetwork network = new SANetwork();
         network.sendGET(endpoint, queryJson, new SANetListener() {
             @Override
-            public void success(Object data) {
+            public void success(final Object data) {
 
                 /** form the json object to parse */
                 JSONObject dataJson = null;
@@ -61,9 +61,14 @@ public class SALoader {
                         SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
                             @Override
                             public void parsedAd(SAAd ad) {
+
+                                /** check for validity */
                                 boolean isValid = SAValidator.isAdDataValid(ad);
 
                                 if (isValid) {
+                                    /** assign adJson */
+                                    ad.adJson = data.toString();
+
                                     if (listener != null) {
                                         listener.didLoadAd(ad);
                                     }
