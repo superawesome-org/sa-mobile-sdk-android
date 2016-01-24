@@ -5,7 +5,8 @@ As with the interstitial ad, there are a two ways to display a video ad:
 First one is similar to the Banner Ad and Interstitial ad; You declare a video ad object and set different parameters on it before calling the `play()` function to actually display it.
 
 ```
-SALoader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
+SALoader loader = new SALoader();
+loader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
     @Override
     public void didLoadAd(SAAd saAd) {
     	SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
@@ -38,7 +39,8 @@ SALoader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
 There's also a shorthand way of calling a static member function of SAVideoActivity called `start()`.
 
 ```
-SALoader.loadAd(__VIDEO_PLACEMENT_ID__, new SALoaderListener() {
+SALoader loader = new SALoader();
+loader.loadAd(__VIDEO_PLACEMENT_ID__, new SALoaderListener() {
    	@Override
     public void didLoadAd(SAAd ad) {
      	// start the video activity

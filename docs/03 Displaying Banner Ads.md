@@ -13,7 +13,8 @@ To do so, you'll first need to declare a SABannerAd view in your activity or fra
 Then, in your activity code:
 
 ```
-SALoader.loadAd(__BANNER_PLACEMENT_ID__, new SALoaderListener() {
+SALoader loader = new SALoader();
+loader.loadAd(__BANNER_PLACEMENT_ID__, new SALoaderListener() {
 	@Override
 	public void didLoadAd(SAAd ad) {
     	// find the Banner

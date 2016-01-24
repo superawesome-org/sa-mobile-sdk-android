@@ -5,7 +5,8 @@ There are two ways to display an Interstitial Ad:
 First one is similar to the Banner Ad; You declare a interstitial object and set different parameters on it before calling the `play()` function to actually display it.
 
 ```
-SALoader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
+SALoader loader = new SALoader();
+loader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
     @Override
     public void didLoadAd(SAAd saAd) {
     	SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
@@ -33,7 +34,8 @@ SALoader.loadAd(_PLACEMENT_ID_, new SALoaderListener() {
 The second one is a static shorthand method on the SAInterstitialActivity class:
 
 ```
-SALoader.loadAd(__INTERSTITIAL_PLACEMENT_ID__, new SALoaderListener() {
+SALoader loader = new SALoader();
+loader.loadAd(__INTERSTITIAL_PLACEMENT_ID__, new SALoaderListener() {
 	@Override
 	public void didLoadAd(SAAd ad) {
      	// start the interstitial activity

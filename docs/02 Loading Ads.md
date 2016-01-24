@@ -6,7 +6,8 @@ All ads are loaded exactly the same (whether they are banner, interstitial or vi
 The syntax for such a call is as follows:
 
 ```
-SALoader.loadAd(__PLACEMENT_ID__, new SALoaderListener() {
+SALoader loader = new SALoader();
+loader.loadAd(__PLACEMENT_ID__, new SALoaderListener() {
 	@Override
     public void didLoadAd(SAAd ad) {
     	// print the ad details
