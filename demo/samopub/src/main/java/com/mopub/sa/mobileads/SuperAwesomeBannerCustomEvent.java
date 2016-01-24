@@ -65,11 +65,6 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
             @Override
             public void didLoadAd(SAAd saAd) {
 
-                /** call evt listener */
-                if (evtListener != null) {
-                    evtListener.onBannerLoaded(bannerAd);
-                }
-
                 /** create the new banner ad */
                 bannerAd = new SABannerAd(context);
                 bannerAd.setAd(saAd);
@@ -109,6 +104,11 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
 
                 /** call play */
                 bannerAd.play();
+
+                /** call evt listener */
+                if (evtListener != null) {
+                    evtListener.onBannerLoaded(bannerAd);
+                }
             }
 
             @Override
