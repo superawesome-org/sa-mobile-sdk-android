@@ -40,7 +40,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.3.0";
+        return "3.3.1";
     }
 
     private String getSdk() {
@@ -81,9 +81,9 @@ public class SuperAwesome {
         this.isTestEnabled = false;
     }
 
-    public boolean isTestingEnabled() {
-        return this.isTestEnabled;
-    }
+    public void setTestMode(boolean isTestEnabled) { this.isTestEnabled = isTestEnabled; }
+
+    public boolean isTestingEnabled() { return this.isTestEnabled; }
 
     /**
      * Group of functions that encapsulate the SAApplication functionality
