@@ -42,7 +42,7 @@ SALoader.loadAd(__VIDEO_PLACEMENT_ID__, new SALoaderListener() {
    	@Override
     public void didLoadAd(SAAd ad) {
      	// start the video activity
-    	SAVideoActivity.start(MainActivity.this, ad, true, null, null, null);
+    	SAVideoActivity.start(MainActivity.this, ad, true, false, null, null, null);
     }
 
     @Override
@@ -53,11 +53,12 @@ SALoader.loadAd(__VIDEO_PLACEMENT_ID__, new SALoaderListener() {
 
 ```
 
-The `start()` function takes six parameters:
+The `start()` function takes seven parameters:
 
  * any valid Activity context
  * an object of type `SAAd`, which usually gets returned by the callback `didLoadAd` function
  * whether to show the Parental Gate or not
+ * whether to show the close button
  * an instance of the SAAdListener interface; can be null
  * an instance of the SAParentalGateListener interface; can be null
  * an instance of the SAVideoAdListener interface; can be null

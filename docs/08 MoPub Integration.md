@@ -8,14 +8,13 @@ This will add the SDK to your current project.
 
 #### Download Adapters
 
-Next, you'll need to download three .java files called Adapters:
+Next, you'll need to download the [samopub.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/samopub.jar?raw=true) archive, which you'll need to add to your project, in order to add three adapters classes:
 
-  * [SuperAwesomeBannerCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/superawesomesdk/sa-sdk/mopub/SuperAwesomeBannerCustomEvent.java)
-  * [SuperAwesomeInterstitialCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/superawesomesdk/sa-sdk/mopub/SuperAwesomeInterstitialCustomEvent.java)
-  * [SuperAwesomeRewardedVideoCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/superawesomesdk/sa-sdk/mopub/SuperAwesomeRewardedVideoCustomEvent.java)
+  * [SuperAwesomeBannerCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/demo/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeBannerCustomEvent.java)
+  * [SuperAwesomeInterstitialCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/demo/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeInterstitialCustomEvent.java)
+  * [SuperAwesomeRewardedVideoCustomEvent.java](https://raw.githubusercontent.com/SuperAwesomeLTD/sa-mobile-sdk-android/develop_v3/demo/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeRewardedVideoCustomEvent.java)
 
-These will act as a convenient bridge between SuperAwesome and MoPub, so that you don't have to write any aditional line of code.
-You'll also need to place them in your project. To do this, in your `/app/src/main/java/com` folder, create a folder called `mopub` and inside it another one called `mobileads`. Here copy the files.
+If you don't want to use the samopub.jar file, you can download each .java file and add it to your project individually. You'll need to place them in a folder hierarchy as `com/mopub/sa/mobileads`, inside your `/app/src/main/java` folder.
 
 #### Setup a MoPub Custom Network
 
@@ -37,9 +36,9 @@ And assign custom inventory details for Banner and Interstitial ads:
 ![](img/IMG_07_MoPub_4.png "Setup custom inventory")
 
 Custom Event Class is:
-  * for Banner Ads: `com.mopub.mobileads.SuperAwesomeBannerCustomEvent`
-  * for Interstitial Ads: `com.mopub.mobileads.SuperAwesomeInterstitialCustomEvent`
-  * for Rewarded Video Ads: `com.mopub.mobileads.SuperAwesomeRewardedVideoCustomEvent`
+  * for Banner Ads: `com.mopub.sa.mobileads.SuperAwesomeBannerCustomEvent`
+  * for Interstitial Ads: `com.mopub.sa.mobileads.SuperAwesomeInterstitialCustomEvent`
+  * for Rewarded Video Ads: `com.mopub.sa.mobileads.SuperAwesomeRewardedVideoCustomEvent`
 
 Notice these are identical to the name of the files you downloaded in step one.
 
@@ -48,8 +47,18 @@ Custom Event Data is always required, and must be given in the form of  JSON:
 ```
 {
 	"placementId": 5692,
-	"testMode": true,
-	"parentalGateEnabled": true
+	"isTestEnabled": true,
+	"isParentalGateEnabled": true
+}
+
+```
+
+For rewarded video, two additional fields can be set:
+
+```
+{
+	"shouldShowCloseButton": false,
+	"shouldAutomaticallyCloseAtEnd": true
 }
 
 ```
