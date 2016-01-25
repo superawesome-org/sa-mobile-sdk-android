@@ -1,6 +1,8 @@
 package com.mopub.sa.mobileads;
 
 import android.content.Context;
+import android.os.Debug;
+import android.util.Log;
 
 import com.mopub.mobileads.CustomEventInterstitial;
 import com.mopub.mobileads.MoPubErrorCode;
@@ -20,18 +22,20 @@ import tv.superawesome.sdk.views.SAInterstitialActivity;
  */
 public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial {
 
+    /** custom event listener */
     private CustomEventInterstitialListener evtListener;
+    private SAInterstitialActivity interstitial;
 
     @Override
     protected void loadInterstitial(final Context context, final CustomEventInterstitialListener customEventInterstitialListener, Map<String, Object> map, Map<String, String> map1) {
 
-        // get map variables
+        /** get map variables */
         int placementId = 0;
         final boolean isTestEnabled;
         final boolean isParentalGateEnabled;
 
         if (map1.get("placementId") != null ){
-            placementId = Integer.parseInt((String)map1.get("placementId").toString());
+            placementId = Integer.parseInt(map1.get("placementId"));
         }
 
         if (map1.get("isTestEnabled") != null) {
@@ -51,19 +55,14 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         SuperAwesome.getInstance().setTestMode(isTestEnabled);
         SuperAwesome.getInstance().setApplicationContext(context);
 
-       // save evt listener
+        /** save evt listener reference */
         evtListener = customEventInterstitialListener;
 
         SALoader loader = new SALoader();
         loader.loadAd(placementId, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd saAd) {
-                /** call listener */
-                if (evtListener != null) {
-                    evtListener.onInterstitialLoaded();
-                }
-
-                SAInterstitialActivity interstitial = new SAInterstitialActivity(context);
+                interstitial = new SAInterstitialActivity(context);
                 interstitial.setAd(saAd);
                 interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
                 interstitial.setAdListener(new SAAdListener() {
@@ -103,8 +102,10 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
                     }
                 });
 
-                /** play the ad */
-                interstitial.play();
+                /** call listener */
+                if (evtListener != null) {
+                    evtListener.onInterstitialLoaded();
+                }
             }
 
             @Override
@@ -119,6 +120,10 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
     @Override
     protected void showInterstitial() {
 
+        /** play the ad */
+        interstitial.play();
+
+        /** call listener function */
         if (evtListener != null) {
             evtListener.onInterstitialShown();
         }
@@ -126,6 +131,6 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
 
     @Override
     protected void onInvalidate() {
-        // do nothing
+        /** do nothing */
     }
 }

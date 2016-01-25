@@ -1,8 +1,10 @@
 package com.mopub.sa.mobileads;
 
 import android.app.Activity;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /** MoPub */
 import com.mopub.common.LifecycleListener;
@@ -24,6 +26,7 @@ import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.views.SAVideoActivity;
 import tv.superawesome.sdk.views.SAParentalGate;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,6 +43,9 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     private boolean shouldShowCloseButton;
     private boolean shouldAutomaticallyCloseAtEnd;
     private String moPubId;
+
+    /** the actual video activity */
+    private SAVideoActivity video;
 
     @Nullable
     @Override
@@ -100,6 +106,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     @Override
     protected void loadWithSdkInitialized(@NonNull final Activity activity, @NonNull Map<String, Object> map, @NonNull Map<String, String> map1) throws Exception {
 
+        Log.d("Test", "====> Load Video");
+
         /** before loading */
         SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().setApplicationContext(activity);
@@ -111,11 +119,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
             @Override
             public void didLoadAd(SAAd ad) {
 
-                /** call this */
-                onRewardedVideoLoadSuccess(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
-
                 /** show video activity */
-                SAVideoActivity video = new SAVideoActivity(activity);
+                video = new SAVideoActivity(activity);
                 video.setAd(ad);
                 video.setIsParentalGateEnabled(isParentalGateEnabled);
                 video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
@@ -191,8 +196,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                     }
                 });
 
-                /** play the ad */
-                video.play();
+                /** call this */
+                onRewardedVideoLoadSuccess(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
             }
 
             @Override
@@ -211,6 +216,9 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
     @Override
     protected void showVideo() {
+        Log.d("Test", "=====> showVideo ");
 
+        /** play the ad */
+        video.play();
     }
 }
