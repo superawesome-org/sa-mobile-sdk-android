@@ -106,8 +106,6 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     @Override
     protected void loadWithSdkInitialized(@NonNull final Activity activity, @NonNull Map<String, Object> map, @NonNull Map<String, String> map1) throws Exception {
 
-        Log.d("Test", "====> Load Video");
-
         /** before loading */
         SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().setApplicationContext(activity);
@@ -216,8 +214,6 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
     @Override
     protected void showVideo() {
-        Log.d("Test", "=====> showVideo ");
-
         /** play the ad */
         video.play();
     }
