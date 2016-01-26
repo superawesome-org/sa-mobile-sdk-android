@@ -26,7 +26,6 @@ public class TestDataProvider {
         list.add(AdItem.create("Mobile Preroll - 40", 40, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("Rich Media MPU - 46", 46, false, AdItemType.banner_item));
         list.add(AdItem.create("Third Party Tag - 47", 47, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("30372", 30372, false, AdItemType.banner_item));
 
 //        list.add(AdItem.create("Fullscreen Video - 21022", 21022, false, AdItemType.fullscreen_video_item));
 //        list.add(AdItem.create("Interstitial - 9549", 9549, false, AdItemType.interstitial_item));
@@ -34,7 +33,7 @@ public class TestDataProvider {
 //        list.add(AdItem.create("Interstitial - 10213", 10213, false, AdItemType.interstitial_item));
 //        list.add(AdItem.create("Interstitial - 10198", 10198, false, AdItemType.interstitial_item));
 //        list.add(AdItem.create("Interstitial - 10324", 10324, false, AdItemType.interstitial_item));
-//        list.add(AdItem.create("Video - 30288", 30288, false, AdItemType.fullscreen_video_item));
+//        list.add(AdItem.create("Video - 28000", 28000, false, AdItemType.fullscreen_video_item));
 //        list.add(AdItem.create("Fungus Amungus - 30302", 30302, false, AdItemType.interstitial_item));
 //        list.add(AdItem.create("10305", 10305, false, AdItemType.interstitial_item));
 //        list.add(AdItem.create("37", 37, false, AdItemType.interstitial_item));

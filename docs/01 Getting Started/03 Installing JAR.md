@@ -1,6 +1,6 @@
 If you're running an environment which does not support Gradle, then you'll need to add the SDK manually.
 
-First, download the JAR file [sa-sdk-3.3.2.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.3.2.jar?raw=true) 
+First, download the JAR file [sa-sdk-3.3.3.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.3.3.jar?raw=true) 
 
 You'll need to add it to your project's `lib` folder, usually `MyApplication/app/libs`. The `libs` folder should be located on the same level as the `src` and `build` folders.
 
@@ -10,9 +10,13 @@ Secondly, you'll need to add the following items in you Manifest file, under the
 
 ```
 <!-- Awesome Ads custom Manifest part -->
-<activity android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner" android:label="SAVideoActivity"></activity>
+<activity android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner" 
+		  android:label="SAVideoActivity"
+		  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
 
-<activity android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner" android:label="SAInterstitialActivity"></activity>
+<activity android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner" 
+		  android:label="SAInterstitialActivity"
+		  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
 
 <service android:name="tv.superawesome.lib.sanetwork.SAGet" android:exported="false" />
 

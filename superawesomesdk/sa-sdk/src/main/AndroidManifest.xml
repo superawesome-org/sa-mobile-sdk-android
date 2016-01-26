@@ -6,10 +6,12 @@
         android:allowBackup="true">
         <activity
             android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner"
-            android:label="SAVideoActivity"></activity>
+            android:label="SAVideoActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner"
-            android:label="SAInterstitialActivity"></activity>
+            android:label="SAInterstitialActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
 
         <!-- Declaring Service in Manifest -->
         <service
