@@ -2,6 +2,7 @@ package tv.superawesome.demoapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -42,6 +43,38 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//        switch (metrics.densityDpi){
+//            case DisplayMetrics.DENSITY_LOW:{
+//                System.out.println("[Density] :: Low");
+//                break;
+//            }
+//            case DisplayMetrics.DENSITY_DEFAULT:{
+//                System.out.println("[Density] :: Default");
+//                break;
+//            }
+//            case DisplayMetrics.DENSITY_HIGH:{
+//                System.out.println("[Density] :: High");
+//                break;
+//            }
+//            case DisplayMetrics.DENSITY_XHIGH:{
+//                System.out.println("[Density] :: XHigh");
+//                break;
+//            }
+//            case DisplayMetrics.DENSITY_XXHIGH:{
+//                System.out.println("[Density] :: XXHigh");
+//                break;
+//            }
+//            case DisplayMetrics.DENSITY_XXXHIGH:{
+//                System.out.println("[Density] :: XXXHigh");
+//                break;
+//            }
+//        }
+//
+//        float factor = (float)metrics.densityDpi / (float)DisplayMetrics.DENSITY_DEFAULT;
+//        System.out.println("[Density] :: "+metrics.densityDpi+" / "+DisplayMetrics.DENSITY_DEFAULT+" = "+factor);
 
         /** SA setup */
         SuperAwesome.getInstance().setConfigurationStaging();

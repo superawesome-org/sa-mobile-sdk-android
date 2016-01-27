@@ -105,8 +105,6 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
             int w = newframe.right;
             int h = newframe.bottom;
 
-            SALog.Log("And here: " + cWidth + ", " + cHeight + " New Ad: " + w + ", " + h);
-
             android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
             params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
             webView.setLayoutParams(params);

@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsoluteLayout;
+import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.data.Loader.SALoader;
@@ -14,6 +18,8 @@ import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.views.SABannerAd;
+
+import static android.widget.AbsoluteLayout.*;
 
 /**
  * Created by gabriel.coman on 07/01/16.
@@ -61,12 +67,25 @@ public class BannerActivity extends Activity {
         loader.loadAd(placementId, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
-                SABannerAd banner = (SABannerAd)findViewById(R.id.bannerView);
+//                SABannerAd banner = (SABannerAd)findViewById(R.id.bannerView);
+//                banner.setAd(ad);
+//                banner.setIsParentalGateEnabled(isParentalGateEnabled);
+//                banner.setAdListener(adListener);
+//                banner.setParentalGateListener(parentalGateListener);
+//                banner.play();
+
+
+                SABannerAd banner = new SABannerAd(BannerActivity.this);
                 banner.setAd(ad);
-                banner.setIsParentalGateEnabled(isParentalGateEnabled);
-                banner.setAdListener(adListener);
-                banner.setParentalGateListener(parentalGateListener);
                 banner.play();
+
+                android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(300, 300);
+                params.leftMargin = 250;
+                params.topMargin = 350;
+                banner.setLayoutParams(params);
+
+                ((ViewGroup) ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0)).addView(banner);
+
             }
 
             @Override
