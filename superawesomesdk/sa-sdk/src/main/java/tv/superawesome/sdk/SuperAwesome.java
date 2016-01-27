@@ -24,6 +24,13 @@ public class SuperAwesome {
     private String baseUrl;
     private boolean isTestEnabled;
 
+    public enum SAConfiguration {
+        STAGING,
+        DEVELOPMENT,
+        PRODUCTION
+    }
+    private SAConfiguration config;
+
     /** the singleton SuperAwesome instance */
     private static SuperAwesome instance = new SuperAwesome();
 
@@ -40,7 +47,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.3.3";
+        return "3.3.4";
     }
 
     private String getSdk() {
@@ -55,20 +62,25 @@ public class SuperAwesome {
      * Group of functions that encapsulate configuration / URL functionality
      */
     public void setConfigurationProduction() {
+        this.config = SAConfiguration.PRODUCTION;
         this.baseUrl = BASE_URL_PRODUCTION;
     }
 
     public void setConfigurationStaging() {
+        this.config = SAConfiguration.STAGING;
         this.baseUrl = BASE_URL_STAGING;
     }
 
     public void setConfigurationDevelopment() {
+        this.config = SAConfiguration.DEVELOPMENT;
         this.baseUrl = BASE_URL_DEVELOPMENT;
     }
 
     public String getBaseURL() {
         return this.baseUrl;
     }
+
+    public SAConfiguration getConfiguration() { return this.config; }
 
     /**
      * Group of functions that encapsulate isTestEnabled functionality

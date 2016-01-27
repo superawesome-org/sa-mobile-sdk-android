@@ -1,23 +1,21 @@
 package tv.superawesome.plugins.unity;
 
-
+/** import android / misc stuff */
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.hardware.SensorManager;
-import android.os.Debug;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.OrientationEventListener;
 import android.view.Surface;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AbsoluteLayout;
 import android.widget.RelativeLayout;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+/** import other SuperAwesome stuff */
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.*;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -31,26 +29,40 @@ import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAVideoActivity;
 
+/** import unity3d plugin classes */
 import com.unity3d.player.*;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by gabriel.coman on 21/01/16.
  */
 public class SAUnity {
 
-
+    /**
+     * Function that sends a message back to Unity
+     * @param unityAd the unique unity Ad name that send a request to SAUnity.java plugin in the first place
+     * @param callback the actual callback that's supposed to get called on the Unity side
+     * @param payloadName used only when sending Ad json data back to Unity really
+     * @param payloadData the payload contents, again, used when sending Ad json data back to Unity
+     */
     private static void SendUnityMsgPayload(String unityAd, String callback, String payloadName, String payloadData) {
         String payload = "{\"type\":\""+callback+"\",\""+payloadName+"\":" + payloadData + "}";
         UnityPlayer.UnitySendMessage(unityAd, "nativeCallback", payload);
     }
 
+    /**
+     * Simplified helper function of SendUnityMsgPayload() that just sends out a callback to Unity
+     * @param unityAd the unique unity object that generated the request in the first place
+     * @param callback the callback to be sent
+     */
     private static void SendUnityMsg(String unityAd, String callback) {
         SendUnityMsgPayload(unityAd, callback, "na", "\"na\"");
     }
 
+    /**
+     * Aux function to get the correct rotation on Android
+     * @param context the current context
+     * @return 0 = portrait, 1 = landscape
+     */
     public static int getRotation(Context context){
         final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
         switch (rotation) {
@@ -65,11 +77,24 @@ public class SAUnity {
         }
     }
 
-    public static void SuperAwesomeUnityLoadAd(final Context context, final String unityName, int placementId, boolean isTestingEnabled) {
+    /**
+     * Loads an ad using the native SDK and returns the Ad's JSON (to act as "ad data" in Unity)
+     * @param context the current context
+     * @param unityName the unity unique object that sent this
+     * @param placementId the placement id to load the ad for
+     * @param isTestingEnabled whether testing is enabled or not
+     */
+    public static void SuperAwesomeUnityLoadAd(final Context context, final String unityName, int placementId, boolean isTestingEnabled, int configuration) {
         /** setup testing */
         SuperAwesome.getInstance().setTestMode(isTestingEnabled);
         SuperAwesome.getInstance().setApplicationContext(context);
-        SuperAwesome.getInstance().setConfigurationStaging();
+        if (configuration == SuperAwesome.SAConfiguration.STAGING.ordinal()) {
+            SuperAwesome.getInstance().setConfigurationStaging();
+        } else  if (configuration == SuperAwesome.SAConfiguration.DEVELOPMENT.ordinal()){
+            SuperAwesome.getInstance().setConfigurationDevelopment();
+        } else  {
+            SuperAwesome.getInstance().setConfigurationProduction();
+        }
 
         /** create the new saloader */
         SALoader loader = new SALoader();
@@ -86,6 +111,16 @@ public class SAUnity {
         });
     }
 
+    /**
+     * Creates a banner ad, based on the following parameters
+     * @param context the current context (activity, etc)
+     * @param placementId the placement Id is needed by the parseDictionaryIntoAd function
+     * @param adJson the actual ad json data
+     * @param unityName the unique name of the unity object that sent this requrst
+     * @param position the position: 0 = top, 1 = bottom
+     * @param size the size of the banner: 0 = 320x50, 1 = 300x50, 2 = 728x90, 3 = 300x250
+     * @param isParentalGateEnabled whether the parental gate is enabled or not
+     */
     public static void SuperAwesomeUnitySABannerAd(final Context context, int placementId, String adJson, final String unityName, final int position, final int size, final boolean isParentalGateEnabled) {
         /** form the json object to parse */
         try {
@@ -232,6 +267,14 @@ public class SAUnity {
         }
     }
 
+    /**
+     * Play an interstitial ad, using the following parameters
+     * @param context the current context, might be an activity
+     * @param placementId the placement Id, needed for the parseDictionaryIntoAd function
+     * @param adJson the ad Json data used to generate the ad
+     * @param unityName the unique name of the unity object that called this func
+     * @param isParentalGateEnabled whether the parental gate is enabled or not
+     */
     public static void SuperAwesomeUnitySAInterstitialAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled){
         /** form the json object to parse */
         try {
@@ -316,8 +359,18 @@ public class SAUnity {
         }
     }
 
+    /**
+     * Play a fullscreen video ad
+     * @param context the context, might be an activity
+     * @param placementId the placement id, needed for parseDictionaryIntoAd
+     * @param adJson the ad Json used to render this ad
+     * @param unityName the unique name of the unity object that sent this request
+     * @param isParentalGateEnabled whether the parental gate should be enabled or not
+     * @param shouldShowCloseButton whether to show the close button or not
+     * @param shouldAutomaticallyCloseAtEnd whether the ad should automatically close at the end of it's runtime
+     */
     public static void SuperAwesomeUnitySAVideoAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled, final boolean shouldShowCloseButton, final boolean shouldAutomaticallyCloseAtEnd) {
-/** form the json object to parse */
+
         try {
             JSONObject dataJson = new JSONObject(adJson);
 
