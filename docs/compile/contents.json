@@ -1,6 +1,6 @@
 {
     "name": "Android SDK",
-    "text": "<p>The SuperAwesome Android SDK (Software Development Kit) lets you to easily add COPPA-compliant display and video advertisements to your apps.</p>\n<p>This project is hosted on GitHub: <a href=\"https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/develop_v3\">https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/develop_v3</a></p>\n",
+    "text": "<p>The SuperAwesome Android SDK (Software Development Kit) lets you to easily add COPPA compliant advertisements to your aps. </p>\n<p>This project is hosted on GitHub: <a href=\"https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/develop_v3\">https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/develop_v3</a></p>\n<p>If you would like to integrate the SDK as-in, read further.</p>\n<p>If you alraedy have ads in your application through <a href=\"http://www.mopub.com\">MoPub</a>, skip directly to MoPub Integration.</p>\n",
     "sections": [
         {
             "name": "Getting Started",
