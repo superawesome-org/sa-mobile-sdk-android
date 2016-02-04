@@ -32,6 +32,9 @@ import tv.superawesome.sdk.views.SAVideoActivity;
 /** import unity3d plugin classes */
 import com.unity3d.player.*;
 
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * Created by gabriel.coman on 21/01/16.
  */
@@ -85,6 +88,8 @@ public class SAUnity {
      * @param isTestingEnabled whether testing is enabled or not
      */
     public static void SuperAwesomeUnityLoadAd(final Context context, final String unityName, int placementId, boolean isTestingEnabled, int configuration) {
+        System.out.println("SuperAwesomeUnityLoadAd " + unityName);
+
         /** setup testing */
         SuperAwesome.getInstance().setTestMode(isTestingEnabled);
         SuperAwesome.getInstance().setApplicationContext(context);
@@ -122,6 +127,8 @@ public class SAUnity {
      * @param isParentalGateEnabled whether the parental gate is enabled or not
      */
     public static void SuperAwesomeUnitySABannerAd(final Context context, int placementId, String adJson, final String unityName, final int position, final int size, final boolean isParentalGateEnabled) {
+        System.out.println("SuperAwesomeUnitySABannerAd " + unityName);
+
         /** form the json object to parse */
         try {
             JSONObject dataJson = new JSONObject(adJson);
@@ -254,6 +261,9 @@ public class SAUnity {
                             /** start playing the banner */
                             bannerAd.play();
 
+                            /** add to this map */
+                            SAUnityManager.getInstance().setAdMap(unityName, screenLayout);
+
                         } else {
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
@@ -268,6 +278,23 @@ public class SAUnity {
     }
 
     /**
+     * Removes a banner ad
+     * @param unityName - the unity name of the banner ad
+     */
+    public static void SuperAwesomeUnityRemoveSABannerAd(final Context context, String unityName) {
+        Object temp = SAUnityManager.getInstance().getAdMap(unityName);
+
+        System.out.println("SuperAwesomeUnityRemoveSABannerAd " + unityName);
+
+        if (temp != null){
+            if (temp.getClass().getName().equals(RelativeLayout.class.getName())){
+                RelativeLayout bad = (RelativeLayout)temp;
+                ((ViewGroup)bad.getParent()).removeView(bad);
+            }
+        }
+    }
+
+    /**
      * Play an interstitial ad, using the following parameters
      * @param context the current context, might be an activity
      * @param placementId the placement Id, needed for the parseDictionaryIntoAd function
@@ -276,6 +303,8 @@ public class SAUnity {
      * @param isParentalGateEnabled whether the parental gate is enabled or not
      */
     public static void SuperAwesomeUnitySAInterstitialAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled){
+        System.out.println("SuperAwesomeUnitySAInterstitialAd " + unityName);
+
         /** form the json object to parse */
         try {
             JSONObject dataJson = new JSONObject(adJson);
@@ -346,6 +375,9 @@ public class SAUnity {
                             /** start playing the interstitial */
                             interstitial.play();
 
+                            /** add to this map */
+                            SAUnityManager.getInstance().setAdMap(unityName, interstitial);
+
                         } else {
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
@@ -360,6 +392,23 @@ public class SAUnity {
     }
 
     /**
+     * Closes an interstitial ad
+     * @param unityName - the unity name of the interstitial ad
+     */
+    public static void SuperAwesomeUnityCloseSAInterstitialAd(final Context context, String unityName) {
+        Object temp = SAUnityManager.getInstance().getAdMap(unityName);
+
+        System.out.println("SuperAwesomeUnityCloseSAInterstitialAd " + unityName);
+
+        if (temp != null){
+            if (temp.getClass().getName().equals(SAInterstitialActivity.class.getName())){
+                SAInterstitialActivity iad = (SAInterstitialActivity)temp;
+                iad.close();
+            }
+        }
+    }
+
+    /**
      * Play a fullscreen video ad
      * @param context the context, might be an activity
      * @param placementId the placement id, needed for parseDictionaryIntoAd
@@ -370,6 +419,8 @@ public class SAUnity {
      * @param shouldAutomaticallyCloseAtEnd whether the ad should automatically close at the end of it's runtime
      */
     public static void SuperAwesomeUnitySAVideoAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled, final boolean shouldShowCloseButton, final boolean shouldAutomaticallyCloseAtEnd) {
+
+        System.out.println("SuperAwesomeUnitySAVideoAd " + unityName);
 
         try {
             JSONObject dataJson = new JSONObject(adJson);
@@ -481,6 +532,10 @@ public class SAUnity {
 
                             /** finally play the video */
                             video.play();
+
+                            /** add to this map */
+                            SAUnityManager.getInstance().setAdMap(unityName, video);
+
                         } else {
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
@@ -491,6 +546,23 @@ public class SAUnity {
             }
         } catch (JSONException e) {
             SendUnityMsg(unityName, "callback_adFailedToShow");
+        }
+    }
+
+    /**
+     * Closes a video ad
+     * @param unityName - the unity name of the video ad
+     */
+    public static void SuperAwesomeUnityCloseSAFullscreenVideoAd(final Context context, String unityName) {
+        Object temp = SAUnityManager.getInstance().getAdMap(unityName);
+
+        System.out.println("SuperAwesomeUnityCloseSAFullscreenVideoAd " + unityName);
+
+        if (temp != null){
+            if (temp.getClass().getName().equals(SAVideoActivity.class.getName())){
+                SAVideoActivity vad = (SAVideoActivity)temp;
+                vad.close();
+            }
         }
     }
 }
