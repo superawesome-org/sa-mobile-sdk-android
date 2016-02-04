@@ -45,6 +45,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     private String moPubId;
 
     /** the actual video activity */
+    private SAAd cAd;
     private SAVideoActivity video;
 
     @Nullable
@@ -117,9 +118,12 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
             @Override
             public void didLoadAd(SAAd ad) {
 
+                /** add cAd */
+                cAd = ad;
+
                 /** show video activity */
                 video = new SAVideoActivity(activity);
-                video.setAd(ad);
+                video.setAd(cAd);
                 video.setIsParentalGateEnabled(isParentalGateEnabled);
                 video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
                 video.setShouldShowCloseButton(shouldShowCloseButton);
@@ -209,7 +213,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
     @Override
     protected boolean hasVideoAvailable() {
-        return true;
+        return (cAd != null ? true : false);
     }
 
     @Override
