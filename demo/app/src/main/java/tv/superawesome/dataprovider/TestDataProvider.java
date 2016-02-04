@@ -22,10 +22,15 @@ public class TestDataProvider {
         list.add(AdItem.create("Image Interstitial - 43", 43, false, AdItemType.interstitial_item));
         list.add(AdItem.create("Image Banner - 45", 45, false, AdItemType.banner_item));
         list.add(AdItem.create("Rich Media Interstitial - 44", 44, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("Tablet Preroll - 38", 38, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("Mobile Preroll - 40", 40, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("Tablet Preroll - 38", 38, true, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("Mobile Preroll - 40", 40, true, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("Rich Media MPU - 46", 46, false, AdItemType.banner_item));
         list.add(AdItem.create("Third Party Tag - 47", 47, false, AdItemType.interstitial_item));
+
+//        list.add(AdItem.create("Capovolari - 30423", 30423, true, AdItemType.banner_item));
+//        list.add(AdItem.create("Capovolari - 30425", 30425, true, AdItemType.interstitial_item));
+//        list.add(AdItem.create("Capovolari - 30424", 30424, true, AdItemType.fullscreen_video_item));
+
 
 //        list.add(AdItem.create("Fullscreen Video - 21022", 21022, false, AdItemType.fullscreen_video_item));
 //        list.add(AdItem.create("Interstitial - 9549", 9549, false, AdItemType.interstitial_item));

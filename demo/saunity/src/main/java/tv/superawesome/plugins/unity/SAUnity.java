@@ -165,10 +165,15 @@ public class SAUnity {
                             DisplayMetrics metrics = new DisplayMetrics();
                             Display display = activity.getWindowManager().getDefaultDisplay();
                             display.getMetrics(metrics);
-                            float factor = (float)metrics.densityDpi / (float)DisplayMetrics.DENSITY_DEFAULT;
+                            final float factor = (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
                             /** update width & height */
-                            final int scaledWidth = (int)(factor * width);
-                            final int scaledHeight = (int)(factor * height);
+                            int scaledWidth = (int)(factor * width);
+                            int scaledHeight = (int)(factor * height);
+
+                            if (scaledWidth > metrics.widthPixels) {
+                                scaledHeight = (metrics.widthPixels * scaledHeight) / scaledWidth;
+                                scaledWidth = metrics.widthPixels;
+                            }
 
                             /** set banner width & height */
                             int maxWidthHeight = Math.max(metrics.widthPixels, metrics.heightPixels);
@@ -196,10 +201,28 @@ public class SAUnity {
                                     if (newRotation != currentRotation[0]){
                                         currentRotation[0] = newRotation;
 
+                                        /** calculate width & height */
+                                        int width = 0, height = 0;
+                                        if (size == 1)      { width = 300; height = 50;  }
+                                        else if (size == 2) { width = 728; height = 90;  }
+                                        else if (size == 3) { width = 300; height = 250; }
+                                        else                { width = 320; height = 50;  }
+
+                                        /** calc scaling factor */
                                         DisplayMetrics metrics = new DisplayMetrics();
                                         Display display = activity.getWindowManager().getDefaultDisplay();
                                         display.getMetrics(metrics);
+                                        /** update width & height */
+                                        int scaledWidth = (int)(factor * width);
+                                        int scaledHeight = (int)(factor * height);
 
+                                        if (scaledWidth > metrics.widthPixels) {
+                                            scaledHeight = (metrics.widthPixels * scaledHeight) / scaledWidth;
+                                            scaledWidth = metrics.widthPixels;
+                                        }
+
+                                        RelativeLayout.LayoutParams params2 =
+                                                new RelativeLayout.LayoutParams(scaledWidth, scaledHeight);
                                         params2.leftMargin = (metrics.widthPixels - scaledWidth) / 2;
                                         params2.topMargin = (position == 0 ? 0 : (metrics.heightPixels - scaledHeight));
                                         bannerAd.setLayoutParams(params2);
