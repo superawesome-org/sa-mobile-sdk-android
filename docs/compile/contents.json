@@ -11,7 +11,7 @@
                 },
                 {
                     "name": "Adding the Library to Your Project - AAR Library",
-                    "text": "<p>The simplest way of installing the AwesomeAds SDK in Android Studio is to download the AAR library through Gradle.</p>\n<p>Just include the following in your module&#39;s <code>build.gradle</code> file (usually the file under <code>MyApplication/app/</code>):</p>\n<pre><code>repositories {\n    maven {\n        url  &quot;http://dl.bintray.com/sharkofmirkwood/maven&quot;\n    }\n}\n\ndependencies {\n    compile &#39;tv.superawesome.sdk:sa-sdk:3.3.6@aar&#39;\n}\n</code></pre><p><img src=\"img/android_gradle_setup.png\" alt=\"\" title=\"Setting up SA in build.gradle\"></p>\n"
+                    "text": "<p>The simplest way of installing the AwesomeAds SDK in Android Studio is to download the AAR library through Gradle.</p>\n<p>Just include the following in your module&#39;s <code>build.gradle</code> file (usually the file under <code>MyApplication/app/</code>):</p>\n<pre><code>repositories {\n    maven {\n        url  &quot;http://dl.bintray.com/sharkofmirkwood/maven&quot;\n    }\n}\n\ndependencies {\n    compile &#39;tv.superawesome.sdk:sa-sdk:3.3.7@aar&#39;\n}\n</code></pre><p><img src=\"img/android_gradle_setup.png\" alt=\"\" title=\"Setting up SA in build.gradle\"></p>\n"
                 },
                 {
                     "name": "Adding the Library to Your Project - JAR Library",
