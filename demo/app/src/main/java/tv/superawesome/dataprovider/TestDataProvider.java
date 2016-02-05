@@ -26,6 +26,7 @@ public class TestDataProvider {
         list.add(AdItem.create("Mobile Preroll - 40", 40, true, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("Rich Media MPU - 46", 46, false, AdItemType.banner_item));
         list.add(AdItem.create("Third Party Tag - 47", 47, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("Third Party Tag - 76", 76, false, AdItemType.fullscreen_video_item));
 
 //        list.add(AdItem.create("Capovolari - 30423", 30423, true, AdItemType.banner_item));
 //        list.add(AdItem.create("Capovolari - 30425", 30425, true, AdItemType.interstitial_item));

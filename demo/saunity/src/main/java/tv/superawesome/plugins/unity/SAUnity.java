@@ -3,12 +3,16 @@ package tv.superawesome.plugins.unity;
 /** import android / misc stuff */
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Size;
 import android.view.Display;
 import android.view.OrientationEventListener;
 import android.view.Surface;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -16,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /** import other SuperAwesome stuff */
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.*;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -67,17 +72,87 @@ public class SAUnity {
      * @return 0 = portrait, 1 = landscape
      */
     public static int getRotation(Context context){
-        final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                return 0;
-            case Surface.ROTATION_90:
-                return 1;
-            case Surface.ROTATION_180:
-                return 0;
-            default:
-                return 1;
+        Display getOrient = ((Activity)context).getWindowManager().getDefaultDisplay();
+        int orientation = Configuration.ORIENTATION_UNDEFINED;
+        if(getOrient.getWidth()==getOrient.getHeight()){
+            orientation = Configuration.ORIENTATION_SQUARE;
+        } else{
+            if(getOrient.getWidth() < getOrient.getHeight()){
+                orientation = Configuration.ORIENTATION_PORTRAIT;
+            }else {
+                orientation = Configuration.ORIENTATION_LANDSCAPE;
+            }
         }
+        return orientation;
+    }
+
+    /**
+     * Function that returns the current screen size
+     * @param activity - the activity to pass along as context
+     * @return a SASize object with width & height members
+     */
+    public static SASize getRealScreenSize(Activity activity, boolean rotate) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        Display display = activity.getWindowManager().getDefaultDisplay();
+
+        View decorView = activity.getWindow().getDecorView();
+//        int uiOptions = decorView.getSystemUiVisibility();
+//        SALog.Log("uiOptions " + uiOptions);
+//        SALog.Log("decorView ==> W: " + decorView.getWidth() + " H: " + decorView.getHeight());
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            display.getRealMetrics(metrics);
+//        } else {
+//            display.getMetrics(metrics);
+//        }
+
+        if (!rotate){
+            return new SASize(decorView.getWidth(), decorView.getHeight());
+        } else {
+            return new SASize(decorView.getHeight(), decorView.getWidth());
+        }
+//        return new SASize(metrics.widthPixels, metrics.heightPixels);
+//        return new SASize(decorView.getWidth(), decorView.getHeight());
+    }
+
+    /**
+     * Get the current scale factor
+     * @param activity - the activity to pass along as context
+     * @return a float meaning the scale
+     */
+    public static float getScaleFactor(Activity activity){
+        DisplayMetrics metrics = new DisplayMetrics();
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        display.getMetrics(metrics);
+        return  (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
+    }
+
+    public static RelativeLayout.LayoutParams getBannerLayoutParams(float factor, SASize screenSize, int bannerSize, int bannerPosition){
+        /** calc actual banner W & H */
+        int width = 0, height = 0;
+        if      (bannerSize == 1) { width = 300; height = 50;  }
+        else if (bannerSize == 2) { width = 728; height = 90;  }
+        else if (bannerSize == 3) { width = 300; height = 250; }
+        else                      { width = 320; height = 50;  }
+
+        /** scale it according to the factor */
+        int scaledWidth = (int)(factor * width);
+        int scaledHeight = (int)(factor * height);
+
+        /** make sure it's not bigger than the screen */
+        if (scaledWidth > screenSize.width) {
+            scaledHeight = (screenSize.width * scaledHeight) / scaledWidth;
+            scaledWidth = screenSize.width;
+        }
+
+        SALog.Log("Orientation Width: " + screenSize.width + " H: " + screenSize.height);
+
+        /** create the layout params */
+        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(scaledWidth, scaledHeight);
+        params2.leftMargin = (screenSize.width - scaledWidth) / 2;
+        params2.topMargin = (bannerPosition == 0 ? 0 : (screenSize.height - scaledHeight));
+
+        return params2;
     }
 
     /**
@@ -126,7 +201,7 @@ public class SAUnity {
      * @param size the size of the banner: 0 = 320x50, 1 = 300x50, 2 = 728x90, 3 = 300x250
      * @param isParentalGateEnabled whether the parental gate is enabled or not
      */
-    public static void SuperAwesomeUnitySABannerAd(final Context context, int placementId, String adJson, final String unityName, final int position, final int size, final boolean isParentalGateEnabled) {
+    public static void SuperAwesomeUnitySABannerAd(final Context context, int placementId, String adJson, final String unityName, final int position, final int size, final int color, final boolean isParentalGateEnabled) {
         System.out.println("SuperAwesomeUnitySABannerAd " + unityName);
 
         /** form the json object to parse */
@@ -154,40 +229,25 @@ public class SAUnity {
                             /** start the banner ad */
                             final SABannerAd bannerAd = new SABannerAd(context);
 
-                            /** calculate width & height */
-                            int width = 0, height = 0;
-                            if (size == 1)      { width = 300; height = 50;  }
-                            else if (size == 2) { width = 728; height = 90;  }
-                            else if (size == 3) { width = 300; height = 250; }
-                            else                { width = 320; height = 50;  }
-
-                            /** calc scaling factor */
-                            DisplayMetrics metrics = new DisplayMetrics();
-                            Display display = activity.getWindowManager().getDefaultDisplay();
-                            display.getMetrics(metrics);
-                            final float factor = (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
-                            /** update width & height */
-                            int scaledWidth = (int)(factor * width);
-                            int scaledHeight = (int)(factor * height);
-
-                            if (scaledWidth > metrics.widthPixels) {
-                                scaledHeight = (metrics.widthPixels * scaledHeight) / scaledWidth;
-                                scaledWidth = metrics.widthPixels;
-                            }
+                            /** get factor & screen size */
+                            SASize screenSize = getRealScreenSize(activity, false);
+                            final float factor = getScaleFactor(activity);
 
                             /** set banner width & height */
-                            int maxWidthHeight = Math.max(metrics.widthPixels, metrics.heightPixels);
-                            RelativeLayout.LayoutParams params1 =
-                                    new RelativeLayout.LayoutParams(maxWidthHeight, maxWidthHeight);
+                            int maxWidthHeight = Math.max(screenSize.width, screenSize.height);
+                            RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(maxWidthHeight, maxWidthHeight);
                             RelativeLayout screenLayout = new RelativeLayout(context);
                             screenLayout.setLayoutParams(params1);
                             screenLayout.setBackgroundColor(Color.TRANSPARENT);
 
-                            final RelativeLayout.LayoutParams params2 =
-                                    new RelativeLayout.LayoutParams(scaledWidth, scaledHeight);
-                            params2.leftMargin = (metrics.widthPixels - scaledWidth) / 2;
-                            params2.topMargin = (position == 0 ? 0 : (metrics.heightPixels - scaledHeight));
+                            /** update width & height */
+                            RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
                             bannerAd.setLayoutParams(params2);
+                            if (color == 0) {
+                                bannerAd.setBackgroundColor(Color.TRANSPARENT);
+                            } else {
+                                bannerAd.setBackgroundColor(Color.rgb(191, 191, 191));
+                            }
 
                             current.addView(screenLayout);
                             screenLayout.addView(bannerAd);
@@ -201,30 +261,10 @@ public class SAUnity {
                                     if (newRotation != currentRotation[0]){
                                         currentRotation[0] = newRotation;
 
-                                        /** calculate width & height */
-                                        int width = 0, height = 0;
-                                        if (size == 1)      { width = 300; height = 50;  }
-                                        else if (size == 2) { width = 728; height = 90;  }
-                                        else if (size == 3) { width = 300; height = 250; }
-                                        else                { width = 320; height = 50;  }
-
                                         /** calc scaling factor */
-                                        DisplayMetrics metrics = new DisplayMetrics();
-                                        Display display = activity.getWindowManager().getDefaultDisplay();
-                                        display.getMetrics(metrics);
-                                        /** update width & height */
-                                        int scaledWidth = (int)(factor * width);
-                                        int scaledHeight = (int)(factor * height);
+                                        SASize screenSize = getRealScreenSize(activity, true);
 
-                                        if (scaledWidth > metrics.widthPixels) {
-                                            scaledHeight = (metrics.widthPixels * scaledHeight) / scaledWidth;
-                                            scaledWidth = metrics.widthPixels;
-                                        }
-
-                                        RelativeLayout.LayoutParams params2 =
-                                                new RelativeLayout.LayoutParams(scaledWidth, scaledHeight);
-                                        params2.leftMargin = (metrics.widthPixels - scaledWidth) / 2;
-                                        params2.topMargin = (position == 0 ? 0 : (metrics.heightPixels - scaledHeight));
+                                        RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
                                         bannerAd.setLayoutParams(params2);
                                     }
                                 }
@@ -586,6 +626,19 @@ public class SAUnity {
                 SAVideoActivity vad = (SAVideoActivity)temp;
                 vad.close();
             }
+        }
+    }
+
+    /**
+     * Private SASize object
+     */
+    private static class SASize {
+        public int width = 0;
+        public int height = 0;
+
+        SASize (int w, int h){
+            width = w;
+            height = h;
         }
     }
 }

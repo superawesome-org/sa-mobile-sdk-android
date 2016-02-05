@@ -87,6 +87,14 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
         delayLayout();
     }
 
+    @Override
+    public void addOnLayoutChangeListener(OnLayoutChangeListener listener) {
+        super.addOnLayoutChangeListener(listener);
+        cWidth = getWidth();
+        cHeight = getHeight();
+        delayLayout();
+    }
+
     private void delayLayout() {
         /**
          * if the ad is ok (and implicitly the cWidth and cHeight params then start arranging the
@@ -134,6 +142,10 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
             }
         };
         this.postDelayed(runnable, 250);
+    }
+
+    public void rearrangeBannerWebView(int width, int height){
+
     }
 
     /**
