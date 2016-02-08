@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,7 +104,6 @@ public class SAInterstitialActivity {
 
         /** subviews */
         private SABannerAd interstitialBanner;
-        private ImageView padlock;
 
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -124,7 +124,6 @@ public class SAInterstitialActivity {
             String packageName = SAApplication.getSAApplicationContext().getPackageName();
             int activity_sa_interstitialId = getResources().getIdentifier("activity_sa_interstitial", "layout", packageName);
             int interstitial_bannerId = getResources().getIdentifier("interstitial_banner", "id", packageName);
-            int interstitial_padlock_imageId = getResources().getIdentifier("interstitial_padlock_image", "id", packageName);
 
             setContentView(activity_sa_interstitialId);
 
@@ -134,19 +133,6 @@ public class SAInterstitialActivity {
             adListener = AdDataHolder.getInstance()._refAdListener;
             parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
 
-//            /** show or hide the padlock */
-//            padlock = (ImageView) findViewById(interstitial_padlock_imageId);
-//            if (ad.isFallback) {
-//                padlock.setVisibility(View.GONE);
-//            } else {
-//                padlock.setVisibility(View.VISIBLE);
-//            }
-//            /**
-//             * for the interstitial, make the fallback
-//             * always true so that it does not show up twice
-//             */
-//            ad.isFallback = true;
-
             /** get the banner */
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
             interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
@@ -155,6 +141,12 @@ public class SAInterstitialActivity {
             interstitialBanner.setParentalGateListener(parentalGateListener);
             interstitialBanner.setIsParentalGateEnabled(isParentalGateEnabled);
             interstitialBanner.play();
+        }
+
+        @Override
+        public void onConfigurationChanged(Configuration newConfig) {
+            super.onConfigurationChanged(newConfig);
+            interstitialBanner.rearrangeBannerWebView(newConfig.orientation);
         }
 
         public void closeInterstitial(View v){

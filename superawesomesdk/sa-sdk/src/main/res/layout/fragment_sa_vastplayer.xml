@@ -28,6 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="26dp"
         android:orientation="horizontal"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
         android:paddingLeft="5dp"
         android:paddingBottom="5dp"
         android:layout_alignParentBottom="true">
@@ -37,7 +39,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="11dp"
+            android:textSize="11sp"
             android:background="@drawable/sa_crono_bg"
             android:textColor="#ffffff"/>
 
@@ -45,12 +47,12 @@
             android:id="@+id/find_out_more"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:gravity="center_vertical"
-            android:text="Find out more »"
+            android:text="@string/superawesome__titlevideo_click"
             android:textColor="#ffffff"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:background="#00000000"
-            android:textAllCaps="false" />
+            android:background="#00000000"/>
     </LinearLayout>
 </RelativeLayout>

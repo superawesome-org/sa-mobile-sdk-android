@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -331,6 +332,15 @@ public class SAVideoActivity {
             manager.parseVASTURL(ad.creative.details.vast);
         }
 
+
+        @Override
+        public void onConfigurationChanged(Configuration newConfig) {
+            super.onConfigurationChanged(newConfig);
+            /**
+             * do nothing here - just let the UI elements resize correctly as specified by the
+             * XML interface files
+             */
+        }
 
         @Override
         public void onStart() {

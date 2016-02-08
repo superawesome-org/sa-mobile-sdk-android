@@ -12,6 +12,7 @@
  */
 package tv.superawesome.lib.sautils;
 
+import android.app.Activity;
 import android.graphics.Rect;
 import android.util.Log;
 import android.util.Size;
@@ -100,50 +101,69 @@ public class SAUtils {
         return builder.toString();
     }
 
+
     /**
-     * Load a resource in a more dynamic way - good for .aar and .jar compatibility
-     * @param packageName - the current package name, usually context.getPackageName() or
-     *                    currentAppContext.getPackageName()
-     * @param className - the class name - layout, drawable, etc
-     * @param name - the name of the resource
-     * @return - the integer ID, as stored in the final project's R class
+     * Dynamically returns a resource Id
+     * @param name the name of the resource
+     * @param type the type of the resource
+     * @param context the context
+     * @return returns the actual ID or 0
      */
-    public static int getResourceIdByName(String packageName, String className, String name) {
-
-        Class r = null;
-        int id = 0;
-        try {
-            r = Class.forName(packageName + ".R");
-
-            Class[] classes = r.getClasses();
-            Class desireClass = null;
-
-            for (int i = 0; i < classes.length; i++) {
-                if (classes[i].getName().split("\\$")[1].equals(className)) {
-                    desireClass = classes[i];
-
-                    break;
-                }
-            }
-
-            if (desireClass != null) {
-                id = desireClass.getField(name).getInt(desireClass);
-            }
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+    public static int getResourceIdByName(String name, String type, Activity context){
+        if (SAApplication.getSAApplicationContext() != null){
+            String packageName = SAApplication.getSAApplicationContext().getPackageName();
+            return context.getResources().getIdentifier(name, type, packageName);
+        } else {
+            return 0;
         }
-
-        return id;
     }
+
+    /**
+     * Returns a string by name
+     * @param name the name of the string
+     * @param context the current context
+     * @return the String
+     */
+    public static String getStringByName(String name, Activity context){
+        int id = getResourceIdByName(name, "string", context);
+        return context.getResources().getString(id);
+    }
+//    public static int getResourceIdByName(String packageName, String className, String name) {
+//
+//        Class r = null;
+//        int id = 0;
+//        try {
+//            r = Class.forName(packageName + ".R");
+//
+//            Class[] classes = r.getClasses();
+//            Class desireClass = null;
+//
+//            for (int i = 0; i < classes.length; i++) {
+//                if (classes[i].getName().split("\\$")[1].equals(className)) {
+//                    desireClass = classes[i];
+//
+//                    break;
+//                }
+//            }
+//
+//            if (desireClass != null) {
+//                id = desireClass.getField(name).getInt(desireClass);
+//            }
+//
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IllegalArgumentException e) {
+//            e.printStackTrace();
+//        } catch (SecurityException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchFieldException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return id;
+//    }
 
     public static Rect arrangeAdInNewFrame(float newW, float newH, float oldW, float oldH) {
         if (oldW == 1 || oldW == 0) { oldW = newW; }

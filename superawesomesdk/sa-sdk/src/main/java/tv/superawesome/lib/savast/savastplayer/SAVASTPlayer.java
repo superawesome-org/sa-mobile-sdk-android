@@ -71,6 +71,7 @@ public class SAVASTPlayer extends Fragment {
         videoPlayer = (VideoView)v.findViewById(video_viewId);
         chronographer = (TextView)v.findViewById(cronographerId);
         findOutMore = (Button)v.findViewById(find_out_moreId);
+        findOutMore.setTransformationMethod(null);
 
         // Inflate the layout for this fragment
         return v;
@@ -194,7 +195,7 @@ public class SAVASTPlayer extends Fragment {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 // text
-                 chronographer.setText("Ad: 0s");
+                chronographer.setText("Ad: 0");
 
                 // call listener function
                 if (listener != null) {
@@ -206,7 +207,7 @@ public class SAVASTPlayer extends Fragment {
         videoPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                // text
+                // set text
                 chronographer.setText("Ad: Error");
 
                 // call listener function

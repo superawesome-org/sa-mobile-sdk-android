@@ -3,6 +3,7 @@ package tv.superawesome.sdk.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -48,6 +49,8 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
     /** helper vars */
     private float cWidth = 0;
     private float cHeight = 0;
+    private float bigDimension = 0;
+    private float smallDimension = 0;
     private boolean layoutOK = false;
 
     /** Constructors */
@@ -84,14 +87,11 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
         super.onLayout(changed, l, t, r, b);
         cWidth = getWidth();
         cHeight = getHeight();
-        delayLayout();
-    }
 
-    @Override
-    public void addOnLayoutChangeListener(OnLayoutChangeListener listener) {
-        super.addOnLayoutChangeListener(listener);
-        cWidth = getWidth();
-        cHeight = getHeight();
+        /** once cWidth and cHeight are determined, also set the big and small dimensions */
+        bigDimension = (cWidth > cHeight ? cWidth : cHeight);
+        smallDimension = (cWidth < cHeight ? cWidth : cHeight);
+
         delayLayout();
     }
 
@@ -144,8 +144,33 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
         this.postDelayed(runnable, 250);
     }
 
-    public void rearrangeBannerWebView(int width, int height){
+    public void rearrangeBannerWebView(int orientation){
+        /** update cWidth & cHeight */
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            cWidth = bigDimension;
+            cHeight = smallDimension;
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            cWidth = smallDimension;
+            cHeight = bigDimension;
+        } else  if (orientation == Configuration.ORIENTATION_SQUARE) {
+            cWidth = cHeight = smallDimension;
+        } else {
+            cWidth = smallDimension;
+            cHeight = bigDimension;
+        }
 
+        /** calc the new frame */
+        final Rect newframe = SAUtils.arrangeAdInNewFrame(
+                cWidth,
+                cHeight,
+                ad.creative.details.width,
+                ad.creative.details.height);
+        int w = newframe.right;
+        int h = newframe.bottom;
+
+        android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        webView.setLayoutParams(params);
     }
 
     /**

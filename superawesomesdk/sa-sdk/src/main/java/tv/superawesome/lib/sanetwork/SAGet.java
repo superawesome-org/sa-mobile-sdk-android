@@ -69,7 +69,8 @@ public class SAGet extends IntentService {
                 /* Sending result back to activity */
                 if (null != results[0]) {
                     bundle.putStringArray("result", results);
-                    System.out.println("Success: " + url + " ==> " + results[0]);
+                    String res = (results[0].length() >= 10 ? results[0].substring(0, 10) : results[0]);
+                    System.out.println("Success: " + url + " ==> " + res);
                     receiver.send(STATUS_FINISHED, bundle);
                 }
             } catch (Exception e) {

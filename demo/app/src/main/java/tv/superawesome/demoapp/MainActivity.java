@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
 
         /** SA setup */
-        SuperAwesome.getInstance().setConfigurationStaging();
+        SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().enableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         loader = new SALoader();
