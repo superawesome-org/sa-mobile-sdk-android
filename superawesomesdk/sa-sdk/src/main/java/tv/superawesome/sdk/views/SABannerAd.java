@@ -87,11 +87,6 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
         super.onLayout(changed, l, t, r, b);
         cWidth = getWidth();
         cHeight = getHeight();
-
-        /** once cWidth and cHeight are determined, also set the big and small dimensions */
-        bigDimension = (cWidth > cHeight ? cWidth : cHeight);
-        smallDimension = (cWidth < cHeight ? cWidth : cHeight);
-
         delayLayout();
     }
 
@@ -104,6 +99,10 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
             /** from this moment on the layout is OK */
             layoutOK = true;
 
+            /** once cWidth and cHeight are determined, also set the big and small dimensions */
+            bigDimension = (cWidth > cHeight ? cWidth : cHeight);
+            smallDimension = (cWidth < cHeight ? cWidth : cHeight);
+
             /** calc the new frame */
             final Rect newframe = SAUtils.arrangeAdInNewFrame(
                     cWidth,
@@ -112,6 +111,8 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
                     ad.creative.details.height);
             int w = newframe.right;
             int h = newframe.bottom;
+
+            SALog.Log("SuperAwesome: cWidth " + cWidth + " cHeight " + cHeight + " w: " + w + " h:" + h);
 
             android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
             params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
