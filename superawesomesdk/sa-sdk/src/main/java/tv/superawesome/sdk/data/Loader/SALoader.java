@@ -42,6 +42,7 @@ public class SALoader {
             queryJson.put("test", SuperAwesome.getInstance().isTestingEnabled());
             queryJson.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
             queryJson.put("rnd", SAURLUtils.getCacheBuster());
+            queryJson.put("dauid", SuperAwesome.getInstance().getDAUID());
         } catch (JSONException e) {
             e.printStackTrace();
         }

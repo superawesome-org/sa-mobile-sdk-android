@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements
 
         /** SA setup */
         SuperAwesome.getInstance().setConfigurationProduction();
-        SuperAwesome.getInstance().enableTestMode();
+        SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         loader = new SALoader();
 
@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements
         TextView saSDKLabel = (TextView)findViewById(R.id.sasdk_label);
         saSDKLabel.setText("SA SDK");
         TextView versionLabel = (TextView)findViewById(R.id.version_label);
-        versionLabel.setText("(" + SuperAwesome.getInstance().getSDKVersion() + " - " + SASystem.getVerboseSystemDetails() + ")");
+        versionLabel.setText("(" + SuperAwesome.getInstance().getSDKVersion() + " - " + SASystem.getVerboseSystemDetails() + " - " + SuperAwesome.getInstance().getDAUID() +  ")");
 
         /** setup the list */
         optionsList = (ListView)findViewById(R.id.optionsList);

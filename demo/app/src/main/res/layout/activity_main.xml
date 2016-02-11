@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="14pt"
             android:textColor="#ffffff"
-            android:textSize="8pt"
+            android:textSize="4pt"
             android:gravity="center"/>
     </LinearLayout>
 
