@@ -15,8 +15,6 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.lib.sautils.SAUtils;
 
 /**
  * Created by gabriel.coman on 23/12/15.
@@ -24,18 +22,19 @@ import tv.superawesome.lib.sautils.SAUtils;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class SAVASTPlayer extends Fragment {
 
-    // subviews and other Fragment parameters
+    /** subviews and other Fragment parameters */
     private VideoView videoPlayer;
     private String videoURL;
     private SAVASTPlayerListener listener;
 
-    // aux views
+    /** aux views */
     private TextView chronographer;
     private Button findOutMore;
 
-    // other helper private vars
+    /** other helper private vars */
     private int duration = 0;
     private int currentTime = 0;
+    private int remainingTime = 0;
     private int startTime = 0;
     private int firstQuartileTime;
     private int midpointTime;
@@ -51,7 +50,7 @@ public class SAVASTPlayer extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        this.setRetainInstance(true);
     }
 
     @Nullable
@@ -72,7 +71,7 @@ public class SAVASTPlayer extends Fragment {
         findOutMore = (Button)v.findViewById(find_out_moreId);
         findOutMore.setTransformationMethod(null);
 
-        // Inflate the layout for this fragment
+        /** Inflate the layout for this fragment */
         return v;
     }
 
@@ -80,9 +79,9 @@ public class SAVASTPlayer extends Fragment {
      * Main playing function
      * @param videoURL the URL to play
      */
-    public void playWithMediaURL(String videoURL){
+    public void playWithMediaURL(final String videoURL){
 
-        // set on click listener
+        /** set on click listener */
         findOutMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,11 +91,11 @@ public class SAVASTPlayer extends Fragment {
             }
         });
 
-        // set the video URL
+        /** set the video URL */
         this.videoURL = videoURL;
 
         try {
-            // Get the URL from String VideoURL
+            /** Get the URL from String VideoURL */
             Uri video = Uri.parse(videoURL);
             videoPlayer.setVideoURI(video);
 
@@ -108,45 +107,49 @@ public class SAVASTPlayer extends Fragment {
             }
         }
 
-        // request focus
+        /** request focus */
         videoPlayer.requestFocus();
 
-        // on ready
+        /** on ready */
         videoPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            // play the video
+            /** play the video */
+            @Override
             public void onPrepared(MediaPlayer mp) {
-                // start player
-                videoPlayer.start();
+                /** start player only ince  */
+                if (currentTime == 0) {
+                    videoPlayer.start();
+                }
 
-                // calculate time values
-                duration = videoPlayer.getDuration() / 1000;
+                /** calculate time values */
+                duration = videoPlayer.getDuration();
                 startTime = 0;
                 firstQuartileTime = duration / 4;
                 midpointTime = duration / 2;
                 thirdQuartileTime = 3 * duration / 4;
                 completeTime = duration;
-                currentTime = 0;
+                remainingTime = (duration - currentTime) / 1000;
 
-                // call listeners
+                /** call listeners */
                 if (listener != null) {
                     listener.didFindPlayerReady();
                 }
 
-                // set out text
-                chronographer.setText("Ad: " + duration);
+                /** set out text */
+                chronographer.setText("Ad: " + remainingTime);
 
-                // part with seconds and stuff
+                /** part with seconds and stuff */
                 final Runnable onEverySecond = new Runnable() {
                     public void run() {
                         if (!videoPlayer.isPlaying()) {
                             return;
                         }
 
-                        // get current time
-                        currentTime = videoPlayer.getCurrentPosition() / 1000;
+                        /** get current time */
+                        currentTime = videoPlayer.getCurrentPosition();
+                        remainingTime = (duration - currentTime) / 1000;
 
-                        // update text
-                        chronographer.setText("Ad: " + (duration - currentTime));
+                        /** update text */
+                        chronographer.setText("Ad: " + remainingTime);
 
                         if (currentTime >= 1 && !isStartHandled) {
                             isStartHandled = true;
@@ -180,23 +183,31 @@ public class SAVASTPlayer extends Fragment {
                             }
                         }
 
-                        // go again
+                        /** go again */
                         videoPlayer.postDelayed(this, 1000);
                     }
                 };
-                // start monitoring
+                /** start monitoring */
                 videoPlayer.postDelayed(onEverySecond, 1000);
+
+                /** do seeking right */
+                mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                    @Override
+                    public void onSeekComplete(MediaPlayer mp) {
+                        videoPlayer.start();
+                    }
+                });
             }
         });
 
-        // on complete
+        /** on complete */
         videoPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                // text
+                /** text */
                 chronographer.setText("Ad: 0");
 
-                // call listener function
+                /** call listener function */
                 if (listener != null) {
                     listener.didReachEnd();
                 }
@@ -206,10 +217,10 @@ public class SAVASTPlayer extends Fragment {
         videoPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                // set text
+                /** set text */
                 chronographer.setText("Ad: Error");
 
-                // call listener function
+                /** call listener function */
                 if (listener != null) {
                     listener.didPlayWithError();
                 }
@@ -221,18 +232,17 @@ public class SAVASTPlayer extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        SALog.Log("Fragment PAUSE");
         if (videoPlayer != null) {
+            currentTime = videoPlayer.getCurrentPosition();
             videoPlayer.pause();
         }
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        SALog.Log("Fragment RESUME");
         if (videoPlayer != null) {
-            videoPlayer.resume();
+            videoPlayer.seekTo(currentTime);
         }
     }
 
@@ -240,7 +250,7 @@ public class SAVASTPlayer extends Fragment {
      * Function used by other components to update the listener
      * @param listener
      */
-    public void setListener(SAVASTPlayerListener listener){
+    public void setListener(SAVASTPlayerListener listener) {
         this.listener = listener;
     }
 }

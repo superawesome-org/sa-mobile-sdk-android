@@ -140,9 +140,8 @@ public class SAVideoActivity {
 
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
-            // Always call the superclass so it can save the view hierarchy state
+            /** Always call the superclass so it can save the view hierarchy state */
             super.onSaveInstanceState(savedInstanceState);
-
         }
 
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -202,7 +201,7 @@ public class SAVideoActivity {
             manager = new SAVASTManager(videoPlayer, new SAVASTManagerListener() {
                 @Override
                 public void didParseVASTAndFindAds() {
-                    // do nothing here
+                    /** do nothing here */
                 }
 
                 @Override
@@ -227,10 +226,10 @@ public class SAVideoActivity {
 
                 @Override
                 public void didStartAd() {
-                    // send thie event just to be sure
+                    /** send thie event just to be sure */
                     SASender.sendEventToURL(ad.creative.viewableImpressionURL);
 
-                    // call listener
+                    /** call listener */
                     if (adListener != null){
                         adListener.adWasShown(ad.placementId);
                     }
@@ -273,7 +272,7 @@ public class SAVideoActivity {
 
                 @Override
                 public void didHaveErrorForCreative() {
-                    // do nothing here
+                    /** do nothing here */
                 }
 
                 @Override
@@ -289,7 +288,7 @@ public class SAVideoActivity {
                         videoAdListener.allAdsEnded(ad.placementId);
                     }
 
-                    // call finish on this activity
+                    /** call finish on this activity */
                     if (shouldAutomaticallyCloseAtEnd) {
                         close();
                     }
@@ -297,9 +296,9 @@ public class SAVideoActivity {
 
                 @Override
                 public void didGoToURL(String url) {
-                    // make these ok
+                    /** make these ok */
                     ad.creative.fullClickURL = url;
-                    // do a final checkup
+                    /** do a final checkup */
                     if (!ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/") &&
                             !ad.creative.fullClickURL.contains("ads.staging.superawesome.tv./v2/video/click/")) {
                         ad.creative.isFullClickURLReliable = true;
