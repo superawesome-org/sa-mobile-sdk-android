@@ -229,6 +229,27 @@ public class SAParser {
 
             ad.creative.viewableImpressionURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAURLUtils.formGetQueryFromDict(impressionDict2);
 
+            /** create the parental gate URL */
+            JSONObject pgDict1 = new JSONObject();
+            try {
+                pgDict1.put("placement", ad.placementId);
+                pgDict1.put("line_item", ad.lineItemId);
+                pgDict1.put("creative", ad.creative.creativeId);
+                pgDict1.put("type", "custom.parentalGateAccessed");
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            JSONObject pgDict2 = new JSONObject();
+            try {
+                pgDict2.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+                pgDict2.put("rnd", SAURLUtils.getCacheBuster());
+                pgDict2.put("data", SAURLUtils.encodeDictAsJsonDict(pgDict1));
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            ad.creative.parentalGateClickURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAURLUtils.formGetQueryFromDict(pgDict2);
+
             /** create the click URL */
             switch (ad.creative.format){
                 /** simple image case */

@@ -117,7 +117,7 @@ public class SAVideoActivity {
     }
 
     /** inner activity class */
-    public static class SAVideoActivityInner extends Activity{
+    public static class SAVideoActivityInner extends Activity implements SANavigationInterface {
 
         /** private variables that control how the ad behaves */
         private SAAd ad;
@@ -309,22 +309,16 @@ public class SAVideoActivity {
 
                     /** open the parental gate */
                     if (isParentalGateEnabled) {
-                        SAParentalGate gate = new SAParentalGate(SAVideoActivityInner.this, ad);
+                        /** send event */
+                        SASender.sendEventToURL(ad.creative.parentalGateClickURL);
+                        /** create pg */
+                        SAParentalGate gate = new SAParentalGate(SAVideoActivityInner.this, SAVideoActivityInner.this, ad);
                         gate.show();
                         gate.setListener(parentalGateListener);
                     }
                     /** go directly to the URL */
                     else {
-                        SALog.Log("Going to " + ad.creative.fullClickURL);
-
-                        // first send this
-                        if (!ad.creative.isFullClickURLReliable) {
-                            SASender.sendEventToURL(ad.creative.trackingURL);
-                        }
-
-                        // go-to-url
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
-                        startActivity(browserIntent);
+                        advanceToClick();
                     }
                 }
             });
@@ -381,6 +375,25 @@ public class SAVideoActivity {
 
             /** call finish on this activity */
             onBackPressed();
+        }
+
+        @Override
+        public void advanceToClick() {
+            SALog.Log("Going to " + ad.creative.fullClickURL);
+
+            /** call listener */
+            if (adListener != null) {
+                adListener.adWasClicked(ad.placementId);
+            }
+
+            /** first send this */
+            if (!ad.creative.isFullClickURLReliable) {
+                SASender.sendEventToURL(ad.creative.trackingURL);
+            }
+
+            /** go-to-url */
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
+            startActivity(browserIntent);
         }
     }
 

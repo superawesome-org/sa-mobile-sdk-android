@@ -32,7 +32,7 @@ import tv.superawesome.sdk.listeners.SAParentalGateListener;
  * Created by gabriel.coman on 30/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SABannerAd extends RelativeLayout implements SAWebViewListener {
+public class SABannerAd extends RelativeLayout implements SAWebViewListener, SANavigationInterface {
 
     /** Private variables */
     private boolean isParentalGateEnabled = true; /** init with default value */
@@ -225,28 +225,20 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
     @Override
     public void saWebViewWillNavigate(String url) {
 
-        /** call listener */
-        if (adListener != null) {
-            adListener.adWasClicked(ad.placementId);
-        }
-
         if (!ad.creative.isFullClickURLReliable){
             ad.creative.fullClickURL = url;
         }
 
         /** check for PG */
         if (isParentalGateEnabled) {
-            SAParentalGate gate = new SAParentalGate(getContext(), ad);
+            /** send event */
+            SASender.sendEventToURL(ad.creative.parentalGateClickURL);
+            /** create pg */
+            SAParentalGate gate = new SAParentalGate(getContext(), this, ad);
             gate.show();
             gate.setListener(parentalGateListener);
         } else {
-            if (!ad.creative.isFullClickURLReliable) {
-                SASender.sendEventToURL(ad.creative.trackingURL);
-            }
-
-            /** go-to-url */
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
-            getContext().startActivity(browserIntent);
+            advanceToClick();
         }
     }
 
@@ -267,5 +259,23 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener {
         if (adListener != null) {
             adListener.adFailedToShow(ad.placementId);
         }
+    }
+
+    @Override
+    public void advanceToClick() {
+        /** call listener */
+        if (adListener != null) {
+            adListener.adWasClicked(ad.placementId);
+        }
+
+        if (!ad.creative.isFullClickURLReliable) {
+            SASender.sendEventToURL(ad.creative.trackingURL);
+        }
+
+        System.out.println("Going to " + ad.creative.fullClickURL);
+
+        /** go-to-url */
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
+        getContext().startActivity(browserIntent);
     }
 }

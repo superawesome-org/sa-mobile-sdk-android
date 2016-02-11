@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.text.InputType;
 import android.widget.EditText;
 
+import java.lang.ref.WeakReference;
+import java.util.Objects;
 import java.util.Random;
 
 import tv.superawesome.lib.sanetwork.SASender;
@@ -41,13 +43,15 @@ public class SAParentalGate {
     /** variables private */
     private int startNum;
     private int endNum;
-    private Context c;
+    private Context c = null;
+    private WeakReference<Object> parentRef = null;
     private SAParentalGateListener listener;
     private SAAd refAd;
 
-    public SAParentalGate(Context c, SAAd _refAd){
+    public SAParentalGate(Context c, Object parent, SAAd _refAd){
         super();
         this.c = c;
+        this.parentRef = new WeakReference<Object> (parent);
         this.refAd = _refAd;
 
         if (this.refAd == null){
@@ -86,25 +90,24 @@ public class SAParentalGate {
                             listener.parentalGateWasSucceded(refAd.placementId);
                         }
 
-                        SALog.Log("Going from PG to: " + refAd.creative.fullClickURL);
+                        String refClassName = parentRef.get().getClass().getName();
+                        String bannerName = SABannerAd.class.getName();
+                        String videoName = SAVideoActivity.SAVideoActivityInner.class.getName();
 
-                        // first send this
-                        if (!refAd.creative.isFullClickURLReliable) {
-                            SASender.sendEventToURL(refAd.creative.trackingURL);
+                        if (refClassName.contains(bannerName)) {
+                            ((SABannerAd) parentRef.get()).advanceToClick();
+                        } else if (refClassName.contains(videoName)) {
+                            ((SAVideoActivity.SAVideoActivityInner) parentRef.get()).advanceToClick();
                         }
-
-                        // and go to URL
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(refAd.creative.fullClickURL));
-                        c.startActivity(browserIntent);
                     } else {
 
                         // go on error way
                         AlertDialog.Builder erroralert = new android.app.AlertDialog.Builder(c);
-                        erroralert .setTitle(SA_ERROR_ALERTVIEW_TITLE);
-                        erroralert .setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
+                        erroralert.setTitle(SA_ERROR_ALERTVIEW_TITLE);
+                        erroralert.setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
 
                         // set button action
-                        erroralert .setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
+                        erroralert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
                                 // dismiss this

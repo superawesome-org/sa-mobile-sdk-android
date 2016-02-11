@@ -62,6 +62,11 @@ public class SACreative {
     public boolean isFullClickURLReliable;
 
     /**
+     *
+     */
+    public String parentalGateClickURL;
+
+    /**
      * here for completnes' sake - is only used by the AIR SDK (for now)
      */
     public String videoCompleteURL;
@@ -86,6 +91,7 @@ public class SACreative {
         printout += "\t trackingURL: " + trackingURL + "\n";
         printout += "\t fullClickURL: " + fullClickURL + "\n";
         printout += "\t isFullClickURLReliable: " + isFullClickURLReliable + "\n";
+        printout += "\t parentalGateClickURL: " + parentalGateClickURL + "\n";
         printout += "\t approved: " + approved + "\n";
         SALog.Log(printout);
         details.print();
