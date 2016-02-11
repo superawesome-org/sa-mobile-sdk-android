@@ -12,5 +12,5 @@ public interface SAVASTPlayerListener {
     void didReachThirdQuartile();
     void didReachEnd();
     void didPlayWithError();
-    void didGoToURL(String url);
+    void didGoToURL();
 }

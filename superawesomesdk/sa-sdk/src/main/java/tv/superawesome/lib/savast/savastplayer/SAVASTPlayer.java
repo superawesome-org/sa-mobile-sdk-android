@@ -28,7 +28,6 @@ public class SAVASTPlayer extends Fragment {
     private VideoView videoPlayer;
     private String videoURL;
     private SAVASTPlayerListener listener;
-    private String clickURL;
 
     // aux views
     private TextView chronographer;
@@ -88,7 +87,7 @@ public class SAVASTPlayer extends Fragment {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    listener.didGoToURL(clickURL);
+                    listener.didGoToURL();
                 }
             }
         });
@@ -243,13 +242,5 @@ public class SAVASTPlayer extends Fragment {
      */
     public void setListener(SAVASTPlayerListener listener){
         this.listener = listener;
-    }
-
-    /**
-     * function used by other components to update the URL
-     * @param url
-     */
-    public void setupClickURL(String url) {
-        clickURL = url;
     }
 }

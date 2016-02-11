@@ -218,13 +218,29 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
     }
 
     @Override
-    public void didGoToURL(String url) {
+    public void didGoToURL() {
         SALog.Log("didGoToURL");
 
         // send event to URL
         for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
             String clickTracking = i.next();
             SASender.sendEventToURL(clickTracking);
+        }
+
+        // setup the current click URL
+        String url = "";
+        if (_cCreative.ClickThrough != null && SAURLUtils.isValidURL(_cCreative.ClickThrough)){
+            url = _cCreative.ClickThrough;
+        }
+        // if no click through is there - just go through the ClickTracking URLs and
+        // maybe one is good
+        else {
+            for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
+                if (SAURLUtils.isValidURL(i.next())){
+                    url = i.next();
+                    break;
+                }
+            }
         }
 
         // call listner
@@ -281,21 +297,6 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
     }
 
     private void playCurrentAdWithCurrentCreative() {
-        // setup the current click URL
-        if (_cCreative.ClickThrough != null && SAURLUtils.isValidURL(_cCreative.ClickThrough)){
-            refPlayer.setupClickURL(_cCreative.ClickThrough);
-        }
-        // if no click through is there - just go through the ClickTracking URLs and
-        // maybe one is good
-        else {
-            for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
-                if (SAURLUtils.isValidURL(i.next())){
-                    refPlayer.setupClickURL(i.next());
-                    break;
-                }
-            }
-        }
-
         // get URL
         String url = _cCreative.MediaFiles.get(0).URL;
 
