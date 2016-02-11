@@ -357,6 +357,11 @@ public class SAVideoActivity {
         }
 
         @Override
+        public void onBackPressed() {
+            /** do nothing */
+        }
+
+        @Override
         public void onDestroy(){
             super.onDestroy();
             videoPlayer = null;
@@ -373,8 +378,11 @@ public class SAVideoActivity {
                 adListener.adWasClosed(ad.placementId);
             }
 
-            /** call finish on this activity */
-            onBackPressed();
+            /**
+             * call super.onBackPressed() to close the activity because it's own onBackPressed()
+             * method is overriden to do nothing e.g. so as not to be closed by the user
+             */
+            super.onBackPressed();
         }
 
         @Override

@@ -155,8 +155,11 @@ public class SAInterstitialActivity {
                 adListener.adWasClosed(ad.placementId);
             }
 
-            /** call finish on this activity */
-            onBackPressed();
+            /**
+             * call super.onBackPressed() to close the activity because it's own onBackPressed()
+             * method is overriden to do nothing e.g. so as not to be closed by the user
+             */
+            super.onBackPressed();
         }
 
         @Override
@@ -177,6 +180,11 @@ public class SAInterstitialActivity {
         @Override
         public void onStop() {
             super.onStop();
+        }
+
+        @Override
+        public void onBackPressed() {
+            /** do nothing */
         }
 
         @Override
