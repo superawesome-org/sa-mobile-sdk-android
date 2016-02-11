@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
@@ -157,7 +158,7 @@ public class SAInterstitialActivity {
 
             /**
              * call super.onBackPressed() to close the activity because it's own onBackPressed()
-             * method is overriden to do nothing e.g. so as not to be closed by the user
+             * method is overridden to do nothing e.g. so as not to be closed by the user
              */
             super.onBackPressed();
         }
