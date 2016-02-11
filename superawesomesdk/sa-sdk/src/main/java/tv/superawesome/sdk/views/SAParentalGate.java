@@ -68,6 +68,7 @@ public class SAParentalGate {
         final AlertDialog.Builder alert = new AlertDialog.Builder(c);
         // set title and message
         alert.setTitle(SA_CHALLANGE_ALERTVIEW_TITLE);
+        alert.setCancelable(false);
         alert.setMessage(SA_CHALLANGE_ALERTVIEW_MESSAGE + startNum + " + " + endNum + " = ? ");
 
         // Set an EditText view to get user input
