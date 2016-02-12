@@ -1,6 +1,6 @@
 If you're running an environment which does not support Gradle, then you'll need to add the SDK manually.
 
-First, download the JAR file [sa-sdk-3.3.9.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.3.9.jar?raw=true) 
+First, download the JAR file [sa-sdk-3.4.0.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.4.0.jar?raw=true)
 
 You'll need to add it to your project's `lib` folder, usually `MyApplication/app/libs`. The `libs` folder should be located on the same level as the `src` and `build` folders.
 
@@ -10,12 +10,12 @@ Secondly, you'll need to add the following items in you Manifest file, under the
 
 ```
 <!-- Awesome Ads custom Manifest part -->
-<activity android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner" 
+<activity android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner"
 		  android:label="SAVideoActivity"
 		  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
 		  android:configChanges="keyboardHidden|orientation|screenSize"></activity>
 
-<activity android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner" 
+<activity android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner"
 		  android:label="SAInterstitialActivity"
 		  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
 		  android:configChanges="keyboardHidden|orientation|screenSize"></activity>
@@ -39,4 +39,4 @@ and unzip it. You'll find three folders inside:
 
 In the end you should have the following folder structure (or something similar):
 
-![](img/resources.png "The new folder structure") 
+![](img/resources.png "The new folder structure")
