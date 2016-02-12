@@ -91,6 +91,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
     }
 
     private void delayLayout() {
+
         /**
          * if the ad is ok (and implicitly the cWidth and cHeight params then start arranging the
          * ad as we should!

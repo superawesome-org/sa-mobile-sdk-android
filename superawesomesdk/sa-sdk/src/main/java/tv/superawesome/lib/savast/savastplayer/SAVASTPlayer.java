@@ -81,6 +81,14 @@ public class SAVASTPlayer extends Fragment {
      */
     public void playWithMediaURL(final String videoURL){
 
+        /** in case this is null */
+        if (videoURL == null){
+            if (listener != null){
+                listener.didPlayWithError();
+            }
+            return;
+        }
+
         /** set on click listener */
         findOutMore.setOnClickListener(new View.OnClickListener() {
             @Override

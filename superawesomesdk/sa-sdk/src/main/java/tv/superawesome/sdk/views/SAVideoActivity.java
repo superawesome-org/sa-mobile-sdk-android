@@ -21,6 +21,7 @@ import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
 import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
@@ -76,6 +77,18 @@ public class SAVideoActivity {
 
     /** play function */
     public void play(){
+        /** check for incorrect placement type */
+        SAAd tmpAd = AdDataHolder.getInstance()._refAd;
+        SAAdListener tmpAdListener = AdDataHolder.getInstance()._refAdListener;
+
+        if (tmpAd.creative.format != SACreativeFormat.video) {
+            if (tmpAdListener  != null) {
+                tmpAdListener .adHasIncorrectPlacement(tmpAd.placementId);
+            }
+
+            return;
+        }
+
         intent = new Intent(context, SAVideoActivityInner.class);
         context.startActivity(intent);
     }
@@ -299,8 +312,8 @@ public class SAVideoActivity {
                     /** make these ok */
                     ad.creative.fullClickURL = url;
                     /** do a final checkup */
-                    if (!ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/") &&
-                            !ad.creative.fullClickURL.contains("ads.staging.superawesome.tv./v2/video/click/")) {
+                    if (ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/") ||
+                            ad.creative.fullClickURL.contains("ads.staging.superawesome.tv./v2/video/click/")) {
                         ad.creative.isFullClickURLReliable = true;
                     } else {
                         ad.creative.isFullClickURLReliable = false;
@@ -395,6 +408,7 @@ public class SAVideoActivity {
 
             /** first send this */
             if (!ad.creative.isFullClickURLReliable) {
+                SALog.Log("Success: " + ad.creative.trackingURL);
                 SASender.sendEventToURL(ad.creative.trackingURL);
             }
 

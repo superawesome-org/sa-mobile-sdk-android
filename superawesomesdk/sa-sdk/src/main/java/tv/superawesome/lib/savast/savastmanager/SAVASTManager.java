@@ -261,8 +261,6 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
             currentCreativeIndex++;
             _cCreative = (SAVASTLinearCreative)_cAd.Creatives.get(currentCreativeIndex);
 
-            SALog.Log("Playing Ad " + currentAdIndex + " - Creative " + currentCreativeIndex);
-
             // play
             playCurrentAdWithCurrentCreative();
         } else  {
@@ -284,13 +282,9 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
                     listener.didStartAd();
                 }
 
-                SALog.Log("Playing Ad " + currentAdIndex + " - Creative " + currentCreativeIndex);
-
                 // play
                 playCurrentAdWithCurrentCreative();
             } else  {
-                SALog.Log("REACHED THE FINAL END");
-
                 if (listener != null){
                     listener.didEndAllAds();
                 }
@@ -299,23 +293,21 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
     }
 
     private void playCurrentAdWithCurrentCreative() {
-        // get URL
-        String url = _cCreative.MediaFiles.get(0).URL;
-
-        // play
+        /** play */
         if (refPlayer != null){
             refPlayer.setListener(this);
-            refPlayer.playWithMediaURL(url);
+            SALog.Log("TRYING TO PLAY " + _cCreative.playableMediaURL);
+            refPlayer.playWithMediaURL(_cCreative.playableMediaURL);
         }
     }
 
     /** Aux functions */
     private void sendCurrentCreativeTrackersFor(String event) {
-        // get all tracking events for this "event" string
+        /** get all tracking events for this "event" string */
         for (Iterator<SAVASTTracking> i = _cCreative.TrackingEvents.iterator(); i.hasNext(); ){
             SAVASTTracking tracking = i.next();
             if (tracking.event.equals(event)){
-                // send event
+                /** send event */
                 SASender.sendEventToURL(tracking.URL);
             }
         }

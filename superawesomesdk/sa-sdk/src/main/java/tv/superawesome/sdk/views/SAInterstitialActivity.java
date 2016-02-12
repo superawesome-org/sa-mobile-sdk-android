@@ -16,6 +16,7 @@ import java.lang.ref.WeakReference;
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
@@ -58,6 +59,18 @@ public class SAInterstitialActivity {
 
     /** play function */
     public void play(){
+        /** check for incorrect placement type */
+        SAAd tmpAd = AdDataHolder.getInstance()._refAd;
+        SAAdListener tmpAdLsitener = AdDataHolder.getInstance()._refAdListener;
+
+        if (tmpAd.creative.format == SACreativeFormat.video) {
+            if (tmpAdLsitener != null) {
+                tmpAdLsitener.adHasIncorrectPlacement(tmpAd.placementId);
+            }
+
+            return;
+        }
+
         intent = new Intent(context, SAInterstitialActivityInner.class);
         context.startActivity(intent);
     }

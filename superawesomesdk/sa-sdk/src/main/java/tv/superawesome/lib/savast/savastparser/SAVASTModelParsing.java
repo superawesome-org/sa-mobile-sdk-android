@@ -108,7 +108,7 @@ public class SAVASTModelParsing {
             SAXML.searchSiblingsAndChildrenOf(element, "ClickThrough", new SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
-                    creative.ClickThrough = e.getTextContent().replace("&amp;","&").replace("%3A",":").replace("%2F","/");
+                    creative.ClickThrough = e.getTextContent().replace("&amp;","&").replace("%3A",":").replace("%2F", "/");
                 }
             });
 
@@ -135,8 +135,12 @@ public class SAVASTModelParsing {
                     SAVASTMediaFile mediaFile = new SAVASTMediaFile();
                     mediaFile.width = e.getAttribute("width");
                     mediaFile.height = e.getAttribute("height");
+                    mediaFile.type = e.getAttribute("type");
                     mediaFile.URL = e.getTextContent();
-                    creative.MediaFiles.add(mediaFile);
+
+                    if (mediaFile.type.contains("mp4") || mediaFile.type.contains(".mp4")) {
+                        creative.MediaFiles.add(mediaFile);
+                    }
                 }
             });
 
@@ -151,6 +155,12 @@ public class SAVASTModelParsing {
                 }
             });
 
+            // add the playable media file
+            if (creative.MediaFiles.size() > 0) {
+                creative.playableMediaURL = creative.MediaFiles.get(0).URL;
+            }
+
+            // return creative
             return creative;
         }
 

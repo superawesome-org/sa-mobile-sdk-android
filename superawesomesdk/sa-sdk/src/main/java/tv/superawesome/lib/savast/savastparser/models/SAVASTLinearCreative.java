@@ -15,6 +15,7 @@ public class SAVASTLinearCreative extends SAVASTCreative{
     public String sequence;
     public String Duration;
     public String ClickThrough;
+    public String playableMediaURL;
     public List<SAVASTMediaFile> MediaFiles;
     public List<SAVASTTracking> TrackingEvents;
     public List<String> ClickTracking;
@@ -26,6 +27,7 @@ public class SAVASTLinearCreative extends SAVASTCreative{
         printout += "\tCreative(" + id + ")" + "\n";
         printout += "\tsequence: " + sequence + "\n";
         printout += "\tDuration: " + Duration + "\n";
+        printout += "\tplayableMediaURL: " + playableMediaURL + "\n";
         printout += "\tClickThrough: " + ClickThrough + "\n";
         printout += "\tMediaFiles[" + MediaFiles.size() + "]" + "\n";
         printout += "\tTrackingEvents[" + TrackingEvents.size() + "]" + "\n";
@@ -42,11 +44,17 @@ public class SAVASTLinearCreative extends SAVASTCreative{
         this.sequence = creative.sequence;
         this.Duration = creative.Duration;
 
-        if (SAURLUtils.isValidURL(ClickThrough) == true){
+        if (SAURLUtils.isValidURL(ClickThrough)){
             // this.ClickThrough = this.ClickThrough;
         }
-        if (SAURLUtils.isValidURL(creative.ClickThrough) == true){
+        if (SAURLUtils.isValidURL(creative.ClickThrough)){
             this.ClickThrough = creative.ClickThrough;
+        }
+        if (SAURLUtils.isValidURL(playableMediaURL)){
+            // this.playableMediaURL = this.playableMediaURL;
+        }
+        if (SAURLUtils.isValidURL(creative.playableMediaURL)){
+            this.playableMediaURL = creative.playableMediaURL;
         }
 
         // now add all other things

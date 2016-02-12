@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
 
         /** SA setup */
-        SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         loader = new SALoader();
@@ -81,10 +81,11 @@ public class MainActivity extends Activity implements
                         loader.loadAd(option.placementId, new SALoaderListener() {
                             @Override
                             public void didLoadAd(SAAd ad) {
+                                ad.print();
                                 vad = new SAVideoActivity(MainActivity.this);
                                 vad.setAd(ad);
                                 vad.setIsParentalGateEnabled(false);
-                                vad.setShouldAutomaticallyCloseAtEnd(false);
+                                vad.setShouldAutomaticallyCloseAtEnd(true);
                                 vad.setShouldShowCloseButton(true);
                                 vad.setAdListener(adListener);
                                 vad.setVideoAdListener(videoAdListener);
