@@ -93,12 +93,13 @@ public class SAParentalGate {
 
                         String refClassName = parentRef.get().getClass().getName();
                         String bannerName = SABannerAd.class.getName();
-                        String videoName = SAVideoActivity.SAVideoActivityInner.class.getName();
+                        String videoName = SAVideoAd.class.getName();
+//                        String videoName = SAVideoActivity.SAVideoActivityInner.class.getName();
 
                         if (refClassName.contains(bannerName)) {
                             ((SABannerAd) parentRef.get()).advanceToClick();
                         } else if (refClassName.contains(videoName)) {
-                            ((SAVideoActivity.SAVideoActivityInner) parentRef.get()).advanceToClick();
+                            ((SAVideoAd) parentRef.get()).advanceToClick();
                         }
                     } else {
 

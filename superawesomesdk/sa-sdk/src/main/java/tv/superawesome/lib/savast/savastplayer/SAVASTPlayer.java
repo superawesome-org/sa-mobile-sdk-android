@@ -2,6 +2,7 @@ package tv.superawesome.lib.savast.savastplayer;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
+import tv.superawesome.lib.sautils.SALog;
 
 /**
  * Created by gabriel.coman on 23/12/15.
@@ -254,11 +256,23 @@ public class SAVASTPlayer extends Fragment {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
     /**
      * Function used by other components to update the listener
      * @param listener
      */
     public void setListener(SAVASTPlayerListener listener) {
         this.listener = listener;
+    }
+
+    /**
+     * Closes and deletes the video player
+     */
+    public void close () {
+        videoPlayer.stopPlayback();
     }
 }

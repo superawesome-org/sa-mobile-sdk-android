@@ -6,20 +6,20 @@ package tv.superawesome.models;
 public enum AdItemType {
     banner_item {
         @Override
-        public String toString() {
-            return "banner_item";
-        }
+        public String toString() { return "banner_item"; }
+    },
+    video_item {
+        @Override
+        public String toString() { return "video_item"; }
     },
     fullscreen_video_item {
         @Override
         public String toString() {
-            return "video_item";
+            return "fullscreen_video_item";
         }
     },
     interstitial_item {
         @Override
-        public String toString() {
-            return "interstitial_item";
-        }
+        public String toString() { return "interstitial_item"; }
     }
 }

@@ -37,7 +37,7 @@ public class TestDataProvider {
         list.add(AdItem.create("Upsight - Tablet Landscape Static - 30174", 30174, false, AdItemType.interstitial_item));
 
         list.add(AdItem.create("Upsight - Rewarded Video - 30176", 30176, false, AdItemType.fullscreen_video_item));
-        list.add(AdItem.create("Upsight - Non Reward Video - 30175", 30175, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("Upsight - Non Reward Video - 30175", 30175, false, AdItemType.video_item));
 
         list.add(AdItem.create("79 #Inter", 79, false, AdItemType.interstitial_item));
         list.add(AdItem.create("79 #Video", 79, false, AdItemType.fullscreen_video_item));

@@ -119,6 +119,10 @@ public class MainActivity extends Activity implements
                         BannerActivity.start(MainActivity.this, option.placementId, adListener, parentalGateListener);
                         break;
                     }
+                    case video_item: {
+                        VideoActivity.start(MainActivity.this, option.placementId, adListener, parentalGateListener, videoAdListener);
+                        break;
+                    }
                 }
             }
         });
