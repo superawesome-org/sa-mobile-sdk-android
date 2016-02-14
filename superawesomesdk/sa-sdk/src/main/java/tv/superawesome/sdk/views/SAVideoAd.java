@@ -105,7 +105,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
             if (adListener != null) {
                 adListener.adHasIncorrectPlacement(ad.placementId);
             }
-            
+
             if (internalAdListener != null) {
                 internalAdListener.adHasIncorrectPlacement(ad.placementId);
             }
