@@ -9,21 +9,18 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.data.Models.SAAd;
-import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
 /**
  * Created by gabriel.coman on 30/12/15.
  */
-public class SAInterstitialActivity implements SANavigationInterface {
+public class SAInterstitialActivity implements SAViewProtocol {
 
     /** private activity object values */
     private Context context;
@@ -55,7 +52,7 @@ public class SAInterstitialActivity implements SANavigationInterface {
     }
 
     /**********************************************************************************************/
-    /** <SANavigationInterface> */
+    /** <SAViewProtocol> */
     /**********************************************************************************************/
 
     @Override

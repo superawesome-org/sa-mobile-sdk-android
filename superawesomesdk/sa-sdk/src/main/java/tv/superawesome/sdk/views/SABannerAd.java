@@ -9,17 +9,12 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sanetwork.SASender;
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
@@ -33,7 +28,7 @@ import tv.superawesome.sdk.listeners.SAParentalGateListener;
  * Created by gabriel.coman on 30/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SABannerAd extends RelativeLayout implements SAWebViewListener, SANavigationInterface {
+public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAViewProtocol {
 
     /** Private variables */
     private boolean isParentalGateEnabled = true;
@@ -126,7 +121,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
     }
 
     /**********************************************************************************************/
-    /** <SANavigationInterface> */
+    /** <SAViewProtocol> */
     /**********************************************************************************************/
 
     /**

@@ -5,24 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sanetwork.SASender;
-import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
-import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
-import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
-import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
-import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
@@ -30,7 +21,7 @@ import tv.superawesome.sdk.listeners.SAVideoAdListener;
 /**
  * Created by gabriel.coman on 24/12/15.
  */
-public class SAVideoActivity implements SANavigationInterface {
+public class SAVideoActivity implements SAViewProtocol {
 
     /** private activity object values */
     private Context context;
@@ -78,7 +69,7 @@ public class SAVideoActivity implements SANavigationInterface {
     }
 
     /**********************************************************************************************/
-    /** <SANavigationInterface> */
+    /** <SAViewProtocol> */
     /**********************************************************************************************/
 
     @Override

@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sanetwork.SASender;
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
@@ -30,7 +28,7 @@ import tv.superawesome.sdk.listeners.SAVideoAdListener;
  * Created by gabriel.coman on 14/02/16.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SAVideoAd extends RelativeLayout implements SANavigationInterface {
+public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
     /** Private variables */
     private boolean isParentalGateEnabled = true;
     private SAAd ad; /** private ad */
@@ -85,7 +83,7 @@ public class SAVideoAd extends RelativeLayout implements SANavigationInterface {
     }
 
     /**********************************************************************************************/
-    /** <SANavigationInterface> */
+    /** <SAViewProtocol> */
     /**********************************************************************************************/
 
     @Override
