@@ -313,22 +313,7 @@ public class SAVideoActivity {
 
                 @Override
                 public void didGoToURL(String url) {
-                    /** update this */
-                    destinationURL = url;
-
-                    /** open the parental gate */
-                    if (isParentalGateEnabled) {
-                        /** send event */
-                        SASender.sendEventToURL(ad.creative.parentalGateClickURL);
-                        /** create pg */
-                        SAParentalGate gate = new SAParentalGate(SAVideoActivityInner.this, SAVideoActivityInner.this, ad);
-                        gate.show();
-                        gate.setListener(parentalGateListener);
-                    }
-                    /** go directly to the URL */
-                    else {
-                        advanceToClick();
-                    }
+                    tryToGoToURL(url);
                 }
             });
             /** send the message to parse the VAST part */
@@ -381,6 +366,7 @@ public class SAVideoActivity {
         }
 
         /** public close function */
+        @Override
         public void close(){
             /** close listener */
             if (adListener != null){
@@ -392,6 +378,36 @@ public class SAVideoActivity {
              * method is overriden to do nothing e.g. so as not to be closed by the user
              */
             super.onBackPressed();
+        }
+
+        @Override
+        public void setAd(SAAd ad) {
+
+        }
+
+        @Override
+        public SAAd getAd() {
+            return null;
+        }
+
+        @Override
+        public void tryToGoToURL(String url) {
+            /** update this */
+            destinationURL = url;
+
+            /** open the parental gate */
+            if (isParentalGateEnabled) {
+                /** send event */
+                SASender.sendEventToURL(ad.creative.parentalGateClickURL);
+                /** create pg */
+                SAParentalGate gate = new SAParentalGate(SAVideoActivityInner.this, SAVideoActivityInner.this, ad);
+                gate.show();
+                gate.setListener(parentalGateListener);
+            }
+            /** go directly to the URL */
+            else {
+                advanceToClick();
+            }
         }
 
         @Override
@@ -411,6 +427,16 @@ public class SAVideoActivity {
             /** go-to-url */
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
             startActivity(browserIntent);
+        }
+
+        @Override
+        public void resizeToOrientation(int orientation) {
+
+        }
+
+        @Override
+        public void play() {
+
         }
     }
 

@@ -36,7 +36,7 @@ import tv.superawesome.sdk.listeners.SAParentalGateListener;
 public class SABannerAd extends RelativeLayout implements SAWebViewListener, SANavigationInterface {
 
     /** Private variables */
-    private boolean isParentalGateEnabled = true; /** init with default value */
+    private boolean isParentalGateEnabled = true;
     private SAAd ad; /** private ad */
 
     /** Subviews */
@@ -55,7 +55,10 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
     private boolean layoutOK = false;
     private String destinationURL = null;
 
-    /** Constructors */
+    /**********************************************************************************************/
+    /** Init methods */
+    /**********************************************************************************************/
+
     public SABannerAd(Context context) {
         this(context, null, 0);
     }
@@ -89,50 +92,69 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
         super.onLayout(changed, l, t, r, b);
         cWidth = getWidth();
         cHeight = getHeight();
-        delayLayout();
+        if (cWidth != 0 && cHeight != 0){
+            layoutOK = true;
+        }
     }
 
-    private void delayLayout() {
+    /**********************************************************************************************/
+    /** <SAWebViewListener> */
+    /**********************************************************************************************/
 
-        /**
-         * if the ad is ok (and implicitly the cWidth and cHeight params then start arranging the
-         * ad as we should!
-         */
-        if (ad != null && !layoutOK ) {
-            /** from this moment on the layout is OK */
-            layoutOK = true;
+    @Override
+    public void saWebViewWillNavigate(String url) {
+        tryToGoToURL(url);
+    }
 
-            /** once cWidth and cHeight are determined, also set the big and small dimensions */
-            bigDimension = (cWidth > cHeight ? cWidth : cHeight);
-            smallDimension = (cWidth < cHeight ? cWidth : cHeight);
+    @Override
+    public void saWebViewDidLoad() {
+        /** send event */
+        SASender.sendEventToURL(ad.creative.viewableImpressionURL);
 
-            /** calc the new frame */
-            final Rect newframe = SAUtils.arrangeAdInNewFrame(
-                    cWidth,
-                    cHeight,
-                    ad.creative.details.width,
-                    ad.creative.details.height);
-            int w = newframe.right;
-            int h = newframe.bottom;
+        /** call listener */
+        if (adListener != null){
+            adListener.adWasShown(ad.placementId);
+        }
+    }
 
-            SALog.Log("SuperAwesome: cWidth " + cWidth + " cHeight " + cHeight + " w: " + w + " h:" + h);
+    @Override
+    public void saWebViewDidFail() {
+        /** call listener */
+        if (adListener != null) {
+            adListener.adFailedToShow(ad.placementId);
+        }
+    }
 
-            android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
-            params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            webView.setLayoutParams(params);
+    /**********************************************************************************************/
+    /** <SANavigationInterface> */
+    /**********************************************************************************************/
 
-            /** load the HTML with the custom SAWebView */
-            webView.loadHTML(
-                    ad.adHTML,
-                    ad.creative.details.width,
-                    ad.creative.details.height,
-                    w, h);
+    /**
+     * This function is used to set the ad reference to a new, loaded Ad
+     * @param _ad
+     */
+    @Override
+    public void setAd(SAAd _ad) {
+        this.ad = _ad;
+    }
 
-            /** make the padlock visible or not */
-            if (ad.isFallback) {
-                padlock.setVisibility(View.GONE);
-            } else {
-                padlock.setVisibility(View.VISIBLE);
+    /**
+     * Functions from SANavigation interface
+     */
+    @Override
+    public SAAd getAd() {
+        return this.ad;
+    }
+
+    /**
+     * Main play() function that inits the whole ad
+     */
+    @Override
+    public void play() {
+        /** check to see for the correct placement type */
+        if (ad.creative.format == SACreativeFormat.video) {
+            if (adListener != null) {
+                adListener.adHasIncorrectPlacement(ad.placementId);
             }
 
             return;
@@ -142,13 +164,91 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                delayLayout();
+                /** once cWidth and cHeight are determined, also set the big and small dimensions */
+                bigDimension = (cWidth > cHeight ? cWidth : cHeight);
+                smallDimension = (cWidth < cHeight ? cWidth : cHeight);
+
+                /** calc the new frame */
+                final Rect newframe = SAUtils.arrangeAdInNewFrame(
+                        cWidth,
+                        cHeight,
+                        ad.creative.details.width,
+                        ad.creative.details.height);
+                int w = newframe.right;
+                int h = newframe.bottom;
+
+                android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
+                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                webView.setLayoutParams(params);
+
+                /** load the HTML with the custom SAWebView */
+                webView.loadHTML(
+                        ad.adHTML,
+                        ad.creative.details.width,
+                        ad.creative.details.height,
+                        w, h);
+
+                /** make the padlock visible or not */
+                if (ad.isFallback) {
+                    padlock.setVisibility(View.GONE);
+                } else {
+                    padlock.setVisibility(View.VISIBLE);
+                }
             }
         };
-        this.postDelayed(runnable, 250);
+
+        /**
+         * if the ad is ok (and implicitly the cWidth and cHeight params then start arranging the
+         * ad as we should!
+         */
+        if (ad == null || !layoutOK) {
+            this.postDelayed(runnable, 250);
+        }
     }
 
-    public void rearrangeBannerWebView(int orientation){
+    @Override
+    public void close() {
+        /** do nothing here */
+    }
+
+    @Override
+    public void tryToGoToURL(String url) {
+        /** update the destination URL */
+        destinationURL = url;
+
+        /** check for PG */
+        if (isParentalGateEnabled) {
+            /** send event */
+            SASender.sendEventToURL(ad.creative.parentalGateClickURL);
+            /** create pg */
+            SAParentalGate gate = new SAParentalGate(getContext(), this, ad);
+            gate.show();
+            gate.setListener(parentalGateListener);
+        } else {
+            advanceToClick();
+        }
+    }
+
+    @Override
+    public void advanceToClick() {
+        /** call listener */
+        if (adListener != null) {
+            adListener.adWasClicked(ad.placementId);
+        }
+
+        if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
+            SASender.sendEventToURL(ad.creative.trackingURL);
+        }
+
+        System.out.println("Going to " + destinationURL);
+
+        /** go-to-url */
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
+        getContext().startActivity(browserIntent);
+    }
+
+    @Override
+    public void resizeToOrientation(int orientation){
         /** update cWidth & cHeight */
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             cWidth = bigDimension;
@@ -177,13 +277,9 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
         webView.setLayoutParams(params);
     }
 
-    /**
-     * This function is used to set the ad reference to a new, loaded Ad
-     * @param _ad
-     */
-    public void setAd(SAAd _ad) {
-        this.ad = _ad;
-    }
+    /**********************************************************************************************/
+    /** setters for listeners */
+    /**********************************************************************************************/
 
     /**
      * This function sets the ad listener
@@ -207,77 +303,5 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
      */
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) {
         this.isParentalGateEnabled = isParentalGateEnabled;
-    }
-
-    /**
-     * Main play() function that inits the whole ad
-     */
-    public void play() {
-        /** check to see for the correct placement type */
-        if (ad.creative.format == SACreativeFormat.video) {
-            if (adListener != null) {
-                adListener.adHasIncorrectPlacement(ad.placementId);
-            }
-
-            return;
-        }
-    }
-
-    /** <SAWebViewListener> */
-
-    @Override
-    public void saWebViewWillNavigate(String url) {
-
-        /** update the destination URL */
-        destinationURL = url;
-
-        /** check for PG */
-        if (isParentalGateEnabled) {
-            /** send event */
-            SASender.sendEventToURL(ad.creative.parentalGateClickURL);
-            /** create pg */
-            SAParentalGate gate = new SAParentalGate(getContext(), this, ad);
-            gate.show();
-            gate.setListener(parentalGateListener);
-        } else {
-            advanceToClick();
-        }
-    }
-
-    @Override
-    public void saWebViewDidLoad() {
-        /** send event */
-        SASender.sendEventToURL(ad.creative.viewableImpressionURL);
-
-        /** call listener */
-        if (adListener != null){
-            adListener.adWasShown(ad.placementId);
-        }
-    }
-
-    @Override
-    public void saWebViewDidFail() {
-        /** call listener */
-        if (adListener != null) {
-            adListener.adFailedToShow(ad.placementId);
-        }
-    }
-
-    @Override
-    public void advanceToClick() {
-        /** call listener */
-        if (adListener != null) {
-            adListener.adWasClicked(ad.placementId);
-        }
-
-        if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
-            SASender.sendEventToURL(ad.creative.trackingURL);
-        }
-
-        System.out.println("Going to " + destinationURL);
-
-        /** go-to-url */
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
-        getContext().startActivity(browserIntent);
     }
 }

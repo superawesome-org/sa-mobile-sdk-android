@@ -121,7 +121,7 @@ public class SAInterstitialActivity {
 
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
-            // Always call the superclass so it can save the view hierarchy state
+            /** Always call the superclass so it can save the view hierarchy state */
             super.onSaveInstanceState(savedInstanceState);
         }
 
@@ -160,7 +160,7 @@ public class SAInterstitialActivity {
         @Override
         public void onConfigurationChanged(Configuration newConfig) {
             super.onConfigurationChanged(newConfig);
-            interstitialBanner.rearrangeBannerWebView(newConfig.orientation);
+            interstitialBanner.resizeToOrientation(newConfig.orientation);
         }
 
         public void closeInterstitial(View v){
