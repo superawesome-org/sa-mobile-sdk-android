@@ -55,7 +55,7 @@ public class SANetwork implements SAGetResultsReceiver.Receiver {
         mReceiver = new SAGetResultsReceiver(new Handler());
         mReceiver.setReceiver(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, SAApplication.getSAApplicationContext(), SAGet.class);
-        /* Send optional extras to Download IntentService */
+        /** Send optional extras to Download IntentService */
         intent.putExtra("url", finalEndpoint);
         intent.putExtra("receiver", mReceiver);
 
