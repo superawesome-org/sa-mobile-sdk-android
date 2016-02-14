@@ -14,12 +14,10 @@ package tv.superawesome.sdk.data.Loader;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.sanetwork.*;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Parser.SAParser;
-import tv.superawesome.sdk.data.Parser.SAParserListener;
 import tv.superawesome.sdk.data.Validator.SAValidator;
 
 /**
@@ -58,28 +56,16 @@ public class SALoader {
                 try {
                     dataJson = new JSONObject(data.toString());
 
-                    if (dataJson != null) {
-                        SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
-                            @Override
-                            public void parsedAd(SAAd ad) {
+                    SAAd parsedAd = SAParser.parseDictionaryIntoAd(dataJson, placementId);
+                    boolean isValid = SAValidator.isAdDataValid(parsedAd);
 
-                                /** check for validity */
-                                boolean isValid = SAValidator.isAdDataValid(ad);
+                    if (isValid) {
 
-                                if (isValid) {
-                                    /** assign adJson */
-                                    ad.adJson = data.toString();
+                        parsedAd.adJson = data.toString();
 
-                                    if (listener != null) {
-                                        listener.didLoadAd(ad);
-                                    }
-                                } else {
-                                    if (listener != null) {
-                                        listener.didFailToLoadAdForPlacementId(placementId);
-                                    }
-                                }
-                            }
-                        });
+                        if (listener != null) {
+                            listener.didLoadAd(parsedAd);
+                        }
                     } else {
                         failAd(listener, placementId);
                     }

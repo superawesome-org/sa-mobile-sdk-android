@@ -164,12 +164,11 @@ public class SAParser {
      * @param placementId = the placement id - just used because it's not returned by the ad server
      * @param listener - the listener that actually calls the callback to finish the method
      */
-    public static void parseDictionaryIntoAd(JSONObject dict, int placementId, final SAParserListener listener) {
+    public static SAAd parseDictionaryIntoAd(JSONObject dict, int placementId) {
         /** perform integrity check */
         if (!SAParser.performIntegrityCheck(dict)){
             SALog.Log("Did not pass integrity check");
-            listener.parsedAd(null);
-            return;
+            return null;
         }
 
         /** surround with a try catch block */
@@ -250,44 +249,13 @@ public class SAParser {
 
             ad.creative.parentalGateClickURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAURLUtils.formGetQueryFromDict(pgDict2);
 
-            /** create the click URL */
-            switch (ad.creative.format){
-                /** simple image case */
-                case image:{
-                    ad.creative.fullClickURL = ad.creative.trackingURL + "&redir=" + ad.creative.clickURL;
-                    ad.creative.isFullClickURLReliable = true;
-                    ad.adHTML = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
-                    listener.parsedAd(ad);
-                    break;
-                }
-                /**
-                 * simple video case here - the burden will be on the vast player to deal with all
-                 * the complexities of vast stuff
-                 * */
-                case video:{
-                    listener.parsedAd(ad);
-                    break;
-                }
-                /** the same - rich media and tag */
-                case rich:
-                case tag:{
-                    if (ad.creative.clickURL != null && SAURLUtils.isValidURL(ad.creative.clickURL)){
-                        ad.creative.fullClickURL = ad.creative.trackingURL + "&redir=" + ad.creative.clickURL;
-                        ad.creative.isFullClickURLReliable = true;
-                    } else {
-                        ad.creative.fullClickURL = null;
-                        ad.creative.isFullClickURLReliable = false;
-                    }
-                    ad.adHTML = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
-                    listener.parsedAd(ad);
-                    break;
-                }
-                default:
-                    break;
-            }
+            /** parse HTML */
+            ad.adHTML = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
+
+            /** return proper ad */
+            return ad;
         } catch (Exception e){
-            listener.parsedAd(null);
-            return;
+            return null;
         }
     }
 

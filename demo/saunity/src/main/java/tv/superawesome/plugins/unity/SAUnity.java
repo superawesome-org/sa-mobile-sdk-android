@@ -6,15 +6,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Size;
 import android.view.Display;
 import android.view.OrientationEventListener;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +21,6 @@ import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.*;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Parser.SAParser;
-import tv.superawesome.sdk.data.Parser.SAParserListener;
 import tv.superawesome.sdk.data.Validator.SAValidator;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
@@ -36,9 +31,6 @@ import tv.superawesome.sdk.views.SAVideoActivity;
 
 /** import unity3d plugin classes */
 import com.unity3d.player.*;
-
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by gabriel.coman on 21/01/16.
@@ -209,129 +201,127 @@ public class SAUnity {
             JSONObject dataJson = new JSONObject(adJson);
 
             if (dataJson != null) {
-                SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
-                    @Override
-                    public void parsedAd(SAAd ad) {
 
-                        /** check for validity */
-                        boolean isValid = SAValidator.isAdDataValid(ad);
+                /** parse Ad */
+                SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
-                        if (isValid) {
-                            /** get current rotation */
-                            final int[] currentRotation = {getRotation(context)};
+                /** check for validity */
+                boolean isValid = SAValidator.isAdDataValid(ad);
 
-                            /** context to activity */
-                            final Activity activity = (Activity) context;
+                if (isValid) {
+                    /** get current rotation */
+                    final int[] currentRotation = {getRotation(context)};
 
-                            /** get the current view group */
-                            ViewGroup current = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+                    /** context to activity */
+                    final Activity activity = (Activity) context;
 
-                            /** start the banner ad */
-                            final SABannerAd bannerAd = new SABannerAd(context);
+                    /** get the current view group */
+                    ViewGroup current = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
 
-                            /** get factor & screen size */
-                            SASize screenSize = getRealScreenSize(activity, false);
-                            final float factor = getScaleFactor(activity);
+                    /** start the banner ad */
+                    final SABannerAd bannerAd = new SABannerAd(context);
 
-                            /** set banner width & height */
-                            int maxWidthHeight = Math.max(screenSize.width, screenSize.height);
-                            RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(maxWidthHeight, maxWidthHeight);
-                            RelativeLayout screenLayout = new RelativeLayout(context);
-                            screenLayout.setLayoutParams(params1);
-                            screenLayout.setBackgroundColor(Color.TRANSPARENT);
+                    /** get factor & screen size */
+                    SASize screenSize = getRealScreenSize(activity, false);
+                    final float factor = getScaleFactor(activity);
 
-                            /** update width & height */
-                            RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
-                            bannerAd.setLayoutParams(params2);
-                            if (color == 0) {
-                                bannerAd.setBackgroundColor(Color.TRANSPARENT);
-                            } else {
-                                bannerAd.setBackgroundColor(Color.rgb(191, 191, 191));
+                    /** set banner width & height */
+                    int maxWidthHeight = Math.max(screenSize.width, screenSize.height);
+                    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(maxWidthHeight, maxWidthHeight);
+                    RelativeLayout screenLayout = new RelativeLayout(context);
+                    screenLayout.setLayoutParams(params1);
+                    screenLayout.setBackgroundColor(Color.TRANSPARENT);
+
+                    /** update width & height */
+                    RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
+                    bannerAd.setLayoutParams(params2);
+                    if (color == 0) {
+                        bannerAd.setBackgroundColor(Color.TRANSPARENT);
+                    } else {
+                        bannerAd.setBackgroundColor(Color.rgb(191, 191, 191));
+                    }
+
+                    current.addView(screenLayout);
+                    screenLayout.addView(bannerAd);
+
+                    /** orientation changed */
+                    OrientationEventListener listener = new OrientationEventListener(activity, SensorManager.SENSOR_DELAY_UI) {
+                        @Override
+                        public void onOrientationChanged(int orientation) {
+                            int newRotation = getRotation(context);
+
+                            if (newRotation != currentRotation[0]){
+                                currentRotation[0] = newRotation;
+
+                                /** calc scaling factor */
+                                SASize screenSize = getRealScreenSize(activity, true);
+
+                                RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
+                                bannerAd.setLayoutParams(params2);
                             }
+                        }
+                    };
+                    listener.enable();
 
-                            current.addView(screenLayout);
-                            screenLayout.addView(bannerAd);
+                    /** set the ad */
+                    bannerAd.setAd(ad);
 
-                            /** orientation changed */
-                            OrientationEventListener listener = new OrientationEventListener(activity, SensorManager.SENSOR_DELAY_UI) {
-                                @Override
-                                public void onOrientationChanged(int orientation) {
-                                    int newRotation = getRotation(context);
+                    /** parametrize it */
+                    bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
 
-                                    if (newRotation != currentRotation[0]){
-                                        currentRotation[0] = newRotation;
+                    /** set the listener */
+                    bannerAd.setAdListener(new SAAdListener() {
+                        @Override
+                        public void adWasShown(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasShown");
+                        }
 
-                                        /** calc scaling factor */
-                                        SASize screenSize = getRealScreenSize(activity, true);
-
-                                        RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
-                                        bannerAd.setLayoutParams(params2);
-                                    }
-                                }
-                            };
-                            listener.enable();
-
-                            /** set the ad */
-                            bannerAd.setAd(ad);
-
-                            /** parametrize it */
-                            bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
-
-                            /** set the listener */
-                            bannerAd.setAdListener(new SAAdListener() {
-                                @Override
-                                public void adWasShown(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasShown");
-                                }
-
-                                @Override
-                                public void adFailedToShow(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adFailedToShow");
-                                }
-
-                                @Override
-                                public void adWasClosed(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasClosed");
-                                }
-
-                                @Override
-                                public void adWasClicked(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasClicked");
-                                }
-
-                                @Override
-                                public void adHasIncorrectPlacement(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
-                                }
-                            });
-                            bannerAd.setParentalGateListener(new SAParentalGateListener() {
-                                @Override
-                                public void parentalGateWasCanceled(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
-                                }
-
-                                @Override
-                                public void parentalGateWasFailed(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasFailed");
-                                }
-
-                                @Override
-                                public void parentalGateWasSucceded(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
-                                }
-                            });
-
-                            /** start playing the banner */
-                            bannerAd.play();
-
-                            /** add to this map */
-                            SAUnityManager.getInstance().setAdMap(unityName, screenLayout);
-
-                        } else {
+                        @Override
+                        public void adFailedToShow(int placementId) {
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
-                    }
-                });
+
+                        @Override
+                        public void adWasClosed(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasClosed");
+                        }
+
+                        @Override
+                        public void adWasClicked(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasClicked");
+                        }
+
+                        @Override
+                        public void adHasIncorrectPlacement(int placementId) {
+                            SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
+                        }
+                    });
+                    bannerAd.setParentalGateListener(new SAParentalGateListener() {
+                        @Override
+                        public void parentalGateWasCanceled(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
+                        }
+
+                        @Override
+                        public void parentalGateWasFailed(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasFailed");
+                        }
+
+                        @Override
+                        public void parentalGateWasSucceded(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
+                        }
+                    });
+
+                    /** start playing the banner */
+                    bannerAd.play();
+
+                    /** add to this map */
+                    SAUnityManager.getInstance().setAdMap(unityName, screenLayout);
+
+                } else {
+                    SendUnityMsg(unityName, "callback_adFailedToShow");
+                }
             } else {
                 SendUnityMsg(unityName, "callback_adFailedToShow");
             }
@@ -373,79 +363,77 @@ public class SAUnity {
             JSONObject dataJson = new JSONObject(adJson);
 
             if (dataJson != null) {
-                SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
-                    @Override
-                    public void parsedAd(SAAd ad) {
 
-                        /** check for validity */
-                        boolean isValid = SAValidator.isAdDataValid(ad);
+                SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
-                        if (isValid) {
+                /** check for validity */
+                boolean isValid = SAValidator.isAdDataValid(ad);
 
-                            /** create the interstitial */
-                            SAInterstitialActivity interstitial = new SAInterstitialActivity(context);
+                if (isValid) {
 
-                            /** set the ad data */
-                            interstitial.setAd(ad);
+                    /** create the interstitial */
+                    SAInterstitialActivity interstitial = new SAInterstitialActivity(context);
 
-                            /** parametrise the interstitial */
-                            interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
+                    /** set the ad data */
+                    interstitial.setAd(ad);
 
-                            /** add listeners */
-                            interstitial.setAdListener(new SAAdListener() {
-                                @Override
-                                public void adWasShown(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasShown");
-                                }
+                    /** parametrise the interstitial */
+                    interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
 
-                                @Override
-                                public void adFailedToShow(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adFailedToShow");
-                                }
+                    /** add listeners */
+                    interstitial.setAdListener(new SAAdListener() {
+                        @Override
+                        public void adWasShown(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasShown");
+                        }
 
-                                @Override
-                                public void adWasClosed(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasClosed");
-                                }
-
-                                @Override
-                                public void adWasClicked(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasClicked");
-                                }
-
-                                @Override
-                                public void adHasIncorrectPlacement(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
-                                }
-                            });
-                            interstitial.setParentalGateListener(new SAParentalGateListener() {
-                                @Override
-                                public void parentalGateWasCanceled(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
-                                }
-
-                                @Override
-                                public void parentalGateWasFailed(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasFailed");
-                                }
-
-                                @Override
-                                public void parentalGateWasSucceded(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
-                                }
-                            });
-
-                            /** start playing the interstitial */
-                            interstitial.play();
-
-                            /** add to this map */
-                            SAUnityManager.getInstance().setAdMap(unityName, interstitial);
-
-                        } else {
+                        @Override
+                        public void adFailedToShow(int placementId) {
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
-                    }
-                });
+
+                        @Override
+                        public void adWasClosed(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasClosed");
+                        }
+
+                        @Override
+                        public void adWasClicked(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasClicked");
+                        }
+
+                        @Override
+                        public void adHasIncorrectPlacement(int placementId) {
+                            SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
+                        }
+                    });
+                    interstitial.setParentalGateListener(new SAParentalGateListener() {
+                        @Override
+                        public void parentalGateWasCanceled(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
+                        }
+
+                        @Override
+                        public void parentalGateWasFailed(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasFailed");
+                        }
+
+                        @Override
+                        public void parentalGateWasSucceded(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
+                        }
+                    });
+
+                    /** start playing the interstitial */
+                    interstitial.play();
+
+                    /** add to this map */
+                    SAUnityManager.getInstance().setAdMap(unityName, interstitial);
+
+                } else {
+                    SendUnityMsg(unityName, "callback_adFailedToShow");
+                }
+
             } else {
                 SendUnityMsg(unityName, "callback_adFailedToShow");
             }
@@ -489,121 +477,119 @@ public class SAUnity {
             JSONObject dataJson = new JSONObject(adJson);
 
             if (dataJson != null) {
-                SAParser.parseDictionaryIntoAd(dataJson, placementId, new SAParserListener() {
-                    @Override
-                    public void parsedAd(SAAd ad) {
 
-                        /** check for validity */
-                        boolean isValid = SAValidator.isAdDataValid(ad);
+                SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
-                        if (isValid) {
-                            /** create the video */
-                            SAVideoActivity video = new SAVideoActivity(context);
+                /** check for validity */
+                boolean isValid = SAValidator.isAdDataValid(ad);
 
-                            /** set the ad */
-                            video.setAd(ad);
+                if (isValid) {
+                    /** create the video */
+                    SAVideoActivity video = new SAVideoActivity(context);
 
-                            /** parametrise the video */
-                            video.setIsParentalGateEnabled(isParentalGateEnabled);
-                            video.setShouldShowCloseButton(shouldShowCloseButton);
-                            video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+                    /** set the ad */
+                    video.setAd(ad);
 
-                            /** add listeners */
-                            video.setAdListener(new SAAdListener() {
-                                @Override
-                                public void adWasShown(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasShown");
-                                }
+                    /** parametrise the video */
+                    video.setIsParentalGateEnabled(isParentalGateEnabled);
+                    video.setShouldShowCloseButton(shouldShowCloseButton);
+                    video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
 
-                                @Override
-                                public void adFailedToShow(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adFailedToShow");
-                                }
+                    /** add listeners */
+                    video.setAdListener(new SAAdListener() {
+                        @Override
+                        public void adWasShown(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasShown");
+                        }
 
-                                @Override
-                                public void adWasClosed(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasClosed");
-                                }
-
-                                @Override
-                                public void adWasClicked(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adWasClicked");
-                                }
-
-                                @Override
-                                public void adHasIncorrectPlacement(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
-                                }
-                            });
-                            video.setVideoAdListener(new SAVideoAdListener() {
-                                @Override
-                                public void adStarted(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adStarted");
-                                }
-
-                                @Override
-                                public void videoStarted(int placementId) {
-                                    SendUnityMsg(unityName, "callback_videoStarted");
-                                }
-
-                                @Override
-                                public void videoReachedFirstQuartile(int placementId) {
-                                    SendUnityMsg(unityName, "callback_videoReachedFirstQuartile");
-                                }
-
-                                @Override
-                                public void videoReachedMidpoint(int placementId) {
-                                    SendUnityMsg(unityName, "callback_videoReachedMidpoint");
-                                }
-
-                                @Override
-                                public void videoReachedThirdQuartile(int placementId) {
-                                    SendUnityMsg(unityName, "callback_videoReachedThirdQuartile");
-                                }
-
-                                @Override
-                                public void videoEnded(int placementId) {
-                                    SendUnityMsg(unityName, "callback_videoEnded");
-                                }
-
-                                @Override
-                                public void adEnded(int placementId) {
-                                    SendUnityMsg(unityName, "callback_adEnded");
-                                }
-
-                                @Override
-                                public void allAdsEnded(int placementId) {
-                                    SendUnityMsg(unityName, "callback_allAdsEnded");
-                                }
-                            });
-                            video.setParentalGateListener(new SAParentalGateListener() {
-                                @Override
-                                public void parentalGateWasCanceled(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
-                                }
-
-                                @Override
-                                public void parentalGateWasFailed(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasFailed");
-                                }
-
-                                @Override
-                                public void parentalGateWasSucceded(int placementId) {
-                                    SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
-                                }
-                            });
-
-                            /** finally play the video */
-                            video.play();
-
-                            /** add to this map */
-                            SAUnityManager.getInstance().setAdMap(unityName, video);
-
-                        } else {
+                        @Override
+                        public void adFailedToShow(int placementId) {
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
-                    }
-                });
+
+                        @Override
+                        public void adWasClosed(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasClosed");
+                        }
+
+                        @Override
+                        public void adWasClicked(int placementId) {
+                            SendUnityMsg(unityName, "callback_adWasClicked");
+                        }
+
+                        @Override
+                        public void adHasIncorrectPlacement(int placementId) {
+                            SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
+                        }
+                    });
+                    video.setVideoAdListener(new SAVideoAdListener() {
+                        @Override
+                        public void adStarted(int placementId) {
+                            SendUnityMsg(unityName, "callback_adStarted");
+                        }
+
+                        @Override
+                        public void videoStarted(int placementId) {
+                            SendUnityMsg(unityName, "callback_videoStarted");
+                        }
+
+                        @Override
+                        public void videoReachedFirstQuartile(int placementId) {
+                            SendUnityMsg(unityName, "callback_videoReachedFirstQuartile");
+                        }
+
+                        @Override
+                        public void videoReachedMidpoint(int placementId) {
+                            SendUnityMsg(unityName, "callback_videoReachedMidpoint");
+                        }
+
+                        @Override
+                        public void videoReachedThirdQuartile(int placementId) {
+                            SendUnityMsg(unityName, "callback_videoReachedThirdQuartile");
+                        }
+
+                        @Override
+                        public void videoEnded(int placementId) {
+                            SendUnityMsg(unityName, "callback_videoEnded");
+                        }
+
+                        @Override
+                        public void adEnded(int placementId) {
+                            SendUnityMsg(unityName, "callback_adEnded");
+                        }
+
+                        @Override
+                        public void allAdsEnded(int placementId) {
+                            SendUnityMsg(unityName, "callback_allAdsEnded");
+                        }
+                    });
+                    video.setParentalGateListener(new SAParentalGateListener() {
+                        @Override
+                        public void parentalGateWasCanceled(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
+                        }
+
+                        @Override
+                        public void parentalGateWasFailed(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasFailed");
+                        }
+
+                        @Override
+                        public void parentalGateWasSucceded(int placementId) {
+                            SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
+                        }
+                    });
+
+                    /** finally play the video */
+                    video.play();
+
+                    /** add to this map */
+                    SAUnityManager.getInstance().setAdMap(unityName, video);
+
+                } else {
+                    SendUnityMsg(unityName, "callback_adFailedToShow");
+                }
+
             } else {
                 SendUnityMsg(unityName, "callback_adFailedToShow");
             }

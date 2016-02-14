@@ -23,6 +23,7 @@ import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
+import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
@@ -52,6 +53,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
     private float bigDimension = 0;
     private float smallDimension = 0;
     private boolean layoutOK = false;
+    private String destinationURL = null;
 
     /** Constructors */
     public SABannerAd(Context context) {
@@ -226,9 +228,8 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
     @Override
     public void saWebViewWillNavigate(String url) {
 
-        if (!ad.creative.isFullClickURLReliable){
-            ad.creative.fullClickURL = url;
-        }
+        /** update the destination URL */
+        destinationURL = url;
 
         /** check for PG */
         if (isParentalGateEnabled) {
@@ -269,14 +270,14 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAN
             adListener.adWasClicked(ad.placementId);
         }
 
-        if (!ad.creative.isFullClickURLReliable) {
+        if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
             SASender.sendEventToURL(ad.creative.trackingURL);
         }
 
-        System.out.println("Going to " + ad.creative.fullClickURL);
+        System.out.println("Going to " + destinationURL);
 
         /** go-to-url */
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
         getContext().startActivity(browserIntent);
     }
 }

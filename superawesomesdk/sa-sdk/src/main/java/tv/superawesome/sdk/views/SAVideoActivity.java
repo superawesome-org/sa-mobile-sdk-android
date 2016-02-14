@@ -20,6 +20,7 @@ import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
+import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
@@ -150,6 +151,9 @@ public class SAVideoActivity {
         /** the padlock part */
         private ImageView padlock;
         private Button closeBtn;
+
+        /** destination URL */
+        private String destinationURL = null;
 
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -309,15 +313,8 @@ public class SAVideoActivity {
 
                 @Override
                 public void didGoToURL(String url) {
-                    /** make these ok */
-                    ad.creative.fullClickURL = url;
-                    /** do a final checkup */
-                    if (ad.creative.fullClickURL.contains("ads.superawesome.tv/v2/video/click/") ||
-                            ad.creative.fullClickURL.contains("ads.staging.superawesome.tv./v2/video/click/")) {
-                        ad.creative.isFullClickURLReliable = true;
-                    } else {
-                        ad.creative.isFullClickURLReliable = false;
-                    }
+                    /** update this */
+                    destinationURL = url;
 
                     /** open the parental gate */
                     if (isParentalGateEnabled) {
@@ -399,7 +396,7 @@ public class SAVideoActivity {
 
         @Override
         public void advanceToClick() {
-            SALog.Log("Going to " + ad.creative.fullClickURL);
+            SALog.Log("Going to " + destinationURL);
 
             /** call listener */
             if (adListener != null) {
@@ -407,13 +404,12 @@ public class SAVideoActivity {
             }
 
             /** first send this */
-            if (!ad.creative.isFullClickURLReliable) {
-                SALog.Log("Success: " + ad.creative.trackingURL);
+            if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
                 SASender.sendEventToURL(ad.creative.trackingURL);
             }
 
             /** go-to-url */
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ad.creative.fullClickURL));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
             startActivity(browserIntent);
         }
     }

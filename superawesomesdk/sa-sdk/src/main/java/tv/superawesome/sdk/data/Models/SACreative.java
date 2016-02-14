@@ -50,26 +50,9 @@ public class SACreative {
     public String trackingURL;
 
     /**
-     * the fullclick URL is usually trackingURL + clickURL
-     * unless we're dealing with rich-media or 3rd party tags - which the ad server does not always
-     * provide the correct clickURL and we have to obtain it at runtime from the WebView
-     */
-    public String fullClickURL;
-
-    /**
-     * says if the click URL is valid or not
-     */
-    public boolean isFullClickURLReliable;
-
-    /**
-     *
+     * The URL that's going to be called when the parental gate is called as well
      */
     public String parentalGateClickURL;
-
-    /**
-     * here for completnes' sake - is only used by the AIR SDK (for now)
-     */
-    public String videoCompleteURL;
 
     /** must be always true for real ads */
     public boolean approved;
@@ -89,8 +72,6 @@ public class SACreative {
         printout += "\t viewableImpressionURL: " + viewableImpressionURL + "\n";
         printout += "\t clickURL: " + clickURL + "\n";
         printout += "\t trackingURL: " + trackingURL + "\n";
-        printout += "\t fullClickURL: " + fullClickURL + "\n";
-        printout += "\t isFullClickURLReliable: " + isFullClickURLReliable + "\n";
         printout += "\t parentalGateClickURL: " + parentalGateClickURL + "\n";
         printout += "\t approved: " + approved + "\n";
         SALog.Log(printout);
