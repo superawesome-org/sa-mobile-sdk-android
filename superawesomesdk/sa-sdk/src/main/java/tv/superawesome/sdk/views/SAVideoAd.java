@@ -21,6 +21,7 @@ import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
@@ -99,6 +100,15 @@ public class SAVideoAd extends RelativeLayout implements SANavigationInterface {
 
     @Override
     public void play() {
+        /** check to see for the correct placement type */
+        if (ad.creative.format != SACreativeFormat.video) {
+            if (adListener != null) {
+                adListener.adHasIncorrectPlacement(ad.placementId);
+            }
+
+            return;
+        }
+
         /** create the VAST manager */
         manager = new SAVASTManager(videoPlayer, new SAVASTManagerListener() {
             @Override
@@ -213,6 +223,7 @@ public class SAVideoAd extends RelativeLayout implements SANavigationInterface {
     @Override
     public void close() {
         videoPlayer.close();
+        manager = null;
     }
 
     @Override

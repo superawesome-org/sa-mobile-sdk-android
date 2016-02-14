@@ -7,15 +7,12 @@
                 android:paddingLeft="0dp"
                 android:background="#000000"
                 tools:context="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner">
-
-    <fragment
-        android:name="tv.superawesome.lib.savast.savastplayer.SAVASTPlayer"
-        android:id="@+id/video_player"
+    <tv.superawesome.sdk.views.SAVideoAd
+        android:id="@+id/video_ad"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="#000000"
-        android:gravity="center_vertical"/>
+        android:layout_height="match_parent"
+        android:padding="0dp">
+    </tv.superawesome.sdk.views.SAVideoAd>
     <Button
         android:id="@+id/video_close"
         android:layout_width="30dp"
@@ -26,18 +23,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/padlock_image"
-        android:src="@drawable/sa_padlock"
-        android:background="@android:color/transparent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:adjustViewBounds="true"
-        android:maxWidth="20dp"
-        android:maxHeight="20dp"/>
-
+        android:onClick="closeVideo"/>
 </RelativeLayout>
