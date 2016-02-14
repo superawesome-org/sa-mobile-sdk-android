@@ -30,7 +30,7 @@ public class TestDataProvider {
 
 //        list.add(AdItem.create("30007", 30007, false, AdItemType.interstitial_item));
 //
-        list.add(AdItem.create("Upsight - Phone Portrait Static - 30172", 30172, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("Upsight - Phone Portrait Static - 30172", 30172, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("Upsight - Phone Landscape Static - 30171", 30171, false, AdItemType.interstitial_item));
 
         list.add(AdItem.create("Upsight - Tablet Portrait Static - 30173", 30173, false, AdItemType.interstitial_item));

@@ -23,21 +23,19 @@ import tv.superawesome.sdk.listeners.SAParentalGateListener;
 /**
  * Created by gabriel.coman on 30/12/15.
  */
-public class SAInterstitialActivity {
+public class SAInterstitialActivity implements SANavigationInterface {
 
     /** private activity object values */
     private Context context;
     private Intent intent;
     private static WeakReference<Activity> mActivityRef;
 
-    /** base constructor */
+    /**********************************************************************************************/
+    /** Normal <Init> functions & other aux functions */
+    /**********************************************************************************************/
+
     public SAInterstitialActivity(Context context){
         this.context = context;
-    }
-
-    /** setter functions */
-    public void setAd(SAAd ad){
-        AdDataHolder.getInstance()._refAd = ad;
     }
 
     public void setAdListener(SAAdListener adListener) {
@@ -52,34 +50,50 @@ public class SAInterstitialActivity {
         AdDataHolder.getInstance()._refIsParentalGateEnabled = isParentalGateEnabled;
     }
 
-    /** weak ref update function - needed mostly to get the close() function to work */
     protected static void updateActivity(Activity activity){
         mActivityRef = new WeakReference<Activity> (activity);
     }
 
-    /** play function */
+    /**********************************************************************************************/
+    /** <SANavigationInterface> */
+    /**********************************************************************************************/
+
+    @Override
+    public void setAd(SAAd ad){
+        AdDataHolder.getInstance()._refAd = ad;
+    }
+
+    @Override
+    public SAAd getAd() {
+        return AdDataHolder.getInstance()._refAd;
+    }
+
+    @Override
     public void play(){
-        /** check for incorrect placement type */
-        SAAd tmpAd = AdDataHolder.getInstance()._refAd;
-        SAAdListener tmpAdLsitener = AdDataHolder.getInstance()._refAdListener;
-
-        if (tmpAd.creative.format == SACreativeFormat.video) {
-            if (tmpAdLsitener != null) {
-                tmpAdLsitener.adHasIncorrectPlacement(tmpAd.placementId);
-            }
-
-            return;
-        }
-
         intent = new Intent(context, SAInterstitialActivityInner.class);
         context.startActivity(intent);
     }
 
-    /** close func */
+    @Override
     public void close() {
         if (mActivityRef != null) {
             mActivityRef.get().onBackPressed();
         }
+    }
+
+    @Override
+    public void tryToGoToURL(String url) {
+        /** do nothing */
+    }
+
+    @Override
+    public void advanceToClick() {
+        /** do nothing */
+    }
+
+    @Override
+    public void resizeToOrientation(int orientation) {
+        /** do nothing */
     }
 
     /** shorthand start method for the lazy */
@@ -105,6 +119,10 @@ public class SAInterstitialActivity {
         /** start playing */
         activity.play();
     }
+
+    /**********************************************************************************************/
+    /** Inner Activity implementation */
+    /**********************************************************************************************/
 
     public static class SAInterstitialActivityInner extends Activity {
 
