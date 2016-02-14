@@ -159,6 +159,9 @@ public class SAVideoActivity implements SAViewProtocol {
         private SAVideoAd videoAd;
         private Button closeBtn;
 
+        /** is OK to close bool */
+        private boolean isOKToClose = false;
+
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
             /** Always call the superclass so it can save the view hierarchy state */
@@ -201,10 +204,51 @@ public class SAVideoActivity implements SAViewProtocol {
 
             /** get player */
             videoAd = (SAVideoAd) findViewById(video_adId);
-            videoAd.setParentalGateListener(parentalGateListener);
             videoAd.setAd(ad);
+            videoAd.setParentalGateListener(parentalGateListener);
             videoAd.setAdListener(adListener);
             videoAd.setVideoAdListener(videoAdListener);
+            videoAd.setIsParentalGateEnabled(isParentalGateEnabled);
+            videoAd.setInternalAdListener(new SAAdListener() {
+                @Override
+                public void adWasShown(int placementId) {}
+                @Override
+                public void adWasClosed(int placementId) {}
+                @Override
+                public void adWasClicked(int placementId) {}
+                @Override
+                public void adHasIncorrectPlacement(int placementId) {
+                    close();
+                }
+                @Override
+                public void adFailedToShow(int placementId) {
+                    close();
+                }
+            });
+            videoAd.setInternalVideoAdListener(new SAVideoAdListener() {
+                @Override
+                public void videoStarted(int placementId) {}
+                @Override
+                public void videoReachedFirstQuartile(int placementId) {}
+                @Override
+                public void videoReachedMidpoint(int placementId) {}
+                @Override
+                public void videoReachedThirdQuartile(int placementId) {}
+                @Override
+                public void videoEnded(int placementId) {}
+                @Override
+                public void adEnded(int placementId) {}
+                @Override
+                public void adStarted(int placementId) {
+                    isOKToClose = true;
+                }
+                @Override
+                public void allAdsEnded(int placementId) {
+                    if (shouldAutomaticallyCloseAtEnd) {
+                        close();
+                    }
+                }
+            });
             videoAd.play();
         }
 
@@ -255,6 +299,12 @@ public class SAVideoActivity implements SAViewProtocol {
 
         /** public close function */
         public void closeVideo(View v){
+            if (isOKToClose) {
+                close();
+            }
+        }
+
+        public void close() {
             /** close listener */
             if (adListener != null){
                 adListener.adWasClosed(ad.placementId);

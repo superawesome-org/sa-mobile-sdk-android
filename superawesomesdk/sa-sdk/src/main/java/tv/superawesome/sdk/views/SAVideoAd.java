@@ -42,6 +42,8 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
     private SAAdListener adListener;
     private SAParentalGateListener parentalGateListener;
     private SAVideoAdListener videoAdListener;
+    private SAAdListener internalAdListener;
+    private SAVideoAdListener internalVideoAdListener;
 
     /** helper vars */
     private float cWidth = 0;
@@ -103,6 +105,10 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
             if (adListener != null) {
                 adListener.adHasIncorrectPlacement(ad.placementId);
             }
+            
+            if (internalAdListener != null) {
+                internalAdListener.adHasIncorrectPlacement(ad.placementId);
+            }
 
             return;
         }
@@ -120,8 +126,9 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
                     adListener.adFailedToShow(ad.placementId);
                 }
 
-                /** close when no ads */
-                close();
+                if (internalAdListener != null) {
+                    internalAdListener.adFailedToShow(ad.placementId);
+                }
             }
 
             @Override
@@ -130,8 +137,9 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
                     adListener.adFailedToShow(ad.placementId);
                 }
 
-                /** close when no ads */
-                close();
+                if (internalAdListener != null) {
+                    internalAdListener.adFailedToShow(ad.placementId);
+                }
             }
 
             @Override
@@ -142,6 +150,10 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
                 /** call listener */
                 if (adListener != null){
                     adListener.adWasShown(ad.placementId);
+                }
+
+                if (internalAdListener != null){
+                    internalVideoAdListener.adStarted(ad.placementId);
                 }
             }
 
@@ -198,7 +210,9 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
                     videoAdListener.allAdsEnded(ad.placementId);
                 }
 
-                close();
+                if (internalVideoAdListener != null){
+                    internalVideoAdListener.allAdsEnded(ad.placementId);
+                }
             }
 
             @Override
@@ -277,6 +291,10 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
         this.adListener = adListener;
     }
 
+    public void setInternalAdListener(SAAdListener adListener) {
+        this.internalAdListener = adListener;
+    }
+
     /**
      * This function sets the parental gate listener
      * @param parentalGateListener
@@ -291,6 +309,10 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
      */
     public void setVideoAdListener(SAVideoAdListener videoAdListener){
         this.videoAdListener = videoAdListener;
+    }
+
+    public void setInternalVideoAdListener(SAVideoAdListener videoAdListener) {
+        this.internalVideoAdListener = videoAdListener;
     }
 
     /**
