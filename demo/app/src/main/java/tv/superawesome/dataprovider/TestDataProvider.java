@@ -42,6 +42,8 @@ public class TestDataProvider {
         list.add(AdItem.create("79 #Inter", 79, false, AdItemType.interstitial_item));
         list.add(AdItem.create("79 #Video", 79, false, AdItemType.fullscreen_video_item));
 
+        list.add(AdItem.create("30425", 30425, false, AdItemType.interstitial_item));
+
         return list;
     }
 }

@@ -32,7 +32,7 @@ public class SASender {
 
             @Override
             public void failure() {
-                // do nothing
+                // SALog.Log("Failure to send to " + url);
             }
         });
     }

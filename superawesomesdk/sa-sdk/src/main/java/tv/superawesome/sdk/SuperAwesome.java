@@ -15,6 +15,7 @@ import java.util.Random;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.capper.SACapper;
 
 /**
  * This is a Singleton class through which SDK users setup their AwesomeAds instance
@@ -25,11 +26,10 @@ public class SuperAwesome {
     private final String BASE_URL_STAGING = "https://ads.staging.superawesome.tv/v2";
     private final String BASE_URL_DEVELOPMENT = "https://ads.dev.superawesome.tv/v2";
     private final String BASE_URL_PRODUCTION = "https://ads.superawesome.tv/v2";
-    private final String SUPER_AWESOME_DAU_ID = "SUPER_AWESOME_DAU_ID";
 
     private String baseUrl;
     private boolean isTestEnabled;
-    private String dauID;
+    private int dauID;
 
     public enum SAConfiguration {
         STAGING,
@@ -55,7 +55,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.4.1";
+        return "3.4.2";
     }
 
     private String getSdk() {
@@ -110,49 +110,19 @@ public class SuperAwesome {
      */
     public void setApplicationContext(Context _appContext){
         SAApplication.setSAApplicationContext(_appContext);
-        this.enableDeviceAppUserId(_appContext);
+        SACapper.enableCapping(_appContext, new SACapper.SACapperListener() {
+            @Override
+            public void didFindDAUId(int id) {
+                dauID = id;
+            }
+        });
     }
 
     public Context getApplicationContext(){
         return SAApplication.getSAApplicationContext();
     }
 
-    /** group of functions that relate to the Device-App-User ID */
-    private String generateId () {
-        /** constants */
-        final String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789";
-        final int length = alphabet.length();
-        final int dauLength = 32;
-
-        /** generate the string */
-        String s = "";
-        for (int i = 0; i < dauLength; i++){
-            int index = SAUtils.randomNumberBetween(0, length - 1);
-            s += alphabet.charAt(index);
-        }
-        return s;
-    }
-
-    private void enableDeviceAppUserId (Context _appContext) {
-        /** get the shared prefs */
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_appContext);
-        String dauID = preferences.getString(SUPER_AWESOME_DAU_ID, null);
-
-        /** if dauId is NOK, then generate it */
-        if (dauID == null || dauID.equals("")) {
-            SharedPreferences.Editor editor = preferences.edit();
-            dauID = generateId();
-            editor.putString(SUPER_AWESOME_DAU_ID, dauID);
-            editor.apply();
-            this.dauID = dauID;
-        }
-        /** else assign it */
-        else {
-            this.dauID = dauID;
-        }
-    }
-
-    public String getDAUID() {
+    public int getDAUID() {
         return this.dauID;
     }
 }

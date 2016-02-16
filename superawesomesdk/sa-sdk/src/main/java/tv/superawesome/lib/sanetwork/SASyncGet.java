@@ -3,6 +3,7 @@ package tv.superawesome.lib.sanetwork;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
@@ -37,6 +38,7 @@ public class SASyncGet {
         SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
         socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
         registry.register(new Scheme("https", socketFactory, 443));
+//        registry.register(new Scheme("http", socketFactory, 80));
         SingleClientConnManager mgr = new SingleClientConnManager(client.getParams(), registry);
 
         DefaultHttpClient httpClient = new DefaultHttpClient(mgr, client.getParams());

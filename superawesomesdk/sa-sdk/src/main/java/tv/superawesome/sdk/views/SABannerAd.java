@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sanetwork.SASender;
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
 import tv.superawesome.lib.sawebview.SAWebViewListener;
@@ -232,6 +233,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         }
 
         if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
+            SALog.Log("Trying to send to " + ad.creative.trackingURL);
             SASender.sendEventToURL(ad.creative.trackingURL);
         }
 
