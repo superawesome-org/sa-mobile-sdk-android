@@ -225,7 +225,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
         manager.parseVASTURL(ad.creative.details.vast);
 
         /** make the padlock visible or not */
-        if (ad.isFallback) {
+        if (ad.isFallback || ad.isHouse) {
             padlock.setVisibility(View.GONE);
         } else {
             padlock.setVisibility(View.VISIBLE);

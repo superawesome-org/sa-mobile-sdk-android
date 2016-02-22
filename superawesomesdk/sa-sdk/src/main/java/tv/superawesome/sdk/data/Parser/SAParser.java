@@ -78,14 +78,15 @@ public class SAParser {
         Object isTestObj = dict.opt("test");
         Object isFallbackObj = dict.opt("is_fallback");
         Object isFillObj = dict.opt("is_fill");
+        Object isHouseObj = dict.opt("is_house");
 
         ad.error = (validateField(errorObj) ? Integer.parseInt(errorObj.toString().replace("\"","")) : -1);
         ad.lineItemId = (validateField(lineItemIdObj) ? Integer.parseInt(lineItemIdObj.toString().replace("\"","")) : -1);
         ad.campaignId = (validateField(campaignIdObj) ? Integer.parseInt(campaignIdObj.toString().replace("\"","")) : -1);
-
-        ad.isTest = (validateField(isTestObj) ? Boolean.parseBoolean(isTestObj.toString().replace("\"","")) : true);
+        ad.isTest = (validateField(isTestObj) ? Boolean.parseBoolean(isTestObj.toString().replace("\"", "")) : true);
         ad.isFallback = (validateField(isFallbackObj) ? Boolean.parseBoolean(isFallbackObj.toString().replace("\"","")) : true);
         ad.isFill = (validateField(isFillObj) ? Boolean.parseBoolean(isFillObj.toString().replace("\"","")) : false);
+        ad.isHouse = (validateField(isHouseObj) ? Boolean.parseBoolean(isHouseObj.toString().replace("\"","")) : false);
 
         return ad;
     }

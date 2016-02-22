@@ -39,10 +39,10 @@ public class TestDataProvider {
         list.add(AdItem.create("Upsight - Rewarded Video - 30176", 30176, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("Upsight - Non Reward Video - 30175", 30175, false, AdItemType.fullscreen_video_item));
 
-        list.add(AdItem.create("79 #Inter", 79, false, AdItemType.interstitial_item));
-        list.add(AdItem.create("79 #Video", 79, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("30471", 30471, true, AdItemType.banner_item));
+        list.add(AdItem.create("30510", 30510, false, AdItemType.video_item));
 
-        list.add(AdItem.create("30425", 30425, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("30512", 30512, true, AdItemType.fullscreen_video_item));
 
         return list;
     }

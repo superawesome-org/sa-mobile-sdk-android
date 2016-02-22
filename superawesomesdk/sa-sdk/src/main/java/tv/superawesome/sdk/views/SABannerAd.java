@@ -36,6 +36,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     private SAAd ad; /** private ad */
 
     /** Subviews */
+    private RelativeLayout contentHolder;
     private SAWebView webView;
     private ImageView padlock;
 
@@ -69,6 +70,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         /** get ids */
         String packageName = context.getPackageName();
         int view_sa_bannerId = getResources().getIdentifier("view_sa_banner", "layout", packageName);
+        int content_holderId = getResources().getIdentifier("content_holder", "id", packageName);
         int web_viewId = getResources().getIdentifier("web_view", "id", packageName);
         int padlockId = getResources().getIdentifier("padlock_image", "id", packageName);
 
@@ -76,6 +78,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(view_sa_bannerId, this);
 
+        contentHolder = (RelativeLayout)findViewById(content_holderId);
         webView = (SAWebView)findViewById(web_viewId);
         webView.setListener(this);
         padlock = (ImageView)findViewById(padlockId);
@@ -175,7 +178,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
 
                 android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                webView.setLayoutParams(params);
+                contentHolder.setLayoutParams(params);
 
                 /** load the HTML with the custom SAWebView */
                 webView.loadHTML(
@@ -185,7 +188,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
                         w, h);
 
                 /** make the padlock visible or not */
-                if (ad.isFallback) {
+                if (ad.isFallback || ad.isHouse) {
                     padlock.setVisibility(View.GONE);
                 } else {
                     padlock.setVisibility(View.VISIBLE);
@@ -271,7 +274,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
 
         android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        webView.setLayoutParams(params);
+        contentHolder.setLayoutParams(params);
     }
 
     /**********************************************************************************************/

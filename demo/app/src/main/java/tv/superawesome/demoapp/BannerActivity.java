@@ -78,9 +78,9 @@ public class BannerActivity extends Activity {
                 banner.setAd(ad);
                 banner.play();
 
-                android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(300, 300);
-                params.leftMargin = 250;
-                params.topMargin = 350;
+                android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(600, 600);
+                params.leftMargin = 0;
+                params.topMargin = 0;
                 banner.setLayoutParams(params);
 
                 ((ViewGroup) ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0)).addView(banner);
