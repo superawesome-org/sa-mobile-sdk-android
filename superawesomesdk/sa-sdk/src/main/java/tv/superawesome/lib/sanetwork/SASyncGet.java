@@ -31,7 +31,8 @@ public class SASyncGet {
         SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
         socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
         registry.register(new Scheme("https", socketFactory, 443));
-//        registry.register(new Scheme("http", socketFactory, 80));
+        registry.register(new Scheme("http", socketFactory, 80));
+        registry.register(new Scheme("http", socketFactory, 8888));
         SingleClientConnManager mgr = new SingleClientConnManager(client.getParams(), registry);
 
         DefaultHttpClient httpClient = new DefaultHttpClient(mgr, client.getParams());

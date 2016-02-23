@@ -82,6 +82,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         webView = (SAWebView)findViewById(web_viewId);
         webView.setListener(this);
         padlock = (ImageView)findViewById(padlockId);
+        webView.setBackgroundColor(Color.GREEN);
 
         this.setBackgroundColor(Color.rgb(191, 191, 191));
     }
@@ -173,8 +174,11 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
                         cHeight,
                         ad.creative.details.width,
                         ad.creative.details.height);
+                int x = newframe.left;
+                int y = newframe.top;
                 int w = newframe.right;
                 int h = newframe.bottom;
+                SALog.Log("Frame: " + x + ", " + y + ", " + w + ", " + h + "==>" + cWidth + "-" + cHeight);
 
                 android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);

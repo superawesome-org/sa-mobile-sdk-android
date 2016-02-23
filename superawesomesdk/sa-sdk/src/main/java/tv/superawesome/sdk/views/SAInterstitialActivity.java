@@ -164,7 +164,8 @@ public class SAInterstitialActivity implements SAViewProtocol {
 
             /** get the banner */
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
-            interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
+//            interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
+            interstitialBanner.setBackgroundColor(Color.RED);
             interstitialBanner.setAd(ad);
             interstitialBanner.setAdListener(adListener);
             interstitialBanner.setParentalGateListener(parentalGateListener);

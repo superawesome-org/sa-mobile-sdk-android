@@ -1,12 +1,15 @@
 package tv.superawesome.lib.sawebview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Size;
+import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -20,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
 
 /**
  * Created by gabriel.coman on 30/12/15.
@@ -28,6 +32,7 @@ public class SAWebView extends WebView {
 
     /** the internal listener */
     private SAWebViewListener listener;
+    private float scaleFactor = 0;
 
     /** Constructors */
     public SAWebView(Context context) {
@@ -43,8 +48,9 @@ public class SAWebView extends WebView {
         /** any initialisation work here */
 
         this.getSettings().setJavaScriptEnabled(true);
-        this.getSettings().setLoadWithOverviewMode(true);
-        this.getSettings().setUseWideViewPort(true);
+//        this.getSettings().setLoadWith3iewPort(true);
+
+        scaleFactor = SAUtils.getScaleFactor((Activity)context);
 
         /** only for jelly bean */
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -84,21 +90,47 @@ public class SAWebView extends WebView {
                     return true;
                 }
             }
+
+        });
+        this.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage cm) {
+                SALog.Log(cm.message() + " -- From line " + cm.lineNumber() + " of " + cm.sourceId());
+                return true;
+            }
         });
 
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int ow, int oh) {
+        super.onSizeChanged(w, h, ow, oh);
+        SALog.Log("onSizeChanged: " + w + " - " + h);
+    }
+
     public void loadHTML(String html, float adWidth, float adHeight, float frameWidth, float frameHeight){
         /** calc params */
-        float xscale = frameWidth / adWidth;
-        float yscale = frameHeight / adHeight;
-        float scale = Math.min(xscale, yscale);
+//        float xscale = 980 / adWidth;
+//        float yscale = (1470 * scaleFactor) / adHeight;
+//        float scale = Math.min(xscale, yscale);
+//        SALog.Log("Scale " + scale);
+//        scale = 1.15f;
+//        this.setInitialScale((int)(scale * 100));
+//        SALog.Log("scale is " + scale * 100);
+//        this.setInitialScale(435);
 
-        this.setInitialScale((int)(scale * 100));
+//        scale = 1.15f;
 
         String _html = html;
         _html = _html.replace("_WIDTH_","" + (int)adWidth);
         _html = _html.replace("_HEIGHT_", "" + (int)adHeight);
+        _html = _html.replace("_FWIDTH_", "" + (int)frameWidth);
+        _html = _html.replace("_FHEIGHT_", "" + (int)frameHeight);
+//        _html = _html.replace("_SCALE_", "" + (float)scale);
+//        _html = _html.replace("_LEFT_", "" + (int)((adWidth/2.0f) * (scale - 1)));
+//        _html = _html.replace("_TOP_", "" + (int)((adHeight/2.0f) * (scale - 1)));
+
+        SALog.Log(_html);
 
         /** get the context */
         Context context = this.getContext();

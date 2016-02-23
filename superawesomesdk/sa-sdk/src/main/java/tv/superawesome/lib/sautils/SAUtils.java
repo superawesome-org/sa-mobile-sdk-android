@@ -14,8 +14,10 @@ package tv.superawesome.lib.sautils;
 
 import android.app.Activity;
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
+import android.view.Display;
 
 import org.json.JSONObject;
 
@@ -188,5 +190,17 @@ public class SAUtils {
         }
 
         return new Rect((int)X, (int)Y, (int)W, (int)H);
+    }
+
+    /**
+     * Get the current scale factor
+     * @param activity - the activity to pass along as context
+     * @return a float meaning the scale
+     */
+    public static float getScaleFactor(Activity activity){
+        DisplayMetrics metrics = new DisplayMetrics();
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        display.getMetrics(metrics);
+        return  (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
     }
 }

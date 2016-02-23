@@ -1,17 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>-->
     <title>SuperAwesome Rich Media Template</title>
     <style>
-        html, body { width: 100%; height: 100%; padding: 0; margin: 0; border: 0; background-color: #efefef; }
-        body { display: table; }
-        div#center { text-align: center; width:100%; height: 100%; display: table-cell; vertical-align: middle;  }
-        iframe { width: _WIDTH_px; height: _HEIGHT_px; border: 0; margin: 0; padding: 0; background-color: #efefef; }
+        html, body { width: 100%; height: 100%; padding: 0; margin: 0; border: 0; background-color: blue; }
+        iframe { width: _WIDTH_px; height: _HEIGHT_px; border: 0; margin: 0; padding: 0; background-color: magenta; }
+        iframe { /** -webkit-transform: scale(_SCALE_); top: _TOP_px; left: _LEFT_px; */ position: absolute;  }
+
     </style>
     <script type="text/javascript">
-        function change_links_target()
-        {
+        function change_links_target() {
+            var iW = window.innerWidth;
+            var iH = window.innerHeight;
+            var scrW = _FWIDTH_;
+            var scrH = _FHEIGHT_;
+
+            var oldR = iW / iH;
+            var newR = scrW/ scrH;
+            var scale = 0;
+            if (oldR > newR) {
+                scale = scrW / iW;
+            } else {
+                scale = scrH / iH;
+            }
+
+            var display_element = document.getElementById('sa-richiframe');
+            display_element.style.webkitTransform = "scale("+scale+")";
+            display_element.style.MozTransform = "scale("+scale+")";
+            display_element.style.oTransform = "scale("+scale+")";
+            display_element.style.msTransform = "scale("+scale+")";
+            display_element.style.left = (iW/2)*(scale-1) + 'px';
+            display_element.style.top = (iH/2)*(scale-1) + 'px';
+
+            console.log(scale);
+            console.log(window.innerWidth + "-" + window.innerHeight);
             var all_document_links = document.getElementsByTagName("a");
             for (i = 0; i < all_document_links.length; i++){
                 all_document_links[i].setAttribute("target", "_top");
@@ -19,6 +42,7 @@
         }
     </script>
 </head>
-<body onload="change_links_target">
-<div id="center"><iframe src='richMediaURL'></iframe></div></body>
+<body onload="change_links_target()">
+<iframe id='sa-richiframe' src='richMediaURL'></iframe>
+</body>
 </html>
