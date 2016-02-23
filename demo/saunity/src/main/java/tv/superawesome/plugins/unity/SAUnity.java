@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 /** import other SuperAwesome stuff */
 import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Loader.*;
 import tv.superawesome.sdk.data.Models.SAAd;
@@ -88,35 +89,12 @@ public class SAUnity {
         Display display = activity.getWindowManager().getDefaultDisplay();
 
         View decorView = activity.getWindow().getDecorView();
-//        int uiOptions = decorView.getSystemUiVisibility();
-//        SALog.Log("uiOptions " + uiOptions);
-//        SALog.Log("decorView ==> W: " + decorView.getWidth() + " H: " + decorView.getHeight());
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            display.getRealMetrics(metrics);
-//        } else {
-//            display.getMetrics(metrics);
-//        }
 
         if (!rotate){
             return new SASize(decorView.getWidth(), decorView.getHeight());
         } else {
             return new SASize(decorView.getHeight(), decorView.getWidth());
         }
-//        return new SASize(metrics.widthPixels, metrics.heightPixels);
-//        return new SASize(decorView.getWidth(), decorView.getHeight());
-    }
-
-    /**
-     * Get the current scale factor
-     * @param activity - the activity to pass along as context
-     * @return a float meaning the scale
-     */
-    public static float getScaleFactor(Activity activity){
-        DisplayMetrics metrics = new DisplayMetrics();
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        display.getMetrics(metrics);
-        return  (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
     }
 
     public static RelativeLayout.LayoutParams getBannerLayoutParams(float factor, SASize screenSize, int bannerSize, int bannerPosition){
@@ -223,7 +201,7 @@ public class SAUnity {
 
                     /** get factor & screen size */
                     SASize screenSize = getRealScreenSize(activity, false);
-                    final float factor = getScaleFactor(activity);
+                    final float factor = SAUtils.getScaleFactor(activity);
 
                     /** set banner width & height */
                     int maxWidthHeight = Math.max(screenSize.width, screenSize.height);

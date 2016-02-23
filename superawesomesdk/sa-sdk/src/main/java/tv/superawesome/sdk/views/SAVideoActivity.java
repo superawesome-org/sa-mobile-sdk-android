@@ -108,7 +108,7 @@ public class SAVideoActivity implements SAViewProtocol {
     }
 
     @Override
-    public void resizeToOrientation(int orientation) {
+    public void resizeToSize(int width, int height) {
         /** do nothing */
     }
 

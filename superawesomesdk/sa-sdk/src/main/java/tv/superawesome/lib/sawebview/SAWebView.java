@@ -48,7 +48,6 @@ public class SAWebView extends WebView {
         /** any initialisation work here */
 
         this.getSettings().setJavaScriptEnabled(true);
-//        this.getSettings().setLoadWith3iewPort(true);
 
         scaleFactor = SAUtils.getScaleFactor((Activity)context);
 
@@ -66,7 +65,6 @@ public class SAWebView extends WebView {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                SALog.Log("On page started");
                 if (shouldOverrideUrlLoading(view, url)) {
                     view.stopLoading();
                 }
@@ -75,11 +73,10 @@ public class SAWebView extends WebView {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-            }
+           }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                SALog.Log("Called once!");
                 if (url.contains("file:///")) {
                     return false;
                 } else {
@@ -102,35 +99,12 @@ public class SAWebView extends WebView {
 
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int ow, int oh) {
-        super.onSizeChanged(w, h, ow, oh);
-        SALog.Log("onSizeChanged: " + w + " - " + h);
-    }
-
     public void loadHTML(String html, float adWidth, float adHeight, float frameWidth, float frameHeight){
         /** calc params */
-//        float xscale = 980 / adWidth;
-//        float yscale = (1470 * scaleFactor) / adHeight;
-//        float scale = Math.min(xscale, yscale);
-//        SALog.Log("Scale " + scale);
-//        scale = 1.15f;
-//        this.setInitialScale((int)(scale * 100));
-//        SALog.Log("scale is " + scale * 100);
-//        this.setInitialScale(435);
-
-//        scale = 1.15f;
-
         String _html = html;
-        _html = _html.replace("_WIDTH_","" + (int)adWidth);
-        _html = _html.replace("_HEIGHT_", "" + (int)adHeight);
-        _html = _html.replace("_FWIDTH_", "" + (int)frameWidth);
-        _html = _html.replace("_FHEIGHT_", "" + (int)frameHeight);
-//        _html = _html.replace("_SCALE_", "" + (float)scale);
-//        _html = _html.replace("_LEFT_", "" + (int)((adWidth/2.0f) * (scale - 1)));
-//        _html = _html.replace("_TOP_", "" + (int)((adHeight/2.0f) * (scale - 1)));
-
-        SALog.Log(_html);
+        _html = _html.replace("_WIDTH_", "" + (int)(adWidth));
+        _html = _html.replace("_HEIGHT_", "" + (int)(adHeight));
+        _html = _html.replace("_SCALE_","" + ((frameWidth/scaleFactor)/adWidth));
 
         /** get the context */
         Context context = this.getContext();

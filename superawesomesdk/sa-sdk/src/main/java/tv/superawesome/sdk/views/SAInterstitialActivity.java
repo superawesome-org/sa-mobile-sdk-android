@@ -8,11 +8,13 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sanetwork.SAApplication;
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
@@ -66,7 +68,7 @@ public class SAInterstitialActivity implements SAViewProtocol {
     }
 
     @Override
-    public void play(){
+    public void play() {
         intent = new Intent(context, SAInterstitialActivityInner.class);
         context.startActivity(intent);
     }
@@ -89,7 +91,7 @@ public class SAInterstitialActivity implements SAViewProtocol {
     }
 
     @Override
-    public void resizeToOrientation(int orientation) {
+    public void resizeToSize(int width, int height) {
         /** do nothing */
     }
 
@@ -164,8 +166,7 @@ public class SAInterstitialActivity implements SAViewProtocol {
 
             /** get the banner */
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
-//            interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
-            interstitialBanner.setBackgroundColor(Color.RED);
+            interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
             interstitialBanner.setAd(ad);
             interstitialBanner.setAdListener(adListener);
             interstitialBanner.setParentalGateListener(parentalGateListener);
@@ -176,7 +177,11 @@ public class SAInterstitialActivity implements SAViewProtocol {
         @Override
         public void onConfigurationChanged(Configuration newConfig) {
             super.onConfigurationChanged(newConfig);
-            interstitialBanner.resizeToOrientation(newConfig.orientation);
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            int width = metrics.widthPixels;
+            int height = metrics.heightPixels;
+            interstitialBanner.resizeToSize(width, height);
+
         }
 
         public void closeInterstitial(View v){

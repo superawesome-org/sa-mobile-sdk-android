@@ -23,7 +23,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
-        android:maxWidth="49dp"
-        android:maxHeight="25dp"/>
+        android:maxWidth="61dp"
+        android:maxHeight="31dp"/>
 
 </RelativeLayout>

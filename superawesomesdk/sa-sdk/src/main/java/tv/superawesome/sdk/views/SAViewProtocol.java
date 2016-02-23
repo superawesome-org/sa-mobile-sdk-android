@@ -26,5 +26,5 @@ public interface SAViewProtocol {
     void advanceToClick();
 
     /** resize view or view controller */
-    void resizeToOrientation(int orientation);
+    void resizeToSize(int width, int height);
 }

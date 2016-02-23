@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -47,8 +48,6 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     /** helper vars */
     private float cWidth = 0;
     private float cHeight = 0;
-    private float bigDimension = 0;
-    private float smallDimension = 0;
     private boolean layoutOK = false;
     private String destinationURL = null;
 
@@ -82,7 +81,12 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         webView = (SAWebView)findViewById(web_viewId);
         webView.setListener(this);
         padlock = (ImageView)findViewById(padlockId);
-        webView.setBackgroundColor(Color.GREEN);
+
+        /** set padlock size vs. screen display */
+//        float scaleFactor = SAUtils.getScaleFactor((Activity)context);
+
+//        android.widget.RelativeLayout.LayoutParams padParams = new LayoutParams((int) (67 * scaleFactor) , (int) (25 * scaleFactor));
+//        padlock.setLayoutParams(padParams);
 
         this.setBackgroundColor(Color.rgb(191, 191, 191));
     }
@@ -92,7 +96,8 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         super.onLayout(changed, l, t, r, b);
         cWidth = getWidth();
         cHeight = getHeight();
-        if (cWidth != 0 && cHeight != 0){
+
+        if (cWidth != 0 && cHeight != 0 && !layoutOK){
             layoutOK = true;
         }
     }
@@ -164,32 +169,9 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                /** once cWidth and cHeight are determined, also set the big and small dimensions */
-                bigDimension = (cWidth > cHeight ? cWidth : cHeight);
-                smallDimension = (cWidth < cHeight ? cWidth : cHeight);
 
-                /** calc the new frame */
-                final Rect newframe = SAUtils.arrangeAdInNewFrame(
-                        cWidth,
-                        cHeight,
-                        ad.creative.details.width,
-                        ad.creative.details.height);
-                int x = newframe.left;
-                int y = newframe.top;
-                int w = newframe.right;
-                int h = newframe.bottom;
-                SALog.Log("Frame: " + x + ", " + y + ", " + w + ", " + h + "==>" + cWidth + "-" + cHeight);
-
-                android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
-                params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                contentHolder.setLayoutParams(params);
-
-                /** load the HTML with the custom SAWebView */
-                webView.loadHTML(
-                        ad.adHTML,
-                        ad.creative.details.width,
-                        ad.creative.details.height,
-                        w, h);
+                /** resize the views */
+                resizeToSize((int) cWidth, (int) cHeight);
 
                 /** make the padlock visible or not */
                 if (ad.isFallback || ad.isHouse) {
@@ -252,33 +234,26 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     }
 
     @Override
-    public void resizeToOrientation(int orientation){
-        /** update cWidth & cHeight */
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            cWidth = bigDimension;
-            cHeight = smallDimension;
-        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            cWidth = smallDimension;
-            cHeight = bigDimension;
-        } else  if (orientation == Configuration.ORIENTATION_SQUARE) {
-            cWidth = cHeight = smallDimension;
-        } else {
-            cWidth = smallDimension;
-            cHeight = bigDimension;
-        }
+    public void resizeToSize(int width, int height){
+        /** get ad width */
+        int adWidth = ad.creative.details.width,
+            adHeight = ad.creative.details.height;
 
-        /** calc the new frame */
-        final Rect newframe = SAUtils.arrangeAdInNewFrame(
-                cWidth,
-                cHeight,
-                ad.creative.details.width,
-                ad.creative.details.height);
-        int w = newframe.right;
-        int h = newframe.bottom;
+        /** calc new frame */
+        Rect newFrame = SAUtils.arrangeAdInNewFrame(width, height, adWidth, adHeight);
+        int newWidth = newFrame.right,
+            newHeight = newFrame.bottom;
 
-        android.widget.RelativeLayout.LayoutParams params = new LayoutParams(w, h);
+        /**
+         * create new layout for content Holder - this must happen ***before*** the parent view
+         * (SABannerAd) triggers the onLayout callback
+         */
+        android.widget.RelativeLayout.LayoutParams params = new LayoutParams(newWidth, newHeight);
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         contentHolder.setLayoutParams(params);
+
+        /** update HTML as well */
+        webView.loadHTML(ad.adHTML, adWidth, adHeight, newWidth, newHeight);
     }
 
     /**********************************************************************************************/
