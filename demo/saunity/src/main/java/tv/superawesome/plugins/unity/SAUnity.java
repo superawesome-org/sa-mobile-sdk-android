@@ -321,6 +321,7 @@ public class SAUnity {
             if (temp.getClass().getName().equals(RelativeLayout.class.getName())){
                 RelativeLayout bad = (RelativeLayout)temp;
                 ((ViewGroup)bad.getParent()).removeView(bad);
+                SAUnityManager.getInstance().removeFromMap(unityName);
             }
         }
     }
@@ -367,11 +368,13 @@ public class SAUnity {
 
                         @Override
                         public void adFailedToShow(int placementId) {
+                            SAUnityManager.getInstance().removeFromMap(placementId);
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
 
                         @Override
                         public void adWasClosed(int placementId) {
+                            SAUnityManager.getInstance().removeFromMap(placementId);
                             SendUnityMsg(unityName, "callback_adWasClosed");
                         }
 
@@ -482,11 +485,13 @@ public class SAUnity {
 
                         @Override
                         public void adFailedToShow(int placementId) {
+                            SAUnityManager.getInstance().removeFromMap(placementId);
                             SendUnityMsg(unityName, "callback_adFailedToShow");
                         }
 
                         @Override
                         public void adWasClosed(int placementId) {
+                            SAUnityManager.getInstance().removeFromMap(placementId);
                             SendUnityMsg(unityName, "callback_adWasClosed");
                         }
 

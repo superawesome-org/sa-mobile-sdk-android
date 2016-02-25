@@ -263,9 +263,9 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
             adListener.adWasClicked(ad.placementId);
         }
 
-        if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
-            SASender.sendEventToURL(ad.creative.trackingURL);
-        }
+//        if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
+//            SASender.sendEventToURL(ad.creative.trackingURL);
+//        }
 
         System.out.println("Going to " + destinationURL);
 

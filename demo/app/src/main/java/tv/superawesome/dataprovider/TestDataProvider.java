@@ -30,13 +30,20 @@ public class TestDataProvider {
 
 //        list.add(AdItem.create("30007", 30007, false, AdItemType.interstitial_item));
 //
-        list.add(AdItem.create("Upsight - Phone Portrait Static - 30172", 30172, false, AdItemType.banner_item));
+
+        list.add(AdItem.create("79", 79, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("1830", 1830, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("230", 230, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("232", 232, false, AdItemType.interstitial_item));
+
+        list.add(AdItem.create("seventy nine", 79, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("1830", 1830, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("Upsight - Phone Landscape Static - 30171", 30171, false, AdItemType.interstitial_item));
 
         list.add(AdItem.create("Upsight - Tablet Portrait Static - 30173", 30173, false, AdItemType.interstitial_item));
         list.add(AdItem.create("Upsight - Tablet Landscape Static - 30174", 30174, false, AdItemType.interstitial_item));
 
-        list.add(AdItem.create("Upsight - Rewarded Video - 30176", 30176, false, AdItemType.fullscreen_video_item));
+        list.add(AdItem.create("28000", 28000, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("10305", 10305, false, AdItemType.banner_item));
         list.add(AdItem.create("30468", 30468, false, AdItemType.interstitial_item));
         list.add(AdItem.create("30510", 30510, false, AdItemType.fullscreen_video_item));
