@@ -73,6 +73,7 @@ public class SAParser {
         SAAd ad = new SAAd();
 
         Object errorObj = dict.opt("error");
+        Object appObj = dict.opt("app");
         Object lineItemIdObj = dict.opt("line_item_id");
         Object campaignIdObj = dict.opt("campaign_id");
         Object isTestObj = dict.opt("test");
@@ -81,6 +82,7 @@ public class SAParser {
         Object isHouseObj = dict.opt("is_house");
 
         ad.error = (validateField(errorObj) ? Integer.parseInt(errorObj.toString().replace("\"","")) : -1);
+        ad.app = (validateField(appObj) ? Integer.parseInt(appObj.toString().replace("\"","")) : -1);
         ad.lineItemId = (validateField(lineItemIdObj) ? Integer.parseInt(lineItemIdObj.toString().replace("\"","")) : -1);
         ad.campaignId = (validateField(campaignIdObj) ? Integer.parseInt(campaignIdObj.toString().replace("\"","")) : -1);
         ad.isTest = (validateField(isTestObj) ? Boolean.parseBoolean(isTestObj.toString().replace("\"", "")) : true);

@@ -26,6 +26,7 @@ public class SAVASTPlayer extends Fragment {
 
     /** subviews and other Fragment parameters */
     private VideoView videoPlayer;
+    private MediaPlayer mediaPlayer;
     private String videoURL;
     private SAVASTPlayerListener listener;
 
@@ -129,6 +130,9 @@ public class SAVASTPlayer extends Fragment {
                 if (currentTime == 0) {
                     videoPlayer.start();
                 }
+
+                /** assign media player */
+                mediaPlayer = mp;
 
                 /** calculate time values */
                 duration = videoPlayer.getDuration();
@@ -268,6 +272,13 @@ public class SAVASTPlayer extends Fragment {
     public void setListener(SAVASTPlayerListener listener) {
         this.listener = listener;
     }
+
+    /**
+     * Getters
+     */
+    public VideoView getVideoPlayer() { return this.videoPlayer; }
+
+    public MediaPlayer getMediaPlayer () { return this.mediaPlayer; }
 
     /**
      * Closes and deletes the video player

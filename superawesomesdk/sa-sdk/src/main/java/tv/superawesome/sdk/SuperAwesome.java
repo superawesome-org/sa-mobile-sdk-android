@@ -22,13 +22,18 @@ import tv.superawesome.sdk.capper.SACapper;
  */
 public class SuperAwesome {
 
-    /** other variables */
+    /** Ad server hardcoded constants */
     private final String BASE_URL_STAGING = "https://ads.staging.superawesome.tv/v2";
     private final String BASE_URL_DEVELOPMENT = "https://ads.dev.superawesome.tv/v2";
     private final String BASE_URL_PRODUCTION = "https://ads.superawesome.tv/v2";
 
+    /** Moat tracking hardcoded constants */
+    private final String MOAT_DISPLAY_PARTNER_CODE = "superawesomeinappdisplay731223424656";
+    private final String MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573";
+
     private String baseUrl;
     private boolean isTestEnabled;
+    private boolean isMoatEnabled;
     private int dauID;
 
     public enum SAConfiguration {
@@ -46,6 +51,7 @@ public class SuperAwesome {
     private SuperAwesome(){
         this.setConfigurationProduction();
         this.disableTestMode();
+        this.enableMoatTracking();
     }
 
     /** Get the only object available */
@@ -104,6 +110,21 @@ public class SuperAwesome {
     public void setTestMode(boolean isTestEnabled) { this.isTestEnabled = isTestEnabled; }
 
     public boolean isTestingEnabled() { return this.isTestEnabled; }
+
+    /**
+     * Group of functions related to Moat
+     */
+    public void enableMoatTracking() { this.isMoatEnabled = true; }
+
+    public void disableMoatTracking() { this.isMoatEnabled = false; }
+
+    public void setMoatEnabled(boolean isMoatEnabled) { this.isMoatEnabled = isMoatEnabled; }
+
+    public boolean getIsMoatEnabled() { return this.isMoatEnabled; }
+
+    public String getDisplayMoatPartnerCode() { return this.MOAT_DISPLAY_PARTNER_CODE; }
+
+    public String getVideoMoatPartnerCode() { return this.MOAT_VIDEO_PARTNER_CODE; }
 
     /**
      * Group of functions that encapsulate the SAApplication functionality

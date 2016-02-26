@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -14,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import java.util.HashMap;
 
 import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
@@ -25,6 +25,10 @@ import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
+
+import com.moat.analytics.mobile.MoatFactory;
+import com.moat.analytics.mobile. NativeDisplayTracker;
+
 
 /**
  * Created by gabriel.coman on 30/12/15.
@@ -50,6 +54,10 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     private float cHeight = 0;
     private boolean layoutOK = false;
     private String destinationURL = null;
+
+    /** moat tracking vars */
+    private MoatFactory moatFactory = null;
+    private NativeDisplayTracker moatDisplayTracker = null;
 
     /**********************************************************************************************/
     /** Init methods */
@@ -83,12 +91,13 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         padlock = (ImageView)findViewById(padlockId);
 
         /** set padlock size vs. screen display */
-//        float scaleFactor = SAUtils.getScaleFactor((Activity)context);
-
-//        android.widget.RelativeLayout.LayoutParams padParams = new LayoutParams((int) (67 * scaleFactor) , (int) (25 * scaleFactor));
-//        padlock.setLayoutParams(padParams);
-
         this.setBackgroundColor(Color.rgb(191, 191, 191));
+
+        /** add moat stuff */
+        if (SuperAwesome.getInstance().getIsMoatEnabled()) {
+            moatFactory = MoatFactory.create((Activity) context);
+            moatDisplayTracker = moatFactory.createNativeDisplayTracker(this, SuperAwesome.getInstance().getDisplayMoatPartnerCode());
+        }
     }
 
     @Override
@@ -115,6 +124,18 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     public void saWebViewDidLoad() {
         /** send event */
         SASender.sendEventToURL(ad.creative.viewableImpressionURL);
+
+        /** send moat events */
+        if (moatDisplayTracker != null) {
+            HashMap<String, String> adIds = new HashMap<String, String>();
+            adIds.put("moatClientLevel1", "SuperAwesome");
+            adIds.put("moatClientLevel2", "" + ad.campaignId);
+            adIds.put("moatClientLevel3", "" + ad.lineItemId);
+            adIds.put("moatClientLevel4", "" + ad.creative.creativeId);
+            adIds.put("moatClientSlicer1", "" + ad.app);
+            adIds.put("moatClientSlicer2", "" + ad.placementId);
+            moatDisplayTracker.track(adIds);
+        }
 
         /** call listener */
         if (adListener != null){

@@ -22,6 +22,9 @@ public class SAAd {
     /** the SA server can send an error; if that's the case, this field will not be nill */
     public int error;
 
+    /** the associated app id */
+    public int app;
+
     /** the ID of the placement that the ad was sent for */
     public int placementId;
 
@@ -60,6 +63,7 @@ public class SAAd {
     public void print(){
         String printout = " \nAD:\n";
         printout += "error: " + error + "\n";
+        printout += "app: " + app + "\n";
         printout += "placementId: " + placementId + "\n";
         printout += "lineItemId: " + lineItemId + "\n";
         printout += "campaignId: " + campaignId + "\n";
