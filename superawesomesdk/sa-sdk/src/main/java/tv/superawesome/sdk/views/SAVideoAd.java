@@ -17,18 +17,12 @@ import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
-import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Models.SACreativeFormat;
+import tv.superawesome.sdk.events.SAEvents;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
-
-import com.moat.analytics.mobile.MoatFactory;
-import com.moat.analytics.mobile.NativeVideoTracker;
-
-import java.util.HashMap;
-
 
 /**
  * Created by gabriel.coman on 14/02/16.
@@ -53,10 +47,6 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
 
     /** helper vars */
     private String destinationURL = null;
-
-    /** moat tracking vars */
-    private MoatFactory moatFactory = null;
-    private NativeVideoTracker moatVideoTracker = null;
 
     /**********************************************************************************************/
     /** Init methods */
@@ -87,12 +77,6 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
         padlock = (ImageView)findViewById(padlockId);
 
         this.setBackgroundColor(Color.BLACK);
-
-        /** again, setup the moat tracking */
-        if (SuperAwesome.getInstance().getIsMoatEnabled()) {
-            moatFactory = MoatFactory.create((Activity)context);
-            moatVideoTracker = moatFactory.createNativeVideoTracker(SuperAwesome.getInstance().getVideoMoatPartnerCode());
-        }
     }
 
     /**********************************************************************************************/
@@ -157,18 +141,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
             public void didStartAd() {
                 /** send thie event just to be sure */
                 SASender.sendEventToURL(ad.creative.viewableImpressionURL);
-
-                /** start moat tracking */
-                if (moatVideoTracker != null) {
-                    HashMap<String, String> adIds = new HashMap<String, String>();
-                    adIds.put("moatClientLevel1", "SuperAwesome");
-                    adIds.put("moatClientLevel2", "" + ad.campaignId);
-                    adIds.put("moatClientLevel3", "" + ad.lineItemId);
-                    adIds.put("moatClientLevel4", "" + ad.creative.creativeId);
-                    adIds.put("moatClientSlicer1", "" + ad.app);
-                    adIds.put("moatClientSlicer2", "" + ad.placementId);
-                    moatVideoTracker.trackVideoAd(adIds, videoPlayer.getMediaPlayer(), videoPlayer.getVideoPlayer());
-                }
+                SAEvents.sendVideoMoatEvent((Activity)getContext(), videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer(), ad);
 
                 /** call listener */
                 if (adListener != null){
@@ -237,12 +210,8 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
                     internalVideoAdListener.allAdsEnded(ad.placementId);
                 }
 
-                /** end moat tracking */
-                if (moatVideoTracker != null) {
-                    HashMap<String, Object> params = new HashMap<String, Object>();
-                    params.put("type", "AdVideoComplete");
-                    moatVideoTracker.dispatchEvent(params);
-                }
+                /** send the end event */
+                SAEvents.sendVideoMoatComplete(ad);
             }
 
             @Override

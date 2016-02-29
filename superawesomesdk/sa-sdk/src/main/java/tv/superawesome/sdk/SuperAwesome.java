@@ -61,7 +61,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.4.5";
+        return "3.4.6";
     }
 
     private String getSdk() {
@@ -120,7 +120,7 @@ public class SuperAwesome {
 
     public void setMoatEnabled(boolean isMoatEnabled) { this.isMoatEnabled = isMoatEnabled; }
 
-    public boolean getIsMoatEnabled() { return this.isMoatEnabled; }
+    public boolean isMoatTrackingEnabled() { return this.isMoatEnabled; }
 
     public String getDisplayMoatPartnerCode() { return this.MOAT_DISPLAY_PARTNER_CODE; }
 

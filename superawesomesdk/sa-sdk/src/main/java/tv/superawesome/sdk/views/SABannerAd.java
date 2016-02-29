@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import java.util.HashMap;
 
 import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
@@ -23,11 +22,9 @@ import tv.superawesome.lib.sawebview.SAWebViewListener;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.data.Models.SACreativeFormat;
+import tv.superawesome.sdk.events.SAEvents;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
-
-import com.moat.analytics.mobile.MoatFactory;
-import com.moat.analytics.mobile. NativeDisplayTracker;
 
 
 /**
@@ -54,10 +51,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     private float cHeight = 0;
     private boolean layoutOK = false;
     private String destinationURL = null;
-
-    /** moat tracking vars */
-    private MoatFactory moatFactory = null;
-    private NativeDisplayTracker moatDisplayTracker = null;
+    private boolean showOnce = false;
 
     /**********************************************************************************************/
     /** Init methods */
@@ -92,12 +86,6 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
 
         /** set padlock size vs. screen display */
         this.setBackgroundColor(Color.rgb(191, 191, 191));
-
-        /** add moat stuff */
-        if (SuperAwesome.getInstance().getIsMoatEnabled()) {
-            moatFactory = MoatFactory.create((Activity) context);
-            moatDisplayTracker = moatFactory.createNativeDisplayTracker(this, SuperAwesome.getInstance().getDisplayMoatPartnerCode());
-        }
     }
 
     @Override
@@ -122,24 +110,17 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
 
     @Override
     public void saWebViewDidLoad() {
-        /** send event */
-        SASender.sendEventToURL(ad.creative.viewableImpressionURL);
+        if (!showOnce) {
+            showOnce = true;
 
-        /** send moat events */
-        if (moatDisplayTracker != null) {
-            HashMap<String, String> adIds = new HashMap<String, String>();
-            adIds.put("moatClientLevel1", "SuperAwesome");
-            adIds.put("moatClientLevel2", "" + ad.campaignId);
-            adIds.put("moatClientLevel3", "" + ad.lineItemId);
-            adIds.put("moatClientLevel4", "" + ad.creative.creativeId);
-            adIds.put("moatClientSlicer1", "" + ad.app);
-            adIds.put("moatClientSlicer2", "" + ad.placementId);
-            moatDisplayTracker.track(adIds);
-        }
+            /** send event */
+            SASender.sendEventToURL(ad.creative.viewableImpressionURL);
+            SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, ad);
 
-        /** call listener */
-        if (adListener != null){
-            adListener.adWasShown(ad.placementId);
+            /** call listener */
+            if (adListener != null) {
+                adListener.adWasShown(ad.placementId);
+            }
         }
     }
 

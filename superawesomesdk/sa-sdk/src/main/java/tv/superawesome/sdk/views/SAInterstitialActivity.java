@@ -181,7 +181,6 @@ public class SAInterstitialActivity implements SAViewProtocol {
             int width = metrics.widthPixels;
             int height = metrics.heightPixels;
             interstitialBanner.resizeToSize(width, height);
-
         }
 
         public void closeInterstitial(View v){
