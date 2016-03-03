@@ -51,7 +51,8 @@ public class SuperAwesome {
     private SuperAwesome(){
         this.setConfigurationProduction();
         this.disableTestMode();
-        this.enableMoatTracking();
+        this.isMoatEnabled = false;
+//        this.enableMoatTracking();
     }
 
     /** Get the only object available */
@@ -61,7 +62,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.4.6";
+        return "3.4.7";
     }
 
     private String getSdk() {
@@ -114,11 +115,11 @@ public class SuperAwesome {
     /**
      * Group of functions related to Moat
      */
-    public void enableMoatTracking() { this.isMoatEnabled = true; }
-
-    public void disableMoatTracking() { this.isMoatEnabled = false; }
-
-    public void setMoatEnabled(boolean isMoatEnabled) { this.isMoatEnabled = isMoatEnabled; }
+//    public void enableMoatTracking() { this.isMoatEnabled = true; }
+//
+//    public void disableMoatTracking() { this.isMoatEnabled = false; }
+//
+//    public void setMoatEnabled(boolean isMoatEnabled) { this.isMoatEnabled = isMoatEnabled; }
 
     public boolean isMoatTrackingEnabled() { return this.isMoatEnabled; }
 

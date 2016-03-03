@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+3.4.7
+ - Disabled Moat tracking
+
+3.4.6
+ - Allowed for Moat tracking
+
 3.4.5
  - Fixed click tracking + some other improvements
 
