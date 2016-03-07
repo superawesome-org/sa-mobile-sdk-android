@@ -22,6 +22,7 @@ public class TestDataProvider {
         list.add(AdItem.create("1830", 1830, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("2559", 2559, false, AdItemType.interstitial_item));
         list.add(AdItem.create("10305", 10305, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("30462", 30462, false, AdItemType.interstitial_item));
 
         return list;
     }

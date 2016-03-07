@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+3.4.8
+ - Updated network GET code to more modern version (+will work with Charles proxy)
+ - Added new padlock
+
 3.4.7
  - Disabled Moat tracking
 
