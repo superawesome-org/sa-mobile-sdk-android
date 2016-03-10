@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebView;
@@ -41,6 +40,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     private RelativeLayout contentHolder;
     private SAWebView webView;
     private ImageView padlock;
+    private SAParentalGate gate;
 
     /** listeners */
     private SAAdListener adListener;
@@ -105,7 +105,20 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
 
     @Override
     public void saWebViewWillNavigate(String url) {
-        tryToGoToURL(url);
+        /** update the destination URL */
+        destinationURL = url;
+
+        /** check for PG */
+        if (isParentalGateEnabled) {
+            /** send event */
+            SAEvents.sendEventToURL(ad.creative.parentalGateClickURL);
+            /** create pg */
+            gate = new SAParentalGate(getContext(), this, ad);
+            gate.show();
+            gate.setListener(parentalGateListener);
+        } else {
+            advanceToClick();
+        }
     }
 
     @Override
@@ -114,7 +127,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
             showOnce = true;
 
             /** send event */
-            SASender.sendEventToURL(ad.creative.viewableImpressionURL);
+            SAEvents.sendEventToURL(ad.creative.viewableImpressionURL);
             SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, ad);
 
             /** call listener */
@@ -199,24 +212,6 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
     }
 
     @Override
-    public void tryToGoToURL(String url) {
-        /** update the destination URL */
-        destinationURL = url;
-
-        /** check for PG */
-        if (isParentalGateEnabled) {
-            /** send event */
-            SASender.sendEventToURL(ad.creative.parentalGateClickURL);
-            /** create pg */
-            SAParentalGate gate = new SAParentalGate(getContext(), this, ad);
-            gate.show();
-            gate.setListener(parentalGateListener);
-        } else {
-            advanceToClick();
-        }
-    }
-
-    @Override
     public void advanceToClick() {
         /** call listener */
         if (adListener != null) {
@@ -225,7 +220,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
 
         if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
             SALog.Log("Trying to send to " + ad.creative.trackingURL);
-            SASender.sendEventToURL(ad.creative.trackingURL);
+            SAEvents.sendEventToURL(ad.creative.trackingURL);
         }
 
         System.out.println("Going to " + destinationURL);

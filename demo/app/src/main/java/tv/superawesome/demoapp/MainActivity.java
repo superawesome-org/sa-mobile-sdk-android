@@ -85,7 +85,7 @@ public class MainActivity extends Activity implements
                                 ad.print();
                                 vad = new SAVideoActivity(MainActivity.this);
                                 vad.setAd(ad);
-                                vad.setIsParentalGateEnabled(false);
+                                vad.setIsParentalGateEnabled(true);
                                 vad.setShouldAutomaticallyCloseAtEnd(true);
                                 vad.setShouldShowCloseButton(true);
                                 vad.setAdListener(adListener);

@@ -13,7 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sanetwork.SASender;
+import java.util.Iterator;
+import java.util.List;
+
+import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
 import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
@@ -37,6 +40,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
     private SAVASTManager manager;
     private SAVASTPlayer videoPlayer;
     private ImageView padlock;
+    private SAParentalGate gate;
 
     /** listeners */
     private SAAdListener adListener;
@@ -47,6 +51,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
 
     /** helper vars */
     private String destinationURL = null;
+    private List<String> clickTracking = null;
 
     /**********************************************************************************************/
     /** Init methods */
@@ -95,6 +100,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
 
     @Override
     public void play() {
+
         /** check to see for the correct placement type */
         if (ad.creative.format != SACreativeFormat.video) {
             if (adListener != null) {
@@ -140,8 +146,12 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
             @Override
             public void didStartAd() {
                 /** send thie event just to be sure */
-                SASender.sendEventToURL(ad.creative.viewableImpressionURL);
+                if (ad != null && ad.creative != null ) {
+                    SAEvents.sendEventToURL(ad.creative.viewableImpressionURL);
+                }
                 SAEvents.sendVideoMoatEvent((Activity)getContext(), videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer(), ad);
+
+                /** repair tags as iframes ... */
 
                 /** call listener */
                 if (adListener != null){
@@ -202,6 +212,11 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
 
             @Override
             public void didEndAllAds() {
+                /** close the gate */
+                if (gate != null) {
+                    gate.close();
+                }
+
                 if (videoAdListener != null){
                     videoAdListener.allAdsEnded(ad.placementId);
                 }
@@ -215,8 +230,22 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
             }
 
             @Override
-            public void didGoToURL(String url) {
-                tryToGoToURL(url);
+            public void didGoToURL(String url, List<String> _clickTracking) {
+                /** update the destination URL */
+                destinationURL = url;
+                clickTracking = _clickTracking;
+
+                /** check for PG */
+                if (isParentalGateEnabled) {
+                    /** send event */
+                    SAEvents.sendEventToURL(ad.creative.parentalGateClickURL);
+                    /** create pg - make sure to access SAVideo.this, not this */
+                    gate = new SAParentalGate(getContext(), SAVideoAd.this, ad);
+                    gate.show();
+                    gate.setListener(parentalGateListener);
+                } else {
+                    advanceToClick();
+                }
             }
         });
 
@@ -238,33 +267,17 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
     }
 
     @Override
-    public void tryToGoToURL(String url) {
-        /** update the destination URL */
-        destinationURL = url;
-
-        /** check for PG */
-        if (isParentalGateEnabled) {
-            /** send event */
-            SASender.sendEventToURL(ad.creative.parentalGateClickURL);
-            /** create pg */
-            SAParentalGate gate = new SAParentalGate(getContext(), this, ad);
-            gate.show();
-            gate.setListener(parentalGateListener);
-        } else {
-            advanceToClick();
-        }
-    }
-
-    @Override
     public void advanceToClick() {
         /** call listener */
         if (adListener != null) {
             adListener.adWasClicked(ad.placementId);
         }
 
-//        if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
-//            SASender.sendEventToURL(ad.creative.trackingURL);
-//        }
+        /** send click tracking events */
+        for (Iterator<String> i = clickTracking.iterator(); i.hasNext(); ){
+            String clickTracking = i.next();
+            SAEvents.sendEventToURL(clickTracking);
+        }
 
         System.out.println("Going to " + destinationURL);
 

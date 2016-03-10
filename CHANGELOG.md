@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.4.9
+ - Some updates to UI stuff & how coppa click tracking is done
+
 3.4.8
  - Updated network GET code to more modern version (+will work with Charles proxy)
  - Added new padlock

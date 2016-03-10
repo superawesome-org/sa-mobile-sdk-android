@@ -19,9 +19,6 @@ public interface SAViewProtocol {
     /** close the ad */
     void close();
 
-    /** first pass at trying to go to URL */
-    void tryToGoToURL(String url);
-
     /** second pass at trying to go to URL */
     void advanceToClick();
 

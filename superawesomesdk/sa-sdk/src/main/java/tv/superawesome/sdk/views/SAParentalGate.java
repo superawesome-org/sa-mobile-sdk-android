@@ -3,8 +3,6 @@ package tv.superawesome.sdk.views;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.text.InputType;
 import android.widget.EditText;
 
@@ -12,7 +10,6 @@ import java.lang.ref.WeakReference;
 import java.util.Objects;
 import java.util.Random;
 
-import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.data.Models.SAAd;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
@@ -48,10 +45,16 @@ public class SAParentalGate {
     private SAParentalGateListener listener;
     private SAAd refAd;
 
+    /** the alert dialog */
+    private AlertDialog dialog;
+
     public SAParentalGate(Context c, Object parent, SAAd _refAd){
         super();
         this.c = c;
         this.parentRef = new WeakReference<Object> (parent);
+        SALog.Log("Object is " + parent.getClass().getName());
+        SALog.Log("Ref is " + parentRef.getClass().getName());
+        SALog.Log("Ref get is " + parentRef.get().getClass().getName());
         this.refAd = _refAd;
 
         if (this.refAd == null){
@@ -92,9 +95,13 @@ public class SAParentalGate {
                         }
 
                         String refClassName = parentRef.get().getClass().getName();
-                        String bannerName = SABannerAd.class.getName();
-                        String videoName = SAVideoAd.class.getName();
-//                        String videoName = SAVideoActivity.SAVideoActivityInner.class.getName();
+                        SALog.Log("ref class name " + refClassName);
+                        String bannerName = SABannerAd.class.getCanonicalName();
+                        String videoName = SAVideoAd.class.getCanonicalName();
+
+                        if ((parentRef.get() instanceof SAViewProtocol) == true) {
+                            SALog.Log("implenents");
+                        }
 
                         if (refClassName.contains(bannerName)) {
                             ((SABannerAd) parentRef.get()).advanceToClick();
@@ -146,8 +153,15 @@ public class SAParentalGate {
             }
         });
 
-        // finally show the alert
-        alert.show();
+        dialog = alert.create();
+        dialog.show();
+    }
+
+    /**
+     * Function that closes this
+     */
+    public void close() {
+        dialog.cancel();
     }
 
     // aux function for random number generation

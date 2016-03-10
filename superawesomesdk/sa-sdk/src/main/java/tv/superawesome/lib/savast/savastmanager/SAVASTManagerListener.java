@@ -1,5 +1,7 @@
 package tv.superawesome.lib.savast.savastmanager;
 
+import java.util.List;
+
 /**
  * Created by gabriel.coman on 23/12/15.
  */
@@ -17,5 +19,5 @@ public interface SAVASTManagerListener {
     void didHaveErrorForCreative();
     void didEndAd();
     void didEndAllAds();
-    void didGoToURL(String url);
+    void didGoToURL(String url, List<String> clickTracking);
 }

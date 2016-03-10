@@ -98,11 +98,6 @@ public class SAVideoActivity implements SAViewProtocol {
     }
 
     @Override
-    public void tryToGoToURL(String url) {
-        /** do nothing */
-    }
-
-    @Override
     public void advanceToClick() {
         /** do nothing */
     }

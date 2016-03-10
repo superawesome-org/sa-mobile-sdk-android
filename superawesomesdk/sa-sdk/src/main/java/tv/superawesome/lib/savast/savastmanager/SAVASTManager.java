@@ -1,12 +1,8 @@
 package tv.superawesome.lib.savast.savastmanager;
 
-import android.os.Debug;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import tv.superawesome.lib.sanetwork.SASender;
 import tv.superawesome.lib.sanetwork.SAURLUtils;
 import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.savast.savastparser.SAVASTParser;
@@ -17,6 +13,7 @@ import tv.superawesome.lib.savast.savastparser.models.SAVASTLinearCreative;
 import tv.superawesome.lib.savast.savastparser.models.SAVASTTracking;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
 import tv.superawesome.lib.savast.savastplayer.SAVASTPlayerListener;
+import tv.superawesome.sdk.events.SAEvents;
 
 /**
  * Created by gabriel.coman on 23/12/15.
@@ -125,7 +122,7 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
             SAVASTImpression impression = i.next();
             if (!impression.isSent) {
                 impression.isSent = true;
-                SASender.sendEventToURL(impression.URL);
+                SAEvents.sendEventToURL(impression.URL);
             }
         }
     }
@@ -207,7 +204,7 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
         // and advance to the next ad
         for (Iterator<String> i = _cAd.Errors.iterator(); i.hasNext(); ){
             String error = i.next();
-            SASender.sendEventToURL(error);
+            SAEvents.sendEventToURL(error);
         }
 
         // call to listner
@@ -224,30 +221,30 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
         SALog.Log("didGoToURL");
 
         // send event to URL
-        for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
-            String clickTracking = i.next();
-            SASender.sendEventToURL(clickTracking);
-        }
+//        for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
+//            String clickTracking = i.next();
+//            SASender.sendEventToURL(clickTracking);
+//        }
 
         // setup the current click URL
         String url = "";
         if (_cCreative.ClickThrough != null && SAURLUtils.isValidURL(_cCreative.ClickThrough)){
             url = _cCreative.ClickThrough;
         }
-        // if no click through is there - just go through the ClickTracking URLs and
-        // maybe one is good
-        else {
-            for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
-                if (SAURLUtils.isValidURL(i.next())){
-                    url = i.next();
-                    break;
-                }
-            }
-        }
+//        // if no click through is there - just go through the ClickTracking URLs and
+//        // maybe one is good
+//        else {
+//            for (Iterator<String> i = _cCreative.ClickTracking.iterator(); i.hasNext(); ){
+//                if (SAURLUtils.isValidURL(i.next())){
+//                    url = i.next();
+//                    break;
+//                }
+//            }
+//        }
 
-        // call listner
+        // call listener
         if (listener != null){
-            listener.didGoToURL(url);
+            listener.didGoToURL(url, _cCreative.ClickTracking);
         }
     }
 
@@ -308,7 +305,7 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
             SAVASTTracking tracking = i.next();
             if (tracking.event.equals(event)){
                 /** send event */
-                SASender.sendEventToURL(tracking.URL);
+                SAEvents.sendEventToURL(tracking.URL);
             }
         }
     }

@@ -30,6 +30,7 @@ public class SAEvents {
      */
     public static void sendEventToURL(final String url) {
         SANetwork network = new SANetwork();
+
         network.sendGET(url, new JSONObject(), new SANetListener() {
             @Override
             public void success(Object data) {
