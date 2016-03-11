@@ -28,12 +28,12 @@ public class SuperAwesome {
     private final String BASE_URL_PRODUCTION = "https://ads.superawesome.tv/v2";
 
     /** Moat tracking hardcoded constants */
-    private final String MOAT_DISPLAY_PARTNER_CODE = "superawesomeinappdisplay731223424656";
-    private final String MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573";
+//    private final String MOAT_DISPLAY_PARTNER_CODE = "superawesomeinappdisplay731223424656";
+//    private final String MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573";
 
     private String baseUrl;
     private boolean isTestEnabled;
-    private boolean isMoatEnabled;
+//    private boolean isMoatEnabled;
     private int dauID;
 
     public enum SAConfiguration {
@@ -51,7 +51,7 @@ public class SuperAwesome {
     private SuperAwesome(){
         this.setConfigurationProduction();
         this.disableTestMode();
-        this.isMoatEnabled = false;
+//        this.isMoatEnabled = false;
 //        this.enableMoatTracking();
     }
 
@@ -62,7 +62,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.5.1";
+        return "3.5.2";
     }
 
     private String getSdk() {
@@ -121,11 +121,11 @@ public class SuperAwesome {
 //
 //    public void setMoatEnabled(boolean isMoatEnabled) { this.isMoatEnabled = isMoatEnabled; }
 
-    public boolean isMoatTrackingEnabled() { return this.isMoatEnabled; }
-
-    public String getDisplayMoatPartnerCode() { return this.MOAT_DISPLAY_PARTNER_CODE; }
-
-    public String getVideoMoatPartnerCode() { return this.MOAT_VIDEO_PARTNER_CODE; }
+//    public boolean isMoatTrackingEnabled() { return this.isMoatEnabled; }
+//
+//    public String getDisplayMoatPartnerCode() { return this.MOAT_DISPLAY_PARTNER_CODE; }
+//
+//    public String getVideoMoatPartnerCode() { return this.MOAT_VIDEO_PARTNER_CODE; }
 
     /**
      * Group of functions that encapsulate the SAApplication functionality

@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.5.2
+ - some small bugfixes
+
 3.5.1
  - fixed again the web view
 
