@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.5.0
+ - Update strings on video
+
 3.4.9
  - Some updates to UI stuff & how coppa click tracking is done
 
