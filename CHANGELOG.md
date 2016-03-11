@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.5.1
+ - fixed again the web view
+
 3.5.0
  - Update strings on video
 

@@ -104,7 +104,7 @@ public class SAWebView extends WebView {
         String _html = html;
         _html = _html.replace("_WIDTH_", "" + (int)(adWidth));
         _html = _html.replace("_HEIGHT_", "" + (int)(adHeight));
-        _html = _html.replace("_SCALE_", "1.25");
+        _html = _html.replace("_SCALE_", "" + ((frameWidth/scaleFactor)/adWidth));
 
         /** get the context */
         Context context = this.getContext();
