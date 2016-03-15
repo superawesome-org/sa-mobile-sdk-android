@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,6 +62,14 @@ public class SAVideoActivity implements SAViewProtocol {
 
     public void setShouldAutomaticallyCloseAtEnd (boolean shouldAutomaticallyCloseAtEnd){
         AdDataHolder.getInstance()._refShouldAutomaticallyCloseAtEnd = shouldAutomaticallyCloseAtEnd;
+    }
+
+    public void setShouldLockOrientation(boolean shouldLockOrientation) {
+        AdDataHolder.getInstance()._refShouldLockOrientation = shouldLockOrientation;
+    }
+
+    public void setLockOrientation(int lockOrientation){
+        AdDataHolder.getInstance()._refLockOrientation = lockOrientation;
     }
 
     /** weak ref update function - needed mostly to get the close() function to work */
@@ -144,6 +153,8 @@ public class SAVideoActivity implements SAViewProtocol {
         private boolean isParentalGateEnabled = true;
         private boolean shouldShowCloseButton = false;
         private boolean shouldAutomaticallyCloseAtEnd = true;
+        private boolean shouldLockOrientation = false;
+        private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         /** sdk listeners */
         private SAAdListener adListener;
@@ -187,6 +198,13 @@ public class SAVideoActivity implements SAViewProtocol {
             adListener = AdDataHolder.getInstance()._refAdListener;
             videoAdListener = AdDataHolder.getInstance()._refVideoAdListener;
             parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
+            shouldLockOrientation = AdDataHolder.getInstance()._refShouldLockOrientation;
+            lockOrientation = AdDataHolder.getInstance()._refLockOrientation;
+
+            /** make sure direction is locked */
+            if (shouldLockOrientation) {
+                setRequestedOrientation(lockOrientation);
+            }
 
             /** get close button */
             closeBtn = (Button) findViewById(close_btnId);
@@ -240,7 +258,7 @@ public class SAVideoActivity implements SAViewProtocol {
                 @Override
                 public void allAdsEnded(int placementId) {
                     if (shouldAutomaticallyCloseAtEnd) {
-                        close();
+                         close();
                     }
                 }
             });
@@ -310,6 +328,8 @@ public class SAVideoActivity implements SAViewProtocol {
              * method is overridden to do nothing e.g. so as not to be closed by the user
              */
             super.onBackPressed();
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
     }
 
@@ -321,6 +341,8 @@ public class SAVideoActivity implements SAViewProtocol {
         public boolean _refIsParentalGateEnabled = true;
         public boolean _refShouldShowCloseButton = false;
         public boolean _refShouldAutomaticallyCloseAtEnd = true;
+        public boolean _refShouldLockOrientation = false;
+        public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         public SAAdListener _refAdListener;
         public SAParentalGateListener _refParentalGateListener;
         public SAVideoAdListener _refVideoAdListener;

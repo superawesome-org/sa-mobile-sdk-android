@@ -19,6 +19,8 @@
         <service
             android:name="tv.superawesome.lib.sanetwork.SAGet"
             android:exported="false" />
+        <service android:name="tv.superawesome.lib.savast.savastparser.SAVASTParser$SAVASTParserInternal"
+            android:exported="false"/>
 
     </application>
 

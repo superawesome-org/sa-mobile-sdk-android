@@ -48,7 +48,7 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
         // create parser
         parser = new SAVASTParser();
 
-        // set the listner
+        // set the listener
         if (this.refPlayer != null) {
             this.refPlayer.setListener(this);
         }
@@ -70,7 +70,7 @@ public class SAVASTManager implements SAVASTParserListener, SAVASTPlayerListener
         // give ref to adQueue from the returned ads list
         adQueue = ads;
 
-        // set the ad queue playhead
+        // set the ad queue play head
         currentAdIndex = 0;
         currentCreativeIndex = -1;
 

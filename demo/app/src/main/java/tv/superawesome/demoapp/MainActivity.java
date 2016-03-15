@@ -1,6 +1,7 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -90,6 +91,8 @@ public class MainActivity extends Activity implements
                                 vad.setShouldShowCloseButton(true);
                                 vad.setAdListener(adListener);
                                 vad.setVideoAdListener(videoAdListener);
+                                vad.setShouldLockOrientation(true);
+                                vad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                                 vad.setParentalGateListener(parentalGateListener);
                                 vad.play();
                             }

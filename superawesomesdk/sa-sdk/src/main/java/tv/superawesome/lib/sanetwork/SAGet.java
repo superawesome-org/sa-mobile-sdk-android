@@ -43,8 +43,6 @@ public class SAGet extends IntentService {
     public static final int STATUS_FINISHED = 1;
     public static final int STATUS_ERROR = 2;
 
-    private static final String TAG = "SAGet";
-
     public SAGet() {
         super(SAGet.class.getName());
     }
@@ -70,7 +68,7 @@ public class SAGet extends IntentService {
                 if (null != results[0]) {
                     bundle.putStringArray("result", results);
                     String res = (results[0].length() >= 10 ? results[0].substring(0, 10) : results[0]);
-                    System.out.println("Success: " + url + " ==> " + res);
+                    System.out.println("Success: " + url + " ==> " + results[0]);
                     receiver.send(STATUS_FINISHED, bundle);
                 }
             } catch (Exception e) {

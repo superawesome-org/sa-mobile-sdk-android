@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.5.4
+ - add lock orientation
+
 3.5.3
 3.5.2
  - some small bugfixes

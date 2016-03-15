@@ -59,6 +59,8 @@ For rewarded video, two additional fields can be set:
 {
 	"shouldShowCloseButton": false,
 	"shouldAutomaticallyCloseAtEnd": true
+        "shouldLockOrientation": true,
+        "lockOrientation": "LANDSCAPE" or "PORTRAIT" 
 }
 
 ```

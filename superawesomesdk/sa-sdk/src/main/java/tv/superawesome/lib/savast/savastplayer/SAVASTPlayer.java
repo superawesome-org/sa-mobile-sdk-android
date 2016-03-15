@@ -47,6 +47,7 @@ public class SAVASTPlayer extends Fragment {
     private boolean isFirstQuartileHandled = false;
     private boolean isMidpointHandled = false;
     private boolean isThirdQuartileHandled = false;
+    private boolean isErrorHandled = false;
     private boolean isSkipHandled = false;
     private boolean isCompleteHandled = false;
 
@@ -235,10 +236,11 @@ public class SAVASTPlayer extends Fragment {
                 chronographer.setText("Ad: Error");
 
                 /** call listener function */
-                if (listener != null) {
+                if (listener != null && !isErrorHandled) {
+                    isErrorHandled = true;
                     listener.didPlayWithError();
                 }
-                return false;
+                return true;
             }
         });
     }

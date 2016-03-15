@@ -1,6 +1,7 @@
 package com.mopub.sa.mobileads;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -42,6 +43,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     private boolean isParentalGateEnabled;
     private boolean shouldShowCloseButton;
     private boolean shouldAutomaticallyCloseAtEnd;
+    private boolean shouldLockOrientation;
+    private int lockOrientation;
     private String moPubId;
 
     /** the actual video activity */
@@ -80,6 +83,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         isParentalGateEnabled = true;
         shouldShowCloseButton = false;
         shouldAutomaticallyCloseAtEnd = true;
+        shouldLockOrientation = false;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         /** get datas */
         if (map.get("com_mopub_ad_unit_id") != null){
@@ -99,6 +104,16 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         }
         if (map1.get("shouldAutomaticallyCloseAtEnd") != null) {
             shouldAutomaticallyCloseAtEnd = Boolean.valueOf(map1.get("shouldAutomaticallyCloseAtEnd"));
+        }
+        if (map1.get("shouldLockOrientation") != null) {
+            shouldLockOrientation = Boolean.valueOf(map1.get("shouldLockOrientation"));
+            if (map1.get("lockDirection") != null) {
+                if (map1.get("lockOrientation").equals("PORTRAIT")) {
+                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                } else if (map1.get("lockDirection").equals("LANDSCAPE")){
+                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                }
+            }
         }
 
         return true;
@@ -127,6 +142,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                 video.setIsParentalGateEnabled(isParentalGateEnabled);
                 video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
                 video.setShouldShowCloseButton(shouldShowCloseButton);
+                video.setShouldLockOrientation(shouldLockOrientation);
+                video.setLockOrientation(lockOrientation);
 
                 video.setAdListener(new SAAdListener() {
                     @Override

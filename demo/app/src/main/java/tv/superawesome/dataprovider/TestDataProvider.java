@@ -18,7 +18,7 @@ public class TestDataProvider {
     public static List<AdItem> createTestData() {
         List<AdItem> list = new ArrayList<>();
 
-        list.add(AdItem.create("Lego ocassions test", 3052, false, AdItemType.interstitial_item));
+        list.add(AdItem.create("30047", 30047, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("79", 79, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("1830", 1830, false, AdItemType.fullscreen_video_item));
         list.add(AdItem.create("2559", 2559, false, AdItemType.interstitial_item));
