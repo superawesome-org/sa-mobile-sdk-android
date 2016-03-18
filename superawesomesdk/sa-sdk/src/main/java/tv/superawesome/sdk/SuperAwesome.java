@@ -8,14 +8,7 @@
 package tv.superawesome.sdk;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import java.util.Random;
-
-import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.capper.SACapper;
+import tv.superawesome.lib.sautils.SAApplication;
 
 /**
  * This is a Singleton class through which SDK users setup their AwesomeAds instance
@@ -27,13 +20,8 @@ public class SuperAwesome {
     private final String BASE_URL_DEVELOPMENT = "https://ads.dev.superawesome.tv/v2";
     private final String BASE_URL_PRODUCTION = "https://ads.superawesome.tv/v2";
 
-    /** Moat tracking hardcoded constants */
-//    private final String MOAT_DISPLAY_PARTNER_CODE = "superawesomeinappdisplay731223424656";
-//    private final String MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573";
-
     private String baseUrl;
     private boolean isTestEnabled;
-//    private boolean isMoatEnabled;
     private int dauID;
 
     public enum SAConfiguration {
@@ -51,7 +39,6 @@ public class SuperAwesome {
     private SuperAwesome(){
         this.setConfigurationProduction();
         this.disableTestMode();
-//        this.isMoatEnabled = false;
 //        this.enableMoatTracking();
     }
 
@@ -132,12 +119,12 @@ public class SuperAwesome {
      */
     public void setApplicationContext(Context _appContext){
         SAApplication.setSAApplicationContext(_appContext);
-        SACapper.enableCapping(_appContext, new SACapper.SACapperListener() {
-            @Override
-            public void didFindDAUId(int id) {
-                dauID = id;
-            }
-        });
+//        SACapper.enableCapping(_appContext, new SACapper.SACapperListener() {
+//            @Override
+//            public void didFindDAUId(int id) {
+//                dauID = id;
+//            }
+//        });
     }
 
     public Context getApplicationContext(){

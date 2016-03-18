@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -16,13 +17,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /** import other SuperAwesome stuff */
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.data.Loader.*;
-import tv.superawesome.sdk.data.Models.SAAd;
-import tv.superawesome.sdk.data.Parser.SAParser;
-import tv.superawesome.sdk.data.Validator.SAValidator;
+import tv.superawesome.sdk.loader.*;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.parser.SAParser;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
@@ -115,7 +114,7 @@ public class SAUnity {
             scaledWidth = screenSize.width;
         }
 
-        SALog.Log("Orientation Width: " + screenSize.width + " H: " + screenSize.height);
+        Log.d("SuperAwesome", "Orientation Width: " + screenSize.width + " H: " + screenSize.height);
 
         /** create the layout params */
         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(scaledWidth, scaledHeight);
@@ -183,10 +182,7 @@ public class SAUnity {
                 /** parse Ad */
                 SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
-                /** check for validity */
-                boolean isValid = SAValidator.isAdDataValid(ad);
-
-                if (isValid) {
+                if (ad != null) {
                     /** get current rotation */
                     final int[] currentRotation = {getRotation(context)};
 
@@ -345,10 +341,7 @@ public class SAUnity {
 
                 SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
-                /** check for validity */
-                boolean isValid = SAValidator.isAdDataValid(ad);
-
-                if (isValid) {
+                if (ad != null) {
 
                     /** create the interstitial */
                     SAInterstitialActivity interstitial = new SAInterstitialActivity(context);
@@ -461,10 +454,7 @@ public class SAUnity {
 
                 SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
-                /** check for validity */
-                boolean isValid = SAValidator.isAdDataValid(ad);
-
-                if (isValid) {
+                if (ad != null) {
                     /** create the video */
                     SAVideoActivity video = new SAVideoActivity(context);
 

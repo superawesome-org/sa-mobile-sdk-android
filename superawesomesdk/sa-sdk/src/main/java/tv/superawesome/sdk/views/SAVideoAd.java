@@ -16,13 +16,12 @@ import android.widget.RelativeLayout;
 import java.util.Iterator;
 import java.util.List;
 
-import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.lib.savast.savastmanager.SAVASTManager;
-import tv.superawesome.lib.savast.savastmanager.SAVASTManagerListener;
-import tv.superawesome.lib.savast.savastplayer.SAVASTPlayer;
-import tv.superawesome.sdk.data.Models.SAAd;
-import tv.superawesome.sdk.data.Models.SACreativeFormat;
-import tv.superawesome.sdk.events.SAEvents;
+import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.savast.SAVASTManager;
+import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
+import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
@@ -38,7 +37,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
 
     /** Subviews & other important stuffs */
     private SAVASTManager manager;
-    private SAVASTPlayer videoPlayer;
+    private SAVideoPlayer videoPlayer;
     private ImageView padlock;
     private SAParentalGate gate;
 
@@ -78,7 +77,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(view_sa_bannerId, this);
 
-        videoPlayer = (SAVASTPlayer) ((Activity)context).getFragmentManager().findFragmentById(video_playerId);
+        videoPlayer = (SAVideoPlayer) ((Activity)context).getFragmentManager().findFragmentById(video_playerId);
         padlock = (ImageView)findViewById(padlockId);
 
         this.setBackgroundColor(Color.BLACK);
@@ -115,7 +114,7 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
         }
 
         /** create the VAST manager */
-        manager = new SAVASTManager(videoPlayer, new SAVASTManagerListener() {
+        manager = new SAVASTManager(videoPlayer, new SAVASTManager.SAVASTManagerListener() {
             @Override
             public void didParseVASTAndFindAds() {
                 /** do nothing here */
@@ -145,11 +144,19 @@ public class SAVideoAd extends RelativeLayout implements SAViewProtocol {
 
             @Override
             public void didStartAd() {
-                /** send thie event just to be sure */
+                /** send this event just to be sure */
                 if (ad != null && ad.creative != null ) {
+                    /** send viewable impression url */
                     SAEvents.sendEventToURL(ad.creative.viewableImpressionURL);
+
+                    /** send impression URL, if exits, to 3rd party only */
+                    if (ad.creative.impressionURL != null && !ad.creative.impressionURL.contains(SuperAwesome.getInstance().getBaseURL())) {
+                        SAEvents.sendEventToURL(ad.creative.impressionURL);
+                    }
+
+                    /** send moat */
+                    SAEvents.sendVideoMoatEvent((Activity)getContext(), videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer(), ad);
                 }
-                SAEvents.sendVideoMoatEvent((Activity)getContext(), videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer(), ad);
 
                 /** repair tags as iframes ... */
 

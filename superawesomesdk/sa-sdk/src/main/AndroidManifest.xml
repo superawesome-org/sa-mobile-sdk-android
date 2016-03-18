@@ -16,12 +16,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
 
         <!-- Declaring Service in Manifest -->
-        <service
-            android:name="tv.superawesome.lib.sanetwork.SAGet"
-            android:exported="false" />
-        <service android:name="tv.superawesome.lib.savast.savastparser.SAVASTParser$SAVASTParserInternal"
-            android:exported="false"/>
-
+        <service android:name="tv.superawesome.lib.sautils.SAAsyncTask$SAAsync" android:exported="false"/>
     </application>
-
 </manifest>

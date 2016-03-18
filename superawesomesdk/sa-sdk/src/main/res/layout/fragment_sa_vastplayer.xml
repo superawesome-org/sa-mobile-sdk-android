@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context="tv.superawesome.lib.savast.savastplayer.SAVASTPlayer">
+    tools:context="tv.superawesome.lib.savideoplayer.SAVideoPlayer">
 
     <VideoView
         android:id="@+id/video_view"
@@ -49,7 +49,7 @@
             android:layout_height="match_parent"
             android:textSize="12sp"
             android:gravity="center_vertical"
-            android:text="Find out more »"
+            android:text="@string/superawesome__titlevideo_click"
             android:textColor="#ffffff"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"

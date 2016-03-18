@@ -1,9 +1,10 @@
 package tv.superawesome.plugins.unity;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAVideoActivity;
@@ -48,7 +49,6 @@ public class SAUnityManager {
             Object o = entry.getValue();
             String k = entry.getKey();
             int placement = -1;
-            SALog.Log(o.getClass().toString());
             if (o.getClass().toString().contains(SABannerAd.class.getName())) {
                 SABannerAd b = (SABannerAd)o;
                 placement = b.getAd().placementId;
@@ -71,7 +71,7 @@ public class SAUnityManager {
         /** finally remove */
         if (key != null){
             adMap.remove(key);
-            SALog.Log("[AA::INFO] " + adMap.entrySet().size() + " Keys remaining in Unity ad dict");
+            Log.d("SuperAwesome", adMap.entrySet().size() + " Keys remaining in Unity ad dict");
         }
     }
 }

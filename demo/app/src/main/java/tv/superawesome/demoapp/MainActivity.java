@@ -3,25 +3,28 @@ package tv.superawesome.demoapp;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import tv.superawesome.dataprovider.TestDataProvider;
-import tv.superawesome.lib.sanetwork.SASystem;
-import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.sautils.SAAsyncTask;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.models.AdItem;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.data.Loader.SALoader;
-import tv.superawesome.sdk.data.Loader.SALoaderListener;
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
-import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAVideoActivity;
 
@@ -44,17 +47,37 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         /** SA setup */
         SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
+
+        SAAsyncTask task = new SAAsyncTask(SuperAwesome.getInstance().getApplicationContext(), new SAAsyncTask.SAAsyncTaskListener() {
+
+            @Override
+            public Object taskToExecute() throws IOException {
+                return SAUtils.syncGet("https://ads.staging.superawesome.tv/v2/ad/79?test=false&sdkVersion=android_3.5.4&rnd=1454507&bundle=tv.superawesome.demoapp");
+            }
+
+            @Override
+            public void onFinish(Object result) {
+                Log.d("SuperAwesome", "" + (String)result);
+            }
+
+            @Override
+            public void onError() {
+                Log.d("SuperAwesome", "onError");
+            }
+        });
+
         loader = new SALoader();
 
         /** set text info */
         TextView saSDKLabel = (TextView)findViewById(R.id.sasdk_label);
         saSDKLabel.setText("SA SDK");
         TextView versionLabel = (TextView)findViewById(R.id.version_label);
-        versionLabel.setText("(" + SuperAwesome.getInstance().getSDKVersion() + " - " + SASystem.getVerboseSystemDetails() + " - " + SuperAwesome.getInstance().getDAUID() +  ")");
+        versionLabel.setText("(" + SuperAwesome.getInstance().getSDKVersion() + " - " + SAUtils.getVerboseSystemDetails() + " - " + SuperAwesome.getInstance().getDAUID() +  ")");
 
         /** setup the list */
         optionsList = (ListView)findViewById(R.id.optionsList);
@@ -99,7 +122,7 @@ public class MainActivity extends Activity implements
 
                             @Override
                             public void didFailToLoadAdForPlacementId(int placementId) {
-                                SALog.Log("Could not load: " + placementId);
+                                Log.d("SuperAwesome", "Could not load: " + placementId);
                             }
                         });
 
@@ -114,7 +137,7 @@ public class MainActivity extends Activity implements
 
                             @Override
                             public void didFailToLoadAdForPlacementId(int placementId) {
-                                SALog.Log("Could not load: " + placementId);
+                                Log.d("SuperAwesome", "Could not load: " + placementId);
                             }
                         });
                         break;
@@ -137,81 +160,81 @@ public class MainActivity extends Activity implements
 
     @Override
     public void adWasShown(int placementId) {
-        SALog.Log("adWasShown");
+        Log.d("SuperAwesome", "adWasShown");
     }
 
     @Override
     public void adFailedToShow(int placementId) {
-        SALog.Log("adFailedToShow");
+        Log.d("SuperAwesome", "adFailedToShow");
     }
 
     @Override
     public void adWasClosed(int placementId) {
-        SALog.Log("adWasClosed");
+        Log.d("SuperAwesome", "adWasClosed");
     }
 
     @Override
     public void adWasClicked(int placementId) {
-        SALog.Log("adWasClicked");
+        Log.d("SuperAwesome", "adWasClicked");
     }
 
     @Override
     public void adHasIncorrectPlacement(int placementId) {
-        SALog.Log("adHasIncorrectPlacement");
+        Log.d("SuperAwesome", "adHasIncorrectPlacement");
     }
 
     @Override
     public void parentalGateWasCanceled(int placementId) {
-        SALog.Log("parentalGateWasCanceled");
+        Log.d("SuperAwesome", "parentalGateWasCanceled");
     }
 
     @Override
     public void parentalGateWasFailed(int placementId) {
-        SALog.Log("parentalGateWasFailed");
+        Log.d("SuperAwesome", "parentalGateWasFailed");
     }
 
     @Override
     public void parentalGateWasSucceded(int placementId) {
-        SALog.Log("parentalGateWasSucceded");
+        Log.d("SuperAwesome", "parentalGateWasSucceded");
     }
 
     @Override
     public void adStarted(int placementId) {
-        SALog.Log("adStarted");
+        Log.d("SuperAwesome", "adStarted");
     }
 
     @Override
     public void videoStarted(int placementId) {
-        SALog.Log("videoStarted");
+        Log.d("SuperAwesome", "videoStarted");
     }
 
     @Override
     public void videoReachedFirstQuartile(int placementId) {
-        SALog.Log("videoReachedFirstQuartile");
+        Log.d("SuperAwesome", "videoReachedFirstQuartile");
     }
 
     @Override
     public void videoReachedMidpoint(int placementId) {
-        SALog.Log("videoReachedMidpoint");
+        Log.d("SuperAwesome", "videoReachedMidpoint");
     }
 
     @Override
     public void videoReachedThirdQuartile(int placementId) {
-        SALog.Log("videoReachedThirdQuartile");
+        Log.d("SuperAwesome", "videoReachedThirdQuartile");
     }
 
     @Override
     public void videoEnded(int placementId) {
-        SALog.Log("videoEnded");
+        Log.d("SuperAwesome", "videoEnded");
     }
 
     @Override
     public void adEnded(int placementId) {
-        SALog.Log("adEnded");
+        Log.d("SuperAwesome", "adEnded");
     }
 
     @Override
     public void allAdsEnded(int placementId) {
-        SALog.Log("allAdsEnded");
+        Log.d("SuperAwesome", "allAdsEnded");
     }
 }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:name="tv.superawesome.lib.savast.savastplayer.SAVASTPlayer"
+        android:name="tv.superawesome.lib.savideoplayer.SAVideoPlayer"
         android:id="@+id/video_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

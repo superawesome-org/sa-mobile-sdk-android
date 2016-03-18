@@ -9,19 +9,18 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sautils.SALog;
+import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.lib.sawebview.SAWebView;
-import tv.superawesome.lib.sawebview.SAWebViewListener;
+import tv.superawesome.lib.sawebview.SAWebPlayer;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.data.Models.SAAd;
-import tv.superawesome.sdk.data.Models.SACreativeFormat;
-import tv.superawesome.sdk.events.SAEvents;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
@@ -30,7 +29,7 @@ import tv.superawesome.sdk.listeners.SAParentalGateListener;
  * Created by gabriel.coman on 30/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAViewProtocol {
+public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlayerListener, SAViewProtocol {
 
     /** Private variables */
     private boolean isParentalGateEnabled = true;
@@ -38,7 +37,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
 
     /** Subviews */
     private RelativeLayout contentHolder;
-    private SAWebView webView;
+    private SAWebPlayer webView;
     private ImageView padlock;
     private SAParentalGate gate;
 
@@ -80,7 +79,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         inflater.inflate(view_sa_bannerId, this);
 
         contentHolder = (RelativeLayout)findViewById(content_holderId);
-        webView = (SAWebView)findViewById(web_viewId);
+        webView = (SAWebPlayer)findViewById(web_viewId);
         webView.setListener(this);
         padlock = (ImageView)findViewById(padlockId);
 
@@ -126,8 +125,15 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         if (!showOnce) {
             showOnce = true;
 
-            /** send event */
+            /** send event viewable impression */
             SAEvents.sendEventToURL(ad.creative.viewableImpressionURL);
+
+            /** send impression URL, if exits, to 3rd party only */
+            if (ad.creative.impressionURL != null && !ad.creative.impressionURL.contains(SuperAwesome.getInstance().getBaseURL())) {
+                SAEvents.sendEventToURL(ad.creative.impressionURL);
+            }
+
+            /** send moat */
             SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, ad);
 
             /** call listener */
@@ -219,7 +225,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
         }
 
         if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
-            SALog.Log("Trying to send to " + ad.creative.trackingURL);
+            Log.d("SuperAwesome", "Trying to send to " + ad.creative.trackingURL);
             SAEvents.sendEventToURL(ad.creative.trackingURL);
         }
 
@@ -237,7 +243,7 @@ public class SABannerAd extends RelativeLayout implements SAWebViewListener, SAV
             adHeight = ad.creative.details.height;
 
         /** calc new frame */
-        Rect newFrame = SAUtils.arrangeAdInNewFrame(width, height, adWidth, adHeight);
+        Rect newFrame = SAUtils.mapOldSizeIntoNewSize(width, height, adWidth, adHeight);
         int newWidth = newFrame.right,
             newHeight = newFrame.bottom;
 

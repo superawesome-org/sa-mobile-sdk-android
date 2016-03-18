@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.views;
 
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.models.SAAd;
 
 /**
  * Defines a common interface that SABannerAd, SAInterstitial and SAVideoActivity can adhere to

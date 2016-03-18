@@ -4,14 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 import java.util.Random;
 
-import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
 /**
@@ -52,9 +52,9 @@ public class SAParentalGate {
         super();
         this.c = c;
         this.parentRef = new WeakReference<Object> (parent);
-        SALog.Log("Object is " + parent.getClass().getName());
-        SALog.Log("Ref is " + parentRef.getClass().getName());
-        SALog.Log("Ref get is " + parentRef.get().getClass().getName());
+        Log.d("SuperAwesome", "Object is " + parent.getClass().getName());
+        Log.d("SuperAwesome", "Ref is " + parentRef.getClass().getName());
+        Log.d("SuperAwesome", "Ref get is " + parentRef.get().getClass().getName());
         this.refAd = _refAd;
 
         if (this.refAd == null){
@@ -64,17 +64,17 @@ public class SAParentalGate {
 
     /** show function */
     public void show() {
-        startNum = randInt(RAND_MIN, RAND_MAX);
-        endNum = randInt(RAND_MIN, RAND_MAX);
+        startNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
+        endNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
 
-        /* we have an alert dialog builder */
+        /** we have an alert dialog builder */
         final AlertDialog.Builder alert = new AlertDialog.Builder(c);
-        // set title and message
+        /** set title and message */
         alert.setTitle(SA_CHALLANGE_ALERTVIEW_TITLE);
         alert.setCancelable(false);
         alert.setMessage(SA_CHALLANGE_ALERTVIEW_MESSAGE + startNum + " + " + endNum + " = ? ");
 
-        // Set an EditText view to get user input
+        /** Set an EditText view to get user input */
         final EditText input = new EditText(c);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         alert.setView(input);
@@ -85,23 +85,18 @@ public class SAParentalGate {
                 if (!input.getText().toString().equals("")) {
                     int userValue = Integer.parseInt(input.getText().toString());
 
-                    // dismiss
+                    /** dismiss */
                     dialog.dismiss();
 
                     if (userValue == (startNum + endNum)) {
-                        // go on success way
+                        /** go on success way */
                         if (listener != null) {
                             listener.parentalGateWasSucceded(refAd.placementId);
                         }
 
                         String refClassName = parentRef.get().getClass().getName();
-                        SALog.Log("ref class name " + refClassName);
                         String bannerName = SABannerAd.class.getCanonicalName();
                         String videoName = SAVideoAd.class.getCanonicalName();
-
-                        if ((parentRef.get() instanceof SAViewProtocol) == true) {
-                            SALog.Log("implenents");
-                        }
 
                         if (refClassName.contains(bannerName)) {
                             ((SABannerAd) parentRef.get()).advanceToClick();
@@ -110,19 +105,19 @@ public class SAParentalGate {
                         }
                     } else {
 
-                        // go on error way
+                        /** go on error way */
                         AlertDialog.Builder erroralert = new android.app.AlertDialog.Builder(c);
                         erroralert.setTitle(SA_ERROR_ALERTVIEW_TITLE);
                         erroralert.setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
 
-                        // set button action
+                        /** set button action */
                         erroralert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
-                                // dismiss this
+                                /** dismiss this */
                                 dialog.dismiss();
 
-                                // do nothing
+                                /** do nothing */
                                 if (listener != null) {
                                     listener.parentalGateWasFailed(refAd.placementId);
                                 }
@@ -142,10 +137,10 @@ public class SAParentalGate {
 
             public void onClick(DialogInterface dialog, int which) {
 
-                // dismiss
+                /** dismiss */
                 dialog.dismiss();
 
-                // go on cancel way
+                /** go on cancel way */
                 if (listener != null) {
                     listener.parentalGateWasCanceled(refAd.placementId);
                 }
@@ -164,17 +159,18 @@ public class SAParentalGate {
         dialog.cancel();
     }
 
-    // aux function for random number generation
-    private static int randInt(int min, int max) {
-        Random rand = new Random();
-        return rand.nextInt((max - min) + 1) + min;
+    /**
+     * Setter for the listener
+     * @param listener - listener reference
+     */
+    public void setListener(SAParentalGateListener listener){
+        this.listener = listener;
     }
 
-    // setters and getters (it's 2015, why is not this automated by now?)
-    public void setListener(SAParentalGateListener list){
-        this.listener = list;
-    }
-
+    /**
+     * Getter for the listener
+     * @return the local listener object
+     */
     public  SAParentalGateListener getListener(){
         return this.listener;
     }

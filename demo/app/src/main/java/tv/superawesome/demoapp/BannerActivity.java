@@ -6,20 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.view.ViewGroup;
-import android.widget.AbsoluteLayout;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.sdk.data.Loader.SALoader;
-import tv.superawesome.sdk.data.Loader.SALoaderListener;
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.views.SABannerAd;
-
-import static android.widget.AbsoluteLayout.*;
 
 /**
  * Created by gabriel.coman on 07/01/16.
@@ -89,9 +85,9 @@ public class BannerActivity extends Activity {
 
             @Override
             public void didFailToLoadAdForPlacementId(int placementId) {
-                SALog.Log("Could not load : " + placementId);
+                Log.d("SuperAwesome", "Could not load : " + placementId);
 
-                // call finish on this activity
+                /** call finish on this activity */
                 onBackPressed();
             }
         });

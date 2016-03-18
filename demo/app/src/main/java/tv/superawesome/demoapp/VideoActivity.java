@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.sdk.data.Loader.SALoader;
-import tv.superawesome.sdk.data.Loader.SALoaderListener;
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
@@ -46,7 +46,7 @@ public class VideoActivity extends Activity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Always call the superclass so it can save the view hierarchy state
+        /** Always call the superclass so it can save the view hierarchy state */
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -63,18 +63,12 @@ public class VideoActivity extends Activity {
         adListener = DataHolder.getInstance()._refAdListener;
         parentalGateListener = DataHolder.getInstance()._refParentalGateListener;
 
-        SALog.Log("Testing: " + DataHolder.getInstance()._refPlacementId);
+        Log.d("SuperAwesome", "Testing: " + DataHolder.getInstance()._refPlacementId);
 
         loader = new SALoader();
         loader.loadAd(placementId, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
-//                SABannerAd banner = (SABannerAd)findViewById(R.id.bannerView);
-//                banner.setAd(ad);
-//                banner.setIsParentalGateEnabled(isParentalGateEnabled);
-//                banner.setAdListener(adListener);
-//                banner.setParentalGateListener(parentalGateListener);
-//                banner.play();
 
                 SAVideoAd video = new SAVideoAd(VideoActivity.this);
                 video.setAd(ad);
@@ -91,9 +85,9 @@ public class VideoActivity extends Activity {
 
             @Override
             public void didFailToLoadAdForPlacementId(int placementId) {
-                SALog.Log("Could not load : " + placementId);
+                Log.d("SuperAwesome", "Could not load : " + placementId);
 
-                // call finish on this activity
+                /** call finish on this activity */
                 onBackPressed();
             }
         });

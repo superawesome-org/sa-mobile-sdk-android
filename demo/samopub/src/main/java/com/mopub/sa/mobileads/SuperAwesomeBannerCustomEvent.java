@@ -8,9 +8,9 @@ import com.mopub.mobileads.MoPubErrorCode;
 import java.util.Map;
 
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.data.Loader.SALoader;
-import tv.superawesome.sdk.data.Loader.SALoaderListener;
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.views.SABannerAd;

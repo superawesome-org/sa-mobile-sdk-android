@@ -13,9 +13,8 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 
-import tv.superawesome.lib.sanetwork.SAApplication;
-import tv.superawesome.lib.sautils.SALog;
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.lib.sautils.SAApplication;
+import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAParentalGateListener;
 

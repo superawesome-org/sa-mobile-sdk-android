@@ -2,34 +2,24 @@ package com.mopub.sa.mobileads;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 /** MoPub */
 import com.mopub.common.LifecycleListener;
-import com.mopub.common.MoPub;
 import com.mopub.common.MoPubReward;
 import com.mopub.mobileads.CustomEventRewardedVideo;
 import com.mopub.mobileads.MoPubErrorCode;
-import com.mopub.mobileads.MoPubRewardedVideoListener;
-import com.mopub.mobileads.MoPubRewardedVideoManager;
 /** AwesomeAds */
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.data.Loader.SALoader;
-import tv.superawesome.sdk.data.Loader.SALoaderListener;
-import tv.superawesome.sdk.data.Models.SAAd;
+import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.views.SAVideoActivity;
-import tv.superawesome.sdk.views.SAParentalGate;
 
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import static com.mopub.mobileads.MoPubRewardedVideoManager.*;
 

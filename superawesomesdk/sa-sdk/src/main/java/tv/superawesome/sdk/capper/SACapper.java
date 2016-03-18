@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -11,7 +12,6 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import java.io.IOException;
 
-import tv.superawesome.lib.sautils.SALog;
 import tv.superawesome.lib.sautils.SAUtils;
 
 /**
@@ -76,7 +76,7 @@ public class SACapper {
                     int hash1 = Math.abs(firstPartOfDAU.hashCode());
                     int hash2 = Math.abs(secondPartOfDAU.hashCode());
                     int dauHash = Math.abs(hash1 ^ hash2);
-                    SALog.Log(hash1 + "-" + hash2 + "-" + dauHash);
+                    Log.d("SuperAwesome", hash1 + "-" + hash2 + "-" + dauHash);
 
                     if (listener != null){
                         listener.didFindDAUId(dauHash);
