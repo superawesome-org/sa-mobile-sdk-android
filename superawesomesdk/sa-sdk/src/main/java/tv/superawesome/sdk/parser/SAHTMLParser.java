@@ -63,7 +63,8 @@ public class SAHTMLParser {
     private static String formatCreativeIntoImageHTML(SAAd ad) {
         try {
             String htmlString = SAUtils.openAssetAsString("html/displayImage.html");
-            htmlString = htmlString.replace("hrefURL", ad.creative.clickURL);
+            String click = (ad.creative.clickURL != null ? ad.creative.clickURL : ad.creative.trackingURL);
+            htmlString = htmlString.replace("hrefURL", click);
             htmlString = htmlString.replace("imageURL", ad.creative.details.image);
             return htmlString;
         } catch (IOException e) {

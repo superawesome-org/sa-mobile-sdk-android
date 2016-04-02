@@ -47,31 +47,10 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         /** SA setup */
         SuperAwesome.getInstance().setConfigurationStaging();
-        SuperAwesome.getInstance().disableTestMode();
+        SuperAwesome.getInstance().enableTestMode();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-
-        SAAsyncTask task = new SAAsyncTask(SuperAwesome.getInstance().getApplicationContext(), new SAAsyncTask.SAAsyncTaskListener() {
-
-            @Override
-            public Object taskToExecute() throws IOException {
-                return SAUtils.syncGet("https://ads.staging.superawesome.tv/v2/ad/79?test=false&sdkVersion=android_3.5.4&rnd=1454507&bundle=tv.superawesome.demoapp");
-            }
-
-            @Override
-            public void onFinish(Object result) {
-                Log.d("SuperAwesome", "" + (String)result);
-            }
-
-            @Override
-            public void onError() {
-                Log.d("SuperAwesome", "onError");
-            }
-        });
-
-        loader = new SALoader();
 
         /** set text info */
         TextView saSDKLabel = (TextView)findViewById(R.id.sasdk_label);
@@ -79,80 +58,108 @@ public class MainActivity extends Activity implements
         TextView versionLabel = (TextView)findViewById(R.id.version_label);
         versionLabel.setText("(" + SuperAwesome.getInstance().getSDKVersion() + " - " + SAUtils.getVerboseSystemDetails() + " - " + SuperAwesome.getInstance().getDAUID() +  ")");
 
-        /** setup the list */
-        optionsList = (ListView)findViewById(R.id.optionsList);
-
-        /** populate the data */
-        final List<AdItem> options = TestDataProvider.createTestData();
-        OptionsAdapter adapter = new OptionsAdapter(this, R.layout.listview_cell, options);
-        optionsList.setAdapter(adapter);
-
-        /** add listeners */
-        optionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        loader = new SALoader();
+        loader.loadAd(79, new SALoaderListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void didLoadAd(SAAd ad) {
+                SAVideoActivity fvad = new SAVideoActivity(MainActivity.this);
+                fvad.setAd(ad);
+                fvad.play();
+            }
 
-                /** get the current selected option and start doing something */
-                AdItem option = options.get(position);
-                if (option.testEnabled) {
-                    SuperAwesome.getInstance().enableTestMode();
-                } else {
-                    SuperAwesome.getInstance().disableTestMode();
-                }
-
-                /** get the type */
-                switch (option.type){
-                    case fullscreen_video_item:{
-                        loader.loadAd(option.placementId, new SALoaderListener() {
-                            @Override
-                            public void didLoadAd(SAAd ad) {
-                                ad.print();
-                                vad = new SAVideoActivity(MainActivity.this);
-                                vad.setAd(ad);
-                                vad.setIsParentalGateEnabled(true);
-                                vad.setShouldAutomaticallyCloseAtEnd(true);
-                                vad.setShouldShowCloseButton(true);
-                                vad.setAdListener(adListener);
-                                vad.setVideoAdListener(videoAdListener);
-                                vad.setShouldLockOrientation(true);
-                                vad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                                vad.setParentalGateListener(parentalGateListener);
-                                vad.play();
-                            }
-
-                            @Override
-                            public void didFailToLoadAdForPlacementId(int placementId) {
-                                Log.d("SuperAwesome", "Could not load: " + placementId);
-                            }
-                        });
-
-                        break;
+            @Override
+            public void didFailToLoadAdForPlacementId(int placementId) {
+                loader.loadAd(31093, new SALoaderListener() {
+                    @Override
+                    public void didLoadAd(SAAd ad) {
+                        SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
+                        iad.setAd(ad);
+                        iad.play();
                     }
-                    case interstitial_item:{
-                        loader.loadAd(option.placementId, new SALoaderListener() {
-                            @Override
-                            public void didLoadAd(SAAd ad) {
-                                SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
-                            }
 
-                            @Override
-                            public void didFailToLoadAdForPlacementId(int placementId) {
-                                Log.d("SuperAwesome", "Could not load: " + placementId);
-                            }
-                        });
-                        break;
+                    @Override
+                    public void didFailToLoadAdForPlacementId(int placementId) {
+                        Log.d("SuperAwesome", "Could not load for any!");
                     }
-                    case banner_item:{
-                        BannerActivity.start(MainActivity.this, option.placementId, adListener, parentalGateListener);
-                        break;
-                    }
-                    case video_item: {
-                        VideoActivity.start(MainActivity.this, option.placementId, adListener, parentalGateListener, videoAdListener);
-                        break;
-                    }
-                }
+                });
             }
         });
+
+//
+//        /** setup the list */
+//        optionsList = (ListView)findViewById(R.id.optionsList);
+//
+//        /** populate the data */
+//        final List<AdItem> options = TestDataProvider.createTestData();
+//        OptionsAdapter adapter = new OptionsAdapter(this, R.layout.listview_cell, options);
+//        optionsList.setAdapter(adapter);
+//
+//        /** add listeners */
+//        optionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                /** get the current selected option and start doing something */
+//                AdItem option = options.get(position);
+//                if (option.testEnabled) {
+//                    SuperAwesome.getInstance().enableTestMode();
+//                } else {
+//                    SuperAwesome.getInstance().disableTestMode();
+//                }
+//
+//                /** get the type */
+//                switch (option.type){
+//                    case fullscreen_video_item:{
+//                        loader.loadAd(option.placementId, new SALoaderListener() {
+//                            @Override
+//                            public void didLoadAd(SAAd ad) {
+//                                ad.print();
+//                                vad = new SAVideoActivity(MainActivity.this);
+//                                vad.setAd(ad);
+//                                vad.setIsParentalGateEnabled(true);
+//                                vad.setShouldAutomaticallyCloseAtEnd(true);
+//                                vad.setShouldShowCloseButton(true);
+//                                vad.setAdListener(adListener);
+//                                vad.setVideoAdListener(videoAdListener);
+//                                vad.setShouldLockOrientation(true);
+//                                vad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//                                vad.setParentalGateListener(parentalGateListener);
+//                                vad.play();
+//                            }
+//
+//                            @Override
+//                            public void didFailToLoadAdForPlacementId(int placementId) {
+//                                Log.d("SuperAwesome", "Could not load: " + placementId);
+//                            }
+//                        });
+//
+//                        break;
+//                    }
+//                    case interstitial_item:{
+//                        loader.loadAd(option.placementId, new SALoaderListener() {
+//                            @Override
+//                            public void didLoadAd(SAAd ad) {
+//                                SAInterstitialActivity.start(MainActivity.this, ad, true, adListener, parentalGateListener);
+//                            }
+//
+//                            @Override
+//                            public void didFailToLoadAdForPlacementId(int placementId) {
+//                                Log.d("SuperAwesome", "Could not load: " + placementId);
+//                            }
+//                        });
+//                        break;
+//                    }
+//                    case banner_item:{
+//                        BannerActivity.start(MainActivity.this, option.placementId, adListener, parentalGateListener);
+//                        break;
+//                    }
+//                    case video_item: {
+//                        VideoActivity.start(MainActivity.this, option.placementId, adListener, parentalGateListener, videoAdListener);
+//                        break;
+//                    }
+//                }
+//            }
+//        });
 
     }
 

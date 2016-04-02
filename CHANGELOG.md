@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+3.5.5
+ - Fix an issue with Images
 3.5.4
  - add lock orientation
 

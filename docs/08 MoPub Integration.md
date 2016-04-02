@@ -4,7 +4,7 @@ If you already have MoPub ads serving in your app, but want to integrate SuperAw
 
 The first thing you should do is integrate the SDK in your current app by following the instructions in [Getting Started / Adding the Library to Your Project](https://developers.superawesome.tv/docs/androidsdk/Getting%20Started/Adding%20the%20Library%20to%20Your%20Project?version=3).
 
-This will add the SDK to your current project. 
+This will add the SDK to your current project.
 
 #### Download Adapters
 
@@ -59,8 +59,8 @@ For rewarded video, two additional fields can be set:
 {
 	"shouldShowCloseButton": false,
 	"shouldAutomaticallyCloseAtEnd": true
-        "shouldLockOrientation": true,
-        "lockOrientation": "LANDSCAPE" or "PORTRAIT" 
+    "shouldLockOrientation": true,
+    "lockOrientation": "LANDSCAPE" or "PORTRAIT" 
 }
 
 ```
