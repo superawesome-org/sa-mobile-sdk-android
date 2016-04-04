@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /** MoPub */
 import com.mopub.common.LifecycleListener;
@@ -106,6 +107,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
             }
         }
 
+        Log.d("SuperAwesome-MoPub", "loaded data until here for " + placementId);
+
         return true;
     }
 
@@ -117,11 +120,14 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         SuperAwesome.getInstance().setApplicationContext(activity);
         SuperAwesome.getInstance().setTestMode(isTestEnabled);
 
+        Log.d("SuperAwesome-MoPub", "load SDK with Initialized for " + placementId);
+
         /** load and show the ad */
         SALoader loader = new SALoader();
         loader.loadAd(placementId, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
+                Log.d("SuperAwesome-MoPub", "Did Load Ad " + placementId);
 
                 /** add cAd */
                 cAd = ad;
