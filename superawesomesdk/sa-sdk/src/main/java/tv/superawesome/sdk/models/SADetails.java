@@ -10,6 +10,8 @@ package tv.superawesome.sdk.models;
 /**
  * Useful imports for this class
  **/
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
@@ -20,7 +22,7 @@ import android.util.Log;
  *
  * This dependency is regulated by SAValidator.h
  */
-public class SADetails {
+public class SADetails implements Parcelable {
 
     /**
      * the width & height of the creative; can be applied to images, banners,
@@ -71,6 +73,11 @@ public class SADetails {
     /** aux value needed when sending ad data like rating and such */
     public int value;
 
+    /** public constructor */
+    public SADetails(){
+        /** do nothing */
+    }
+
     /** aux print function */
     public void print() {
         String printout = " \nDETAILS:\n";
@@ -88,5 +95,56 @@ public class SADetails {
         printout += "\t\t url: " + url + "\n";
         printout += "\t\t value: " + value + "\n";
         Log.d("SuperAwesome", printout);
+    }
+
+    /** <Parceable> implementation */
+    protected SADetails(Parcel in) {
+        width = in.readInt();
+        height = in.readInt();
+        image = in.readString();
+        name = in.readString();
+        video = in.readString();
+        bitrate = in.readInt();
+        duration = in.readInt();
+        vast = in.readString();
+        tag = in.readString();
+        zip = in.readString();
+        url = in.readString();
+        placementFormat = in.readString();
+        value = in.readInt();
+    }
+
+    public static final Creator<SADetails> CREATOR = new Creator<SADetails>() {
+        @Override
+        public SADetails createFromParcel(Parcel in) {
+            return new SADetails(in);
+        }
+
+        @Override
+        public SADetails[] newArray(int size) {
+            return new SADetails[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(width);
+        dest.writeInt(height);
+        dest.writeString(image);
+        dest.writeString(name);
+        dest.writeString(video);
+        dest.writeInt(bitrate);
+        dest.writeInt(duration);
+        dest.writeString(vast);
+        dest.writeString(tag);
+        dest.writeString(zip);
+        dest.writeString(url);
+        dest.writeString(placementFormat);
+        dest.writeInt(value);
     }
 }

@@ -19,14 +19,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".BannerActivity"
-            android:label="@string/title_activity_activity_banner" >
-        </activity>
-        <activity
-            android:name=".VideoActivity"
-            android:label="@string/title_activity_activity_video">
-        </activity>
     </application>
-
 </manifest>

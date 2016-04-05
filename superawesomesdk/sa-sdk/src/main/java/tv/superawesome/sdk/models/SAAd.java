@@ -10,6 +10,8 @@ package tv.superawesome.sdk.models;
 /**
  * Imports needed for this class
  */
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 /**
@@ -17,7 +19,7 @@ import android.util.Log;
  * when an Ad is requested, as well as some aux fields that will be generated
  * by the SDK
  */
-public class SAAd {
+public class SAAd implements Parcelable {
 
     /** the SA server can send an error; if that's the case, this field will not be nill */
     public int error;
@@ -59,6 +61,11 @@ public class SAAd {
     /** pointer to the creative data associated with the ad */
     public SACreative creative;
 
+    /** public constructor */
+    public SAAd(){
+        /** do nothing */
+    }
+
     /** aux print function */
     public void print(){
         String printout = " \nAD:\n";
@@ -73,5 +80,54 @@ public class SAAd {
         printout += "adHTML: " + adHTML + "\n";
         Log.d("SuperAwesome", printout);
         creative.print();
+    }
+
+    /** <Parceable> implementation */
+    protected SAAd(Parcel in) {
+        error = in.readInt();
+        app = in.readInt();
+        placementId = in.readInt();
+        lineItemId = in.readInt();
+        campaignId = in.readInt();
+        isTest = in.readByte() != 0;
+        isFallback = in.readByte() != 0;
+        isFill = in.readByte() != 0;
+        isHouse = in.readByte() != 0;
+        adHTML = in.readString();
+        adJson = in.readString();
+        creative = in.readParcelable(SACreative.class.getClassLoader());
+    }
+
+    public static final Creator<SAAd> CREATOR = new Creator<SAAd>() {
+        @Override
+        public SAAd createFromParcel(Parcel in) {
+            return new SAAd(in);
+        }
+
+        @Override
+        public SAAd[] newArray(int size) {
+            return new SAAd[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(error);
+        dest.writeInt(app);
+        dest.writeInt(placementId);
+        dest.writeInt(lineItemId);
+        dest.writeInt(campaignId);
+        dest.writeByte((byte) (isTest ? 1 : 0));
+        dest.writeByte((byte) (isFallback ? 1 : 0));
+        dest.writeByte((byte) (isFill ? 1 : 0));
+        dest.writeByte((byte) (isHouse ? 1 : 0));
+        dest.writeString(adHTML);
+        dest.writeString(adJson);
+        dest.writeParcelable(creative, flags);
     }
 }

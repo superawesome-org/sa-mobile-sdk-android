@@ -10,6 +10,8 @@ package tv.superawesome.sdk.models;
 /**
  * imports for this class
  */
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 
@@ -17,7 +19,7 @@ import android.util.Log;
  * The creative contains essential ad information like format, click url
  * and such
  */
-public class SACreative {
+public class SACreative implements Parcelable {
 
     /** the creative ID is a unique ID associated by the server with this Ad */
     public int creativeId;
@@ -61,6 +63,11 @@ public class SACreative {
     /** pointer to a SADetails object containing even more creative information */
     public SADetails details;
 
+    /** public constructor */
+    public SACreative(){
+        /** do nothing */
+    }
+
     /** aux print function */
     public void print() {
         String printout = " \nCREATIVE:\n";
@@ -77,5 +84,52 @@ public class SACreative {
         printout += "\t approved: " + approved + "\n";
         Log.d("SuperAwesome", printout);
         details.print();
+    }
+
+    /** <Parceable> implementation */
+    protected SACreative(Parcel in) {
+        creativeId = in.readInt();
+        name = in.readString();
+        cpm = in.readInt();
+        baseFormat = in.readString();
+        impressionURL = in.readString();
+        viewableImpressionURL = in.readString();
+        clickURL = in.readString();
+        trackingURL = in.readString();
+        parentalGateClickURL = in.readString();
+        approved = in.readByte() != 0;
+        details = in.readParcelable(SADetails.class.getClassLoader());
+    }
+
+    public static final Creator<SACreative> CREATOR = new Creator<SACreative>() {
+        @Override
+        public SACreative createFromParcel(Parcel in) {
+            return new SACreative(in);
+        }
+
+        @Override
+        public SACreative[] newArray(int size) {
+            return new SACreative[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(creativeId);
+        dest.writeString(name);
+        dest.writeInt(cpm);
+        dest.writeString(baseFormat);
+        dest.writeString(impressionURL);
+        dest.writeString(viewableImpressionURL);
+        dest.writeString(clickURL);
+        dest.writeString(trackingURL);
+        dest.writeString(parentalGateClickURL);
+        dest.writeByte((byte) (approved ? 1 : 0));
+        dest.writeParcelable(details, flags);
     }
 }
