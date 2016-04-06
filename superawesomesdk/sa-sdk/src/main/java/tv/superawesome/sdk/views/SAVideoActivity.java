@@ -175,15 +175,6 @@ public class SAVideoActivity implements SAViewProtocol {
                 setRequestedOrientation(lockOrientation);
             }
 
-//            /** get close button */
-//            closeBtn = (Button) findViewById(close_btnId);
-//            /** also check visibility of button */
-//            if (shouldShowCloseButton){
-//                closeBtn.setVisibility(View.VISIBLE);
-//            } else {
-//                closeBtn.setVisibility(View.GONE);
-//            }
-
             /** get player */
             videoAd = (SAVideoAd) findViewById(video_adId);
 
@@ -240,49 +231,10 @@ public class SAVideoActivity implements SAViewProtocol {
             }
         }
 
-//        @Override
-//        public void onConfigurationChanged(Configuration newConfig) {
-//            super.onConfigurationChanged(newConfig);
-//            /**
-//             * do nothing here - just let the UI elements resize correctly as specified by the
-//             * XML interface files
-//             */
-//        }
-
-//        @Override
-//        public void onStart() {
-//            super.onStart();
-//        }
-//
-//        @Override
-//        public void onResume() {
-//            super.onResume();
-//        }
-//
-//        @Override
-//        public void onPause() {
-//            super.onPause();
-//        }
-//
-//        @Override
-//        public void onStop() {
-//            super.onStop();
-//        }
-
         @Override
         public void onBackPressed() {
 
         }
-
-//        @Override
-//        public void onDestroy(){
-//            super.onDestroy();
-//            videoAd.close();
-//            ad = null;
-//            adListener = null;
-//            parentalGateListener = null;
-//            videoAdListener = null;
-//        }
 
         /** public close function */
         public void closeVideo(View v){
@@ -302,7 +254,6 @@ public class SAVideoActivity implements SAViewProtocol {
              * call super.onBackPressed() to close the activity because it's own onBackPressed()
              * method is overridden to do nothing e.g. so as not to be closed by the user
              */
-//            super.onBackPressed();
             super.finish();
 
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);

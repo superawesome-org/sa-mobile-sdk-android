@@ -11,4 +11,9 @@
         <!--android:layout_height="300dp"-->
         <!--android:id="@+id/SAVideoAd2Id"/>-->
 
+    <tv.superawesome.sdk.views.SABannerAd
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:id="@+id/mybanner"/>
+
 </LinearLayout>

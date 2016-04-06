@@ -19,6 +19,7 @@ import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebPlayer;
 import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.models.SACreativeFormat;
 import tv.superawesome.sdk.listeners.SAAdListener;
@@ -209,6 +210,8 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
          */
         if (ad == null || !layoutOK) {
             this.postDelayed(runnable, 250);
+        } else {
+            post(runnable);
         }
     }
 
@@ -229,7 +232,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
             SAEvents.sendEventToURL(ad.creative.trackingURL);
         }
 
-        System.out.println("Going to " + destinationURL);
+        Log.d("SuperAwesome", "Going to " + destinationURL);
 
         /** go-to-url */
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));

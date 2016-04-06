@@ -9,6 +9,8 @@ import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.loader.SALoaderListener;
 import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.views.SABannerAd;
+import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAVideoActivity;
 import tv.superawesome.sdk.views.SAVideoAd;
 
@@ -16,6 +18,7 @@ public class MainActivity extends Activity {
 
     private SAAd savedAd = null;
     private SAVideoAd videoAd2 = null;
+    private SABannerAd bannerAd = null;
 
     /** the options list */
     @Override
@@ -24,23 +27,41 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().enableTestMode();
+        SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setConfigurationProduction();
+
+//        if (savedInstanceState == null) {
+//            SALoader loader = new SALoader();
+//            loader.loadAd(28000, new SALoaderListener() {
+//                @Override
+//                public void didLoadAd(SAAd ad) {
+//                    savedAd = ad;
+////                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+////                    videoAd2.setAd(savedAd);
+////                    Log.d("SuperAwesome", "Loaded first time " + videoAd2.getAd().placementId);
+////                    videoAd2.play();
+//
+//                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+//                    vad.setAd(ad);
+//                    vad.play();
+//                }
+//
+//                @Override
+//                public void didFailToLoadAdForPlacementId(int placementId) {
+//
+//                }
+//            });
+//        }
 
         if (savedInstanceState == null) {
             SALoader loader = new SALoader();
-            loader.loadAd(28000, new SALoaderListener() {
+            loader.loadAd(30471, new SALoaderListener() {
                 @Override
                 public void didLoadAd(SAAd ad) {
                     savedAd = ad;
-//                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
-//                    videoAd2.setAd(savedAd);
-//                    Log.d("SuperAwesome", "Loaded first time " + videoAd2.getAd().placementId);
-//                    videoAd2.play();
-
-                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
-                    vad.setAd(ad);
-                    vad.play();
+                    bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+                    bannerAd.setAd(ad);
+                    bannerAd.play();
                 }
 
                 @Override
@@ -48,6 +69,11 @@ public class MainActivity extends Activity {
 
                 }
             });
+        } else {
+            savedAd = savedInstanceState.getParcelable("savedAd");
+            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+            bannerAd.setAd(savedAd);
+            bannerAd.play();
         }
     }
 
