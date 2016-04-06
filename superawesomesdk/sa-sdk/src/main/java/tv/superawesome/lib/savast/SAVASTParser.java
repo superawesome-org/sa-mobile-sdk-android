@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import tv.superawesome.lib.sautils.SAAsyncTask;
 import tv.superawesome.lib.sautils.SAApplication;
+import tv.superawesome.lib.sautils.SANetwork;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.models.SAVASTAd;
 import tv.superawesome.lib.savast.models.SAVASTAdType;
@@ -76,7 +77,8 @@ public class SAVASTParser {
         final List<SAVASTAd> lads = new ArrayList<SAVASTAd>();
 
         /** step 1: get the XML */
-        String VAST = SAUtils.syncGet(url);
+        SANetwork network = new SANetwork();
+        String VAST = network.syncGet(url);
 
         if (VAST == null) {
             /**

@@ -7,6 +7,7 @@ import android.widget.VideoView;
 
 import org.json.JSONObject;
 
+import tv.superawesome.lib.sautils.SANetwork;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.models.SAAd;
 
@@ -33,7 +34,8 @@ public class SAEvents {
     public static void sendEventToURL(final String url) {
         if (!isSATrackingEnabled) return;
 
-        SAUtils.asyncGet(url, new JSONObject(), new SAUtils.SANetListener() {
+        SANetwork network = new SANetwork();
+        network.asyncGet(url, new JSONObject(), new SANetwork.SANetListener() {
             @Override
             public void success(Object data) {
                 /** do nothing */

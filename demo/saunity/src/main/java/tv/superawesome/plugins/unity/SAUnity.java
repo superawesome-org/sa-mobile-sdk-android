@@ -114,7 +114,7 @@ public class SAUnity {
      * @param isTestingEnabled whether testing is enabled or not
      */
     public static void SuperAwesomeUnityLoadAd(final Context context, final String unityName, int placementId, boolean isTestingEnabled, int configuration) {
-        System.out.println("SuperAwesomeUnityLoadAd " + unityName);
+        System.out.println("SuperAwesomeUnityLoadAd " + unityName + " / " + placementId);
 
         /** setup testing */
         SuperAwesome.getInstance().setTestMode(isTestingEnabled);
@@ -132,11 +132,13 @@ public class SAUnity {
         loader.loadAd(placementId, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
+                Log.d("SuperAwesome", "didLoadAd " + ad.placementId);
                 SendUnityMsgPayload(unityName, "callback_didLoadAd", "adJson", ad.adJson);
             }
 
             @Override
             public void didFailToLoadAdForPlacementId(int placementId) {
+                Log.d("SuperAwesome", "didFailToLoad " + placementId);
                 SendUnityMsgPayload(unityName, "callback_didFailToLoadAd", "", "");
             }
         });

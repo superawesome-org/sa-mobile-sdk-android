@@ -49,8 +49,8 @@ public class SALoader {
         }
 
         /** send a standard GET request */
-        // SANetwork network = new SANetwork();
-        SAUtils.asyncGet(endpoint, queryJson, new SAUtils.SANetListener() {
+        SANetwork network = new SANetwork();
+        network.asyncGet(endpoint, queryJson, new SANetwork.SANetListener() {
             @Override
             public void success(final Object data) {
 
