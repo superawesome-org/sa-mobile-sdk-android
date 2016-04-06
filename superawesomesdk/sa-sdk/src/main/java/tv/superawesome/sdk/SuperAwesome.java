@@ -50,7 +50,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.5.6";
+        return "3.5.7";
     }
 
     private String getSdk() {

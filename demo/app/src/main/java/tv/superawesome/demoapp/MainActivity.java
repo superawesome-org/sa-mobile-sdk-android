@@ -37,15 +37,15 @@ public class MainActivity extends Activity {
                 @Override
                 public void didLoadAd(SAAd ad) {
                     savedAd = ad;
-                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
-                    videoAd2.setIsParentalGateEnabled(false);
-                    videoAd2.setAd(savedAd);
-                    videoAd2.play();
+//                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+//                    videoAd2.setIsParentalGateEnabled(false);
+//                    videoAd2.setAd(savedAd);
+//                    videoAd2.play();
 
 
-//                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
-//                    vad.setAd(ad);
-//                    vad.play();
+                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+                    vad.setAd(ad);
+                    vad.play();
                 }
 
                 @Override

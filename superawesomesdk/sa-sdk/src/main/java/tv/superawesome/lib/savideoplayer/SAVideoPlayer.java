@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -52,6 +53,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     private int current = 0;
     private int duration = 0;
     private boolean isStarted = false;
+    private boolean isReady = false;
 
     /**
      * This function **WILL** get called only once - when the SAVideoPlayer fragment gets created
@@ -68,16 +70,17 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
         /** add prepared listener */
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
-            public void onPrepared(MediaPlayer mp) {
+            public void onPrepared(final MediaPlayer mp) {
                 setSurfaceSize();
-                mediaPlayer.start();
+                isReady = true;
+                mp.start();
 
                 if (listener != null && !isReadyHandled) {
                     isReadyHandled = true;
                     listener.didFindPlayerReady();
                     isStarted = true;
                     if (controller != null) {
-                        controller.chronographer.setText("Ad: " + getDuration() / 1000);
+                        controller.chronographer.setText("Ad: " + mp.getDuration() / 1000);
                     }
                 }
 
@@ -88,8 +91,8 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
                         /** don't continue if completed */
                         if (isCompleteHandled) return;
 
-                        current = getCurrentPosition();
-                        duration = getDuration();
+                        current = mp.getCurrentPosition();
+                        duration = mp.getDuration();
 
                         if (current >= 1 && !isStartHandled && listener != null) {
                             isStartHandled = true;
@@ -125,9 +128,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 if (listener != null && !isErrorHandled) {
                     isErrorHandled = true;
-                    isCompleteHandled = true;
                     listener.didPlayWithError();
-                    close();
                 }
                 return true;
             }
@@ -220,22 +221,16 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     }
 
     @Override
-    public void onDestroyView() {
-        controller.shouldNotHide = false;
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (isCompleteHandled) return;
+    public void onStop() {
+        super.onStop();
+        if (isCompleteHandled || !isReady) return;
         mediaPlayer.pause();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (isCompleteHandled) return;
+    public void onStart() {
+        super.onStart();
+        if (isCompleteHandled || !isReady) return;
         mediaPlayer.start();
     }
 
@@ -266,6 +261,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
      * The "close" function; opposite of the play function
      */
     public void close(){
+        isCompleteHandled = true;
         mediaPlayer.stop();
         mediaPlayer.setDisplay(null);
     }
@@ -311,12 +307,12 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
 
     @Override
     public int getDuration() {
-        return mediaPlayer.getDuration();
+        return 0;
     }
 
     @Override
     public int getCurrentPosition() {
-        return mediaPlayer.getCurrentPosition();
+        return 0;
     }
 
     @Override

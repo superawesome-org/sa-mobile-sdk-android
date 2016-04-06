@@ -6,10 +6,10 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <tv.superawesome.sdk.views.SAVideoAd
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:id="@+id/SAVideoAd2Id"/>
+    <!--<tv.superawesome.sdk.views.SAVideoAd-->
+        <!--android:layout_width="300dp"-->
+        <!--android:layout_height="300dp"-->
+        <!--android:id="@+id/SAVideoAd2Id"/>-->
 
     <!--<tv.superawesome.sdk.views.SABannerAd-->
         <!--android:layout_width="320dp"-->
