@@ -78,25 +78,7 @@ public class SAUnity {
         return orientation;
     }
 
-    /**
-     * Function that returns the current screen size
-     * @param activity - the activity to pass along as context
-     * @return a SASize object with width & height members
-     */
-    public static SASize getRealScreenSize(Activity activity, boolean rotate) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        Display display = activity.getWindowManager().getDefaultDisplay();
-
-        View decorView = activity.getWindow().getDecorView();
-
-        if (!rotate){
-            return new SASize(decorView.getWidth(), decorView.getHeight());
-        } else {
-            return new SASize(decorView.getHeight(), decorView.getWidth());
-        }
-    }
-
-    public static RelativeLayout.LayoutParams getBannerLayoutParams(float factor, SASize screenSize, int bannerSize, int bannerPosition){
+    public static RelativeLayout.LayoutParams getBannerLayoutParams(float factor, SAUtils.SASize screenSize, int bannerSize, int bannerPosition){
         /** calc actual banner W & H */
         int width = 0, height = 0;
         if      (bannerSize == 1) { width = 300; height = 50;  }
@@ -196,7 +178,7 @@ public class SAUnity {
                     final SABannerAd bannerAd = new SABannerAd(context);
 
                     /** get factor & screen size */
-                    SASize screenSize = getRealScreenSize(activity, false);
+                    SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
                     final float factor = SAUtils.getScaleFactor(activity);
 
                     /** set banner width & height */
@@ -228,7 +210,7 @@ public class SAUnity {
                                 currentRotation[0] = newRotation;
 
                                 /** calc scaling factor */
-                                SASize screenSize = getRealScreenSize(activity, true);
+                                SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, true);
 
                                 RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
                                 bannerAd.setLayoutParams(params2);
@@ -585,19 +567,6 @@ public class SAUnity {
                 SAVideoActivity vad = (SAVideoActivity)temp;
                 vad.close();
             }
-        }
-    }
-
-    /**
-     * Private SASize object
-     */
-    private static class SASize {
-        public int width = 0;
-        public int height = 0;
-
-        SASize (int w, int h){
-            width = w;
-            height = h;
         }
     }
 }

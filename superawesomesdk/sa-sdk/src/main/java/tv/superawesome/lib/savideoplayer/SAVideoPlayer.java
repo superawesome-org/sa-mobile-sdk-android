@@ -1,8 +1,9 @@
 package tv.superawesome.lib.savideoplayer;
 
 import android.annotation.TargetApi;
-import android.graphics.Rect;
+import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.graphics.Rect;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -72,7 +73,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
                 setSurfaceSize();
                 mediaPlayer.start();
 
-                if (listener != null && !isReadyHandled){
+                if (listener != null && !isReadyHandled) {
                     isReadyHandled = true;
                     listener.didFindPlayerReady();
                     isStarted = true;
@@ -81,12 +82,14 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
                     }
                 }
 
-                final Handler handler = new Handler();
+                final Handler handler = new Handler(Looper.getMainLooper());
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (!isPlaying()) return;
+                        /** don't continue if completed */
+                        if (isCompleteHandled) return;
 
+                        Log.d("SuperAwesome", "from here?");
                         current = getCurrentPosition();
                         duration = getDuration();
 
@@ -137,6 +140,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
                 if (listener != null && !isCompleteHandled) {
                     isCompleteHandled = true;
                     listener.didReachEnd();
+                    close();
                 }
             }
         });
@@ -164,6 +168,9 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+                /** don't go here when video is completed */
+                if (isCompleteHandled) return;
+
                 /** final media player display setup */
                 mediaPlayer.setDisplay(holder);
                 setSurfaceSize();
@@ -202,6 +209,8 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
+                if (isCompleteHandled) return;
+                controller.removeAllViews();
                 mediaPlayer.setDisplay(null);
             }
         });
@@ -214,6 +223,20 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     public void onDestroyView() {
         controller.shouldNotHide = false;
         super.onDestroyView();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (isCompleteHandled) return;
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isCompleteHandled) return;
+        mediaPlayer.start();
     }
 
     /**
@@ -243,7 +266,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
      * The "close" function; opposite of the play function
      */
     public void close(){
-        pause();
+        mediaPlayer.stop();
         mediaPlayer.setDisplay(null);
     }
 

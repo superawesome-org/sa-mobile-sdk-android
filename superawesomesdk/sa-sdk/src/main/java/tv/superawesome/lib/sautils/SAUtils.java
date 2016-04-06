@@ -18,6 +18,7 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.Display;
+import android.view.View;
 
 import org.json.JSONObject;
 
@@ -138,6 +139,24 @@ public class SAUtils {
         Display display = activity.getWindowManager().getDefaultDisplay();
         display.getMetrics(metrics);
         return  (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
+    }
+
+    /**
+     * Function that returns the current screen size
+     * @param activity - the activity to pass along as context
+     * @return a SASize object with width & height members
+     */
+    public static SASize getRealScreenSize(Activity activity, boolean rotate) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        Display display = activity.getWindowManager().getDefaultDisplay();
+
+        View decorView = activity.getWindow().getDecorView();
+
+        if (!rotate){
+            return new SASize(decorView.getWidth(), decorView.getHeight());
+        } else {
+            return new SASize(decorView.getHeight(), decorView.getWidth());
+        }
     }
 
     /**
@@ -360,5 +379,18 @@ public class SAUtils {
          */
         void failure();
 
+    }
+
+    /**
+     * Private SASize object
+     */
+    public static class SASize {
+        public int width = 0;
+        public int height = 0;
+
+        SASize (int w, int h){
+            width = w;
+            height = h;
+        }
     }
 }

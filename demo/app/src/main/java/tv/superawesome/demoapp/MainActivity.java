@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.RelativeLayout;
 
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.d("SuperAwesome", "MainActivity onCreate");
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setConfigurationProduction();
@@ -37,8 +38,10 @@ public class MainActivity extends Activity {
                 public void didLoadAd(SAAd ad) {
                     savedAd = ad;
                     videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+                    videoAd2.setIsParentalGateEnabled(false);
                     videoAd2.setAd(savedAd);
                     videoAd2.play();
+
 
 //                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
 //                    vad.setAd(ad);
@@ -79,6 +82,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("savedAd", savedAd);
+        Log.d("SuperAwesome", "onSaveIntanceState");
         super.onSaveInstanceState(outState);
     }
 }
