@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -89,7 +88,6 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
                         /** don't continue if completed */
                         if (isCompleteHandled) return;
 
-                        Log.d("SuperAwesome", "from here?");
                         current = getCurrentPosition();
                         duration = getDuration();
 
@@ -127,7 +125,9 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 if (listener != null && !isErrorHandled) {
                     isErrorHandled = true;
+                    isCompleteHandled = true;
                     listener.didPlayWithError();
+                    close();
                 }
                 return true;
             }

@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.5.6
+ - Refactored a good chunk of the video & vast parsing so it works with AIR SDK and offers generally better performance
+
 3.5.5
  - Fix an issue with Images
 3.5.4
