@@ -7,8 +7,7 @@
         <activity
             android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner"
             android:label="SAVideoActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner"
             android:label="SAInterstitialActivity"

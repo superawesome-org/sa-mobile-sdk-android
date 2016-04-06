@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,6 +23,7 @@ import tv.superawesome.sdk.listeners.SAVideoAdListener;
 /**
  * Created by gabriel.coman on 24/12/15.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class SAVideoActivity implements SAViewProtocol {
 
     /** private activity object values */
@@ -116,42 +118,13 @@ public class SAVideoActivity implements SAViewProtocol {
         /** do nothing */
     }
 
-    /** shorthand start method for the lazy */
-    public static void start(Context c,
-                             SAAd ad,
-                             boolean isParentalGateEnabled,
-                             boolean shouldShowCloseButton,
-                             SAAdListener adListener,
-                             SAParentalGateListener parentalGateListener,
-                             SAVideoAdListener videoAdListener) {
-
-        /** create activity */
-        SAVideoActivity activity = new SAVideoActivity(c);
-
-        /** set ad */
-        activity.setAd(ad);
-
-        /** set ad parameters */
-        activity.setIsParentalGateEnabled(isParentalGateEnabled);
-        activity.setShouldShowCloseButton(shouldShowCloseButton);
-        activity.setShouldAutomaticallyCloseAtEnd(true);
-
-        /** set listeners */
-        activity.setAdListener(adListener);
-        activity.setParentalGateListener(parentalGateListener);
-        activity.setVideoAdListener(videoAdListener);
-
-        /** start playing */
-        activity.play();
-    }
-
     /** inner activity class */
     public static class SAVideoActivityInner extends Activity {
 
         /** private variables that control how the ad behaves */
         private SAAd ad;
         private boolean isParentalGateEnabled = true;
-        private boolean shouldShowCloseButton = false;
+        private boolean shouldShowCloseButton = true;
         private boolean shouldAutomaticallyCloseAtEnd = true;
         private boolean shouldLockOrientation = false;
         private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
@@ -163,18 +136,15 @@ public class SAVideoActivity implements SAViewProtocol {
 
         /** vast stuff */
         private SAVideoAd videoAd;
-        private Button closeBtn;
 
         /** is OK to close bool */
         private boolean isOKToClose = false;
 
         @Override
         public void onSaveInstanceState(Bundle savedInstanceState) {
-            /** Always call the superclass so it can save the view hierarchy state */
-            super.onSaveInstanceState(savedInstanceState);
+             super.onSaveInstanceState(savedInstanceState);
         }
 
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -186,7 +156,6 @@ public class SAVideoActivity implements SAViewProtocol {
             String packageName = SAApplication.getSAApplicationContext().getPackageName();
             int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
             int video_adId = getResources().getIdentifier("video_ad", "id", packageName);
-            int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
 
             setContentView(activity_sa_videoId);
 
@@ -206,109 +175,114 @@ public class SAVideoActivity implements SAViewProtocol {
                 setRequestedOrientation(lockOrientation);
             }
 
-            /** get close button */
-            closeBtn = (Button) findViewById(close_btnId);
-            /** also check visibility of button */
-            if (shouldShowCloseButton){
-                closeBtn.setVisibility(View.VISIBLE);
-            } else {
-                closeBtn.setVisibility(View.GONE);
-            }
+//            /** get close button */
+//            closeBtn = (Button) findViewById(close_btnId);
+//            /** also check visibility of button */
+//            if (shouldShowCloseButton){
+//                closeBtn.setVisibility(View.VISIBLE);
+//            } else {
+//                closeBtn.setVisibility(View.GONE);
+//            }
 
             /** get player */
             videoAd = (SAVideoAd) findViewById(video_adId);
-            videoAd.setAd(ad);
-            videoAd.setParentalGateListener(parentalGateListener);
-            videoAd.setAdListener(adListener);
-            videoAd.setVideoAdListener(videoAdListener);
-            videoAd.setIsParentalGateEnabled(isParentalGateEnabled);
-            videoAd.setInternalAdListener(new SAAdListener() {
-                @Override
-                public void adWasShown(int placementId) {}
-                @Override
-                public void adWasClosed(int placementId) {}
-                @Override
-                public void adWasClicked(int placementId) {}
-                @Override
-                public void adHasIncorrectPlacement(int placementId) {
-                    close();
-                }
-                @Override
-                public void adFailedToShow(int placementId) {
-                    close();
-                }
-            });
-            videoAd.setInternalVideoAdListener(new SAVideoAdListener() {
-                @Override
-                public void videoStarted(int placementId) {}
-                @Override
-                public void videoReachedFirstQuartile(int placementId) {}
-                @Override
-                public void videoReachedMidpoint(int placementId) {}
-                @Override
-                public void videoReachedThirdQuartile(int placementId) {}
-                @Override
-                public void videoEnded(int placementId) {}
-                @Override
-                public void adEnded(int placementId) {}
-                @Override
-                public void adStarted(int placementId) {
-                    isOKToClose = true;
-                }
-                @Override
-                public void allAdsEnded(int placementId) {
-                    if (shouldAutomaticallyCloseAtEnd) {
-                         close();
+
+            if (savedInstanceState == null) {
+                videoAd.setAd(ad);
+                videoAd.setParentalGateListener(parentalGateListener);
+                videoAd.setAdListener(adListener);
+                videoAd.setVideoAdListener(videoAdListener);
+                videoAd.setIsParentalGateEnabled(isParentalGateEnabled);
+                videoAd.setShouldShowCloseButton(shouldShowCloseButton);
+                videoAd.setInternalAdListener(new SAAdListener() {
+                    @Override
+                    public void adWasShown(int placementId) {}
+                    @Override
+                    public void adWasClosed(int placementId) {
+                        close();
                     }
-                }
-            });
-            videoAd.play();
+                    @Override
+                    public void adWasClicked(int placementId) {}
+                    @Override
+                    public void adHasIncorrectPlacement(int placementId) {
+                        close();
+                    }
+                    @Override
+                    public void adFailedToShow(int placementId) {
+                        close();
+                    }
+                });
+                videoAd.setInternalVideoAdListener(new SAVideoAdListener() {
+                    @Override
+                    public void videoStarted(int placementId) {}
+                    @Override
+                    public void videoReachedFirstQuartile(int placementId) {}
+                    @Override
+                    public void videoReachedMidpoint(int placementId) {}
+                    @Override
+                    public void videoReachedThirdQuartile(int placementId) {}
+                    @Override
+                    public void videoEnded(int placementId) {}
+                    @Override
+                    public void adEnded(int placementId) {}
+                    @Override
+                    public void adStarted(int placementId) {
+                        isOKToClose = true;
+                    }
+                    @Override
+                    public void allAdsEnded(int placementId) {
+                        if (shouldAutomaticallyCloseAtEnd) {
+                            close();
+                        }
+                    }
+                });
+                videoAd.play();
+            }
         }
 
+//        @Override
+//        public void onConfigurationChanged(Configuration newConfig) {
+//            super.onConfigurationChanged(newConfig);
+//            /**
+//             * do nothing here - just let the UI elements resize correctly as specified by the
+//             * XML interface files
+//             */
+//        }
 
-        @Override
-        public void onConfigurationChanged(Configuration newConfig) {
-            super.onConfigurationChanged(newConfig);
-            /**
-             * do nothing here - just let the UI elements resize correctly as specified by the
-             * XML interface files
-             */
-        }
-
-        @Override
-        public void onStart() {
-            super.onStart();
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-        }
-
-        @Override
-        public void onStop() {
-            super.onStop();
-        }
+//        @Override
+//        public void onStart() {
+//            super.onStart();
+//        }
+//
+//        @Override
+//        public void onResume() {
+//            super.onResume();
+//        }
+//
+//        @Override
+//        public void onPause() {
+//            super.onPause();
+//        }
+//
+//        @Override
+//        public void onStop() {
+//            super.onStop();
+//        }
 
         @Override
         public void onBackPressed() {
-            /** do nothing */
+
         }
 
-        @Override
-        public void onDestroy(){
-            super.onDestroy();
-            videoAd.close();
-            ad = null;
-            adListener = null;
-            parentalGateListener = null;
-            videoAdListener = null;
-        }
+//        @Override
+//        public void onDestroy(){
+//            super.onDestroy();
+//            videoAd.close();
+//            ad = null;
+//            adListener = null;
+//            parentalGateListener = null;
+//            videoAdListener = null;
+//        }
 
         /** public close function */
         public void closeVideo(View v){
@@ -322,12 +296,14 @@ public class SAVideoActivity implements SAViewProtocol {
             if (adListener != null){
                 adListener.adWasClosed(ad.placementId);
             }
+            videoAd.close();
 
             /**
              * call super.onBackPressed() to close the activity because it's own onBackPressed()
              * method is overridden to do nothing e.g. so as not to be closed by the user
              */
-            super.onBackPressed();
+//            super.onBackPressed();
+            super.finish();
 
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
@@ -339,7 +315,7 @@ public class SAVideoActivity implements SAViewProtocol {
     private static class AdDataHolder {
         public SAAd _refAd;
         public boolean _refIsParentalGateEnabled = true;
-        public boolean _refShouldShowCloseButton = false;
+        public boolean _refShouldShowCloseButton = true;
         public boolean _refShouldAutomaticallyCloseAtEnd = true;
         public boolean _refShouldLockOrientation = false;
         public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;

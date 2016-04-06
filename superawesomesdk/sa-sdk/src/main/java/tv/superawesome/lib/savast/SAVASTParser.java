@@ -8,7 +8,6 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -47,18 +46,21 @@ public class SAVASTParser {
 
             @Override
             public void onFinish(Object result) {
-                List<SAVASTAd> ads = (List<SAVASTAd>)result;
-                if (ads != null && ads.size() > 0 && listener != null) {
-                    listener.didParseVASTAndHasResponse(ads);
-                } else if (listener != null) {
-                    listener.didNotFindAnyValidAds();
+                List<SAVASTAd> ads = new ArrayList<>();
+                if (result != null){
+                    ads = (List<SAVASTAd>)result;
+                }
+
+                if (listener != null) {
+                    listener.didParseVAST(ads);
                 }
             }
 
             @Override
             public void onError() {
+                List<SAVASTAd> ads = new ArrayList<>();
                 if (listener != null) {
-                    listener.didFindInvalidVASTResponse();
+                    listener.didParseVAST(ads);
                 }
             }
         });
@@ -78,8 +80,7 @@ public class SAVASTParser {
 
         if (VAST == null) {
             /**
-             * return empty ads if  VAST string is NULL - this can sometimes happen because of
-             * SSL certificate issues
+             * return empty ads if  VAST string is NULL - this can sometimes happen because of SSL certificate issues
              */
             return lads;
         }
@@ -94,7 +95,13 @@ public class SAVASTParser {
         /** step 2. get the correct reference to the root XML element */
         final Element root = (Element) doc.getElementsByTagName("VAST").item(0);
 
-        /** step 3. start finding ads and parsing them */
+        /** step 3. check if the loaded XML document has "Ad" children */
+        boolean hasAds = SAXML.checkSiblingsAndChildrenOf(root, "Ad");
+        if (!hasAds) {
+            return lads;
+        }
+
+        /** step 4. start finding ads and parsing them */
         SAXML.searchSiblingsAndChildrenOf(root, "Ad", new SAXML.SAXMLIterator() {
             @Override
             public void foundElement(Element e) {
@@ -105,7 +112,7 @@ public class SAVASTParser {
                 if (isInLine){
                     SAVASTAd inlineAd = parseAdXML(e);
                     lads.add(inlineAd);
-                } else {
+                } else if (isWrapper) {
                     SAVASTAd wrapperAd = parseAdXML(e);
 
                     String VASTAdTagURI = "";
@@ -119,18 +126,19 @@ public class SAVASTParser {
                         wrapperAd.Creatives = SAUtils.removeAllButFirstElement(wrapperAd.Creatives);
 
                         /** merge foundAds with wrapper ad */
-                        for (Iterator<SAVASTAd> i = foundAds.iterator(); i.hasNext(); ){
-                            SAVASTAd foundAd = i.next();
+                        for (SAVASTAd foundAd : foundAds) {
                             foundAd.sumAd(wrapperAd);
                         }
 
                         /** add to final return array */
-                        for (Iterator<SAVASTAd> i = foundAds.iterator(); i.hasNext(); ){
-                            lads.add(i.next());
+                        for (SAVASTAd foundAd : foundAds) {
+                            lads.add(foundAd);
                         }
                     } catch (IOException | ParserConfigurationException | SAXException e1) {
                         e1.printStackTrace();
                     }
+                } else {
+                    /** do nothing */
                 }
             }
         });
@@ -305,17 +313,6 @@ public class SAVASTParser {
          * Called when the parser has successfully parsed a VAST tag
          * @param ads - returns (as a callback parameter) a list of ads
          */
-        void didParseVASTAndHasResponse(List<SAVASTAd> ads);
-
-        /**
-         * Called when the parser has successfully parsed a VAST tag, but
-         * no ads have been found
-         */
-        void didNotFindAnyValidAds();
-
-        /**
-         * Called when the parser could not parse the VAST tag
-         */
-        void didFindInvalidVASTResponse();
+        void didParseVAST(List<SAVASTAd> ads);
     }
 }

@@ -63,9 +63,16 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
     /** <SAVASTParserListener> */
 
     @Override
-    public void didParseVASTAndHasResponse(List<SAVASTAd> ads) {
+    public void didParseVAST(List<SAVASTAd> ads) {
+        /** error checking */
+        if (ads.size() < 1) {
+            if (listener != null) {
+                listener.didNotFindAds();
+            }
+            return;
+        }
 
-        /** give ref to adQueue from the returned ads list  */
+       /** give ref to adQueue from the returned ads list  */
         adQueue = ads;
 
         /** set the ad queue play head */
@@ -77,35 +84,12 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
 
         /** call listener */
         if (listener != null){
-            listener.didParseVASTAndFindAds();
             listener.didStartAd();
         }
 
         /** progress through ads */
         this.progressThroughAds();
 
-        for (Iterator<SAVASTAd> i = ads.iterator(); i.hasNext(); ){
-            SAVASTAd ad = i.next();
-            ad.print();
-        }
-    }
-
-    @Override
-    public void didNotFindAnyValidAds() {
-        Log.d("SuperAwesome", "Did not find any valid ads");
-
-        if (listener != null){
-            listener.didParseVASTButDidNotFindAnyAds();
-        }
-    }
-
-    @Override
-    public void didFindInvalidVASTResponse() {
-        Log.d("SuperAwesome", "Did find invalid ads");
-
-        if (listener != null) {
-            listener.didNotParseVAST();
-        }
     }
 
     /** <SAVideoPlayerListener> */
@@ -201,9 +185,10 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
          * if a creative is played with error, send events to the error tag
          * and advance to the next ad
          */
-        for (Iterator<String> i = _cAd.Errors.iterator(); i.hasNext(); ){
-            String error = i.next();
-            SAEvents.sendEventToURL(error);
+        if (_cAd != null) {
+            for (String error : _cAd.Errors) {
+                SAEvents.sendEventToURL(error);
+            }
         }
 
         /** call to listener */
@@ -212,7 +197,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
         }
 
         /** call to continue to progress */
-        this.progressThroughAds();
+        // this.progressThroughAds();
     }
 
     @Override
@@ -228,6 +213,13 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
         /** call listener */
         if (listener != null){
             listener.didGoToURL(url, _cCreative.ClickTracking);
+        }
+    }
+
+    @Override
+    public void didClickOnClose() {
+        if (listener != null) {
+            listener.didClickOnClose();
         }
     }
 
@@ -276,7 +268,6 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
         /** play */
         if (refPlayer != null){
             refPlayer.setListener(this);
-            Log.d("SuperAwesome", "TRYING TO PLAY " + _cCreative.playableMediaURL);
             refPlayer.playWithMediaURL(_cCreative.playableMediaURL);
         }
     }
@@ -301,19 +292,9 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
     public interface SAVASTManagerListener {
 
         /**
-         * parsed vast and found ads
-         */
-        void didParseVASTAndFindAds();
-
-        /**
-         * parsed vast and did not find ads
-         */
-        void didParseVASTButDidNotFindAnyAds();
-
-        /**
          * parsed vast and found errors / could not parse vast
          */
-        void didNotParseVAST();
+        void didNotFindAds();
 
         /**
          * ad started
@@ -366,5 +347,10 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
          * @param clickTracking additoonal click tracking URLs
          */
         void didGoToURL(String url, List<String> clickTracking);
+
+        /**
+         * ad was closed
+         */
+        void didClickOnClose();
     }
 }

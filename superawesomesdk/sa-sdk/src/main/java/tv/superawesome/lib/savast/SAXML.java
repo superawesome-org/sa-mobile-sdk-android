@@ -90,9 +90,8 @@ public class SAXML {
      */
     public static void  searchSiblingsAndChildrenOf(Node node, String name, SAXMLIterator block) {
         List<Element> list = searchSiblingsAndChildrenOf(node, name);
-        Iterator<Element> it = list.iterator();
-        while (it.hasNext()){
-            block.foundElement(it.next());
+        for (Element aList : list) {
+            block.foundElement(aList);
         }
     }
 

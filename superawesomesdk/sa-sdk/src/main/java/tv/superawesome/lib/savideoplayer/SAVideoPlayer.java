@@ -1,268 +1,205 @@
 package tv.superawesome.lib.savideoplayer;
 
 import android.annotation.TargetApi;
+import android.support.annotation.Nullable;
 import android.app.Fragment;
-import android.content.res.Configuration;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.VideoView;
-import tv.superawesome.lib.sautils.SAApplication;
+import android.widget.FrameLayout;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 
-/**
- * Created by gabriel.coman on 23/12/15.
- */
+import java.io.IOException;
+
+import tv.superawesome.sdk.SuperAwesome;
+
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SAVideoPlayer extends Fragment {
+public class SAVideoPlayer extends Fragment implements
+        MediaController.MediaPlayerControl,
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnErrorListener,
+        MediaPlayer.OnCompletionListener {
 
-    /** subviews and other Fragment parameters */
-    private VideoView videoPlayer;
-    private MediaPlayer mediaPlayer;
-    private String videoURL;
-    private SAVideoPlayerListener listener;
+    /** View elements for the Video Player */
+    private SurfaceView surfaceView = null;
+    private MediaPlayer mediaPlayer = null;
+    private SAMediaController controller = null;
 
-    /** aux views */
-    private TextView chronographer;
-    private Button findOutMore;
-
-    /** other helper private vars */
-    private int duration = 0;
-    private int currentTime = 0;
-    private int remainingTime = 0;
-    private int startTime = 0;
-    private int firstQuartileTime;
-    private int midpointTime;
-    private int thirdQuartileTime;
-    private int completeTime;
+    /** bool vars for each step */
+    private boolean isReadyHandled = false;
     private boolean isStartHandled = false;
     private boolean isFirstQuartileHandled = false;
     private boolean isMidpointHandled = false;
     private boolean isThirdQuartileHandled = false;
     private boolean isErrorHandled = false;
-    private boolean isSkipHandled = false;
     private boolean isCompleteHandled = false;
 
+    /** listeners & other configuration variables */
+    public SAVideoPlayerListener listener = null;
+    public boolean shouldShowPadlock = true;
+    public boolean shouldShowCloseButton = false;
+    public String videoURL = null;
+
+    /** current time */
+    private int current = 0;
+    private int duration = 0;
+    private boolean isStarted = false;
+
+    /**
+     * This function **WILL** get called only once - when the SAVideoPlayer fragment gets created
+     * @param savedInstanceState the previous saved state
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
-    }
+        setRetainInstance(true);
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        /** load resource */
-        String packageName = SAApplication.getSAApplicationContext().getPackageName();
-        int fragment_sa_vastplayerId = getResources().getIdentifier("fragment_sa_vastplayer", "layout", packageName);
-        int video_viewId = getResources().getIdentifier("video_view", "id", packageName);
-        int cronographerId = getResources().getIdentifier("cronographer", "id", packageName);
-        int find_out_moreId = getResources().getIdentifier("find_out_more", "id", packageName);
-
-        View v = inflater.inflate(fragment_sa_vastplayerId, container, false);
-
-        videoPlayer = (VideoView)v.findViewById(video_viewId);
-        chronographer = (TextView)v.findViewById(cronographerId);
-        findOutMore = (Button)v.findViewById(find_out_moreId);
-        findOutMore.setTransformationMethod(null);
-
-        /** Inflate the layout for this fragment */
-        return v;
+        Log.d("SuperAwesome", "onCreate");
+        /** create the media player here because it needs to be set just once */
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setOnErrorListener(this);
+        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setOnPreparedListener(this);
     }
 
     /**
-     * Main playing function
-     * @param videoURL the URL to play
+     * This function **WILL** get called each time the screen is drawn (e.g. orientation change)
+     * @param inflater standard inflater
+     * @param container view group
+     * @param savedInstanceState the saved state
+     * @return the current VideoPlayer view that needs to be drawn
      */
-    public void playWithMediaURL(final String videoURL){
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        Log.d("SuperAwesome", "onCreateView");
+        FrameLayout frameLayout = new FrameLayout(getActivity());
+        frameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        frameLayout.setBackgroundColor(Color.BLACK);
 
-        /** in case this is null */
-        if (videoURL == null){
-            if (listener != null){
+        surfaceView = new SurfaceView(getActivity());
+        surfaceView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        surfaceView.setZOrderOnTop(true);
+        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                mediaPlayer.setDisplay(holder);
+                setSurfaceSize();
+
+//                if (isStarted) mediaPlayer.start();
+
+                /** setup media controller */
+                controller = new SAMediaController(getActivity());
+                controller.shouldShowCloseButton = shouldShowCloseButton;
+                controller.shouldShowPadlock = shouldShowPadlock;
+                controller.setAnchorView((View) surfaceView.getParent());
+                controller.setMediaPlayer(SAVideoPlayer.this);
+                controller.show();
+                controller.showMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.didGoToURL();
+                        }
+                    }
+                });
+                if (controller.close != null) {
+                    controller.close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (listener != null) {
+                                listener.didClickOnClose();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                mediaPlayer.setDisplay(null);
+            }
+        });
+        frameLayout.addView(surfaceView);
+
+        return frameLayout;
+    }
+
+    @Override
+    public void onDestroyView() {
+        controller.shouldNotHide = false;
+//        controller.hide();
+//        mediaPlayer.pause();
+        super.onDestroyView();
+    }
+
+    private void setSurfaceSize() {
+        /** get the dimensions of the video (only valid when surfaceView is set) */
+        float videoWidth = mediaPlayer.getVideoWidth();
+        float videoHeight = mediaPlayer.getVideoHeight();
+
+        /** get the dimensions of the container (the surfaceView's parent in this case) */
+        View container = (View) surfaceView.getParent();
+        float containerWidth = container.getWidth();
+        float containerHeight = container.getHeight();
+
+        /** set dimensions to surfaceView's layout params (maintaining aspect ratio) */
+        android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
+        lp.width = (int) containerWidth;
+        lp.height = (int) ((videoHeight / videoWidth) * containerWidth);
+        if(lp.height > containerHeight) {
+            lp.width = (int) ((videoWidth / videoHeight) * containerHeight);
+            lp.height = (int) containerHeight;
+        }
+        int left = (((int)containerWidth - lp.width) / 2);
+        int top = (((int)containerHeight - lp.height) / 2);
+
+        if (lp instanceof ViewGroup.MarginLayoutParams) {
+            final ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)lp;
+            marginLayoutParams.setMargins(left, top, 0, 0);
+        }
+
+        surfaceView.setLayoutParams(lp);
+    }
+
+    public void playWithMediaURL(String url) {
+        videoURL = url;
+
+        if (videoURL == null) {
+            if (listener != null && !isErrorHandled){
+                isErrorHandled = true;
                 listener.didPlayWithError();
             }
             return;
         }
 
-        /** set on click listener */
-        findOutMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.didGoToURL();
-                }
-            }
-        });
-
-        /** set the video URL */
-        this.videoURL = videoURL;
-
         try {
-            /** Get the URL from String VideoURL */
-            Uri video = Uri.parse(videoURL);
-            videoPlayer.setVideoURI(video);
-
-        } catch (Exception e) {
+            Log.d("SuperAwesome", "Start SAVideoPlayer " + videoURL);
+            mediaPlayer.setDataSource(getActivity(), Uri.parse(videoURL));
+            mediaPlayer.prepare();
+        } catch (IOException e) {
             e.printStackTrace();
-
-            if (listener != null) {
-                listener.didPlayWithError();
-            }
-        }
-
-        /** request focus */
-        videoPlayer.requestFocus();
-
-        /** on ready */
-        videoPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            /** play the video */
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                /** start player only ince  */
-                if (currentTime == 0) {
-                    videoPlayer.start();
-                }
-
-                /** assign media player */
-                mediaPlayer = mp;
-
-                /** calculate time values */
-                duration = videoPlayer.getDuration();
-                startTime = 0;
-                firstQuartileTime = duration / 4;
-                midpointTime = duration / 2;
-                thirdQuartileTime = 3 * duration / 4;
-                completeTime = duration;
-                remainingTime = (duration - currentTime) / 1000;
-
-                /** call listeners */
-                if (listener != null) {
-                    listener.didFindPlayerReady();
-                }
-
-                /** set out text */
-                chronographer.setText("Ad: " + remainingTime);
-
-                /** part with seconds and stuff */
-                final Runnable onEverySecond = new Runnable() {
-                    public void run() {
-                        if (!videoPlayer.isPlaying()) {
-                            return;
-                        }
-
-                        /** get current time */
-                        currentTime = videoPlayer.getCurrentPosition();
-                        remainingTime = (duration - currentTime) / 1000;
-
-                        /** update text */
-                        chronographer.setText("Ad: " + remainingTime);
-
-                        if (currentTime >= 1 && !isStartHandled) {
-                            isStartHandled = true;
-
-                            if (listener != null) {
-                                listener.didStartPlayer();
-                            }
-                        }
-
-                        if (currentTime >= firstQuartileTime && !isFirstQuartileHandled) {
-                            isFirstQuartileHandled = true;
-
-                            if (listener != null) {
-                                listener.didReachFirstQuartile();
-                            }
-                        }
-
-                        if (currentTime >= midpointTime && !isMidpointHandled) {
-                            isMidpointHandled = true;
-
-                            if (listener != null) {
-                                listener.didReachMidpoint();
-                            }
-                        }
-
-                        if (currentTime >= thirdQuartileTime && !isThirdQuartileHandled) {
-                            isThirdQuartileHandled = true;
-
-                            if (listener != null) {
-                                listener.didReachThirdQuartile();
-                            }
-                        }
-
-                        /** go again */
-                        videoPlayer.postDelayed(this, 1000);
-                    }
-                };
-                /** start monitoring */
-                videoPlayer.postDelayed(onEverySecond, 1000);
-
-                /** do seeking right */
-                mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                    @Override
-                    public void onSeekComplete(MediaPlayer mp) {
-                        videoPlayer.start();
-                    }
-                });
-            }
-        });
-
-        /** on complete */
-        videoPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                /** text */
-                chronographer.setText("Ad: 0");
-
-                /** call listener function */
-                if (listener != null) {
-                    listener.didReachEnd();
-                }
-            }
-        });
-
-        videoPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                /** set text */
-                chronographer.setText("Ad: Error");
-
-                /** call listener function */
-                if (listener != null && !isErrorHandled) {
-                    isErrorHandled = true;
-                    listener.didPlayWithError();
-                }
-                return true;
-            }
-        });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (videoPlayer != null) {
-            currentTime = videoPlayer.getCurrentPosition();
-            videoPlayer.pause();
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (videoPlayer != null) {
-            videoPlayer.seekTo(currentTime);
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+    public void close(){
+        pause();
+        mediaPlayer.setDisplay(null);
     }
 
     /**
@@ -274,17 +211,146 @@ public class SAVideoPlayer extends Fragment {
     }
 
     /**
-     * Getters
+     * *********************************************************************************************
+     * MediaController.MediaPlayerControl
+     * *********************************************************************************************
      */
-    public VideoView getVideoPlayer() { return this.videoPlayer; }
+    @Override
+    public void start() {
+        mediaPlayer.start();
+    }
 
-    public MediaPlayer getMediaPlayer () { return this.mediaPlayer; }
+    @Override
+    public void pause() {
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public int getDuration() {
+        return mediaPlayer.getDuration();
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    @Override
+    public void seekTo(int pos) {
+        mediaPlayer.seekTo(pos);
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return false;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return false;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return false;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
 
     /**
-     * Closes and deletes the video player
+     * ************************************************************
+     * <MediaPlayer.OnPreparedListener> implementation
+     * ************************************************************
      */
-    public void close () {
-        videoPlayer.stopPlayback();
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        mediaPlayer.start();
+        setSurfaceSize();
+
+        if (listener != null && !isReadyHandled){
+            isReadyHandled = true;
+            listener.didFindPlayerReady();
+            isStarted = true;
+            if (controller != null) {
+                controller.chronographer.setText("Ad: " + getDuration() / 1000);
+            }
+        }
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isPlaying()) return;
+
+                current = getCurrentPosition();
+                duration = getDuration();
+
+                if (current >= 1 && !isStartHandled && listener != null) {
+                    isStartHandled = true;
+                    listener.didStartPlayer();
+                }
+                if (current >= duration / 4 && !isFirstQuartileHandled && listener != null) {
+                    isFirstQuartileHandled = true;
+                    listener.didReachFirstQuartile();
+                }
+                if (current >= duration / 2 && !isMidpointHandled && listener != null) {
+                    isMidpointHandled = true;
+                    listener.didReachMidpoint();
+                }
+                if (current >= 3 * duration / 4 && !isThirdQuartileHandled && listener != null) {
+                    isThirdQuartileHandled = true;
+                    listener.didReachThirdQuartile();
+                }
+
+                if (controller != null) {
+                    int remaining = (duration - current) / 1000;
+                    controller.chronographer.setText("Ad: " + remaining);
+                }
+
+                handler.postDelayed(this, 1000);
+            }
+        }, 1000);
+    }
+
+    /**
+     * *********************************************************************************************
+     * MediaPlayer.OnCompletedListener
+     * *********************************************************************************************
+     */
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        if (listener != null && !isCompleteHandled) {
+            isCompleteHandled = true;
+            listener.didReachEnd();
+        }
+    }
+
+    /**
+     * *********************************************************************************************
+     * MediaPlayer.OnErrorListener
+     * *********************************************************************************************
+     */
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        if (listener != null && !isErrorHandled){
+            isErrorHandled = true;
+            listener.didPlayWithError();
+        }
+        return true;
     }
 
     /**
@@ -333,5 +399,6 @@ public class SAVideoPlayer extends Fragment {
          * called when the player clicks on the clicker
          */
         void didGoToURL();
+        void didClickOnClose();
     }
 }
