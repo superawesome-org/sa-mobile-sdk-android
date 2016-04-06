@@ -50,6 +50,10 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
     private String destinationURL = null;
     private List<String> clickTracking = new ArrayList<>();
 
+    /**
+     * Constructors with different types of parameters; All should default to the three param
+     * constructor, with context, attributes and default style
+     */
     public SAVideoAd(Context context) { this(context, null, 0); }
     public SAVideoAd(Context context, AttributeSet attrs) { this(context, attrs, 0); }
     public SAVideoAd(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -95,6 +99,10 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
             return;
         }
 
+        /**
+         * start the vast manager - that in turn will start the video player;
+         * this function should be called just once in an activity - not on every configuration change
+         */
         videoPlayer.shouldShowPadlock = !(ad.isFallback || ad.isHouse);
         videoPlayer.shouldShowCloseButton = shouldShowCloseButton;
         manager = new SAVASTManager(videoPlayer, this);

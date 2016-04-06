@@ -167,9 +167,9 @@ public class SAVASTParser {
         if (isWrapper) ad.type = SAVASTAdType.Wrapper;
 
         /** init ad arrays */
-        ad.Errors = new ArrayList<String>();
-        ad.Impressions = new ArrayList<SAVASTImpression>();
-        ad.Creatives = new ArrayList<SAVASTCreative>();
+        ad.Errors = new ArrayList<>();
+        ad.Impressions = new ArrayList<>();
+        ad.Creatives = new ArrayList<>();
 
         /** get errors */
         SAXML.searchSiblingsAndChildrenOf(adElement, "Error", new SAXML.SAXMLIterator() {
@@ -226,10 +226,10 @@ public class SAVASTParser {
             creative.sequence = element.getAttribute("sequence");
 
             /** create arrays */
-            creative.MediaFiles = new ArrayList<SAVASTMediaFile>();
-            creative.TrackingEvents = new ArrayList<SAVASTTracking>();
-            creative.ClickTracking = new ArrayList<String>();
-            creative.CustomClicks = new ArrayList<String>();
+            creative.MediaFiles = new ArrayList<>();
+            creative.TrackingEvents = new ArrayList<>();
+            creative.ClickTracking = new ArrayList<>();
+            creative.CustomClicks = new ArrayList<>();
 
             /** populate duration */
             SAXML.searchSiblingsAndChildrenOf(element, "Duration", new SAXML.SAXMLIterator() {

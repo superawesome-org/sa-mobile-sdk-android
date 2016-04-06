@@ -48,7 +48,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
 
         /** set the listener */
         if (this.refPlayer != null) {
-            this.refPlayer.setListener(this);
+            this.refPlayer.listener = this;
         }
     }
 
@@ -267,7 +267,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
     private void playCurrentAdWithCurrentCreative() {
         /** play */
         if (refPlayer != null){
-            refPlayer.setListener(this);
+            refPlayer.listener = this;
             refPlayer.playWithMediaURL(_cCreative.playableMediaURL);
         }
     }

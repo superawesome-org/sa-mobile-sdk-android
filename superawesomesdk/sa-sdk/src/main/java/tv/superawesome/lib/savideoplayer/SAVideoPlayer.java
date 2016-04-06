@@ -1,6 +1,7 @@
 package tv.superawesome.lib.savideoplayer;
 
 import android.annotation.TargetApi;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.graphics.Color;
@@ -21,16 +22,13 @@ import android.widget.RelativeLayout;
 
 import java.io.IOException;
 
-import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.lib.sautils.SAUtils;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SAVideoPlayer extends Fragment implements
-        MediaController.MediaPlayerControl,
-        MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnErrorListener,
-        MediaPlayer.OnCompletionListener {
+public class SAVideoPlayer extends Fragment implements MediaController.MediaPlayerControl  {
 
     /** View elements for the Video Player */
+    private FrameLayout containerView = null;
     private SurfaceView surfaceView = null;
     private MediaPlayer mediaPlayer = null;
     private SAMediaController controller = null;
@@ -64,12 +62,84 @@ public class SAVideoPlayer extends Fragment implements
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        Log.d("SuperAwesome", "onCreate");
         /** create the media player here because it needs to be set just once */
         mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnErrorListener(this);
-        mediaPlayer.setOnCompletionListener(this);
-        mediaPlayer.setOnPreparedListener(this);
+
+        /** add prepared listener */
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                setSurfaceSize();
+                mediaPlayer.start();
+
+                if (listener != null && !isReadyHandled){
+                    isReadyHandled = true;
+                    listener.didFindPlayerReady();
+                    isStarted = true;
+                    if (controller != null) {
+                        controller.chronographer.setText("Ad: " + getDuration() / 1000);
+                    }
+                }
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isPlaying()) return;
+
+                        current = getCurrentPosition();
+                        duration = getDuration();
+
+                        if (current >= 1 && !isStartHandled && listener != null) {
+                            isStartHandled = true;
+                            listener.didStartPlayer();
+                        }
+                        if (current >= duration / 4 && !isFirstQuartileHandled && listener != null) {
+                            isFirstQuartileHandled = true;
+                            listener.didReachFirstQuartile();
+                        }
+                        if (current >= duration / 2 && !isMidpointHandled && listener != null) {
+                            isMidpointHandled = true;
+                            listener.didReachMidpoint();
+                        }
+                        if (current >= 3 * duration / 4 && !isThirdQuartileHandled && listener != null) {
+                            isThirdQuartileHandled = true;
+                            listener.didReachThirdQuartile();
+                        }
+
+                        if (controller != null) {
+                            int remaining = (duration - current) / 1000;
+                            controller.chronographer.setText("Ad: " + remaining);
+                        }
+
+                        handler.postDelayed(this, 500);
+                    }
+                }, 500);
+            }
+        });
+
+        /** add error listener */
+        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                if (listener != null && !isErrorHandled) {
+                    isErrorHandled = true;
+                    listener.didPlayWithError();
+                }
+                return true;
+            }
+        });
+
+        /** add completion listener */
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if (listener != null && !isCompleteHandled) {
+                    isCompleteHandled = true;
+                    listener.didReachEnd();
+                }
+            }
+        });
     }
 
     /**
@@ -82,21 +152,21 @@ public class SAVideoPlayer extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        Log.d("SuperAwesome", "onCreateView");
-        FrameLayout frameLayout = new FrameLayout(getActivity());
-        frameLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        frameLayout.setBackgroundColor(Color.BLACK);
+        /** create container */
+        containerView = new FrameLayout(getActivity());
+        containerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        containerView.setBackgroundColor(Color.BLACK);
 
+        /** create surface */
         surfaceView = new SurfaceView(getActivity());
         surfaceView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         surfaceView.setZOrderOnTop(true);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+                /** final media player display setup */
                 mediaPlayer.setDisplay(holder);
                 setSurfaceSize();
-
-//                if (isStarted) mediaPlayer.start();
 
                 /** setup media controller */
                 controller = new SAMediaController(getActivity());
@@ -135,48 +205,21 @@ public class SAVideoPlayer extends Fragment implements
                 mediaPlayer.setDisplay(null);
             }
         });
-        frameLayout.addView(surfaceView);
+        containerView.addView(surfaceView);
 
-        return frameLayout;
+        return containerView;
     }
 
     @Override
     public void onDestroyView() {
         controller.shouldNotHide = false;
-//        controller.hide();
-//        mediaPlayer.pause();
         super.onDestroyView();
     }
 
-    private void setSurfaceSize() {
-        /** get the dimensions of the video (only valid when surfaceView is set) */
-        float videoWidth = mediaPlayer.getVideoWidth();
-        float videoHeight = mediaPlayer.getVideoHeight();
-
-        /** get the dimensions of the container (the surfaceView's parent in this case) */
-        View container = (View) surfaceView.getParent();
-        float containerWidth = container.getWidth();
-        float containerHeight = container.getHeight();
-
-        /** set dimensions to surfaceView's layout params (maintaining aspect ratio) */
-        android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
-        lp.width = (int) containerWidth;
-        lp.height = (int) ((videoHeight / videoWidth) * containerWidth);
-        if(lp.height > containerHeight) {
-            lp.width = (int) ((videoWidth / videoHeight) * containerHeight);
-            lp.height = (int) containerHeight;
-        }
-        int left = (((int)containerWidth - lp.width) / 2);
-        int top = (((int)containerHeight - lp.height) / 2);
-
-        if (lp instanceof ViewGroup.MarginLayoutParams) {
-            final ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)lp;
-            marginLayoutParams.setMargins(left, top, 0, 0);
-        }
-
-        surfaceView.setLayoutParams(lp);
-    }
-
+    /**
+     * Main "play" function; if this function is not called, the player **WILL NEVER** display video content
+     * @param url - the URL to play
+     */
     public void playWithMediaURL(String url) {
         videoURL = url;
 
@@ -189,7 +232,6 @@ public class SAVideoPlayer extends Fragment implements
         }
 
         try {
-            Log.d("SuperAwesome", "Start SAVideoPlayer " + videoURL);
             mediaPlayer.setDataSource(getActivity(), Uri.parse(videoURL));
             mediaPlayer.prepare();
         } catch (IOException e) {
@@ -197,17 +239,36 @@ public class SAVideoPlayer extends Fragment implements
         }
     }
 
+    /**
+     * The "close" function; opposite of the play function
+     */
     public void close(){
         pause();
         mediaPlayer.setDisplay(null);
     }
 
     /**
-     * Function used by other components to update the listener
-     * @param listener
+     * Aux surface size function that calculates the video surface size needed in order to
+     * maintain correct aspect ratio
      */
-    public void setListener(SAVideoPlayerListener listener) {
-        this.listener = listener;
+    private void setSurfaceSize() {
+        /** get dimensions */
+        float videoWidth = mediaPlayer.getVideoWidth();
+        float videoHeight = mediaPlayer.getVideoHeight();
+        float containerWidth = containerView.getWidth();
+        float containerHeight = containerView.getHeight();
+
+        /** set frame */
+        Rect newFrame = SAUtils.mapOldSizeIntoNewSize(containerWidth, containerHeight, videoWidth, videoHeight);
+        android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
+        lp.width = newFrame.right;
+        lp.height = newFrame.bottom;
+        if (lp instanceof ViewGroup.MarginLayoutParams) {
+            final ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)lp;
+            marginLayoutParams.setMargins(newFrame.left, newFrame.top, 0, 0);
+        }
+
+        surfaceView.setLayoutParams(lp);
     }
 
     /**
@@ -268,89 +329,6 @@ public class SAVideoPlayer extends Fragment implements
     @Override
     public int getAudioSessionId() {
         return 0;
-    }
-
-    /**
-     * ************************************************************
-     * <MediaPlayer.OnPreparedListener> implementation
-     * ************************************************************
-     */
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        mediaPlayer.start();
-        setSurfaceSize();
-
-        if (listener != null && !isReadyHandled){
-            isReadyHandled = true;
-            listener.didFindPlayerReady();
-            isStarted = true;
-            if (controller != null) {
-                controller.chronographer.setText("Ad: " + getDuration() / 1000);
-            }
-        }
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!isPlaying()) return;
-
-                current = getCurrentPosition();
-                duration = getDuration();
-
-                if (current >= 1 && !isStartHandled && listener != null) {
-                    isStartHandled = true;
-                    listener.didStartPlayer();
-                }
-                if (current >= duration / 4 && !isFirstQuartileHandled && listener != null) {
-                    isFirstQuartileHandled = true;
-                    listener.didReachFirstQuartile();
-                }
-                if (current >= duration / 2 && !isMidpointHandled && listener != null) {
-                    isMidpointHandled = true;
-                    listener.didReachMidpoint();
-                }
-                if (current >= 3 * duration / 4 && !isThirdQuartileHandled && listener != null) {
-                    isThirdQuartileHandled = true;
-                    listener.didReachThirdQuartile();
-                }
-
-                if (controller != null) {
-                    int remaining = (duration - current) / 1000;
-                    controller.chronographer.setText("Ad: " + remaining);
-                }
-
-                handler.postDelayed(this, 1000);
-            }
-        }, 1000);
-    }
-
-    /**
-     * *********************************************************************************************
-     * MediaPlayer.OnCompletedListener
-     * *********************************************************************************************
-     */
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-        if (listener != null && !isCompleteHandled) {
-            isCompleteHandled = true;
-            listener.didReachEnd();
-        }
-    }
-
-    /**
-     * *********************************************************************************************
-     * MediaPlayer.OnErrorListener
-     * *********************************************************************************************
-     */
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-        if (listener != null && !isErrorHandled){
-            isErrorHandled = true;
-            listener.didPlayWithError();
-        }
-        return true;
     }
 
     /**

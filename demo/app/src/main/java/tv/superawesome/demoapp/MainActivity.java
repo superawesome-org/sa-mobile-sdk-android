@@ -30,38 +30,19 @@ public class MainActivity extends Activity {
         SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setConfigurationProduction();
 
-//        if (savedInstanceState == null) {
-//            SALoader loader = new SALoader();
-//            loader.loadAd(28000, new SALoaderListener() {
-//                @Override
-//                public void didLoadAd(SAAd ad) {
-//                    savedAd = ad;
-////                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
-////                    videoAd2.setAd(savedAd);
-////                    Log.d("SuperAwesome", "Loaded first time " + videoAd2.getAd().placementId);
-////                    videoAd2.play();
-//
-//                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
-//                    vad.setAd(ad);
-//                    vad.play();
-//                }
-//
-//                @Override
-//                public void didFailToLoadAdForPlacementId(int placementId) {
-//
-//                }
-//            });
-//        }
-
         if (savedInstanceState == null) {
             SALoader loader = new SALoader();
-            loader.loadAd(30471, new SALoaderListener() {
+            loader.loadAd(28000, new SALoaderListener() {
                 @Override
                 public void didLoadAd(SAAd ad) {
                     savedAd = ad;
-                    bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-                    bannerAd.setAd(ad);
-                    bannerAd.play();
+                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+                    videoAd2.setAd(savedAd);
+                    videoAd2.play();
+
+//                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+//                    vad.setAd(ad);
+//                    vad.play();
                 }
 
                 @Override
@@ -69,12 +50,30 @@ public class MainActivity extends Activity {
 
                 }
             });
-        } else {
-            savedAd = savedInstanceState.getParcelable("savedAd");
-            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-            bannerAd.setAd(savedAd);
-            bannerAd.play();
         }
+
+//        if (savedInstanceState == null) {
+//            SALoader loader = new SALoader();
+//            loader.loadAd(30471, new SALoaderListener() {
+//                @Override
+//                public void didLoadAd(SAAd ad) {
+//                    savedAd = ad;
+//                    bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+//                    bannerAd.setAd(ad);
+//                    bannerAd.play();
+//                }
+//
+//                @Override
+//                public void didFailToLoadAdForPlacementId(int placementId) {
+//
+//                }
+//            });
+//        } else {
+//            savedAd = savedInstanceState.getParcelable("savedAd");
+//            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+//            bannerAd.setAd(savedAd);
+//            bannerAd.play();
+//        }
     }
 
     @Override
