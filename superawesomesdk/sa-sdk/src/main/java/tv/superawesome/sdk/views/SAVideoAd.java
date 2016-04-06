@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import tv.superawesome.lib.saevents.SAEvents;

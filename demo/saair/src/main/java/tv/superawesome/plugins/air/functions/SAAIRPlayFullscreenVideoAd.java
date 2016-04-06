@@ -156,9 +156,6 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
                         });
                         video.play();
 
-                        /** add to this map */
-//                        SAUnityManager.getInstance().setAdMap(unityName, video);
-
                     } else {
                         String meta = "{\"name\":\"" + name + "\", \"func\":\"adFailedToShow\"}";
                         freContext.dispatchStatusEventAsync(meta, "");

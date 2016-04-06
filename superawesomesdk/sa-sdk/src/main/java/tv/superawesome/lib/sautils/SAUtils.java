@@ -126,59 +126,7 @@ public class SAUtils {
     /**********************************************************************************************/
     /** SYSTEM RESOURCES Aux Functions */
     /**********************************************************************************************/
-
-    /**
-     * Get an .txt/.html file from the Assets folder and return a String with its content
-     * @param assetPath - the path to the asset
-     * @return - the string contents
-     */
-
-    public static String openAssetAsString(String assetPath) throws IOException {
-        /** create the input streams and all that stuff */
-        StringBuilder builder = new StringBuilder();
-        InputStream text = SAApplication.getSAApplicationContext().getAssets().open(assetPath);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(text, "UTF-8"));
-
-        /** go through all the file and append */
-        String str;
-        while ((str = reader.readLine()) != null) {
-            builder.append(str);
-        }
-
-        /** close the reader */
-        reader.close();
-
-        /** return the new string */
-        return builder.toString();
-    }
-
-
-    /**
-     * Dynamically returns a resource Id
-     * @param name the name of the resource
-     * @param type the type of the resource
-     * @param context the context
-     * @return returns the actual ID or 0
-     */
-    public static int getResourceIdByName(String name, String type, Activity context){
-        if (SAApplication.getSAApplicationContext() != null){
-            String packageName = SAApplication.getSAApplicationContext().getPackageName();
-            return context.getResources().getIdentifier(name, type, packageName);
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Returns a string by name
-     * @param name the name of the string
-     * @param context the current context
-     * @return the String
-     */
-    public static String getStringByName(String name, Activity context){
-        int id = getResourceIdByName(name, "string", context);
-        return context.getResources().getString(id);
-    }
+    
 
     /**
      * Get the current scale factor
