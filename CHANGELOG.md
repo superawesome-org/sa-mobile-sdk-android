@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+3.5.8
 3.5.7
 3.5.6
  - Refactored a good chunk of the video & vast parsing so it works with AIR SDK and offers generally better performance

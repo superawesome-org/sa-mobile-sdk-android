@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 
+import java.util.HashMap;
+
 /**
  * Created by gabriel.coman on 18/03/16.
  */
@@ -22,32 +24,56 @@ public class SAAsyncTask {
      */
     public SAAsyncTask(Context context, final SAAsyncTaskListener listener) {
 
-        Persister.getInstance().listener = listener;
+        /** add something more to the hash map */
+        String hash = generateUniqueKey();
+        Persister persister = new Persister();
+        persister.listener = listener;
+        PersisterStore.getInstance().persisterHashMap.put(hash, persister);
 
         /** create the receiver */
         receiver = new SAAsycTaskReceiver(new Handler());
         receiver.setReceiver(new SAAsyncReceiver() {
             @Override
             public void onReceiveResult(int resultCode, Bundle resultData) {
+                String hash = resultData.getString("hash");
+                Persister persister = PersisterStore.getInstance().persisterHashMap.get(hash);
                 switch (resultCode) {
                     case STATUS_RUNNING:
                         break;
                     case STATUS_FINISHED: {
-                        Persister.getInstance().listener.onFinish(Persister.getInstance().result);
+                        persister.listener.onFinish(persister.result);
                         break;
                     }
                     case STATUS_ERROR: {
-                        Persister.getInstance().listener.onError();
+                        persister.listener.onError();
                         break;
                     }
                 }
+                PersisterStore.getInstance().persisterHashMap.remove(hash);
             }
         });
 
         /** create and launch the Intent */
         Intent intent = new Intent(Intent.ACTION_SYNC, null, context, SAAsync.class);
         intent.putExtra("receiver", receiver);
+        intent.putExtra("hash", hash);
         context.startService(intent);
+    }
+
+    /** group of functions that relate to the Device-App-User ID */
+    private String generateUniqueKey () {
+        /** constants */
+        final String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789";
+        final int length = alphabet.length();
+        final int dauLength = 32;
+
+        /** generate the string */
+        String s = "";
+        for (int i = 0; i < dauLength; i++){
+            int index = SAUtils.randomNumberBetween(0, length - 1);
+            s += alphabet.charAt(index);
+        }
+        return s;
     }
 
     /**
@@ -71,18 +97,24 @@ public class SAAsyncTask {
         @Override
         protected void onHandleIntent(Intent intent) {
             final ResultReceiver receiver = intent.getParcelableExtra("receiver");
+            String hash = intent.getStringExtra("hash");
+            Persister persister = PersisterStore.getInstance().persisterHashMap.get(hash);
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
 
             try {
-                Persister.getInstance().result = Persister.getInstance().listener.taskToExecute();
+                persister.result = persister.listener.taskToExecute();
+                PersisterStore.getInstance().persisterHashMap.put(hash, persister);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if (Persister.getInstance().result == null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("hash", hash);
+
+            if (persister.result == null) {
                 receiver.send(STATUS_ERROR, Bundle.EMPTY);
             } else {
-                receiver.send(STATUS_FINISHED, Bundle.EMPTY);
+                receiver.send(STATUS_FINISHED, bundle);
             }
         }
     }
@@ -155,23 +187,35 @@ public class SAAsyncTask {
         void onError();
     }
 
-    /**
-     * *********************************************************************************************
-     * The Persister is a singleton private class that makes it easy to transfer complex objects
-     * between the different internal objects in this super-class
-     * *********************************************************************************************
-     */
-    private static class Persister {
-        /**
-         * Private objects - a reference to the Async Task listener and the result object
-         */
-        public SAAsyncTaskListener listener;
-        public Object result;
-
-        /**
-         * Static methods to make it a singleton
-         */
-        private static final Persister instance = new Persister ();
-        public static Persister  getInstance() { return instance; }
+    private class Persister {
+        public SAAsyncTaskListener listener = null;
+        public Object result = null;
     }
+
+    private static class PersisterStore {
+        public HashMap<String, Persister> persisterHashMap;
+        public PersisterStore() { persisterHashMap = new HashMap<>(); }
+        private static final PersisterStore instance = new PersisterStore ();
+        public static PersisterStore getInstance() { return instance; }
+    }
+
+//    /**
+//     * *********************************************************************************************
+//     * The Persister is a singleton private class that makes it easy to transfer complex objects
+//     * between the different internal objects in this super-class
+//     * *********************************************************************************************
+//     */
+//    private static class Persister {
+//        /**
+//         * Private objects - a reference to the Async Task listener and the result object
+//         */
+//        public SAAsyncTaskListener listener;
+//        public Object result;
+//
+//        /**
+//         * Static methods to make it a singleton
+//         */
+//        private static final Persister instance = new Persister ();
+//        public static Persister  getInstance() { return instance; }
+//    }
 }

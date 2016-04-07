@@ -87,8 +87,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         if (map1.get("isTestEnabled") != null) {
             isTestEnabled = Boolean.valueOf(map1.get("isTestEnabled"));
         }
-        if (map1.get("parentalGateEnabled") != null){
-            isParentalGateEnabled = Boolean.valueOf(map1.get("parentalGateEnabled"));
+        if (map1.get("isParentalGateEnabled") != null){
+            isParentalGateEnabled = Boolean.valueOf(map1.get("isParentalGateEnabled"));
         }
         if (map1.get("shouldShowCloseButton") != null){
             shouldShowCloseButton = Boolean.valueOf(map1.get("shouldShowCloseButton"));
