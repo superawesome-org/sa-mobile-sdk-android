@@ -9,7 +9,6 @@ import android.util.Log;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
 
@@ -33,40 +32,48 @@ public class SACapper {
     public static void enableCapping(final Context context, final SACapperListener listener) {
 
 
-        AsyncTask<Void, Void, AdvertisingIdClient.Info> task = new AsyncTask<Void, Void, AdvertisingIdClient.Info>() {
+        AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
             @Override
-            protected AdvertisingIdClient.Info doInBackground(Void... params) {
+            protected String doInBackground(Void... params) {
 
                 /** get the ad data from Google Play Services */
-                AdvertisingIdClient.Info adInfo = null;
+                String adString = "";
                 try {
-                    adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
-                } catch (IOException | GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException | VerifyError e) {
+                    AdvertisingIdClient.Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
+                    if (adInfo.isLimitAdTrackingEnabled()) {
+                        adString = adInfo.getId();
+                    }
+                } catch (IOException e) {
                     /** do nothing */
+                    Log.d("SuperAwesome", "IOException");
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    /** do nothing */
+                    Log.d("SuperAwesome", "GooglePlayServicesNotAvailableException");
+                } catch (GooglePlayServicesRepairableException e) {
+                    /** do nothing */
+                    Log.d("SuperAwesome", "GooglePlayServicesRepairableException");
+                } catch (VerifyError e) {
+                    /** do nothing */
+                    Log.d("SuperAwesome", "VerifyError");
+                } catch (NullPointerException e) {
+                    /** do nothing */
+                    Log.d("SuperAwesome", "NullPointerException");
                 }
 
-                return adInfo;
+                return adString;
             }
 
             @Override
-            protected void onPostExecute(AdvertisingIdClient.Info adInfo) {
+            protected void onPostExecute(String adInfo) {
                 super.onPostExecute(adInfo);
 
-                if (adInfo != null){
-                    /** get the tracking part */
-                    boolean canTrack = !adInfo.isLimitAdTrackingEnabled();
-
-                    /** if user had disabled tracking --> that's it */
-                    if (!canTrack) {
-                        listener.didFindDAUId(0);
-                        return;
-                    }
+                if (!adInfo.equals("")){
 
                     /** continue as if  user has Ad Tracking enabled and all ... */
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
                     /** create the dauID */
-                    String firstPartOfDAU = adInfo.getId();
+                    String firstPartOfDAU = adInfo;
                     String secondPartOfDAU = preferences.getString(SUPER_AWESOME_FIRST_PART_DAU, null);
 
                     if (secondPartOfDAU == null || secondPartOfDAU.equals("")) {
@@ -79,7 +86,7 @@ public class SACapper {
                     int hash1 = Math.abs(firstPartOfDAU.hashCode());
                     int hash2 = Math.abs(secondPartOfDAU.hashCode());
                     int dauHash = Math.abs(hash1 ^ hash2);
-                    Log.d("SuperAwesome", hash1 + "-" + hash2 + "-" + dauHash);
+                    Log.d("SuperAwesome", "hashes " + hash1 + "-" + hash2 + "-" + dauHash);
 
                     if (listener != null){
                         listener.didFindDAUId(dauHash);

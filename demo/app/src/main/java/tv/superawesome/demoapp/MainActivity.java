@@ -31,6 +31,8 @@ public class MainActivity extends Activity {
         SuperAwesome.getInstance().enableTestMode();
         SuperAwesome.getInstance().setConfigurationProduction();
 
+
+
         if (savedInstanceState == null) {
             SALoader loader = new SALoader();
             loader.loadAd(28000, new SALoaderListener() {
