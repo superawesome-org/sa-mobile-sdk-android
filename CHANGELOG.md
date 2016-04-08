@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+3.6.4
+3.6.3
+3.6.2
+3.6.1
 3.6.0
 3.5.9
  - Improvements to the VAST parsing, video playing (handle fragments and screen rotation OK now), and integration with AIR SDK

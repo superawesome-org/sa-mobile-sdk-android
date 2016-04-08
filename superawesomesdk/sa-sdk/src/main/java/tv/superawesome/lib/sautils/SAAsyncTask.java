@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -194,8 +195,8 @@ public class SAAsyncTask {
 
     private static class PersisterStore {
         public HashMap<String, Persister> persisterHashMap;
-        public PersisterStore() { persisterHashMap = new HashMap<>(); }
-        private static final PersisterStore instance = new PersisterStore ();
+        private PersisterStore(){ persisterHashMap = new HashMap<>(); }
+        private final static PersisterStore instance = new PersisterStore();
         public static PersisterStore getInstance() { return instance; }
     }
 }

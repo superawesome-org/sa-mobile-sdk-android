@@ -15,7 +15,7 @@ import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAVideoActivity;
 import tv.superawesome.sdk.views.SAVideoAd;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SALoaderListener {
 
     private SAAd savedAd = null;
     private SAVideoAd videoAd2 = null;
@@ -32,27 +32,35 @@ public class MainActivity extends Activity {
         SuperAwesome.getInstance().setConfigurationProduction();
 
 
-
         if (savedInstanceState == null) {
             SALoader loader = new SALoader();
-            loader.loadAd(28000, new SALoaderListener() {
-                @Override
-                public void didLoadAd(SAAd ad) {
-                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
-                    videoAd2.setAd(ad);
-                    videoAd2.play();
-
-//                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
-//                    vad.setAd(ad);
-//                    vad.play();
-                }
-
-                @Override
-                public void didFailToLoadAdForPlacementId(int placementId) {
-
-                }
-            });
+            loader.loadAd(28000, this);
+            loader.loadAd(30741, this);
+            SALoader loader1 = new SALoader();
+            loader1.loadAd(10305, this);
         }
+
+
+//        if (savedInstanceState == null) {
+//            SALoader loader = new SALoader();
+//            loader.loadAd(28000, new SALoaderListener() {
+//                @Override
+//                public void didLoadAd(SAAd ad) {
+//                    videoAd2 = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+//                    videoAd2.setAd(ad);
+//                    videoAd2.play();
+//
+////                    SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+////                    vad.setAd(ad);
+////                    vad.play();
+//                }
+//
+//                @Override
+//                public void didFailToLoadAdForPlacementId(int placementId) {
+//
+//                }
+//            });
+//        }
     }
 
     @Override
@@ -60,5 +68,15 @@ public class MainActivity extends Activity {
         outState.putParcelable("savedAd", savedAd);
         Log.d("SuperAwesome", "onSaveIntanceState");
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void didLoadAd(SAAd ad) {
+        Log.d("SuperAwesome", ad.placementId + " was loaded");
+    }
+
+    @Override
+    public void didFailToLoadAdForPlacementId(int placementId) {
+        Log.d("SuperAwesome", placementId + " failed");
     }
 }
