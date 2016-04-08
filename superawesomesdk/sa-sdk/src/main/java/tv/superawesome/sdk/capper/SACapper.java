@@ -43,6 +43,9 @@ public class SACapper {
                     if (adInfo.isLimitAdTrackingEnabled()) {
                         adString = adInfo.getId();
                     }
+                } catch (VerifyError e) {
+                    /** do nothing */
+                    Log.d("SuperAwesome", "VerifyError");
                 } catch (IOException e) {
                     /** do nothing */
                     Log.d("SuperAwesome", "IOException");
@@ -52,9 +55,6 @@ public class SACapper {
                 } catch (GooglePlayServicesRepairableException e) {
                     /** do nothing */
                     Log.d("SuperAwesome", "GooglePlayServicesRepairableException");
-                } catch (VerifyError e) {
-                    /** do nothing */
-                    Log.d("SuperAwesome", "VerifyError");
                 } catch (NullPointerException e) {
                     /** do nothing */
                     Log.d("SuperAwesome", "NullPointerException");
