@@ -32,7 +32,6 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
 
     /** View elements for the Video Player */
     private FrameLayout containerView = null;
-//    private RelativeLayout containerView = null;
     private SurfaceView surfaceView = null;
     private MediaPlayer mediaPlayer = null;
     private SAMediaController controller = null;

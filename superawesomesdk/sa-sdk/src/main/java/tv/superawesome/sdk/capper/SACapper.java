@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.IOException;
 
@@ -31,6 +32,7 @@ public class SACapper {
      **/
     public static void enableCapping(final Context context, final SACapperListener listener) {
 
+
         AsyncTask<Void, Void, AdvertisingIdClient.Info> task = new AsyncTask<Void, Void, AdvertisingIdClient.Info>() {
             @Override
             protected AdvertisingIdClient.Info doInBackground(Void... params) {
@@ -39,7 +41,7 @@ public class SACapper {
                 AdvertisingIdClient.Info adInfo = null;
                 try {
                     adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
-                } catch (IOException | GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
+                } catch (IOException | GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException | VerifyError e) {
                     /** do nothing */
                 }
 
