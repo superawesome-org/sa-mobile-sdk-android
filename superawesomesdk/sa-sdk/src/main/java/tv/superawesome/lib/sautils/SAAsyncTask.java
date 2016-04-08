@@ -198,24 +198,4 @@ public class SAAsyncTask {
         private static final PersisterStore instance = new PersisterStore ();
         public static PersisterStore getInstance() { return instance; }
     }
-
-//    /**
-//     * *********************************************************************************************
-//     * The Persister is a singleton private class that makes it easy to transfer complex objects
-//     * between the different internal objects in this super-class
-//     * *********************************************************************************************
-//     */
-//    private static class Persister {
-//        /**
-//         * Private objects - a reference to the Async Task listener and the result object
-//         */
-//        public SAAsyncTaskListener listener;
-//        public Object result;
-//
-//        /**
-//         * Static methods to make it a singleton
-//         */
-//        private static final Persister instance = new Persister ();
-//        public static Persister  getInstance() { return instance; }
-//    }
 }

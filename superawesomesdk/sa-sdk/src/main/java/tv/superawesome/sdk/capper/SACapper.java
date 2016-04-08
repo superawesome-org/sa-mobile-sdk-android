@@ -30,6 +30,7 @@ public class SACapper {
      * gms enabled)
      **/
     public static void enableCapping(final Context context, final SACapperListener listener) {
+
         AsyncTask<Void, Void, AdvertisingIdClient.Info> task = new AsyncTask<Void, Void, AdvertisingIdClient.Info>() {
             @Override
             protected AdvertisingIdClient.Info doInBackground(Void... params) {

@@ -44,8 +44,9 @@ public class SAUnity {
      * @param payloadName used only when sending Ad json data back to Unity really
      * @param payloadData the payload contents, again, used when sending Ad json data back to Unity
      */
-    private static void SendUnityMsgPayload(String unityAd, String callback, String payloadName, String payloadData) {
-        String payload = "{\"type\":\""+callback+"\",\""+payloadName+"\":" + payloadData + "}";
+    private static void SendUnityMsgPayload(String unityAd, String callback, int placementId, String payloadName, String payloadData) {
+        String payload = "{ \"placementId\":\"" + placementId + "\", \"type\":\""+callback+"\",\""+payloadName+"\":" + payloadData + "}";
+        Log.d("SuperAwesome", "Sending XOXO " + payload);
         UnityPlayer.UnitySendMessage(unityAd, "nativeCallback", payload);
     }
 
@@ -54,8 +55,8 @@ public class SAUnity {
      * @param unityAd the unique unity object that generated the request in the first place
      * @param callback the callback to be sent
      */
-    private static void SendUnityMsg(String unityAd, String callback) {
-        SendUnityMsgPayload(unityAd, callback, "na", "\"na\"");
+    private static void SendUnityMsg(String unityAd, int placementId, String callback) {
+        SendUnityMsgPayload(unityAd, callback, placementId, "na", "\"na\"");
     }
 
     /**
@@ -133,13 +134,13 @@ public class SAUnity {
             @Override
             public void didLoadAd(SAAd ad) {
                 Log.d("SuperAwesome", "didLoadAd " + ad.placementId);
-                SendUnityMsgPayload(unityName, "callback_didLoadAd", "adJson", ad.adJson);
+                SendUnityMsgPayload(unityName, "callback_didLoadAd", ad.placementId, "adJson", ad.adJson);
             }
 
             @Override
             public void didFailToLoadAdForPlacementId(int placementId) {
                 Log.d("SuperAwesome", "didFailToLoad " + placementId);
-                SendUnityMsgPayload(unityName, "callback_didFailToLoadAd", "", "");
+                SendUnityMsgPayload(unityName, "callback_didFailToLoadAd", placementId, "", "");
             }
         });
     }
@@ -231,43 +232,43 @@ public class SAUnity {
                     bannerAd.setAdListener(new SAAdListener() {
                         @Override
                         public void adWasShown(int placementId) {
-                            SendUnityMsg(unityName, "callback_adWasShown");
+                            SendUnityMsg(unityName, placementId, "callback_adWasShown");
                         }
 
                         @Override
                         public void adFailedToShow(int placementId) {
-                            SendUnityMsg(unityName, "callback_adFailedToShow");
+                            SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
                         }
 
                         @Override
                         public void adWasClosed(int placementId) {
-                            SendUnityMsg(unityName, "callback_adWasClosed");
+                            SendUnityMsg(unityName, placementId, "callback_adWasClosed");
                         }
 
                         @Override
                         public void adWasClicked(int placementId) {
-                            SendUnityMsg(unityName, "callback_adWasClicked");
+                            SendUnityMsg(unityName, placementId, "callback_adWasClicked");
                         }
 
                         @Override
                         public void adHasIncorrectPlacement(int placementId) {
-                            SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
+                            SendUnityMsg(unityName, placementId, "callback_adHasIncorrectPlacement");
                         }
                     });
                     bannerAd.setParentalGateListener(new SAParentalGateListener() {
                         @Override
                         public void parentalGateWasCanceled(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasCanceled");
                         }
 
                         @Override
                         public void parentalGateWasFailed(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasFailed");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasFailed");
                         }
 
                         @Override
                         public void parentalGateWasSucceded(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasSucceded");
                         }
                     });
 
@@ -278,13 +279,13 @@ public class SAUnity {
                     SAUnityManager.getInstance().setAdMap(unityName, screenLayout);
 
                 } else {
-                    SendUnityMsg(unityName, "callback_adFailedToShow");
+                    SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
                 }
             } else {
-                SendUnityMsg(unityName, "callback_adFailedToShow");
+                SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
             }
         } catch (JSONException e) {
-            SendUnityMsg(unityName, "callback_adFailedToShow");
+            SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
         }
     }
 
@@ -340,45 +341,45 @@ public class SAUnity {
                     interstitial.setAdListener(new SAAdListener() {
                         @Override
                         public void adWasShown(int placementId) {
-                            SendUnityMsg(unityName, "callback_adWasShown");
+                            SendUnityMsg(unityName, placementId, "callback_adWasShown");
                         }
 
                         @Override
                         public void adFailedToShow(int placementId) {
                             SAUnityManager.getInstance().removeFromMap(placementId);
-                            SendUnityMsg(unityName, "callback_adFailedToShow");
+                            SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
                         }
 
                         @Override
                         public void adWasClosed(int placementId) {
                             SAUnityManager.getInstance().removeFromMap(placementId);
-                            SendUnityMsg(unityName, "callback_adWasClosed");
+                            SendUnityMsg(unityName, placementId, "callback_adWasClosed");
                         }
 
                         @Override
                         public void adWasClicked(int placementId) {
-                            SendUnityMsg(unityName, "callback_adWasClicked");
+                            SendUnityMsg(unityName, placementId, "callback_adWasClicked");
                         }
 
                         @Override
                         public void adHasIncorrectPlacement(int placementId) {
-                            SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
+                            SendUnityMsg(unityName, placementId, "callback_adHasIncorrectPlacement");
                         }
                     });
                     interstitial.setParentalGateListener(new SAParentalGateListener() {
                         @Override
                         public void parentalGateWasCanceled(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasCanceled");
                         }
 
                         @Override
                         public void parentalGateWasFailed(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasFailed");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasFailed");
                         }
 
                         @Override
                         public void parentalGateWasSucceded(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasSucceded");
                         }
                     });
 
@@ -389,14 +390,14 @@ public class SAUnity {
                     SAUnityManager.getInstance().setAdMap(unityName, interstitial);
 
                 } else {
-                    SendUnityMsg(unityName, "callback_adFailedToShow");
+                    SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
                 }
 
             } else {
-                SendUnityMsg(unityName, "callback_adFailedToShow");
+                SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
             }
         } catch (JSONException e) {
-            SendUnityMsg(unityName, "callback_adFailedToShow");
+            SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
         }
     }
 
@@ -454,86 +455,86 @@ public class SAUnity {
                     video.setAdListener(new SAAdListener() {
                         @Override
                         public void adWasShown(int placementId) {
-                            SendUnityMsg(unityName, "callback_adWasShown");
+                            SendUnityMsg(unityName, placementId, "callback_adWasShown");
                         }
 
                         @Override
                         public void adFailedToShow(int placementId) {
                             SAUnityManager.getInstance().removeFromMap(placementId);
-                            SendUnityMsg(unityName, "callback_adFailedToShow");
+                            SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
                         }
 
                         @Override
                         public void adWasClosed(int placementId) {
                             SAUnityManager.getInstance().removeFromMap(placementId);
-                            SendUnityMsg(unityName, "callback_adWasClosed");
+                            SendUnityMsg(unityName, placementId, "callback_adWasClosed");
                         }
 
                         @Override
                         public void adWasClicked(int placementId) {
-                            SendUnityMsg(unityName, "callback_adWasClicked");
+                            SendUnityMsg(unityName, placementId, "callback_adWasClicked");
                         }
 
                         @Override
                         public void adHasIncorrectPlacement(int placementId) {
-                            SendUnityMsg(unityName, "callback_adHasIncorrectPlacement");
+                            SendUnityMsg(unityName, placementId, "callback_adHasIncorrectPlacement");
                         }
                     });
                     video.setVideoAdListener(new SAVideoAdListener() {
                         @Override
                         public void adStarted(int placementId) {
-                            SendUnityMsg(unityName, "callback_adStarted");
+                            SendUnityMsg(unityName, placementId, "callback_adStarted");
                         }
 
                         @Override
                         public void videoStarted(int placementId) {
-                            SendUnityMsg(unityName, "callback_videoStarted");
+                            SendUnityMsg(unityName, placementId, "callback_videoStarted");
                         }
 
                         @Override
                         public void videoReachedFirstQuartile(int placementId) {
-                            SendUnityMsg(unityName, "callback_videoReachedFirstQuartile");
+                            SendUnityMsg(unityName, placementId, "callback_videoReachedFirstQuartile");
                         }
 
                         @Override
                         public void videoReachedMidpoint(int placementId) {
-                            SendUnityMsg(unityName, "callback_videoReachedMidpoint");
+                            SendUnityMsg(unityName, placementId, "callback_videoReachedMidpoint");
                         }
 
                         @Override
                         public void videoReachedThirdQuartile(int placementId) {
-                            SendUnityMsg(unityName, "callback_videoReachedThirdQuartile");
+                            SendUnityMsg(unityName, placementId, "callback_videoReachedThirdQuartile");
                         }
 
                         @Override
                         public void videoEnded(int placementId) {
-                            SendUnityMsg(unityName, "callback_videoEnded");
+                            SendUnityMsg(unityName, placementId, "callback_videoEnded");
                         }
 
                         @Override
                         public void adEnded(int placementId) {
-                            SendUnityMsg(unityName, "callback_adEnded");
+                            SendUnityMsg(unityName, placementId, "callback_adEnded");
                         }
 
                         @Override
                         public void allAdsEnded(int placementId) {
-                            SendUnityMsg(unityName, "callback_allAdsEnded");
+                            SendUnityMsg(unityName, placementId, "callback_allAdsEnded");
                         }
                     });
                     video.setParentalGateListener(new SAParentalGateListener() {
                         @Override
                         public void parentalGateWasCanceled(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasCanceled");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasCanceled");
                         }
 
                         @Override
                         public void parentalGateWasFailed(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasFailed");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasFailed");
                         }
 
                         @Override
                         public void parentalGateWasSucceded(int placementId) {
-                            SendUnityMsg(unityName, "callback_parentalGateWasSucceded");
+                            SendUnityMsg(unityName, placementId, "callback_parentalGateWasSucceded");
                         }
                     });
 
@@ -544,14 +545,14 @@ public class SAUnity {
                     SAUnityManager.getInstance().setAdMap(unityName, video);
 
                 } else {
-                    SendUnityMsg(unityName, "callback_adFailedToShow");
+                    SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
                 }
 
             } else {
-                SendUnityMsg(unityName, "callback_adFailedToShow");
+                SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
             }
         } catch (JSONException e) {
-            SendUnityMsg(unityName, "callback_adFailedToShow");
+            SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
         }
     }
 

@@ -49,7 +49,7 @@ public class SAAIRLoadAdFunction implements FREFunction {
                         Log.d("AIREXT", "Did load ad " + ad.placementId);
 
                         /** dispatch a loaded ad event */
-                        String meta = "{\"name\":\"" + name + "\", \"func\":\"didLoadAd\"}";
+                        String meta = "{\"placementId\":" + placementId + ", \"name\":\"" + name + "\", \"func\":\"didLoadAd\"}";
                         freContext.dispatchStatusEventAsync(meta, ad.adJson);
                     }
 
@@ -58,7 +58,7 @@ public class SAAIRLoadAdFunction implements FREFunction {
                         Log.d("AIREXT", "Did fail to load Ad " + placementId);
 
                         /** dispatch a ad not loaded event */
-                        String meta = "{\"name\":\"" + name + "\", \"func\":\"didFailToLoadAdForPlacementId\"}";
+                        String meta = "{\"placementId\":" + placementId + ", \"name\":\"" + name + "\", \"func\":\"didFailToLoadAdForPlacementId\"}";
                         freContext.dispatchStatusEventAsync(meta, "");
                     }
                 });

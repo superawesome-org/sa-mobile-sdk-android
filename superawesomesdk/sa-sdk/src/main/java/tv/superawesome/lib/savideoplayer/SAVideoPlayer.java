@@ -1,6 +1,8 @@
 package tv.superawesome.lib.savideoplayer;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.graphics.Rect;
@@ -30,6 +32,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
 
     /** View elements for the Video Player */
     private FrameLayout containerView = null;
+//    private RelativeLayout containerView = null;
     private SurfaceView surfaceView = null;
     private MediaPlayer mediaPlayer = null;
     private SAMediaController controller = null;
@@ -178,11 +181,12 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
 
                 /** setup media controller */
                 controller = new SAMediaController(getActivity());
+                controller.shouldNotHide = true;
                 controller.shouldShowCloseButton = shouldShowCloseButton;
                 controller.shouldShowPadlock = shouldShowPadlock;
-                controller.setAnchorView((View) surfaceView.getParent());
                 controller.setMediaPlayer(SAVideoPlayer.this);
-                controller.show();
+                controller.setAnchorView(containerView);
+                controller.show(0);
                 controller.showMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -215,6 +219,8 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
                 mediaPlayer.setDisplay(null);
             }
         });
+
+
         containerView.addView(surfaceView);
 
         return containerView;
@@ -223,6 +229,8 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     @Override
     public void onStop() {
         super.onStop();
+        controller.shouldNotHide = false;
+        controller.hide();
         if (isCompleteHandled || !isReady) return;
         mediaPlayer.pause();
     }

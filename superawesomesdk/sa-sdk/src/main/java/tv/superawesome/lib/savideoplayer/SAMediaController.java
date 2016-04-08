@@ -3,16 +3,18 @@ package tv.superawesome.lib.savideoplayer;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.DisplayMetrics;
-import android.view.Display;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 import tv.superawesome.lib.sautils.SAUtils;
 
@@ -52,7 +54,7 @@ public class SAMediaController extends MediaController {
         Context mContext = getContext();
 
         String packageName = mContext.getPackageName();
-        int watermark_49x25Id = getResources().getIdentifier("watermark_49x25", "drawable", packageName);
+        int watermark_67x25Id = getResources().getIdentifier("watermark_67x25", "drawable", packageName);
         int sa_markId = getResources().getIdentifier("sa_mark", "drawable", packageName);
         int sa_crono_bgId = getResources().getIdentifier("sa_crono_bg", "drawable", packageName);
         int sa_closeId = getResources().getIdentifier("sa_close", "drawable", packageName);
@@ -99,8 +101,8 @@ public class SAMediaController extends MediaController {
         /** create the padlock */
         if (shouldShowPadlock) {
             padlock = new ImageView(mContext);
-            padlock.setImageResource(watermark_49x25Id);
-            RelativeLayout.LayoutParams padLay = new RelativeLayout.LayoutParams((int) (61 * scale), (int) (31 * scale));
+            padlock.setImageResource(watermark_67x25Id);
+            RelativeLayout.LayoutParams padLay = new RelativeLayout.LayoutParams((int) (83 * scale), (int) (31 * scale));
             padLay.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             parent.addView(padlock, padLay);
         }
@@ -117,9 +119,58 @@ public class SAMediaController extends MediaController {
     }
 
     @Override
+    public void show(int timeout) {
+        super.show(timeout);
+        // fix pre Android 4.3 strange positioning when used in Fragments
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            try {
+                Field field1 = MediaController.class.getDeclaredField("mAnchor");
+                field1.setAccessible(true);
+                View mAnchor = (View)field1.get(this);
+
+                Field field2 = MediaController.class.getDeclaredField("mDecor");
+                field2.setAccessible(true);
+                View mDecor = (View)field2.get(this);
+
+                Field field3 = MediaController.class.getDeclaredField("mDecorLayoutParams");
+                field3.setAccessible(true);
+                WindowManager.LayoutParams mDecorLayoutParams = (WindowManager.LayoutParams)field3.get(this);
+
+                Field field4 = MediaController.class.getDeclaredField("mWindowManager");
+                field4.setAccessible(true);
+                WindowManager mWindowManager = (WindowManager)field4.get(this);
+
+                // NOTE: this appears in its own Window so co-ordinates are screen co-ordinates
+                int [] anchorPos = new int[2];
+                mAnchor.getLocationOnScreen(anchorPos);
+
+                // we need to know the size of the controller so we can properly position it
+                // within its space
+                mDecor.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(), MeasureSpec.AT_MOST),
+                        MeasureSpec.makeMeasureSpec(mAnchor.getHeight(), MeasureSpec.AT_MOST));
+
+                mDecor.setPadding(0,0,0,0);
+
+                WindowManager.LayoutParams p = mDecorLayoutParams;
+                p.verticalMargin = 0;
+                p.horizontalMargin = 0;
+                p.width = mAnchor.getWidth();
+                p.gravity = Gravity.LEFT | Gravity.TOP;
+                p.x = anchorPos[0] + (mAnchor.getWidth() - p.width) / 2;
+                p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
+                mWindowManager.updateViewLayout(mDecor, mDecorLayoutParams);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public void hide() {
         if (shouldNotHide) {
-            show();
+            show(0);
         } else {
             super.hide();
         }

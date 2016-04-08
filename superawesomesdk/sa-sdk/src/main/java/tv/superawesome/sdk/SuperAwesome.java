@@ -23,7 +23,7 @@ public class SuperAwesome {
 
     private String baseUrl;
     private boolean isTestEnabled;
-    private int dauID;
+    private int dauID = 0;
 
     public enum SAConfiguration {
         STAGING,
@@ -40,7 +40,6 @@ public class SuperAwesome {
     private SuperAwesome(){
         this.setConfigurationProduction();
         this.disableTestMode();
-//        this.enableMoatTracking();
     }
 
     /** Get the only object available */
@@ -50,7 +49,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.5.9";
+        return "3.6.0";
     }
 
     private String getSdk() {
@@ -120,12 +119,12 @@ public class SuperAwesome {
      */
     public void setApplicationContext(Context _appContext){
         SAApplication.setSAApplicationContext(_appContext);
-//        SACapper.enableCapping(_appContext, new SACapper.SACapperListener() {
-//            @Override
-//            public void didFindDAUId(int id) {
-//                dauID = id;
-//            }
-//        });
+        SACapper.enableCapping(_appContext, new SACapper.SACapperListener() {
+            @Override
+            public void didFindDAUId(int id) {
+                dauID = id;
+            }
+        });
     }
 
     public Context getApplicationContext(){
