@@ -31,3 +31,4 @@ proguard/
 *.iml
 
 /demo/java_pid11218.hprof
+rdocs/build/*

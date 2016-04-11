@@ -9,6 +9,7 @@ import com.adobe.fre.FREObject;
 import com.adobe.fre.FRETypeMismatchException;
 import com.adobe.fre.FREWrongThreadException;
 
+import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.loader.SALoaderListener;
@@ -32,7 +33,7 @@ public class SAAIRLoadAdFunction implements FREFunction {
                 final int configuration = freObjects[3].getAsInt();
 
                 /** setup environment */
-                SuperAwesome.getInstance().setApplicationContext(freContext.getActivity().getApplicationContext());
+                SAApplication.setSAApplicationContext(freContext.getActivity().getApplicationContext());
                 SuperAwesome.getInstance().setTestMode(isTestingEnabled);
                 switch (configuration) {
                     case 0: SuperAwesome.getInstance().setConfigurationStaging(); break;
