@@ -13,6 +13,10 @@
 package tv.superawesome.lib.sautils;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
@@ -81,6 +85,25 @@ public class SAUtils {
     public static int randomNumberBetween(int min, int max){
         Random rand  = new Random();
         return rand.nextInt(max - min + 1) + min;
+    }
+
+    /**
+     * Generate a Unique Key
+     * @return a unique key string
+     */
+    public static String generateUniqueKey () {
+        /** constants */
+        final String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789";
+        final int length = alphabet.length();
+        final int dauLength = 32;
+
+        /** generate the string */
+        String s = "";
+        for (int i = 0; i < dauLength; i++){
+            int index = SAUtils.randomNumberBetween(0, length - 1);
+            s += alphabet.charAt(index);
+        }
+        return s;
     }
 
     /**
@@ -172,8 +195,8 @@ public class SAUtils {
         double wi = (double)width/(double)dens;
         double hi = (double)height/(double)dens;
         double x = Math.pow(wi,2);
-        double y = Math.pow(hi,2);
-        double screenInches = Math.sqrt(x+y);
+        double y = Math.pow(hi, 2);
+        double screenInches = Math.sqrt(x + y);
 
         if (screenInches < 6){
             return SASystemSize.mobile;
@@ -188,6 +211,27 @@ public class SAUtils {
      */
     public static String getVerboseSystemDetails() {
         return "android" + "_" + getSystemSize().toString();
+    }
+
+    /**
+     * Function that gets the app name
+     * @return the app name
+     */
+    public static String getAppLabel() {
+        Context pContext = SAApplication.getSAApplicationContext();
+        PackageManager lPackageManager = pContext.getPackageManager();
+        ApplicationInfo lApplicationInfo = null;
+        try {
+            lApplicationInfo = lPackageManager.getApplicationInfo(pContext.getApplicationInfo().packageName, 0);
+        } catch (final PackageManager.NameNotFoundException e) {
+        }
+        String name = (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : "Unknown");
+        try {
+            name = URLEncoder.encode(name, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     /**********************************************************************************************/

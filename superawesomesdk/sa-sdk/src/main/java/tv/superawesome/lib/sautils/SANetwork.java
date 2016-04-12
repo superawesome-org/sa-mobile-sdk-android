@@ -1,5 +1,7 @@
 package tv.superawesome.lib.sautils;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -8,6 +10,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import tv.superawesome.sdk.loader.SALoader;
 
 /**
  * Created by gabriel.coman on 06/04/16.

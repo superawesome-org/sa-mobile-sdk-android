@@ -78,7 +78,7 @@ public class SACapper {
 
                     if (secondPartOfDAU == null || secondPartOfDAU.equals("")) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        secondPartOfDAU = generateUniqueKey();
+                        secondPartOfDAU = SAUtils.generateUniqueKey();
                         editor.putString(SUPER_AWESOME_FIRST_PART_DAU, secondPartOfDAU);
                         editor.apply();
                     }
@@ -101,23 +101,6 @@ public class SACapper {
             }
         };
         task.execute();
-    }
-
-
-    /** group of functions that relate to the Device-App-User ID */
-    private static String generateUniqueKey () {
-        /** constants */
-        final String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789";
-        final int length = alphabet.length();
-        final int dauLength = 32;
-
-        /** generate the string */
-        String s = "";
-        for (int i = 0; i < dauLength; i++){
-            int index = SAUtils.randomNumberBetween(0, length - 1);
-            s += alphabet.charAt(index);
-        }
-        return s;
     }
 
     /**

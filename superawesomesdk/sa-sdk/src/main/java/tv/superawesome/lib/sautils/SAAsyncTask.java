@@ -8,8 +8,6 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
 
-import java.util.HashMap;
-
 /**
  * Created by gabriel.coman on 18/03/16.
  */
@@ -26,18 +24,20 @@ public class SAAsyncTask {
     public SAAsyncTask(Context context, final SAAsyncTaskListener listener) {
 
         /** add something more to the hash map */
-        String hash = generateUniqueKey();
-        Persister persister = new Persister();
+        String hash = SAUtils.generateUniqueKey();
+        SAPersister persister = new SAPersister();
         persister.listener = listener;
-        PersisterStore.getInstance().persisterHashMap.put(hash, persister);
+        SAPersisterStore.getInstance().persisterHashMap.put(hash, persister);
 
         /** create the receiver */
         receiver = new SAAsycTaskReceiver(new Handler());
         receiver.setReceiver(new SAAsyncReceiver() {
             @Override
             public void onReceiveResult(int resultCode, Bundle resultData) {
+
                 String hash = resultData.getString("hash");
-                Persister persister = PersisterStore.getInstance().persisterHashMap.get(hash);
+                SAPersister persister = SAPersisterStore.getInstance().persisterHashMap.get(hash);
+
                 switch (resultCode) {
                     case STATUS_RUNNING:
                         break;
@@ -50,7 +50,7 @@ public class SAAsyncTask {
                         break;
                     }
                 }
-                PersisterStore.getInstance().persisterHashMap.remove(hash);
+                SAPersisterStore.getInstance().persisterHashMap.remove(hash);
             }
         });
 
@@ -59,22 +59,6 @@ public class SAAsyncTask {
         intent.putExtra("receiver", receiver);
         intent.putExtra("hash", hash);
         context.startService(intent);
-    }
-
-    /** group of functions that relate to the Device-App-User ID */
-    private String generateUniqueKey () {
-        /** constants */
-        final String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789";
-        final int length = alphabet.length();
-        final int dauLength = 32;
-
-        /** generate the string */
-        String s = "";
-        for (int i = 0; i < dauLength; i++){
-            int index = SAUtils.randomNumberBetween(0, length - 1);
-            s += alphabet.charAt(index);
-        }
-        return s;
     }
 
     /**
@@ -99,24 +83,22 @@ public class SAAsyncTask {
         protected void onHandleIntent(Intent intent) {
             final ResultReceiver receiver = intent.getParcelableExtra("receiver");
             String hash = intent.getStringExtra("hash");
-            Persister persister = PersisterStore.getInstance().persisterHashMap.get(hash);
+            SAPersister persister = SAPersisterStore.getInstance().persisterHashMap.get(hash);
+
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
 
             try {
                 persister.result = persister.listener.taskToExecute();
-                PersisterStore.getInstance().persisterHashMap.put(hash, persister);
+                SAPersisterStore.getInstance().persisterHashMap.put(hash, persister);
             } catch (Exception e) {
-                e.printStackTrace();
+                persister.result = null;
+                SAPersisterStore.getInstance().persisterHashMap.put(hash, persister);
             }
 
+            /** send results forward */
             Bundle bundle = new Bundle();
             bundle.putString("hash", hash);
-
-            if (persister.result == null) {
-                receiver.send(STATUS_ERROR, Bundle.EMPTY);
-            } else {
-                receiver.send(STATUS_FINISHED, bundle);
-            }
+            receiver.send(STATUS_FINISHED, bundle);
         }
     }
 
@@ -186,17 +168,5 @@ public class SAAsyncTask {
          * On Error callback
          */
         void onError();
-    }
-
-    private class Persister {
-        public SAAsyncTaskListener listener = null;
-        public Object result = null;
-    }
-
-    private static class PersisterStore {
-        public HashMap<String, Persister> persisterHashMap;
-        private PersisterStore(){ persisterHashMap = new HashMap<>(); }
-        private final static PersisterStore instance = new PersisterStore();
-        public static PersisterStore getInstance() { return instance; }
     }
 }

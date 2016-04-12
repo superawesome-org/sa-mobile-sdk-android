@@ -11,6 +11,8 @@ package tv.superawesome.sdk.loader;
  * Imports needed for this implementation
  */
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,6 +43,7 @@ public class SALoader {
             queryJson.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
             queryJson.put("rnd", SAUtils.getCacheBuster());
             queryJson.put("bundle", SuperAwesome.getInstance().getApplicationContext().getPackageName());
+            queryJson.put("name", SAUtils.getAppLabel());
             if (SuperAwesome.getInstance().getDAUID() != 0) {
                 queryJson.put("dauid", SuperAwesome.getInstance().getDAUID());
             }
@@ -53,6 +56,11 @@ public class SALoader {
         network.asyncGet(endpoint, queryJson, new SANetwork.SANetListener() {
             @Override
             public void success(final Object data) {
+                /** edge null case (no network, etc) */
+                if (data == null) {
+                    failAd(listener, placementId);
+                    return;
+                }
 
                 /** form the json object to parse */
                 JSONObject dataJson = null;

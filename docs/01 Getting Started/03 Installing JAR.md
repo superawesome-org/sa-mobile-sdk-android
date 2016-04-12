@@ -1,6 +1,6 @@
 If you're running an environment which does not support Gradle, then you'll need to add the SDK manually.
 
-First, download the JAR file [sa-sdk-3.6.4.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.6.4.jar?raw=true)
+First, download the JAR file [sa-sdk-3.6.5.jar](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop_v3/docs/res/sa-sdk-3.6.5.jar?raw=true)
 
 You'll need to add it to your project's `lib` folder, usually `MyApplication/app/libs`. The `libs` folder should be located on the same level as the `src` and `build` folders.
 
@@ -34,7 +34,6 @@ Download [sa-sdk-res.zip](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-andro
 and unzip it. You'll find three folders inside:
  * layout - containing a buch of XML files; copy the XML files inside your projects' layout folder
  * drawable - containing a bunch of PNG files; copy the PNG files inside your projects' drawable folder
- * assets - containing a folder named html; copy the whole folder inside your projects' assets folder.
 
 In the end you should have the following folder structure (or something similar):
 

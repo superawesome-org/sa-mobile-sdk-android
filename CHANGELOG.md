@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.6.5
+ - Fixed an issue with the loading of requests
+
 3.6.4
 3.6.3
 3.6.2
