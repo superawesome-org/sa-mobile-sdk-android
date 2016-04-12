@@ -30,9 +30,10 @@ You'll usually need just one instance per Activity.
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            // setup the test mode
+            // setup SuperAwesome
+            Context c = getApplicationContext();
+            SuperAwesome.getInstance().setApplicationContext(c);
             SuperAwesome.getInstance().enableTestMode();
-
 
             // load ads only when the
             // activity starts for the first time
@@ -58,7 +59,7 @@ In order to use these callbacks:
     public class MainActivity extends Activity
                               implements SALoaderListener
 
-* the MainActivity must be set as delegate for the SALoader object created earlier:
+* the MainActivity must be set as delegate for the SALoader object created earlier (replace **null** with **this** in *SALoader.loadAd(30471, null)*):
 
 .. code-block:: java
 
@@ -73,7 +74,9 @@ In order to use these callbacks:
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            // setup the test mode
+            // setup SuperAwesome
+            Context c = getApplicationContext();
+            SuperAwesome.getInstance().setApplicationContext(c);
             SuperAwesome.getInstance().enableTestMode();
 
 
@@ -119,7 +122,35 @@ You can find out all details by calling the **print** function, as shown in the 
 Saving an Ad for later use
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To save ads for later use, you can do something like this:
+To save ads for later use, you can save it in a class member variable:
+
+.. code-block:: java
+
+    public class MainActivity extends Activity
+                              implements SALoaderListener {
+
+        // member variable that will retain the
+        // saved ad, once that's loaded
+        private SAAd bannerAdData = null;
+
+        // rest of the implementation ...
+
+        @Override
+        public void didLoadAd(SAAd ad) {
+            // at this moment ad data is ready and
+            // we can save the data!
+            bannerAdData = ad;
+        }
+
+        // rest of the implementation ...
+    }
+
+Saving ads with orientation change
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Android destroys and recreates an activity each time orientation changes, that's why it's important to also save ad data
+when this happens.
+The **SAAd** class implements the **Parceable** protocol, which allows ad data to be saved between orientation, like so:
 
 .. code-block:: java
 
@@ -129,7 +160,8 @@ To save ads for later use, you can do something like this:
         // private SALoader class member
         private SALoader loader = null;
 
-        // declare a SAAd object to save data in
+        // member variable that will retain the
+        // saved ad, once that's loaded
         private SAAd bannerAdData = null;
 
         @Override
@@ -137,7 +169,9 @@ To save ads for later use, you can do something like this:
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            SuperAwesome.getInstance().setConfigurationProduction();
+            // setup SuperAwesome
+            Context c = getApplicationContext();
+            SuperAwesome.getInstance().setApplicationContext(c);
             SuperAwesome.getInstance().enableTestMode();
 
             // load ads only when the
@@ -149,17 +183,35 @@ To save ads for later use, you can do something like this:
                 // call the Load ad function
                 loader.loadAd(30471, this);
             }
+            //
+            // if savedInstanceState already has
+            // some data, don't perform
+            // the load again, but just get it
+            // from the bundle
+            else {
+                bannerAdData = (SAAd) savedInstanceState.get("bannerAdData");
+            }
         }
 
         @Override
         public void didLoadAd(SAAd ad) {
-            // at this moment ad data is ready
+            // at this moment ad data is ready and
+            // we can save the data!
             bannerAdData = ad;
         }
 
         @Override
         public void didFailToLoadAdForPlacementId(int i) {
             // at this moment no ad could be found
+        }
+
+        @Override
+        protected void onSaveInstanceState(Bundle outState) {
+            // before the activity is destroyed,
+            // Android can save additional
+            // information in a bundle!
+            outState.putParcelable("bannerAdData", bannerAdData);
+            super.onSaveInstanceState(outState);
         }
     }
 
@@ -176,7 +228,8 @@ Finally, if you want to load multiple ads and save them for later use, you can d
         // private SALoader class member
         private SALoader loader = null;
 
-        // declare a SAAd object to save data in
+        // member variables that will retain the
+        // saved ads, once they're loaded
         private SAAd bannerAdData = null;
         private SAAd interstitialAdData = null;
         private SAAd videoAdData = null;
@@ -186,7 +239,9 @@ Finally, if you want to load multiple ads and save them for later use, you can d
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            SuperAwesome.getInstance().setConfigurationProduction();
+            // setup SuperAwesome
+            Context c = getApplicationContext();
+            SuperAwesome.getInstance().setApplicationContext(c);
             SuperAwesome.getInstance().enableTestMode();
 
             // load ads only when the
@@ -201,6 +256,16 @@ Finally, if you want to load multiple ads and save them for later use, you can d
                 loader.loadAd(30471, this);
                 loader.loadAd(30473, this);
                 loader.loadAd(30479, this);
+            }
+            //
+            // if savedInstanceState already has
+            // some data, don't perform
+            // the load again, but just get it
+            // from the bundle
+            else {
+                bannerAdData = (SAAd) savedInstanceState.get("bannerAdData");
+                interstitialAdData = (SAAd) savedInstanceState.get("interstitialAdData");
+                videoAdData = (SAAd) savedInstanceState.get("videoAdData");
             }
         }
 
@@ -221,7 +286,15 @@ Finally, if you want to load multiple ads and save them for later use, you can d
         public void didFailToLoadAdForPlacementId(int i) {
             // at this moment no ad could be found
         }
-    }
 
-Dealing with orientation changes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        @Override
+        protected void onSaveInstanceState(Bundle outState) {
+            // before the activity is destroyed,
+            // Android can save additional
+            // information in a bundle!
+            outState.putParcelable("bannerAdData", bannerAdData);
+            outState.putParcelable("interstitialAdData", interstitialAdData);
+            outState.putParcelable("videoAdData", videoAdData);
+            super.onSaveInstanceState(outState);
+        }
+    }

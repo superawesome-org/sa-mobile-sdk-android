@@ -35,13 +35,13 @@ You can specify them in your activity class (MainActivity.java).
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
+            // mandatory setup for the Android SDK
+            SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
+
             SuperAwesome.getInstance().setConfigurationProduction();
             // SuperAwesome.getInstance().setConfigurationStaging();
 
             SuperAwesome.getInstance().enableTestMode();
             // SuperAwesome.getInstance().disableTestMode();
-
-            // this is mandatory!
-            SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         }
     }

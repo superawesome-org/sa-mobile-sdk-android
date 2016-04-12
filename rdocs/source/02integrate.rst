@@ -23,7 +23,7 @@ Just include the following in your module's **build.gradle** file (usually the f
     }
 
     dependencies {
-        compile 'tv.superawesome.sdk:sa-sdk:3.6.4@aar'
+        compile 'tv.superawesome.sdk:sa-sdk:3.6.5@aar'
         compile 'com.google.android.gms:play-services:8.4.0'
     }
 
