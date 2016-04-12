@@ -34,7 +34,7 @@ Add the SDK as a JAR library
 
 If you're running an environment which does not support Gradle, then you'll need to add the SDK manually.
 
-1) Download `sa-sdk-3.6.4.jar <https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/raw/develop_v3/rdocs/source/res/sa-sdk-3.6.4.jar>`_
+1) Download `sa-sdk-3.6.5.jar <https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/raw/develop_v3/rdocs/source/res/sa-sdk-3.6.5.jar>`_
 
 You'll need to add it to your project's **lib** folder, usually **AndroidDemo/app/libs**.
 The libs folder should be located on the same level as the **src** and **build** folders.
