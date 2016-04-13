@@ -12,6 +12,7 @@ import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.loader.SALoaderListener;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.views.SABannerAd;
+import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAVideoAd;
 
 public class MainActivity extends Activity implements SALoaderListener {
@@ -27,12 +28,12 @@ public class MainActivity extends Activity implements SALoaderListener {
         setContentView(R.layout.activity_main);
 
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().enableTestMode();
+        SuperAwesome.getInstance().disableTestMode();
         SuperAwesome.getInstance().setConfigurationProduction();
 
         if (savedInstanceState == null) {
             SALoader loader = new SALoader();
-            loader.loadAd(28000, this);
+            loader.loadAd(31093, this);
         }
         else {
 
@@ -48,9 +49,9 @@ public class MainActivity extends Activity implements SALoaderListener {
     @Override
     public void didLoadAd(SAAd ad) {
         savedAd = ad;
-        video = (SAVideoAd)findViewById(R.id.SAVideoAd2Id);
-        video.setAd(savedAd);
-        video.play();
+        SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
+        iad.setAd(ad);
+        iad.play();
     }
 
     @Override
