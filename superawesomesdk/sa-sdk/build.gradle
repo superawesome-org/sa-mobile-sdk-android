@@ -8,8 +8,8 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 version = properties.getProperty("project.version")
 group = properties.getProperty("project.group")
 
-def siteUrl = 'https://developers.superawesome.tv/docs/androidsdk?version=2'        // Homepage URL of the library
-def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/develop_v3'         // Git repository URL
+def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'        // Homepage URL of the library
+def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'         // Git repository URL
 
 android {
     compileSdkVersion 22
