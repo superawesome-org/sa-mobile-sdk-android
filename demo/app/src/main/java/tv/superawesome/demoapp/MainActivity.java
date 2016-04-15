@@ -2,13 +2,18 @@ package tv.superawesome.demoapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
+
+import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.views.SAVideoAd;
 
 public class MainActivity extends Activity implements SALoaderListener {
 
+    private SALoader loader = null;
     private SAAd savedAd = null;
-    private SABannerAd bannerAd = null;
     private SAVideoAd video = null;
 
     /** the options list */
@@ -16,7 +21,16 @@ public class MainActivity extends Activity implements SALoaderListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println(SuperAwesome.getSdkVersion());
+
+        SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
+        SuperAwesome.getInstance().enableTestMode();
+
+        if (savedInstanceState == null) {
+            loader = new SALoader();
+            loader.loadAd(28000, this);
+        } else {
+            savedAd = (SAAd) savedInstanceState.get("savedAd");
+        }
 
     }
 
@@ -29,9 +43,9 @@ public class MainActivity extends Activity implements SALoaderListener {
     @Override
     public void didLoadAd(SAAd ad) {
         savedAd = ad;
-        SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
-        iad.setAd(ad);
-        iad.play();
+        video = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+        video.setAd(savedAd);
+        video.play();
     }
 
     @Override

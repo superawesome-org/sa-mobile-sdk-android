@@ -5,9 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo.iml" filepath="$PROJECT_DIR$/demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/sa-sdk.iml" filepath="$PROJECT_DIR$/../superawesomesdk/sa-sdk/sa-sdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sasdk/sasdk.iml" filepath="$PROJECT_DIR$/sasdk/sasdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/saair/saair.iml" filepath="$PROJECT_DIR$/saair/saair.iml" />
       <module fileurl="file://$PROJECT_DIR$/samopub/samopub.iml" filepath="$PROJECT_DIR$/samopub/samopub.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sasdk/sasdk.iml" filepath="$PROJECT_DIR$/sasdk/sasdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/saunity/saunity.iml" filepath="$PROJECT_DIR$/saunity/saunity.iml" />
     </modules>
   </component>
