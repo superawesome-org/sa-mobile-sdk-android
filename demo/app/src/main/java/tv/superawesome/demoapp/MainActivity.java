@@ -1,170 +1,41 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.provider.MediaStore;
+import android.util.Log;
 
-import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.activities.SAGamewallActivity;
-import tv.superawesome.sdk.activities.SAVideoActivity;
-import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.views.video.SAVideoViewListener;
+public class MainActivity extends Activity implements SALoaderListener {
 
+    private SAAd savedAd = null;
+    private SABannerAd bannerAd = null;
+    private SAVideoAd video = null;
 
-
-public class MainActivity extends Activity {
-
+    /** the options list */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println(SuperAwesome.getSdkVersion());
 
-        String[] ads = {
-                "Banner ad - code",
-                "Banner ad - XML",
-                "Interstitial - code",
-                "Interstitial - XML",
-                "Video ad - code",
-                "Video ad - XML",
-                "Video ad - fullscreen activity",
-                "Gamewall",
-                "All ads in one activity"
-        };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, ads);
-
-        ListView list = (ListView) findViewById(R.id.list);
-        list.setAdapter(adapter);
-
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                switch (position) {
-                    case 0:
-                        startActivity(new Intent(MainActivity.this, BannerAdCodeActivity.class));
-                        break;
-                    case 1:
-                        startActivity(new Intent(MainActivity.this, BannerAdXmlActivity.class));
-                        break;
-                    case 2:
-                        startActivity(new Intent(MainActivity.this, InterstitialAdCodeActivity.class));
-                        break;
-                    case 3:
-                        startActivity(new Intent(MainActivity.this, InterstitialAdXmlActivity.class));
-                        break;
-                    case 4:
-                        startActivity(new Intent(MainActivity.this, VideoAdCodeActivity.class));
-                        break;
-                    case 5:
-                        startActivity(new Intent(MainActivity.this, VideoAdXmlActivity.class));
-                        break;
-                    case 6:
-                        SAVideoActivity.start(MainActivity.this, "30175", "false", "true", new SAVideoViewListener() {
-                            @Override
-                            public void onAdClick() {
-                                System.out.println("CUSTOM LISTNER - AD CLICK");
-                            }
-
-                            @Override
-                            public void onAdStart() {
-                                System.out.println("CUSTOM LISTNER - AD START");
-                            }
-
-                            @Override
-                            public void onAdPause() {
-
-                            }
-
-                            @Override
-                            public void onAdResume() {
-
-                            }
-
-                            @Override
-                            public void onAdFirstQuartile() {
-
-                            }
-
-                            @Override
-                            public void onAdMidpoint() {
-                                System.out.println("CUSTOM LISTNER - AD MIDPOINT");
-                            }
-
-                            @Override
-                            public void onAdThirdQuartile() {
-
-                            }
-
-                            @Override
-                            public void onAdComplete() {
-
-                            }
-
-                            @Override
-                            public void onAdClosed() {
-
-                            }
-
-                            @Override
-                            public void onAdSkipped() {
-
-                            }
-
-                            @Override
-                            public void onAdLoaded(SAAd superAwesomeAd) {
-                                System.out.println("CUSTOM LISTNER - AD LOADED");
-                            }
-
-                            @Override
-                            public void onAdError(String message) {
-
-                            }
-                        });
-                        break;
-                    case 7:
-                        startActivity(new Intent(MainActivity.this, GamewallActivity.class));
-                        break;
-                    case 8:
-                        startActivity(new Intent(MainActivity.this, AllAdsActivity.class));
-                        break;
-                }
-
-            }
-
-            @SuppressWarnings("unused")
-            public void onClick(View v) {
-            };
-        });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("savedAd", savedAd);
+        super.onSaveInstanceState(outState);
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+    @Override
+    public void didLoadAd(SAAd ad) {
+        savedAd = ad;
+        SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
+        iad.setAd(ad);
+        iad.play();
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void didFailToLoadAdForPlacementId(int placementId) {
+        Log.d("SuperAwesome", "Failed for " + placementId);
     }
 }

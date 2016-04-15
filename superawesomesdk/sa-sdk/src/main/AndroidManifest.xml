@@ -3,34 +3,18 @@
     package="tv.superawesome.sdk">
 
     <application
-        android:allowBackup="true" >
+        android:allowBackup="true">
         <activity
-            android:name="org.nexage.sourcekit.mraid.MRAIDBrowser"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:name="tv.superawesome.sdk.views.SAVideoActivity$SAVideoActivityInner"
+            android:label="SAVideoActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity
-            android:name=".activities.SAVideoActivity"
-            android:label="@string/superawesome__title_activity_savideo" >
-        </activity>
-        <activity
-            android:name=".activities.SAGamewallActivity"
-            android:label="@string/superawesome__title_activity_sagamewall" >
-        </activity>
+            android:name="tv.superawesome.sdk.views.SAInterstitialActivity$SAInterstitialActivityInner"
+            android:label="SAInterstitialActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
 
-        <receiver android:name="tv.superawesome.sdk.gamewall.RewardReceiver" android:enabled="true" android:exported="true">
-            <intent-filter>
-                <action android:name="com.bee7.action.REWARD" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="tv.superawesome.sdk.gamewall.RewardingServiceReceiver" android:enabled="true" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-        <service android:name="tv.superawesome.sdk.gamewall.RewardingService" android:process=":rewardingservice" android:enabled="true" />
-
-
+        <!-- Declaring Service in Manifest -->
+        <service android:name="tv.superawesome.lib.sautils.SAAsyncTask$SAAsync" android:exported="false"/>
     </application>
-
 </manifest>

@@ -29,3 +29,8 @@ proguard/
 */.idea/libraries
 .DS_Store
 *.iml
+
+/demo/java_pid11218.hprof
+rdocs/build/*
+rdocs/source/themes/*
+rdocs/source/themeres/*

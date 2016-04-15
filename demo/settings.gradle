@@ -1,4 +1,3 @@
-include ':app'
-include 'sa-sdk', ':bee7androidsdkgamewall'
-project(':sa-sdk').projectDir=new File('../superawesomesdk/sa-sdk')
-project(':bee7androidsdkgamewall').projectDir=new File('../superawesomesdk/bee7androidsdkgamewall')
+include ':app', ':saunity', ':samopub', ':saair'
+include 'sa-sdk'
+project(':sa-sdk').projectDir = new File('../superawesomesdk/sa-sdk')

@@ -10,7 +10,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/../superawesomesdk/bee7androidsdkgamewall" />
+            <option value="$PROJECT_DIR$/saair" />
+            <option value="$PROJECT_DIR$/samopub" />
+            <option value="$PROJECT_DIR$/saunity" />
             <option value="$PROJECT_DIR$/../superawesomesdk/sa-sdk" />
           </set>
         </option>
