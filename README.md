@@ -1,6 +1,6 @@
 SuperAwesome Mobile SDK for Android
 ===================================
 
-Version 3.6.5
+Version 3.6.9
 
-For more information check out the [SuperAwesome Developer Portal](http://developers.superawesome.tv/docs/androidsdk).
+For more information check out the [SuperAwesome Developer Portal](https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html).

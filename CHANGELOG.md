@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+
+3.6.9
+3.6.8
+3.6.7
+3.6.6
+ - Update to master, from develop_v3
+
 3.6.5
  - Fixed an issue with the loading of requests
 
