@@ -21,13 +21,19 @@ import android.util.Log;
  */
 public class SACreative implements Parcelable {
 
-    /** the creative ID is a unique ID associated by the server with this Ad */
+    /**
+     * the creative ID is a unique ID associated by the server with this Ad
+     */
     public int creativeId;
 
-    /** name of the creative - set by the user in the dashboard */
+    /**
+     * name of the creative - set by the user in the dashboard
+     */
     public String name;
 
-    /** agreed upon CPM; not really a useful field */
+    /**
+     * agreed upon CPM; not really a useful field
+     */
     public int cpm;
 
     /**
@@ -37,19 +43,25 @@ public class SACreative implements Parcelable {
     public String baseFormat;
     public SACreativeFormat format;
 
-    /** the impression URL; not really useful */
+    /**
+     * the impression URL; not really useful
+     */
     public String impressionURL;
 
-    /** the viewable impression URL - used to send impression data to the Ad server */
+    /**
+     * the viewable impression URL - used to send impression data to the Ad server
+     */
     public String viewableImpressionURL;
 
     /**
      * the click URL taken from the Ad server - usually it's used in conjunction with the
      * tracking URL to form the complete URL
-     * */
+     */
     public String clickURL;
 
-    /** the tracking URL is used to send clicks to the Ad server */
+    /**
+     * the tracking URL is used to send clicks to the Ad server
+     */
     public String trackingURL;
 
     /**
@@ -57,41 +69,29 @@ public class SACreative implements Parcelable {
      */
     public String parentalGateClickURL;
 
-    /** must be always true for real ads */
+    /**
+     * must be always true for real ads
+     */
     public boolean approved;
 
-    /** pointer to a SADetails object containing even more creative information */
+    /**
+     * pointer to a SADetails object containing even more creative information
+     */
     public SADetails details;
 
-    /** public constructor */
-    public SACreative(){
+    /**
+     * public constructor
+     */
+    public SACreative() {
         /** do nothing */
     }
 
-    /** aux print function */
-    public void print() {
-        String printout = " \nCREATIVE:\n";
-        printout += "\t creativeId: " + creativeId + "\n";
-        printout += "\t name: " + name + "\n";
-        printout += "\t cpm: " + cpm + "\n";
-        printout += "\t baseFormat: " + baseFormat + "\n";
-        printout += "\t format: " + format.toString() + "\n";
-        printout += "\t impressionURL: " + impressionURL + "\n";
-        printout += "\t viewableImpressionURL: " + viewableImpressionURL + "\n";
-        printout += "\t clickURL: " + clickURL + "\n";
-        printout += "\t trackingURL: " + trackingURL + "\n";
-        printout += "\t parentalGateClickURL: " + parentalGateClickURL + "\n";
-        printout += "\t approved: " + approved + "\n";
-        Log.d("SuperAwesome", printout);
-        details.print();
-    }
-
-    /** <Parceable> implementation */
     protected SACreative(Parcel in) {
         creativeId = in.readInt();
         name = in.readString();
         cpm = in.readInt();
         baseFormat = in.readString();
+        format = in.readParcelable(SACreativeFormat.class.getClassLoader());
         impressionURL = in.readString();
         viewableImpressionURL = in.readString();
         clickURL = in.readString();
@@ -113,6 +113,26 @@ public class SACreative implements Parcelable {
         }
     };
 
+    /**
+     * aux print function
+     */
+    public void print() {
+        String printout = " \nCREATIVE:\n";
+        printout += "\t creativeId: " + creativeId + "\n";
+        printout += "\t name: " + name + "\n";
+        printout += "\t cpm: " + cpm + "\n";
+        printout += "\t baseFormat: " + baseFormat + "\n";
+        printout += "\t format: " + format.toString() + "\n";
+        printout += "\t impressionURL: " + impressionURL + "\n";
+        printout += "\t viewableImpressionURL: " + viewableImpressionURL + "\n";
+        printout += "\t clickURL: " + clickURL + "\n";
+        printout += "\t trackingURL: " + trackingURL + "\n";
+        printout += "\t parentalGateClickURL: " + parentalGateClickURL + "\n";
+        printout += "\t approved: " + approved + "\n";
+        Log.d("SuperAwesome", printout);
+        details.print();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -124,6 +144,7 @@ public class SACreative implements Parcelable {
         dest.writeString(name);
         dest.writeInt(cpm);
         dest.writeString(baseFormat);
+        dest.writeParcelable(format, flags);
         dest.writeString(impressionURL);
         dest.writeString(viewableImpressionURL);
         dest.writeString(clickURL);

@@ -33,25 +33,39 @@ public class SADetails implements Parcelable{
     public int width;
     public int height;
 
-    /** in case creative format is image_with_link, this is the URL of the image */
+    /**
+     * in case creative format is image_with_link, this is the URL of the image
+     */
     public String image;
 
-    /** name of the creative */
+    /**
+     * name of the creative
+     */
     public String name;
 
-    /** in case creative format is video, this is the URL of the video to be streamed */
+    /**
+     * in case creative format is video, this is the URL of the video to be streamed
+     */
     public String video;
 
-    /** in case creative format is video, this is the video bitrate */
+    /**
+     * in case creative format is video, this is the video bitrate
+     */
     public int bitrate;
 
-    /** in case creative format is video, this is the total duration */
+    /**
+     * in case creative format is video, this is the total duration
+     */
     public int duration;
 
-    /** in case creative format is video, this is the associated vast tag */
+    /**
+     * in case creative format is video, this is the associated vast tag
+     */
     public String vast;
 
-    /** in case creative format is tag, this is the JS tag */
+    /**
+     * in case creative format is tag, this is the JS tag
+     */
     public String tag;
 
     /**
@@ -61,7 +75,9 @@ public class SADetails implements Parcelable{
      */
     public String zip;
 
-    /** in case creative format is rich media, this is the URL of the rich media */
+    /**
+     * in case creative format is rich media, this is the URL of the rich media
+     */
     public String url;
 
     /**
@@ -70,14 +86,20 @@ public class SADetails implements Parcelable{
      */
     public String placementFormat;
 
-    /** aux value needed when sending ad data like rating and such */
+    /**
+     * aux value needed when sending ad data like rating and such
+     */
     public int value;
 
-    /** the ad data */
+    /**
+     * the ad data
+     */
     public SAData data;
 
-    /** public constructor */
-    public SADetails(){
+    /**
+     * public constructor
+     */
+    public SADetails() {
         /** do nothing */
     }
 
@@ -110,7 +132,9 @@ public class SADetails implements Parcelable{
         }
     };
 
-    /** aux print function */
+    /**
+     * aux print function
+     */
     public void print() {
         String printout = " \nDETAILS:\n";
         printout += "\t\t width: " + width + "\n";

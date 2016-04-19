@@ -60,10 +60,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
         parser.execute(url, this);
     }
 
-    /** <SAVASTParserListener> */
-
-    @Override
-    public void didParseVAST(List<SAVASTAd> ads) {
+    public void manageWithAds(List<SAVASTAd> ads) {
         /** error checking */
         if (ads.size() < 1) {
             if (listener != null) {
@@ -72,7 +69,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
             return;
         }
 
-       /** give ref to adQueue from the returned ads list  */
+        /** give ref to adQueue from the returned ads list  */
         adQueue = ads;
 
         /** set the ad queue play head */
@@ -89,7 +86,13 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
 
         /** progress through ads */
         this.progressThroughAds();
+    }
 
+    /** <SAVASTParserListener> */
+
+    @Override
+    public void didParseVAST(List<SAVASTAd> ads) {
+        manageWithAds(ads);
     }
 
     /** <SAVideoPlayerListener> */

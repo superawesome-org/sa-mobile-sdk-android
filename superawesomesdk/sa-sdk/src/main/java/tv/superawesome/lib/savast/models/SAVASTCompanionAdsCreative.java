@@ -6,7 +6,11 @@ import android.os.Parcelable;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTCompanionAdsCreative extends SAVASTCreative implements Parcelable{
+public class SAVASTCompanionAdsCreative extends SAVASTCreative implements Parcelable {
+
+    public SAVASTCompanionAdsCreative(){
+        super();
+    }
 
     protected SAVASTCompanionAdsCreative(Parcel in) {
         super(in);

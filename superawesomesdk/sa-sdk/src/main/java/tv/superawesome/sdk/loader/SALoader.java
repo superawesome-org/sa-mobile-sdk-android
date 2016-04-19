@@ -69,9 +69,17 @@ public class SALoader {
                     SAAd parsedAd = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
                     /** success case */
-                    if (parsedAd != null && listener != null) {
+                    if (parsedAd != null) {
                         parsedAd.adJson = data.toString();
-                        listener.didLoadAd(parsedAd);
+                        SALoaderExtra extra = new SALoaderExtra();
+                        extra.getExtraData(parsedAd, new SALoaderExtra.SALoaderExtraListener() {
+                            @Override
+                            public void extraDone(SAAd finalAd) {
+                                if (listener != null) {
+                                    listener.didLoadAd(finalAd);
+                                }
+                            }
+                        });
                     }
                     /** error case */
                     else {

@@ -1,8 +1,19 @@
 package tv.superawesome.sdk.loader;
 
+import android.util.Log;
+
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import tv.superawesome.lib.savast.SAVASTParser;
+import tv.superawesome.lib.savast.models.SAVASTAd;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.models.SACreativeFormat;
+import tv.superawesome.sdk.models.SAData;
 import tv.superawesome.sdk.parser.SAHTMLParser;
 
 /**
@@ -24,7 +35,7 @@ public class SALoaderExtra {
         /** get necessary data */
         this.ad = _ad;
         this.listener = _listener;
-
+        ad.creative.details.data = new SAData();
         SACreativeFormat type = ad.creative.format;
 
         switch (type) {
@@ -36,9 +47,18 @@ public class SALoaderExtra {
             case rich:
             case tag: {
                 ad.creative.details.data.adHtml = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
+                listener.extraDone(ad);
                 break;
             }
             case video: {
+                parser = new SAVASTParser();
+                parser.execute(ad.creative.details.vast, new SAVASTParser.SAVASTParserListener() {
+                    @Override
+                    public void didParseVAST(List<SAVASTAd> ads) {
+                        ad.creative.details.data.vastAds = ads;
+                        listener.extraDone(ad);
+                    }
+                });
                 break;
             }
         }

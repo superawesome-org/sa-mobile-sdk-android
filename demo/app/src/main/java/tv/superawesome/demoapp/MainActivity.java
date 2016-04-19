@@ -18,6 +18,7 @@ public class MainActivity extends Activity implements SALoaderListener {
     private SALoader loader = null;
     private SAAd savedAd = null;
     private SAVideoAd videoAd = null;
+    private SAInterstitialActivity inter = null;
 
     /** the options list */
     @Override
@@ -25,15 +26,20 @@ public class MainActivity extends Activity implements SALoaderListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().enableTestMode();
+        SuperAwesome.getInstance().disableTestMode();
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(28000, this);
+            loader.loadAd(100, this);
         } else {
             savedAd = (SAAd) savedInstanceState.get("savedAd");
+            if (savedAd != null) {
+                savedAd.shortPrint();
+            } else {
+                Log.d("SuperAwesome", "No saved ad!");
+            }
         }
 
     }
@@ -47,9 +53,13 @@ public class MainActivity extends Activity implements SALoaderListener {
     @Override
     public void didLoadAd(SAAd ad) {
         savedAd = ad;
-        videoAd = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
-        videoAd.setAd(savedAd);
-        videoAd.play();
+        savedAd.shortPrint();
+        inter = new SAInterstitialActivity(MainActivity.this);
+        inter.setAd(savedAd);
+        inter.play();
+//        videoAd = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+//        videoAd.setAd(savedAd);
+//        videoAd.play();
     }
 
     @Override

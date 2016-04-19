@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTNonLinearCreative extends SAVASTCreative implements Parcelable{
+public class SAVASTNonLinearCreative extends SAVASTCreative implements Parcelable {
 
     protected SAVASTNonLinearCreative(Parcel in) {
     }

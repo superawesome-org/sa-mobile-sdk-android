@@ -6,11 +6,11 @@ import android.os.Parcelable;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTImpression extends SAGenericVAST implements Parcelable{
+public class SAVASTImpression extends SAGenericVAST implements Parcelable {
     public boolean isSent = false;
     public String URL;
 
-    public SAVASTImpression(){
+    public SAVASTImpression() {
         super();
     }
 

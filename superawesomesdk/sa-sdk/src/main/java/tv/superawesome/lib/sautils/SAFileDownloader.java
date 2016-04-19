@@ -65,8 +65,6 @@ public class SAFileDownloader {
         dir.mkdirs();
         File file = new File(dir, filePath);
 
-        Log.d("SuperAwesome", "can read file " + file.canRead() + " " + file.canWrite());
-
         /** create streams */
         InputStream input = null;
         OutputStream output = null;
@@ -103,14 +101,13 @@ public class SAFileDownloader {
             /** no file has beet written here */
             Log.d("SuperAwesome-FILE", "Exception: " + e.toString());
             return null;
-
         }
 
         try {
             if (output != null) output.close();
             if (input != null) input.close();
         } catch (IOException ignored) {}
-        Log.d("SuperAwesome", "but does it get to here?");
+
         if (connection != null) connection.disconnect();
 
         /** return the filePath */

@@ -19,24 +19,36 @@ import android.util.Log;
  * when an Ad is requested, as well as some aux fields that will be generated
  * by the SDK
  */
-public class SAAd implements Parcelable {
+public class SAAd implements Parcelable{
 
-    /** the SA server can send an error; if that's the case, this field will not be nill */
+    /**
+     * the SA server can send an error; if that's the case, this field will not be nill
+     */
     public int error;
 
-    /** the associated app id */
+    /**
+     * the associated app id
+     */
     public int app;
 
-    /** the ID of the placement that the ad was sent for */
+    /**
+     * the ID of the placement that the ad was sent for
+     */
     public int placementId;
 
-    /** line item */
+    /**
+     * line item
+     */
     public int lineItemId;
 
-    /** the ID of the campaign that the ad is a part of */
+    /**
+     * the ID of the campaign that the ad is a part of
+     */
     public int campaignId;
 
-    /** is true when the ad is a test ad */
+    /**
+     * is true when the ad is a test ad
+     */
     public boolean isTest;
 
     /**
@@ -52,30 +64,18 @@ public class SAAd implements Parcelable {
      */
     public String adJson;
 
-    /** pointer to the creative data associated with the ad */
+    /**
+     * pointer to the creative data associated with the ad
+     */
     public SACreative creative;
 
-    /** public constructor */
-    public SAAd(){
+    /**
+     * public constructor
+     */
+    public SAAd() {
         /** do nothing */
     }
 
-    /** aux print function */
-    public void print(){
-        String printout = " \nAD:\n";
-        printout += "error: " + error + "\n";
-        printout += "app: " + app + "\n";
-        printout += "placementId: " + placementId + "\n";
-        printout += "lineItemId: " + lineItemId + "\n";
-        printout += "campaignId: " + campaignId + "\n";
-        printout += "isTest: " + isTest + "\n";
-        printout += "isFallback: " + isFallback + "\n";
-        printout += "isFill: " + isFill + "\n";
-        Log.d("SuperAwesome", printout);
-        creative.print();
-    }
-
-    /** <Parceable> implementation */
     protected SAAd(Parcel in) {
         error = in.readInt();
         app = in.readInt();
@@ -101,6 +101,32 @@ public class SAAd implements Parcelable {
             return new SAAd[size];
         }
     };
+
+    /**
+     * aux print function
+     */
+    public void print() {
+        String printout = " \nAD:\n";
+        printout += "error: " + error + "\n";
+        printout += "app: " + app + "\n";
+        printout += "placementId: " + placementId + "\n";
+        printout += "lineItemId: " + lineItemId + "\n";
+        printout += "campaignId: " + campaignId + "\n";
+        printout += "isTest: " + isTest + "\n";
+        printout += "isFallback: " + isFallback + "\n";
+        printout += "isFill: " + isFill + "\n";
+        Log.d("SuperAwesome", printout);
+        creative.print();
+    }
+
+    public void shortPrint(){
+        String printout = "Ad[" + placementId + "] " + creative.format.toString() + " ";
+        printout += (creative.format == SACreativeFormat.video ? creative.details.vast + " " + creative.details.data.vastAds.size() + " VAST ads" : "");
+        printout += (creative.format == SACreativeFormat.image ? creative.details.image : "");
+        printout += (creative.format == SACreativeFormat.rich ? creative.details.url : "");
+        printout += (creative.format == SACreativeFormat.tag ? creative.details.tag : "");
+        Log.d("SuperAwesome", printout);
+    }
 
     @Override
     public int describeContents() {

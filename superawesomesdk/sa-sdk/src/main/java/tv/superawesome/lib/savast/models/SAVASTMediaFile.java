@@ -12,7 +12,7 @@ public class SAVASTMediaFile extends SAGenericVAST implements Parcelable {
     public String URL;
     public String type;
 
-    public SAVASTMediaFile(){
+    public SAVASTMediaFile() {
 
     }
 

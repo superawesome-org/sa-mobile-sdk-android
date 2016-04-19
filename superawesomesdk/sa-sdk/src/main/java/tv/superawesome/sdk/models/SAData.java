@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tv.superawesome.lib.savast.models.SAVASTAd;
@@ -26,14 +27,10 @@ public class SAData implements Parcelable {
     /**
      * A list of vast ads
      */
-    public List<SAVASTAd> vastAds;
+    public List<SAVASTAd> vastAds = new ArrayList<SAVASTAd>();
 
-    public void print(){
-        String printout = " \n\t\tDATA:\n";
-        printout += "\t\t\t adHtml (len): " + adHtml.length()+ "\n";
-        printout += "\t\t\t imagePath: " + imagePath + "\n";
-        printout += "\t\t\t vastAds: " + vastAds.size() + "\n";
-        Log.d("SuperAwesome", printout);
+    public SAData(){
+        /** standard constructor */
     }
 
     protected SAData(Parcel in) {
@@ -53,6 +50,14 @@ public class SAData implements Parcelable {
             return new SAData[size];
         }
     };
+
+    public void print() {
+        String printout = " \n\t\tDATA:\n";
+        printout += "\t\t\t adHtml: " + adHtml + "\n";
+        printout += "\t\t\t imagePath: " + imagePath + "\n";
+        printout += "\t\t\t vastAds: " + vastAds.size() + "\n";
+        Log.d("SuperAwesome", printout);
+    }
 
     @Override
     public int describeContents() {

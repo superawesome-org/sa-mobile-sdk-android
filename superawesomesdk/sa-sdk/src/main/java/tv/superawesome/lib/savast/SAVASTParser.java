@@ -75,7 +75,7 @@ public class SAVASTParser {
      * @param url - URL to the VAST
      * @return an array of VAST ads
      */
-    public List<SAVASTAd> parseVAST(String url) throws IOException, ParserConfigurationException, SAXException {
+    private List<SAVASTAd> parseVAST(String url) throws IOException, ParserConfigurationException, SAXException {
         /** create the array of ads that should be returned */
         final List<SAVASTAd> lads = new ArrayList<SAVASTAd>();
 
@@ -300,7 +300,6 @@ public class SAVASTParser {
                 creative.playableMediaURL = creative.MediaFiles.get(0).URL;
                 if (creative.playableMediaURL != null) {
                     creative.playableDiskURL = SAFileDownloader.getInstance().downloadFileSync(creative.playableMediaURL);
-                    Log.d("SuperAwesome", "been saved as " + creative.playableDiskURL);
                     creative.isOnDisk = (creative.playableDiskURL != null);
                 }
             }

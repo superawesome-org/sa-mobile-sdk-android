@@ -106,7 +106,7 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
         videoPlayer.shouldShowPadlock = !(ad.isFallback || ad.isHouse);
         videoPlayer.shouldShowCloseButton = shouldShowCloseButton;
         manager = new SAVASTManager(videoPlayer, this);
-        manager.parseVASTURL(ad.creative.details.vast);
+        manager.manageWithAds(ad.creative.details.data.vastAds);
     }
 
     @Override

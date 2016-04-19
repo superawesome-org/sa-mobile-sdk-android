@@ -24,7 +24,6 @@ public class SAVASTAd extends SAGenericVAST implements Parcelable {
     }
 
     protected SAVASTAd(Parcel in) {
-        super();
         type = in.readParcelable(SAVASTAdType.class.getClassLoader());
         id = in.readString();
         sequence = in.readString();

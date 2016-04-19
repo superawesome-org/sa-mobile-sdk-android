@@ -10,7 +10,7 @@ import android.os.Parcelable;
 public class SAVASTCreative extends SAGenericVAST implements Parcelable {
     public SAVASTCreativeType type;
 
-    public SAVASTCreative(){
+    public SAVASTCreative() {
         /** normal constructor */
     }
 
@@ -35,7 +35,7 @@ public class SAVASTCreative extends SAGenericVAST implements Parcelable {
 
     }
 
-    public void sumCreative(SAVASTCreative creative){
+    public void sumCreative(SAVASTCreative creative) {
         // do nothing
     }
 

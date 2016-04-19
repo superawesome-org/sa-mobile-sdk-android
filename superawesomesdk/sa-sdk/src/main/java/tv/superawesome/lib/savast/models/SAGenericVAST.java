@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 public class SAGenericVAST implements Parcelable {
 
-    public SAGenericVAST(){
+    public SAGenericVAST() {
         /** generic constructor */
     }
 
@@ -28,7 +28,7 @@ public class SAGenericVAST implements Parcelable {
     };
 
     // function to print
-    public void print(){
+    public void print() {
 
     }
 

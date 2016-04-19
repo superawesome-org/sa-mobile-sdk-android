@@ -12,7 +12,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTLinearCreative extends SAVASTCreative implements Parcelable{
+public class SAVASTLinearCreative extends SAVASTCreative implements Parcelable {
 
     public String id;
     public String sequence;
@@ -20,24 +20,24 @@ public class SAVASTLinearCreative extends SAVASTCreative implements Parcelable{
     public String ClickThrough;
     public String playableMediaURL;
     public String playableDiskURL;
-    public Boolean isOnDisk = false;
+    public boolean isOnDisk = false;
     public List<SAVASTMediaFile> MediaFiles;
     public List<SAVASTTracking> TrackingEvents;
     public List<String> ClickTracking;
     public List<String> CustomClicks;
 
-    public SAVASTLinearCreative(){
+    public SAVASTLinearCreative() {
         super();
     }
 
     protected SAVASTLinearCreative(Parcel in) {
-        super();
         id = in.readString();
         sequence = in.readString();
         Duration = in.readString();
         ClickThrough = in.readString();
         playableMediaURL = in.readString();
         playableDiskURL = in.readString();
+        isOnDisk = in.readByte() != 0;
         MediaFiles = in.createTypedArrayList(SAVASTMediaFile.CREATOR);
         TrackingEvents = in.createTypedArrayList(SAVASTTracking.CREATOR);
         ClickTracking = in.createStringArrayList();
@@ -80,30 +80,30 @@ public class SAVASTLinearCreative extends SAVASTCreative implements Parcelable{
         this.sequence = creative.sequence;
         this.Duration = creative.Duration;
 
-        if (SAUtils.isValidURL(ClickThrough)){
+        if (SAUtils.isValidURL(ClickThrough)) {
             /** this.ClickThrough = this.ClickThrough; */
         }
-        if (SAUtils.isValidURL(creative.ClickThrough)){
+        if (SAUtils.isValidURL(creative.ClickThrough)) {
             this.ClickThrough = creative.ClickThrough;
         }
-        if (SAUtils.isValidURL(playableMediaURL)){
+        if (SAUtils.isValidURL(playableMediaURL)) {
             /** this.playableMediaURL = this.playableMediaURL; */
         }
-        if (SAUtils.isValidURL(creative.playableMediaURL)){
+        if (SAUtils.isValidURL(creative.playableMediaURL)) {
             this.playableMediaURL = creative.playableMediaURL;
         }
 
         /** now add all other things */
-        for (Iterator<SAVASTMediaFile> i = creative.MediaFiles.iterator(); i.hasNext(); ){
+        for (Iterator<SAVASTMediaFile> i = creative.MediaFiles.iterator(); i.hasNext(); ) {
             this.MediaFiles.add(i.next());
         }
-        for (Iterator<SAVASTTracking> i = creative.TrackingEvents.iterator(); i .hasNext(); ){
+        for (Iterator<SAVASTTracking> i = creative.TrackingEvents.iterator(); i.hasNext(); ) {
             this.TrackingEvents.add(i.next());
         }
-        for (Iterator<String> i = creative.ClickTracking.iterator(); i.hasNext(); ){
+        for (Iterator<String> i = creative.ClickTracking.iterator(); i.hasNext(); ) {
             this.ClickTracking.add(i.next());
         }
-        for (Iterator<String> i = creative.CustomClicks.iterator(); i.hasNext(); ){
+        for (Iterator<String> i = creative.CustomClicks.iterator(); i.hasNext(); ) {
             this.CustomClicks.add(i.next());
         }
     }
@@ -121,6 +121,7 @@ public class SAVASTLinearCreative extends SAVASTCreative implements Parcelable{
         dest.writeString(ClickThrough);
         dest.writeString(playableMediaURL);
         dest.writeString(playableDiskURL);
+        dest.writeByte((byte) (isOnDisk ? 1 : 0));
         dest.writeTypedList(MediaFiles);
         dest.writeTypedList(TrackingEvents);
         dest.writeStringList(ClickTracking);
