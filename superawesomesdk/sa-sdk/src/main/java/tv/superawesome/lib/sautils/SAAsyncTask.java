@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import java.util.HashMap;
+
 /**
  * Created by gabriel.coman on 18/03/16.
  */
@@ -170,3 +172,53 @@ public class SAAsyncTask {
         void onError();
     }
 }
+
+/**
+ * Created by gabriel.coman on 12/04/16.
+ */
+class SAPersister {
+
+    /**
+     * reference to an async task listener
+     */
+    public SAAsyncTask.SAAsyncTaskListener listener = null;
+
+    /**
+     * And the result of the operation
+     */
+    public Object result = null;
+}
+
+/**
+ * Created by gabriel.coman on 12/04/16.
+ */
+class SAPersisterStore {
+
+    /**
+     * The public HashMap that holds objects of
+     *  key
+     *  saperister { listener, object }
+     */
+    public HashMap<String, SAPersister> persisterHashMap;
+
+    /**
+     * private constructor (that's called just once)
+     */
+    private SAPersisterStore() {
+        persisterHashMap = new HashMap<>();
+    }
+
+    /**
+     * instance variable
+     */
+    private final static SAPersisterStore instance = new SAPersisterStore();
+
+    /**
+     * The public instance getter
+     * @return the actual instance
+     */
+    public static SAPersisterStore getInstance() {
+        return instance;
+    }
+}
+

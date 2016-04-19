@@ -259,7 +259,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
         contentHolder.setLayoutParams(params);
 
         /** update HTML as well */
-        webView.loadHTML(ad.adHTML, adWidth, adHeight, newWidth, newHeight);
+        webView.loadHTML(ad.creative.details.data.adHtml, adWidth, adHeight, newWidth, newHeight);
     }
 
     /**********************************************************************************************/

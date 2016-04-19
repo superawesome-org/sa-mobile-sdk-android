@@ -3,6 +3,7 @@ package tv.superawesome.lib.savideoplayer;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.os.Environment;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.graphics.Rect;
@@ -23,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 
+import java.io.File;
 import java.io.IOException;
 
 import tv.superawesome.lib.sautils.SAUtils;
@@ -255,6 +257,20 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
             }
             return;
         }
+
+        try {
+            mediaPlayer.setDataSource(getActivity(), Uri.parse(videoURL));
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void playWithDiskURL(String path) {
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File (sdCard.getAbsolutePath() + "/satmofolder");
+        File file = new File(dir, path);
+        videoURL = file.toString();
 
         try {
             mediaPlayer.setDataSource(getActivity(), Uri.parse(videoURL));

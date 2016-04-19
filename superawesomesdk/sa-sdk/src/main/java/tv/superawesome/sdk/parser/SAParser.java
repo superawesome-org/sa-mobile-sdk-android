@@ -277,9 +277,6 @@ public class SAParser {
 
             ad.creative.parentalGateClickURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAUtils.formGetQueryFromDict(pgDict2);
 
-            /** parse HTML */
-            ad.adHTML = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
-
             /** do a validity check */
             if (!isAdDataValid(ad)) {
                 return null;

@@ -266,9 +266,15 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
 
     private void playCurrentAdWithCurrentCreative() {
         /** play */
-        if (refPlayer != null){
+        if (refPlayer != null) {
             refPlayer.listener = this;
-            refPlayer.playWithMediaURL(_cCreative.playableMediaURL);
+            if (_cCreative.isOnDisk) {
+                Log.d("SuperAwesome", "Taking file from disk " + _cCreative.playableDiskURL);
+                refPlayer.playWithDiskURL(_cCreative.playableDiskURL);
+            } else {
+                Log.d("SuperAwesome", "Taking file from remote " + _cCreative.playableMediaURL);
+                refPlayer.playWithMediaURL(_cCreative.playableMediaURL);
+            }
         }
     }
 

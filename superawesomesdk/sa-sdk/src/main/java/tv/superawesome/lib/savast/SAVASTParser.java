@@ -1,5 +1,7 @@
 package tv.superawesome.lib.savast;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -16,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import tv.superawesome.lib.sautils.SAAsyncTask;
 import tv.superawesome.lib.sautils.SAApplication;
+import tv.superawesome.lib.sautils.SAFileDownloader;
 import tv.superawesome.lib.sautils.SANetwork;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.models.SAVASTAd;
@@ -295,6 +298,11 @@ public class SAVASTParser {
             /** add the playable media file */
             if (creative.MediaFiles.size() > 0) {
                 creative.playableMediaURL = creative.MediaFiles.get(0).URL;
+                if (creative.playableMediaURL != null) {
+                    creative.playableDiskURL = SAFileDownloader.getInstance().downloadFileSync(creative.playableMediaURL);
+                    Log.d("SuperAwesome", "been saved as " + creative.playableDiskURL);
+                    creative.isOnDisk = (creative.playableDiskURL != null);
+                }
             }
 
             /** return creative */

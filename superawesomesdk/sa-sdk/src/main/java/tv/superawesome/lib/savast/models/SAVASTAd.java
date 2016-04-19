@@ -1,5 +1,7 @@
 package tv.superawesome.lib.savast.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.Iterator;
@@ -8,7 +10,7 @@ import java.util.List;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTAd extends SAGenericVAST {
+public class SAVASTAd extends SAGenericVAST implements Parcelable {
 
     public SAVASTAdType type;
     public String id;
@@ -16,6 +18,32 @@ public class SAVASTAd extends SAGenericVAST {
     public List<String> Errors;
     public List<SAVASTImpression> Impressions;
     public List<SAVASTCreative> Creatives;
+
+    public SAVASTAd(){
+        super();
+    }
+
+    protected SAVASTAd(Parcel in) {
+        super();
+        type = in.readParcelable(SAVASTAdType.class.getClassLoader());
+        id = in.readString();
+        sequence = in.readString();
+        Errors = in.createStringArrayList();
+        Impressions = in.createTypedArrayList(SAVASTImpression.CREATOR);
+        Creatives = in.createTypedArrayList(SAVASTCreative.CREATOR);
+    }
+
+    public static final Creator<SAVASTAd> CREATOR = new Creator<SAVASTAd>() {
+        @Override
+        public SAVASTAd createFromParcel(Parcel in) {
+            return new SAVASTAd(in);
+        }
+
+        @Override
+        public SAVASTAd[] newArray(int size) {
+            return new SAVASTAd[size];
+        }
+    };
 
     @Override
     public void print() {
@@ -55,5 +83,20 @@ public class SAVASTAd extends SAGenericVAST {
                 creative1.sumCreative(creative2);
             }
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(type, flags);
+        dest.writeString(id);
+        dest.writeString(sequence);
+        dest.writeStringList(Errors);
+        dest.writeTypedList(Impressions);
+        dest.writeTypedList(Creatives);
     }
 }

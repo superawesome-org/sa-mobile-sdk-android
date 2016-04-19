@@ -1,5 +1,7 @@
 package tv.superawesome.lib.savast.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.Iterator;
@@ -10,17 +12,49 @@ import tv.superawesome.lib.sautils.SAUtils;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTLinearCreative extends SAVASTCreative{
+public class SAVASTLinearCreative extends SAVASTCreative implements Parcelable{
 
     public String id;
     public String sequence;
     public String Duration;
     public String ClickThrough;
     public String playableMediaURL;
+    public String playableDiskURL;
+    public Boolean isOnDisk = false;
     public List<SAVASTMediaFile> MediaFiles;
     public List<SAVASTTracking> TrackingEvents;
     public List<String> ClickTracking;
     public List<String> CustomClicks;
+
+    public SAVASTLinearCreative(){
+        super();
+    }
+
+    protected SAVASTLinearCreative(Parcel in) {
+        super();
+        id = in.readString();
+        sequence = in.readString();
+        Duration = in.readString();
+        ClickThrough = in.readString();
+        playableMediaURL = in.readString();
+        playableDiskURL = in.readString();
+        MediaFiles = in.createTypedArrayList(SAVASTMediaFile.CREATOR);
+        TrackingEvents = in.createTypedArrayList(SAVASTTracking.CREATOR);
+        ClickTracking = in.createStringArrayList();
+        CustomClicks = in.createStringArrayList();
+    }
+
+    public static final Creator<SAVASTLinearCreative> CREATOR = new Creator<SAVASTLinearCreative>() {
+        @Override
+        public SAVASTLinearCreative createFromParcel(Parcel in) {
+            return new SAVASTLinearCreative(in);
+        }
+
+        @Override
+        public SAVASTLinearCreative[] newArray(int size) {
+            return new SAVASTLinearCreative[size];
+        }
+    };
 
     @Override
     public void print() {
@@ -29,6 +63,7 @@ public class SAVASTLinearCreative extends SAVASTCreative{
         printout += "\tsequence: " + sequence + "\n";
         printout += "\tDuration: " + Duration + "\n";
         printout += "\tplayableMediaURL: " + playableMediaURL + "\n";
+        printout += "\tplayableDiskURL: " + isOnDisk + " " + playableDiskURL + "\n";
         printout += "\tClickThrough: " + ClickThrough + "\n";
         printout += "\tMediaFiles[" + MediaFiles.size() + "]" + "\n";
         printout += "\tTrackingEvents[" + TrackingEvents.size() + "]" + "\n";
@@ -71,5 +106,24 @@ public class SAVASTLinearCreative extends SAVASTCreative{
         for (Iterator<String> i = creative.CustomClicks.iterator(); i.hasNext(); ){
             this.CustomClicks.add(i.next());
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(sequence);
+        dest.writeString(Duration);
+        dest.writeString(ClickThrough);
+        dest.writeString(playableMediaURL);
+        dest.writeString(playableDiskURL);
+        dest.writeTypedList(MediaFiles);
+        dest.writeTypedList(TrackingEvents);
+        dest.writeStringList(ClickTracking);
+        dest.writeStringList(CustomClicks);
     }
 }

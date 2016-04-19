@@ -22,7 +22,7 @@ import android.util.Log;
  *
  * This dependency is regulated by SAValidator.h
  */
-public class SADetails implements Parcelable {
+public class SADetails implements Parcelable{
 
     /**
      * the width & height of the creative; can be applied to images, banners,
@@ -73,10 +73,42 @@ public class SADetails implements Parcelable {
     /** aux value needed when sending ad data like rating and such */
     public int value;
 
+    /** the ad data */
+    public SAData data;
+
     /** public constructor */
     public SADetails(){
         /** do nothing */
     }
+
+    protected SADetails(Parcel in) {
+        width = in.readInt();
+        height = in.readInt();
+        image = in.readString();
+        name = in.readString();
+        video = in.readString();
+        bitrate = in.readInt();
+        duration = in.readInt();
+        vast = in.readString();
+        tag = in.readString();
+        zip = in.readString();
+        url = in.readString();
+        placementFormat = in.readString();
+        value = in.readInt();
+        data = in.readParcelable(SAData.class.getClassLoader());
+    }
+
+    public static final Creator<SADetails> CREATOR = new Creator<SADetails>() {
+        @Override
+        public SADetails createFromParcel(Parcel in) {
+            return new SADetails(in);
+        }
+
+        @Override
+        public SADetails[] newArray(int size) {
+            return new SADetails[size];
+        }
+    };
 
     /** aux print function */
     public void print() {
@@ -95,36 +127,8 @@ public class SADetails implements Parcelable {
         printout += "\t\t url: " + url + "\n";
         printout += "\t\t value: " + value + "\n";
         Log.d("SuperAwesome", printout);
+        data.print();
     }
-
-    /** <Parceable> implementation */
-    protected SADetails(Parcel in) {
-        width = in.readInt();
-        height = in.readInt();
-        image = in.readString();
-        name = in.readString();
-        video = in.readString();
-        bitrate = in.readInt();
-        duration = in.readInt();
-        vast = in.readString();
-        tag = in.readString();
-        zip = in.readString();
-        url = in.readString();
-        placementFormat = in.readString();
-        value = in.readInt();
-    }
-
-    public static final Creator<SADetails> CREATOR = new Creator<SADetails>() {
-        @Override
-        public SADetails createFromParcel(Parcel in) {
-            return new SADetails(in);
-        }
-
-        @Override
-        public SADetails[] newArray(int size) {
-            return new SADetails[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -146,5 +150,6 @@ public class SADetails implements Parcelable {
         dest.writeString(url);
         dest.writeString(placementFormat);
         dest.writeInt(value);
+        dest.writeParcelable(data, flags);
     }
 }
