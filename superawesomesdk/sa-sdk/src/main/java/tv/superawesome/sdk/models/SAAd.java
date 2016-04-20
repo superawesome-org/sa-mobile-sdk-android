@@ -121,7 +121,7 @@ public class SAAd implements Parcelable{
 
     public void shortPrint(){
         String printout = "Ad[" + placementId + "] " + creative.format.toString() + " ";
-        printout += (creative.format == SACreativeFormat.video ? creative.details.vast + " " + creative.details.data.vastAds.size() + " VAST ads" : "");
+        // printout += (creative.format == SACreativeFormat.video ? creative.details.vast + " " + creative.details.data.vastAds.size() + " VAST ads" : "");
         printout += (creative.format == SACreativeFormat.image ? creative.details.image : "");
         printout += (creative.format == SACreativeFormat.rich ? creative.details.url : "");
         printout += (creative.format == SACreativeFormat.tag ? creative.details.tag : "");

@@ -210,7 +210,6 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
             }
 
             @Override

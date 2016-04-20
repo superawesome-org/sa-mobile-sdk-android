@@ -12,6 +12,7 @@ import com.adobe.fre.FREWrongThreadException;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
 import tv.superawesome.sdk.models.SAAd;
 
 /**
@@ -43,7 +44,7 @@ public class SAAIRLoadAdFunction implements FREFunction {
                 Log.d("AIREXT", "Got loadAd params: " + name + ": " + placementId + " test: " + SuperAwesome.getInstance().isTestingEnabled() + " config: " + SuperAwesome.getInstance().getConfiguration());
 
                 SALoader loader = new SALoader();
-                loader.loadAd(placementId, new SALoader.SALoaderListener() {
+                loader.loadAd(placementId, new SALoaderListener() {
                     @Override
                     public void didLoadAd(SAAd ad) {
                         Log.d("AIREXT", "Did load ad " + ad.placementId);

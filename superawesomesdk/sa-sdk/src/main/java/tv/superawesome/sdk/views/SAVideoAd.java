@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
     private SAVideoAdListener internalVideoAdListener;
 
     /** helper vars */
+    private boolean layoutOK = false;
     private String destinationURL = null;
     private List<String> clickTracking = new ArrayList<>();
 
@@ -66,6 +70,15 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(view_sa_videoadId, this);
         videoPlayer = (SAVideoPlayer)((Activity) context).getFragmentManager().findFragmentById(video_playerId);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        if (getWidth() != 0 && getHeight() != 0 && !layoutOK){
+            layoutOK = true;
+        }
     }
 
     /**
@@ -106,7 +119,20 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
         videoPlayer.shouldShowPadlock = !(ad.isFallback || ad.isHouse);
         videoPlayer.shouldShowCloseButton = shouldShowCloseButton;
         manager = new SAVASTManager(videoPlayer, this);
-        manager.manageWithAds(ad.creative.details.data.vastAds);
+
+        /** wait till the ad ia actually visible to play it */
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                manager.manageWithAds(ad.creative.details.data.vastAds);
+            }
+        };
+
+        if (ad == null || !layoutOK) {
+            this.postDelayed(runnable, 250);
+        } else {
+            post(runnable);
+        }
     }
 
     @Override

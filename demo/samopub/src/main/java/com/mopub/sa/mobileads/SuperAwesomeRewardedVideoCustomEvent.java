@@ -14,6 +14,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 /** AwesomeAds */
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.listeners.SAAdListener;
 import tv.superawesome.sdk.listeners.SAVideoAdListener;
@@ -123,7 +124,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
         /** load and show the ad */
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoader.SALoaderListener() {
+        loader.loadAd(placementId, new SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
                 Log.d("SuperAwesome-MoPub", "Did Load Ad " + placementId);

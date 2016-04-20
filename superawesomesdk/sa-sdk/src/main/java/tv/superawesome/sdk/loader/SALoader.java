@@ -72,7 +72,7 @@ public class SALoader {
                     if (parsedAd != null) {
                         parsedAd.adJson = data.toString();
                         SALoaderExtra extra = new SALoaderExtra();
-                        extra.getExtraData(parsedAd, new SALoaderExtra.SALoaderExtraListener() {
+                        extra.getExtraData(parsedAd, new SALoaderExtraListener() {
                             @Override
                             public void extraDone(SAAd finalAd) {
                                 if (listener != null) {
@@ -106,24 +106,5 @@ public class SALoader {
         if (_listener != null){
             _listener.didFailToLoadAdForPlacementId(placementId);
         }
-    }
-
-    /**
-     * Loader interface
-     */
-    public interface SALoaderListener {
-
-        /**
-         * After SALoader pre-loads an Ad, this is the function that should be called
-         * @param ad - sends back the Ad object that was loaded
-         */
-        void didLoadAd(SAAd ad);
-
-        /**
-         * After SALoader fails to pre-loads an Ad, this is the function that should be called
-         * @param placementId - sends back the Ad's placement Id
-         */
-        void didFailToLoadAdForPlacementId(int placementId);
-
     }
 }

@@ -8,11 +8,13 @@ import android.widget.VideoView;
 import tv.superawesome.lib.sautils.SAFileDownloader;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
+import tv.superawesome.sdk.loader.SALoaderListener;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
+import tv.superawesome.sdk.views.SAVideoActivity;
 import tv.superawesome.sdk.views.SAVideoAd;
 
-public class MainActivity extends Activity implements SALoader.SALoaderListener {
+public class MainActivity extends Activity implements SALoaderListener {
 
     private SALoader loader = null;
     private SAAd savedAd = null;
@@ -27,11 +29,11 @@ public class MainActivity extends Activity implements SALoader.SALoaderListener 
 
         SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().enableTestMode();
+        SuperAwesome.getInstance().disableTestMode();
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(28000, this);
+            loader.loadAd(30492, this);
         } else {
             savedAd = (SAAd) savedInstanceState.get("savedAd");
             if (savedAd != null) {
@@ -56,9 +58,14 @@ public class MainActivity extends Activity implements SALoader.SALoaderListener 
 //        inter = new SAInterstitialActivity(MainActivity.this);
 //        inter.setAd(savedAd);
 //        inter.play();
-        videoAd = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
-        videoAd.setAd(savedAd);
-        videoAd.play();
+
+        SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+        vad.setAd(savedAd);
+        vad.play();
+//
+//        videoAd = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+//        videoAd.setAd(savedAd);
+//        videoAd.play();
     }
 
     @Override
