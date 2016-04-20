@@ -1,7 +1,10 @@
 CHANGELOG
 =========
 
+3.7.1
+ - Add video preloading
 
+3.7.0
 3.6.9
 3.6.8
 3.6.7
