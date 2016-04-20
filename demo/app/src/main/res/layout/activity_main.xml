@@ -6,6 +6,13 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/mybutton"
+        android:text="Show video"
+        android:onClick="didClickOnBtn"/>
+
     <tv.superawesome.sdk.views.SAVideoAd
         android:layout_width="300dp"
         android:layout_height="300dp"

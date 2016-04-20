@@ -40,7 +40,7 @@ public class SACapper {
                 String adString = "";
                 try {
                     AdvertisingIdClient.Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
-                    if (adInfo.isLimitAdTrackingEnabled()) {
+                    if (!adInfo.isLimitAdTrackingEnabled()) {
                         adString = adInfo.getId();
                     }
                 } catch (VerifyError e) {

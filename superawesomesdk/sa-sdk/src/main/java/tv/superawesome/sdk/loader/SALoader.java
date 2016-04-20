@@ -36,7 +36,7 @@ public class SALoader {
     public void loadAd(final int placementId, final SALoaderListener listener){
 
         /** form the endpoint */
-        String endpoint = SuperAwesome.getInstance().getBaseURL() + "/ad/" + placementId;
+        final String endpoint = SuperAwesome.getInstance().getBaseURL() + "/ad/" + placementId;
         JSONObject queryJson = new JSONObject();
         try {
             queryJson.put("test", SuperAwesome.getInstance().isTestingEnabled());
@@ -44,9 +44,7 @@ public class SALoader {
             queryJson.put("rnd", SAUtils.getCacheBuster());
             queryJson.put("bundle", SuperAwesome.getInstance().getApplicationContext().getPackageName());
             queryJson.put("name", SAUtils.getAppLabel());
-            if (SuperAwesome.getInstance().getDAUID() != 0) {
-                queryJson.put("dauid", SuperAwesome.getInstance().getDAUID());
-            }
+            queryJson.put("dauid", SuperAwesome.getInstance().getDAUID());
         } catch (JSONException e) {
             e.printStackTrace();
         }

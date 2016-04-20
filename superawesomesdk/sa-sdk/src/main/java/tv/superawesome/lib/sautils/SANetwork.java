@@ -79,6 +79,7 @@ public class SANetwork {
 
             @Override
             public void onFinish(Object result) {
+                Log.d("SuperAwesome", "[OK] " + endpoint);
                 listener.success(result);
             }
 

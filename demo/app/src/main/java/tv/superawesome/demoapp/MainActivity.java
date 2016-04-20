@@ -3,6 +3,7 @@ package tv.superawesome.demoapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.VideoView;
 
 import tv.superawesome.lib.sautils.SAFileDownloader;
@@ -32,8 +33,7 @@ public class MainActivity extends Activity implements SALoaderListener {
         SuperAwesome.getInstance().disableTestMode();
 
         if (savedInstanceState == null) {
-            loader = new SALoader();
-            loader.loadAd(30492, this);
+
         } else {
             savedAd = (SAAd) savedInstanceState.get("savedAd");
             if (savedAd != null) {
@@ -59,9 +59,11 @@ public class MainActivity extends Activity implements SALoaderListener {
 //        inter.setAd(savedAd);
 //        inter.play();
 
-        SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
-        vad.setAd(savedAd);
-        vad.play();
+        if (savedAd != null) {
+            SAVideoActivity vad = new SAVideoActivity(MainActivity.this);
+            vad.setAd(savedAd);
+            vad.play();
+        }
 //
 //        videoAd = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
 //        videoAd.setAd(savedAd);
@@ -71,5 +73,11 @@ public class MainActivity extends Activity implements SALoaderListener {
     @Override
     public void didFailToLoadAdForPlacementId(int placementId) {
         Log.d("SuperAwesome", "Failed for " + placementId);
+    }
+
+    public void didClickOnBtn(View v) {
+        loader = new SALoader();
+        loader.loadAd(30492, this);
+
     }
 }
