@@ -25,13 +25,13 @@ public class MainActivity extends Activity implements SALoader.SALoaderListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SuperAwesome.getInstance().setConfigurationStaging();
+        SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().disableTestMode();
+        SuperAwesome.getInstance().enableTestMode();
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(103, this);
+            loader.loadAd(28000, this);
         } else {
             savedAd = (SAAd) savedInstanceState.get("savedAd");
             if (savedAd != null) {
@@ -53,12 +53,12 @@ public class MainActivity extends Activity implements SALoader.SALoaderListener 
     public void didLoadAd(SAAd ad) {
         savedAd = ad;
         savedAd.shortPrint();
-        inter = new SAInterstitialActivity(MainActivity.this);
-        inter.setAd(savedAd);
-        inter.play();
-//        videoAd = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
-//        videoAd.setAd(savedAd);
-//        videoAd.play();
+//        inter = new SAInterstitialActivity(MainActivity.this);
+//        inter.setAd(savedAd);
+//        inter.play();
+        videoAd = (SAVideoAd) findViewById(R.id.SAVideoAd2Id);
+        videoAd.setAd(savedAd);
+        videoAd.play();
     }
 
     @Override
