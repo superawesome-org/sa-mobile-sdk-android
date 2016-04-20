@@ -32,7 +32,6 @@ public class SAFileDownloader {
     /** private variables */
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private HashMap<String, String> fileStore;
 
     /** the singleton SuperAwesome instance */
     private static SAFileDownloader instance = new SAFileDownloader();

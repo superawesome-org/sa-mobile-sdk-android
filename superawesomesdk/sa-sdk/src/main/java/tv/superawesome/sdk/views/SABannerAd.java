@@ -134,9 +134,6 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
                 SAEvents.sendEventToURL(ad.creative.impressionURL);
             }
 
-            /** send moat */
-            SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, ad);
-
             /** call listener */
             if (adListener != null) {
                 adListener.adWasShown(ad.placementId);

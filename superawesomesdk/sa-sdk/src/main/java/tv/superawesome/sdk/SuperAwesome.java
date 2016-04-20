@@ -8,6 +8,8 @@
 package tv.superawesome.sdk;
 
 import android.content.Context;
+
+import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.capper.SACapper;
 
@@ -40,6 +42,7 @@ public class SuperAwesome {
     private SuperAwesome(){
         this.setConfigurationProduction();
         this.disableTestMode();
+        SAEvents.enableSATracking();
     }
 
     /** Get the only object available */
@@ -98,21 +101,6 @@ public class SuperAwesome {
     public void setTestMode(boolean isTestEnabled) { this.isTestEnabled = isTestEnabled; }
 
     public boolean isTestingEnabled() { return this.isTestEnabled; }
-
-    /**
-     * Group of functions related to Moat
-     */
-//    public void enableMoatTracking() { this.isMoatEnabled = true; }
-//
-//    public void disableMoatTracking() { this.isMoatEnabled = false; }
-//
-//    public void setMoatEnabled(boolean isMoatEnabled) { this.isMoatEnabled = isMoatEnabled; }
-
-//    public boolean isMoatTrackingEnabled() { return this.isMoatEnabled; }
-//
-//    public String getDisplayMoatPartnerCode() { return this.MOAT_DISPLAY_PARTNER_CODE; }
-//
-//    public String getVideoMoatPartnerCode() { return this.MOAT_VIDEO_PARTNER_CODE; }
 
     /**
      * Group of functions that encapsulate the SAApplication functionality

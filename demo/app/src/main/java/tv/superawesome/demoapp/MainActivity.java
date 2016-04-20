@@ -8,12 +8,11 @@ import android.widget.VideoView;
 import tv.superawesome.lib.sautils.SAFileDownloader;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
-import tv.superawesome.sdk.loader.SALoaderListener;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
 import tv.superawesome.sdk.views.SAVideoAd;
 
-public class MainActivity extends Activity implements SALoaderListener {
+public class MainActivity extends Activity implements SALoader.SALoaderListener {
 
     private SALoader loader = null;
     private SAAd savedAd = null;
@@ -32,7 +31,7 @@ public class MainActivity extends Activity implements SALoaderListener {
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(100, this);
+            loader.loadAd(103, this);
         } else {
             savedAd = (SAAd) savedInstanceState.get("savedAd");
             if (savedAd != null) {

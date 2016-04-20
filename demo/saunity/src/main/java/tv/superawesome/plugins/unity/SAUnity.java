@@ -130,7 +130,7 @@ public class SAUnity {
 
         /** create the new saloader */
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoaderListener() {
+        loader.loadAd(placementId, new SALoader.SALoaderListener() {
             @Override
             public void didLoadAd(SAAd ad) {
                 Log.d("SuperAwesome", "didLoadAd " + ad.placementId);
