@@ -14,6 +14,7 @@ import tv.superawesome.lib.sautils.SAUtils;
  */
 public class SAVASTLinearCreative extends SAVASTCreative implements Parcelable {
 
+    public SAVASTCreativeType type;
     public String id;
     public String sequence;
     public String Duration;

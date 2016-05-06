@@ -10,13 +10,13 @@ import java.util.List;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTAd extends SAGenericVAST implements Parcelable {
+public class SAVASTAd implements Parcelable {
 
     public SAVASTAdType type;
     public String id;
     public String sequence;
     public List<String> Errors;
-    public List<SAVASTImpression> Impressions;
+    public List<String> Impressions;
     public List<SAVASTCreative> Creatives;
 
     public SAVASTAd(){
@@ -28,7 +28,7 @@ public class SAVASTAd extends SAGenericVAST implements Parcelable {
         id = in.readString();
         sequence = in.readString();
         Errors = in.createStringArrayList();
-        Impressions = in.createTypedArrayList(SAVASTImpression.CREATOR);
+        Impressions = in.createStringArrayList();
         Creatives = in.createTypedArrayList(SAVASTCreative.CREATOR);
     }
 
@@ -44,7 +44,6 @@ public class SAVASTAd extends SAGenericVAST implements Parcelable {
         }
     };
 
-    @Override
     public void print() {
         String printout = " \n";
         printout += type.toString() + " Ad(" + id + ")" + "\n";
@@ -70,7 +69,7 @@ public class SAVASTAd extends SAGenericVAST implements Parcelable {
         }
 
         // add impressions
-        for (Iterator<SAVASTImpression> i = ad.Impressions.iterator(); i.hasNext(); ){
+        for (Iterator<String> i = ad.Impressions.iterator(); i.hasNext(); ){
             this.Impressions.add(i.next());
         }
 
@@ -95,7 +94,7 @@ public class SAVASTAd extends SAGenericVAST implements Parcelable {
         dest.writeString(id);
         dest.writeString(sequence);
         dest.writeStringList(Errors);
-        dest.writeTypedList(Impressions);
+        dest.writeStringList(Impressions);
         dest.writeTypedList(Creatives);
     }
 }

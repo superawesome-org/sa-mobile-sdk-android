@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements SALoaderListener {
 
     public void didClickOnBtn(View v) {
         loader = new SALoader();
-        loader.loadAd(30492, this);
+        loader.loadAd(30486, this);
 
     }
 }

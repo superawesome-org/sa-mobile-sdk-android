@@ -19,7 +19,7 @@ import android.util.Log;
  * when an Ad is requested, as well as some aux fields that will be generated
  * by the SDK
  */
-public class SAAd implements Parcelable{
+public class SAAd implements Parcelable {
 
     /**
      * the SA server can send an error; if that's the case, this field will not be nill
