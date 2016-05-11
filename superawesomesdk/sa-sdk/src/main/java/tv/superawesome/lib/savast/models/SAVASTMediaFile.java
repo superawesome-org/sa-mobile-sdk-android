@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTMediaFile extends SAGenericVAST implements Parcelable {
+public class SAVASTMediaFile implements Parcelable {
     public String width;
     public String height;
     public String URL;
@@ -35,7 +35,6 @@ public class SAVASTMediaFile extends SAGenericVAST implements Parcelable {
         }
     };
 
-    @Override
     public void print() {
 
     }

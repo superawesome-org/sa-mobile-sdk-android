@@ -17,10 +17,11 @@ public class SAVASTAd implements Parcelable {
     public String sequence;
     public List<String> Errors;
     public List<String> Impressions;
+    public boolean isImpressionSent;
     public List<SAVASTCreative> Creatives;
 
     public SAVASTAd(){
-        super();
+
     }
 
     protected SAVASTAd(Parcel in) {
@@ -29,6 +30,7 @@ public class SAVASTAd implements Parcelable {
         sequence = in.readString();
         Errors = in.createStringArrayList();
         Impressions = in.createStringArrayList();
+        isImpressionSent = in.readByte() != 0;
         Creatives = in.createTypedArrayList(SAVASTCreative.CREATOR);
     }
 
@@ -76,8 +78,8 @@ public class SAVASTAd implements Parcelable {
         // add creatives
         for (Iterator<SAVASTCreative> i1 = this.Creatives.iterator(); i1.hasNext(); ){
             for (Iterator<SAVASTCreative> i2 = ad.Creatives.iterator(); i2.hasNext(); ){
-                SAVASTLinearCreative creative1 = (SAVASTLinearCreative)i1.next();
-                SAVASTLinearCreative creative2 = (SAVASTLinearCreative)i2.next();
+                SAVASTCreative creative1 = i1.next();
+                SAVASTCreative creative2 = i2.next();
                 creative1.sumCreative(creative2);
             }
         }
@@ -95,6 +97,7 @@ public class SAVASTAd implements Parcelable {
         dest.writeString(sequence);
         dest.writeStringList(Errors);
         dest.writeStringList(Impressions);
+        dest.writeByte((byte) (isImpressionSent ? 1 : 0));
         dest.writeTypedList(Creatives);
     }
 }

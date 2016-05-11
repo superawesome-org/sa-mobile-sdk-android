@@ -1,7 +1,5 @@
 package tv.superawesome.lib.savast;
 
-import android.util.Log;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -25,8 +23,6 @@ import tv.superawesome.lib.savast.models.SAVASTAd;
 import tv.superawesome.lib.savast.models.SAVASTAdType;
 import tv.superawesome.lib.savast.models.SAVASTCreative;
 import tv.superawesome.lib.savast.models.SAVASTCreativeType;
-import tv.superawesome.lib.savast.models.SAVASTImpression;
-import tv.superawesome.lib.savast.models.SAVASTLinearCreative;
 import tv.superawesome.lib.savast.models.SAVASTMediaFile;
 import tv.superawesome.lib.savast.models.SAVASTTracking;
 
@@ -186,12 +182,11 @@ public class SAVASTParser {
         });
 
         /** get impressions */
+        ad.isImpressionSent = false;
         SAXML.searchSiblingsAndChildrenOf(adElement, "Impression", new SAXML.SAXMLIterator() {
             @Override
             public void foundElement(Element e) {
-                SAVASTImpression impression = new SAVASTImpression();
-                impression.URL = e.getTextContent();
-                ad.Impressions.add(impression);
+               ad.Impressions.add(e.getTextContent());
             }
         });
 
@@ -199,7 +194,7 @@ public class SAVASTParser {
         SAXML.searchSiblingsAndChildrenOf(adElement, "Creative", new SAXML.SAXMLIterator() {
             @Override
             public void foundElement(Element e) {
-                SAVASTLinearCreative linear = parseCreativeXML(e);
+                SAVASTCreative linear = parseCreativeXML(e);
                 if (linear != null){
                     ad.Creatives.add(linear);
                 }
@@ -214,7 +209,7 @@ public class SAVASTParser {
      * @param element a XML element
      * @return a valid SAVASTLinearCreative model
      */
-    public static SAVASTLinearCreative parseCreativeXML(Element element){
+    public static SAVASTCreative parseCreativeXML(Element element){
         /**
          * first find out what kind of content this creative has
          * is it Linear, NonLinear or CompanionAds?
@@ -223,7 +218,7 @@ public class SAVASTParser {
 
         /** init as a linear Creative */
         if (isLinear) {
-            final SAVASTLinearCreative creative = new SAVASTLinearCreative();
+            final SAVASTCreative creative = new SAVASTCreative();
 
             /** get attributes */
             creative.type = SAVASTCreativeType.Linear;

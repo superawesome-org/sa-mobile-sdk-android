@@ -56,10 +56,10 @@ public class SAParser {
 
         if (ad == null) return false;
         if (ad.creative == null)  return false;
-        if (ad.creative.format == SACreativeFormat.invalid) return false;
+        if (ad.creative.creativeFormat == SACreativeFormat.invalid) return false;
         if (ad.creative.details == null) return false;
 
-        switch (ad.creative.format) {
+        switch (ad.creative.creativeFormat) {
             case image:{ if (ad.creative.details.image == null) return false; break; }
             case video:{ if (ad.creative.details.vast == null)  return false; break; }
             case rich:{ if (ad.creative.details.url == null)  return false; break; }
@@ -111,7 +111,7 @@ public class SAParser {
         ad.app = (validateField(appObj) ? Integer.parseInt(appObj.toString().replace("\"","")) : -1);
         ad.lineItemId = (validateField(lineItemIdObj) ? Integer.parseInt(lineItemIdObj.toString().replace("\"","")) : -1);
         ad.campaignId = (validateField(campaignIdObj) ? Integer.parseInt(campaignIdObj.toString().replace("\"","")) : -1);
-        ad.isTest = (validateField(isTestObj) ? Boolean.parseBoolean(isTestObj.toString().replace("\"", "")) : true);
+        ad.test = (validateField(isTestObj) ? Boolean.parseBoolean(isTestObj.toString().replace("\"", "")) : true);
         ad.isFallback = (validateField(isFallbackObj) ? Boolean.parseBoolean(isFallbackObj.toString().replace("\"","")) : true);
         ad.isFill = (validateField(isFillObj) ? Boolean.parseBoolean(isFillObj.toString().replace("\"","")) : false);
         ad.isHouse = (validateField(isHouseObj) ? Boolean.parseBoolean(isHouseObj.toString().replace("\"","")) : false);
@@ -128,21 +128,23 @@ public class SAParser {
 
         SACreative creative = new SACreative();
 
-        Object creativeIdObj = cdict.opt("id");
+        Object idObj = cdict.opt("id");
         Object nameObj = cdict.opt("name");
         Object cpmObj = cdict.opt("cpm");
-        Object baseFormatObj = cdict.opt("format");
+        Object formatObj = cdict.opt("format");
         Object impressionUrlObj = cdict.opt("impression_url");
         Object clickUrlObj = cdict.opt("click_url");
         Object approvedObj = cdict.opt("approved");
+        Object liveObj = cdict.opt("live");
 
-        creative.creativeId = (validateField(creativeIdObj) ? Integer.parseInt(creativeIdObj.toString().replace("\"","")) : -1);
+        creative.id = (validateField(idObj) ? Integer.parseInt(idObj.toString().replace("\"","")) : -1);
         creative.name = (validateField(nameObj) ? nameObj.toString().replace("\"", "") : null);
         creative.cpm = (validateField(cpmObj) ? Integer.parseInt(cpmObj.toString().replace("\"", "")) : 0);
-        creative.impressionURL = (validateField(impressionUrlObj) ? impressionUrlObj.toString().replace("\"", "") : null);
-        creative.clickURL = (validateField(clickUrlObj) ? clickUrlObj.toString().replace("\"", "") : null);
+        creative.impressionUrl = (validateField(impressionUrlObj) ? impressionUrlObj.toString().replace("\"", "") : null);
+        creative.clickUrl = (validateField(clickUrlObj) ? clickUrlObj.toString().replace("\"", "") : null);
         creative.approved = (validateField(approvedObj) ? Boolean.parseBoolean(approvedObj.toString().replace("\"", "")) : false);
-        creative.baseFormat = (validateField(baseFormatObj) ? baseFormatObj.toString().replace("\"", "") : null);
+        creative.live = (validateField(liveObj) ? Boolean.parseBoolean(liveObj.toString().replace("\"","")) : false);
+        creative.format = (validateField(formatObj ) ? formatObj .toString().replace("\"", "") : null);
 
         return creative;
     }
@@ -180,7 +182,7 @@ public class SAParser {
         details.duration = (validateField(durationObj) ? Integer.parseInt(durationObj.toString().replace("\"","")) : 0);
         details.vast = (validateField(vastObj) ? vastObj.toString().replace("\"", "") : null);
         details.tag = (validateField(tagObj) ? tagObj.toString() : null);
-        details.zip = (validateField(zipFileObj) ? zipFileObj.toString().replace("\"", "") : null);
+        details.zipFile = (validateField(zipFileObj) ? zipFileObj.toString().replace("\"", "") : null);
         details.url = (validateField(urlObj) ? urlObj.toString().replace("\"", "") : null);
         details.placementFormat = (validateField(placementFormatObj) ? placementFormatObj.toString().replace("\"", "") : null);
 
@@ -213,26 +215,26 @@ public class SAParser {
             ad.creative.details = SAParser.parseDetailsWithDictionary(ddict);
 
             /** prform the next steps of the parsing */
-            ad.creative.format = SACreativeFormat.invalid;
-            if (ad.creative.baseFormat.equals("image_with_link")) ad.creative.format = SACreativeFormat.image;
-            else if (ad.creative.baseFormat.equals("video")) ad.creative.format = SACreativeFormat.video;
-            else if (ad.creative.baseFormat.contains("rich_media")) ad.creative.format = SACreativeFormat.rich;
-            else if (ad.creative.baseFormat.contains("tag")) ad.creative.format = SACreativeFormat.tag;
+            ad.creative.creativeFormat = SACreativeFormat.invalid;
+            if (ad.creative.format.equals("image_with_link")) ad.creative.creativeFormat = SACreativeFormat.image;
+            else if (ad.creative.format.equals("video")) ad.creative.creativeFormat = SACreativeFormat.video;
+            else if (ad.creative.format.contains("rich_media")) ad.creative.creativeFormat = SACreativeFormat.rich;
+            else if (ad.creative.format.contains("tag")) ad.creative.creativeFormat = SACreativeFormat.tag;
 
             /** create the tracking URL */
             JSONObject trackingDict = new JSONObject();
             try {
                 trackingDict.put("placement", ad.placementId);
                 trackingDict.put("line_item", ad.lineItemId);
-                trackingDict.put("creative", ad.creative.creativeId);
+                trackingDict.put("creative", ad.creative.id);
                 trackingDict.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
                 trackingDict.put("rnd", SAUtils.getCacheBuster());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            ad.creative.trackingURL = SuperAwesome.getInstance().getBaseURL() +
-                    (ad.creative.format == SACreativeFormat.video ? "/video/click/?" : "/click?") +
+            ad.creative.trackingUrl = SuperAwesome.getInstance().getBaseURL() +
+                    (ad.creative.creativeFormat == SACreativeFormat.video ? "/video/click/?" : "/click?") +
                     SAUtils.formGetQueryFromDict(trackingDict);
 
             /** create the viewable impression URL */
@@ -240,7 +242,7 @@ public class SAParser {
             try {
                 impressionDict1.put("placement", ad.placementId);
                 impressionDict1.put("line_item", ad.lineItemId);
-                impressionDict1.put("creative", ad.creative.creativeId);
+                impressionDict1.put("creative", ad.creative.id);
                 impressionDict1.put("type", "viewable_impression");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -254,14 +256,14 @@ public class SAParser {
                 e.printStackTrace();
             }
 
-            ad.creative.viewableImpressionURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAUtils.formGetQueryFromDict(impressionDict2);
+            ad.creative.viewableImpressionUrl = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAUtils.formGetQueryFromDict(impressionDict2);
 
             /** create the parental gate URL */
             JSONObject pgDict1 = new JSONObject();
             try {
                 pgDict1.put("placement", ad.placementId);
                 pgDict1.put("line_item", ad.lineItemId);
-                pgDict1.put("creative", ad.creative.creativeId);
+                pgDict1.put("creative", ad.creative.id);
                 pgDict1.put("type", "custom.parentalGateAccessed");
             } catch (JSONException e){
                 e.printStackTrace();
@@ -275,7 +277,7 @@ public class SAParser {
                 e.printStackTrace();
             }
 
-            ad.creative.parentalGateClickURL = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAUtils.formGetQueryFromDict(pgDict2);
+            ad.creative.parentalGateClickUrl = SuperAwesome.getInstance().getBaseURL() + "/event?" + SAUtils.formGetQueryFromDict(pgDict2);
 
             /** do a validity check */
             if (!isAdDataValid(ad)) {

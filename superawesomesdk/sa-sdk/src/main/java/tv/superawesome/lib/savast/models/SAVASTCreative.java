@@ -13,7 +13,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTCreative implements Parcelable {
+public class SAVASTCreative implements Parcelable{
 
     public SAVASTCreativeType type;
     public String id;
@@ -29,8 +29,35 @@ public class SAVASTCreative implements Parcelable {
     public List<String> CustomClicks;
 
     public SAVASTCreative() {
-        super();
+
     }
+
+    protected SAVASTCreative(Parcel in) {
+        type = in.readParcelable(SAVASTCreativeType.class.getClassLoader());
+        id = in.readString();
+        sequence = in.readString();
+        Duration = in.readString();
+        ClickThrough = in.readString();
+        playableMediaURL = in.readString();
+        playableDiskURL = in.readString();
+        isOnDisk = in.readByte() != 0;
+        MediaFiles = in.createTypedArrayList(SAVASTMediaFile.CREATOR);
+        TrackingEvents = in.createTypedArrayList(SAVASTTracking.CREATOR);
+        ClickTracking = in.createStringArrayList();
+        CustomClicks = in.createStringArrayList();
+    }
+
+    public static final Creator<SAVASTCreative> CREATOR = new Creator<SAVASTCreative>() {
+        @Override
+        public SAVASTCreative createFromParcel(Parcel in) {
+            return new SAVASTCreative(in);
+        }
+
+        @Override
+        public SAVASTCreative[] newArray(int size) {
+            return new SAVASTCreative[size];
+        }
+    };
 
     public void print() {
         String printout = " \n";
@@ -47,25 +74,8 @@ public class SAVASTCreative implements Parcelable {
         Log.d("SuperAwesome", printout);
     }
 
-    protected SAVASTCreative(Parcel in) {
-        type = in.readParcelable(SAVASTCreativeType.class.getClassLoader());
-    }
-
-    public static final Creator<SAVASTCreative> CREATOR = new Creator<SAVASTCreative>() {
-        @Override
-        public SAVASTCreative createFromParcel(Parcel in) {
-            return new SAVASTCreative(in);
-        }
-
-        @Override
-        public SAVASTCreative[] newArray(int size) {
-            return new SAVASTCreative[size];
-        }
-    };
-
-    public void sumCreative(SAVASTLinearCreative creative) {
+    public void sumCreative(SAVASTCreative creative) {
         // call super
-        super.sumCreative(creative);
 
         this.id = creative.id;
         this.sequence = creative.sequence;
@@ -107,5 +117,16 @@ public class SAVASTCreative implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(type, flags);
+        dest.writeString(id);
+        dest.writeString(sequence);
+        dest.writeString(Duration);
+        dest.writeString(ClickThrough);
+        dest.writeString(playableMediaURL);
+        dest.writeString(playableDiskURL);
+        dest.writeByte((byte) (isOnDisk ? 1 : 0));
+        dest.writeTypedList(MediaFiles);
+        dest.writeTypedList(TrackingEvents);
+        dest.writeStringList(ClickTracking);
+        dest.writeStringList(CustomClicks);
     }
 }

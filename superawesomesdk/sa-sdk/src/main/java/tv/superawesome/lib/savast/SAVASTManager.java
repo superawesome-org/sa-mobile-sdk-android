@@ -8,8 +8,7 @@ import java.util.List;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.models.SAVASTAd;
-import tv.superawesome.lib.savast.models.SAVASTImpression;
-import tv.superawesome.lib.savast.models.SAVASTLinearCreative;
+import tv.superawesome.lib.savast.models.SAVASTCreative;
 import tv.superawesome.lib.savast.models.SAVASTTracking;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 
@@ -31,7 +30,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
 
     /** references to current ad and current creative */
     private SAVASTAd _cAd;
-    private SAVASTLinearCreative _cCreative;
+    private SAVASTCreative _cCreative;
 
     /**
      * Constructor
@@ -99,15 +98,12 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
 
     @Override
     public void didFindPlayerReady() {
-        Log.d("SuperAwesome", "didFindPlayerReady");
 
-        /** send impressions  */
-        for (Iterator<SAVASTImpression> i = _cAd.Impressions.iterator(); i.hasNext(); ){
-            SAVASTImpression impression = i.next();
-            if (!impression.isSent) {
-                impression.isSent = true;
-                SAEvents.sendEventToURL(impression.URL);
+        if (!_cAd.isImpressionSent) {
+            for (String Impression : _cAd.Impressions) {
+                SAEvents.sendEventToURL(Impression);
             }
+            _cAd.isImpressionSent = true;
         }
     }
 
@@ -234,7 +230,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
         if (currentCreativeIndex < creativeCount - 1){
             /** select current */
             currentCreativeIndex++;
-            _cCreative = (SAVASTLinearCreative)_cAd.Creatives.get(currentCreativeIndex);
+            _cCreative = _cAd.Creatives.get(currentCreativeIndex);
 
             /** play */
             playCurrentAdWithCurrentCreative();
@@ -250,7 +246,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
                 currentAdIndex++;
 
                 _cAd = adQueue.get(currentAdIndex);
-                _cCreative = (SAVASTLinearCreative)_cAd.Creatives.get(currentCreativeIndex);
+                _cCreative = _cAd.Creatives.get(currentCreativeIndex);
 
                 /** call listener again */
                 if (listener != null) {
@@ -283,11 +279,8 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
 
     /** Aux functions */
     private void sendCurrentCreativeTrackersFor(String event) {
-        /** get all tracking events for this "event" string */
-        for (Iterator<SAVASTTracking> i = _cCreative.TrackingEvents.iterator(); i.hasNext(); ){
-            SAVASTTracking tracking = i.next();
-            if (tracking.event.equals(event)){
-                /** send event */
+        for (SAVASTTracking tracking : _cCreative.TrackingEvents) {
+            if (tracking.event.equals(event)) {
                 SAEvents.sendEventToURL(tracking.URL);
             }
         }

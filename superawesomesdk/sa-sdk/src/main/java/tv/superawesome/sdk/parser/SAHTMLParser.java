@@ -54,7 +54,7 @@ public class SAHTMLParser {
          * based on the creative format, return the appropriate function
          * and leave the implementation details to each private function in part
          */
-        switch (ad.creative.format) {
+        switch (ad.creative.creativeFormat) {
             case invalid:{
                 return null;
             }
@@ -84,7 +84,7 @@ public class SAHTMLParser {
      */
     private static String formatCreativeIntoImageHTML(SAAd ad) {
         String htmlString = imageHTML;
-        String click = (ad.creative.clickURL != null ? ad.creative.clickURL : ad.creative.trackingURL);
+        String click = (ad.creative.clickUrl != null ? ad.creative.clickUrl : ad.creative.trackingUrl);
         htmlString = htmlString.replace("hrefURL", click);
         htmlString = htmlString.replace("imageURL", ad.creative.details.image);
         return htmlString;
@@ -101,7 +101,7 @@ public class SAHTMLParser {
         String richMediaURL = ad.creative.details.url +
                 "?placement=" + ad.placementId +
                 "&line_item=" + ad.lineItemId +
-                "&creative=" + ad.creative.creativeId +
+                "&creative=" + ad.creative.id +
                 "&rnd=" + SAUtils.getCacheBuster();
 
         return htmlString.replace("richMediaURL", richMediaURL);
@@ -117,9 +117,9 @@ public class SAHTMLParser {
         String htmlString = tagHTML;
 
         String tagString = ad.creative.details.tag;
-        tagString = tagString.replace("[click]", ad.creative.trackingURL + "&redir=");
+        tagString = tagString.replace("[click]", ad.creative.trackingUrl + "&redir=");
         try {
-            tagString = tagString.replace("[click_enc]", SAUtils.encodeURL(ad.creative.trackingURL));
+            tagString = tagString.replace("[click_enc]", SAUtils.encodeURL(ad.creative.trackingUrl));
         } catch (URISyntaxException | MalformedURLException e) {
             e.printStackTrace();
         }

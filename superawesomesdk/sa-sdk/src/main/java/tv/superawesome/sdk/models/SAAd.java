@@ -49,7 +49,7 @@ public class SAAd implements Parcelable {
     /**
      * is true when the ad is a test ad
      */
-    public boolean isTest;
+    public boolean test;
 
     /**
      * is true when ad is fallback (fallback ads are sent when there are no
@@ -82,7 +82,7 @@ public class SAAd implements Parcelable {
         placementId = in.readInt();
         lineItemId = in.readInt();
         campaignId = in.readInt();
-        isTest = in.readByte() != 0;
+        test = in.readByte() != 0;
         isFallback = in.readByte() != 0;
         isFill = in.readByte() != 0;
         isHouse = in.readByte() != 0;
@@ -112,7 +112,7 @@ public class SAAd implements Parcelable {
         printout += "placementId: " + placementId + "\n";
         printout += "lineItemId: " + lineItemId + "\n";
         printout += "campaignId: " + campaignId + "\n";
-        printout += "isTest: " + isTest + "\n";
+        printout += "isTest: " + test + "\n";
         printout += "isFallback: " + isFallback + "\n";
         printout += "isFill: " + isFill + "\n";
         Log.d("SuperAwesome", printout);
@@ -120,11 +120,11 @@ public class SAAd implements Parcelable {
     }
 
     public void shortPrint(){
-        String printout = "Ad[" + placementId + "] " + creative.format.toString() + " ";
+        String printout = "Ad[" + placementId + "] " + creative.creativeFormat.toString() + " ";
         // printout += (creative.format == SACreativeFormat.video ? creative.details.vast + " " + creative.details.data.vastAds.size() + " VAST ads" : "");
-        printout += (creative.format == SACreativeFormat.image ? creative.details.image : "");
-        printout += (creative.format == SACreativeFormat.rich ? creative.details.url : "");
-        printout += (creative.format == SACreativeFormat.tag ? creative.details.tag : "");
+        printout += (creative.creativeFormat == SACreativeFormat.image ? creative.details.image : "");
+        printout += (creative.creativeFormat == SACreativeFormat.rich ? creative.details.url : "");
+        printout += (creative.creativeFormat == SACreativeFormat.tag ? creative.details.tag : "");
         Log.d("SuperAwesome", printout);
     }
 
@@ -140,7 +140,7 @@ public class SAAd implements Parcelable {
         dest.writeInt(placementId);
         dest.writeInt(lineItemId);
         dest.writeInt(campaignId);
-        dest.writeByte((byte) (isTest ? 1 : 0));
+        dest.writeByte((byte) (test ? 1 : 0));
         dest.writeByte((byte) (isFallback ? 1 : 0));
         dest.writeByte((byte) (isFill ? 1 : 0));
         dest.writeByte((byte) (isHouse ? 1 : 0));

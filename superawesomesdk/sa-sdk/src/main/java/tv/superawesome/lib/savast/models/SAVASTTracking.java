@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTTracking extends SAGenericVAST implements Parcelable {
+public class SAVASTTracking implements Parcelable {
 
     public String event;
     public String URL;
@@ -32,7 +32,6 @@ public class SAVASTTracking extends SAGenericVAST implements Parcelable {
         }
     };
 
-    @Override
     public void print() {
 
     }

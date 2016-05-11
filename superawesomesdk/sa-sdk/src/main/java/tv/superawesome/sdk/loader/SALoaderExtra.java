@@ -36,7 +36,7 @@ public class SALoaderExtra {
         this.ad = _ad;
         this.listener = _listener;
         ad.creative.details.data = new SAData();
-        SACreativeFormat type = ad.creative.format;
+        SACreativeFormat type = ad.creative.creativeFormat;
 
         switch (type) {
             case invalid: {

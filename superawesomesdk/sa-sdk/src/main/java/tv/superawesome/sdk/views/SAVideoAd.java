@@ -100,7 +100,7 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
     @Override
     public void play() {
         /** check to see for the correct placement type */
-        if (ad.creative.format != SACreativeFormat.video) {
+        if (ad.creative.creativeFormat != SACreativeFormat.video) {
             if (adListener != null) {
                 adListener.adHasIncorrectPlacement(ad.placementId);
             }
@@ -195,11 +195,11 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
         /** send this event just to be sure */
         if (ad != null && ad.creative != null ) {
             /** send viewable impression url */
-            SAEvents.sendEventToURL(ad.creative.viewableImpressionURL);
+            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
 
             /** send impression URL, if exits, to 3rd party only */
-            if (ad.creative.impressionURL != null && !ad.creative.impressionURL.contains(SuperAwesome.getInstance().getBaseURL())) {
-                SAEvents.sendEventToURL(ad.creative.impressionURL);
+            if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
+                SAEvents.sendEventToURL(ad.creative.impressionUrl);
             }
         }
 
@@ -285,7 +285,7 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
         /** check for PG */
         if (isParentalGateEnabled) {
             /** send event */
-            SAEvents.sendEventToURL(ad.creative.parentalGateClickURL);
+            SAEvents.sendEventToURL(ad.creative.parentalGateClickUrl);
             /** create pg - make sure to access SAVideo.this, not this */
             gate = new SAParentalGate(getContext(), SAVideoAd.this, ad);
             gate.show();

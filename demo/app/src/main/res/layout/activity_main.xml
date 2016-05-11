@@ -9,20 +9,43 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/mybutton"
-        android:text="Show video"
-        android:onClick="didClickOnBtn"/>
+        android:id="@+id/playbannerBtn"
+        android:text="Play Banner"
+        android:onClick="playBanner"/>
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/playinter1Btn"
+        android:text="Play Interstitial 1"
+        android:onClick="playInterstitial1"
+        android:layout_height="50dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/playinter2Btn"
+        android:text="Play Interstitial 2"
+        android:onClick="playInterstitial2"
+        android:layout_height="50dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/playinter3Btn"
+        android:text="Play Interstitial 3"
+        android:onClick="playInterstitial3"
+        android:layout_height="50dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/playvid1Btn"
+        android:text="Play Video 1"
+        android:onClick="playVideo1"
+        android:layout_height="50dp" />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/playvid2Btn"
+        android:text="Play Video 2"
+        android:onClick="playVideo2"
+        android:layout_height="50dp" />
 
-    <tv.superawesome.sdk.views.SAVideoAd
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
-        android:id="@+id/SAVideoAd2Id"/>
-
-    <!--<tv.superawesome.sdk.views.SABannerAd-->
-        <!--android:layout_width="320dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:id="@+id/mybanner"/>-->
+    <tv.superawesome.sdk.views.SABannerAd
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:id="@+id/mybanner"/>
 
 </LinearLayout>
