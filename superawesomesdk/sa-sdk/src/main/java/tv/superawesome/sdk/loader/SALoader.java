@@ -11,8 +11,6 @@ package tv.superawesome.sdk.loader;
  * Imports needed for this implementation
  */
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +31,7 @@ public class SALoader {
      * @param placementId - the placement ID a user might want to preload an Ad for
      * @param listener - a reference to the listener
      */
-    public void loadAd(final int placementId, final SALoaderListener listener){
+    public void loadAd(final int placementId, final SALoaderInterface listener){
 
         /** form the endpoint */
         final String endpoint = SuperAwesome.getInstance().getBaseURL() + "/ad/" + placementId;
@@ -51,7 +49,7 @@ public class SALoader {
 
         /** send a standard GET request */
         SANetwork network = new SANetwork();
-        network.asyncGet(endpoint, queryJson, new SANetwork.SANetListener() {
+        network.asyncGet(endpoint, queryJson, new SANetInterface() {
             @Override
             public void success(final Object data) {
                 /** edge null case (no network, etc) */
@@ -70,7 +68,7 @@ public class SALoader {
                     if (parsedAd != null) {
                         parsedAd.adJson = data.toString();
                         SALoaderExtra extra = new SALoaderExtra();
-                        extra.getExtraData(parsedAd, new SALoaderExtraListener() {
+                        extra.getExtraData(parsedAd, new SALoaderExtraInterface() {
                             @Override
                             public void extraDone(SAAd finalAd) {
                                 if (listener != null) {
@@ -100,7 +98,7 @@ public class SALoader {
      * @param _listener
      * @param placementId
      */
-    private void failAd(SALoaderListener _listener, int placementId){
+    private void failAd(SALoaderInterface _listener, int placementId){
         if (_listener != null){
             _listener.didFailToLoadAdForPlacementId(placementId);
         }

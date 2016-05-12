@@ -2,7 +2,6 @@ package tv.superawesome.lib.savast;
 
 import android.util.Log;
 
-import java.util.Iterator;
 import java.util.List;
 
 import tv.superawesome.lib.saevents.SAEvents;
@@ -11,16 +10,17 @@ import tv.superawesome.lib.savast.models.SAVASTAd;
 import tv.superawesome.lib.savast.models.SAVASTCreative;
 import tv.superawesome.lib.savast.models.SAVASTTracking;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
+import tv.superawesome.lib.savideoplayer.SAVideoPlayerInterface;
 
 /**
  * Created by gabriel.coman on 23/12/15.
  */
-public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideoPlayer.SAVideoPlayerListener {
+public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterface {
 
     /** private variables */
     private SAVASTParser parser;
     private SAVideoPlayer refPlayer;
-    private SAVASTManagerListener listener;
+    private SAVASTManagerInterface listener;
 
     /** other private variables needed to play ads */
     private List<SAVASTAd> adQueue;
@@ -37,7 +37,7 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
      * @param refPlayer
      * @param listener
      */
-    public SAVASTManager(SAVideoPlayer refPlayer, SAVASTManagerListener listener) {
+    public SAVASTManager(SAVideoPlayer refPlayer, SAVASTManagerInterface listener) {
 
         this.refPlayer = refPlayer;
         this.listener = listener;
@@ -87,14 +87,14 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
         this.progressThroughAds();
     }
 
-    /** <SAVASTParserListener> */
+    /** <SAVASTParserInterface> */
 
     @Override
     public void didParseVAST(List<SAVASTAd> ads) {
         manageWithAds(ads);
     }
 
-    /** <SAVideoPlayerListener> */
+    /** <SAVideoPlayerInterface> */
 
     @Override
     public void didFindPlayerReady() {
@@ -284,75 +284,5 @@ public class SAVASTManager implements SAVASTParser.SAVASTParserListener, SAVideo
                 SAEvents.sendEventToURL(tracking.URL);
             }
         }
-    }
-
-    /**
-     * ************************************************************
-     * Public interface
-     * ************************************************************
-     */
-    public interface SAVASTManagerListener {
-
-        /**
-         * parsed vast and found errors / could not parse vast
-         */
-        void didNotFindAds();
-
-        /**
-         * ad started
-         */
-        void didStartAd();
-
-        /**
-         * creative / video started
-         */
-        void didStartCreative();
-
-        /**
-         * video 1/4
-         */
-        void didReachFirstQuartileOfCreative();
-
-        /**
-         * video 1/2
-         */
-        void didReachMidpointOfCreative();
-
-        /**
-         * video 3/4
-         */
-        void didReachThirdQuartileOfCreative();
-
-        /**
-         * video full
-         */
-        void didEndOfCreative();
-
-        /**
-         * video played with errors
-         */
-        void didHaveErrorForCreative();
-
-        /**
-         * ad ended
-         */
-        void didEndAd();
-
-        /**
-         * all ads ended
-         */
-        void didEndAllAds();
-
-        /**
-         * ad was clicked
-         * @param url the URL to go to
-         * @param clickTracking additoonal click tracking URLs
-         */
-        void didGoToURL(String url, List<String> clickTracking);
-
-        /**
-         * ad was closed
-         */
-        void didClickOnClose();
     }
 }

@@ -3,7 +3,6 @@ package tv.superawesome.plugins.air.functions;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -19,13 +18,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.parser.SAParser;
-import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAAdInterface;
+import tv.superawesome.sdk.views.SAParentalGateInterface;
 import tv.superawesome.sdk.views.SAVideoAd;
+import tv.superawesome.sdk.views.SAVideoAdInterface;
 
 /**
  * Created by gabriel.coman on 06/04/16.
@@ -64,7 +62,7 @@ public class SAAIRPlayVideoAd implements FREFunction {
                         SAVideoAd video = new SAVideoAd(activity);
                         video.setAd(ad);
                         video.setIsParentalGateEnabled(isParentalGateEnabled);
-                        video.setAdListener(new SAAdListener() {
+                        video.setAdListener(new SAAdInterface() {
                             @Override
                             public void adWasShown(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";
@@ -95,7 +93,7 @@ public class SAAIRPlayVideoAd implements FREFunction {
                                 freContext.dispatchStatusEventAsync(meta, "");
                             }
                         });
-                        video.setVideoAdListener(new SAVideoAdListener() {
+                        video.setVideoAdListener(new SAVideoAdInterface() {
                             @Override
                             public void adStarted(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"adStarted\"}";
@@ -144,7 +142,7 @@ public class SAAIRPlayVideoAd implements FREFunction {
                                 freContext.dispatchStatusEventAsync(meta, "");
                             }
                         });
-                        video.setParentalGateListener(new SAParentalGateListener() {
+                        video.setParentalGateListener(new SAParentalGateInterface() {
                             @Override
                             public void parentalGateWasCanceled(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasCanceled\"}";

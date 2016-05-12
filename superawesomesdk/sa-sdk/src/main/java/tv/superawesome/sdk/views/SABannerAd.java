@@ -1,7 +1,6 @@
 package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,19 +17,17 @@ import android.widget.RelativeLayout;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebview.SAWebPlayer;
+import tv.superawesome.lib.sawebview.SAWebPlayerInterface;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.models.SACreativeFormat;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
 
 /**
  * Created by gabriel.coman on 30/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlayerListener, SAViewProtocol {
+public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, SAViewInterface {
 
     /** Private variables */
     private boolean isParentalGateEnabled = true;
@@ -43,8 +40,8 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
     private SAParentalGate gate;
 
     /** listeners */
-    private SAAdListener adListener;
-    private SAParentalGateListener parentalGateListener;
+    private SAAdInterface adListener;
+    private SAParentalGateInterface parentalGateListener;
 
     /** helper vars */
     private float cWidth = 0;
@@ -150,7 +147,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
     }
 
     /**********************************************************************************************/
-    /** <SAViewProtocol> */
+    /** <SAViewInterface> */
     /**********************************************************************************************/
 
     /**
@@ -267,7 +264,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
      * This function sets the ad listener
      * @param adListener
      */
-    public void setAdListener(SAAdListener adListener) {
+    public void setAdListener(SAAdInterface adListener) {
         this.adListener = adListener;
     }
 
@@ -275,7 +272,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayer.SAWebPlaye
      * This function sets the parental gate listener
      * @param parentalGateListener
      */
-    public void setParentalGateListener(SAParentalGateListener parentalGateListener){
+    public void setParentalGateListener(SAParentalGateInterface parentalGateListener){
         this.parentalGateListener = parentalGateListener;
     }
 

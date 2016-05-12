@@ -1,8 +1,6 @@
 package tv.superawesome.lib.savideoplayer;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Environment;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -14,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -48,7 +45,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     private boolean isCompleteHandled = false;
 
     /** listeners & other configuration variables */
-    public SAVideoPlayerListener listener = null;
+    public SAVideoPlayerInterface listener = null;
     public boolean shouldShowPadlock = true;
     public boolean shouldShowCloseButton = false;
     public String videoURL = null;
@@ -370,54 +367,5 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     @Override
     public int getAudioSessionId() {
         return 0;
-    }
-
-    /**
-     * ************************************************************
-     * Public interface
-     * ************************************************************
-     */
-    public interface SAVideoPlayerListener {
-
-        /**
-         * called when the player is read to play
-         */
-        void didFindPlayerReady();
-
-        /**
-         * called when the player actually starts playing
-         */
-        void didStartPlayer();
-
-        /**
-         * called when the player reaches 1/4 of duration
-         */
-        void didReachFirstQuartile();
-
-        /**
-         * called when the player reaches 1/2 of duration
-         */
-        void didReachMidpoint();
-
-        /**
-         * called when the player reaches 3/4 of duration
-         */
-        void didReachThirdQuartile();
-
-        /**
-         * called when the player reaches end
-         */
-        void didReachEnd();
-
-        /**
-         * called when the player plays with error
-         */
-        void didPlayWithError();
-
-        /**
-         * called when the player clicks on the clicker
-         */
-        void didGoToURL();
-        void didClickOnClose();
     }
 }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.util.Log;
 
 import java.util.HashMap;
 
@@ -23,7 +22,7 @@ public class SAAsyncTask {
     /**
      * Creates a new SAAsync Task
      */
-    public SAAsyncTask(Context context, final SAAsyncTaskListener listener) {
+    public SAAsyncTask(Context context, final SAAsyncTaskInterface listener) {
 
         /** add something more to the hash map */
         String hash = SAUtils.generateUniqueKey();
@@ -152,7 +151,7 @@ public class SAAsyncTask {
         void onReceiveResult(int resultCode, Bundle resultData);
     }
 
-    public interface SAAsyncTaskListener {
+    public interface SAAsyncTaskInterface {
         /**
          * This method basically tells the AsyncTask "what" piece of code to execute async
          * @return it returns a generic "Object", that can be anything from a String to an Array to null
@@ -181,7 +180,7 @@ class SAPersister {
     /**
      * reference to an async task listener
      */
-    public SAAsyncTask.SAAsyncTaskListener listener = null;
+    public SAAsyncTask.SAAsyncTaskInterface listener = null;
 
     /**
      * And the result of the operation

@@ -15,10 +15,10 @@ import org.json.JSONObject;
 
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.parser.SAParser;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
+import tv.superawesome.sdk.views.SAAdInterface;
+import tv.superawesome.sdk.views.SAParentalGateInterface;
 import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAVideoAdInterface;
 
 /**
  * Created by gabriel.coman on 17/03/16.
@@ -55,7 +55,7 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
                         video.setIsParentalGateEnabled(isParentalGateEnabled);
                         video.setShouldShowCloseButton(shouldShowCloseButton);
                         video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-                        video.setAdListener(new SAAdListener() {
+                        video.setAdListener(new SAAdInterface() {
                             @Override
                             public void adWasShown(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";
@@ -86,7 +86,7 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
                                 freContext.dispatchStatusEventAsync(meta, "");
                             }
                         });
-                        video.setVideoAdListener(new SAVideoAdListener() {
+                        video.setVideoAdListener(new SAVideoAdInterface() {
                             @Override
                             public void adStarted(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"adStarted\"}";
@@ -135,7 +135,7 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
                                 freContext.dispatchStatusEventAsync(meta, "");
                             }
                         });
-                        video.setParentalGateListener(new SAParentalGateListener() {
+                        video.setParentalGateListener(new SAParentalGateInterface() {
                             @Override
                             public void parentalGateWasCanceled(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasCanceled\"}";

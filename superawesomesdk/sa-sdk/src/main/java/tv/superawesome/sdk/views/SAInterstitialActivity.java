@@ -16,13 +16,11 @@ import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
 /**
  * Created by gabriel.coman on 30/12/15.
  */
-public class SAInterstitialActivity implements SAViewProtocol {
+public class SAInterstitialActivity implements SAViewInterface {
 
     /** private activity object values */
     private Context context;
@@ -39,11 +37,11 @@ public class SAInterstitialActivity implements SAViewProtocol {
         holder = new InterstitialAdDataHolder();
     }
 
-    public void setAdListener(SAAdListener adListener) {
+    public void setAdListener(SAAdInterface adListener) {
         holder._refAdListener = adListener;
     }
 
-    public void setParentalGateListener(SAParentalGateListener parentalGareListener){
+    public void setParentalGateListener(SAParentalGateInterface parentalGareListener){
         holder._refParentalGateListener = parentalGareListener;
     }
 
@@ -64,7 +62,7 @@ public class SAInterstitialActivity implements SAViewProtocol {
     }
 
     /**********************************************************************************************/
-    /** <SAViewProtocol> */
+    /** <SAViewInterface> */
     /**********************************************************************************************/
 
     @Override
@@ -104,8 +102,8 @@ public class SAInterstitialActivity implements SAViewProtocol {
     public static void start(Context c,
                              SAAd ad,
                              boolean isParentalGateEnabled,
-                             SAAdListener adListener,
-                             SAParentalGateListener parentalGateListener) {
+                             SAAdInterface adListener,
+                             SAParentalGateInterface parentalGateListener) {
 
         /** create activity */
         SAInterstitialActivity activity = new SAInterstitialActivity(c);
@@ -137,8 +135,8 @@ public class SAInterstitialActivity implements SAViewProtocol {
         private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         /** sdk listeners */
-        private SAAdListener adListener;
-        private SAParentalGateListener parentalGateListener;
+        private SAAdInterface adListener;
+        private SAParentalGateInterface parentalGateListener;
 
         /** subviews */
         private SABannerAd interstitialBanner;
@@ -255,8 +253,8 @@ class InterstitialAdDataHolder {
     public boolean _refIsParentalGateEnabled;
     public boolean _refShouldLockOrientation = false;
     public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-    public SAAdListener _refAdListener;
-    public SAParentalGateListener _refParentalGateListener;
+    public SAAdInterface _refAdListener;
+    public SAParentalGateInterface _refParentalGateListener;
 
     InterstitialAdDataHolder (){
         // basic constructor

@@ -9,10 +9,9 @@ import java.util.Map;
 
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
-import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.loader.SALoaderInterface;
 import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
+import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SABannerAd;
 
 
@@ -61,7 +60,7 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
 
         /** start loading */
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoaderListener() {
+        loader.loadAd(placementId, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
 
@@ -69,7 +68,7 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
                 bannerAd = new SABannerAd(context);
                 bannerAd.setAd(saAd);
                 bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
-                bannerAd.setAdListener(new SAAdListener() {
+                bannerAd.setAdListener(new SAAdInterface() {
                     @Override
                     public void adWasShown(int placementId) {
 

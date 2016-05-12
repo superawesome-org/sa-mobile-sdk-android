@@ -1,9 +1,9 @@
-package tv.superawesome.sdk.listeners;
+package tv.superawesome.sdk.views;
 
 /**
  * Created by gabriel.coman on 26/12/15.
  */
-public interface SAAdListener {
+public interface SAAdInterface {
 
     /**
      * Callback when ad is first shown

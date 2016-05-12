@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.adobe.fre.FREContext;
-import com.adobe.fre.FREExtension;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREInvalidObjectException;
 import com.adobe.fre.FREObject;
@@ -14,13 +13,11 @@ import com.adobe.fre.FREWrongThreadException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.parser.SAParser;
+import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
-import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAParentalGateInterface;
 
 /**
  * Created by gabriel.coman on 06/04/16.
@@ -53,7 +50,7 @@ public class SAAIRPlayInterstitialAd implements FREFunction {
                         SAInterstitialActivity inter = new SAInterstitialActivity (freContext.getActivity());
                         inter.setAd(ad);
                         inter.setIsParentalGateEnabled(isParentalGateEnabled);
-                        inter.setAdListener(new SAAdListener() {
+                        inter.setAdListener(new SAAdInterface() {
                             @Override
                             public void adWasShown(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";
@@ -84,7 +81,7 @@ public class SAAIRPlayInterstitialAd implements FREFunction {
                                 freContext.dispatchStatusEventAsync(meta, "");
                             }
                         });
-                        inter.setParentalGateListener(new SAParentalGateListener() {
+                        inter.setParentalGateListener(new SAParentalGateInterface() {
                             @Override
                             public void parentalGateWasCanceled(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasCanceled\"}";

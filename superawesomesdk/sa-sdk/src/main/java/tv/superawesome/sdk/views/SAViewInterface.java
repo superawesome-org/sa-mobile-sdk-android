@@ -6,7 +6,7 @@ import tv.superawesome.sdk.models.SAAd;
  * Defines a common interface that SABannerAd, SAInterstitial and SAVideoActivity can adhere to
  * to make navigation a little less fragmented in the Android SDK
  */
-public interface SAViewProtocol {
+public interface SAViewInterface {
     /** sets the ad for a SABannerAd, SAInterstitialAd, etc type class */
     void setAd(SAAd ad);
 

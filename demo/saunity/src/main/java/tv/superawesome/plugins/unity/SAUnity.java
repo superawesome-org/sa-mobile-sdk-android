@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.SensorManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.OrientationEventListener;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import org.json.JSONException;
@@ -22,12 +20,12 @@ import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.*;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.parser.SAParser;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
+import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
+import tv.superawesome.sdk.views.SAParentalGateInterface;
 import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAVideoAdInterface;
 
 /** import unity3d plugin classes */
 import com.unity3d.player.*;
@@ -130,7 +128,7 @@ public class SAUnity {
 
         /** create the new saloader */
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoaderListener() {
+        loader.loadAd(placementId, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd ad) {
                 Log.d("SuperAwesome", "didLoadAd " + ad.placementId);
@@ -229,7 +227,7 @@ public class SAUnity {
                     bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
 
                     /** set the listener */
-                    bannerAd.setAdListener(new SAAdListener() {
+                    bannerAd.setAdListener(new SAAdInterface() {
                         @Override
                         public void adWasShown(int placementId) {
                             SendUnityMsg(unityName, placementId, "callback_adWasShown");
@@ -255,7 +253,7 @@ public class SAUnity {
                             SendUnityMsg(unityName, placementId, "callback_adHasIncorrectPlacement");
                         }
                     });
-                    bannerAd.setParentalGateListener(new SAParentalGateListener() {
+                    bannerAd.setParentalGateListener(new SAParentalGateInterface() {
                         @Override
                         public void parentalGateWasCanceled(int placementId) {
                             SendUnityMsg(unityName, placementId, "callback_parentalGateWasCanceled");
@@ -338,7 +336,7 @@ public class SAUnity {
                     interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
 
                     /** add listeners */
-                    interstitial.setAdListener(new SAAdListener() {
+                    interstitial.setAdListener(new SAAdInterface() {
                         @Override
                         public void adWasShown(int placementId) {
                             SendUnityMsg(unityName, placementId, "callback_adWasShown");
@@ -366,7 +364,7 @@ public class SAUnity {
                             SendUnityMsg(unityName, placementId, "callback_adHasIncorrectPlacement");
                         }
                     });
-                    interstitial.setParentalGateListener(new SAParentalGateListener() {
+                    interstitial.setParentalGateListener(new SAParentalGateInterface() {
                         @Override
                         public void parentalGateWasCanceled(int placementId) {
                             SendUnityMsg(unityName, placementId, "callback_parentalGateWasCanceled");
@@ -452,7 +450,7 @@ public class SAUnity {
                     video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
 
                     /** add listeners */
-                    video.setAdListener(new SAAdListener() {
+                    video.setAdListener(new SAAdInterface() {
                         @Override
                         public void adWasShown(int placementId) {
                             SendUnityMsg(unityName, placementId, "callback_adWasShown");
@@ -480,7 +478,7 @@ public class SAUnity {
                             SendUnityMsg(unityName, placementId, "callback_adHasIncorrectPlacement");
                         }
                     });
-                    video.setVideoAdListener(new SAVideoAdListener() {
+                    video.setVideoAdListener(new SAVideoAdInterface() {
                         @Override
                         public void adStarted(int placementId) {
                             SendUnityMsg(unityName, placementId, "callback_adStarted");
@@ -521,7 +519,7 @@ public class SAUnity {
                             SendUnityMsg(unityName, placementId, "callback_allAdsEnded");
                         }
                     });
-                    video.setParentalGateListener(new SAParentalGateListener() {
+                    video.setParentalGateListener(new SAParentalGateInterface() {
                         @Override
                         public void parentalGateWasCanceled(int placementId) {
                             SendUnityMsg(unityName, placementId, "callback_parentalGateWasCanceled");

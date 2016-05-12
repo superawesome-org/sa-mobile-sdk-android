@@ -8,11 +8,9 @@ import android.util.Log;
 import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
-import java.util.Random;
 
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
 
 /**
  * Created by connor.leigh-smith on 28/08/15.
@@ -42,7 +40,7 @@ public class SAParentalGate {
     private int endNum;
     private Context c = null;
     private WeakReference<Object> parentRef = null;
-    private SAParentalGateListener listener;
+    private SAParentalGateInterface listener;
     private SAAd refAd;
 
     /** the alert dialog */
@@ -163,7 +161,7 @@ public class SAParentalGate {
      * Setter for the listener
      * @param listener - listener reference
      */
-    public void setListener(SAParentalGateListener listener){
+    public void setListener(SAParentalGateInterface listener){
         this.listener = listener;
     }
 
@@ -171,7 +169,7 @@ public class SAParentalGate {
      * Getter for the listener
      * @return the local listener object
      */
-    public  SAParentalGateListener getListener(){
+    public SAParentalGateInterface getListener(){
         return this.listener;
     }
 }

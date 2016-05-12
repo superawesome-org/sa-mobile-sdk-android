@@ -6,11 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -18,11 +15,9 @@ import java.util.List;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.savast.SAVASTManager;
+import tv.superawesome.lib.savast.SAVASTManagerInterface;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.models.SACreativeFormat;
 
@@ -30,7 +25,7 @@ import tv.superawesome.sdk.models.SACreativeFormat;
  * Created by gabriel.coman on 05/04/16.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTManager.SAVASTManagerListener {
+public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTManagerInterface {
 
     /** the Ad */
     private boolean isParentalGateEnabled = true;
@@ -43,11 +38,11 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
     private SAParentalGate gate;
 
     /** listeners */
-    private SAAdListener adListener;
-    private SAParentalGateListener parentalGateListener;
-    private SAVideoAdListener videoAdListener;
-    private SAAdListener internalAdListener;
-    private SAVideoAdListener internalVideoAdListener;
+    private SAAdInterface adListener;
+    private SAParentalGateInterface parentalGateListener;
+    private SAVideoAdInterface videoAdListener;
+    private SAAdInterface internalAdListener;
+    private SAVideoAdInterface internalVideoAdListener;
 
     /** helper vars */
     private boolean layoutOK = false;
@@ -83,7 +78,7 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
 
     /**
      * *********************************************************************************************
-     * <SAViewProtocol> Implementation
+     * <SAViewInterface> Implementation
      * *********************************************************************************************
      */
 
@@ -167,19 +162,19 @@ public class SAVideoAd extends FrameLayout implements SAViewProtocol, SAVASTMana
     /**
      * These functions sets the ad listener
      */
-    public void setAdListener(SAAdListener adListener) {
+    public void setAdListener(SAAdInterface adListener) {
         this.adListener = adListener;
     }
-    public void setInternalAdListener(SAAdListener adListener) { this.internalAdListener = adListener; }
-    public void setParentalGateListener(SAParentalGateListener parentalGateListener){ this.parentalGateListener = parentalGateListener; }
-    public void setVideoAdListener(SAVideoAdListener videoAdListener){ this.videoAdListener = videoAdListener; }
-    public void setInternalVideoAdListener(SAVideoAdListener videoAdListener) { this.internalVideoAdListener = videoAdListener; }
+    public void setInternalAdListener(SAAdInterface adListener) { this.internalAdListener = adListener; }
+    public void setParentalGateListener(SAParentalGateInterface parentalGateListener){ this.parentalGateListener = parentalGateListener; }
+    public void setVideoAdListener(SAVideoAdInterface videoAdListener){ this.videoAdListener = videoAdListener; }
+    public void setInternalVideoAdListener(SAVideoAdInterface videoAdListener) { this.internalVideoAdListener = videoAdListener; }
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) { this.isParentalGateEnabled = isParentalGateEnabled; }
     public void setShouldShowCloseButton(boolean shouldShowCloseButton) { this.shouldShowCloseButton = shouldShowCloseButton; }
 
     /**
      * *********************************************************************************************
-     * <SAVASTManager.SAVASTManagerListener> Implementation
+     * <SAVASTManager.SAVASTManagerInterface> Implementation
      * *********************************************************************************************
      */
 

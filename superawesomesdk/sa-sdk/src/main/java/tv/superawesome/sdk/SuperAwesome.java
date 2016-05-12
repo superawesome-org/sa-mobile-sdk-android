@@ -12,6 +12,7 @@ import android.content.Context;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.capper.SACapper;
+import tv.superawesome.sdk.capper.SACapperInterface;
 
 /**
  * This is a Singleton class through which SDK users setup their AwesomeAds instance
@@ -107,7 +108,7 @@ public class SuperAwesome {
      */
     public void setApplicationContext(Context _appContext){
         SAApplication.setSAApplicationContext(_appContext);
-        SACapper.enableCapping(_appContext, new SACapper.SACapperListener() {
+        SACapper.enableCapping(_appContext, new SACapperInterface() {
             @Override
             public void didFindDAUId(int id) {
                 dauID = id;

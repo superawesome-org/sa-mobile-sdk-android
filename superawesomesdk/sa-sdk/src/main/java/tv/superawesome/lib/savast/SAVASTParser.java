@@ -31,13 +31,13 @@ import tv.superawesome.lib.savast.models.SAVASTTracking;
  */
 public class SAVASTParser {
 
-    private SAVASTParserListener listener;
+    private SAVASTParserInterface listener;
     private List<SAVASTAd> ads;
 
-    public void execute(final String url, final SAVASTParserListener listener) {
+    public void execute(final String url, final SAVASTParserInterface listener) {
         this.listener = listener;
 
-        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskListener() {
+        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskInterface() {
             @Override
             public Object taskToExecute() throws IOException, SAXException, ParserConfigurationException  {
                 List<SAVASTAd> ads = parseVAST(url);
@@ -304,19 +304,5 @@ public class SAVASTParser {
         }
 
         return null;
-    }
-
-    /**
-     * ************************************************************
-     * Public interface
-     * ************************************************************
-     */
-    public interface SAVASTParserListener {
-
-        /**
-         * Called when the parser has successfully parsed a VAST tag
-         * @param ads - returns (as a callback parameter) a list of ads
-         */
-        void didParseVAST(List<SAVASTAd> ads);
     }
 }

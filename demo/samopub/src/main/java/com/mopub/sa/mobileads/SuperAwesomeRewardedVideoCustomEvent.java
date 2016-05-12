@@ -14,11 +14,11 @@ import com.mopub.mobileads.MoPubErrorCode;
 /** AwesomeAds */
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
-import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.loader.SALoaderInterface;
 import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
+import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAVideoAdInterface;
 
 import java.util.Map;
 
@@ -124,7 +124,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
         /** load and show the ad */
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoaderListener() {
+        loader.loadAd(placementId, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd ad) {
                 Log.d("SuperAwesome-MoPub", "Did Load Ad " + placementId);
@@ -141,7 +141,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                 video.setShouldLockOrientation(shouldLockOrientation);
                 video.setLockOrientation(lockOrientation);
 
-                video.setAdListener(new SAAdListener() {
+                video.setAdListener(new SAAdInterface() {
                     @Override
                     public void adWasShown(int placementId) {
 
@@ -168,7 +168,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                     }
                 });
 
-                video.setVideoAdListener(new SAVideoAdListener() {
+                video.setVideoAdListener(new SAVideoAdInterface() {
                     @Override
                     public void adStarted(int placementId) {
 

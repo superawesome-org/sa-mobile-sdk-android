@@ -2,8 +2,6 @@ package com.mopub.sa.mobileads;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.os.Debug;
-import android.util.Log;
 
 import com.mopub.mobileads.CustomEventInterstitial;
 import com.mopub.mobileads.MoPubErrorCode;
@@ -12,10 +10,9 @@ import java.util.Map;
 
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
-import tv.superawesome.sdk.loader.SALoaderListener;
+import tv.superawesome.sdk.loader.SALoaderInterface;
 import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
+import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SAInterstitialActivity;
 
 /**
@@ -75,7 +72,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         evtListener = customEventInterstitialListener;
 
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoaderListener() {
+        loader.loadAd(placementId, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
                 interstitial = new SAInterstitialActivity(context);
@@ -83,7 +80,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
                 interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
                 interstitial.setShouldLockOrientation(shouldLockOrientation);
                 interstitial.setLockOrientation(lockOrientation);
-                interstitial.setAdListener(new SAAdListener() {
+                interstitial.setAdListener(new SAAdInterface() {
                     @Override
                     public void adWasShown(int placementId) {
                         if (evtListener != null) {

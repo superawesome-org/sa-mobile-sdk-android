@@ -7,23 +7,18 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sautils.SAApplication;
-import tv.superawesome.sdk.R;
 import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.listeners.SAAdListener;
-import tv.superawesome.sdk.listeners.SAParentalGateListener;
-import tv.superawesome.sdk.listeners.SAVideoAdListener;
 
 /**
  * Created by gabriel.coman on 24/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SAVideoActivity implements SAViewProtocol {
+public class SAVideoActivity implements SAViewInterface {
 
     /** private activity object values */
     private Context context;
@@ -43,15 +38,15 @@ public class SAVideoActivity implements SAViewProtocol {
 
 
 
-    public void setAdListener(SAAdListener adListener) {
+    public void setAdListener(SAAdInterface adListener) {
         holder._refAdListener = adListener;
     }
 
-    public void setVideoAdListener(SAVideoAdListener videoAdListener){
+    public void setVideoAdListener(SAVideoAdInterface videoAdListener){
         holder._refVideoAdListener = videoAdListener;
     }
 
-    public void setParentalGateListener(SAParentalGateListener parentalGateListener){
+    public void setParentalGateListener(SAParentalGateInterface parentalGateListener){
         holder._refParentalGateListener = parentalGateListener;
     }
 
@@ -81,7 +76,7 @@ public class SAVideoActivity implements SAViewProtocol {
     }
 
     /**********************************************************************************************/
-    /** <SAViewProtocol> */
+    /** <SAViewInterface> */
     /**********************************************************************************************/
 
     @Override
@@ -131,9 +126,9 @@ public class SAVideoActivity implements SAViewProtocol {
         private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         /** sdk listeners */
-        private SAAdListener adListener;
-        private SAParentalGateListener parentalGateListener;
-        private SAVideoAdListener videoAdListener;
+        private SAAdInterface adListener;
+        private SAParentalGateInterface parentalGateListener;
+        private SAVideoAdInterface videoAdListener;
 
         /** vast stuff */
         private SAVideoAd videoAd;
@@ -186,7 +181,7 @@ public class SAVideoActivity implements SAViewProtocol {
                 videoAd.setVideoAdListener(videoAdListener);
                 videoAd.setIsParentalGateEnabled(isParentalGateEnabled);
                 videoAd.setShouldShowCloseButton(shouldShowCloseButton);
-                videoAd.setInternalAdListener(new SAAdListener() {
+                videoAd.setInternalAdListener(new SAAdInterface() {
                     @Override
                     public void adWasShown(int placementId) {}
                     @Override
@@ -204,7 +199,7 @@ public class SAVideoActivity implements SAViewProtocol {
                         close();
                     }
                 });
-                videoAd.setInternalVideoAdListener(new SAVideoAdListener() {
+                videoAd.setInternalVideoAdListener(new SAVideoAdInterface() {
                     @Override
                     public void videoStarted(int placementId) {}
                     @Override
@@ -272,9 +267,9 @@ class VideoAdDataHolder {
     public boolean _refShouldAutomaticallyCloseAtEnd = true;
     public boolean _refShouldLockOrientation = false;
     public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-    public SAAdListener _refAdListener;
-    public SAParentalGateListener _refParentalGateListener;
-    public SAVideoAdListener _refVideoAdListener;
+    public SAAdInterface _refAdListener;
+    public SAParentalGateInterface _refParentalGateListener;
+    public SAVideoAdInterface _refVideoAdListener;
 
     VideoAdDataHolder (){
         // basic contructor

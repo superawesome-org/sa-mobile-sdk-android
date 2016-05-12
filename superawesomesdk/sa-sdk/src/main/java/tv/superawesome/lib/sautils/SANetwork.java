@@ -11,8 +11,6 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import tv.superawesome.sdk.loader.SALoader;
-
 /**
  * Created by gabriel.coman on 06/04/16.
  */
@@ -65,13 +63,13 @@ public class SANetwork {
      * @param urlString - the URL to make the request to
      * @param listener - the listener
      */
-    public void asyncGet(String urlString, JSONObject querydict, final SANetListener listener) {
+    public void asyncGet(String urlString, JSONObject querydict, final SANetInterface listener) {
 
         /** form the actual final endpoint */
         final String endpoint = urlString + (!SAUtils.isJSONEmpty(querydict) ? "?" + SAUtils.formGetQueryFromDict(querydict) : "");
 
         /** create a new SAAsync Task */
-        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskListener() {
+        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskInterface() {
             @Override
             public Object taskToExecute() throws Exception {
                 return syncGet(endpoint);
@@ -88,29 +86,5 @@ public class SANetwork {
                 listener.failure();
             }
         });
-    }
-
-    /**
-     * *********************************************************************************************
-     * This is a listener interface for SAGet and SAPost async task classes
-     * *********************************************************************************************
-     */
-    public interface SANetListener {
-
-        /**
-         * This function should be called in case of Async operation success, and should
-         * always return an anonymous data object
-         *
-         * @param data - is a callback parameter; to be accessed by the class that implements
-         * this Listener interface
-         */
-        void success(Object data);
-
-        /**
-         * This function should be called in case of Async operation failure, and
-         * should have no parameters
-         */
-        void failure();
-
     }
 }

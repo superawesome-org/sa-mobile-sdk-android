@@ -5,7 +5,7 @@ import tv.superawesome.sdk.models.SAAd;
 /**
  * Loader interface
  */
-public interface SALoaderListener {
+public interface SALoaderInterface {
 
     /**
      * After SALoader pre-loads an Ad, this is the function that should be called

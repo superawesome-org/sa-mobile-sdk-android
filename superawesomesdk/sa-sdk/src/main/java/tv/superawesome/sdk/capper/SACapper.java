@@ -29,7 +29,7 @@ public class SACapper {
      * or it can be 0 -> in which case it's not valid (user does not have tracking enabled or
      * gms enabled)
      **/
-    public static void enableCapping(final Context context, final SACapperListener listener) {
+    public static void enableCapping(final Context context, final SACapperInterface listener) {
 
 
         AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
@@ -101,12 +101,5 @@ public class SACapper {
             }
         };
         task.execute();
-    }
-
-    /**
-     * Listener interface for the Dau
-     */
-    public interface SACapperListener {
-        void didFindDAUId(int dauID);
     }
 }
