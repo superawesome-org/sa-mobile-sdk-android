@@ -124,7 +124,7 @@ public class SAVASTParser {
 
                     try {
                         List<SAVASTAd> foundAds = parseVAST(VASTAdTagURI);
-                        wrapperAd.Creatives = SAUtils.removeAllButFirstElement(wrapperAd.Creatives);
+                        wrapperAd.creatives = SAUtils.removeAllButFirstElement(wrapperAd.creatives);
 
                         /** merge foundAds with wrapper ad */
                         for (SAVASTAd foundAd : foundAds) {
@@ -168,16 +168,16 @@ public class SAVASTParser {
         if (isWrapper) ad.type = SAVASTAdType.Wrapper;
 
         /** init ad arrays */
-        ad.Errors = new ArrayList<>();
-        ad.Impressions = new ArrayList<>();
-        ad.Creatives = new ArrayList<>();
+        ad.errors = new ArrayList<>();
+        ad.impressions = new ArrayList<>();
+        ad.creatives = new ArrayList<>();
 
         /** get errors */
         SAXML.searchSiblingsAndChildrenOf(adElement, "Error", new SAXML.SAXMLIterator() {
             @Override
             public void foundElement(Element e) {
                 String error = e.getTextContent();
-                ad.Errors.add(error);
+                ad.errors.add(error);
             }
         });
 
@@ -186,7 +186,7 @@ public class SAVASTParser {
         SAXML.searchSiblingsAndChildrenOf(adElement, "Impression", new SAXML.SAXMLIterator() {
             @Override
             public void foundElement(Element e) {
-               ad.Impressions.add(e.getTextContent());
+               ad.impressions.add(e.getTextContent());
             }
         });
 
@@ -196,7 +196,7 @@ public class SAVASTParser {
             public void foundElement(Element e) {
                 SAVASTCreative linear = parseCreativeXML(e);
                 if (linear != null){
-                    ad.Creatives.add(linear);
+                    ad.creatives.add(linear);
                 }
             }
         });
@@ -226,40 +226,40 @@ public class SAVASTParser {
             creative.sequence = element.getAttribute("sequence");
 
             /** create arrays */
-            creative.MediaFiles = new ArrayList<>();
-            creative.TrackingEvents = new ArrayList<>();
-            creative.ClickTracking = new ArrayList<>();
-            creative.CustomClicks = new ArrayList<>();
+            creative.mediaFiles = new ArrayList<>();
+            creative.trackingEvents = new ArrayList<>();
+            creative.clickTracking = new ArrayList<>();
+            creative.customClicks = new ArrayList<>();
 
             /** populate duration */
-            SAXML.searchSiblingsAndChildrenOf(element, "Duration", new SAXML.SAXMLIterator() {
+            SAXML.searchSiblingsAndChildrenOf(element, "duration", new SAXML.SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
-                    creative.Duration = e.getTextContent();
+                    creative.duration = e.getTextContent();
                 }
             });
 
             /** populate click through */
-            SAXML.searchSiblingsAndChildrenOf(element, "ClickThrough", new SAXML.SAXMLIterator() {
+            SAXML.searchSiblingsAndChildrenOf(element, "clickThrough", new SAXML.SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
-                    creative.ClickThrough = e.getTextContent().replace("&amp;","&").replace("%3A",":").replace("%2F", "/");
+                    creative.clickThrough = e.getTextContent().replace("&amp;","&").replace("%3A",":").replace("%2F", "/");
                 }
             });
 
             /** populate Click Tracking */
-            SAXML.searchSiblingsAndChildrenOf(element, "ClickTracking", new SAXML.SAXMLIterator() {
+            SAXML.searchSiblingsAndChildrenOf(element, "clickTracking", new SAXML.SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
-                    creative.ClickTracking.add(e.getTextContent());
+                    creative.clickTracking.add(e.getTextContent());
                 }
             });
 
             /** populate Custom Clicks */
-            SAXML.searchSiblingsAndChildrenOf(element, "CustomClicks", new SAXML.SAXMLIterator() {
+            SAXML.searchSiblingsAndChildrenOf(element, "customClicks", new SAXML.SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
-                    creative.CustomClicks.add(e.getTextContent());
+                    creative.customClicks.add(e.getTextContent());
                 }
             });
 
@@ -269,8 +269,8 @@ public class SAVASTParser {
                 public void foundElement(Element e) {
                     SAVASTTracking tracking = new SAVASTTracking();
                     tracking.event = e.getAttribute("event");
-                    tracking.URL = e.getTextContent();
-                    creative.TrackingEvents.add(tracking);
+                    tracking.url = e.getTextContent();
+                    creative.trackingEvents.add(tracking);
                 }
             });
 
@@ -282,20 +282,20 @@ public class SAVASTParser {
                     mediaFile.width = e.getAttribute("width");
                     mediaFile.height = e.getAttribute("height");
                     mediaFile.type = e.getAttribute("type");
-                    mediaFile.URL = e.getTextContent();
+                    mediaFile.url = e.getTextContent();
 
                     if (mediaFile.type.contains("mp4") || mediaFile.type.contains(".mp4")) {
-                        creative.MediaFiles.add(mediaFile);
+                        creative.mediaFiles.add(mediaFile);
                     }
                 }
             });
 
             /** add the playable media file */
-            if (creative.MediaFiles.size() > 0) {
-                creative.playableMediaURL = creative.MediaFiles.get(0).URL;
-                if (creative.playableMediaURL != null) {
-                    creative.playableDiskURL = SAFileDownloader.getInstance().downloadFileSync(creative.playableMediaURL);
-                    creative.isOnDisk = (creative.playableDiskURL != null);
+            if (creative.mediaFiles.size() > 0) {
+                creative.playableMediaUrl = creative.mediaFiles.get(0).url;
+                if (creative.playableMediaUrl != null) {
+                    creative.playableDiskUrl = SAFileDownloader.getInstance().downloadFileSync(creative.playableMediaUrl);
+                    creative.isOnDisk = (creative.playableDiskUrl != null);
                 }
             }
 

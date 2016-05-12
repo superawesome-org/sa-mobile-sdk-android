@@ -5,46 +5,56 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import tv.superawesome.lib.sautils.JSONSerializable;
 import tv.superawesome.lib.sautils.SAUtils;
 
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTCreative implements Parcelable{
+public class SAVASTCreative implements Parcelable, JSONSerializable {
 
     public SAVASTCreativeType type;
     public String id;
     public String sequence;
-    public String Duration;
-    public String ClickThrough;
-    public String playableMediaURL;
-    public String playableDiskURL;
+    public String duration;
+    public String clickThrough;
+    public String playableMediaUrl;
+    public String playableDiskUrl;
     public boolean isOnDisk = false;
-    public List<SAVASTMediaFile> MediaFiles;
-    public List<SAVASTTracking> TrackingEvents;
-    public List<String> ClickTracking;
-    public List<String> CustomClicks;
+    public List<SAVASTMediaFile> mediaFiles;
+    public List<SAVASTTracking> trackingEvents;
+    public List<String> clickTracking;
+    public List<String> customClicks;
 
     public SAVASTCreative() {
 
+    }
+
+    public SAVASTCreative(JSONObject json) throws JSONException{
+        readFromJson(json);
     }
 
     protected SAVASTCreative(Parcel in) {
         type = in.readParcelable(SAVASTCreativeType.class.getClassLoader());
         id = in.readString();
         sequence = in.readString();
-        Duration = in.readString();
-        ClickThrough = in.readString();
-        playableMediaURL = in.readString();
-        playableDiskURL = in.readString();
+        duration = in.readString();
+        clickThrough = in.readString();
+        playableMediaUrl = in.readString();
+        playableDiskUrl = in.readString();
         isOnDisk = in.readByte() != 0;
-        MediaFiles = in.createTypedArrayList(SAVASTMediaFile.CREATOR);
-        TrackingEvents = in.createTypedArrayList(SAVASTTracking.CREATOR);
-        ClickTracking = in.createStringArrayList();
-        CustomClicks = in.createStringArrayList();
+        mediaFiles = in.createTypedArrayList(SAVASTMediaFile.CREATOR);
+        trackingEvents = in.createTypedArrayList(SAVASTTracking.CREATOR);
+        clickTracking = in.createStringArrayList();
+        customClicks = in.createStringArrayList();
     }
 
     public static final Creator<SAVASTCreative> CREATOR = new Creator<SAVASTCreative>() {
@@ -63,14 +73,14 @@ public class SAVASTCreative implements Parcelable{
         String printout = " \n";
         printout += "\tCreative(" + id + ")" + "\n";
         printout += "\tsequence: " + sequence + "\n";
-        printout += "\tDuration: " + Duration + "\n";
-        printout += "\tplayableMediaURL: " + playableMediaURL + "\n";
-        printout += "\tplayableDiskURL: " + isOnDisk + " " + playableDiskURL + "\n";
-        printout += "\tClickThrough: " + ClickThrough + "\n";
-        printout += "\tMediaFiles[" + MediaFiles.size() + "]" + "\n";
-        printout += "\tTrackingEvents[" + TrackingEvents.size() + "]" + "\n";
-        printout += "\tClickTracking[" + ClickTracking.size() + "]" + "\n";
-        printout += "\tCustomClicks[" + CustomClicks.size() + "]" + "\n";
+        printout += "\tduration: " + duration + "\n";
+        printout += "\tplayableMediaUrl: " + playableMediaUrl + "\n";
+        printout += "\tplayableDiskUrl: " + isOnDisk + " " + playableDiskUrl + "\n";
+        printout += "\tclickThrough: " + clickThrough + "\n";
+        printout += "\tmediaFiles[" + mediaFiles.size() + "]" + "\n";
+        printout += "\ttrackingEvents[" + trackingEvents.size() + "]" + "\n";
+        printout += "\tclickTracking[" + clickTracking.size() + "]" + "\n";
+        printout += "\tcustomClicks[" + customClicks.size() + "]" + "\n";
         Log.d("SuperAwesome", printout);
     }
 
@@ -79,33 +89,27 @@ public class SAVASTCreative implements Parcelable{
 
         this.id = creative.id;
         this.sequence = creative.sequence;
-        this.Duration = creative.Duration;
+        this.duration = creative.duration;
 
-        if (SAUtils.isValidURL(ClickThrough)) {
-            /** this.ClickThrough = this.ClickThrough; */
+        if (SAUtils.isValidURL(creative.clickThrough)) {
+            this.clickThrough = creative.clickThrough;
         }
-        if (SAUtils.isValidURL(creative.ClickThrough)) {
-            this.ClickThrough = creative.ClickThrough;
-        }
-        if (SAUtils.isValidURL(playableMediaURL)) {
-            /** this.playableMediaURL = this.playableMediaURL; */
-        }
-        if (SAUtils.isValidURL(creative.playableMediaURL)) {
-            this.playableMediaURL = creative.playableMediaURL;
+        if (SAUtils.isValidURL(creative.playableMediaUrl)) {
+            this.playableMediaUrl = creative.playableMediaUrl;
         }
 
         /** now add all other things */
-        for (Iterator<SAVASTMediaFile> i = creative.MediaFiles.iterator(); i.hasNext(); ) {
-            this.MediaFiles.add(i.next());
+        for (Iterator<SAVASTMediaFile> i = creative.mediaFiles.iterator(); i.hasNext(); ) {
+            this.mediaFiles.add(i.next());
         }
-        for (Iterator<SAVASTTracking> i = creative.TrackingEvents.iterator(); i.hasNext(); ) {
-            this.TrackingEvents.add(i.next());
+        for (Iterator<SAVASTTracking> i = creative.trackingEvents.iterator(); i.hasNext(); ) {
+            this.trackingEvents.add(i.next());
         }
-        for (Iterator<String> i = creative.ClickTracking.iterator(); i.hasNext(); ) {
-            this.ClickTracking.add(i.next());
+        for (Iterator<String> i = creative.clickTracking.iterator(); i.hasNext(); ) {
+            this.clickTracking.add(i.next());
         }
-        for (Iterator<String> i = creative.CustomClicks.iterator(); i.hasNext(); ) {
-            this.CustomClicks.add(i.next());
+        for (Iterator<String> i = creative.customClicks.iterator(); i.hasNext(); ) {
+            this.customClicks.add(i.next());
         }
     }
 
@@ -119,14 +123,197 @@ public class SAVASTCreative implements Parcelable{
         dest.writeParcelable(type, flags);
         dest.writeString(id);
         dest.writeString(sequence);
-        dest.writeString(Duration);
-        dest.writeString(ClickThrough);
-        dest.writeString(playableMediaURL);
-        dest.writeString(playableDiskURL);
+        dest.writeString(duration);
+        dest.writeString(clickThrough);
+        dest.writeString(playableMediaUrl);
+        dest.writeString(playableDiskUrl);
         dest.writeByte((byte) (isOnDisk ? 1 : 0));
-        dest.writeTypedList(MediaFiles);
-        dest.writeTypedList(TrackingEvents);
-        dest.writeStringList(ClickTracking);
-        dest.writeStringList(CustomClicks);
+        dest.writeTypedList(mediaFiles);
+        dest.writeTypedList(trackingEvents);
+        dest.writeStringList(clickTracking);
+        dest.writeStringList(customClicks);
     }
+
+
+    @Override
+    public void readFromJson(JSONObject json) {
+        if (!json.isNull("id")) {
+            id = json.optString("id");
+        }
+        if (!json.isNull("sequence")) {
+            sequence = json.optString("sequence");
+        }
+        if (!json.isNull("duration")) {
+            duration = json.optString("duration");
+        }
+        if (!json.isNull("clickThrough")) {
+            clickThrough = json.optString("clickThrough");
+        }
+        if (!json.isNull("playableMediaUrl")) {
+            playableMediaUrl = json.optString("playableMediaUrl");
+        }
+        if (!json.isNull("playableDiskUrl")) {
+            playableDiskUrl = json.optString("playableDiskUrl");
+        }
+        if (!json.isNull("isOnDisk")){
+            isOnDisk = json.optBoolean("isOnDisk");
+        }
+        if (!json.isNull("mediaFiles")) {
+            mediaFiles = new ArrayList<SAVASTMediaFile>();
+            JSONArray jsonArray = json.optJSONArray("mediaFiles");
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject obj = jsonArray.optJSONObject(i);
+                try {
+                    SAVASTMediaFile mediaFile = new SAVASTMediaFile(obj);
+                    mediaFiles.add(mediaFile);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (!json.isNull("trackingEvents")) {
+            trackingEvents = new ArrayList<SAVASTTracking>();
+            JSONArray jsonArray = json.optJSONArray("trackingEvents");
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject obj = jsonArray.optJSONObject(i);
+                try {
+                    SAVASTTracking tracking = new SAVASTTracking(obj);
+                    trackingEvents.add(tracking);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (!json.isNull("clickTracking")){
+            clickTracking = new ArrayList<String>();
+            JSONArray jsonArray = json.optJSONArray("clickTracking");
+            for (int i = 0; i < jsonArray.length(); i++){
+                String obj = jsonArray.optString(i);
+                if (obj != null) {
+                    clickTracking.add(obj);
+                }
+            }
+        }
+        if (!json.isNull("customClicks")){
+            customClicks = new ArrayList<String>();
+            JSONArray jsonArray = json.optJSONArray("customClicks");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String obj = jsonArray.optString(i);
+                if (obj != null) {
+                    customClicks.add(obj);
+                }
+            }
+        }
+        if (!json.isNull("type")){
+            String obj = json.optString("type");
+            if (obj != null) {
+                if (obj.equals(SAVASTCreativeType.Linear.toString())) {
+                    type = SAVASTCreativeType.Linear;
+                }
+                if (obj.equals(SAVASTCreativeType.NonLinear.toString())) {
+                    type = SAVASTCreativeType.NonLinear;
+                }
+                if (obj.equals(SAVASTCreativeType.CompanionAds.toString())) {
+                    type = SAVASTCreativeType.CompanionAds;
+                }
+            }
+        }
+    }
+
+    @Override
+    public JSONObject writeToJson() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("id", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("sequence", sequence);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("duration", duration);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("type", type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("clickThrough", clickThrough);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("playableMediaUrl", playableMediaUrl);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("playableDiskUrl", playableDiskUrl);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("isOnDisk", isOnDisk);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (mediaFiles != null) {
+            JSONArray mediaFileJsonArray = new JSONArray();
+            for (SAVASTMediaFile mediaFile : mediaFiles) {
+                mediaFileJsonArray.put(mediaFile.writeToJson());
+            }
+            try {
+                json.put("mediaFiles", mediaFileJsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (trackingEvents != null) {
+            JSONArray trackingEventsJsonArray = new JSONArray();
+            for (SAVASTTracking tracking : trackingEvents) {
+                trackingEventsJsonArray.put(tracking.writeToJson());
+            }
+            try {
+                json.put("trackingEvents", trackingEventsJsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (clickTracking != null) {
+            JSONArray clickTrackingJsonArray = new JSONArray();
+            for (String click : clickTracking) {
+                clickTrackingJsonArray.put(click);
+            }
+            try {
+                json.put("clickTracking", clickTrackingJsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (customClicks != null) {
+            JSONArray customClicksJsonArray = new JSONArray();
+            for (String click : customClicks) {
+                customClicksJsonArray.put(click);
+            }
+            try {
+                json.put("customClicks", customClicksJsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return json;
+    }
+
+
 }

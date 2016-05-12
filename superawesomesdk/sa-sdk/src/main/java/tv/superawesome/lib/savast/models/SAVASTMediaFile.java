@@ -3,23 +3,33 @@ package tv.superawesome.lib.savast.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tv.superawesome.lib.sautils.JSONSerializable;
+
 /**
  * Created by gabriel.coman on 22/12/15.
  */
-public class SAVASTMediaFile implements Parcelable {
+public class SAVASTMediaFile implements Parcelable, JSONSerializable {
+
     public String width;
     public String height;
-    public String URL;
+    public String url;
     public String type;
 
     public SAVASTMediaFile() {
 
     }
 
+    public SAVASTMediaFile(JSONObject json) throws JSONException {
+        readFromJson(json);
+    }
+
     protected SAVASTMediaFile(Parcel in) {
         width = in.readString();
         height = in.readString();
-        URL = in.readString();
+        url = in.readString();
         type = in.readString();
     }
 
@@ -35,10 +45,6 @@ public class SAVASTMediaFile implements Parcelable {
         }
     };
 
-    public void print() {
-
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -48,7 +54,49 @@ public class SAVASTMediaFile implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(width);
         dest.writeString(height);
-        dest.writeString(URL);
+        dest.writeString(url);
         dest.writeString(type);
+    }
+
+    @Override
+    public void readFromJson(JSONObject json) {
+        if (!json.isNull("width")){
+            width = json.optString("width");
+        }
+        if (!json.isNull("height")){
+            height = json.optString("height");
+        }
+        if (!json.isNull("url")){
+            url = json.optString("url");
+        }
+        if (!json.isNull("type")){
+            type = json.optString("type");
+        }
+    }
+
+    @Override
+    public JSONObject writeToJson() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("width", width);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("height", height);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("url", url);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("type", type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

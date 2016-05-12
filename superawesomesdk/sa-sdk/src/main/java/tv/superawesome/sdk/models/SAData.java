@@ -4,33 +4,32 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import tv.superawesome.lib.sautils.JSONSerializable;
 import tv.superawesome.lib.savast.models.SAVASTAd;
+import tv.superawesome.lib.savast.models.SAVASTTracking;
 
 /**
  * Created by gabriel.coman on 19/04/16.
  */
-public class SAData implements Parcelable {
+public class SAData implements Parcelable, JSONSerializable {
 
-    /**
-     * The ad HTML
-     */
     public String adHtml;
-
-    /**
-     * Path to an image (for strictly image format creatives)
-     */
     public String imagePath;
-
-    /**
-     * A list of vast ads
-     */
     public List<SAVASTAd> vastAds = new ArrayList<SAVASTAd>();
 
     public SAData(){
         /** standard constructor */
+    }
+
+    public SAData(JSONObject json) throws JSONException {
+        readFromJson(json);
     }
 
     protected SAData(Parcel in) {
@@ -69,5 +68,57 @@ public class SAData implements Parcelable {
         dest.writeString(adHtml);
         dest.writeString(imagePath);
         dest.writeTypedList(vastAds);
+    }
+
+    @Override
+    public void readFromJson(JSONObject json) {
+        if (!json.isNull("adHtml")) {
+            adHtml = json.optString("adHtml");
+        }
+        if (!json.isNull("imagePath")) {
+            imagePath = json.optString("imagePath");
+        }
+        if (!json.isNull("vastAds")){
+            vastAds = new ArrayList<SAVASTAd>();
+            JSONArray jsonArray = json.optJSONArray("vastAds");
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject obj = jsonArray.optJSONObject(i);
+                try {
+                    SAVASTAd savastAd = new SAVASTAd(obj);
+                    vastAds.add(savastAd);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public JSONObject writeToJson() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("adHtml", adHtml);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("imagePath", imagePath);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (vastAds != null) {
+            JSONArray vastAdsJsonArray = new JSONArray();
+            for (SAVASTAd savastAd : vastAds) {
+                vastAdsJsonArray.put(savastAd.writeToJson());
+            }
+            try {
+                json.put("vastAds", vastAdsJsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return json;
     }
 }

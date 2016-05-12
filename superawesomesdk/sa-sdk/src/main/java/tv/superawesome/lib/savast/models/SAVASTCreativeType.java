@@ -3,6 +3,11 @@ package tv.superawesome.lib.savast.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tv.superawesome.lib.sautils.JSONSerializable;
+
 /**
  * Created by gabriel.coman on 22/12/15.
  */

@@ -100,7 +100,7 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
     public void didFindPlayerReady() {
 
         if (!_cAd.isImpressionSent) {
-            for (String Impression : _cAd.Impressions) {
+            for (String Impression : _cAd.impressions) {
                 SAEvents.sendEventToURL(Impression);
             }
             _cAd.isImpressionSent = true;
@@ -185,7 +185,7 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
          * and advance to the next ad
          */
         if (_cAd != null) {
-            for (String error : _cAd.Errors) {
+            for (String error : _cAd.errors) {
                 SAEvents.sendEventToURL(error);
             }
         }
@@ -205,13 +205,13 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
 
         /** setup the current click URL */
         String url = "";
-        if (_cCreative.ClickThrough != null && SAUtils.isValidURL(_cCreative.ClickThrough)){
-            url = _cCreative.ClickThrough;
+        if (_cCreative.clickThrough != null && SAUtils.isValidURL(_cCreative.clickThrough)){
+            url = _cCreative.clickThrough;
         }
 
         /** call listener */
         if (listener != null){
-            listener.didGoToURL(url, _cCreative.ClickTracking);
+            listener.didGoToURL(url, _cCreative.clickTracking);
         }
     }
 
@@ -225,12 +225,12 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
     /** Other needed functions */
 
     private void progressThroughAds() {
-        int creativeCount = adQueue.get(currentAdIndex).Creatives.size();
+        int creativeCount = adQueue.get(currentAdIndex).creatives.size();
 
         if (currentCreativeIndex < creativeCount - 1){
             /** select current */
             currentCreativeIndex++;
-            _cCreative = _cAd.Creatives.get(currentCreativeIndex);
+            _cCreative = _cAd.creatives.get(currentCreativeIndex);
 
             /** play */
             playCurrentAdWithCurrentCreative();
@@ -246,7 +246,7 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
                 currentAdIndex++;
 
                 _cAd = adQueue.get(currentAdIndex);
-                _cCreative = _cAd.Creatives.get(currentCreativeIndex);
+                _cCreative = _cAd.creatives.get(currentCreativeIndex);
 
                 /** call listener again */
                 if (listener != null) {
@@ -268,20 +268,20 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
         if (refPlayer != null) {
             refPlayer.listener = this;
             if (_cCreative.isOnDisk) {
-                Log.d("SuperAwesome", "Taking file from disk " + _cCreative.playableDiskURL);
-                refPlayer.playWithDiskURL(_cCreative.playableDiskURL);
+                Log.d("SuperAwesome", "Taking file from disk " + _cCreative.playableDiskUrl);
+                refPlayer.playWithDiskURL(_cCreative.playableDiskUrl);
             } else {
-                Log.d("SuperAwesome", "Taking file from remote " + _cCreative.playableMediaURL);
-                refPlayer.playWithMediaURL(_cCreative.playableMediaURL);
+                Log.d("SuperAwesome", "Taking file from remote " + _cCreative.playableMediaUrl);
+                refPlayer.playWithMediaURL(_cCreative.playableMediaUrl);
             }
         }
     }
 
     /** Aux functions */
     private void sendCurrentCreativeTrackersFor(String event) {
-        for (SAVASTTracking tracking : _cCreative.TrackingEvents) {
+        for (SAVASTTracking tracking : _cCreative.trackingEvents) {
             if (tracking.event.equals(event)) {
-                SAEvents.sendEventToURL(tracking.URL);
+                SAEvents.sendEventToURL(tracking.url);
             }
         }
     }

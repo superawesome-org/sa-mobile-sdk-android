@@ -3,9 +3,15 @@ package tv.superawesome.demoapp;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tv.superawesome.lib.savast.models.SAVASTAd;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.loader.SALoaderInterface;
@@ -119,10 +125,30 @@ public class MainActivity extends Activity implements SALoaderInterface {
 
     public void playVideo1(View v){
         if (video1Data != null){
-            SAVideoActivity fvad = new SAVideoActivity(MainActivity.this);
-            fvad.setAd(video1Data);
-            fvad.setShouldAutomaticallyCloseAtEnd(false);
-            fvad.play();
+
+            JSONObject videoJson = video1Data.writeToJson();
+            String videoString = videoJson.toString();
+            TextView t = (TextView)findViewById(R.id.mytextbox1);
+            t.setText(videoString);
+            t.setMovementMethod(new ScrollingMovementMethod());
+            try {
+                SAAd ad2 = new SAAd(videoJson);
+                String test = ad2.writeToJson().toString();
+                TextView t2 = (TextView)findViewById(R.id.mytextbox2);
+                t2.setText(test);
+                t2.setMovementMethod(new ScrollingMovementMethod());
+                if (test.equals(videoString)){
+                    Log.d("SuperAwesome", "Is all OK");
+                    Log.d("SuperWAesome", test);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+//            SAVideoActivity fvad = new SAVideoActivity(MainActivity.this);
+//            fvad.setAd(video1Data);
+//            fvad.setShouldAutomaticallyCloseAtEnd(false);
+//            fvad.play();
         }
     }
 

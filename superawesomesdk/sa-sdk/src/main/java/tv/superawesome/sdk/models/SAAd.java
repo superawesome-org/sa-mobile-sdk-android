@@ -14,59 +14,28 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tv.superawesome.lib.sautils.JSONSerializable;
+
 /**
  * This model class contains all information that is received from the server
  * when an Ad is requested, as well as some aux fields that will be generated
  * by the SDK
  */
-public class SAAd implements Parcelable {
+public class SAAd implements Parcelable, JSONSerializable {
 
-    /**
-     * the SA server can send an error; if that's the case, this field will not be nill
-     */
     public int error;
-
-    /**
-     * the associated app id
-     */
     public int app;
-
-    /**
-     * the ID of the placement that the ad was sent for
-     */
     public int placementId;
-
-    /**
-     * line item
-     */
     public int lineItemId;
-
-    /**
-     * the ID of the campaign that the ad is a part of
-     */
     public int campaignId;
-
-    /**
-     * is true when the ad is a test ad
-     */
     public boolean test;
-
-    /**
-     * is true when ad is fallback (fallback ads are sent when there are no
-     * real ads to display for a certain placement)
-     */
     public boolean isFallback;
     public boolean isFill;
     public boolean isHouse;
-
-    /**
-     * the Json of the original Ad - as sent by the server
-     */
     public String adJson;
-
-    /**
-     * pointer to the creative data associated with the ad
-     */
     public SACreative creative;
 
     /**
@@ -74,6 +43,10 @@ public class SAAd implements Parcelable {
      */
     public SAAd() {
         /** do nothing */
+    }
+
+    public SAAd(JSONObject json) throws JSONException {
+        readFromJson(json);
     }
 
     protected SAAd(Parcel in) {
@@ -146,5 +119,100 @@ public class SAAd implements Parcelable {
         dest.writeByte((byte) (isHouse ? 1 : 0));
         dest.writeString(adJson);
         dest.writeParcelable(creative, flags);
+    }
+
+    @Override
+    public void readFromJson(JSONObject json) {
+        if (!json.isNull("error")) {
+            error = json.optInt("error");
+        }
+        if (!json.isNull("app")){
+            app = json.optInt("app");
+        }
+        if (!json.isNull("placementId")){
+            placementId = json.optInt("placementId");
+        }
+        if (!json.isNull("lineItemId")){
+            lineItemId = json.optInt("lineItemId");
+        }
+        if (!json.isNull("campaignId")){
+            campaignId = json.optInt("campaignId");
+        }
+        if (!json.isNull("test")){
+            test = json.optBoolean("test");
+        }
+        if (!json.isNull("isFallback")){
+            isFallback = json.optBoolean("isFallback");
+        }
+        if (!json.isNull("isFill")){
+            isFill = json.optBoolean("isFill");
+        }
+        if (!json.isNull("isHouse")){
+            isHouse = json.optBoolean("isHouse");
+        }
+        if (!json.isNull("creative")){
+            JSONObject obj = json.optJSONObject("creative");
+            try {
+                creative = new SACreative(obj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public JSONObject writeToJson() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("error", error);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("app", app);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("placementId", placementId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("lineItemId", lineItemId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("campaignId", campaignId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("test", test);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("isFallback", isFallback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("isFill", isFill);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("isHouse", isHouse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("creative", creative.writeToJson());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

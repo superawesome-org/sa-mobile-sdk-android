@@ -47,5 +47,25 @@
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:id="@+id/mybanner"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/mytextbox1"
+        android:scrollbars="vertical"
+        android:maxLines="1000"
+        android:enabled="true"
+        android:textIsSelectable="true"
+        android:focusable="true"
+        android:longClickable="true"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/mytextbox2"
+        android:scrollbars="vertical"
+        android:maxLines="1000"
+        android:enabled="true"
+        android:textIsSelectable="true"
+        android:focusable="true"
+        android:longClickable="true"/>
 
 </LinearLayout>
