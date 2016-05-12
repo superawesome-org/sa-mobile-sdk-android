@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -27,6 +28,7 @@ public class SAInterstitialActivity implements SAViewProtocol {
     private Context context;
     private Intent intent;
     private static WeakReference<Activity> mActivityRef;
+    private static InterstitialAdDataHolder holder;
 
     /**********************************************************************************************/
     /** Normal <Init> functions & other aux functions */
@@ -34,18 +36,27 @@ public class SAInterstitialActivity implements SAViewProtocol {
 
     public SAInterstitialActivity(Context context){
         this.context = context;
+        holder = new InterstitialAdDataHolder();
     }
 
     public void setAdListener(SAAdListener adListener) {
-        AdDataHolder.getInstance()._refAdListener = adListener;
+        holder._refAdListener = adListener;
     }
 
     public void setParentalGateListener(SAParentalGateListener parentalGareListener){
-        AdDataHolder.getInstance()._refParentalGateListener = parentalGareListener;
+        holder._refParentalGateListener = parentalGareListener;
+    }
+
+    public void setShouldLockOrientation(boolean shouldLockOrientation) {
+        holder._refShouldLockOrientation = shouldLockOrientation;
+    }
+
+    public void setLockOrientation(int lockOrientation){
+        holder._refLockOrientation = lockOrientation;
     }
 
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) {
-        AdDataHolder.getInstance()._refIsParentalGateEnabled = isParentalGateEnabled;
+        holder._refIsParentalGateEnabled = isParentalGateEnabled;
     }
 
     protected static void updateActivity(Activity activity){
@@ -58,12 +69,12 @@ public class SAInterstitialActivity implements SAViewProtocol {
 
     @Override
     public void setAd(SAAd ad){
-        AdDataHolder.getInstance()._refAd = ad;
+        holder._refAd = ad;
     }
 
     @Override
     public SAAd getAd() {
-        return AdDataHolder.getInstance()._refAd;
+        return holder._refAd;
     }
 
     @Override
@@ -122,6 +133,8 @@ public class SAInterstitialActivity implements SAViewProtocol {
         /** private variables */
         private SAAd ad; /** private ad */
         private boolean isParentalGateEnabled = true; /** init with default value */
+        private boolean shouldLockOrientation = false;
+        private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         /** sdk listeners */
         private SAAdListener adListener;
@@ -153,10 +166,17 @@ public class SAInterstitialActivity implements SAViewProtocol {
             setContentView(activity_sa_interstitialId);
 
             /** assign data from AdDataHolder */
-            ad = AdDataHolder.getInstance()._refAd;
-            isParentalGateEnabled = AdDataHolder.getInstance()._refIsParentalGateEnabled;
-            adListener = AdDataHolder.getInstance()._refAdListener;
-            parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
+            ad = holder._refAd;
+            isParentalGateEnabled = holder._refIsParentalGateEnabled;
+            adListener = holder._refAdListener;
+            parentalGateListener = holder._refParentalGateListener;
+            lockOrientation = holder._refLockOrientation;
+            shouldLockOrientation = holder._refShouldLockOrientation;
+
+            /** make sure direction is locked */
+            if (shouldLockOrientation) {
+                setRequestedOrientation(lockOrientation);
+            }
 
             /** get the banner */
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
@@ -188,6 +208,8 @@ public class SAInterstitialActivity implements SAViewProtocol {
              * method is overridden to do nothing e.g. so as not to be closed by the user
              */
             super.onBackPressed();
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
         @Override
@@ -223,18 +245,20 @@ public class SAInterstitialActivity implements SAViewProtocol {
             parentalGateListener = null;
         }
     }
+}
 
-    /**
-     * Private class that hold info to share between activities
-     */
-    private static class AdDataHolder {
-        public SAAd _refAd;
-        public boolean _refIsParentalGateEnabled;
-        public SAAdListener _refAdListener;
-        public SAParentalGateListener _refParentalGateListener;
+/**
+ * The Video activity's ad data holder object
+ */
+class InterstitialAdDataHolder {
+    public SAAd _refAd;
+    public boolean _refIsParentalGateEnabled;
+    public boolean _refShouldLockOrientation = false;
+    public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    public SAAdListener _refAdListener;
+    public SAParentalGateListener _refParentalGateListener;
 
-        /** set and get methods on the Ad Data Holder class */
-        private static final AdDataHolder holder = new AdDataHolder();
-        public static AdDataHolder getInstance() {return holder;}
+    InterstitialAdDataHolder (){
+        // basic constructor
     }
 }

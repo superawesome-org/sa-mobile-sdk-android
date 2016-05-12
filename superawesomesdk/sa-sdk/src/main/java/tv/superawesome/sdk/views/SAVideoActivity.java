@@ -29,6 +29,7 @@ public class SAVideoActivity implements SAViewProtocol {
     private Context context;
     private Intent intent;
     private static WeakReference<Activity> mActivityRef;
+    private static VideoAdDataHolder  holder;
 
     /**********************************************************************************************/
     /** Normal <Init> functions & other aux functions */
@@ -37,40 +38,41 @@ public class SAVideoActivity implements SAViewProtocol {
     /** base constructor */
     public SAVideoActivity(Context context){
         this.context = context;
+        holder = new VideoAdDataHolder ();
     }
 
 
 
     public void setAdListener(SAAdListener adListener) {
-        AdDataHolder.getInstance()._refAdListener = adListener;
+        holder._refAdListener = adListener;
     }
 
     public void setVideoAdListener(SAVideoAdListener videoAdListener){
-        AdDataHolder.getInstance()._refVideoAdListener = videoAdListener;
+        holder._refVideoAdListener = videoAdListener;
     }
 
     public void setParentalGateListener(SAParentalGateListener parentalGateListener){
-        AdDataHolder.getInstance()._refParentalGateListener = parentalGateListener;
+        holder._refParentalGateListener = parentalGateListener;
     }
 
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) {
-        AdDataHolder.getInstance()._refIsParentalGateEnabled = isParentalGateEnabled;
+        holder._refIsParentalGateEnabled = isParentalGateEnabled;
     }
 
     public void setShouldShowCloseButton (boolean shouldShowCloseButton){
-        AdDataHolder.getInstance()._refShouldShowCloseButton = shouldShowCloseButton;
+        holder._refShouldShowCloseButton = shouldShowCloseButton;
     }
 
     public void setShouldAutomaticallyCloseAtEnd (boolean shouldAutomaticallyCloseAtEnd){
-        AdDataHolder.getInstance()._refShouldAutomaticallyCloseAtEnd = shouldAutomaticallyCloseAtEnd;
+        holder._refShouldAutomaticallyCloseAtEnd = shouldAutomaticallyCloseAtEnd;
     }
 
     public void setShouldLockOrientation(boolean shouldLockOrientation) {
-        AdDataHolder.getInstance()._refShouldLockOrientation = shouldLockOrientation;
+        holder._refShouldLockOrientation = shouldLockOrientation;
     }
 
     public void setLockOrientation(int lockOrientation){
-        AdDataHolder.getInstance()._refLockOrientation = lockOrientation;
+        holder._refLockOrientation = lockOrientation;
     }
 
     /** weak ref update function - needed mostly to get the close() function to work */
@@ -84,12 +86,12 @@ public class SAVideoActivity implements SAViewProtocol {
 
     @Override
     public void setAd(SAAd ad){
-        AdDataHolder.getInstance()._refAd = ad;
+        holder._refAd = ad;
     }
 
     @Override
     public SAAd getAd() {
-        return AdDataHolder.getInstance()._refAd;
+        return holder._refAd;
     }
 
     /** play function */
@@ -159,15 +161,15 @@ public class SAVideoActivity implements SAViewProtocol {
             setContentView(activity_sa_videoId);
 
             /** assign data from AdDataHolder */
-            ad = AdDataHolder.getInstance()._refAd;
-            isParentalGateEnabled = AdDataHolder.getInstance()._refIsParentalGateEnabled;
-            shouldShowCloseButton = AdDataHolder.getInstance()._refShouldShowCloseButton;
-            shouldAutomaticallyCloseAtEnd = AdDataHolder.getInstance()._refShouldAutomaticallyCloseAtEnd;
-            adListener = AdDataHolder.getInstance()._refAdListener;
-            videoAdListener = AdDataHolder.getInstance()._refVideoAdListener;
-            parentalGateListener = AdDataHolder.getInstance()._refParentalGateListener;
-            shouldLockOrientation = AdDataHolder.getInstance()._refShouldLockOrientation;
-            lockOrientation = AdDataHolder.getInstance()._refLockOrientation;
+            ad = holder._refAd;
+            isParentalGateEnabled = holder._refIsParentalGateEnabled;
+            shouldShowCloseButton = holder._refShouldShowCloseButton;
+            shouldAutomaticallyCloseAtEnd = holder._refShouldAutomaticallyCloseAtEnd;
+            adListener = holder._refAdListener;
+            videoAdListener = holder._refVideoAdListener;
+            parentalGateListener = holder._refParentalGateListener;
+            shouldLockOrientation = holder._refShouldLockOrientation;
+            lockOrientation = holder._refLockOrientation;
 
             /** make sure direction is locked */
             if (shouldLockOrientation) {
@@ -258,23 +260,23 @@ public class SAVideoActivity implements SAViewProtocol {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
     }
+}
 
-    /**
-     * Private class that hold info to share between activities
-     */
-    private static class AdDataHolder {
-        public SAAd _refAd;
-        public boolean _refIsParentalGateEnabled = true;
-        public boolean _refShouldShowCloseButton = true;
-        public boolean _refShouldAutomaticallyCloseAtEnd = true;
-        public boolean _refShouldLockOrientation = false;
-        public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-        public SAAdListener _refAdListener;
-        public SAParentalGateListener _refParentalGateListener;
-        public SAVideoAdListener _refVideoAdListener;
+/**
+ * The Video activity's ad data holder object
+ */
+class VideoAdDataHolder {
+    public SAAd _refAd;
+    public boolean _refIsParentalGateEnabled = true;
+    public boolean _refShouldShowCloseButton = true;
+    public boolean _refShouldAutomaticallyCloseAtEnd = true;
+    public boolean _refShouldLockOrientation = false;
+    public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    public SAAdListener _refAdListener;
+    public SAParentalGateListener _refParentalGateListener;
+    public SAVideoAdListener _refVideoAdListener;
 
-        /** set and get methods on the Ad Data Holder class */
-        private static final AdDataHolder holder = new AdDataHolder();
-        public static AdDataHolder getInstance() {return holder;}
+    VideoAdDataHolder (){
+        // basic contructor
     }
 }

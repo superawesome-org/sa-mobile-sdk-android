@@ -1,6 +1,7 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -106,6 +107,8 @@ public class MainActivity extends Activity implements SALoaderListener {
         if (interstitial2Data != null) {
             SAInterstitialActivity iad = new SAInterstitialActivity(MainActivity.this);
             iad.setAd(interstitial2Data);
+            iad.setShouldLockOrientation(true);
+            iad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             iad.play();
         }
     }
@@ -122,6 +125,7 @@ public class MainActivity extends Activity implements SALoaderListener {
         if (video1Data != null){
             SAVideoActivity fvad = new SAVideoActivity(MainActivity.this);
             fvad.setAd(video1Data);
+            fvad.setShouldAutomaticallyCloseAtEnd(false);
             fvad.play();
         }
     }
@@ -130,6 +134,9 @@ public class MainActivity extends Activity implements SALoaderListener {
         if (video2Data != null){
             SAVideoActivity fvad = new SAVideoActivity(MainActivity.this);
             fvad.setAd(video2Data);
+            fvad.setShouldLockOrientation(true);
+            fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fvad.setShouldShowCloseButton(false);
             fvad.play();
         }
     }

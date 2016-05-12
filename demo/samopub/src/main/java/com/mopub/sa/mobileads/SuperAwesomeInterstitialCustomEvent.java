@@ -1,6 +1,7 @@
 package com.mopub.sa.mobileads;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Debug;
 import android.util.Log;
 
@@ -25,6 +26,8 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
     /** custom event listener */
     private CustomEventInterstitialListener evtListener;
     private SAInterstitialActivity interstitial;
+    private boolean shouldLockOrientation;
+    private int lockOrientation;
 
     @Override
     protected void loadInterstitial(final Context context, final CustomEventInterstitialListener customEventInterstitialListener, Map<String, Object> map, Map<String, String> map1) {
@@ -33,6 +36,8 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         int placementId = 0;
         final boolean isTestEnabled;
         final boolean isParentalGateEnabled;
+        shouldLockOrientation = false;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         if (map1.get("placementId") != null ){
             placementId = Integer.parseInt(map1.get("placementId"));
@@ -50,6 +55,17 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
             isParentalGateEnabled = false;
         }
 
+        if (map1.get("shouldLockOrientation") != null) {
+            shouldLockOrientation = Boolean.valueOf(map1.get("shouldLockOrientation"));
+            if (map1.get("lockDirection") != null) {
+                if (map1.get("lockOrientation").equals("PORTRAIT")) {
+                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                } else if (map1.get("lockDirection").equals("LANDSCAPE")){
+                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                }
+            }
+        }
+
         /** before loading */
         SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().setTestMode(isTestEnabled);
@@ -65,6 +81,8 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
                 interstitial = new SAInterstitialActivity(context);
                 interstitial.setAd(saAd);
                 interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
+                interstitial.setShouldLockOrientation(shouldLockOrientation);
+                interstitial.setLockOrientation(lockOrientation);
                 interstitial.setAdListener(new SAAdListener() {
                     @Override
                     public void adWasShown(int placementId) {
