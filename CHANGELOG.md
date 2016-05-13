@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.7.4
+ - Refactoring code & plugins
+
 3.7.3
 3.7.2
 3.7.1
