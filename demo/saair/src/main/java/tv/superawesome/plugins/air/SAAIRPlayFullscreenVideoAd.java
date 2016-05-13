@@ -45,121 +45,113 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
 
                 try {
                     JSONObject dataJson = new JSONObject(adJson);
-                    SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
+                    SAAd ad = new SAAd(dataJson);
 
-                    if (ad != null) {
-                        Log.d("AIREXT", "ad data valid");
-                        /** create the video */
-                        SAFullscreenVideoAd video = new SAFullscreenVideoAd(freContext.getActivity());
-                        video.setAd(ad);
-                        video.setIsParentalGateEnabled(isParentalGateEnabled);
-                        video.setShouldShowCloseButton(shouldShowCloseButton);
-                        video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-                        video.setAdListener(new SAAdInterface() {
-                            @Override
-                            public void adWasShown(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                    SAFullscreenVideoAd video = new SAFullscreenVideoAd(freContext.getActivity());
+                    video.setAd(ad);
+                    video.setIsParentalGateEnabled(isParentalGateEnabled);
+                    video.setShouldShowCloseButton(shouldShowCloseButton);
+                    video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+                    video.setAdListener(new SAAdInterface() {
+                        @Override
+                        public void adWasShown(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void adFailedToShow(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adFailedToShow\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void adFailedToShow(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adFailedToShow\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void adWasClosed(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasClosed\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void adWasClosed(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasClosed\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void adWasClicked(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasClicked\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void adWasClicked(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasClicked\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void adHasIncorrectPlacement(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adHasIncorrectPlacement\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
-                        });
-                        video.setVideoAdListener(new SAVideoAdInterface() {
-                            @Override
-                            public void adStarted(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adStarted\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void adHasIncorrectPlacement(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adHasIncorrectPlacement\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
+                    });
+                    video.setVideoAdListener(new SAVideoAdInterface() {
+                        @Override
+                        public void adStarted(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adStarted\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void videoStarted(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoStarted\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void videoStarted(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"videoStarted\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void videoReachedFirstQuartile(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedFirstQuartile\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void videoReachedFirstQuartile(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedFirstQuartile\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void videoReachedMidpoint(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedMidpoint\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void videoReachedMidpoint(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedMidpoint\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void videoReachedThirdQuartile(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedThirdQuartile\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void videoReachedThirdQuartile(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedThirdQuartile\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void videoEnded(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoEnded\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void videoEnded(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"videoEnded\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void adEnded(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adEnded\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void adEnded(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adEnded\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void allAdsEnded(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"allAdsEnded\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
-                        });
-                        video.setParentalGateListener(new SAParentalGateInterface() {
-                            @Override
-                            public void parentalGateWasCanceled(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasCanceled\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void allAdsEnded(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"allAdsEnded\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
+                    });
+                    video.setParentalGateListener(new SAParentalGateInterface() {
+                        @Override
+                        public void parentalGateWasCanceled(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasCanceled\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void parentalGateWasFailed(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasFailed\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
+                        @Override
+                        public void parentalGateWasFailed(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasFailed\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
 
-                            @Override
-                            public void parentalGateWasSucceded(int placementId) {
-                                String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasSucceded\"}";
-                                freContext.dispatchStatusEventAsync(meta, "");
-                            }
-                        });
-                        video.play();
-
-                    } else {
-                        String meta = "{\"name\":\"" + name + "\", \"func\":\"adFailedToShow\"}";
-                        freContext.dispatchStatusEventAsync(meta, "");
-                    }
+                        @Override
+                        public void parentalGateWasSucceded(int placementId) {
+                            String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasSucceded\"}";
+                            freContext.dispatchStatusEventAsync(meta, "");
+                        }
+                    });
+                    video.play();
                 } catch (JSONException e) {
                     String meta = "{\"name\":\"" + name + "\", \"func\":\"adFailedToShow\"}";
                     freContext.dispatchStatusEventAsync(meta, "");
