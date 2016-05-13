@@ -35,7 +35,6 @@ public class SAAd implements Parcelable, JSONSerializable {
     public boolean isFallback;
     public boolean isFill;
     public boolean isHouse;
-    public String adJson;
     public SACreative creative;
 
     /**
@@ -59,7 +58,6 @@ public class SAAd implements Parcelable, JSONSerializable {
         isFallback = in.readByte() != 0;
         isFill = in.readByte() != 0;
         isHouse = in.readByte() != 0;
-        adJson = in.readString();
         creative = in.readParcelable(SACreative.class.getClassLoader());
     }
 
@@ -117,7 +115,6 @@ public class SAAd implements Parcelable, JSONSerializable {
         dest.writeByte((byte) (isFallback ? 1 : 0));
         dest.writeByte((byte) (isFill ? 1 : 0));
         dest.writeByte((byte) (isHouse ? 1 : 0));
-        dest.writeString(adJson);
         dest.writeParcelable(creative, flags);
     }
 

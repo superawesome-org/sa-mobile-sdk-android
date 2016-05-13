@@ -3,7 +3,7 @@ package tv.superawesome.sdk.views;
 import tv.superawesome.sdk.models.SAAd;
 
 /**
- * Defines a common interface that SABannerAd, SAInterstitial and SAVideoActivity can adhere to
+ * Defines a common interface that SABannerAd, SAInterstitial and SAFullscreenVideoAd can adhere to
  * to make navigation a little less fragmented in the Android SDK
  */
 public interface SAViewInterface {

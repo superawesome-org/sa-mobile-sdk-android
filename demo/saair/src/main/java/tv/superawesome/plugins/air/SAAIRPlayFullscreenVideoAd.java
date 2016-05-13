@@ -1,11 +1,7 @@
-package tv.superawesome.plugins.air.functions;
+package tv.superawesome.plugins.air;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
@@ -17,38 +13,34 @@ import com.adobe.fre.FREWrongThreadException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.parser.SAParser;
 import tv.superawesome.sdk.views.SAAdInterface;
-import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAParentalGateInterface;
+import tv.superawesome.sdk.views.SAFullscreenVideoAd;
+import tv.superawesome.sdk.views.SAVideoAdInterface;
 
 /**
- * Created by gabriel.coman on 06/04/16.
+ * Created by gabriel.coman on 17/03/16.
  */
-public class SAAIRPlayBannerAd implements FREFunction {
+public class SAAIRPlayFullscreenVideoAd implements FREFunction {
     @Override
     public FREObject call(final FREContext freContext, FREObject[] freObjects) {
         /** setup vars with default values */
-        Log.d("AIREXT", "playBannerAd");
+        Log.d("AIREXT", "playFullscreenVideoAd");
 
-        if (freObjects.length == 8){
+        if (freObjects.length == 6){
             try {
                 /** get variables */
                 final String name = freObjects[0].getAsString();
                 final int placementId = freObjects[1].getAsInt();
                 final String adJson = freObjects[2].getAsString();
                 final boolean isParentalGateEnabled = freObjects[3].getAsBool();
-                final int x = (int)(freObjects[4].getAsDouble());
-                final int y = (int)(freObjects[5].getAsDouble());
-                final int w = (int)(freObjects[6].getAsDouble());
-                final int h = (int)(freObjects[7].getAsDouble());
-                final Activity activity = freContext.getActivity();
-                final Context context = activity.getApplicationContext();
+                final boolean shouldShowCloseButton = freObjects[4].getAsBool();
+                final boolean shouldAutomaticallyCloseAtEnd = freObjects[5].getAsBool();
+                final Context context = freContext.getActivity().getApplicationContext();
 
-                Log.d("AIREXT", "Meta: " + name + "/" + placementId + "/" + isParentalGateEnabled);
-                Log.d("AIREXT", x + "/" + y + "/" + w + "/" + h);
+                Log.d("AIREXT", "Meta: " + name + "/" + placementId + "/" + isParentalGateEnabled + "/" + shouldShowCloseButton + "/" + shouldAutomaticallyCloseAtEnd);
                 Log.d("AIREXT", "adJson: " + adJson);
 
                 try {
@@ -58,10 +50,12 @@ public class SAAIRPlayBannerAd implements FREFunction {
                     if (ad != null) {
                         Log.d("AIREXT", "ad data valid");
                         /** create the video */
-                        SABannerAd banner = new SABannerAd(activity);
-                        banner.setAd(ad);
-                        banner.setIsParentalGateEnabled(isParentalGateEnabled);
-                        banner.setAdListener(new SAAdInterface() {
+                        SAFullscreenVideoAd video = new SAFullscreenVideoAd(freContext.getActivity());
+                        video.setAd(ad);
+                        video.setIsParentalGateEnabled(isParentalGateEnabled);
+                        video.setShouldShowCloseButton(shouldShowCloseButton);
+                        video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+                        video.setAdListener(new SAAdInterface() {
                             @Override
                             public void adWasShown(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";
@@ -92,7 +86,56 @@ public class SAAIRPlayBannerAd implements FREFunction {
                                 freContext.dispatchStatusEventAsync(meta, "");
                             }
                         });
-                        banner.setParentalGateListener(new SAParentalGateInterface() {
+                        video.setVideoAdListener(new SAVideoAdInterface() {
+                            @Override
+                            public void adStarted(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adStarted\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+
+                            @Override
+                            public void videoStarted(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoStarted\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+
+                            @Override
+                            public void videoReachedFirstQuartile(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedFirstQuartile\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+
+                            @Override
+                            public void videoReachedMidpoint(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedMidpoint\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+
+                            @Override
+                            public void videoReachedThirdQuartile(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoReachedThirdQuartile\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+
+                            @Override
+                            public void videoEnded(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"videoEnded\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+
+                            @Override
+                            public void adEnded(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"adEnded\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+
+                            @Override
+                            public void allAdsEnded(int placementId) {
+                                String meta = "{\"name\":\"" + name + "\", \"func\":\"allAdsEnded\"}";
+                                freContext.dispatchStatusEventAsync(meta, "");
+                            }
+                        });
+                        video.setParentalGateListener(new SAParentalGateInterface() {
                             @Override
                             public void parentalGateWasCanceled(int placementId) {
                                 String meta = "{\"name\":\"" + name + "\", \"func\":\"parentalGateWasCanceled\"}";
@@ -111,26 +154,7 @@ public class SAAIRPlayBannerAd implements FREFunction {
                                 freContext.dispatchStatusEventAsync(meta, "");
                             }
                         });
-
-                        ViewGroup current = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-
-                        /** set banner width & height */
-                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
-                        int maxWidthHeight = Math.max(screenSize.width, screenSize.height);
-                        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(maxWidthHeight, maxWidthHeight);
-                        RelativeLayout screenLayout = new RelativeLayout(context);
-                        screenLayout.setLayoutParams(params1);
-                        screenLayout.setBackgroundColor(Color.TRANSPARENT);
-
-                        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(w, h);
-                        params2.setMargins(x, y, 0, 0);
-                        banner.setLayoutParams(params2);
-
-                        current.addView(screenLayout);
-                        screenLayout.addView(banner);
-
-                        /** finally play */
-                        banner.play();
+                        video.play();
 
                     } else {
                         String meta = "{\"name\":\"" + name + "\", \"func\":\"adFailedToShow\"}";
@@ -141,7 +165,7 @@ public class SAAIRPlayBannerAd implements FREFunction {
                     freContext.dispatchStatusEventAsync(meta, "");
                 }
 
-            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException  e) {
                 e.printStackTrace();
             }
         }

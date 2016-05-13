@@ -20,7 +20,7 @@ import tv.superawesome.sdk.models.SAAd;
 /**
  * Created by gabriel.coman on 30/12/15.
  */
-public class SAInterstitialActivity implements SAViewInterface {
+public class SAInterstitialAd implements SAViewInterface {
 
     /** private activity object values */
     private Context context;
@@ -32,7 +32,7 @@ public class SAInterstitialActivity implements SAViewInterface {
     /** Normal <Init> functions & other aux functions */
     /**********************************************************************************************/
 
-    public SAInterstitialActivity(Context context){
+    public SAInterstitialAd(Context context){
         this.context = context;
         holder = new InterstitialAdDataHolder();
     }
@@ -77,7 +77,7 @@ public class SAInterstitialActivity implements SAViewInterface {
 
     @Override
     public void play() {
-        intent = new Intent(context, SAInterstitialActivityInner.class);
+        intent = new Intent(context, SAInterstitialAdActivity.class);
         context.startActivity(intent);
     }
 
@@ -106,7 +106,7 @@ public class SAInterstitialActivity implements SAViewInterface {
                              SAParentalGateInterface parentalGateListener) {
 
         /** create activity */
-        SAInterstitialActivity activity = new SAInterstitialActivity(c);
+        SAInterstitialAd activity = new SAInterstitialAd(c);
 
         /** set ad */
         activity.setAd(ad);
@@ -126,7 +126,7 @@ public class SAInterstitialActivity implements SAViewInterface {
     /** Inner Activity implementation */
     /**********************************************************************************************/
 
-    public static class SAInterstitialActivityInner extends Activity {
+    public static class SAInterstitialAdActivity extends Activity {
 
         /** private variables */
         private SAAd ad; /** private ad */
@@ -154,7 +154,7 @@ public class SAInterstitialActivity implements SAViewInterface {
             super.onCreate(savedInstanceState);
 
             /** update parent class weak ref to point to this activity */
-            SAInterstitialActivity.updateActivity(this);
+            SAInterstitialAd.updateActivity(this);
 
             /** load resource */
             String packageName = SAApplication.getSAApplicationContext().getPackageName();

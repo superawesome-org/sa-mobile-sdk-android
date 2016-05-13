@@ -11,6 +11,8 @@ package tv.superawesome.sdk.loader;
  * Imports needed for this implementation
  */
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,14 +40,37 @@ public class SALoader {
         JSONObject queryJson = new JSONObject();
         try {
             queryJson.put("test", SuperAwesome.getInstance().isTestingEnabled());
-            queryJson.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
-            queryJson.put("rnd", SAUtils.getCacheBuster());
-            queryJson.put("bundle", SuperAwesome.getInstance().getApplicationContext().getPackageName());
-            queryJson.put("name", SAUtils.getAppLabel());
-            queryJson.put("dauid", SuperAwesome.getInstance().getDAUID());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try {
+            queryJson.put("sdkVersion", SuperAwesome.getInstance().getSDKVersion());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            queryJson.put("rnd", SAUtils.getCacheBuster());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            queryJson.put("bundle", SuperAwesome.getInstance().getApplicationContext().getPackageName());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            queryJson.put("name", SAUtils.getAppLabel());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+             queryJson.put("dauid", SuperAwesome.getInstance().getDAUID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("SuperAwesome", "Trying to load " + endpoint);
+        Log.d("SuperAwesome", "queryJson: " + queryJson.toString());
 
         /** send a standard GET request */
         SANetwork network = new SANetwork();
@@ -66,7 +91,6 @@ public class SALoader {
 
                     /** success case */
                     if (parsedAd != null) {
-                        parsedAd.adJson = data.toString();
                         SALoaderExtra extra = new SALoaderExtra();
                         extra.getExtraData(parsedAd, new SALoaderExtraInterface() {
                             @Override

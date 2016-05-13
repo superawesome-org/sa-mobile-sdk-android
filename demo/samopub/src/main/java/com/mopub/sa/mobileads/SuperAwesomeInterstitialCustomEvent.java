@@ -13,7 +13,7 @@ import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.loader.SALoaderInterface;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.views.SAAdInterface;
-import tv.superawesome.sdk.views.SAInterstitialActivity;
+import tv.superawesome.sdk.views.SAInterstitialAd;
 
 /**
  * Created by gabriel.coman on 27/10/15.
@@ -22,7 +22,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
 
     /** custom event listener */
     private CustomEventInterstitialListener evtListener;
-    private SAInterstitialActivity interstitial;
+    private SAInterstitialAd interstitial;
     private boolean shouldLockOrientation;
     private int lockOrientation;
 
@@ -75,7 +75,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         loader.loadAd(placementId, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
-                interstitial = new SAInterstitialActivity(context);
+                interstitial = new SAInterstitialAd(context);
                 interstitial.setAd(saAd);
                 interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
                 interstitial.setShouldLockOrientation(shouldLockOrientation);

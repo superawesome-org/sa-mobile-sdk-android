@@ -28,22 +28,22 @@ import tv.superawesome.sdk.models.SADetails;
  */
 public class SAParser {
 
-    /**
-     * Function that validates a certain dictionary field
-     * @param object - the field to be validated, as a generic java object
-     * @return true if all is ok, false otherwise
-     */
-    private static boolean validateField(Object object){
-        if (object != null){
-            String objString = object.toString().replace("\"","");
-            if (!objString.equals("null")){
-                return true;
-            }
-            return false;
-        }
-
-        return false;
-    }
+//    /**
+//     * Function that validates a certain dictionary field
+//     * @param object - the field to be validated, as a generic java object
+//     * @return true if all is ok, false otherwise
+//     */
+//    private static boolean validateField(Object object){
+//        if (object != null){
+//            String objString = object.toString().replace("\"","");
+//            if (!objString.equals("null")){
+//                return true;
+//            }
+//            return false;
+//        }
+//
+//        return false;
+//    }
 
     /**
      * This function tests wherer an Ad is valid; It does so by looking at some crucial ad
@@ -90,104 +90,104 @@ public class SAParser {
         return false;
     }
 
-    /**
-     * This static function parses the general Ad info (passed as a map) into a SAAd object
-     * @param dict a json of values from the server
-     * @return a SAAd object
-     */
-    private static SAAd parseAdWithDictionary(JSONObject dict) {
-        SAAd ad = new SAAd();
+//    /**
+//     * This static function parses the general Ad info (passed as a map) into a SAAd object
+//     * @param dict a json of values from the server
+//     * @return a SAAd object
+//     */
+//    private static SAAd parseAdWithDictionary(JSONObject dict) {
+//        SAAd ad = new SAAd();
+//
+//        Object errorObj = dict.opt("error");
+//        Object appObj = dict.opt("app");
+//        Object lineItemIdObj = dict.opt("line_item_id");
+//        Object campaignIdObj = dict.opt("campaign_id");
+//        Object isTestObj = dict.opt("test");
+//        Object isFallbackObj = dict.opt("is_fallback");
+//        Object isFillObj = dict.opt("is_fill");
+//        Object isHouseObj = dict.opt("is_house");
+//
+//        ad.error = (validateField(errorObj) ? Integer.parseInt(errorObj.toString().replace("\"","")) : -1);
+//        ad.app = (validateField(appObj) ? Integer.parseInt(appObj.toString().replace("\"","")) : -1);
+//        ad.lineItemId = (validateField(lineItemIdObj) ? Integer.parseInt(lineItemIdObj.toString().replace("\"","")) : -1);
+//        ad.campaignId = (validateField(campaignIdObj) ? Integer.parseInt(campaignIdObj.toString().replace("\"","")) : -1);
+//        ad.test = (validateField(isTestObj) ? Boolean.parseBoolean(isTestObj.toString().replace("\"", "")) : true);
+//        ad.isFallback = (validateField(isFallbackObj) ? Boolean.parseBoolean(isFallbackObj.toString().replace("\"","")) : true);
+//        ad.isFill = (validateField(isFillObj) ? Boolean.parseBoolean(isFillObj.toString().replace("\"","")) : false);
+//        ad.isHouse = (validateField(isHouseObj) ? Boolean.parseBoolean(isHouseObj.toString().replace("\"","")) : false);
+//
+//        return ad;
+//    }
+//
+//    /**
+//     * This static function parses the creative Ad info (passed as a map) into a SACreative object
+//     * @param cdict a json of values from the server
+//     * @return a SACreative object
+//     */
+//    private static SACreative parseCreativeWithDictionary(JSONObject cdict){
+//
+//        SACreative creative = new SACreative();
+//
+//        Object idObj = cdict.opt("id");
+//        Object nameObj = cdict.opt("name");
+//        Object cpmObj = cdict.opt("cpm");
+//        Object formatObj = cdict.opt("format");
+//        Object impressionUrlObj = cdict.opt("impression_url");
+//        Object clickUrlObj = cdict.opt("click_url");
+//        Object approvedObj = cdict.opt("approved");
+//        Object liveObj = cdict.opt("live");
+//
+//        creative.id = (validateField(idObj) ? Integer.parseInt(idObj.toString().replace("\"","")) : -1);
+//        creative.name = (validateField(nameObj) ? nameObj.toString().replace("\"", "") : null);
+//        creative.cpm = (validateField(cpmObj) ? Integer.parseInt(cpmObj.toString().replace("\"", "")) : 0);
+//        creative.impressionUrl = (validateField(impressionUrlObj) ? impressionUrlObj.toString().replace("\"", "") : null);
+//        creative.clickUrl = (validateField(clickUrlObj) ? clickUrlObj.toString().replace("\"", "") : null);
+//        creative.approved = (validateField(approvedObj) ? Boolean.parseBoolean(approvedObj.toString().replace("\"", "")) : false);
+//        creative.live = (validateField(liveObj) ? Boolean.parseBoolean(liveObj.toString().replace("\"","")) : false);
+//        creative.format = (validateField(formatObj ) ? formatObj .toString().replace("\"", "") : null);
+//
+//        return creative;
+//    }
 
-        Object errorObj = dict.opt("error");
-        Object appObj = dict.opt("app");
-        Object lineItemIdObj = dict.opt("line_item_id");
-        Object campaignIdObj = dict.opt("campaign_id");
-        Object isTestObj = dict.opt("test");
-        Object isFallbackObj = dict.opt("is_fallback");
-        Object isFillObj = dict.opt("is_fill");
-        Object isHouseObj = dict.opt("is_house");
-
-        ad.error = (validateField(errorObj) ? Integer.parseInt(errorObj.toString().replace("\"","")) : -1);
-        ad.app = (validateField(appObj) ? Integer.parseInt(appObj.toString().replace("\"","")) : -1);
-        ad.lineItemId = (validateField(lineItemIdObj) ? Integer.parseInt(lineItemIdObj.toString().replace("\"","")) : -1);
-        ad.campaignId = (validateField(campaignIdObj) ? Integer.parseInt(campaignIdObj.toString().replace("\"","")) : -1);
-        ad.test = (validateField(isTestObj) ? Boolean.parseBoolean(isTestObj.toString().replace("\"", "")) : true);
-        ad.isFallback = (validateField(isFallbackObj) ? Boolean.parseBoolean(isFallbackObj.toString().replace("\"","")) : true);
-        ad.isFill = (validateField(isFillObj) ? Boolean.parseBoolean(isFillObj.toString().replace("\"","")) : false);
-        ad.isHouse = (validateField(isHouseObj) ? Boolean.parseBoolean(isHouseObj.toString().replace("\"","")) : false);
-
-        return ad;
-    }
-
-    /**
-     * This static function parses the creative Ad info (passed as a map) into a SACreative object
-     * @param cdict a json of values from the server
-     * @return a SACreative object
-     */
-    private static SACreative parseCreativeWithDictionary(JSONObject cdict){
-
-        SACreative creative = new SACreative();
-
-        Object idObj = cdict.opt("id");
-        Object nameObj = cdict.opt("name");
-        Object cpmObj = cdict.opt("cpm");
-        Object formatObj = cdict.opt("format");
-        Object impressionUrlObj = cdict.opt("impression_url");
-        Object clickUrlObj = cdict.opt("click_url");
-        Object approvedObj = cdict.opt("approved");
-        Object liveObj = cdict.opt("live");
-
-        creative.id = (validateField(idObj) ? Integer.parseInt(idObj.toString().replace("\"","")) : -1);
-        creative.name = (validateField(nameObj) ? nameObj.toString().replace("\"", "") : null);
-        creative.cpm = (validateField(cpmObj) ? Integer.parseInt(cpmObj.toString().replace("\"", "")) : 0);
-        creative.impressionUrl = (validateField(impressionUrlObj) ? impressionUrlObj.toString().replace("\"", "") : null);
-        creative.clickUrl = (validateField(clickUrlObj) ? clickUrlObj.toString().replace("\"", "") : null);
-        creative.approved = (validateField(approvedObj) ? Boolean.parseBoolean(approvedObj.toString().replace("\"", "")) : false);
-        creative.live = (validateField(liveObj) ? Boolean.parseBoolean(liveObj.toString().replace("\"","")) : false);
-        creative.format = (validateField(formatObj ) ? formatObj .toString().replace("\"", "") : null);
-
-        return creative;
-    }
-
-    /**
-     * This static function parses the creative details Ad info (passed as a map) into a SADetails object
-     * @param ddict a json of values from the server
-     * @return a SADetails object
-     */
-    private static SADetails parseDetailsWithDictionary(JSONObject ddict){
-
-        SADetails details = new SADetails();
-
-        Object widthObj = ddict.opt("width");
-        Object heightObj = ddict.opt("height");
-        Object imageObj = ddict.opt("image");
-        Object valueObj = ddict.opt("value");
-        Object nameObj = ddict.opt("name");
-        Object videoObj = ddict.opt("video");
-        Object bitrateObj = ddict.opt("bitrate");
-        Object durationObj = ddict.opt("duration");
-        Object vastObj = ddict.opt("vast");
-        Object tagObj = ddict.opt("tag");
-        Object placementFormatObj = ddict.opt("placement_format");
-        Object zipFileObj = ddict.opt("zip_file");
-        Object urlObj = ddict.opt("url");
-
-        details.width = (validateField(widthObj) ? Integer.parseInt(widthObj.toString().replace("\"","")) : 0);
-        details.height = (validateField(heightObj) ? Integer.parseInt(heightObj.toString().replace("\"","")) : 0);
-        details.image = (validateField(imageObj) ? imageObj.toString().replace("\"", "") : null);
-        details.value = (validateField(valueObj) ? Integer.parseInt(valueObj.toString().replace("\"","")) : 0);
-        details.name = (validateField(nameObj) ? nameObj.toString().replace("\"", "") : null);
-        details.video = (validateField(videoObj) ? videoObj.toString().replace("\"", "") : null);
-        details.bitrate = (validateField(bitrateObj) ? Integer.parseInt(bitrateObj.toString().replace("\"","")) : 0);
-        details.duration = (validateField(durationObj) ? Integer.parseInt(durationObj.toString().replace("\"","")) : 0);
-        details.vast = (validateField(vastObj) ? vastObj.toString().replace("\"", "") : null);
-        details.tag = (validateField(tagObj) ? tagObj.toString() : null);
-        details.zipFile = (validateField(zipFileObj) ? zipFileObj.toString().replace("\"", "") : null);
-        details.url = (validateField(urlObj) ? urlObj.toString().replace("\"", "") : null);
-        details.placementFormat = (validateField(placementFormatObj) ? placementFormatObj.toString().replace("\"", "") : null);
-
-        return details;
-    }
+//    /**
+//     * This static function parses the creative details Ad info (passed as a map) into a SADetails object
+//     * @param ddict a json of values from the server
+//     * @return a SADetails object
+//     */
+//    private static SADetails parseDetailsWithDictionary(JSONObject ddict){
+//
+//        SADetails details = new SADetails();
+//
+//        Object widthObj = ddict.opt("width");
+//        Object heightObj = ddict.opt("height");
+//        Object imageObj = ddict.opt("image");
+//        Object valueObj = ddict.opt("value");
+//        Object nameObj = ddict.opt("name");
+//        Object videoObj = ddict.opt("video");
+//        Object bitrateObj = ddict.opt("bitrate");
+//        Object durationObj = ddict.opt("duration");
+//        Object vastObj = ddict.opt("vast");
+//        Object tagObj = ddict.opt("tag");
+//        Object placementFormatObj = ddict.opt("placement_format");
+//        Object zipFileObj = ddict.opt("zip_file");
+//        Object urlObj = ddict.opt("url");
+//
+//        details.width = (validateField(widthObj) ? Integer.parseInt(widthObj.toString().replace("\"","")) : 0);
+//        details.height = (validateField(heightObj) ? Integer.parseInt(heightObj.toString().replace("\"","")) : 0);
+//        details.image = (validateField(imageObj) ? imageObj.toString().replace("\"", "") : null);
+//        details.value = (validateField(valueObj) ? Integer.parseInt(valueObj.toString().replace("\"","")) : 0);
+//        details.name = (validateField(nameObj) ? nameObj.toString().replace("\"", "") : null);
+//        details.video = (validateField(videoObj) ? videoObj.toString().replace("\"", "") : null);
+//        details.bitrate = (validateField(bitrateObj) ? Integer.parseInt(bitrateObj.toString().replace("\"","")) : 0);
+//        details.duration = (validateField(durationObj) ? Integer.parseInt(durationObj.toString().replace("\"","")) : 0);
+//        details.vast = (validateField(vastObj) ? vastObj.toString().replace("\"", "") : null);
+//        details.tag = (validateField(tagObj) ? tagObj.toString() : null);
+//        details.zipFile = (validateField(zipFileObj) ? zipFileObj.toString().replace("\"", "") : null);
+//        details.url = (validateField(urlObj) ? urlObj.toString().replace("\"", "") : null);
+//        details.placementFormat = (validateField(placementFormatObj) ? placementFormatObj.toString().replace("\"", "") : null);
+//
+//        return details;
+//    }
 
     /**
      * Parses a dictionary received from the server into a valid Ad object
@@ -203,16 +203,19 @@ public class SAParser {
 
         /** surround with a try catch block */
         try {
-            /** extract dicts */
-            JSONObject adict = dict;
-            JSONObject cdict = dict.optJSONObject("creative");
-            JSONObject ddict = cdict.optJSONObject("details");
-
-            /** parse base ad stuff */
-            SAAd ad = SAParser.parseAdWithDictionary(adict);
+            SAAd ad = new SAAd(dict);
             ad.placementId = placementId;
-            ad.creative = SAParser.parseCreativeWithDictionary(cdict);
-            ad.creative.details = SAParser.parseDetailsWithDictionary(ddict);
+
+//            /** extract dicts */
+//            JSONObject adict = dict;
+//            JSONObject cdict = dict.optJSONObject("creative");
+//            JSONObject ddict = cdict.optJSONObject("details");
+//
+//            /** parse base ad stuff */
+//            SAAd ad = SAParser.parseAdWithDictionary(adict);
+//            ad.placementId = placementId;
+//            ad.creative = SAParser.parseCreativeWithDictionary(cdict);
+//            ad.creative.details = SAParser.parseDetailsWithDictionary(ddict);
 
             /** prform the next steps of the parsing */
             ad.creative.creativeFormat = SACreativeFormat.invalid;

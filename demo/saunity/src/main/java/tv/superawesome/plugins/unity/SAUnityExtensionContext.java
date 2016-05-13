@@ -6,27 +6,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tv.superawesome.sdk.views.SABannerAd;
-import tv.superawesome.sdk.views.SAInterstitialActivity;
-import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAFullscreenVideoAd;
+import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAVideoAd;
 
 /**
  * Created by gabriel.coman on 04/02/16.
  */
-public class SAUnityManager {
+public class SAUnityExtensionContext {
 
     private HashMap<String, Object> adMap = null;
 
     /** the singleton SuperAwesome instance */
-    private static SAUnityManager instance = new SAUnityManager();
+    private static SAUnityExtensionContext instance = new SAUnityExtensionContext();
 
     /** make the constructor private so that this class cannot be instantiated */
-    private SAUnityManager(){
+    private SAUnityExtensionContext(){
         adMap = new HashMap<>();
     }
 
     /** Get the only object available */
-    public static SAUnityManager getInstance(){
+    public static SAUnityExtensionContext getInstance(){
         return instance;
     }
 
@@ -55,11 +55,11 @@ public class SAUnityManager {
             } else if (o.getClass().toString().contains(SAVideoAd.class.getName())) {
                 SAVideoAd v = (SAVideoAd)o;
                 placement = v.getAd().placementId;
-            } else if (o.getClass().toString().contains(SAInterstitialActivity.class.getName())) {
-                SAInterstitialActivity i = (SAInterstitialActivity)o;
+            } else if (o.getClass().toString().contains(SAInterstitialAd.class.getName())) {
+                SAInterstitialAd i = (SAInterstitialAd)o;
                 placement = i.getAd().placementId;
-            } else if (o.getClass().toString().contains(SAVideoActivity.class.getName())) {
-                SAVideoActivity fv = (SAVideoActivity)o;
+            } else if (o.getClass().toString().contains(SAFullscreenVideoAd.class.getName())) {
+                SAFullscreenVideoAd fv = (SAFullscreenVideoAd)o;
                 placement = fv.getAd().placementId;
             }
 

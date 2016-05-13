@@ -17,7 +17,7 @@ import tv.superawesome.sdk.loader.SALoader;
 import tv.superawesome.sdk.loader.SALoaderInterface;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.views.SAAdInterface;
-import tv.superawesome.sdk.views.SAVideoActivity;
+import tv.superawesome.sdk.views.SAFullscreenVideoAd;
 import tv.superawesome.sdk.views.SAVideoAdInterface;
 
 import java.util.Map;
@@ -40,7 +40,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
     /** the actual video activity */
     private SAAd cAd;
-    private SAVideoActivity video;
+    private SAFullscreenVideoAd video;
 
     @Nullable
     @Override
@@ -133,7 +133,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                 cAd = ad;
 
                 /** show video activity */
-                video = new SAVideoActivity(activity);
+                video = new SAFullscreenVideoAd(activity);
                 video.setAd(cAd);
                 video.setIsParentalGateEnabled(isParentalGateEnabled);
                 video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);

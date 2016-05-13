@@ -1,4 +1,4 @@
-package tv.superawesome.plugins.air.functions;
+package tv.superawesome.plugins.air;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.parser.SAParser;
 import tv.superawesome.sdk.views.SAAdInterface;
-import tv.superawesome.sdk.views.SAInterstitialActivity;
+import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAParentalGateInterface;
 
 /**
@@ -47,7 +47,7 @@ public class SAAIRPlayInterstitialAd implements FREFunction {
                     if (ad != null) {
                         Log.d("AIREXT", "ad data valid");
                         /** create the video */
-                        SAInterstitialActivity inter = new SAInterstitialActivity (freContext.getActivity());
+                        SAInterstitialAd inter = new SAInterstitialAd(freContext.getActivity());
                         inter.setAd(ad);
                         inter.setIsParentalGateEnabled(isParentalGateEnabled);
                         inter.setAdListener(new SAAdInterface() {

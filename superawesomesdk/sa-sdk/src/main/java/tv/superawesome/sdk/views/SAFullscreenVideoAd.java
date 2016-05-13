@@ -18,7 +18,7 @@ import tv.superawesome.sdk.models.SAAd;
  * Created by gabriel.coman on 24/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SAVideoActivity implements SAViewInterface {
+public class SAFullscreenVideoAd implements SAViewInterface {
 
     /** private activity object values */
     private Context context;
@@ -31,7 +31,7 @@ public class SAVideoActivity implements SAViewInterface {
     /**********************************************************************************************/
 
     /** base constructor */
-    public SAVideoActivity(Context context){
+    public SAFullscreenVideoAd(Context context){
         this.context = context;
         holder = new VideoAdDataHolder ();
     }
@@ -92,7 +92,7 @@ public class SAVideoActivity implements SAViewInterface {
     /** play function */
     @Override
     public void play(){
-        intent = new Intent(context, SAVideoActivityInner.class);
+        intent = new Intent(context, SAFullscreenVideoAdActivity.class);
         context.startActivity(intent);
     }
 
@@ -115,7 +115,7 @@ public class SAVideoActivity implements SAViewInterface {
     }
 
     /** inner activity class */
-    public static class SAVideoActivityInner extends Activity {
+    public static class SAFullscreenVideoAdActivity extends Activity {
 
         /** private variables that control how the ad behaves */
         private SAAd ad;
@@ -146,7 +146,7 @@ public class SAVideoActivity implements SAViewInterface {
             super.onCreate(savedInstanceState);
 
             /** update parent class weak ref to point to this activity */
-            SAVideoActivity.updateActivity(this);
+            SAFullscreenVideoAd.updateActivity(this);
 
             /** load resources */
             String packageName = SAApplication.getSAApplicationContext().getPackageName();

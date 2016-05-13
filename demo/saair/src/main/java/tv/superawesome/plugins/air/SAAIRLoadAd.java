@@ -1,4 +1,4 @@
-package tv.superawesome.plugins.air.functions;
+package tv.superawesome.plugins.air;
 
 import android.util.Log;
 
@@ -18,7 +18,7 @@ import tv.superawesome.sdk.models.SAAd;
 /**
  * Created by gabriel.coman on 16/03/16.
  */
-public class SAAIRLoadAdFunction implements FREFunction {
+public class SAAIRLoadAd implements FREFunction {
     @Override
     public FREObject call(final FREContext freContext, FREObject[] freObjects) {
         /** setup vars with default values */
@@ -51,7 +51,8 @@ public class SAAIRLoadAdFunction implements FREFunction {
 
                         /** dispatch a loaded ad event */
                         String meta = "{\"placementId\":" + placementId + ", \"name\":\"" + name + "\", \"func\":\"didLoadAd\"}";
-                        freContext.dispatchStatusEventAsync(meta, ad.adJson);
+                        String adJson = ad.writeToJson().toString();
+                        freContext.dispatchStatusEventAsync(meta, adJson);
                     }
 
                     @Override
