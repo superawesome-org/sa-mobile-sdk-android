@@ -22,7 +22,7 @@ public class SAData implements Parcelable, JSONSerializable {
 
     public String adHtml;
     public String imagePath;
-    public List<SAVASTAd> vastAds = new ArrayList<SAVASTAd>();
+    public SAVASTAd vastAd = null;
 
     public SAData(){
         /** standard constructor */
@@ -35,7 +35,7 @@ public class SAData implements Parcelable, JSONSerializable {
     protected SAData(Parcel in) {
         adHtml = in.readString();
         imagePath = in.readString();
-        vastAds = in.createTypedArrayList(SAVASTAd.CREATOR);
+        vastAd = in.readParcelable(SAVASTAd.class.getClassLoader());
     }
 
     public static final Creator<SAData> CREATOR = new Creator<SAData>() {
@@ -54,8 +54,8 @@ public class SAData implements Parcelable, JSONSerializable {
         String printout = " \n\t\tDATA:\n";
         printout += "\t\t\t adHtml: " + adHtml + "\n";
         printout += "\t\t\t imagePath: " + imagePath + "\n";
-        printout += "\t\t\t vastAds: " + vastAds.size() + "\n";
         Log.d("SuperAwesome", printout);
+        vastAd.print();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SAData implements Parcelable, JSONSerializable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(adHtml);
         dest.writeString(imagePath);
-        dest.writeTypedList(vastAds);
+        dest.writeParcelable(vastAd, flags);
     }
 
     @Override
@@ -78,17 +78,12 @@ public class SAData implements Parcelable, JSONSerializable {
         if (!json.isNull("imagePath")) {
             imagePath = json.optString("imagePath");
         }
-        if (!json.isNull("vastAds")){
-            vastAds = new ArrayList<SAVASTAd>();
-            JSONArray jsonArray = json.optJSONArray("vastAds");
-            for (int i = 0; i < jsonArray.length(); i++){
-                JSONObject obj = jsonArray.optJSONObject(i);
-                try {
-                    SAVASTAd savastAd = new SAVASTAd(obj);
-                    vastAds.add(savastAd);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        if (!json.isNull("vastAd")) {
+            JSONObject obj = json.optJSONObject("vastAd");
+            try {
+                vastAd = new SAVASTAd(obj);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -107,13 +102,9 @@ public class SAData implements Parcelable, JSONSerializable {
             e.printStackTrace();
         }
 
-        if (vastAds != null) {
-            JSONArray vastAdsJsonArray = new JSONArray();
-            for (SAVASTAd savastAd : vastAds) {
-                vastAdsJsonArray.put(savastAd.writeToJson());
-            }
+        if (vastAd != null) {
             try {
-                json.put("vastAds", vastAdsJsonArray);
+                json.put("vastAd", vastAd.writeToJson());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

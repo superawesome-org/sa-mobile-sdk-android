@@ -226,8 +226,10 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     @Override
     public void onStop() {
         super.onStop();
-        controller.shouldNotHide = false;
-        controller.hide();
+        if (controller != null) {
+            controller.shouldNotHide = false;
+            controller.hide();
+        }
         if (isCompleteHandled || !isReady) return;
         mediaPlayer.pause();
     }

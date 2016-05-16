@@ -5,12 +5,12 @@
     <application
         android:allowBackup="true">
         <activity
-            android:name=".views.SAFullscreenVideoAd$SAVideoActivityInner"
-            android:label="SAVideoActivity"
+            android:name=".views.SAFullscreenVideoAd$SAFullscreenVideoAdActivity"
+            android:label="SAFullscreenVideoAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity
-            android:name=".views.SAInterstitialAd$SAInterstitialActivityInner"
-            android:label="SAInterstitialActivity"
+            android:name=".views.SAInterstitialAd$SAInterstitialAdActivity"
+            android:label="SAInterstitialAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
 

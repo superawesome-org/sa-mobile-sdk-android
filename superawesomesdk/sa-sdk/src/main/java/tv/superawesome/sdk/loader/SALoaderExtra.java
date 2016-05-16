@@ -46,10 +46,11 @@ public class SALoaderExtra {
             }
             case video: {
                 parser = new SAVASTParser();
-                parser.execute(ad.creative.details.vast, new SAVASTParserInterface() {
+
+                parser.parseVASTAds(ad.creative.details.vast, new SAVASTParserInterface() {
                     @Override
-                    public void didParseVAST(List<SAVASTAd> ads) {
-                        ad.creative.details.data.vastAds = ads;
+                    public void didParseVAST(SAVASTAd vastAd) {
+                        ad.creative.details.data.vastAd = vastAd;
                         listener.extraDone(ad);
                     }
                 });

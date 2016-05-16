@@ -1,5 +1,8 @@
 package tv.superawesome.lib.savast;
 
+import android.util.Log;
+
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -7,6 +10,7 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import tv.superawesome.lib.sautils.SAAsyncTask;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.sautils.SAFileDownloader;
+import tv.superawesome.lib.sautils.SANetInterface;
 import tv.superawesome.lib.sautils.SANetwork;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.models.SAVASTAd;
@@ -34,34 +39,14 @@ public class SAVASTParser {
     private SAVASTParserInterface listener;
     private List<SAVASTAd> ads;
 
-    public void execute(final String url, final SAVASTParserInterface listener) {
+    public void parseVASTAds(final String url, final SAVASTParserInterface listener) {
         this.listener = listener;
 
-        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskInterface() {
+        this.parseVAST(url, new SAVASTParserInterface() {
             @Override
-            public Object taskToExecute() throws IOException, SAXException, ParserConfigurationException  {
-                List<SAVASTAd> ads = parseVAST(url);
-                return ads;
-            }
-
-            @Override
-            public void onFinish(Object result) {
-                List<SAVASTAd> ads = new ArrayList<>();
-                if (result != null){
-                    ads = (List<SAVASTAd>)result;
-                }
-
-                if (listener != null) {
-                    listener.didParseVAST(ads);
-                }
-            }
-
-            @Override
-            public void onError() {
-                List<SAVASTAd> ads = new ArrayList<>();
-                if (listener != null) {
-                    listener.didParseVAST(ads);
-                }
+            public void didParseVAST(SAVASTAd ad) {
+                // download files
+                listener.didParseVAST(ad);
             }
         });
     }
@@ -71,80 +56,63 @@ public class SAVASTParser {
      * @param url - URL to the VAST
      * @return an array of VAST ads
      */
-    private List<SAVASTAd> parseVAST(String url) throws IOException, ParserConfigurationException, SAXException {
-        /** create the array of ads that should be returned */
-        final List<SAVASTAd> lads = new ArrayList<SAVASTAd>();
-
+    private void parseVAST(String url, final SAVASTParserInterface listener) {
         /** step 1: get the XML */
-        SANetwork network = new SANetwork();
-        String VAST = network.syncGet(url);
-
-        if (VAST == null) {
-            /**
-             * return empty ads if  VAST string is NULL - this can sometimes happen because of SSL certificate issues
-             */
-            return lads;
-        }
-
-        /** create the Doc builder factory */
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        /** Parse the XML file */
-        Document doc = db.parse(new InputSource(new ByteArrayInputStream(VAST.getBytes("utf-8"))));
-        doc.getDocumentElement().normalize();
-
-        /** step 2. get the correct reference to the root XML element */
-        final Element root = (Element) doc.getElementsByTagName("VAST").item(0);
-
-        /** step 3. check if the loaded XML document has "Ad" children */
-        boolean hasAds = SAXML.checkSiblingsAndChildrenOf(root, "Ad");
-        if (!hasAds) {
-            return lads;
-        }
-
-        /** step 4. start finding ads and parsing them */
-        SAXML.searchSiblingsAndChildrenOf(root, "Ad", new SAXML.SAXMLIterator() {
+        final SANetwork network = new SANetwork();
+        network.asyncGet(url, new JSONObject(), new SANetInterface() {
             @Override
-            public void foundElement(Element e) {
+            public void success(Object data) {
+                String VAST = (String)data;
 
-                boolean isInLine = SAXML.checkSiblingsAndChildrenOf(e, "InLine");
-                boolean isWrapper = SAXML.checkSiblingsAndChildrenOf(e, "Wrapper");
+                Document doc = null;
+                try {
+                    // get the XML doc and the root element
+                    doc = SAXML.parseXML(VAST);
+                    final Element root = (Element) doc.getElementsByTagName("VAST").item(0);
 
-                if (isInLine){
-                    SAVASTAd inlineAd = parseAdXML(e);
-                    lads.add(inlineAd);
-                } else if (isWrapper) {
-                    SAVASTAd wrapperAd = parseAdXML(e);
-
-                    String VASTAdTagURI = "";
-                    Element uriPointer = SAXML.findFirstInstanceInSiblingsAndChildrenOf(e, "VASTAdTagURI");
-                    if (uriPointer != null){
-                        VASTAdTagURI = uriPointer.getTextContent();
+                    // do a check
+                    if (! SAXML.checkSiblingsAndChildrenOf(root, "Ad")) {
+                        listener.didParseVAST(null);
+                        return;
                     }
 
-                    try {
-                        List<SAVASTAd> foundAds = parseVAST(VASTAdTagURI);
-                        wrapperAd.creatives = SAUtils.removeAllButFirstElement(wrapperAd.creatives);
+                    // get the proper vast ad
+                    Element adXML = SAXML.findFirstInstanceInSiblingsAndChildrenOf(root, "Ad");
+                    final SAVASTAd ad = parseAdXML(adXML);
 
-                        /** merge foundAds with wrapper ad */
-                        for (SAVASTAd foundAd : foundAds) {
-                            foundAd.sumAd(wrapperAd);
-                        }
-
-                        /** add to final return array */
-                        for (SAVASTAd foundAd : foundAds) {
-                            lads.add(foundAd);
-                        }
-                    } catch (IOException | ParserConfigurationException | SAXException e1) {
-                        e1.printStackTrace();
+                    // inline case
+                    if (ad.type == SAVASTAdType.InLine) {
+                        listener.didParseVAST(ad);
+                        return;
                     }
-                } else {
-                    /** do nothing */
+                    // wrapper case
+                    else if (ad.type == SAVASTAdType.Wrapper) {
+                        parseVAST(ad.redirectUri, new SAVASTParserInterface() {
+                            @Override
+                            public void didParseVAST(SAVASTAd wrapper) {
+                                if (wrapper != null) {
+                                    wrapper.sumAd(ad);
+                                }
+
+                                listener.didParseVAST(wrapper);
+                                return;
+                            }
+                        });
+                    }
+                    // some other invalid case
+                    else {
+                        listener.didParseVAST(null);
+                    }
+                } catch (ParserConfigurationException | IOException | SAXException | NullPointerException e) {
+                    listener.didParseVAST(null);
                 }
             }
-        });
 
-        return lads;
+            @Override
+            public void failure() {
+                listener.didParseVAST(null);
+            }
+        });
     }
 
     /**
@@ -170,7 +138,11 @@ public class SAVASTParser {
         /** init ad arrays */
         ad.errors = new ArrayList<>();
         ad.impressions = new ArrayList<>();
-        ad.creatives = new ArrayList<>();
+
+        Element vastUri = SAXML.findFirstInstanceInSiblingsAndChildrenOf(adElement, "VASTAdTagURI");
+        if (vastUri != null) {
+            ad.redirectUri = vastUri.getTextContent();
+        }
 
         /** get errors */
         SAXML.searchSiblingsAndChildrenOf(adElement, "Error", new SAXML.SAXMLIterator() {
@@ -190,16 +162,8 @@ public class SAVASTParser {
             }
         });
 
-        /** get creatives */
-        SAXML.searchSiblingsAndChildrenOf(adElement, "Creative", new SAXML.SAXMLIterator() {
-            @Override
-            public void foundElement(Element e) {
-                SAVASTCreative linear = parseCreativeXML(e);
-                if (linear != null){
-                    ad.creatives.add(linear);
-                }
-            }
-        });
+        Element creativeXML = SAXML.findFirstInstanceInSiblingsAndChildrenOf(adElement, "Creative");
+        ad.creative = parseCreativeXML(creativeXML);
 
         return ad;
     }

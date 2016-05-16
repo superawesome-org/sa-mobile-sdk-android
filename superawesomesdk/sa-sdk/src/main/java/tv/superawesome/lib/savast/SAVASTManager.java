@@ -22,12 +22,6 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
     private SAVideoPlayer refPlayer;
     private SAVASTManagerInterface listener;
 
-    /** other private variables needed to play ads */
-    private List<SAVASTAd> adQueue;
-
-    private int currentAdIndex;
-    private int currentCreativeIndex;
-
     /** references to current ad and current creative */
     private SAVASTAd _cAd;
     private SAVASTCreative _cCreative;
@@ -56,42 +50,36 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
      * @param url
      */
     public void parseVASTURL(String url) {
-        parser.execute(url, this);
+        parser.parseVASTAds(url, this);
     }
 
-    public void manageWithAds(List<SAVASTAd> ads) {
+    public void manageWithAd(SAVASTAd ad) {
         /** error checking */
-        if (ads.size() < 1) {
+        if (ad == null || ad.creative == null) {
             if (listener != null) {
                 listener.didNotFindAds();
             }
             return;
         }
 
-        /** give ref to adQueue from the returned ads list  */
-        adQueue = ads;
-
-        /** set the ad queue play head */
-        currentAdIndex = 0;
-        currentCreativeIndex = -1;
-
         /** get current ad */
-        _cAd = adQueue.get(currentAdIndex);
+        _cAd = ad;
+        _cCreative = ad.creative;
 
         /** call listener */
         if (listener != null){
             listener.didStartAd();
         }
 
-        /** progress through ads */
-        this.progressThroughAds();
+        // play current data
+        playCurrentAdWithCurrentCreative();
     }
 
     /** <SAVASTParserInterface> */
 
     @Override
-    public void didParseVAST(List<SAVASTAd> ads) {
-        manageWithAds(ads);
+    public void didParseVAST(SAVASTAd ad) {
+        manageWithAd(ad);
     }
 
     /** <SAVideoPlayerInterface> */
@@ -170,10 +158,9 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
         /** call listener */
         if (listener != null){
             listener.didEndOfCreative();
+            listener.didEndAd();
+            listener.didEndAllAds();
         }
-
-        /** call to continue */
-        this.progressThroughAds();
     }
 
     @Override
@@ -194,9 +181,6 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
         if (listener != null){
             listener.didHaveErrorForCreative();
         }
-
-        /** call to continue to progress */
-        // this.progressThroughAds();
     }
 
     @Override
@@ -219,47 +203,6 @@ public class SAVASTManager implements SAVASTParserInterface, SAVideoPlayerInterf
     public void didClickOnClose() {
         if (listener != null) {
             listener.didClickOnClose();
-        }
-    }
-
-    /** Other needed functions */
-
-    private void progressThroughAds() {
-        int creativeCount = adQueue.get(currentAdIndex).creatives.size();
-
-        if (currentCreativeIndex < creativeCount - 1){
-            /** select current */
-            currentCreativeIndex++;
-            _cCreative = _cAd.creatives.get(currentCreativeIndex);
-
-            /** play */
-            playCurrentAdWithCurrentCreative();
-        } else  {
-            /** call listener */
-            if (listener != null){
-                listener.didEndAd();
-            }
-
-            if (currentAdIndex < adQueue.size() - 1){
-                /** select current */
-                currentCreativeIndex = 0;
-                currentAdIndex++;
-
-                _cAd = adQueue.get(currentAdIndex);
-                _cCreative = _cAd.creatives.get(currentCreativeIndex);
-
-                /** call listener again */
-                if (listener != null) {
-                    listener.didStartAd();
-                }
-
-                /** play */
-                playCurrentAdWithCurrentCreative();
-            } else  {
-                if (listener != null){
-                    listener.didEndAllAds();
-                }
-            }
         }
     }
 

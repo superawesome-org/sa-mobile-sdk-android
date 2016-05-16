@@ -8,11 +8,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.channels.SelectableChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import tv.superawesome.lib.sautils.JSONSerializable;
+import tv.superawesome.sdk.models.SACreative;
 
 /**
  * Created by gabriel.coman on 22/12/15.
@@ -22,10 +24,11 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
     public SAVASTAdType type;
     public String id;
     public String sequence;
+    public String redirectUri;
     public boolean isImpressionSent;
     public List<String> errors;
     public List<String> impressions;
-    public List<SAVASTCreative> creatives;
+    public SAVASTCreative creative;
 
     public SAVASTAd(){
 
@@ -39,10 +42,11 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
         type = in.readParcelable(SAVASTAdType.class.getClassLoader());
         id = in.readString();
         sequence = in.readString();
+        redirectUri = in.readString();
+        isImpressionSent = in.readByte() != 0;
         errors = in.createStringArrayList();
         impressions = in.createStringArrayList();
-        isImpressionSent = in.readByte() != 0;
-        creatives = in.createTypedArrayList(SAVASTCreative.CREATOR);
+        creative = in.readParcelable(SAVASTCreative.class.getClassLoader());
     }
 
     public static final Creator<SAVASTAd> CREATOR = new Creator<SAVASTAd>() {
@@ -61,15 +65,11 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
         String printout = " \n";
         printout += type.toString() + " Ad(" + id + ")" + "\n";
         printout += "Sequence: " + sequence + "\n";
+        printout += "Redirect Uri: " + redirectUri + "\n";
         printout += "Errors[" + errors.size() + "]" + "\n";
         printout += "Impressions[" + impressions.size() + "]" + "\n";
-        printout += "Creatives[" + creatives.size() + "]" + "\n";
         Log.d("SuperAwesome", printout);
-
-        for (Iterator<SAVASTCreative> i = creatives.iterator(); i.hasNext(); ) {
-            SAVASTCreative item = i.next();
-            item.print();
-        }
+        creative.print();
     }
 
     public void sumAd(SAVASTAd ad){
@@ -86,12 +86,7 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
             this.impressions.add(impression);
         }
 
-        // add creatives
-        for (SAVASTCreative creative1 : this.creatives) {
-            for (SAVASTCreative creative2 : ad.creatives) {
-                creative1.sumCreative(creative2);
-            }
-        }
+        this.creative.sumCreative(ad.creative);
     }
 
     @Override
@@ -104,10 +99,11 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
         dest.writeParcelable(type, flags);
         dest.writeString(id);
         dest.writeString(sequence);
+        dest.writeString(redirectUri);
+        dest.writeByte((byte) (isImpressionSent ? 1 : 0));
         dest.writeStringList(errors);
         dest.writeStringList(impressions);
-        dest.writeByte((byte) (isImpressionSent ? 1 : 0));
-        dest.writeTypedList(creatives);
+        dest.writeParcelable(creative, flags);
     }
 
     @Override
@@ -117,6 +113,9 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
         }
         if (!json.isNull("sequence")){
             sequence = json.optString("sequence");
+        }
+        if (!json.isNull("redirectUri")) {
+            redirectUri = json.optString("redirectUri");
         }
         if (!json.isNull("isImpressionSent")){
             isImpressionSent = json.optBoolean("isImpressionSent");
@@ -155,17 +154,12 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
                 }
             }
         }
-        if (!json.isNull("creatives")) {
-            creatives = new ArrayList<SAVASTCreative>();
-            JSONArray jsonArray = json.optJSONArray("creatives");
-            for (int i = 0; i < jsonArray.length(); i++){
-                JSONObject obj = jsonArray.optJSONObject(i);
-                try {
-                    SAVASTCreative creative = new SAVASTCreative(obj);
-                    creatives.add(creative);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        if (!json.isNull("creative")) {
+            JSONObject obj = json.optJSONObject("creative");
+            try {
+                creative = new SAVASTCreative(obj);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -181,6 +175,11 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
         try {
             json.put("id", id);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            json.put("redirectUri", redirectUri);
+        } catch (JSONException e){
             e.printStackTrace();
         }
         try {
@@ -218,16 +217,10 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
             }
         }
 
-        if (creatives != null) {
-            JSONArray creativesJsonArray = new JSONArray();
-            for (SAVASTCreative creative : creatives) {
-                creativesJsonArray.put(creative.writeToJson());
-            }
-            try {
-                json.put("creatives", creativesJsonArray);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        try {
+            json.put("creative", creative.writeToJson());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return json;

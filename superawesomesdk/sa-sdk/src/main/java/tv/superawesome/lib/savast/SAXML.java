@@ -1,16 +1,50 @@
 package tv.superawesome.lib.savast;
 
+import android.util.Log;
+
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by gabriel.coman on 22/12/15.
  */
 public class SAXML {
+
+    /**
+     * function that parses a XML document
+     * @param xml xml string
+     * @return a Document object
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
+    public static Document parseXML(String xml) throws ParserConfigurationException, IOException, SAXException, NullPointerException {
+        if (xml == null) {
+            NullPointerException e = new NullPointerException();
+            throw e;
+        }
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
+        doc.getDocumentElement().normalize();
+        return doc;
+    }
 
     /**
      * private function that makes the most generic search

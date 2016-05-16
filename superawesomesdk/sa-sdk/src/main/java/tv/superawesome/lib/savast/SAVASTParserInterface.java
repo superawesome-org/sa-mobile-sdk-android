@@ -10,7 +10,7 @@ public interface SAVASTParserInterface {
 
     /**
      * Called when the parser has successfully parsed a VAST tag
-     * @param ads - returns (as a callback parameter) a list of ads
+     * @param ad - returns (as a callback parameter) a
      */
-    void didParseVAST(List<SAVASTAd> ads);
+    void didParseVAST(SAVASTAd ad);
 }

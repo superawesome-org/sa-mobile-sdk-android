@@ -119,7 +119,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                manager.manageWithAds(ad.creative.details.data.vastAds);
+                manager.manageWithAd(ad.creative.details.data.vastAd);
             }
         };
 
