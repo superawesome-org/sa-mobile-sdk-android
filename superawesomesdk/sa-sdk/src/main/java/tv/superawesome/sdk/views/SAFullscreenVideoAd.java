@@ -66,6 +66,10 @@ public class SAFullscreenVideoAd implements SAViewInterface {
         holder._refShouldLockOrientation = shouldLockOrientation;
     }
 
+    public void setShouldAllowFullscreenClick(boolean shouldAllowFullscreenClick) {
+        holder._refShouldAllowFullscreenClick = shouldAllowFullscreenClick;
+    }
+
     public void setLockOrientation(int lockOrientation){
         holder._refLockOrientation = lockOrientation;
     }
@@ -123,6 +127,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
         private boolean shouldShowCloseButton = true;
         private boolean shouldAutomaticallyCloseAtEnd = true;
         private boolean shouldLockOrientation = false;
+        private boolean shouldAllowFullscreenClick = true;
         private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         /** sdk listeners */
@@ -164,6 +169,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
             videoAdListener = holder._refVideoAdListener;
             parentalGateListener = holder._refParentalGateListener;
             shouldLockOrientation = holder._refShouldLockOrientation;
+            shouldAllowFullscreenClick = holder._refShouldAllowFullscreenClick;
             lockOrientation = holder._refLockOrientation;
 
             /** make sure direction is locked */
@@ -181,6 +187,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
                 videoAd.setVideoAdListener(videoAdListener);
                 videoAd.setIsParentalGateEnabled(isParentalGateEnabled);
                 videoAd.setShouldShowCloseButton(shouldShowCloseButton);
+                videoAd.setShouldAllowFullscreenClick(shouldAllowFullscreenClick);
                 videoAd.setInternalAdListener(new SAAdInterface() {
                     @Override
                     public void adWasShown(int placementId) {}
@@ -266,6 +273,7 @@ class VideoAdDataHolder {
     public boolean _refShouldShowCloseButton = true;
     public boolean _refShouldAutomaticallyCloseAtEnd = true;
     public boolean _refShouldLockOrientation = false;
+    public boolean _refShouldAllowFullscreenClick = true;
     public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
     public SAAdInterface _refAdListener;
     public SAParentalGateInterface _refParentalGateListener;

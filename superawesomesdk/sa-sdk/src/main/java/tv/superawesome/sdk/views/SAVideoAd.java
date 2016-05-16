@@ -30,6 +30,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     /** the Ad */
     private boolean isParentalGateEnabled = true;
     private boolean shouldShowCloseButton = false;
+    private boolean shouldAllowFullscreenClick = true;
     private SAAd ad;
 
     /** display stuff */
@@ -113,6 +114,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
          */
         videoPlayer.shouldShowPadlock = !(ad.isFallback || ad.isHouse);
         videoPlayer.shouldShowCloseButton = shouldShowCloseButton;
+        videoPlayer.shouldAllowFullscreenClick = shouldAllowFullscreenClick;
         manager = new SAVASTManager(videoPlayer, this);
 
         /** wait till the ad ia actually visible to play it */
@@ -171,6 +173,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     public void setInternalVideoAdListener(SAVideoAdInterface videoAdListener) { this.internalVideoAdListener = videoAdListener; }
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) { this.isParentalGateEnabled = isParentalGateEnabled; }
     public void setShouldShowCloseButton(boolean shouldShowCloseButton) { this.shouldShowCloseButton = shouldShowCloseButton; }
+    public void setShouldAllowFullscreenClick(boolean shouldAllowFullscreenClick) { this.shouldAllowFullscreenClick = shouldAllowFullscreenClick; }
 
     /**
      * *********************************************************************************************

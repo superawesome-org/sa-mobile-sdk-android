@@ -35,6 +35,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     private boolean shouldShowCloseButton;
     private boolean shouldAutomaticallyCloseAtEnd;
     private boolean shouldLockOrientation;
+    private boolean shouldAllowFullscreenClick;
     private int lockOrientation;
     private String moPubId;
 
@@ -75,6 +76,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         shouldShowCloseButton = false;
         shouldAutomaticallyCloseAtEnd = true;
         shouldLockOrientation = false;
+        shouldAllowFullscreenClick = true;
         lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 
         /** get datas */
@@ -105,6 +107,9 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                 }
             }
+        }
+        if (map1.get("shouldAllowFullscreenClick") != null) {
+            shouldAllowFullscreenClick = Boolean.valueOf(map1.get("shouldAllowFullscreenClick"));
         }
 
         Log.d("SuperAwesome-MoPub", "loaded data until here for " + placementId);
@@ -140,6 +145,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                 video.setShouldShowCloseButton(shouldShowCloseButton);
                 video.setShouldLockOrientation(shouldLockOrientation);
                 video.setLockOrientation(lockOrientation);
+                video.setShouldAllowFullscreenClick(shouldAllowFullscreenClick);
 
                 video.setAdListener(new SAAdInterface() {
                     @Override

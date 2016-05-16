@@ -39,6 +39,7 @@ public class SAMediaController extends MediaController {
     public boolean shouldShowPadlock = false;
     public boolean shouldShowCloseButton = false;
     public boolean shouldNotHide = true;
+    public boolean shouldAllowFullscreenClick = true;
 
     public SAMediaController(Context context) {
         super(context);
@@ -85,18 +86,26 @@ public class SAMediaController extends MediaController {
         parent.addView(chronographer, chronoLay);
 
         /** create the show more button */
-        showMore = new Button(mContext);
-        showMore.setTransformationMethod(null);
-        showMore.setText(findOutMore);
-        showMore.setTextColor(Color.WHITE);
-        showMore.setTextSize(12);
-        showMore.setBackgroundColor(Color.TRANSPARENT);
-        showMore.setGravity(Gravity.CENTER_VERTICAL);
-        showMore.setPadding((int) (65 * scale), 0, 0, 0);
-        RelativeLayout.LayoutParams showLay = new RelativeLayout.LayoutParams((int)(200*scale), (int)(26*scale));
-        showLay.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        showLay.setMargins(0, 0, 0, (int)(5*scale));
-        parent.addView(showMore, showLay);
+        if (!shouldAllowFullscreenClick) {
+            showMore = new Button(mContext);
+            showMore.setTransformationMethod(null);
+            showMore.setText(findOutMore);
+            showMore.setTextColor(Color.WHITE);
+            showMore.setTextSize(12);
+            showMore.setBackgroundColor(Color.TRANSPARENT);
+            showMore.setGravity(Gravity.CENTER_VERTICAL);
+            showMore.setPadding((int) (65 * scale), 0, 0, 0);
+            RelativeLayout.LayoutParams showLay = new RelativeLayout.LayoutParams((int)(200*scale), (int)(26*scale));
+            showLay.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            showLay.setMargins(0, 0, 0, (int)(5*scale));
+            parent.addView(showMore, showLay);
+        } else {
+            showMore = new Button(mContext);
+            showMore.setTransformationMethod(null);
+            showMore.setBackgroundColor(Color.TRANSPARENT);
+            RelativeLayout.LayoutParams showLay = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            parent.addView(showMore, showLay);
+        }
 
         /** create the padlock */
         if (shouldShowPadlock) {

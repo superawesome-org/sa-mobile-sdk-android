@@ -124,6 +124,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
             fvad.setShouldAutomaticallyCloseAtEnd(false);
             fvad.setShouldLockOrientation(true);
             fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fvad.setShouldAllowFullscreenClick(false);
             fvad.play();
         }
     }

@@ -48,6 +48,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
     public SAVideoPlayerInterface listener = null;
     public boolean shouldShowPadlock = true;
     public boolean shouldShowCloseButton = false;
+    public boolean shouldAllowFullscreenClick = true;
     public String videoURL = null;
 
     /** current time */
@@ -182,6 +183,7 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
                 controller.shouldNotHide = true;
                 controller.shouldShowCloseButton = shouldShowCloseButton;
                 controller.shouldShowPadlock = shouldShowPadlock;
+                controller.shouldAllowFullscreenClick = shouldAllowFullscreenClick;
                 controller.setMediaPlayer(SAVideoPlayer.this);
                 controller.setAnchorView(containerView);
                 controller.show(0);
