@@ -3,7 +3,7 @@ package tv.superawesome.lib.sautils;
 /**
  * This is a listener interface for SAGet and SAPost async task classes
  */
-public interface SANetInterface {
+public interface SANetworkInterface {
 
     /**
      * This function should be called in case of Async operation success, and should

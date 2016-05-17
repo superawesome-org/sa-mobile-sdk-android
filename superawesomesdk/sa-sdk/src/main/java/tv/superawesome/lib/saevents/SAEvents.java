@@ -2,7 +2,7 @@ package tv.superawesome.lib.saevents;
 
 import org.json.JSONObject;
 
-import tv.superawesome.lib.sautils.SANetInterface;
+import tv.superawesome.lib.sautils.SANetworkInterface;
 import tv.superawesome.lib.sautils.SANetwork;
 
 
@@ -25,7 +25,7 @@ public class SAEvents {
         if (!isSATrackingEnabled) return;
 
         SANetwork network = new SANetwork();
-        network.asyncGet(url, new JSONObject(), new SANetInterface() {
+        network.asyncGet(url, new JSONObject(), new SANetworkInterface() {
             @Override
             public void success(Object data) {
                 /** do nothing */

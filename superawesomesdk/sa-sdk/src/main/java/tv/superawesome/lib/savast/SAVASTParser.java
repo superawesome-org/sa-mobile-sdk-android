@@ -1,29 +1,19 @@
 package tv.superawesome.lib.savast;
 
-import android.util.Log;
-
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.sql.Wrapper;
 import java.util.ArrayList;
-import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import tv.superawesome.lib.sautils.SAAsyncTask;
-import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.sautils.SAFileDownloader;
-import tv.superawesome.lib.sautils.SANetInterface;
+import tv.superawesome.lib.sautils.SAFileDownloaderInterface;
+import tv.superawesome.lib.sautils.SANetworkInterface;
 import tv.superawesome.lib.sautils.SANetwork;
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savast.models.SAVASTAd;
 import tv.superawesome.lib.savast.models.SAVASTAdType;
 import tv.superawesome.lib.savast.models.SAVASTCreative;
@@ -36,17 +26,30 @@ import tv.superawesome.lib.savast.models.SAVASTTracking;
  */
 public class SAVASTParser {
 
-    private SAVASTParserInterface listener;
-    private List<SAVASTAd> ads;
-
+    /**
+     * The main parse function of the parser
+     * @param url - URL where the VAST resides
+     * @param listener - a SAVASTParserInterface listener object
+     */
     public void parseVASTAds(final String url, final SAVASTParserInterface listener) {
-        this.listener = listener;
 
         this.parseVAST(url, new SAVASTParserInterface() {
             @Override
-            public void didParseVAST(SAVASTAd ad) {
-                // download files
-                listener.didParseVAST(ad);
+            public void didParseVAST(final SAVASTAd ad) {
+
+                SAFileDownloader.getInstance().downloadFile(ad.creative.playableMediaUrl, ad.creative.playableDiskUrl, new SAFileDownloaderInterface() {
+                    @Override
+                    public void finished() {
+                        ad.creative.isOnDisk = true;
+                        listener.didParseVAST(ad);
+                    }
+
+                    @Override
+                    public void failure() {
+                        ad.creative.isOnDisk = false;
+                        listener.didParseVAST(ad);
+                    }
+                });
             }
         });
     }
@@ -59,7 +62,7 @@ public class SAVASTParser {
     private void parseVAST(String url, final SAVASTParserInterface listener) {
         /** step 1: get the XML */
         final SANetwork network = new SANetwork();
-        network.asyncGet(url, new JSONObject(), new SANetInterface() {
+        network.asyncGet(url, new JSONObject(), new SANetworkInterface() {
             @Override
             public void success(Object data) {
                 String VAST = (String)data;
@@ -71,9 +74,11 @@ public class SAVASTParser {
                     final Element root = (Element) doc.getElementsByTagName("VAST").item(0);
 
                     // do a check
+                    if (root == null) {
+                        listener.didParseVAST(null); return;
+                    }
                     if (! SAXML.checkSiblingsAndChildrenOf(root, "Ad")) {
-                        listener.didParseVAST(null);
-                        return;
+                        listener.didParseVAST(null); return;
                     }
 
                     // get the proper vast ad
@@ -93,7 +98,6 @@ public class SAVASTParser {
                                 if (wrapper != null) {
                                     wrapper.sumAd(ad);
                                 }
-
                                 listener.didParseVAST(wrapper);
                                 return;
                             }
@@ -258,8 +262,7 @@ public class SAVASTParser {
             if (creative.mediaFiles.size() > 0) {
                 creative.playableMediaUrl = creative.mediaFiles.get(0).url;
                 if (creative.playableMediaUrl != null) {
-                    creative.playableDiskUrl = SAFileDownloader.getInstance().downloadFileSync(creative.playableMediaUrl);
-                    creative.isOnDisk = (creative.playableDiskUrl != null);
+                    creative.playableDiskUrl = SAFileDownloader.getInstance().getDiskLocation();
                 }
             }
 

@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import tv.superawesome.sdk.loader.SALoader;
@@ -26,7 +27,6 @@ public class SAFileDownloader {
 
     /** constants */
     private final String PREFERENCES = "MyPreferences";
-    private final String SA_FILE_STORE = "SA_FILE_STORE";
     private final String SA_FOLDER = "/satmofolder";
 
     /** private variables */
@@ -40,7 +40,7 @@ public class SAFileDownloader {
     }
 
     /** make the constructor private so that this class cannot be instantiated */
-    private SAFileDownloader(){
+    private SAFileDownloader () {
         preferences = SAApplication.getSAApplicationContext().getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         editor = preferences.edit();
 
@@ -48,69 +48,100 @@ public class SAFileDownloader {
     }
 
     /**
-     * Download a file in a sync way
-     * @param videoURL
-     * @return a filepath to the new file
+     * Returns a key-enabled disk location
+     * @return
      */
-    public String downloadFileSync(String videoURL) {
+    public String getDiskLocation () {
+        return "samov_" + SAUtils.generateUniqueKey() + ".mp4";
+    }
 
-        /** create the file path */
-        final String key = SAUtils.generateUniqueKey();
-        final String filePath = "samov_" + key + ".mp4";
+    /**
+     * Function that downloads a file
+     * @param videoUrl - the remote file ULR
+     * @param fpath - the simple file path of the file
+     * @param listener - result listener
+     */
+    public void downloadFile(final String videoUrl, final String fpath, final SAFileDownloaderInterface listener) {
+        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskInterface() {
+            @Override
+            public Object taskToExecute() throws Exception {
+                /** get the original SA unique key */
+                if (fpath == null) return null;
+                String[] c1 = fpath.split("_");
+                if (c1.length < 2) return null;
+                String key1 = c1[1];
+                String[] c2 = key1.split(".mp4");
+                if (c2.length < 1) return null;
+                String key = c2[0];
 
-        /** actually create the file */
-        File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File (sdCard.getAbsolutePath() + SA_FOLDER);
-        dir.mkdirs();
-        File file = new File(dir, filePath);
+                /** actually create the file */
+                File sdCard = Environment.getExternalStorageDirectory();
+                File dir = new File (sdCard.getAbsolutePath() + SA_FOLDER);
+                dir.mkdirs();
+                File file = new File(dir, fpath);
 
-        /** create streams */
-        InputStream input = null;
-        OutputStream output = null;
-        HttpURLConnection connection = null;
-        try {
-            /** start connection */
-            URL url = new URL(videoURL);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.connect();
+                /** create streams */
+                InputStream input = null;
+                OutputStream output = null;
+                HttpURLConnection connection = null;
+                try {
+                    /** start connection */
+                    URL url = new URL(videoUrl);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
 
-            int statusCode = connection.getResponseCode();
-            int fileLength = connection.getContentLength();
+                    int statusCode = connection.getResponseCode();
 
-            /** exception code != 200 */
-            if (statusCode != HttpURLConnection.HTTP_OK) return null;
+                    /** exception code != 200 */
+                    if (statusCode != HttpURLConnection.HTTP_OK) return null;
 
-            /** get input stream and start writing to disk */
-            input = connection.getInputStream();
-            output = new FileOutputStream(file);
+                    /** get input stream and start writing to disk */
+                    input = connection.getInputStream();
+                    output = new FileOutputStream(file);
 
-            byte data[] = new byte[4096];
-            long total = 0;
-            int count;
-            while ((count = input.read(data)) != -1) {
-                total += count;
-                output.write(data, 0, count);
+                    byte data[] = new byte[4096];
+                    long total = 0;
+                    int count;
+                    while ((count = input.read(data)) != -1) {
+                        total += count;
+                        output.write(data, 0, count);
+                    }
+
+                    /** here file is written */
+                    editor.putString(key, fpath);
+                    editor.apply();
+
+                } catch (Exception e) {
+                    /** no file has beet written here */
+                    return null;
+                }
+
+                try {
+                    if (output != null) output.close();
+                    if (input != null) input.close();
+                } catch (IOException ignored) {}
+
+                if (connection != null) connection.disconnect();
+
+                /** if all goes well up until here, just return an empty object */
+                return new Object();
             }
 
-            /** here file is written */
-            editor.putString(key, filePath);
-            editor.apply();
+            @Override
+            public void onFinish(Object result) {
+                if (result != null) {
+                    Log.d("SuperAwesome", "Downloaded " + videoUrl + " ==> " + fpath);
+                    listener.finished();
+                } else {
+                    listener.failure();
+                }
+            }
 
-        } catch (Exception e) {
-            /** no file has beet written here */
-            Log.d("SuperAwesome-FILE", "Exception: " + e.toString());
-            return null;
-        }
-
-        try {
-            if (output != null) output.close();
-            if (input != null) input.close();
-        } catch (IOException ignored) {}
-
-        if (connection != null) connection.disconnect();
-
-        /** return the filePath */
-        return filePath;
+            @Override
+            public void onError() {
+                listener.failure();
+            }
+        });
     }
 
     /**

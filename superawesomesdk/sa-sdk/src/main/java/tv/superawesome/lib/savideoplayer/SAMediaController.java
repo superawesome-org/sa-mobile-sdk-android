@@ -39,7 +39,7 @@ public class SAMediaController extends MediaController {
     public boolean shouldShowPadlock = false;
     public boolean shouldShowCloseButton = false;
     public boolean shouldNotHide = true;
-    public boolean shouldAllowFullscreenClick = true;
+    public boolean shouldShowSmallClickButton = false;
 
     public SAMediaController(Context context) {
         super(context);
@@ -86,7 +86,7 @@ public class SAMediaController extends MediaController {
         parent.addView(chronographer, chronoLay);
 
         /** create the show more button */
-        if (!shouldAllowFullscreenClick) {
+        if (shouldShowSmallClickButton) {
             showMore = new Button(mContext);
             showMore.setTransformationMethod(null);
             showMore.setText(findOutMore);
