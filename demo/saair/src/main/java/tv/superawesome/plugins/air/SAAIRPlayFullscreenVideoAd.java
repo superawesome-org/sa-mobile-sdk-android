@@ -1,6 +1,7 @@
 package tv.superawesome.plugins.air;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.util.Log;
 
 import com.adobe.fre.FREContext;
@@ -29,7 +30,7 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
         /** setup vars with default values */
         Log.d("AIREXT", "playFullscreenVideoAd");
 
-        if (freObjects.length == 6){
+        if (freObjects.length == 9){
             try {
                 /** get variables */
                 final String name = freObjects[0].getAsString();
@@ -38,6 +39,10 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
                 final boolean isParentalGateEnabled = freObjects[3].getAsBool();
                 final boolean shouldShowCloseButton = freObjects[4].getAsBool();
                 final boolean shouldAutomaticallyCloseAtEnd = freObjects[5].getAsBool();
+                final boolean shouldShowSmallClickButton = freObjects[6].getAsBool();
+                final boolean shouldLockOrientation = freObjects[7].getAsBool();
+                final int lockOrientation = freObjects[8].getAsInt();
+
                 final Context context = freContext.getActivity().getApplicationContext();
 
                 Log.d("AIREXT", "Meta: " + name + "/" + placementId + "/" + isParentalGateEnabled + "/" + shouldShowCloseButton + "/" + shouldAutomaticallyCloseAtEnd);
@@ -52,6 +57,13 @@ public class SAAIRPlayFullscreenVideoAd implements FREFunction {
                     video.setIsParentalGateEnabled(isParentalGateEnabled);
                     video.setShouldShowCloseButton(shouldShowCloseButton);
                     video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+                    video.setShouldShowSmallClickButton(shouldShowSmallClickButton);
+                    video.setShouldLockOrientation(shouldLockOrientation);
+                    if (lockOrientation == 1){
+                        video.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    } else if (lockOrientation == 2){
+                        video.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }
                     video.setAdListener(new SAAdInterface() {
                         @Override
                         public void adWasShown(int placementId) {

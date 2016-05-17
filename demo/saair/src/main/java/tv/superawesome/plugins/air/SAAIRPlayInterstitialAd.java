@@ -1,6 +1,7 @@
 package tv.superawesome.plugins.air;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.util.Log;
 
 import com.adobe.fre.FREContext;
@@ -12,6 +13,8 @@ import com.adobe.fre.FREWrongThreadException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.AccessibleObject;
 
 import tv.superawesome.sdk.models.SAAd;
 import tv.superawesome.sdk.parser.SAParser;
@@ -28,17 +31,16 @@ public class SAAIRPlayInterstitialAd implements FREFunction {
         /** setup vars with default values */
         Log.d("AIREXT", "playInterstitialAd");
 
-        if (freObjects.length == 4){
+        if (freObjects.length == 6){
             try {
                 /** get variables */
                 final String name = freObjects[0].getAsString();
                 final int placementId = freObjects[1].getAsInt();
                 final String adJson = freObjects[2].getAsString();
                 final boolean isParentalGateEnabled = freObjects[3].getAsBool();
+                final boolean shouldLockOrientation = freObjects[4].getAsBool();
+                final int lockOrientation = freObjects[5].getAsInt();
                 final Context context = freContext.getActivity().getApplicationContext();
-
-                Log.d("AIREXT", "Meta: " + name + "/" + placementId + "/" + isParentalGateEnabled);
-                Log.d("AIREXT", "adJson: " + adJson);
 
                 try {
                     JSONObject dataJson = new JSONObject(adJson);
@@ -47,6 +49,12 @@ public class SAAIRPlayInterstitialAd implements FREFunction {
                     SAInterstitialAd inter = new SAInterstitialAd(freContext.getActivity());
                     inter.setAd(ad);
                     inter.setIsParentalGateEnabled(isParentalGateEnabled);
+                    inter.setShouldLockOrientation(shouldLockOrientation);
+                    if (lockOrientation == 1) {
+                        inter.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    } else if (lockOrientation == 2){
+                        inter.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    }
                     inter.setAdListener(new SAAdInterface() {
                         @Override
                         public void adWasShown(int placementId) {

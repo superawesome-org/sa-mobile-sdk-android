@@ -34,23 +34,20 @@ public class SAAIRPlayVideoAd implements FREFunction {
         /** setup vars with default values */
         Log.d("AIREXT", "playVideoAd");
 
-        if (freObjects.length == 8){
+        if (freObjects.length == 9){
             try {
                 /** get variables */
                 final String name = freObjects[0].getAsString();
                 final int placementId = freObjects[1].getAsInt();
                 final String adJson = freObjects[2].getAsString();
                 final boolean isParentalGateEnabled = freObjects[3].getAsBool();
-                final int x = (int)(freObjects[4].getAsDouble());
-                final int y = (int)(freObjects[5].getAsDouble());
-                final int w = (int)(freObjects[6].getAsDouble());
-                final int h = (int)(freObjects[7].getAsDouble());
+                final boolean shouldShowSmallClickButton = freObjects[4].getAsBool();
+                final int x = (int)(freObjects[5].getAsDouble());
+                final int y = (int)(freObjects[6].getAsDouble());
+                final int w = (int)(freObjects[7].getAsDouble());
+                final int h = (int)(freObjects[8].getAsDouble());
                 final Activity activity = freContext.getActivity();
                 final Context context = activity.getApplicationContext();
-
-                Log.d("AIREXT", "Meta: " + name + "/" + placementId + "/" + isParentalGateEnabled);
-                Log.d("AIREXT", x + "/" + y + "/" + w + "/" + h);
-                Log.d("AIREXT", "adJson: " + adJson);
 
                 try {
                     JSONObject dataJson = new JSONObject(adJson);
@@ -59,6 +56,7 @@ public class SAAIRPlayVideoAd implements FREFunction {
                     SAVideoAd video = new SAVideoAd(activity);
                     video.setAd(ad);
                     video.setIsParentalGateEnabled(isParentalGateEnabled);
+                    video.setShouldShowSmallClickButton(shouldShowSmallClickButton);
                     video.setAdListener(new SAAdInterface() {
                         @Override
                         public void adWasShown(int placementId) {
