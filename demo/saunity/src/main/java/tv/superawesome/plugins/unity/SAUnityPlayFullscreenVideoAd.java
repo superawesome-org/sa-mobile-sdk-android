@@ -1,6 +1,7 @@
 package tv.superawesome.plugins.unity;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ public class SAUnityPlayFullscreenVideoAd {
      * @param shouldShowCloseButton whether to show the close button or not
      * @param shouldAutomaticallyCloseAtEnd whether the ad should automatically close at the end of it's runtime
      */
-    public static void SuperAwesomeUnitySAVideoAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled, final boolean shouldShowCloseButton, final boolean shouldAutomaticallyCloseAtEnd) {
+    public static void SuperAwesomeUnitySAVideoAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled, final boolean shouldShowCloseButton, final boolean shouldAutomaticallyCloseAtEnd, final boolean shouldShowSmallClickButton, final boolean shouldLockOrientation, final int lockOrientation) {
 
         System.out.println("SuperAwesomeUnitySAVideoAd " + unityName);
 
@@ -44,6 +45,13 @@ public class SAUnityPlayFullscreenVideoAd {
             video.setIsParentalGateEnabled(isParentalGateEnabled);
             video.setShouldShowCloseButton(shouldShowCloseButton);
             video.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+            video.setShouldShowSmallClickButton(shouldShowSmallClickButton);
+            video.setShouldLockOrientation(shouldLockOrientation);
+            if (lockOrientation == 1){
+                video.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            } else if (lockOrientation == 2){
+                video.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
 
             /** add listeners */
             video.setAdListener(new SAAdInterface() {

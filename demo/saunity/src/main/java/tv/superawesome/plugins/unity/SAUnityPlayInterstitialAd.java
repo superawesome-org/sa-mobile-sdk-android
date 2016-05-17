@@ -1,6 +1,7 @@
 package tv.superawesome.plugins.unity;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +24,7 @@ public class SAUnityPlayInterstitialAd {
      * @param unityName the unique name of the unity object that called this func
      * @param isParentalGateEnabled whether the parental gate is enabled or not
      */
-    public static void SuperAwesomeUnitySAInterstitialAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled){
+    public static void SuperAwesomeUnitySAInterstitialAd(final Context context, int placementId, String adJson, final String unityName, final boolean isParentalGateEnabled, final boolean shouldLockOrientation, final int lockOrientation){
         System.out.println("SuperAwesomeUnitySAInterstitialAd " + unityName);
 
         /** form the json object to parse */
@@ -39,6 +40,12 @@ public class SAUnityPlayInterstitialAd {
 
             /** parametrise the interstitial */
             interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
+            interstitial.setShouldLockOrientation(shouldLockOrientation);
+            if (lockOrientation == 1){
+                interstitial.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            } else if (lockOrientation == 2){
+                interstitial.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
 
             /** add listeners */
             interstitial.setAdListener(new SAAdInterface() {
