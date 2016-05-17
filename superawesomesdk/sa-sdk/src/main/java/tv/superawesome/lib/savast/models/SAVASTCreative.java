@@ -97,6 +97,9 @@ public class SAVASTCreative implements Parcelable, JSONSerializable {
         if (SAUtils.isValidURL(creative.playableMediaUrl)) {
             this.playableMediaUrl = creative.playableMediaUrl;
         }
+        if (creative.playableDiskUrl != null) {
+            this.playableDiskUrl = creative.playableDiskUrl;
+        }
 
         /** now add all other things */
         for (Iterator<SAVASTMediaFile> i = creative.mediaFiles.iterator(); i.hasNext(); ) {

@@ -96,9 +96,9 @@ public class SAVASTParser {
                             @Override
                             public void didParseVAST(SAVASTAd wrapper) {
                                 if (wrapper != null) {
-                                    wrapper.sumAd(ad);
+                                    ad.sumAd(wrapper);
                                 }
-                                listener.didParseVAST(wrapper);
+                                listener.didParseVAST(ad);
                                 return;
                             }
                         });
@@ -208,7 +208,7 @@ public class SAVASTParser {
             });
 
             /** populate click through */
-            SAXML.searchSiblingsAndChildrenOf(element, "clickThrough", new SAXML.SAXMLIterator() {
+            SAXML.searchSiblingsAndChildrenOf(element, "ClickThrough", new SAXML.SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
                     creative.clickThrough = e.getTextContent().replace("&amp;","&").replace("%3A",":").replace("%2F", "/");
@@ -216,7 +216,7 @@ public class SAVASTParser {
             });
 
             /** populate Click Tracking */
-            SAXML.searchSiblingsAndChildrenOf(element, "clickTracking", new SAXML.SAXMLIterator() {
+            SAXML.searchSiblingsAndChildrenOf(element, "ClickTracking", new SAXML.SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
                     creative.clickTracking.add(e.getTextContent());
@@ -224,7 +224,7 @@ public class SAVASTParser {
             });
 
             /** populate Custom Clicks */
-            SAXML.searchSiblingsAndChildrenOf(element, "customClicks", new SAXML.SAXMLIterator() {
+            SAXML.searchSiblingsAndChildrenOf(element, "CustomClicks", new SAXML.SAXMLIterator() {
                 @Override
                 public void foundElement(Element e) {
                     creative.customClicks.add(e.getTextContent());

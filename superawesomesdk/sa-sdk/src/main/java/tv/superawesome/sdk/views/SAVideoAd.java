@@ -149,7 +149,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
             SAEvents.sendEventToURL(click);
         }
 
-        System.out.println("Going to " + destinationURL);
+        System.out.println("Going to URL: " + destinationURL);
 
         /** go-to-url */
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
