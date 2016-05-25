@@ -62,7 +62,7 @@ public class SAFileDownloader {
      * @param listener - result listener
      */
     public void downloadFile(final String videoUrl, final String fpath, final SAFileDownloaderInterface listener) {
-        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskInterface() {
+        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTaskInterface() {
             @Override
             public Object taskToExecute() throws Exception {
                 /** get the original SA unique key */

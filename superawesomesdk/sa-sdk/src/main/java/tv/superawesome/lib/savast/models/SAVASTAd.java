@@ -2,23 +2,14 @@ package tv.superawesome.lib.savast.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.nio.channels.SelectableChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import tv.superawesome.lib.sautils.JSONSerializable;
-import tv.superawesome.sdk.models.SACreative;
 
-/**
- * Created by gabriel.coman on 22/12/15.
- */
 public class SAVASTAd implements Parcelable, JSONSerializable {
 
     public SAVASTAdType type;
@@ -60,17 +51,6 @@ public class SAVASTAd implements Parcelable, JSONSerializable {
             return new SAVASTAd[size];
         }
     };
-
-    public void print() {
-        String printout = " \n";
-        printout += type.toString() + " Ad(" + id + ")" + "\n";
-        printout += "Sequence: " + sequence + "\n";
-        printout += "Redirect Uri: " + redirectUri + "\n";
-        printout += "Errors[" + errors.size() + "]" + "\n";
-        printout += "Impressions[" + impressions.size() + "]" + "\n";
-        Log.d("SuperAwesome", printout);
-        creative.print();
-    }
 
     public void sumAd(SAVASTAd ad){
         this.id = ad.id;

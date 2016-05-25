@@ -87,28 +87,6 @@ public class SADetails implements Parcelable, JSONSerializable{
         }
     };
 
-    /**
-     * aux print function
-     */
-    public void print() {
-        String printout = " \nDETAILS:\n";
-        printout += "\t\t width: " + width + "\n";
-        printout += "\t\t height: " + height + "\n";
-        printout += "\t\t image: " + image + "\n";
-        printout += "\t\t name: " + name + "\n";
-        printout += "\t\t video: " + video + "\n";
-        printout += "\t\t bitrate: " + bitrate + "\n";
-        printout += "\t\t duration: " + duration + "\n";
-        printout += "\t\t vast: " + vast + "\n";
-        printout += "\t\t tag: " + tag + "\n";
-        printout += "\t\t placementFormat: " + placementFormat + "\n";
-        printout += "\t\t zip: " + zipFile + "\n";
-        printout += "\t\t url: " + url + "\n";
-        printout += "\t\t value: " + value + "\n";
-        Log.d("SuperAwesome", printout);
-        data.print();
-    }
-
     @Override
     public int describeContents() {
         return 0;

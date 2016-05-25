@@ -50,14 +50,6 @@ public class SAData implements Parcelable, JSONSerializable {
         }
     };
 
-    public void print() {
-        String printout = " \n\t\tDATA:\n";
-        printout += "\t\t\t adHtml: " + adHtml + "\n";
-        printout += "\t\t\t imagePath: " + imagePath + "\n";
-        Log.d("SuperAwesome", printout);
-        vastAd.print();
-    }
-
     @Override
     public int describeContents() {
         return 0;

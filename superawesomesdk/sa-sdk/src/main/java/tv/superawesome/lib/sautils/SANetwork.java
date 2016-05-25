@@ -26,16 +26,17 @@ public class SANetwork {
         final String endpoint = urlString + (!SAUtils.isJSONEmpty(querydict) ? "?" + SAUtils.formGetQueryFromDict(querydict) : "");
 
         /** create a new SAAsync Task */
-        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTask.SAAsyncTaskInterface() {
+        SAAsyncTask task = new SAAsyncTask(SAApplication.getSAApplicationContext(), new SAAsyncTaskInterface() {
             @Override
             public Object taskToExecute() throws Exception {
 
                 URL url;
                 String response = null;
+                HttpsURLConnection conn = null;
+                InputStreamReader in = null;
                 try {
                     url = new URL(endpoint);
-
-                    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+                    conn = (HttpsURLConnection) url.openConnection();
                     conn.setReadTimeout(15000);
                     conn.setConnectTimeout(15000);
                     conn.setRequestMethod("GET");
@@ -48,13 +49,17 @@ public class SANetwork {
                     if (responseCode == HttpsURLConnection.HTTP_OK) {
                         String line;
                         response = "";
-                        BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                        while ((line=br.readLine()) != null) {
-                            response+=line;
+                        in = new InputStreamReader(conn.getInputStream());
+                        BufferedReader reader = new BufferedReader(in);
+                        while ((line = reader.readLine()) != null) {
+                            response += line;
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    in.close();
+                    conn.disconnect();
                 }
 
                 return response;

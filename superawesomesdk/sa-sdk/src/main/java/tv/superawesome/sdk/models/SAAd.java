@@ -73,32 +73,6 @@ public class SAAd implements Parcelable, JSONSerializable {
         }
     };
 
-    /**
-     * aux print function
-     */
-    public void print() {
-        String printout = " \nAD:\n";
-        printout += "error: " + error + "\n";
-        printout += "app: " + app + "\n";
-        printout += "placementId: " + placementId + "\n";
-        printout += "lineItemId: " + lineItemId + "\n";
-        printout += "campaignId: " + campaignId + "\n";
-        printout += "isTest: " + test + "\n";
-        printout += "isFallback: " + isFallback + "\n";
-        printout += "isFill: " + isFill + "\n";
-        Log.d("SuperAwesome", printout);
-        creative.print();
-    }
-
-    public void shortPrint(){
-        String printout = "Ad[" + placementId + "] " + creative.creativeFormat.toString() + " ";
-        // printout += (creative.format == SACreativeFormat.video ? creative.details.vast + " " + creative.details.data.vastAds.size() + " VAST ads" : "");
-        printout += (creative.creativeFormat == SACreativeFormat.image ? creative.details.image : "");
-        printout += (creative.creativeFormat == SACreativeFormat.rich ? creative.details.url : "");
-        printout += (creative.creativeFormat == SACreativeFormat.tag ? creative.details.tag : "");
-        Log.d("SuperAwesome", printout);
-    }
-
     @Override
     public int describeContents() {
         return 0;

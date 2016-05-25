@@ -12,6 +12,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import java.io.IOException;
 
+import tv.superawesome.lib.sautils.SAAsyncTask;
+import tv.superawesome.lib.sautils.SAAsyncTaskInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 
 /**
@@ -30,7 +32,6 @@ public class SACapper {
      * gms enabled)
      **/
     public static void enableCapping(final Context context, final SACapperInterface listener) {
-
 
         AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
             @Override

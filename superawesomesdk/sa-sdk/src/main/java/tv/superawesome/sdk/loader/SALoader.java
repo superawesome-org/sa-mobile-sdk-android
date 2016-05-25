@@ -17,9 +17,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.lib.savast.SAVASTParser;
+import tv.superawesome.lib.savast.SAVASTParserInterface;
+import tv.superawesome.lib.savast.models.SAVASTAd;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.sautils.*;
 import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.sdk.models.SACreativeFormat;
+import tv.superawesome.sdk.models.SAData;
+import tv.superawesome.sdk.parser.SAHTMLParser;
 import tv.superawesome.sdk.parser.SAParser;
 
 /**
@@ -35,7 +41,6 @@ public class SALoader {
      */
     public void loadAd(final int placementId, final SALoaderInterface listener){
 
-        /** form the endpoint */
         final String endpoint = SuperAwesome.getInstance().getBaseURL() + "/ad/" + placementId;
         JSONObject queryJson = new JSONObject();
         try {
@@ -63,45 +68,55 @@ public class SALoader {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         try {
              queryJson.put("dauid", SuperAwesome.getInstance().getDAUID());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.d("SuperAwesome", "Trying to load " + endpoint);
-        Log.d("SuperAwesome", "queryJson: " + queryJson.toString());
-
-        /** send a standard GET request */
         SANetwork network = new SANetwork();
         network.asyncGet(endpoint, queryJson, new SANetworkInterface() {
             @Override
             public void success(final Object data) {
-                /** edge null case (no network, etc) */
                 if (data == null) {
                     failAd(listener, placementId);
                     return;
                 }
 
-                /** form the json object to parse */
                 JSONObject dataJson = null;
                 try {
                     dataJson = new JSONObject(data.toString());
-                    SAAd parsedAd = SAParser.parseDictionaryIntoAd(dataJson, placementId);
+                    final SAAd ad = SAParser.parseDictionaryIntoAd(dataJson, placementId);
 
-                    /** success case */
-                    if (parsedAd != null) {
-                        SALoaderExtra extra = new SALoaderExtra();
-                        extra.getExtraData(parsedAd, new SALoaderExtraInterface() {
-                            @Override
-                            public void extraDone(SAAd finalAd) {
-                                if (listener != null) {
-                                    listener.didLoadAd(finalAd);
-                                }
+                    if (ad != null) {
+
+                        ad.creative.details.data = new SAData();
+                        SACreativeFormat type = ad.creative.creativeFormat;
+
+                        switch (type) {
+                            case invalid:
+                            case image:
+                            case rich:
+                            case tag: {
+                                ad.creative.details.data.adHtml = SAHTMLParser.formatCreativeDataIntoAdHTML(ad);
+                                didLoadAd(listener, ad);
+                                break;
                             }
-                        });
+                            case video: {
+                                SAVASTParser parser = new SAVASTParser();
+
+                                parser.parseVASTAds(ad.creative.details.vast, new SAVASTParserInterface() {
+                                    @Override
+                                    public void didParseVAST(SAVASTAd vastAd) {
+                                        ad.creative.details.data.vastAd = vastAd;
+                                        didLoadAd(listener, ad);
+                                    }
+                                });
+                                break;
+                            }
+                        }
                     }
-                    /** error case */
                     else {
                         failAd(listener, placementId);
                     }
@@ -117,14 +132,15 @@ public class SALoader {
         });
     }
 
-    /**
-     * Common failure function for all the myriad ways the class can fail
-     * @param _listener
-     * @param placementId
-     */
-    private void failAd(SALoaderInterface _listener, int placementId){
-        if (_listener != null){
-            _listener.didFailToLoadAdForPlacementId(placementId);
+    void didLoadAd(SALoaderInterface listener, SAAd ad) {
+        if (listener != null) {
+            listener.didLoadAd(ad);
+        }
+    }
+
+    private void failAd(SALoaderInterface listener, int placementId){
+        if (listener != null){
+            listener.didFailToLoadAdForPlacementId(placementId);
         }
     }
 }

@@ -81,28 +81,6 @@ public class SACreative implements Parcelable, JSONSerializable {
         }
     };
 
-    /**
-     * aux print function
-     */
-    public void print() {
-        String printout = " \nCREATIVE:\n";
-        printout += "\t id: " + id + "\n";
-        printout += "\t name: " + name + "\n";
-        printout += "\t cpm: " + cpm + "\n";
-        printout += "\t format: " + format + "\n";
-        printout += "\t impressionURL: " + impressionUrl + "\n";
-        printout += "\t clickURL: " + clickUrl + "\n";
-        printout += "\t approved: " + approved + "\n";
-        printout += "\t live: " + live + "\n";
-
-        printout += "\t viewableImpressionURL: " + viewableImpressionUrl + "\n";
-        printout += "\t trackingURL: " + trackingUrl + "\n";
-        printout += "\t creativeFormat: " + creativeFormat.toString() + "\n";
-        printout += "\t parentalGateClickURL: " + parentalGateClickUrl + "\n";
-        Log.d("SuperAwesome", printout);
-        details.print();
-    }
-
     @Override
     public int describeContents() {
         return 0;

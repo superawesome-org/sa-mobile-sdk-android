@@ -69,21 +69,6 @@ public class SAVASTCreative implements Parcelable, JSONSerializable {
         }
     };
 
-    public void print() {
-        String printout = " \n";
-        printout += "\tCreative(" + id + ")" + "\n";
-        printout += "\tsequence: " + sequence + "\n";
-        printout += "\tduration: " + duration + "\n";
-        printout += "\tplayableMediaUrl: " + playableMediaUrl + "\n";
-        printout += "\tplayableDiskUrl: " + isOnDisk + " " + playableDiskUrl + "\n";
-        printout += "\tclickThrough: " + clickThrough + "\n";
-        printout += "\tmediaFiles[" + mediaFiles.size() + "]" + "\n";
-        printout += "\ttrackingEvents[" + trackingEvents.size() + "]" + "\n";
-        printout += "\tclickTracking[" + clickTracking.size() + "]" + "\n";
-        printout += "\tcustomClicks[" + customClicks.size() + "]" + "\n";
-        Log.d("SuperAwesome", printout);
-    }
-
     public void sumCreative(SAVASTCreative creative) {
         // call super
 
