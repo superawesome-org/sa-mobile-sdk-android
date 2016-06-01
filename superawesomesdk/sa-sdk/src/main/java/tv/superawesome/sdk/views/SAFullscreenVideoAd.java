@@ -24,7 +24,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
     private Context context;
     private Intent intent;
     private static WeakReference<Activity> mActivityRef;
-    private static VideoAdDataHolder  holder;
+    private static SAVideoAdDataHolder holder;
 
     /**********************************************************************************************/
     /** Normal <Init> functions & other aux functions */
@@ -33,7 +33,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
     /** base constructor */
     public SAFullscreenVideoAd(Context context){
         this.context = context;
-        holder = new VideoAdDataHolder ();
+        holder = new SAVideoAdDataHolder();
     }
 
 
@@ -267,7 +267,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
 /**
  * The Video activity's ad data holder object
  */
-class VideoAdDataHolder {
+class SAVideoAdDataHolder {
     public SAAd _refAd;
     public boolean _refIsParentalGateEnabled = true;
     public boolean _refShouldShowCloseButton = true;
@@ -279,7 +279,7 @@ class VideoAdDataHolder {
     public SAParentalGateInterface _refParentalGateListener;
     public SAVideoAdInterface _refVideoAdListener;
 
-    VideoAdDataHolder (){
+    SAVideoAdDataHolder(){
         // basic contructor
     }
 }

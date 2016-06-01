@@ -248,7 +248,9 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
     @Override
     public void didHaveErrorForCreative() {
-
+        if (internalAdListener != null) {
+            internalAdListener.adWasClosed(ad.placementId);
+        }
     }
 
     @Override

@@ -26,7 +26,7 @@ public class SAInterstitialAd implements SAViewInterface {
     private Context context;
     private Intent intent;
     private static WeakReference<Activity> mActivityRef;
-    private static InterstitialAdDataHolder holder;
+    private static SAInterstitialAdDataHolder holder;
 
     /**********************************************************************************************/
     /** Normal <Init> functions & other aux functions */
@@ -34,7 +34,7 @@ public class SAInterstitialAd implements SAViewInterface {
 
     public SAInterstitialAd(Context context){
         this.context = context;
-        holder = new InterstitialAdDataHolder();
+        holder = new SAInterstitialAdDataHolder();
     }
 
     public void setAdListener(SAAdInterface adListener) {
@@ -248,7 +248,7 @@ public class SAInterstitialAd implements SAViewInterface {
 /**
  * The Video activity's ad data holder object
  */
-class InterstitialAdDataHolder {
+class SAInterstitialAdDataHolder {
     public SAAd _refAd;
     public boolean _refIsParentalGateEnabled;
     public boolean _refShouldLockOrientation = false;
@@ -256,7 +256,7 @@ class InterstitialAdDataHolder {
     public SAAdInterface _refAdListener;
     public SAParentalGateInterface _refParentalGateListener;
 
-    InterstitialAdDataHolder (){
+    SAInterstitialAdDataHolder(){
         // basic constructor
     }
 }

@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+3.7.9
+ - Fixed a bug with fullscreen video ad not closing on error
+
+3.7.8
 3.7.7
 3.7.6
 3.7.5
