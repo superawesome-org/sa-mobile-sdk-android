@@ -2,17 +2,18 @@ package tv.superawesome.lib.saevents;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.View;
 import android.widget.VideoView;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import tv.superawesome.lib.sautils.SANetworkInterface;
 import tv.superawesome.lib.sautils.SANetwork;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.samoat.SAMoatEvents;
 import tv.superawesome.sdk.models.SAAd;
 
 /**
@@ -65,7 +66,21 @@ public class SAEvents {
         adIds.put("app", "" + ad.app);
         adIds.put("placementId", "" + ad.placementId);
 
-        SAMoatEvents.getInstance().sendDisplayMoatEvent(activity, view, adIds);
+        try {
+            Class<?> moat = Class.forName("tv.superawesome.samoat.SAMoatEvents");
+            java.lang.reflect.Method method = moat.getMethod("getInstance");
+            Object moatInstance = method.invoke(moat);
+            java.lang.reflect.Method method1 = moat.getMethod("sendDisplayMoatEvent", Activity.class, View.class, HashMap.class);
+            method1.invoke(moatInstance, activity, view, adIds);
+        } catch (ClassNotFoundException e) {
+            // failure
+        } catch (NoSuchMethodException e) {
+            // failure
+        } catch (InvocationTargetException e) {
+            // failure
+        } catch (IllegalAccessException e) {
+            // failure;
+        }
     }
 
     public static void sendVideoMoatEvent(Activity activity, VideoView video, MediaPlayer mp, SAAd ad){
@@ -78,11 +93,40 @@ public class SAEvents {
         adIds.put("app", "" + ad.app);
         adIds.put("placementId", "" + ad.placementId);
 
-        SAMoatEvents.getInstance().sendVideoMoatEvent(activity, video, mp, adIds);
+        try {
+            Class<?> moat = Class.forName("tv.superawesome.samoat.SAMoatEvents");
+            java.lang.reflect.Method method = moat.getMethod("getInstance");
+            Object moatInstance = method.invoke(moat);
+            java.lang.reflect.Method method1 = moat.getMethod("sendVideoMoatEvent", Activity.class, VideoView.class, MediaPlayer.class, HashMap.class);
+            method1.invoke(moatInstance, activity, video, mp, adIds);
+        } catch (ClassNotFoundException e) {
+            // failure
+        } catch (NoSuchMethodException e) {
+            // failure
+        } catch (InvocationTargetException e) {
+            // failure
+        } catch (IllegalAccessException e) {
+            // failure;
+        }
     }
 
     public static void sendVideoMoatComplete(SAAd ad) {
         if (!SAUtils.isClassAvailable("tv.superawesome.samoat.SAMoatEvents")) return;
-        SAMoatEvents.getInstance().sendVideoMoatComplete(""+ad.placementId);
+
+        try {
+            Class<?> moat = Class.forName("tv.superawesome.samoat.SAMoatEvents");
+            java.lang.reflect.Method method = moat.getMethod("getInstance");
+            Object moatInstance = method.invoke(moat);
+            java.lang.reflect.Method method1 = moat.getMethod("sendVideoMoatComplete", String.class);
+            method1.invoke(moatInstance, "" + ad.placementId);
+        } catch (ClassNotFoundException e) {
+            // failure
+        } catch (NoSuchMethodException e) {
+            // failure
+        } catch (InvocationTargetException e) {
+            // failure
+        } catch (IllegalAccessException e) {
+            // failure;
+        }
     }
 }
