@@ -290,6 +290,14 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
         mediaPlayer.setDisplay(null);
     }
 
+    public void pausePlayer() {
+        mediaPlayer.pause();
+    }
+
+    public void resumePlayer () {
+        mediaPlayer.start();
+    }
+
     /**
      * Aux surface size function that calculates the video surface size needed in order to
      * maintain correct aspect ratio

@@ -50,9 +50,6 @@ public class SAParentalGate {
         super();
         this.c = c;
         this.parentRef = new WeakReference<Object> (parent);
-        Log.d("SuperAwesome", "Object is " + parent.getClass().getName());
-        Log.d("SuperAwesome", "Ref is " + parentRef.getClass().getName());
-        Log.d("SuperAwesome", "Ref get is " + parentRef.get().getClass().getName());
         this.refAd = _refAd;
 
         if (this.refAd == null){
@@ -76,6 +73,14 @@ public class SAParentalGate {
         final EditText input = new EditText(c);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         alert.setView(input);
+
+        /** resume video */
+        String refClassName = parentRef.get().getClass().getName();
+        String videoName = SAVideoAd.class.getCanonicalName();
+
+        if (refClassName.contains(videoName)) {
+            ((SAVideoAd) parentRef.get()).pause();
+        }
 
         final AlertDialog.Builder aContinue = alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -115,6 +120,14 @@ public class SAParentalGate {
                                 /** dismiss this */
                                 dialog.dismiss();
 
+                                /** resume video */
+                                String refClassName = parentRef.get().getClass().getName();
+                                String videoName = SAVideoAd.class.getCanonicalName();
+
+                                if (refClassName.contains(videoName)) {
+                                    ((SAVideoAd) parentRef.get()).resume();
+                                }
+
                                 /** do nothing */
                                 if (listener != null) {
                                     listener.parentalGateWasFailed(refAd.placementId);
@@ -124,6 +137,15 @@ public class SAParentalGate {
                         });
                         erroralert.show();
 
+                    }
+                }
+                else {
+                    /** resume video */
+                    String refClassName = parentRef.get().getClass().getName();
+                    String videoName = SAVideoAd.class.getCanonicalName();
+
+                    if (refClassName.contains(videoName)) {
+                        ((SAVideoAd) parentRef.get()).resume();
                     }
                 }
 
@@ -137,6 +159,14 @@ public class SAParentalGate {
 
                 /** dismiss */
                 dialog.dismiss();
+
+                /** resume video */
+                String refClassName = parentRef.get().getClass().getName();
+                String videoName = SAVideoAd.class.getCanonicalName();
+
+                if (refClassName.contains(videoName)) {
+                    ((SAVideoAd) parentRef.get()).resume();
+                }
 
                 /** go on cancel way */
                 if (listener != null) {

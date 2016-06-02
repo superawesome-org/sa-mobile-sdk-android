@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+3.8.2
+ - Better build system
+
 3.7.9
  - Fixed a bug with fullscreen video ad not closing on error
 

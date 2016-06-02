@@ -130,7 +130,7 @@ public class SAFileDownloader {
             @Override
             public void onFinish(Object result) {
                 if (result != null) {
-                    Log.d("SuperAwesome", "Downloaded " + videoUrl + " ==> " + fpath);
+                    Log.d("SuperAwesome", "[Downloaded] " + videoUrl + " ==> " + fpath);
                     listener.finished();
                 } else {
                     listener.failure();
@@ -156,7 +156,7 @@ public class SAFileDownloader {
             String filePath = preferences.getString(key, "");
             File file = new File(dir, filePath);
             boolean deleted = file.delete();
-            Log.d("SuperAwesome", "Deleting " + deleted + ":" + file.toURI());
+            Log.d("SuperAwesome", "[Deleting] " + deleted + ":" + file.toURI());
             editor.remove(key);
         }
         editor.apply();

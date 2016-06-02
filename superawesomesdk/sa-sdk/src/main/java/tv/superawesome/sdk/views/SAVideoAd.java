@@ -137,6 +137,14 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         videoPlayer.close();
     }
 
+    public void pause () {
+        videoPlayer.pausePlayer();
+    }
+
+    public void resume () {
+        videoPlayer.resumePlayer();
+    }
+
     @Override
     public void advanceToClick() {
         /** call listener */
