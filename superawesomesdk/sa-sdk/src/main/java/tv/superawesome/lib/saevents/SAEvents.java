@@ -1,10 +1,16 @@
 package tv.superawesome.lib.saevents;
 
+import android.app.Activity;
+import android.media.MediaPlayer;
+import android.view.View;
+import android.widget.VideoView;
+
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sautils.SANetworkInterface;
 import tv.superawesome.lib.sautils.SANetwork;
-
+import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.models.SAAd;
 
 /**
  * Class that sends events to the server (click, viewable impression, etc)
@@ -44,5 +50,20 @@ public class SAEvents {
 
     public static void disableSATracking() {
         isSATrackingEnabled = false;
+    }
+
+    public static void sendDisplayMoatEvent(Activity activity, View view, SAAd ad) {
+        if (!SAUtils.isClassAvailable("com.moat.analytics.mobile.MoatFactory")) return;
+        SAMoatEvents.getInstance().sendDisplayMoatEvent(activity, view, ad);
+    }
+
+    public static void sendVideoMoatEvent(Activity activity, VideoView video, MediaPlayer mp, SAAd ad){
+        if (!SAUtils.isClassAvailable("com.moat.analytics.mobile.MoatFactory")) return;
+        SAMoatEvents.getInstance().sendVideoMoatEvent(activity, video, mp, ad);
+    }
+
+    public static void sendVideoMoatComplete(SAAd ad) {
+        if (!SAUtils.isClassAvailable("com.moat.analytics.mobile.MoatFactory")) return;
+        SAMoatEvents.getInstance().sendVideoMoatComplete(ad);
     }
 }

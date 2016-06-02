@@ -1,3 +1,3 @@
-include ':app', ':saunity', ':samopub', ':saair'
+include ':app', ':saunity', ':samopub', ':saair', ':samoat'
 include 'sa-sdk'
 project(':sa-sdk').projectDir = new File('../superawesomesdk/sa-sdk')

@@ -331,6 +331,23 @@ public class SAUtils {
     }
 
     /**
+     * Function that checks at run-time if a class is loaded or not
+     * @param className
+     * @return
+     */
+    public static boolean isClassAvailable(String className){
+        boolean driverAvailable = true;
+
+        try {
+            Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            driverAvailable = false;
+        }
+
+        return driverAvailable;
+    }
+
+    /**
      * Private SASize object
      */
     public static class SASize {

@@ -199,6 +199,9 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
                 SAEvents.sendEventToURL(ad.creative.impressionUrl);
             }
+
+            /** send moat */
+            SAEvents.sendVideoMoatEvent((Activity) getContext(), null, videoPlayer.getMediaPlayer(), ad);
         }
 
         /** call listener */
@@ -274,6 +277,9 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         if (internalVideoAdListener != null){
             internalVideoAdListener.allAdsEnded(ad.placementId);
         }
+
+        /** send the end event */
+        SAEvents.sendVideoMoatComplete(ad);
     }
 
     @Override

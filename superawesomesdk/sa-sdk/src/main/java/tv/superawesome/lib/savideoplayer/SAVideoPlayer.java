@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
+import android.widget.VideoView;
 
 import java.io.File;
 import java.io.IOException;
@@ -312,6 +313,13 @@ public class SAVideoPlayer extends Fragment implements MediaController.MediaPlay
 
         surfaceView.setLayoutParams(lp);
     }
+
+    /**
+     * Getters
+     */
+    public SurfaceView getVideoPlayer() { return surfaceView; }
+
+    public MediaPlayer getMediaPlayer () { return mediaPlayer; }
 
     /**
      * *********************************************************************************************

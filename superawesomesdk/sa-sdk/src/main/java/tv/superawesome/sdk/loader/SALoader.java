@@ -109,8 +109,12 @@ public class SALoader {
                                 parser.parseVASTAds(ad.creative.details.vast, new SAVASTParserInterface() {
                                     @Override
                                     public void didParseVAST(SAVASTAd vastAd) {
-                                        ad.creative.details.data.vastAd = vastAd;
-                                        didLoadAd(listener, ad);
+                                        if (vastAd != null) {
+                                            ad.creative.details.data.vastAd = vastAd;
+                                            didLoadAd(listener, ad);
+                                        } else {
+                                            failAd(listener, ad.placementId);
+                                        }
                                     }
                                 });
                                 break;

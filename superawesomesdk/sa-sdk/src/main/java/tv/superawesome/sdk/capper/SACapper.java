@@ -33,6 +33,12 @@ public class SACapper {
      **/
     public static void enableCapping(final Context context, final SACapperInterface listener) {
 
+        // guard against horrible errors!
+        if (!SAUtils.isClassAvailable("com.google.android.gms.ads.identifier.AdvertisingIdClient")) {
+            listener.didFindDAUId(0);
+            return;
+        }
+
         AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -44,21 +50,8 @@ public class SACapper {
                     if (!adInfo.isLimitAdTrackingEnabled()) {
                         adString = adInfo.getId();
                     }
-                } catch (VerifyError e) {
-                    /** do nothing */
-                    Log.d("SuperAwesome", "VerifyError");
-                } catch (IOException e) {
-                    /** do nothing */
-                    Log.d("SuperAwesome", "IOException");
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    /** do nothing */
-                    Log.d("SuperAwesome", "GooglePlayServicesNotAvailableException");
-                } catch (GooglePlayServicesRepairableException e) {
-                    /** do nothing */
-                    Log.d("SuperAwesome", "GooglePlayServicesRepairableException");
-                } catch (NullPointerException e) {
-                    /** do nothing */
-                    Log.d("SuperAwesome", "NullPointerException");
+                } catch (VerifyError | IOException | NullPointerException | GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
+                    // do nothing
                 }
 
                 return adString;

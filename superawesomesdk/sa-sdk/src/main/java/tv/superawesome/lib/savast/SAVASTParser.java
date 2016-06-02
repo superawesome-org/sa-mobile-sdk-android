@@ -1,5 +1,7 @@
 package tv.superawesome.lib.savast;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,19 +39,25 @@ public class SAVASTParser {
             @Override
             public void didParseVAST(final SAVASTAd ad) {
 
-                SAFileDownloader.getInstance().downloadFile(ad.creative.playableMediaUrl, ad.creative.playableDiskUrl, new SAFileDownloaderInterface() {
-                    @Override
-                    public void finished() {
-                        ad.creative.isOnDisk = true;
-                        listener.didParseVAST(ad);
-                    }
+                // do a final check for wrapper ads that have null or incorrect data
+                if (ad.creative.playableMediaUrl == null || ad.creative.mediaFiles.size() == 0) {
+                    listener.didParseVAST(null);
+                }
+                else {
+                    SAFileDownloader.getInstance().downloadFile(ad.creative.playableMediaUrl, ad.creative.playableDiskUrl, new SAFileDownloaderInterface() {
+                        @Override
+                        public void finished() {
+                            ad.creative.isOnDisk = true;
+                            listener.didParseVAST(ad);
+                        }
 
-                    @Override
-                    public void failure() {
-                        ad.creative.isOnDisk = false;
-                        listener.didParseVAST(ad);
-                    }
-                });
+                        @Override
+                        public void failure() {
+                            ad.creative.isOnDisk = false;
+                            listener.didParseVAST(ad);
+                        }
+                    });
+                }
             }
         });
     }
@@ -75,10 +83,12 @@ public class SAVASTParser {
 
                     // do a check
                     if (root == null) {
-                        listener.didParseVAST(null); return;
+                        listener.didParseVAST(null);
+                        return;
                     }
                     if (! SAXML.checkSiblingsAndChildrenOf(root, "Ad")) {
-                        listener.didParseVAST(null); return;
+                        listener.didParseVAST(null);
+                        return;
                     }
 
                     // get the proper vast ad

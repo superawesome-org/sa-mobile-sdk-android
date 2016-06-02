@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -20,7 +21,7 @@ public class SANetwork {
      * @param urlString - the URL to make the request to
      * @param listener - the listener
      */
-    public void asyncGet(String urlString, JSONObject querydict, final SANetworkInterface listener) {
+    public void asyncGet(final String urlString, JSONObject querydict, final SANetworkInterface listener) {
 
         /** form the actual final endpoint */
         final String endpoint = urlString + (!SAUtils.isJSONEmpty(querydict) ? "?" + SAUtils.formGetQueryFromDict(querydict) : "");
@@ -30,38 +31,76 @@ public class SANetwork {
             @Override
             public Object taskToExecute() throws Exception {
 
-                URL url;
+                // connection vars
                 String response = null;
-                HttpsURLConnection conn = null;
+                HttpURLConnection conn = null;
+                HttpsURLConnection sconn = null;
                 InputStreamReader in = null;
-                try {
-                    url = new URL(endpoint);
-                    conn = (HttpsURLConnection) url.openConnection();
-                    conn.setReadTimeout(15000);
-                    conn.setConnectTimeout(15000);
-                    conn.setRequestMethod("GET");
-                    conn.setDoInput(true);
-                    conn.setRequestProperty("Content-Type", "application/json");
-                    conn.setRequestProperty("User-Agent", SAUtils.getUserAgent());
 
-                    int responseCode = conn.getResponseCode();
+                // url & proto
+                URL url = new URL(endpoint);
+                String proto = url.getProtocol();
 
-                    if (responseCode == HttpsURLConnection.HTTP_OK) {
-                        String line;
-                        response = "";
-                        in = new InputStreamReader(conn.getInputStream());
-                        BufferedReader reader = new BufferedReader(in);
-                        while ((line = reader.readLine()) != null) {
-                            response += line;
+                if (proto.equals("https")){
+                    try {
+                        sconn = (HttpsURLConnection) url.openConnection();
+                        sconn.setReadTimeout(15000);
+                        sconn.setConnectTimeout(15000);
+                        sconn.setRequestMethod("GET");
+                        sconn.setDoInput(true);
+                        sconn.setRequestProperty("Content-Type", "application/json");
+                        sconn.setRequestProperty("User-Agent", SAUtils.getUserAgent());
+
+                        int responseCode = sconn.getResponseCode();
+
+                        if (responseCode == HttpsURLConnection.HTTP_OK) {
+                            String line;
+                            response = "";
+                            in = new InputStreamReader(sconn.getInputStream());
+                            BufferedReader reader = new BufferedReader(in);
+                            while ((line = reader.readLine()) != null) {
+                                response += line;
+                            }
                         }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    } finally {
+                        assert in != null;
+                        in.close();
+                        sconn.disconnect();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    in.close();
-                    conn.disconnect();
+                }
+                else {
+                    try {
+                        conn = (HttpURLConnection) url.openConnection();
+                        conn.setReadTimeout(15000);
+                        conn.setConnectTimeout(15000);
+                        conn.setRequestMethod("GET");
+                        conn.setDoInput(true);
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        conn.setRequestProperty("User-Agent", SAUtils.getUserAgent());
+
+                        int responseCode = conn.getResponseCode();
+
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+                            String line;
+                            response = "";
+                            in = new InputStreamReader(conn.getInputStream());
+                            BufferedReader reader = new BufferedReader(in);
+                            while ((line = reader.readLine()) != null) {
+                                response += line;
+                            }
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    } finally {
+                        assert in != null;
+                        in.close();
+                        conn.disconnect();
+                    }
                 }
 
+                // return data!
                 return response;
             }
 

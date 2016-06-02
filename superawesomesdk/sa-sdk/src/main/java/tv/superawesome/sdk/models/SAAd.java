@@ -104,10 +104,10 @@ public class SAAd implements Parcelable, JSONSerializable {
             placementId = json.optInt("placementId");
         }
         if (!json.isNull("lineItemId")){
-            lineItemId = json.optInt("lineItemId");
+            lineItemId = json.optInt("line_item_id");
         }
         if (!json.isNull("campaignId")){
-            campaignId = json.optInt("campaignId");
+            campaignId = json.optInt("campaign_id");
         }
         if (!json.isNull("test")){
             test = json.optBoolean("test");
@@ -150,12 +150,12 @@ public class SAAd implements Parcelable, JSONSerializable {
             e.printStackTrace();
         }
         try {
-            json.put("lineItemId", lineItemId);
+            json.put("line_item_id", lineItemId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            json.put("campaignId", campaignId);
+            json.put("campaign_id", campaignId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

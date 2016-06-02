@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -125,6 +126,9 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
 
             /** send event viewable impression */
             SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+
+            /** send moat */
+            SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, ad);
 
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
