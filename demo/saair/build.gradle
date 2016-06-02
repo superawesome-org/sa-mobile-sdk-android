@@ -5,7 +5,7 @@ apply plugin: 'com.jfrog.bintray'
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-version = properties.getProperty("project.airversion")
+version = properties.getProperty("project.version")
 group = properties.getProperty("project.group")
 
 def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'        // Homepage URL of the library
