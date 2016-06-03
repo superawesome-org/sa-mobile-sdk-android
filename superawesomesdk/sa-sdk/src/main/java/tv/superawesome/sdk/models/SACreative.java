@@ -119,11 +119,11 @@ public class SACreative implements Parcelable, JSONSerializable {
         if (!json.isNull("format")){
             format = json.optString("format");
         }
-        if (!json.isNull("impressionUrl")){
-            impressionUrl = json.optString("impressionUrl");
+        if (!json.isNull("impression_url")){
+            impressionUrl = json.optString("impression_url");
         }
-        if (!json.isNull("clickUrl")){
-            clickUrl = json.optString("clickUrl");
+        if (!json.isNull("click_url")){
+            clickUrl = json.optString("click_url");
         }
         if (!json.isNull("approved")){
             approved = json.optBoolean("approved");
@@ -194,12 +194,12 @@ public class SACreative implements Parcelable, JSONSerializable {
             e.printStackTrace();
         }
         try {
-            json.put("impressionUrl", impressionUrl);
+            json.put("impression_url", impressionUrl);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            json.put("clickUrl", clickUrl);
+            json.put("click_url", clickUrl);
         } catch (JSONException e) {
             e.printStackTrace();
         }

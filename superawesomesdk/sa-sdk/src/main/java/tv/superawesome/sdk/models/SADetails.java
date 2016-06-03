@@ -148,8 +148,8 @@ public class SADetails implements Parcelable, JSONSerializable{
         if (!json.isNull("url")){
             url = json.optString("url");
         }
-        if (!json.isNull("placementFormat")){
-            placementFormat = json.optString("placementFormat");
+        if (!json.isNull("placement_format")){
+            placementFormat = json.optString("placement_format");
         }
         if (!json.isNull("data")){
             JSONObject obj = json.optJSONObject("data");
@@ -225,7 +225,7 @@ public class SADetails implements Parcelable, JSONSerializable{
             e.printStackTrace();
         }
         try {
-            json.put("placementFormat", placementFormat);
+            json.put("placement_format", placementFormat);
         } catch (JSONException e) {
             e.printStackTrace();
         }

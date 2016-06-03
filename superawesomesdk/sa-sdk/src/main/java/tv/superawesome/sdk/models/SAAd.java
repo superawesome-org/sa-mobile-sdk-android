@@ -103,23 +103,23 @@ public class SAAd implements Parcelable, JSONSerializable {
         if (!json.isNull("placementId")){
             placementId = json.optInt("placementId");
         }
-        if (!json.isNull("lineItemId")){
+        if (!json.isNull("line_item_id")){
             lineItemId = json.optInt("line_item_id");
         }
-        if (!json.isNull("campaignId")){
+        if (!json.isNull("campaign_id")){
             campaignId = json.optInt("campaign_id");
         }
         if (!json.isNull("test")){
             test = json.optBoolean("test");
         }
-        if (!json.isNull("isFallback")){
-            isFallback = json.optBoolean("isFallback");
+        if (!json.isNull("is_fallback")){
+            isFallback = json.optBoolean("is_fallback");
         }
-        if (!json.isNull("isFill")){
-            isFill = json.optBoolean("isFill");
+        if (!json.isNull("is_fill")){
+            isFill = json.optBoolean("is_fill");
         }
-        if (!json.isNull("isHouse")){
-            isHouse = json.optBoolean("isHouse");
+        if (!json.isNull("is_house")){
+            isHouse = json.optBoolean("is_house");
         }
         if (!json.isNull("creative")){
             JSONObject obj = json.optJSONObject("creative");
@@ -165,17 +165,17 @@ public class SAAd implements Parcelable, JSONSerializable {
             e.printStackTrace();
         }
         try {
-            json.put("isFallback", isFallback);
+            json.put("is_fallback", isFallback);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            json.put("isFill", isFill);
+            json.put("is_fill", isFill);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            json.put("isHouse", isHouse);
+            json.put("is_house", isHouse);
         } catch (JSONException e) {
             e.printStackTrace();
         }
