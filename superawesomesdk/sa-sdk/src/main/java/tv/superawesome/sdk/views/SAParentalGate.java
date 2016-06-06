@@ -10,7 +10,7 @@ import android.widget.EditText;
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.lib.saadloader.models.SAAd;
 
 /**
  * Created by connor.leigh-smith on 28/08/15.

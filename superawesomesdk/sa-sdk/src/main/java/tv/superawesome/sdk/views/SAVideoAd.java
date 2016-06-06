@@ -11,15 +11,16 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import tv.superawesome.lib.saevents.SAEvents;
-import tv.superawesome.lib.savast.SAVASTManager;
-import tv.superawesome.lib.savast.SAVASTManagerInterface;
+import tv.superawesome.lib.savastparser.SAVASTManager;
+import tv.superawesome.lib.savastparser.SAVASTManagerInterface;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.models.SACreativeFormat;
+import tv.superawesome.lib.saadloader.models.SAAd;
+import tv.superawesome.lib.saadloader.models.SACreativeFormat;
 
 /**
  * Created by gabriel.coman on 05/04/16.
@@ -209,7 +210,13 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
             }
 
             /** send moat */
-            SAEvents.sendVideoMoatEvent((Activity) getContext(), null, videoPlayer.getMediaPlayer(), ad);
+            HashMap<String, String> adData = new HashMap<>();
+            adData.put("campaignId", "" + ad.campaignId);
+            adData.put("lineItemId", "" + ad.lineItemId);
+            adData.put("creativeId", "" + ad.creative.id);
+            adData.put("app", "" + ad.app);
+            adData.put("placementId", "" + ad.placementId);
+            SAEvents.sendVideoMoatEvent((Activity) getContext(), null, videoPlayer.getMediaPlayer(), adData);
         }
 
         /** call listener */
@@ -287,7 +294,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         }
 
         /** send the end event */
-        SAEvents.sendVideoMoatComplete(ad);
+        SAEvents.sendVideoMoatComplete(ad.placementId);
     }
 
     @Override

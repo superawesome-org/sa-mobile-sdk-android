@@ -12,7 +12,7 @@ import android.view.View;
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sautils.SAApplication;
-import tv.superawesome.sdk.models.SAAd;
+import tv.superawesome.lib.saadloader.models.SAAd;
 
 /**
  * Created by gabriel.coman on 24/12/15.

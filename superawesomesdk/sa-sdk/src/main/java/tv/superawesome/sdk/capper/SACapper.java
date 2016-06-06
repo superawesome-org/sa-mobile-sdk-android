@@ -11,9 +11,6 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import java.io.IOException;
-
-import tv.superawesome.lib.sautils.SAAsyncTask;
-import tv.superawesome.lib.sautils.SAAsyncTaskInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 
 /**

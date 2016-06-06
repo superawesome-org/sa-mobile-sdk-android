@@ -13,8 +13,5 @@
             android:label="SAInterstitialAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
-
-        <!-- Declaring Service in Manifest -->
-        <service android:name="tv.superawesome.lib.sautils.SAAsyncTask$SAAsync" android:exported="false"/>
     </application>
 </manifest>

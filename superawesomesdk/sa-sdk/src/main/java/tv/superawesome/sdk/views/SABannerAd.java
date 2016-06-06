@@ -15,14 +15,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.util.HashMap;
+
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.lib.sawebview.SAWebPlayer;
-import tv.superawesome.lib.sawebview.SAWebPlayerInterface;
+import tv.superawesome.lib.sawebplayer.SAWebPlayer;
+import tv.superawesome.lib.sawebplayer.SAWebPlayerInterface;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.models.SAAd;
-import tv.superawesome.sdk.models.SACreativeFormat;
-
+import tv.superawesome.lib.saadloader.models.SAAd;
+import tv.superawesome.lib.saadloader.models.SACreativeFormat;
 
 /**
  * Created by gabriel.coman on 30/12/15.
@@ -128,7 +129,13 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
             SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
 
             /** send moat */
-            SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, ad);
+            HashMap<String, String> adData = new HashMap<>();
+            adData.put("campaignId", "" + ad.campaignId);
+            adData.put("lineItemId", "" + ad.lineItemId);
+            adData.put("creativeId", "" + ad.creative.id);
+            adData.put("app", "" + ad.app);
+            adData.put("placementId", "" + ad.placementId);
+            SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, adData);
 
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {

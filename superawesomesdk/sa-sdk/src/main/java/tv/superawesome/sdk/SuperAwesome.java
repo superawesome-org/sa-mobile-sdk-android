@@ -9,6 +9,7 @@ package tv.superawesome.sdk;
 
 import android.content.Context;
 
+import tv.superawesome.lib.saadloader.SALoaderSession;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.capper.SACapper;
@@ -44,6 +45,7 @@ public class SuperAwesome {
         this.setConfigurationProduction();
         this.disableTestMode();
         SAEvents.enableSATracking();
+        SALoaderSession.getInstance().setVersion(this.getVersion());
     }
 
     /** Get the only object available */
@@ -70,16 +72,19 @@ public class SuperAwesome {
     public void setConfigurationProduction() {
         this.config = SAConfiguration.PRODUCTION;
         this.baseUrl = BASE_URL_PRODUCTION;
+        SALoaderSession.getInstance().setBaseUrl(BASE_URL_PRODUCTION);
     }
 
     public void setConfigurationStaging() {
         this.config = SAConfiguration.STAGING;
         this.baseUrl = BASE_URL_STAGING;
+        SALoaderSession.getInstance().setBaseUrl(BASE_URL_STAGING);
     }
 
     public void setConfigurationDevelopment() {
         this.config = SAConfiguration.DEVELOPMENT;
         this.baseUrl = BASE_URL_DEVELOPMENT;
+        SALoaderSession.getInstance().setBaseUrl(BASE_URL_DEVELOPMENT);
     }
 
     public String getBaseURL() {
@@ -93,10 +98,12 @@ public class SuperAwesome {
      */
     public void enableTestMode() {
         this.isTestEnabled = true;
+        SALoaderSession.getInstance().setTest(true);
     }
 
     public void disableTestMode() {
         this.isTestEnabled = false;
+        SALoaderSession.getInstance().setTest(false);
     }
 
     public void setTestMode(boolean isTestEnabled) { this.isTestEnabled = isTestEnabled; }
@@ -112,6 +119,7 @@ public class SuperAwesome {
             @Override
             public void didFindDAUId(int id) {
                 dauID = id;
+                SALoaderSession.getInstance().setDauId(dauID);
             }
         });
     }
