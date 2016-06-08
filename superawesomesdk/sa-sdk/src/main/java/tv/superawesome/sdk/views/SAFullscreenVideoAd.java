@@ -170,7 +170,6 @@ public class SAFullscreenVideoAd implements SAViewInterface {
             shouldShowSmallClickButton = holder._refShouldShowSmallClickButton;
             lockOrientation = holder._refLockOrientation;
 
-            /** make sure direction is locked */
             if (shouldLockOrientation) {
                 setRequestedOrientation(lockOrientation);
             }
@@ -220,6 +219,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
                     @Override
                     public void adStarted(int placementId) {
                         isOKToClose = true;
+
                     }
                     @Override
                     public void allAdsEnded(int placementId) {

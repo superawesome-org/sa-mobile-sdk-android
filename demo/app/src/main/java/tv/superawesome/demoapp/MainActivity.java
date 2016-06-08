@@ -13,6 +13,7 @@ import tv.superawesome.lib.saadloader.models.SAAd;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAFullscreenVideoAd;
+import tv.superawesome.sdk.views.SAVideoAd;
 
 public class MainActivity extends Activity implements SALoaderInterface {
 
@@ -24,6 +25,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
     private SAAd video1Data = null;
     private SAAd video2Data = null;
     private SABannerAd bannerAd = null;
+    private SAVideoAd videoAd = null;
 
     /** the options list */
     @Override
@@ -38,14 +40,11 @@ public class MainActivity extends Activity implements SALoaderInterface {
         if (savedInstanceState == null) {
             loader = new SALoader();
             loader.loadAd(113, this);
-//            loader.loadAd(31365, this);
             loader.loadAd(114, this);
-//            loader.loadAd(115, this);
+            loader.loadAd(115, this);
             loader.loadAd(116, this);
-//            loader.loadAd(117, this);
-//            loader.loadAd(118, this);
-//            loader.loadAd(30490, this);
-//            loader.loadAd(28000, this);
+            loader.loadAd(117, this);
+            loader.loadAd(118, this);
         } else {
             bannerData = (SAAd) savedInstanceState.get("bannerData");
             interstitial1Data = (SAAd) savedInstanceState.get("interstitial1Data");
@@ -77,9 +76,6 @@ public class MainActivity extends Activity implements SALoaderInterface {
             case 116: video1Data = ad; break;
             case 117: video2Data = ad; break;
             case 118: interstitial3Data = ad; break;
-            case 31365: bannerData = ad; break;
-            case 30490: video1Data = ad; break;
-            case 28000: video1Data = ad; break;
         }
     }
 
@@ -128,8 +124,8 @@ public class MainActivity extends Activity implements SALoaderInterface {
             SAFullscreenVideoAd fvad = new SAFullscreenVideoAd(MainActivity.this);
             fvad.setAd(video1Data);
             fvad.setShouldAutomaticallyCloseAtEnd(false);
-            fvad.setShouldLockOrientation(true);
-            fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//            fvad.setShouldLockOrientation(true);
+//            fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fvad.setShouldShowSmallClickButton(true);
             fvad.play();
         }
@@ -137,13 +133,9 @@ public class MainActivity extends Activity implements SALoaderInterface {
 
     public void playVideo2(View v){
         if (video2Data != null){
-            SAFullscreenVideoAd fvad = new SAFullscreenVideoAd(MainActivity.this);
-            fvad.setAd(video2Data);
-            fvad.setShouldLockOrientation(true);
-            fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            fvad.setShouldShowCloseButton(true);
-            fvad.setShouldAutomaticallyCloseAtEnd(true);
-            fvad.play();
+            videoAd = (SAVideoAd)findViewById(R.id.myVideoAd);
+            videoAd.setAd(video2Data);
+            videoAd.play();
         }
     }
 }
