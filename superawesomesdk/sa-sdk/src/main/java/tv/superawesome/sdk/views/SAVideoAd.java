@@ -246,51 +246,53 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         /** send this event just to be sure */
         if (ad != null && ad.creative != null ) {
 
-            viewabilityRunnable = new Runnable() {
-                @Override
-                public void run() {
+            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
 
-                    if (ticks >= 5) {
-
-                        if (viewabilityCount == 5){
-                            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
-                        } else {
-                            Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
-                        }
-
-                    } else {
-                        ticks++;
-                        Log.d("SuperAwesome", "Tick " + ticks + "/5");
-
-                        // child
-                        int[] array = new int[2];
-                        getLocationInWindow(array);
-                        Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
-
-                        // super view
-                        int[] sarray = new int[2];
-                        View parent = (View)getParent();
-                        parent.getLocationInWindow(sarray);
-                        Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
-
-                        // window
-                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
-                        Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
-
-                        if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
-                            viewabilityCount++;
-                        }
-
-                        Log.d("SuperAwesome", banner.toString());
-                        Log.d("SuperAwesome", sbanner.toString());
-                        Log.d("SuperAwesome", screen.toString());
-
-                        postDelayed(this, 1000);
-                    }
-
-                }
-            };
-            postDelayed(viewabilityRunnable, 1000);
+//            viewabilityRunnable = new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    if (ticks >= 5) {
+//
+//                        if (viewabilityCount == 5){
+//                            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+//                        } else {
+//                            Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
+//                        }
+//
+//                    } else {
+//                        ticks++;
+//                        Log.d("SuperAwesome", "Tick " + ticks + "/5");
+//
+//                        // child
+//                        int[] array = new int[2];
+//                        getLocationInWindow(array);
+//                        Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+//
+//                        // super view
+//                        int[] sarray = new int[2];
+//                        View parent = (View)getParent();
+//                        parent.getLocationInWindow(sarray);
+//                        Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+//
+//                        // window
+//                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
+//                        Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
+//
+//                        if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
+//                            viewabilityCount++;
+//                        }
+//
+//                        Log.d("SuperAwesome", banner.toString());
+//                        Log.d("SuperAwesome", sbanner.toString());
+//                        Log.d("SuperAwesome", screen.toString());
+//
+//                        postDelayed(this, 1000);
+//                    }
+//
+//                }
+//            };
+//            postDelayed(viewabilityRunnable, 1000);
 
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
