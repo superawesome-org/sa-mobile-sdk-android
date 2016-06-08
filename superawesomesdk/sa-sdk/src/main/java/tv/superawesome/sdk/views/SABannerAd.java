@@ -12,7 +12,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.HashMap;
@@ -125,8 +127,26 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
         if (!showOnce) {
             showOnce = true;
 
-            /** send event viewable impression */
-            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+            // child
+            int[] array = new int[2];
+            getLocationInWindow(array);
+            Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+
+            // super view
+            int[] sarray = new int[2];
+            View parent = (View)getParent();
+            parent.getLocationInWindow(sarray);
+            Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+
+            // window
+            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
+            Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
+
+            if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
+                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+            } else {
+                Log.d("SuperAwesome", "[AA :: Error] Banner is not in viewable rectangle");
+            }
 
             /** send moat */
             HashMap<String, String> adData = new HashMap<>();

@@ -31,18 +31,19 @@ public class MainActivity extends Activity implements SALoaderInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SuperAwesome.getInstance().setConfigurationStaging();
+        SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         SuperAwesome.getInstance().disableTestMode();
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(113, this);
-            loader.loadAd(114, this);
-            loader.loadAd(115, this);
-            loader.loadAd(116, this);
-            loader.loadAd(117, this);
-            loader.loadAd(118, this);
+//            loader.loadAd(113, this);
+            loader.loadAd(31365, this);
+//            loader.loadAd(114, this);
+//            loader.loadAd(115, this);
+//            loader.loadAd(116, this);
+//            loader.loadAd(117, this);
+//            loader.loadAd(118, this);
 //            loader.loadAd(30490, this);
 //            loader.loadAd(28000, this);
         } else {
@@ -76,6 +77,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
             case 116: video1Data = ad; break;
             case 117: video2Data = ad; break;
             case 118: interstitial3Data = ad; break;
+            case 31365: bannerData = ad; break;
             case 30490: video1Data = ad; break;
             case 28000: video1Data = ad; break;
         }

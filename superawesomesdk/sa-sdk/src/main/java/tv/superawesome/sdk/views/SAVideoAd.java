@@ -4,10 +4,13 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTManager;
 import tv.superawesome.lib.savastparser.SAVASTManagerInterface;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
@@ -201,8 +205,27 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     public void didStartAd() {
         /** send this event just to be sure */
         if (ad != null && ad.creative != null ) {
-            /** send viewable impression url */
-            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+
+            // child
+            int[] array = new int[2];
+            getLocationInWindow(array);
+            Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+
+            // super view
+            int[] sarray = new int[2];
+            View parent = (View)getParent();
+            parent.getLocationInWindow(sarray);
+            Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+
+            // window
+            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
+            Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
+
+            if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
+                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+            } else {
+                Log.d("SuperAwesome", "[AA :: Error] Banner is not in viewable rectangle");
+            }
 
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
