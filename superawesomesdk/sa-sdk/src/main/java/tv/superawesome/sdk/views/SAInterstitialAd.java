@@ -201,6 +201,9 @@ public class SAInterstitialAd implements SAViewInterface {
                 adListener.adWasClosed(ad.placementId);
             }
 
+            // close this
+            interstitialBanner.close();
+
             /**
              * call super.onBackPressed() to close the activity because it's own onBackPressed()
              * method is overridden to do nothing e.g. so as not to be closed by the user

@@ -266,7 +266,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
 
     @Override
     public void close() {
-        /** do nothing here */
+        SAEvents.sentDisplayMoatStop(ad.placementId);
     }
 
     @Override

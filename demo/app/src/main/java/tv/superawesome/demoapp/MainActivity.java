@@ -94,11 +94,14 @@ public class MainActivity extends Activity implements SALoaderInterface {
     }
 
     public void playInterstitial1(View v){
-        if (interstitial1Data != null){
-            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
-            iad.setAd(interstitial1Data);
-            iad.play();
-        }
+
+        bannerAd.close();
+//
+//        if (interstitial1Data != null){
+//            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
+//            iad.setAd(interstitial1Data);
+//            iad.play();
+//        }
     }
 
     public void playInterstitial2(View v){
