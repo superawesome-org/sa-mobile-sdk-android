@@ -54,6 +54,10 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
     private String destinationURL = null;
     private boolean showOnce = false;
 
+    private int ticks = 0;
+    private int viewabilityCount = 0;
+    private Runnable viewabilityRunnable = null;
+
     /**********************************************************************************************/
     /** Init methods */
     /**********************************************************************************************/
@@ -127,26 +131,46 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
         if (!showOnce) {
             showOnce = true;
 
-            // child
-            int[] array = new int[2];
-            getLocationInWindow(array);
-            Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+            viewabilityRunnable = new Runnable() {
+                @Override
+                public void run() {
 
-            // super view
-            int[] sarray = new int[2];
-            View parent = (View)getParent();
-            parent.getLocationInWindow(sarray);
-            Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+                    if (ticks >= 5) {
 
-            // window
-            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
-            Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
+                        if (viewabilityCount == 5){
+                            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+                        } else {
+                            Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
+                        }
 
-            if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
-                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
-            } else {
-                Log.d("SuperAwesome", "[AA :: Error] Banner is not in viewable rectangle");
-            }
+                    } else {
+                        ticks++;
+
+                        // child
+                        int[] array = new int[2];
+                        getLocationInWindow(array);
+                        Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+
+                        // super view
+                        int[] sarray = new int[2];
+                        View parent = (View)getParent();
+                        parent.getLocationInWindow(sarray);
+                        Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+
+                        // window
+                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
+                        Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
+
+                        if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
+                            viewabilityCount++;
+                        }
+
+                        postDelayed(this, 1000);
+                    }
+
+                }
+            };
+            postDelayed(viewabilityRunnable, 1000);
 
             /** send moat */
             HashMap<String, String> adData = new HashMap<>();

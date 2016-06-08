@@ -36,8 +36,6 @@ public class SAFullscreenVideoAd implements SAViewInterface {
         holder = new SAVideoAdDataHolder();
     }
 
-
-
     public void setAdListener(SAAdInterface adListener) {
         holder._refAdListener = adListener;
     }

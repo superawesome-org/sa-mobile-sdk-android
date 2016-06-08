@@ -7,15 +7,20 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Handler;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -55,6 +60,13 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     private String destinationURL = null;
     private List<String> clickTracking = new ArrayList<>();
 
+    private int ticks = 0;
+    private int viewabilityCount = 0;
+    private Runnable viewabilityRunnable = null;
+    private Rect thisRect;
+    private Rect superRect;
+    private Rect screenRect;
+
     /**
      * Constructors with different types of parameters; All should default to the three param
      * constructor, with context, attributes and default style
@@ -78,7 +90,23 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         super.onLayout(changed, left, top, right, bottom);
 
         if (getWidth() != 0 && getHeight() != 0 && !layoutOK){
+
+            int[] array = new int[2];
+            getLocationInWindow(array);
+            thisRect = new Rect(array[0], array[1], getWidth(), getHeight());
+
+            // super view
+            int[] sarray = new int[2];
+            View parent = (View)getParent();
+            parent.getLocationInWindow(sarray);
+            superRect = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+
+            // window
+            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
+            screenRect = new Rect(0, 0, screenSize.width, screenSize.height);
+
             layoutOK = true;
+
         }
     }
 
@@ -122,7 +150,6 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         videoPlayer.shouldShowSmallClickButton = shouldShowSmallClickButton;
         manager = new SAVASTManager(videoPlayer, this);
 
-        /** wait till the ad ia actually visible to play it */
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -206,26 +233,33 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         /** send this event just to be sure */
         if (ad != null && ad.creative != null ) {
 
-            // child
-            int[] array = new int[2];
-            getLocationInWindow(array);
-            Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
 
-            // super view
-            int[] sarray = new int[2];
-            View parent = (View)getParent();
-            parent.getLocationInWindow(sarray);
-            Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
-
-            // window
-            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
-            Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
-
-            if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
-                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
-            } else {
-                Log.d("SuperAwesome", "[AA :: Error] Banner is not in viewable rectangle");
-            }
+//            viewabilityRunnable = new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    if (ticks >= 5) {
+//
+//                        if (viewabilityCount == 5){
+//                            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+//                        } else {
+//                            Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
+//                        }
+//
+//                    } else {
+//                        ticks++;
+//                        if (SAUtils.isTargetRectInFrameRect(thisRect, superRect) && SAUtils.isTargetRectInFrameRect(thisRect, screenRect)){
+//                            viewabilityCount++;
+//                        }
+//
+//                        Log.d("SuperAwesome", "Ticks: " + ticks + "/5" + " VCount: " + viewabilityCount);
+//
+//                        postDelayed(this, 1000);
+//                    }
+//                }
+//            };
+//            postDelayed(viewabilityRunnable, 1000);
 
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
@@ -341,6 +375,10 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
     @Override
     public void didClickOnClose() {
+
+        Log.d("SuperAwesome", "on close layoutOK is " + layoutOK);
+        Log.d("SuperAwesome", "ref " + thisRect);
+
         if (internalAdListener != null) {
             internalAdListener.adWasClosed(ad.placementId);
         }
