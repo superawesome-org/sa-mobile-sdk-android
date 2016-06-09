@@ -281,7 +281,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
             adData.put("creativeId", "" + ad.creative.id);
             adData.put("app", "" + ad.app);
             adData.put("placementId", "" + ad.placementId);
-            SAEvents.sendVideoMoatEvent((Activity) getContext(), videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer(), adData);
+            SAEvents.registerVideoMoatEvent((Activity) getContext(), videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer(), adData);
         }
 
         /** call listener */
@@ -359,7 +359,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         }
 
         /** send the end event */
-        SAEvents.sendVideoMoatComplete(ad.placementId);
+        SAEvents.unregisterVideoMoatEvent(ad.placementId);
     }
 
     @Override

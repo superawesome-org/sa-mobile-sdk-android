@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+3.8.9
+3.8.8
+3.8.7
+3.8.7
+ - Added correct viewable impression & Moat stuffs
+
 3.8.5
 3.8.3
 3.8.2

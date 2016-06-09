@@ -189,7 +189,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
             adData.put("creativeId", "" + ad.creative.id);
             adData.put("app", "" + ad.app);
             adData.put("placementId", "" + ad.placementId);
-            SAEvents.sendDisplayMoatEvent((Activity) this.getContext(), this, adData);
+            SAEvents.registerDisplayMoatEvent((Activity) this.getContext(), this, adData);
 
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
@@ -276,7 +276,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
 
     @Override
     public void close() {
-        SAEvents.sentDisplayMoatStop(ad.placementId);
+        SAEvents.unregisterDisplayMoatEvent(ad.placementId);
     }
 
     @Override
