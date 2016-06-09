@@ -59,9 +59,9 @@ install {
                 }
                 developers {
                     developer {
-                        id 'sharkofmirkwood'
-                        name 'Connor Leigh-Smith'
-                        email 'connorbob21@gmail.com'
+                        id 'gabrielcoman'
+                        name 'Gabriel Coman'
+                        email 'gabriel.coman@superawesome.tv'
                     }
                 }
                 scm {

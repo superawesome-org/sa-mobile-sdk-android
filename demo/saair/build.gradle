@@ -19,7 +19,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName version
     }
     buildTypes {
         release {
@@ -59,9 +59,9 @@ install {
                 }
                 developers {
                     developer {
-                        id 'sharkofmirkwood'
-                        name 'Connor Leigh-Smith'
-                        email 'connorbob21@gmail.com'
+                        id 'gabrielcoman'
+                        name 'Gabriel Coman'
+                        email 'gabriel.coman@superawesome.tv'
                     }
                 }
                 scm {

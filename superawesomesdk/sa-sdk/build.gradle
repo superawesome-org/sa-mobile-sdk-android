@@ -63,9 +63,9 @@ install {
                 }
                 developers {
                     developer {
-                        id 'sharkofmirkwood'
-                        name 'Connor Leigh-Smith'
-                        email 'connorbob21@gmail.com'
+                        id 'gabrielcoman'
+                        name 'Gabriel Coman'
+                        email 'gabriel.coman@superawesome.tv'
                     }
                 }
                 scm {
@@ -89,13 +89,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
-    compile 'tv.superawesome.lib.sautils:sautils:0.1.5'
+    compile 'tv.superawesome.lib.sautils:sautils:0.1.6'
     compile 'tv.superawesome.lib.sajsonparser:sajsonparser:0.1.0'
-    compile 'tv.superawesome.lib.saevents:saevents:0.1.9'
+    compile 'tv.superawesome.lib.saevents:saevents:0.2.0'
     compile 'tv.superawesome.lib.savastparser:savastparser:0.1.3'
     compile 'tv.superawesome.lib.savideoplayer:savideoplayer:0.1.3'
     compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.1.0'
-    compile 'tv.superawesome.lib.saadloader:saadloader:0.1.2'
+    compile 'tv.superawesome.lib.saadloader:saadloader:0.1.4'
 }
 
 //task sourcesJar(type: Jar) {

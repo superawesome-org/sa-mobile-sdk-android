@@ -39,12 +39,13 @@ public class MainActivity extends Activity implements SALoaderInterface {
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(113, this);
+//            loader.loadAd(113, this);
             loader.loadAd(114, this);
             loader.loadAd(115, this);
             loader.loadAd(116, this);
             loader.loadAd(117, this);
             loader.loadAd(118, this);
+            loader.loadAd(200, this);
         } else {
             bannerData = (SAAd) savedInstanceState.get("bannerData");
             interstitial1Data = (SAAd) savedInstanceState.get("interstitial1Data");
@@ -69,6 +70,9 @@ public class MainActivity extends Activity implements SALoaderInterface {
 
     @Override
     public void didLoadAd(SAAd ad) {
+
+        Log.d("SuperAwesome-ADData", ad.writeToJson().toString());
+
         switch (ad.placementId) {
             case 113: bannerData = ad; break;
             case 114: interstitial1Data = ad; break;
@@ -76,6 +80,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
             case 116: video1Data = ad; break;
             case 117: video2Data = ad; break;
             case 118: interstitial3Data = ad; break;
+            case 200: bannerData = ad; break;
         }
     }
 
