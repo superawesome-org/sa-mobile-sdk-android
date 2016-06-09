@@ -151,6 +151,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
     @Override
     public void close() {
+        SAEvents.unregisterVideoMoatEvent(ad.placementId);
         videoPlayer.destroy();
     }
 
