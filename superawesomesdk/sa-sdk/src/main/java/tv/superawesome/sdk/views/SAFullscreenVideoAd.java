@@ -182,6 +182,7 @@ public class SAFullscreenVideoAd implements SAViewInterface {
                 videoAd.setParentalGateListener(parentalGateListener);
                 videoAd.setAdListener(adListener);
                 videoAd.setVideoAdListener(videoAdListener);
+                videoAd.setIsPartOfFullscreen(true);
                 videoAd.setIsParentalGateEnabled(isParentalGateEnabled);
                 videoAd.setShouldShowCloseButton(shouldShowCloseButton);
                 videoAd.setShouldShowSmallClickButton(shouldShowSmallClickButton);

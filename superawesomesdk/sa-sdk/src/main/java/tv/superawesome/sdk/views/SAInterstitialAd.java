@@ -180,6 +180,7 @@ public class SAInterstitialAd implements SAViewInterface {
             interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
             interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
             interstitialBanner.setAd(ad);
+            interstitialBanner.setIsPartOfFullscreen(true);
             interstitialBanner.setAdListener(adListener);
             interstitialBanner.setParentalGateListener(parentalGateListener);
             interstitialBanner.setIsParentalGateEnabled(isParentalGateEnabled);

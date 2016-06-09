@@ -42,6 +42,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     private boolean isParentalGateEnabled = true;
     private boolean shouldShowCloseButton = false;
     private boolean shouldShowSmallClickButton = false;
+    private boolean isPartOfFullscreen = false;
     private SAAd ad;
 
     /** display stuff */
@@ -64,9 +65,6 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     private int ticks = 0;
     private int viewabilityCount = 0;
     private Runnable viewabilityRunnable = null;
-    private Rect thisRect;
-    private Rect superRect;
-    private Rect screenRect;
 
     /**
      * Constructors with different types of parameters; All should default to the three param
@@ -92,20 +90,6 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
         if (getWidth() != 0 && getHeight() != 0 && !layoutOK){
 
-            int[] array = new int[2];
-            getLocationInWindow(array);
-            thisRect = new Rect(array[0], array[1], getWidth(), getHeight());
-
-            // super view
-            int[] sarray = new int[2];
-            View parent = (View)getParent();
-            parent.getLocationInWindow(sarray);
-            superRect = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
-
-            // window
-            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
-            screenRect = new Rect(0, 0, screenSize.width, screenSize.height);
-
             layoutOK = true;
 
         }
@@ -126,9 +110,6 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     public SAAd getAd() {
         return ad;
     }
-
-//    private android.os.Handler handy = new android.os.Handler();
-//    private Runnable testR = null;
 
     @Override
     public void play() {
@@ -166,15 +147,6 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         } else {
             post(runnable);
         }
-
-//        testR = new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d("SuperAwesome", "POST Runnable " + layoutOK);
-//                postDelayed(this, 1000);
-//            }
-//        };
-//        handy.postDelayed(testR, 1000);
     }
 
     @Override
@@ -227,6 +199,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
     public void setIsParentalGateEnabled (boolean isParentalGateEnabled) { this.isParentalGateEnabled = isParentalGateEnabled; }
     public void setShouldShowCloseButton(boolean shouldShowCloseButton) { this.shouldShowCloseButton = shouldShowCloseButton; }
     public void setShouldShowSmallClickButton(boolean shouldShowSmallClickButton) { this.shouldShowSmallClickButton = shouldShowSmallClickButton; }
+    public void setIsPartOfFullscreen(boolean isPartOfFullscreen) { this.isPartOfFullscreen = isPartOfFullscreen; }
 
     /**
      * *********************************************************************************************
@@ -246,53 +219,55 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         /** send this event just to be sure */
         if (ad != null && ad.creative != null ) {
 
-            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+            if (isPartOfFullscreen) {
+                Log.d("SuperAwesome", "[AA :: Info] Sending viewable impression");
+                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+            }
+            else {
+                viewabilityRunnable = new Runnable() {
+                    @Override
+                    public void run() {
 
-//            viewabilityRunnable = new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    if (ticks >= 5) {
-//
-//                        if (viewabilityCount == 5){
-//                            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
-//                        } else {
-//                            Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
-//                        }
-//
-//                    } else {
-//                        ticks++;
-//                        Log.d("SuperAwesome", "Tick " + ticks + "/5");
-//
-//                        // child
-//                        int[] array = new int[2];
-//                        getLocationInWindow(array);
-//                        Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
-//
-//                        // super view
-//                        int[] sarray = new int[2];
-//                        View parent = (View)getParent();
-//                        parent.getLocationInWindow(sarray);
-//                        Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
-//
-//                        // window
-//                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
-//                        Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
-//
-//                        if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
-//                            viewabilityCount++;
-//                        }
-//
-//                        Log.d("SuperAwesome", banner.toString());
-//                        Log.d("SuperAwesome", sbanner.toString());
-//                        Log.d("SuperAwesome", screen.toString());
-//
-//                        postDelayed(this, 1000);
-//                    }
-//
-//                }
-//            };
-//            postDelayed(viewabilityRunnable, 1000);
+                        if (ticks >= 5) {
+
+                            if (viewabilityCount == 5){
+                                Log.d("SuperAwesome", "[AA :: Info] Sending viewable impression");
+                                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+                            } else {
+                                Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
+                            }
+
+                        } else {
+                            ticks++;
+
+                            // child
+                            int[] array = new int[2];
+                            getLocationInWindow(array);
+                            Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+
+                            // super view
+                            int[] sarray = new int[2];
+                            View parent = (View)getParent();
+                            parent.getLocationInWindow(sarray);
+                            Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+
+                            // window
+                            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
+                            Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
+
+                            if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
+                                viewabilityCount++;
+                            }
+
+                            Log.d("SuperAwesome", "[AA :: Info] Timer tick: " + ticks + "/5 and viewability count: " + viewabilityCount + "/5");
+
+                            postDelayed(this, 1000);
+                        }
+
+                    }
+                };
+                postDelayed(viewabilityRunnable, 1000);
+            }
 
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {

@@ -35,6 +35,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
 
     /** Private variables */
     private boolean isParentalGateEnabled = true;
+    private boolean isPartOfFullscreen = false;
     private SAAd ad; /** private ad */
 
     /** Subviews */
@@ -131,46 +132,55 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
         if (!showOnce) {
             showOnce = true;
 
-            viewabilityRunnable = new Runnable() {
-                @Override
-                public void run() {
+            if (isPartOfFullscreen) {
+                Log.d("SuperAwesome", "[AA :: Info] Sending viewable impression");
+                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+            }
+            else {
+                viewabilityRunnable = new Runnable() {
+                    @Override
+                    public void run() {
 
-                    if (ticks >= 5) {
+                        if (ticks >= 5) {
 
-                        if (viewabilityCount == 5){
-                            SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+                            if (viewabilityCount == 5){
+                                Log.d("SuperAwesome", "[AA :: Info] Sending viewable impression");
+                                SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
+                            } else {
+                                Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
+                            }
+
                         } else {
-                            Log.d("SuperAwesome", "[AA :: Error] Video is not in viewable rectangle");
+                            ticks++;
+
+                            // child
+                            int[] array = new int[2];
+                            getLocationInWindow(array);
+                            Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
+
+                            // super view
+                            int[] sarray = new int[2];
+                            View parent = (View)getParent();
+                            parent.getLocationInWindow(sarray);
+                            Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
+
+                            // window
+                            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
+                            Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
+
+                            if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
+                                viewabilityCount++;
+                            }
+
+                            Log.d("SuperAwesome", "[AA :: Info] Timer tick: " + ticks + "/5 and viewability count: " + viewabilityCount + "/5");
+
+                            postDelayed(this, 1000);
                         }
 
-                    } else {
-                        ticks++;
-
-                        // child
-                        int[] array = new int[2];
-                        getLocationInWindow(array);
-                        Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
-
-                        // super view
-                        int[] sarray = new int[2];
-                        View parent = (View)getParent();
-                        parent.getLocationInWindow(sarray);
-                        Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
-
-                        // window
-                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
-                        Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
-
-                        if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
-                            viewabilityCount++;
-                        }
-
-                        postDelayed(this, 1000);
                     }
-
-                }
-            };
-            postDelayed(viewabilityRunnable, 1000);
+                };
+                postDelayed(viewabilityRunnable, 1000);
+            }
 
             /** send moat */
             HashMap<String, String> adData = new HashMap<>();
@@ -329,6 +339,10 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
      */
     public void setParentalGateListener(SAParentalGateInterface parentalGateListener){
         this.parentalGateListener = parentalGateListener;
+    }
+
+    public void setIsPartOfFullscreen(boolean isPartOfFullscreen) {
+        this.isPartOfFullscreen = isPartOfFullscreen;
     }
 
     /**

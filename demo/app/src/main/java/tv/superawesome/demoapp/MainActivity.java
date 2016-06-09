@@ -94,14 +94,11 @@ public class MainActivity extends Activity implements SALoaderInterface {
     }
 
     public void playInterstitial1(View v){
-
-        bannerAd.close();
-//
-//        if (interstitial1Data != null){
-//            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
-//            iad.setAd(interstitial1Data);
-//            iad.play();
-//        }
+        if (interstitial1Data != null){
+            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
+            iad.setAd(interstitial1Data);
+            iad.play();
+        }
     }
 
     public void playInterstitial2(View v){
@@ -127,8 +124,8 @@ public class MainActivity extends Activity implements SALoaderInterface {
             SAFullscreenVideoAd fvad = new SAFullscreenVideoAd(MainActivity.this);
             fvad.setAd(video1Data);
             fvad.setShouldAutomaticallyCloseAtEnd(false);
-//            fvad.setShouldLockOrientation(true);
-//            fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fvad.setShouldLockOrientation(true);
+            fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fvad.setShouldShowSmallClickButton(true);
             fvad.play();
         }
