@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'nebula.provided-base'
 apply plugin: 'nebula.optional-base'
 
 Properties properties = new Properties()
@@ -83,9 +84,7 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile project(':sa-sdk')
-    compile files('libs/unity-classes.jar'), optional
 }

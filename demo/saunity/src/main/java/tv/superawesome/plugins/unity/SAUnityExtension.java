@@ -1,6 +1,8 @@
 package tv.superawesome.plugins.unity;
 
-import com.unity3d.player.*;
+// import com.unity3d.player.UnityPlayer;
+import java.lang.reflect.InvocationTargetException;
+import tv.superawesome.lib.sautils.SAUtils;
 
 /**
  * Created by gabriel.coman on 21/01/16.
@@ -16,7 +18,23 @@ public class SAUnityExtension {
      */
     public static void SendUnityMsgPayload(String unityAd, String callback, int placementId, String payloadName, String payloadData) {
         String payload = "{ \"placementId\":\"" + placementId + "\", \"type\":\""+callback+"\",\""+payloadName+"\":" + payloadData + "}";
-        UnityPlayer.UnitySendMessage(unityAd, "nativeCallback", payload);
+
+        if (!SAUtils.isClassAvailable("com.unity3d.player.UnityPlayer")) return;
+
+        try {
+            Class<?> unity = Class.forName("com.unity3d.player.UnityPlayer");
+            java.lang.reflect.Method method = unity.getMethod("UnitySendMessage", String.class, String.class, String.class);
+            method.invoke(unity, unityAd, "nativeCallback", payload);
+        } catch (ClassNotFoundException e) {
+            // failure
+        } catch (NoSuchMethodException e) {
+            // failure
+        } catch (InvocationTargetException e) {
+            // failure
+        } catch (IllegalAccessException e) {
+            // failure;
+        }
+        // UnityPlayer.UnitySendMessage(unityAd, "nativeCallback", payload);
     }
 
     /**
