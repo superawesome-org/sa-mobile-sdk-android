@@ -7,30 +7,23 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.VideoView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Handler;
-
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTManager;
 import tv.superawesome.lib.savastparser.SAVASTManagerInterface;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.lib.saadloader.models.SAAd;
-import tv.superawesome.lib.saadloader.models.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.SAAd;
+import tv.superawesome.lib.samodelspace.SACreativeFormat;
 
 /**
  * Created by gabriel.coman on 05/04/16.

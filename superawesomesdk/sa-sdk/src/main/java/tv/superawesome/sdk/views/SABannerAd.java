@@ -24,8 +24,8 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerInterface;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.lib.saadloader.models.SAAd;
-import tv.superawesome.lib.saadloader.models.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.SAAd;
+import tv.superawesome.lib.samodelspace.SACreativeFormat;
 
 /**
  * Created by gabriel.coman on 30/12/15.

@@ -4,13 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
 
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.lib.saadloader.models.SAAd;
+import tv.superawesome.lib.samodelspace.SAAd;
 
 /**
  * Created by connor.leigh-smith on 28/08/15.

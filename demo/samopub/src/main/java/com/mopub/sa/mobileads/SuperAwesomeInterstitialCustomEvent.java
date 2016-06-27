@@ -11,7 +11,7 @@ import java.util.Map;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
-import tv.superawesome.lib.saadloader.models.SAAd;
+import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 

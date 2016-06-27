@@ -14,7 +14,7 @@ import com.adobe.fre.FREWrongThreadException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tv.superawesome.lib.saadloader.models.SAAd;
+import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SAParentalGateInterface;
 import tv.superawesome.sdk.views.SAFullscreenVideoAd;

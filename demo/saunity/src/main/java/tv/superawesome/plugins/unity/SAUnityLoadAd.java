@@ -5,7 +5,7 @@ import android.content.Context;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
-import tv.superawesome.lib.saadloader.models.SAAd;
+import tv.superawesome.lib.samodelspace.SAAd;
 
 /**
  * Created by gabriel.coman on 13/05/16.
