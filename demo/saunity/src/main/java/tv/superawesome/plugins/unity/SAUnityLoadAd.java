@@ -1,6 +1,7 @@
 package tv.superawesome.plugins.unity;
 
 import android.content.Context;
+import android.util.Log;
 
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.saadloader.SALoader;

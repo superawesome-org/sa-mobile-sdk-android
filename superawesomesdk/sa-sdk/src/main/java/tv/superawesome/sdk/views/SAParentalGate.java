@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
 
+import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.samodelspace.SAAd;
 
@@ -58,6 +59,10 @@ public class SAParentalGate {
 
     /** show function */
     public void show() {
+
+        // send Open Event
+        SAEvents.sendEventToURL(refAd.creative.parentalGateOpenUrl);
+
         startNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
         endNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
 
@@ -74,7 +79,7 @@ public class SAParentalGate {
         alert.setView(input);
 
         /** resume video */
-        String refClassName = parentRef.get().getClass().getName();
+        final String refClassName = parentRef.get().getClass().getName();
         String videoName = SAVideoAd.class.getCanonicalName();
 
         if (refClassName.contains(videoName)) {
@@ -91,6 +96,10 @@ public class SAParentalGate {
                     dialog.dismiss();
 
                     if (userValue == (startNum + endNum)) {
+
+                        // send event
+                        SAEvents.sendEventToURL(refAd.creative.parentalGateSuccessUrl);
+
                         /** go on success way */
                         if (listener != null) {
                             listener.parentalGateWasSucceded(refAd.placementId);
@@ -106,6 +115,9 @@ public class SAParentalGate {
                             ((SAVideoAd) parentRef.get()).advanceToClick();
                         }
                     } else {
+
+                        // send event
+                        SAEvents.sendEventToURL(refAd.creative.parentalGateFailUrl);
 
                         /** go on error way */
                         AlertDialog.Builder erroralert = new android.app.AlertDialog.Builder(c);
@@ -155,6 +167,9 @@ public class SAParentalGate {
         alert.setNegativeButton(SA_CHALLANGE_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+
+                // send event
+                SAEvents.sendEventToURL(refAd.creative.parentalGateCloseUrl);
 
                 /** dismiss */
                 dialog.dismiss();

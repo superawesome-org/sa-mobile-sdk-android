@@ -59,13 +59,14 @@ public class SAAIRLoadAd implements FREFunction {
                     public void didFailToLoadAdForPlacementId(int placementId) {
                         Log.d("AIREXT", "Did fail to load Ad " + placementId);
 
-                        /** dispatch a ad not loaded event */
+                        /** dispatch an ad not loaded event */
                         String meta = "{\"placementId\":" + placementId + ", \"name\":\"" + name + "\", \"func\":\"didFailToLoadAdForPlacementId\"}";
                         freContext.dispatchStatusEventAsync(meta, "");
                     }
                 });
 
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                Log.d("AIREXT", "Some nasty error");
                 e.printStackTrace();
             }
         }

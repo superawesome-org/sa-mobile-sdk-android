@@ -1,6 +1,8 @@
 package tv.superawesome.plugins.unity;
 
 // import com.unity3d.player.UnityPlayer;
+import android.util.Log;
+
 import java.lang.reflect.InvocationTargetException;
 import tv.superawesome.lib.sautils.SAUtils;
 

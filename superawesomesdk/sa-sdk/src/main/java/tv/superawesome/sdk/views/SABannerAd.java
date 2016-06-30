@@ -33,6 +33,9 @@ import tv.superawesome.lib.samodelspace.SACreativeFormat;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, SAViewInterface {
 
+    /** constants */
+    private final int DISPLAY_VIEWABILITY_COUNT = 1;
+
     /** Private variables */
     private boolean isParentalGateEnabled = true;
     private boolean isPartOfFullscreen = false;
@@ -116,12 +119,9 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
 
         /** check for PG */
         if (isParentalGateEnabled) {
-            /** send event */
-            SAEvents.sendEventToURL(ad.creative.parentalGateClickUrl);
-            /** create pg */
             gate = new SAParentalGate(getContext(), this, ad);
-            gate.show();
             gate.setListener(parentalGateListener);
+            gate.show();
         } else {
             advanceToClick();
         }
@@ -141,9 +141,9 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
                     @Override
                     public void run() {
 
-                        if (ticks >= 5) {
+                        if (ticks >= DISPLAY_VIEWABILITY_COUNT) {
 
-                            if (viewabilityCount == 5){
+                            if (viewabilityCount == DISPLAY_VIEWABILITY_COUNT){
                                 Log.d("SuperAwesome", "[AA :: Info] Sending viewable impression");
                                 SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
                             } else {

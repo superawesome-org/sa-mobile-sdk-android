@@ -31,6 +31,9 @@ import tv.superawesome.lib.samodelspace.SACreativeFormat;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTManagerInterface {
 
+    /** constants */
+    private final int VIDEO_VIEWABILITY_COUNT = 2;
+
     /** the Ad */
     private boolean isParentalGateEnabled = true;
     private boolean shouldShowCloseButton = false;
@@ -222,9 +225,9 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
                     @Override
                     public void run() {
 
-                        if (ticks >= 5) {
+                        if (ticks >= VIDEO_VIEWABILITY_COUNT) {
 
-                            if (viewabilityCount == 5){
+                            if (viewabilityCount == VIDEO_VIEWABILITY_COUNT){
                                 Log.d("SuperAwesome", "[AA :: Info] Sending viewable impression");
                                 SAEvents.sendEventToURL(ad.creative.viewableImpressionUrl);
                             } else {
@@ -364,12 +367,9 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
         /** check for PG */
         if (isParentalGateEnabled) {
-            /** send event */
-            SAEvents.sendEventToURL(ad.creative.parentalGateClickUrl);
-            /** create pg - make sure to access SAVideo.this, not this */
             gate = new SAParentalGate(getContext(), SAVideoAd.this, ad);
-            gate.show();
             gate.setListener(parentalGateListener);
+            gate.show();
         } else {
             advanceToClick();
         }
