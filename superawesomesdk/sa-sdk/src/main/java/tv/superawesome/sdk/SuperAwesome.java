@@ -55,7 +55,7 @@ public class SuperAwesome {
 
     /** provide versionin */
     private String getVersion () {
-        return "3.9.9";
+        return "4.0.0";
     }
 
     private String getSdk() {
@@ -106,7 +106,10 @@ public class SuperAwesome {
         SALoaderSession.getInstance().setTest(false);
     }
 
-    public void setTestMode(boolean isTestEnabled) { this.isTestEnabled = isTestEnabled; }
+    public void setTestMode(boolean isTestEnabled) {
+        this.isTestEnabled = isTestEnabled;
+        SALoaderSession.getInstance().setTest(isTestEnabled);
+    }
 
     public boolean isTestingEnabled() { return this.isTestEnabled; }
 

@@ -22,7 +22,9 @@ public class SAUnityLoadAd {
      */
     public static void SuperAwesomeUnityLoadAd(final Context context, final String unityName, int placementId, boolean isTestingEnabled, int configuration) {
         /** setup testing */
+
         SuperAwesome.getInstance().setTestMode(isTestingEnabled);
+        Log.d("SuperAwesome", "On Android side Testing is " + SuperAwesome.getInstance().isTestingEnabled());
         SuperAwesome.getInstance().setApplicationContext(context);
         if (configuration == SuperAwesome.SAConfiguration.STAGING.ordinal()) {
             SuperAwesome.getInstance().setConfigurationStaging();
