@@ -92,5 +92,5 @@ dependencies {
     compile 'tv.superawesome.lib.saevents:saevents:0.2.7'
     compile 'tv.superawesome.lib.savideoplayer:savideoplayer:0.1.5'
     compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.1.0'
-    compile 'tv.superawesome.lib.saadloader:saadloader:0.2.2'
+    compile 'tv.superawesome.lib.saadloader:saadloader:0.2.3'
 }
