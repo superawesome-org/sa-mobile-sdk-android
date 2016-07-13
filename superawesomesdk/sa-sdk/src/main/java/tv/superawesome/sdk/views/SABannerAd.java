@@ -182,15 +182,6 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
                 postDelayed(viewabilityRunnable, 1000);
             }
 
-            /** send moat */
-            HashMap<String, String> adData = new HashMap<>();
-            adData.put("campaignId", "" + ad.campaignId);
-            adData.put("lineItemId", "" + ad.lineItemId);
-            adData.put("creativeId", "" + ad.creative.id);
-            adData.put("app", "" + ad.app);
-            adData.put("placementId", "" + ad.placementId);
-            SAEvents.registerDisplayMoatEvent((Activity) this.getContext(), this, adData);
-
             /** send impression URL, if exits, to 3rd party only */
             if (ad.creative.impressionUrl != null && !ad.creative.impressionUrl.contains(SuperAwesome.getInstance().getBaseURL())) {
                 SAEvents.sendEventToURL(ad.creative.impressionUrl);
@@ -317,8 +308,20 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         contentHolder.setLayoutParams(params);
 
+        /** prepare moat tracking */
+        HashMap<String, String> adData = new HashMap<>();
+        adData.put("campaignId", "" + ad.campaignId);
+        adData.put("lineItemId", "" + ad.lineItemId);
+        adData.put("creativeId", "" + ad.creative.id);
+        adData.put("app", "" + ad.app);
+        adData.put("placementId", "" + ad.placementId);
+        String moatString = SAEvents.registerDisplayMoatEvent((Activity)this.getContext(), webView, adData);
+        Log.d("SuperAwesome-HTML+MOAT", "Moat String is " + moatString);
+        String fullHTML = ad.creative.details.data.adHtml.replace("_MOAT_", moatString);
+        Log.d("SuperAwesome-HTML+MOAT", fullHTML);
+
         /** update HTML as well */
-        webView.loadHTML(ad.creative.details.data.adHtml, adWidth, adHeight, newWidth, newHeight);
+        webView.loadHTML(fullHTML, adWidth, adHeight, newWidth, newHeight);
     }
 
     /**********************************************************************************************/
