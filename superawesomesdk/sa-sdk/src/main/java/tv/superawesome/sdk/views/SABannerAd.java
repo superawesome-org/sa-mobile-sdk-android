@@ -316,9 +316,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
         adData.put("app", "" + ad.app);
         adData.put("placementId", "" + ad.placementId);
         String moatString = SAEvents.registerDisplayMoatEvent((Activity)this.getContext(), webView, adData);
-        Log.d("SuperAwesome-HTML+MOAT", "Moat String is " + moatString);
         String fullHTML = ad.creative.details.data.adHtml.replace("_MOAT_", moatString);
-        Log.d("SuperAwesome-HTML+MOAT", fullHTML);
 
         /** update HTML as well */
         webView.loadHTML(fullHTML, adWidth, adHeight, newWidth, newHeight);
