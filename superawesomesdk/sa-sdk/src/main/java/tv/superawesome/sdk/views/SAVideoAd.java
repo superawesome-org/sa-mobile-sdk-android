@@ -260,7 +260,6 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
                             postDelayed(this, 1000);
                         }
-
                     }
                 };
                 postDelayed(viewabilityRunnable, 1000);
@@ -273,6 +272,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
             /** send moat */
             HashMap<String, String> adData = new HashMap<>();
+            adData.put("advertiserId", "" + ad.advertiserId);
             adData.put("campaignId", "" + ad.campaignId);
             adData.put("lineItemId", "" + ad.lineItemId);
             adData.put("creativeId", "" + ad.creative.id);

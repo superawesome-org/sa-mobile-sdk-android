@@ -310,6 +310,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
 
         /** prepare moat tracking */
         HashMap<String, String> adData = new HashMap<>();
+        adData.put("advertiserId", "" + ad.advertiserId);
         adData.put("campaignId", "" + ad.campaignId);
         adData.put("lineItemId", "" + ad.lineItemId);
         adData.put("creativeId", "" + ad.creative.id);
