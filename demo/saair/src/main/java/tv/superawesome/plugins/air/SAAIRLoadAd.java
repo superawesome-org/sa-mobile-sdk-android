@@ -37,7 +37,7 @@ public class SAAIRLoadAd implements FREFunction {
                 SuperAwesome.getInstance().setTestMode(isTestingEnabled);
                 switch (configuration) {
                     case 0: SuperAwesome.getInstance().setConfigurationStaging(); break;
-                    case 1: SuperAwesome.getInstance().setConfigurationDevelopment(); break;
+                    case 1: SuperAwesome.getInstance().setConfigurationStaging(); break;
                     case 2: default: SuperAwesome.getInstance().setConfigurationProduction(); break;
                 }
 

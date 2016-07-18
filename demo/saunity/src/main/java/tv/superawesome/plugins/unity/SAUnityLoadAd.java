@@ -29,7 +29,7 @@ public class SAUnityLoadAd {
         if (configuration == SuperAwesome.SAConfiguration.STAGING.ordinal()) {
             SuperAwesome.getInstance().setConfigurationStaging();
         } else  if (configuration == SuperAwesome.SAConfiguration.DEVELOPMENT.ordinal()){
-            SuperAwesome.getInstance().setConfigurationDevelopment();
+            SuperAwesome.getInstance().setConfigurationStaging();
         } else  {
             SuperAwesome.getInstance().setConfigurationProduction();
         }

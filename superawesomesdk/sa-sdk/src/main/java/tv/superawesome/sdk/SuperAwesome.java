@@ -9,7 +9,7 @@ package tv.superawesome.sdk;
 
 import android.content.Context;
 
-import tv.superawesome.lib.saadloader.SALoaderSession;
+import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.capper.SACapper;
@@ -20,22 +20,12 @@ import tv.superawesome.sdk.capper.SACapperInterface;
  */
 public class SuperAwesome {
 
-    /** Ad server hardcoded constants */
-    private final String BASE_URL_STAGING = "https://ads.staging.superawesome.tv/v2";
-    private final String BASE_URL_DEVELOPMENT = "https://ads.dev.superawesome.tv/v2";
-    private final String BASE_URL_PRODUCTION = "https://ads.superawesome.tv/v2";
-
-    private String baseUrl;
-    private boolean isTestEnabled;
-    private int dauID = 0;
-
     public enum SAConfiguration {
         STAGING,
         DEVELOPMENT,
         PRODUCTION
     }
     private SAConfiguration config;
-
 
     /** the singleton SuperAwesome instance */
     private static SuperAwesome instance = new SuperAwesome();
@@ -45,7 +35,7 @@ public class SuperAwesome {
         this.setConfigurationProduction();
         this.disableTestMode();
         SAEvents.enableSATracking();
-        SALoaderSession.getInstance().setVersion(this.getVersion());
+        SASession.getInstance().setVersion(this.getVersion());
     }
 
     /** Get the only object available */
@@ -71,24 +61,16 @@ public class SuperAwesome {
      */
     public void setConfigurationProduction() {
         this.config = SAConfiguration.PRODUCTION;
-        this.baseUrl = BASE_URL_PRODUCTION;
-        SALoaderSession.getInstance().setBaseUrl(BASE_URL_PRODUCTION);
+        SASession.getInstance().setConfigurationProduction();
     }
 
     public void setConfigurationStaging() {
         this.config = SAConfiguration.STAGING;
-        this.baseUrl = BASE_URL_STAGING;
-        SALoaderSession.getInstance().setBaseUrl(BASE_URL_STAGING);
-    }
-
-    public void setConfigurationDevelopment() {
-        this.config = SAConfiguration.DEVELOPMENT;
-        this.baseUrl = BASE_URL_DEVELOPMENT;
-        SALoaderSession.getInstance().setBaseUrl(BASE_URL_DEVELOPMENT);
+        SASession.getInstance().setConfigurationStaging();
     }
 
     public String getBaseURL() {
-        return this.baseUrl;
+        return SASession.getInstance().getBaseUrl();
     }
 
     public SAConfiguration getConfiguration() { return this.config; }
@@ -97,21 +79,18 @@ public class SuperAwesome {
      * Group of functions that encapsulate isTestEnabled functionality
      */
     public void enableTestMode() {
-        this.isTestEnabled = true;
-        SALoaderSession.getInstance().setTest(true);
+        SASession.getInstance().setTest(true);
     }
 
     public void disableTestMode() {
-        this.isTestEnabled = false;
-        SALoaderSession.getInstance().setTest(false);
+        SASession.getInstance().setTest(false);
     }
 
     public void setTestMode(boolean isTestEnabled) {
-        this.isTestEnabled = isTestEnabled;
-        SALoaderSession.getInstance().setTest(isTestEnabled);
+        SASession.getInstance().setTest(isTestEnabled);
     }
 
-    public boolean isTestingEnabled() { return this.isTestEnabled; }
+    public boolean isTestingEnabled() { return SASession.getInstance().isTestEnabled(); }
 
     /**
      * Group of functions that encapsulate the SAApplication functionality
@@ -121,8 +100,7 @@ public class SuperAwesome {
         SACapper.enableCapping(_appContext, new SACapperInterface() {
             @Override
             public void didFindDAUId(int id) {
-                dauID = id;
-                SALoaderSession.getInstance().setDauId(dauID);
+                SASession.getInstance().setDauId(id);
             }
         });
     }
@@ -132,6 +110,6 @@ public class SuperAwesome {
     }
 
     public int getDAUID() {
-        return this.dauID;
+        return SASession.getInstance().getDauId();
     }
 }
