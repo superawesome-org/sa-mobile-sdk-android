@@ -84,5 +84,5 @@ repositories {
 }
 
 dependencies {
-    compile project(':sa-sdk')
+    compile project(':superawesome-base')
 }

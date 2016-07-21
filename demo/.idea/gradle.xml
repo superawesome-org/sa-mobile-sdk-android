@@ -13,7 +13,8 @@
             <option value="$PROJECT_DIR$/saair" />
             <option value="$PROJECT_DIR$/samopub" />
             <option value="$PROJECT_DIR$/saunity" />
-            <option value="$PROJECT_DIR$/../superawesomesdk/sa-sdk" />
+            <option value="$PROJECT_DIR$/superawesome" />
+            <option value="$PROJECT_DIR$/superawesome-base" />
           </set>
         </option>
       </GradleProjectSettings>

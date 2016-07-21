@@ -11,9 +11,11 @@ group = properties.getProperty("project.group")
 def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'        // Homepage URL of the library
 def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'         // Git repository URL
 
+
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
+    resourcePrefix "superawesome__"
 
     defaultConfig {
         minSdkVersion 11
@@ -32,11 +34,10 @@ android {
 bintray {
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
-
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "SuperAwesomeSDK-AIR"
+        name = "SuperAwesome-Base"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
@@ -49,7 +50,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'SuperAwesome Mobile SDK for Android with AIR extension'
+                name 'SuperAwesome Base Mobile SDK for Android'
                 url siteUrl
                 licenses {
                     license {
@@ -83,6 +84,12 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('libs/FlashRuntimeExtensions.jar')
-    compile project(':superawesome-base')
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    compile 'tv.superawesome.lib.sautils:sautils:0.2.1'
+    compile 'tv.superawesome.lib.saevents:saevents:0.3.5'
+    compile 'tv.superawesome.lib.savideoplayer:savideoplayer:0.1.6'
+    compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.1.0'
+    compile 'tv.superawesome.lib.saadloader:saadloader:0.3.1'
+    compile 'tv.superawesome.lib.sasession:sasession:0.1.1'
+
 }

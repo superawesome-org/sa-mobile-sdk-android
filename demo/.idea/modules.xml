@@ -4,10 +4,11 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo.iml" filepath="$PROJECT_DIR$/demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../superawesomesdk/sa-sdk/sa-sdk.iml" filepath="$PROJECT_DIR$/../superawesomesdk/sa-sdk/sa-sdk.iml" />
       <module fileurl="file://$PROJECT_DIR$/saair/saair.iml" filepath="$PROJECT_DIR$/saair/saair.iml" />
       <module fileurl="file://$PROJECT_DIR$/samopub/samopub.iml" filepath="$PROJECT_DIR$/samopub/samopub.iml" />
       <module fileurl="file://$PROJECT_DIR$/saunity/saunity.iml" filepath="$PROJECT_DIR$/saunity/saunity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/superawesome/superawesome.iml" filepath="$PROJECT_DIR$/superawesome/superawesome.iml" />
+      <module fileurl="file://$PROJECT_DIR$/superawesome-base/superawesome-base.iml" filepath="$PROJECT_DIR$/superawesome-base/superawesome-base.iml" />
     </modules>
   </component>
 </project>
