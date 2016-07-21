@@ -89,10 +89,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'tv.superawesome.lib.sautils:sautils:0.2.1'
-    compile 'tv.superawesome.lib.saevents:saevents:0.3.3'
+    compile 'tv.superawesome.lib.saevents:saevents:0.3.5'
     compile 'tv.superawesome.lib.savideoplayer:savideoplayer:0.1.6'
     compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.1.0'
-    compile 'tv.superawesome.lib.saadloader:saadloader:0.2.9'
+    compile 'tv.superawesome.lib.saadloader:saadloader:0.3.1'
     compile 'tv.superawesome.lib.sasession:sasession:0.1.1'
 
 }

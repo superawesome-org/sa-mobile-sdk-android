@@ -278,6 +278,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
             adData.put("creativeId", "" + ad.creative.id);
             adData.put("app", "" + ad.app);
             adData.put("placementId", "" + ad.placementId);
+            adData.put("publisherId", "" + ad.publisherId);
             SAEvents.registerVideoMoatEvent((Activity) getContext(), videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer(), adData);
         }
 
