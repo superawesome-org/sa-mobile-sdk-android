@@ -83,6 +83,7 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
     compile 'com.mopub:mopub-sdk:4.3.0@aar'
     compile project(':superawesome-base')
 }

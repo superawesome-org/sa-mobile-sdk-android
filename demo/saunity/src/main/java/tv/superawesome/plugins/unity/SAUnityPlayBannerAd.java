@@ -2,18 +2,16 @@ package tv.superawesome.plugins.unity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
-import android.hardware.SensorManager;
+import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.OrientationEventListener;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -24,59 +22,6 @@ import tv.superawesome.sdk.views.SAParentalGateInterface;
  */
 public class SAUnityPlayBannerAd {
 
-    /**
-     * Aux function to get the correct rotation on Android
-     * @param context the current context
-     * @return 0 = portrait, 1 = landscape
-     */
-    private static int getOrientation(Context context){
-        Display getOrient = ((Activity)context).getWindowManager().getDefaultDisplay();
-        int orientation = Configuration.ORIENTATION_UNDEFINED;
-        if(getOrient.getWidth()==getOrient.getHeight()){
-            orientation = Configuration.ORIENTATION_SQUARE;
-        } else{
-            if(getOrient.getWidth() < getOrient.getHeight()){
-                orientation = Configuration.ORIENTATION_PORTRAIT;
-            }else {
-                orientation = Configuration.ORIENTATION_LANDSCAPE;
-            }
-        }
-        return orientation;
-    }
-
-    /**
-     * Function that gets a banner's layout params
-     * @param factor a calculated factor
-     * @param screenSize the screen size
-     * @param bannerSize the banner size
-     * @param bannerPosition the banner position
-     * @return a new set of layout params
-     */
-    private static RelativeLayout.LayoutParams getBannerLayoutParams(float factor, SAUtils.SASize screenSize, int bannerSize, int bannerPosition){
-        /** calc actual banner W & H */
-        int width = 0, height = 0;
-        if      (bannerSize == 1) { width = 300; height = 50;  }
-        else if (bannerSize == 2) { width = 728; height = 90;  }
-        else if (bannerSize == 3) { width = 300; height = 250; }
-        else                      { width = 320; height = 50;  }
-
-        /** scale it according to the factor */
-        int scaledWidth = (int)(factor * width);
-        int scaledHeight = (int)(factor * height);
-
-        /** make sure it's not bigger than the screen */
-        if (scaledWidth > screenSize.width) {
-            scaledHeight = (screenSize.width * scaledHeight) / scaledWidth;
-            scaledWidth = screenSize.width;
-        }
-
-        /** create the layout params */
-        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(scaledWidth, scaledHeight);
-        params2.leftMargin = (screenSize.width - scaledWidth) / 2;
-        params2.topMargin = (bannerPosition == 0 ? 0 : (screenSize.height - scaledHeight));
-
-        return params2;
-    }
     /**
      * Creates a banner ad, based on the following parameters
      * @param context the current context (activity, etc)
@@ -95,9 +40,6 @@ public class SAUnityPlayBannerAd {
             JSONObject dataJson = new JSONObject(adJson);
             SAAd ad = new SAAd(dataJson);
 
-            /** get current rotation */
-            final int[] currentRotation = {getOrientation(context)};
-
             /** context to activity */
             final Activity activity = (Activity) context;
 
@@ -107,50 +49,27 @@ public class SAUnityPlayBannerAd {
             /** start the banner ad */
             final SABannerAd bannerAd = new SABannerAd(context);
 
-            /** get factor & screen size */
-            SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
-            final float factor = SAUtils.getScaleFactor(activity);
-
-            /** set banner width & height */
-            int maxWidthHeight = Math.max(screenSize.width, screenSize.height);
-            RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(maxWidthHeight, maxWidthHeight);
             RelativeLayout screenLayout = new RelativeLayout(context);
-            screenLayout.setLayoutParams(params1);
             screenLayout.setBackgroundColor(Color.TRANSPARENT);
+            screenLayout.setGravity(position == 0 ? Gravity.TOP : Gravity.BOTTOM);
+            screenLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            current.addView(screenLayout);
 
-            /** update width & height */
-            RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
-            bannerAd.setLayoutParams(params2);
+            Display getOrient = ((Activity)context).getWindowManager().getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
+            getOrient.getMetrics(metrics);
+            int width = metrics.widthPixels;
+            int height = metrics.heightPixels;
+            int smallDimension = (width > height ? height : width);
+
+            bannerAd.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(smallDimension*0.15)));
+            bannerAd.setAd(ad);
             if (color == 0) {
                 bannerAd.setBackgroundColor(Color.TRANSPARENT);
             } else {
                 bannerAd.setBackgroundColor(Color.rgb(191, 191, 191));
             }
-
-            current.addView(screenLayout);
-            screenLayout.addView(bannerAd);
-
-            /** orientation changed */
-            OrientationEventListener listener = new OrientationEventListener(activity, SensorManager.SENSOR_DELAY_UI) {
-                @Override
-                public void onOrientationChanged(int orientation) {
-                    int newRotation = getOrientation(context);
-
-                    if (newRotation != currentRotation[0]){
-                        currentRotation[0] = newRotation;
-
-                        /** calc scaling factor */
-                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, true);
-
-                        RelativeLayout.LayoutParams params2 = getBannerLayoutParams(factor, screenSize, size, position);
-                        bannerAd.setLayoutParams(params2);
-                    }
-                }
-            };
-            listener.enable();
-
-            /** set the ad */
-            bannerAd.setAd(ad);
+            bannerAd.play();
 
             /** parametrize it */
             bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
@@ -199,13 +118,13 @@ public class SAUnityPlayBannerAd {
                 }
             });
 
-            /** start playing the banner */
-            bannerAd.play();
+            screenLayout.addView(bannerAd);
+            current.addView(screenLayout);
 
             /** add to this map */
-            SAUnityExtensionContext.getInstance().setAdMap(unityName, screenLayout);
+            tv.superawesome.plugins.unity.SAUnityExtensionContext.getInstance().setAdMap(unityName, screenLayout);
         } catch (JSONException e) {
-            SAUnityExtension.SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
+            tv.superawesome.plugins.unity.SAUnityExtension.SendUnityMsg(unityName, placementId, "callback_adFailedToShow");
         }
     }
 

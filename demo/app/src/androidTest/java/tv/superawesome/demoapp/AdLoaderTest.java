@@ -2,12 +2,6 @@ package tv.superawesome.demoapp;
 
 import junit.framework.TestCase;
 
-import org.mockito.ArgumentCaptor;
-
-import tv.superawesome.demoapp.mocks.FakeUrlLoader;
-
-import static org.mockito.Mockito.*;
-
 /**
  * Created by connor.leigh-smith on 01/07/15.
  */
