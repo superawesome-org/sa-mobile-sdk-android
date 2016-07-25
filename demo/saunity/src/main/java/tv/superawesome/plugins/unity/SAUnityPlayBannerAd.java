@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.sdk.views.SAAdInterface;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -21,6 +23,32 @@ import tv.superawesome.sdk.views.SAParentalGateInterface;
  * Created by gabriel.coman on 13/05/16.
  */
 public class SAUnityPlayBannerAd {
+
+    private static int getBannerHeight(int screenWidth, int screenHeight, float factor, int bannerSize) {
+        /// calc actual banner W & H
+        int width = 0, height = 0;
+        if      (bannerSize == 1) { width = 300; height = 50;  }
+        else if (bannerSize == 2) { width = 728; height = 90;  }
+        else if (bannerSize == 3) { width = 300; height = 250; }
+        else                      { width = 320; height = 50;  }
+
+        // scale it according to the factor
+        int scaledWidth = (int)(factor * width);
+        int scaledHeight = (int)(factor * height);
+
+        // make sure it's not bigger than the screen
+        if (scaledWidth > screenWidth) {
+            scaledHeight = (screenWidth * scaledHeight) / scaledWidth;
+        }
+
+        // but not bigger than 15% of the screen's height
+        if (scaledHeight > 0.15 * screenHeight) {
+            scaledHeight = (int)(0.15 * screenHeight);
+        }
+
+        // scale it
+        return scaledHeight;
+    }
 
     /**
      * Creates a banner ad, based on the following parameters
@@ -53,7 +81,6 @@ public class SAUnityPlayBannerAd {
             screenLayout.setBackgroundColor(Color.TRANSPARENT);
             screenLayout.setGravity(position == 0 ? Gravity.TOP : Gravity.BOTTOM);
             screenLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            current.addView(screenLayout);
 
             Display getOrient = ((Activity)context).getWindowManager().getDefaultDisplay();
             DisplayMetrics metrics = new DisplayMetrics();
@@ -61,8 +88,14 @@ public class SAUnityPlayBannerAd {
             int width = metrics.widthPixels;
             int height = metrics.heightPixels;
             int smallDimension = (width > height ? height : width);
+            final int bigDimension = (width < height ? height : width);
 
-            bannerAd.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(smallDimension*0.15)));
+            SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
+
+            float factor = SAUtils.getScaleFactor(activity);
+            int scaledBannerHeight = getBannerHeight(screenSize.width, screenSize.height, factor, size);
+
+            bannerAd.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, scaledBannerHeight));
             bannerAd.setAd(ad);
             if (color == 0) {
                 bannerAd.setBackgroundColor(Color.TRANSPARENT);
@@ -70,6 +103,15 @@ public class SAUnityPlayBannerAd {
                 bannerAd.setBackgroundColor(Color.rgb(191, 191, 191));
             }
             bannerAd.play();
+            bannerAd.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                    if (bottom != oldBottom || right != oldRight) {
+                        bannerAd.resizeToSize(right, bottom);
+                    }
+                }
+            });
 
             /** parametrize it */
             bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
