@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
             loader.loadAd(116, this);
             loader.loadAd(117, this);
             loader.loadAd(118, this);
+//            loader.loadAd(230, this);
 //            loader.loadAd(200, this);
         } else {
             bannerData = (SAAd) savedInstanceState.get("bannerData");
@@ -74,6 +75,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
         Log.d("SuperAwesome-ADData", ad.writeToJson().toString());
 
         switch (ad.placementId) {
+//            case 230: video1Data = ad; break;
             case 113: bannerData = ad; break;
             case 114: interstitial1Data = ad; break;
             case 115: interstitial2Data = ad; break;

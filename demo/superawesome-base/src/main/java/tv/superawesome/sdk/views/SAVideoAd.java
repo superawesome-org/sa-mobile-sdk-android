@@ -126,7 +126,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
          * start the vast manager - that in turn will start the video player;
          * this function should be called just once in an activity - not on every configuration change
          */
-        videoPlayer.shouldShowPadlock = !(ad.isFallback || ad.isHouse);
+        videoPlayer.shouldShowPadlock = shouldShowPadlock ();
         videoPlayer.shouldShowCloseButton = shouldShowCloseButton;
         videoPlayer.shouldShowSmallClickButton = shouldShowSmallClickButton;
         manager = new SAVASTManager(videoPlayer, this);
@@ -143,6 +143,11 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         } else {
             post(runnable);
         }
+    }
+
+    @Override
+    public boolean shouldShowPadlock () {
+        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     @Override

@@ -16,6 +16,9 @@ public interface SAViewInterface {
     /** play the ad */
     void play();
 
+    /** show the padlock */
+    boolean shouldShowPadlock();
+
     /** close the ad */
     void close();
 

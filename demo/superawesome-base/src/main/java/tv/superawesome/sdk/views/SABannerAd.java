@@ -246,10 +246,10 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
                 resizeToSize((int) cWidth, (int) cHeight);
 
                 /** make the padlock visible or not */
-                if (ad.isFallback || ad.isHouse) {
-                    padlock.setVisibility(View.GONE);
-                } else {
+                if (shouldShowPadlock()) {
                     padlock.setVisibility(View.VISIBLE);
+                } else {
+                    padlock.setVisibility(View.GONE);
                 }
             }
         };
@@ -263,6 +263,11 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
         } else {
             post(runnable);
         }
+    }
+
+    @Override
+    public boolean shouldShowPadlock () {
+        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     @Override

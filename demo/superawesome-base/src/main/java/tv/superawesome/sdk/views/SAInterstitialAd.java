@@ -82,6 +82,11 @@ public class SAInterstitialAd implements SAViewInterface {
     }
 
     @Override
+    public boolean shouldShowPadlock() {
+        return false;
+    }
+
+    @Override
     public void close() {
         if (mActivityRef != null) {
             mActivityRef.get().onBackPressed();

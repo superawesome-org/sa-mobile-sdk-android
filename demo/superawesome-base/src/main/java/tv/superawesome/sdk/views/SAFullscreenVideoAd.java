@@ -98,6 +98,11 @@ public class SAFullscreenVideoAd implements SAViewInterface {
         context.startActivity(intent);
     }
 
+    @Override
+    public boolean shouldShowPadlock() {
+        return false;
+    }
+
     /** close function */
     @Override
     public void close() {
