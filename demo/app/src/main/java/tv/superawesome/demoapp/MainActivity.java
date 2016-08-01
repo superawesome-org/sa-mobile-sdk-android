@@ -33,18 +33,19 @@ public class MainActivity extends Activity implements SALoaderInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SuperAwesome.getInstance().setConfigurationStaging();
+        SuperAwesome.getInstance().setConfigurationProduction();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().disableTestMode();
+        SuperAwesome.getInstance().enableTestMode();
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(113, this);
-            loader.loadAd(114, this);
-            loader.loadAd(115, this);
-            loader.loadAd(116, this);
-            loader.loadAd(117, this);
-            loader.loadAd(118, this);
+            loader.loadAd(30260, this);
+//            loader.loadAd(113, this);
+//            loader.loadAd(114, this);
+//            loader.loadAd(115, this);
+//            loader.loadAd(116, this);
+//            loader.loadAd(117, this);
+//            loader.loadAd(118, this);
 //            loader.loadAd(230, this);
 //            loader.loadAd(200, this);
         } else {
@@ -76,6 +77,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
 
         switch (ad.placementId) {
 //            case 230: video1Data = ad; break;
+            case 30260: video1Data = ad; break;
             case 113: bannerData = ad; break;
             case 114: interstitial1Data = ad; break;
             case 115: interstitial2Data = ad; break;
@@ -130,7 +132,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
         if (video1Data != null){
             SAFullscreenVideoAd fvad = new SAFullscreenVideoAd(MainActivity.this);
             fvad.setAd(video1Data);
-            fvad.setShouldAutomaticallyCloseAtEnd(false);
+            fvad.setShouldAutomaticallyCloseAtEnd(true);
             fvad.setShouldLockOrientation(true);
             fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fvad.setShouldShowSmallClickButton(true);
