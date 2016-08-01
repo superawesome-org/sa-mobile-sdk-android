@@ -33,19 +33,20 @@ public class MainActivity extends Activity implements SALoaderInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SuperAwesome.getInstance().setConfigurationProduction();
+        SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().enableTestMode();
+        SuperAwesome.getInstance().disableTestMode();
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(30260, this);
-//            loader.loadAd(113, this);
-//            loader.loadAd(114, this);
-//            loader.loadAd(115, this);
-//            loader.loadAd(116, this);
-//            loader.loadAd(117, this);
-//            loader.loadAd(118, this);
+//            loader.loadAd(222, this);
+//            loader.loadAd(223, this);
+            loader.loadAd(113, this);
+            loader.loadAd(114, this);
+            loader.loadAd(115, this);
+            loader.loadAd(116, this);
+            loader.loadAd(117, this);
+            loader.loadAd(118, this);
 //            loader.loadAd(230, this);
 //            loader.loadAd(200, this);
         } else {
@@ -76,8 +77,10 @@ public class MainActivity extends Activity implements SALoaderInterface {
         Log.d("SuperAwesome-ADData", ad.writeToJson().toString());
 
         switch (ad.placementId) {
+//            case 222: bannerData = ad; break;
+//            case 223: video1Data = ad; break;
 //            case 230: video1Data = ad; break;
-            case 30260: video1Data = ad; break;
+//            case 30260: video1Data = ad; break;
             case 113: bannerData = ad; break;
             case 114: interstitial1Data = ad; break;
             case 115: interstitial2Data = ad; break;
