@@ -13,10 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTManager;
 import tv.superawesome.lib.savastparser.SAVASTManagerInterface;
@@ -176,10 +180,27 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
             SAEvents.sendEventToURL(click);
         }
 
-        System.out.println("Going to URL: " + destinationURL);
+        /** switch between CPM & CPI campaigns */
+        String finalUrl = destinationURL;
+        if (ad.saCampaignType == SACampaignType.CPI) {
+            finalUrl += "&referrer=";
+            JSONObject referrerData = SAJsonParser.newObject(new Object[]{
+                    "utm_source", ad.advertiserId,
+                    "utm_campaign", ad.campaignId,
+                    "utm_term", ad.lineItemId,
+                    "utm_content", ad.creative.id,
+                    "utm_medium", ad.placementId
+            });
+            String referrerQuery = SAUtils.formGetQueryFromDict(referrerData);
+            referrerQuery = referrerQuery.replace("&", "%26");
+            referrerQuery = referrerQuery.replace("=", "%3D");
+            finalUrl += referrerQuery;
+        }
+
+        System.out.println("Going to URL: " + finalUrl);
 
         /** go-to-url */
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
         getContext().startActivity(browserIntent);
     }
 

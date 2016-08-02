@@ -17,9 +17,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerInterface;
@@ -287,10 +291,27 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
             SAEvents.sendEventToURL(ad.creative.trackingUrl);
         }
 
-        Log.d("SuperAwesome", "Going to " + destinationURL);
+        /** switch between CPM & CPI campaigns */
+        String finalUrl = destinationURL;
+        if (ad.saCampaignType == SACampaignType.CPI) {
+            finalUrl += "&referrer=";
+            JSONObject referrerData = SAJsonParser.newObject(new Object[]{
+                    "utm_source", ad.advertiserId,
+                    "utm_campaign", ad.campaignId,
+                    "utm_term", ad.lineItemId,
+                    "utm_content", ad.creative.id,
+                    "utm_medium", ad.placementId
+            });
+            String referrerQuery = SAUtils.formGetQueryFromDict(referrerData);
+            referrerQuery = referrerQuery.replace("&", "%26");
+            referrerQuery = referrerQuery.replace("=", "%3D");
+            finalUrl += referrerQuery;
+        }
+
+        Log.d("SuperAwesome", "Going to " + finalUrl);
 
         /** go-to-url */
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destinationURL));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
         getContext().startActivity(browserIntent);
     }
 
