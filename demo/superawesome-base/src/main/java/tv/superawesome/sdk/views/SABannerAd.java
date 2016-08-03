@@ -296,7 +296,7 @@ public class SABannerAd extends RelativeLayout implements SAWebPlayerInterface, 
         if (ad.saCampaignType == SACampaignType.CPI) {
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", ad.advertiserId,
+                    "utm_source", SuperAwesome.getInstance().getConfiguration(), // used to be ad.advertiserId
                     "utm_campaign", ad.campaignId,
                     "utm_term", ad.lineItemId,
                     "utm_content", ad.creative.id,

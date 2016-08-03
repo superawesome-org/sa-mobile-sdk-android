@@ -20,17 +20,10 @@ import tv.superawesome.sdk.capper.SACapperInterface;
  */
 public class SuperAwesome {
 
-    public enum SAConfiguration {
-        STAGING,
-        DEVELOPMENT,
-        PRODUCTION
-    }
-    private SAConfiguration config;
-
-    /** the singleton SuperAwesome instance */
+    // variables
     private static SuperAwesome instance = new SuperAwesome();
 
-    /** make the constructor private so that this class cannot be instantiated */
+    // constructors
     private SuperAwesome(){
         this.setConfigurationProduction();
         this.disableTestMode();
@@ -38,46 +31,21 @@ public class SuperAwesome {
         SASession.getInstance().setVersion(this.getVersion());
     }
 
-    /** Get the only object available */
-    public static SuperAwesome getInstance(){
-        return instance;
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Setters
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /** provide versionin */
-    private String getVersion () {
-        return "4.1.6";
+    public void setConfiguration(int configuration) {
+        SASession.getInstance().setConfiguration(configuration);
     }
-
-    private String getSdk() {
-        return "android";
-    }
-
-    public String getSDKVersion() {
-        return SuperAwesome.getInstance().getSdk() + "_" + SuperAwesome.getInstance().getVersion();
-    }
-
-    /**
-     * Group of functions that encapsulate configuration / URL functionality
-     */
     public void setConfigurationProduction() {
-        this.config = SAConfiguration.PRODUCTION;
         SASession.getInstance().setConfigurationProduction();
     }
 
     public void setConfigurationStaging() {
-        this.config = SAConfiguration.STAGING;
         SASession.getInstance().setConfigurationStaging();
     }
 
-    public String getBaseURL() {
-        return SASession.getInstance().getBaseUrl();
-    }
-
-    public SAConfiguration getConfiguration() { return this.config; }
-
-    /**
-     * Group of functions that encapsulate isTestEnabled functionality
-     */
     public void enableTestMode() {
         SASession.getInstance().setTest(true);
     }
@@ -90,11 +58,6 @@ public class SuperAwesome {
         SASession.getInstance().setTest(isTestEnabled);
     }
 
-    public boolean isTestingEnabled() { return SASession.getInstance().isTestEnabled(); }
-
-    /**
-     * Group of functions that encapsulate the SAApplication functionality
-     */
     public void setApplicationContext(Context _appContext){
         SAApplication.setSAApplicationContext(_appContext);
         SACapper.enableCapping(_appContext, new SACapperInterface() {
@@ -103,6 +66,34 @@ public class SuperAwesome {
                 SASession.getInstance().setDauId(id);
             }
         });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static SuperAwesome getInstance(){
+        return instance;
+    }
+
+    private String getVersion () {
+        return "4.1.8";
+    }
+
+    private String getSdk() {
+        return "android";
+    }
+
+    public String getSDKVersion() {
+        return SuperAwesome.getInstance().getSdk() + "_" + SuperAwesome.getInstance().getVersion();
+    }
+
+    public int getConfiguration() { return SASession.getInstance().getConfiguration(); }
+
+    public boolean isTestingEnabled() { return SASession.getInstance().isTestEnabled(); }
+
+    public String getBaseURL() {
+        return SASession.getInstance().getBaseUrl();
     }
 
     public Context getApplicationContext(){

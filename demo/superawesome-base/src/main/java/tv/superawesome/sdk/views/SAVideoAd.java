@@ -185,7 +185,7 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
         if (ad.saCampaignType == SACampaignType.CPI) {
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", ad.advertiserId,
+                    "utm_source", SuperAwesome.getInstance().getConfiguration(), // used to be ad.advertiserId
                     "utm_campaign", ad.campaignId,
                     "utm_term", ad.lineItemId,
                     "utm_content", ad.creative.id,

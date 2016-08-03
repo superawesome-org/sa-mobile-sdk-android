@@ -35,11 +35,7 @@ public class SAAIRLoadAd implements FREFunction {
                 /** setup environment */
                 SAApplication.setSAApplicationContext(freContext.getActivity().getApplicationContext());
                 SuperAwesome.getInstance().setTestMode(isTestingEnabled);
-                switch (configuration) {
-                    case 0: SuperAwesome.getInstance().setConfigurationStaging(); break;
-                    case 1: SuperAwesome.getInstance().setConfigurationStaging(); break;
-                    case 2: default: SuperAwesome.getInstance().setConfigurationProduction(); break;
-                }
+                SuperAwesome.getInstance().setConfiguration(configuration);
 
                 Log.d("AIREXT", "Got loadAd params: " + name + ": " + placementId + " test: " + SuperAwesome.getInstance().isTestingEnabled() + " config: " + SuperAwesome.getInstance().getConfiguration());
 

@@ -26,13 +26,7 @@ public class SAUnityLoadAd {
         SuperAwesome.getInstance().setTestMode(isTestingEnabled);
         Log.d("SuperAwesome", "On Android side Testing is " + SuperAwesome.getInstance().isTestingEnabled());
         SuperAwesome.getInstance().setApplicationContext(context);
-        if (configuration == SuperAwesome.SAConfiguration.STAGING.ordinal()) {
-            SuperAwesome.getInstance().setConfigurationStaging();
-        } else  if (configuration == SuperAwesome.SAConfiguration.DEVELOPMENT.ordinal()){
-            SuperAwesome.getInstance().setConfigurationStaging();
-        } else  {
-            SuperAwesome.getInstance().setConfigurationProduction();
-        }
+        SuperAwesome.getInstance().setConfiguration(configuration);
 
         /** create the new SALoader */
         SALoader loader = new SALoader();
