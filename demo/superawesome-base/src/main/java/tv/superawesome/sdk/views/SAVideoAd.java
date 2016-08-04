@@ -182,7 +182,16 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
 
         /** switch between CPM & CPI campaigns */
         String finalUrl = destinationURL;
+
+        // if video CPI
         if (ad.saCampaignType == SACampaignType.CPI) {
+            // then send an event to the current "destinationURL" taken from the VAST Tag, so that
+            // a click will be counted
+            SAEvents.sendEventToURL(destinationURL);
+
+            // and get the actual creative click URL so that we can append to it and send referral
+            // data to the store :(
+            finalUrl = ad.creative.clickUrl;
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
                     "utm_source", SuperAwesome.getInstance().getConfiguration(), // used to be ad.advertiserId
@@ -194,10 +203,12 @@ public class SAVideoAd extends FrameLayout implements SAViewInterface, SAVASTMan
             String referrerQuery = SAUtils.formGetQueryFromDict(referrerData);
             referrerQuery = referrerQuery.replace("&", "%26");
             referrerQuery = referrerQuery.replace("=", "%3D");
+
+            // finally add the query
             finalUrl += referrerQuery;
         }
 
-        System.out.println("Going to URL: " + finalUrl);
+        Log.d("SuperAwesome", "Going to URL: " + finalUrl);
 
         /** go-to-url */
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
