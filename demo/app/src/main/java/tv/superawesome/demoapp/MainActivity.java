@@ -39,14 +39,16 @@ public class MainActivity extends Activity implements SALoaderInterface {
 
         if (savedInstanceState == null) {
             loader = new SALoader();
-            loader.loadAd(222, this);
-            loader.loadAd(223, this);
-//            loader.loadAd(113, this);
-//            loader.loadAd(114, this);
-//            loader.loadAd(115, this);
-//            loader.loadAd(116, this);
-//            loader.loadAd(117, this);
-//            loader.loadAd(118, this);
+//            loader.loadAd(236, this);
+//            loader.loadAd(31378, this);
+//            loader.loadAd(222, this);
+//            loader.loadAd(223, this);
+            loader.loadAd(113, this);
+            loader.loadAd(114, this);
+            loader.loadAd(115, this);
+            loader.loadAd(116, this);
+            loader.loadAd(117, this);
+            loader.loadAd(118, this);
 //            loader.loadAd(230, this);
 //            loader.loadAd(200, this);
         } else {
@@ -78,16 +80,18 @@ public class MainActivity extends Activity implements SALoaderInterface {
         Log.d("SuperAwesome-ADData", ad.placementId + " " + ad.saCampaignType.toString());
 
         switch (ad.placementId) {
-            case 222: bannerData = ad; break;
-            case 223: video1Data = ad; break;
+//            case 236: interstitial1Data = ad; break;
+//            case 31378: interstitial1Data = ad; break;
+//            case 222: bannerData = ad; break;
+//            case 223: video1Data = ad; break;
 //            case 230: video1Data = ad; break;
 //            case 30260: video1Data = ad; break;
-//            case 113: bannerData = ad; break;
-//            case 114: interstitial1Data = ad; break;
-//            case 115: interstitial2Data = ad; break;
-//            case 116: video1Data = ad; break;
-//            case 117: video2Data = ad; break;
-//            case 118: interstitial3Data = ad; break;
+            case 113: bannerData = ad; break;
+            case 114: interstitial1Data = ad; break;
+            case 115: interstitial2Data = ad; break;
+            case 116: video1Data = ad; break;
+            case 117: video2Data = ad; break;
+            case 118: interstitial3Data = ad; break;
 //            case 200: bannerData = ad; break;
         }
     }
@@ -139,7 +143,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
             fvad.setAd(video1Data);
             fvad.setShouldAutomaticallyCloseAtEnd(true);
             fvad.setShouldLockOrientation(true);
-            fvad.setIsParentalGateEnabled(false);
+            fvad.setIsParentalGateEnabled(true);
             fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fvad.setShouldShowSmallClickButton(true);
             fvad.play();

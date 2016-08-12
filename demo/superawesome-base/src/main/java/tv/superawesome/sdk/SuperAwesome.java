@@ -25,10 +25,10 @@ public class SuperAwesome {
 
     // constructors
     private SuperAwesome(){
-        this.setConfigurationProduction();
-        this.disableTestMode();
+        setConfigurationProduction();
+        disableTestMode();
         SAEvents.enableSATracking();
-        SASession.getInstance().setVersion(this.getVersion());
+        SASession.getInstance().setVersion(getSDKVersion());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ public class SuperAwesome {
     }
 
     private String getVersion () {
-        return "4.1.9";
+        return "4.1.10";
     }
 
     private String getSdk() {
@@ -85,7 +85,7 @@ public class SuperAwesome {
     }
 
     public String getSDKVersion() {
-        return SuperAwesome.getInstance().getSdk() + "_" + SuperAwesome.getInstance().getVersion();
+        return getSdk() + "_" + getVersion();
     }
 
     public int getConfiguration() { return SASession.getInstance().getConfiguration(); }
