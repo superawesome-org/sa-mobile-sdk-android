@@ -36,7 +36,7 @@
 //        holder = new SAVideoAdDataHolder();
 //    }
 //
-//    public void setAdListener(SAAdInterface adListener) {
+//    public void setAdListener(SAInterface adListener) {
 //        holder._refAdListener = adListener;
 //    }
 //
@@ -134,7 +134,7 @@
 //        private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 //
 //        /** sdk listeners */
-//        private SAAdInterface adListener;
+//        private SAInterface adListener;
 //        private SAParentalGateInterface parentalGateListener;
 //        private SAVideoAdInterface videoAdListener;
 //
@@ -191,7 +191,7 @@
 //                videoAd.setIsParentalGateEnabled(isParentalGateEnabled);
 //                videoAd.setShouldShowCloseButton(shouldShowCloseButton);
 //                videoAd.setShouldShowSmallClickButton(shouldShowSmallClickButton);
-//                videoAd.setInternalAdListener(new SAAdInterface() {
+//                videoAd.setInternalAdListener(new SAInterface() {
 //                    @Override
 //                    public void adWasShown(int placementId) {}
 //                    @Override
@@ -279,7 +279,7 @@
 //    public boolean _refShouldLockOrientation = false;
 //    public boolean _refShouldShowSmallClickButton = false;
 //    public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-//    public SAAdInterface _refAdListener;
+//    public SAInterface _refAdListener;
 //    public SAParentalGateInterface _refParentalGateListener;
 //    public SAVideoAdInterface _refVideoAdListener;
 //

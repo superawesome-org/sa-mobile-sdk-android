@@ -7,24 +7,29 @@ import tv.superawesome.lib.samodelspace.SAAd;
  * to make navigation a little less fragmented in the Android SDK
  */
 public interface SAViewInterface {
+
+    // load the ad
+    void load(int placementId);
+
     /** sets the ad for a SABannerAd, SAInterstitialAd, etc type class */
     void setAd(SAAd ad);
 
     /** return an Ad */
     SAAd getAd();
 
+    /** show the padlock */
+    boolean shouldShowPadlock();
+
     /** play the ad */
     void play();
 
-    /** show the padlock */
-    boolean shouldShowPadlock();
+    /** second pass at trying to go to URL */
+    void click();
+
+    /** resize view or view controller */
+    void resize(int width, int height);
 
     /** close the ad */
     void close();
 
-    /** second pass at trying to go to URL */
-    void advanceToClick();
-
-    /** resize view or view controller */
-    void resizeToSize(int width, int height);
 }

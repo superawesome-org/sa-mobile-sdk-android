@@ -15,7 +15,7 @@
 //
 //import tv.superawesome.lib.sautils.SAUtils;
 //import tv.superawesome.lib.samodelspace.SAAd;
-//import tv.superawesome.sdk.views.SAAdInterface;
+//import tv.superawesome.sdk.views.SAInterface;
 //import tv.superawesome.sdk.views.SABannerAd;
 //import tv.superawesome.sdk.views.SAParentalGateInterface;
 //
@@ -117,7 +117,7 @@
 //            bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
 //
 //            /** set the listener */
-//            bannerAd.setAdListener(new SAAdInterface() {
+//            bannerAd.setAdListener(new SAInterface() {
 //                @Override
 //                public void adWasShown(int placementId) {
 //                    SAUnityExtension.SendUnityMsg(unityName, placementId, "callback_adWasShown");

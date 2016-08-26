@@ -11,9 +11,6 @@ import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.sdk.views.SABannerAd;
-import tv.superawesome.sdk.views.SAInterstitialAd;
-import tv.superawesome.sdk.views.SAFullscreenVideoAd;
-import tv.superawesome.sdk.views.SAVideoAd;
 
 public class MainActivity extends Activity {
 
@@ -24,7 +21,7 @@ public class MainActivity extends Activity {
 //    private SAAd interstitial3Data = null;
 //    private SAAd video1Data = null;
 //    private SAAd video2Data = null;
-//    private SABannerAd bannerAd = null;
+    private SABannerAd bannerAd = null;
 //    private SAVideoAd videoAd = null;
 
     /** the options list */
@@ -36,6 +33,9 @@ public class MainActivity extends Activity {
         SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         SuperAwesome.getInstance().disableTestMode();
+
+        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+        bannerAd.load(250);
 
 //        if (savedInstanceState == null) {
 //            loader = new SALoader();
@@ -105,6 +105,7 @@ public class MainActivity extends Activity {
 
     /** <Button Actions> */
     public void playBanner(View v){
+        bannerAd.play();
 //        if (bannerData != null) {
 //            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
 //            bannerAd.setAd(bannerData);

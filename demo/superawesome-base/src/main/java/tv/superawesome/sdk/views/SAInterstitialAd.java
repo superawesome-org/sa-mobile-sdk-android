@@ -37,7 +37,7 @@
 //        holder = new SAInterstitialAdDataHolder();
 //    }
 //
-//    public void setAdListener(SAAdInterface adListener) {
+//    public void setAdListener(SAInterface adListener) {
 //        holder._refAdListener = adListener;
 //    }
 //
@@ -107,7 +107,7 @@
 //    public static void start(Context c,
 //                             SAAd ad,
 //                             boolean isParentalGateEnabled,
-//                             SAAdInterface adListener,
+//                             SAInterface adListener,
 //                             SAParentalGateInterface parentalGateListener) {
 //
 //        /** create activity */
@@ -140,7 +140,7 @@
 //        private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 //
 //        /** sdk listeners */
-//        private SAAdInterface adListener;
+//        private SAInterface adListener;
 //        private SAParentalGateInterface parentalGateListener;
 //
 //        /** subviews */
@@ -262,7 +262,7 @@
 //    public boolean _refIsParentalGateEnabled;
 //    public boolean _refShouldLockOrientation = false;
 //    public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-//    public SAAdInterface _refAdListener;
+//    public SAInterface _refAdListener;
 //    public SAParentalGateInterface _refParentalGateListener;
 //
 //    SAInterstitialAdDataHolder(){

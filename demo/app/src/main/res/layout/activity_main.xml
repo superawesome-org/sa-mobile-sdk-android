@@ -12,36 +12,36 @@
         android:id="@+id/playbannerBtn"
         android:text="Play Banner"
         android:onClick="playBanner"/>
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/playinter1Btn"
-        android:text="Play Interstitial 1"
-        android:onClick="playInterstitial1"
-        android:layout_height="50dp" />
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/playinter2Btn"
-        android:text="Play Interstitial 2"
-        android:onClick="playInterstitial2"
-        android:layout_height="50dp" />
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/playinter3Btn"
-        android:text="Play Interstitial 3"
-        android:onClick="playInterstitial3"
-        android:layout_height="50dp" />
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/playvid1Btn"
-        android:text="Play Video 1"
-        android:onClick="playVideo1"
-        android:layout_height="50dp" />
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/playvid2Btn"
-        android:text="Play Video 2"
-        android:onClick="playVideo2"
-        android:layout_height="50dp" />
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/playinter1Btn"-->
+        <!--android:text="Play Interstitial 1"-->
+        <!--android:onClick="playInterstitial1"-->
+        <!--android:layout_height="50dp" />-->
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/playinter2Btn"-->
+        <!--android:text="Play Interstitial 2"-->
+        <!--android:onClick="playInterstitial2"-->
+        <!--android:layout_height="50dp" />-->
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/playinter3Btn"-->
+        <!--android:text="Play Interstitial 3"-->
+        <!--android:onClick="playInterstitial3"-->
+        <!--android:layout_height="50dp" />-->
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/playvid1Btn"-->
+        <!--android:text="Play Video 1"-->
+        <!--android:onClick="playVideo1"-->
+        <!--android:layout_height="50dp" />-->
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:id="@+id/playvid2Btn"-->
+        <!--android:text="Play Video 2"-->
+        <!--android:onClick="playVideo2"-->
+        <!--android:layout_height="50dp" />-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,20 +50,9 @@
 
         <tv.superawesome.sdk.views.SABannerAd
             android:layout_centerInParent="true"
-            android:layout_width="320dp"
-            android:layout_height="50dp"
-            android:id="@+id/mybanner"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#00ff00">
-
-        <tv.superawesome.sdk.views.SAVideoAd
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/myVideoAd"/>
+            android:id="@+id/mybanner"/>
     </RelativeLayout>
 
 </LinearLayout>

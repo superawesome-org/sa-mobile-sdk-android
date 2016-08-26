@@ -12,7 +12,7 @@
 //import tv.superawesome.lib.saadloader.SALoader;
 //import tv.superawesome.lib.saadloader.SALoaderInterface;
 //import tv.superawesome.lib.samodelspace.SAAd;
-//import tv.superawesome.sdk.views.SAAdInterface;
+//import tv.superawesome.sdk.views.SAInterface;
 //import tv.superawesome.sdk.views.SAInterstitialAd;
 //
 ///**
@@ -80,7 +80,7 @@
 //                interstitial.setIsParentalGateEnabled(isParentalGateEnabled);
 //                interstitial.setShouldLockOrientation(shouldLockOrientation);
 //                interstitial.setLockOrientation(lockOrientation);
-//                interstitial.setAdListener(new SAAdInterface() {
+//                interstitial.setAdListener(new SAInterface() {
 //                    @Override
 //                    public void adWasShown(int placementId) {
 //                        if (evtListener != null) {

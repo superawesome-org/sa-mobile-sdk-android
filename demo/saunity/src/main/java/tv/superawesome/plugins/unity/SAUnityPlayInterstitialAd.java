@@ -7,7 +7,7 @@
 //import org.json.JSONObject;
 //
 //import tv.superawesome.lib.samodelspace.SAAd;
-//import tv.superawesome.sdk.views.SAAdInterface;
+//import tv.superawesome.sdk.views.SAInterface;
 //import tv.superawesome.sdk.views.SAInterstitialAd;
 //import tv.superawesome.sdk.views.SAParentalGateInterface;
 //
@@ -48,7 +48,7 @@
 //            }
 //
 //            /** add listeners */
-//            interstitial.setAdListener(new SAAdInterface() {
+//            interstitial.setAdListener(new SAInterface() {
 //                @Override
 //                public void adWasShown(int placementId) {
 //                    SAUnityExtension.SendUnityMsg(unityName, placementId, "callback_adWasShown");

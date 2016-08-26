@@ -51,10 +51,10 @@
 //    private SAParentalGate gate;
 //
 //    /** listeners */
-//    private SAAdInterface adListener;
+//    private SAInterface adListener;
 //    private SAParentalGateInterface parentalGateListener;
 //    private SAVideoAdInterface videoAdListener;
-//    private SAAdInterface internalAdListener;
+//    private SAInterface internalAdListener;
 //    private SAVideoAdInterface internalVideoAdListener;
 //
 //    /** helper vars */
@@ -223,10 +223,10 @@
 //    /**
 //     * These functions sets the ad listener
 //     */
-//    public void setAdListener(SAAdInterface adListener) {
+//    public void setAdListener(SAInterface adListener) {
 //        this.adListener = adListener;
 //    }
-//    public void setInternalAdListener(SAAdInterface adListener) { this.internalAdListener = adListener; }
+//    public void setInternalAdListener(SAInterface adListener) { this.internalAdListener = adListener; }
 //    public void setParentalGateListener(SAParentalGateInterface parentalGateListener){ this.parentalGateListener = parentalGateListener; }
 //    public void setVideoAdListener(SAVideoAdInterface videoAdListener){ this.videoAdListener = videoAdListener; }
 //    public void setInternalVideoAdListener(SAVideoAdInterface videoAdListener) { this.internalVideoAdListener = videoAdListener; }

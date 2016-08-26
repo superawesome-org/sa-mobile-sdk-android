@@ -19,7 +19,7 @@
 //
 //import tv.superawesome.lib.sautils.SAUtils;
 //import tv.superawesome.lib.samodelspace.SAAd;
-//import tv.superawesome.sdk.views.SAAdInterface;
+//import tv.superawesome.sdk.views.SAInterface;
 //import tv.superawesome.sdk.views.SAParentalGateInterface;
 //import tv.superawesome.sdk.views.SAVideoAd;
 //import tv.superawesome.sdk.views.SAVideoAdInterface;
@@ -56,7 +56,7 @@
 //                    video.setAd(ad);
 //                    video.setIsParentalGateEnabled(isParentalGateEnabled);
 //                    video.setShouldShowSmallClickButton(shouldShowSmallClickButton);
-//                    video.setAdListener(new SAAdInterface() {
+//                    video.setAdListener(new SAInterface() {
 //                        @Override
 //                        public void adWasShown(int placementId) {
 //                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";

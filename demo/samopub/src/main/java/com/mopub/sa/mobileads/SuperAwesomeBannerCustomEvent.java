@@ -11,7 +11,7 @@
 //import tv.superawesome.lib.saadloader.SALoader;
 //import tv.superawesome.lib.saadloader.SALoaderInterface;
 //import tv.superawesome.lib.samodelspace.SAAd;
-//import tv.superawesome.sdk.views.SAAdInterface;
+//import tv.superawesome.sdk.views.SAInterface;
 //import tv.superawesome.sdk.views.SABannerAd;
 //
 //
@@ -68,7 +68,7 @@
 //                bannerAd = new SABannerAd(context);
 //                bannerAd.setAd(saAd);
 //                bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
-//                bannerAd.setAdListener(new SAAdInterface() {
+//                bannerAd.setAdListener(new SAInterface() {
 //                    @Override
 //                    public void adWasShown(int placementId) {
 //

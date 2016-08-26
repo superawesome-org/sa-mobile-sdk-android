@@ -3,7 +3,10 @@ package tv.superawesome.sdk.views;
 /**
  * Created by gabriel.coman on 26/12/15.
  */
-public interface SAAdInterface {
+public interface SAInterface {
+
+    void adWasLoaded(int placementId);
+    void adWasNotLoaded(int placementId);
 
     /**
      * Callback when ad is first shown

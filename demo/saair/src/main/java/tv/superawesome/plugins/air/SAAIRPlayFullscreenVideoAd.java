@@ -15,7 +15,7 @@
 //import org.json.JSONObject;
 //
 //import tv.superawesome.lib.samodelspace.SAAd;
-//import tv.superawesome.sdk.views.SAAdInterface;
+//import tv.superawesome.sdk.views.SAInterface;
 //import tv.superawesome.sdk.views.SAParentalGateInterface;
 //import tv.superawesome.sdk.views.SAFullscreenVideoAd;
 //import tv.superawesome.sdk.views.SAVideoAdInterface;
@@ -63,7 +63,7 @@
 //                    } else if (lockOrientation == 2){
 //                        video.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 //                    }
-//                    video.setAdListener(new SAAdInterface() {
+//                    video.setAdListener(new SAInterface() {
 //                        @Override
 //                        public void adWasShown(int placementId) {
 //                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";
