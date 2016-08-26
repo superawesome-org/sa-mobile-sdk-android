@@ -52,7 +52,7 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
     private SALoader loader;
     private SAWebPlayer webView;
     private ImageView padlock;
-//    private SAParentalGate gate;
+    private SAParentalGate gate;
 
     /** listeners */
     public SAInterface adListener;
@@ -108,9 +108,8 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
 
                 /** check for PG */
                 if (isParentalGateEnabled) {
-//            gate = new SAParentalGate(getContext(), this, ad);
-//            gate.setListener(parentalGateListener);
-//            gate.show();
+                    gate = new SAParentalGate(getContext(), this, ad);
+                    gate.show();
                 } else {
                     click();
                 }

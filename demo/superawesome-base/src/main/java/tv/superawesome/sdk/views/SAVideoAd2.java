@@ -40,9 +40,11 @@ public class SAVideoAd2 extends Activity implements SAViewInterface {
     private SAAd ad = null;
     private Context context = null;
     private SAInterface listener = null;
+    SAVideoPlayer videoPlayer = null;
     private int ticks = 0;
     private int viewabilityCount = 0;
     private Runnable viewabilityRunnable = null;
+    private SAParentalGate gate;
 
     private boolean isParentalGateEnabled = false;
     private boolean shouldShowCloseButton = true;
@@ -145,7 +147,7 @@ public class SAVideoAd2 extends Activity implements SAViewInterface {
 
 
             // video player
-            final SAVideoPlayer videoPlayer = (SAVideoPlayer) getFragmentManager().findFragmentById(video_playerId);
+            videoPlayer = (SAVideoPlayer) getFragmentManager().findFragmentById(video_playerId);
             videoPlayer.setEventListener(new SAVideoPlayerEventInterface() {
                 @Override
                 public void SAVideoPlayerEventHandled(SAVideoPlayerEvent saVideoPlayerEvent) {
@@ -217,7 +219,8 @@ public class SAVideoAd2 extends Activity implements SAViewInterface {
                 public void SAVideoPlayerClickHandled() {
                     /** check for PG */
                     if (isParentalGateEnabled) {
-                        // PG stuff
+                        gate = new SAParentalGate(SAVideoAd2.this, this, ad);
+                        gate.show();
                     } else {
                         click();
                     }
@@ -345,6 +348,14 @@ public class SAVideoAd2 extends Activity implements SAViewInterface {
     @Override
     public void resize(int width, int height) {
         // do nothing
+    }
+
+    public void pause () {
+        videoPlayer.pausePlayer();
+    }
+
+    public void resume () {
+        videoPlayer.resumePlayer();
     }
 
     @Override
