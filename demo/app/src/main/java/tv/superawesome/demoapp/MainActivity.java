@@ -11,6 +11,8 @@ import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.sdk.views.SABannerAd;
+import tv.superawesome.sdk.views.SAInterstitialAd;
+import tv.superawesome.sdk.views.SAVideoAd2;
 
 public class MainActivity extends Activity {
 
@@ -22,6 +24,8 @@ public class MainActivity extends Activity {
 //    private SAAd video1Data = null;
 //    private SAAd video2Data = null;
     private SABannerAd bannerAd = null;
+    private SAInterstitialAd interstitialAd = null;
+    private SAVideoAd2 videoAd2 = null;
 //    private SAVideoAd videoAd = null;
 
     /** the options list */
@@ -36,6 +40,12 @@ public class MainActivity extends Activity {
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
         bannerAd.load(250);
+
+        interstitialAd = new SAInterstitialAd(this);
+        interstitialAd.load(251);
+
+        videoAd2 = new SAVideoAd2(this);
+        videoAd2.load(252);
 
 //        if (savedInstanceState == null) {
 //            loader = new SALoader();
@@ -115,6 +125,7 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial1(View v){
+        interstitialAd.play();
 //        if (interstitial1Data != null){
 //            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
 //            iad.setAd(interstitial1Data);
@@ -141,6 +152,7 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
+        videoAd2.play();
 //        if (video1Data != null){
 //            SAFullscreenVideoAd fvad = new SAFullscreenVideoAd(MainActivity.this);
 //            fvad.setAd(video1Data);

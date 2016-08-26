@@ -121,6 +121,7 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
             public void SAWebPlayerEventHandled(SAWebPlayerEvent saWebPlayerEvent) {
                 switch (saWebPlayerEvent) {
                     case Web_Start: {
+
                         if (!showOnce) {
                             showOnce = true;
 
@@ -211,16 +212,13 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
 
     @Override public void play() {
 
-        Log.d("SuperAwesome-Test", "a1");
-        Log.d("SuperAwesome-Test", "res " + ad + "-" + canPlay);
         if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && canPlay) {
-            Log.d("SuperAwesome-Test", "a2");
             /** if ad is still not OK - wait a little while longer */
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    Log.d("SuperAwesome-Test", "a3");
                     /** resize the views */
+                    canPlay = false;
                     resize((int) cWidth, (int) cHeight);
 
                     /** make the padlock visible or not */
@@ -232,16 +230,13 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
                 }
             };
 
-            Log.d("SuperAwesome-Test", "a4");
             /**
              * if the ad is ok (and implicitly the cWidth and cHeight params then start arranging the
              * ad as we should!
              */
             if (ad == null || !layoutOK) {
-                Log.d("SuperAwesome-Test", "a5");
                 this.postDelayed(runnable, 250);
             } else {
-                Log.d("SuperAwesome-Test", "a6");
                 post(runnable);
             }
 
@@ -304,9 +299,9 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
         int newWidth = newFrame.right,
             newHeight = newFrame.bottom;
 
-//        android.widget.RelativeLayout.LayoutParams params = new LayoutParams(newWidth, newHeight);
-//        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-//        contentHolder.setLayoutParams(params);
+        android.widget.RelativeLayout.LayoutParams params = new LayoutParams(newWidth, newHeight);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        contentHolder.setLayoutParams(params);
 
         /** prepare moat tracking */
         HashMap<String, String> adData = new HashMap<>();
@@ -319,8 +314,6 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
         adData.put("publisherId", "" + ad.publisherId);
         String moatString = SAEvents.registerDisplayMoatEvent((Activity)this.getContext(), webView, adData);
         String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
-
-        Log.d("SuperAwesome-HTML", fullHTML);
 
         /** update HTML as well */
         webView.loadHTML(fullHTML, adWidth, adHeight, newWidth, newHeight);

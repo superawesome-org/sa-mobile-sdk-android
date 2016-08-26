@@ -1,271 +1,216 @@
-//package tv.superawesome.sdk.views;
-//
-//import android.annotation.TargetApi;
-//import android.app.Activity;
-//import android.content.Context;
-//import android.content.Intent;
-//import android.content.pm.ActivityInfo;
-//import android.content.res.Configuration;
-//import android.graphics.Color;
-//import android.os.Build;
-//import android.os.Bundle;
-//import android.util.DisplayMetrics;
-//import android.view.View;
-//
-//import java.lang.ref.WeakReference;
-//
-//import tv.superawesome.lib.sautils.SAApplication;
-//import tv.superawesome.lib.samodelspace.SAAd;
-//
-///**
-// * Created by gabriel.coman on 30/12/15.
-// */
-//public class SAInterstitialAd implements SAViewInterface {
-//
-//    /** private activity object values */
-//    private Context context;
-//    private Intent intent;
-//    private static WeakReference<Activity> mActivityRef;
-//    private static SAInterstitialAdDataHolder holder;
-//
-//    /**********************************************************************************************/
-//    /** Normal <Init> functions & other aux functions */
-//    /**********************************************************************************************/
-//
-//    public SAInterstitialAd(Context context){
-//        this.context = context;
-//        holder = new SAInterstitialAdDataHolder();
-//    }
-//
-//    public void setAdListener(SAInterface adListener) {
-//        holder._refAdListener = adListener;
-//    }
-//
-//    public void setParentalGateListener(SAParentalGateInterface parentalGareListener){
-//        holder._refParentalGateListener = parentalGareListener;
-//    }
-//
-//    public void setShouldLockOrientation(boolean shouldLockOrientation) {
-//        holder._refShouldLockOrientation = shouldLockOrientation;
-//    }
-//
-//    public void setLockOrientation(int lockOrientation){
-//        holder._refLockOrientation = lockOrientation;
-//    }
-//
-//    public void setIsParentalGateEnabled (boolean isParentalGateEnabled) {
-//        holder._refIsParentalGateEnabled = isParentalGateEnabled;
-//    }
-//
-//    protected static void updateActivity(Activity activity){
-//        mActivityRef = new WeakReference<Activity> (activity);
-//    }
-//
-//    /**********************************************************************************************/
-//    /** <SAViewInterface> */
-//    /**********************************************************************************************/
-//
-//    @Override
-//    public void setAd(SAAd ad){
-//        holder._refAd = ad;
-//    }
-//
-//    @Override
-//    public SAAd getAd() {
-//        return holder._refAd;
-//    }
-//
-//    @Override
-//    public void play() {
-//        intent = new Intent(context, SAInterstitialAdActivity.class);
-//        context.startActivity(intent);
-//    }
-//
-//    @Override
-//    public boolean shouldShowPadlock() {
-//        return false;
-//    }
-//
-//    @Override
-//    public void close() {
-//        if (mActivityRef != null) {
-//            mActivityRef.get().onBackPressed();
-//        }
-//    }
-//
-//    @Override
-//    public void advanceToClick() {
-//        /** do nothing */
-//    }
-//
-//    @Override
-//    public void resizeToSize(int width, int height) {
-//        /** do nothing */
-//    }
-//
-//    /** shorthand start method for the lazy */
-//    public static void start(Context c,
-//                             SAAd ad,
-//                             boolean isParentalGateEnabled,
-//                             SAInterface adListener,
-//                             SAParentalGateInterface parentalGateListener) {
-//
-//        /** create activity */
-//        SAInterstitialAd activity = new SAInterstitialAd(c);
-//
-//        /** set ad */
-//        activity.setAd(ad);
-//
-//        /** set ad parameters */
-//        activity.setIsParentalGateEnabled(isParentalGateEnabled);
-//
-//        /** set listeners */
-//        activity.setAdListener(adListener);
-//        activity.setParentalGateListener(parentalGateListener);
-//
-//        /** start playing */
-//        activity.play();
-//    }
-//
-//    /**********************************************************************************************/
-//    /** Inner Activity implementation */
-//    /**********************************************************************************************/
-//
-//    public static class SAInterstitialAdActivity extends Activity {
-//
-//        /** private variables */
-//        private SAAd ad; /** private ad */
-//        private boolean isParentalGateEnabled = true; /** init with default value */
-//        private boolean shouldLockOrientation = false;
-//        private int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-//
-//        /** sdk listeners */
-//        private SAInterface adListener;
-//        private SAParentalGateInterface parentalGateListener;
-//
-//        /** subviews */
-//        private SABannerAd interstitialBanner;
-//
-//        @Override
-//        public void onSaveInstanceState(Bundle savedInstanceState) {
-//            /** Always call the superclass so it can save the view hierarchy state */
-//            super.onSaveInstanceState(savedInstanceState);
-//        }
-//
-//        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-//        @Override
-//        protected void onCreate(Bundle savedInstanceState) {
-//            /** call super and layout */
-//            super.onCreate(savedInstanceState);
-//
-//            /** update parent class weak ref to point to this activity */
-//            SAInterstitialAd.updateActivity(this);
-//
-//            /** load resource */
-//            String packageName = SAApplication.getSAApplicationContext().getPackageName();
-//            int activity_sa_interstitialId = getResources().getIdentifier("activity_sa_interstitial", "layout", packageName);
-//            int interstitial_bannerId = getResources().getIdentifier("interstitial_banner", "id", packageName);
-//
-//            setContentView(activity_sa_interstitialId);
-//
-//            /** assign data from AdDataHolder */
-//            ad = holder._refAd;
-//            isParentalGateEnabled = holder._refIsParentalGateEnabled;
-//            adListener = holder._refAdListener;
-//            parentalGateListener = holder._refParentalGateListener;
-//            lockOrientation = holder._refLockOrientation;
-//            shouldLockOrientation = holder._refShouldLockOrientation;
-//
-//            /** make sure direction is locked */
-//            if (shouldLockOrientation) {
-//                setRequestedOrientation(lockOrientation);
-//            }
-//
-//            /** get the banner */
-//            interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
-//            interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
-//            interstitialBanner.setAd(ad);
-//            interstitialBanner.setIsPartOfFullscreen(true);
-//            interstitialBanner.setAdListener(adListener);
-//            interstitialBanner.setParentalGateListener(parentalGateListener);
-//            interstitialBanner.setIsParentalGateEnabled(isParentalGateEnabled);
-//            interstitialBanner.play();
-//        }
-//
-//        @Override
-//        public void onConfigurationChanged(Configuration newConfig) {
-//            super.onConfigurationChanged(newConfig);
-//            DisplayMetrics metrics = getResources().getDisplayMetrics();
-//            int width = metrics.widthPixels;
-//            int height = metrics.heightPixels;
-//            interstitialBanner.resizeToSize(width, height);
-//        }
-//
-//        public void closeInterstitial(View v){
-//            /** close listener */
-//            if (adListener != null){
-//                adListener.adWasClosed(ad.placementId);
-//            }
-//
-//            // close this
-//            interstitialBanner.close();
-//
-//            /**
-//             * call super.onBackPressed() to close the activity because it's own onBackPressed()
-//             * method is overridden to do nothing e.g. so as not to be closed by the user
-//             */
-//            super.onBackPressed();
-//
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-//        }
-//
-//        @Override
-//        public void onStart() {
-//            super.onStart();
-//        }
-//
-//        @Override
-//        public void onResume() {
-//            super.onResume();
-//        }
-//
-//        @Override
-//        public void onPause() {
-//            super.onPause();
-//        }
-//
-//        @Override
-//        public void onStop() {
-//            super.onStop();
-//        }
-//
-//        @Override
-//        public void onBackPressed() {
-//            /** do nothing */
-//        }
-//
-//        @Override
-//        public void onDestroy(){
-//            super.onDestroy();
-//            ad = null;
-//            adListener = null;
-//            parentalGateListener = null;
-//        }
-//    }
-//}
-//
-///**
-// * The Video activity's ad data holder object
-// */
-//class SAInterstitialAdDataHolder {
-//    public SAAd _refAd;
-//    public boolean _refIsParentalGateEnabled;
-//    public boolean _refShouldLockOrientation = false;
-//    public int _refLockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-//    public SAInterface _refAdListener;
-//    public SAParentalGateInterface _refParentalGateListener;
-//
-//    SAInterstitialAdDataHolder(){
-//        // basic constructor
-//    }
-//}
+package tv.superawesome.sdk.views;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.Button;
+
+import org.json.JSONObject;
+
+import tv.superawesome.lib.saadloader.SALoader;
+import tv.superawesome.lib.saadloader.SALoaderInterface;
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.lib.sautils.SAApplication;
+import tv.superawesome.lib.samodelspace.SAAd;
+
+public class SAInterstitialAd extends Activity implements SAViewInterface {
+
+    private Context context = null;
+    private SALoader loader = null;
+    private SAAd ad = null;
+    private SAInterface listener = null;
+    private SABannerAd interstitialBanner = null;
+
+    // state vars
+    private boolean isParentalGateEnabled = false;
+    private boolean shouldLockOrientation = false;
+    private int     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Activity initialization
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public SAInterstitialAd () {
+        initialize();
+    }
+
+    public SAInterstitialAd (Context c) {
+        context = c;
+        initialize();
+    }
+
+    private void initialize () {
+        loader = new SALoader();
+    }
+
+    public void setListener (SAInterface listener) {
+        if (listener != null) {
+            this.listener = listener;
+        }
+    }
+
+    public void setIsParentalGateEnabled (boolean value) {
+        isParentalGateEnabled = value;
+    }
+
+    public void setShouldLockOrientation (boolean value) {
+        shouldLockOrientation = value;
+    }
+
+    public void setLockOrientation (int value) {
+        lockOrientation = value;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // get extras
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String adJson = extras.getString("SAInterstitialAd_ad");
+            JSONObject jsonObject = SAJsonParser.newObject(adJson);
+            this.ad = new SAAd(jsonObject);
+            this.isParentalGateEnabled = extras.getBoolean("SAInterstitialAd_isParentalGateEnabled");
+            this.shouldLockOrientation = extras.getBoolean("SAInterstitialAd_shouldLockOrientation");
+            this.lockOrientation = extras.getByte("SAInterstitialAd_lockOrientation");
+        }
+
+        // gather resource names
+        String packageName = SAApplication.getSAApplicationContext().getPackageName();
+        int activity_sa_interstitialId = getResources().getIdentifier("activity_sa_interstitial", "layout", packageName);
+        int interstitial_bannerId = getResources().getIdentifier("interstitial_banner", "id", packageName);
+        int interstitial_closeId = getResources().getIdentifier("interstitial_close", "id", packageName);
+
+        // finally start displaying
+        setContentView(activity_sa_interstitialId);
+
+        // make sure direction is locked
+        if (shouldLockOrientation) {
+            setRequestedOrientation(lockOrientation);
+        }
+
+        // set the close btn
+        Button closeBtn = (Button) findViewById(interstitial_closeId);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                close();
+            }
+        });
+
+        // set the interstitial
+        interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
+        interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
+        interstitialBanner.setAd(ad);
+        interstitialBanner.setIsPartOfFullscreen(true);
+        interstitialBanner.adListener = listener;
+        interstitialBanner.isParentalGateEnabled = isParentalGateEnabled;
+
+        // finally play!
+        interstitialBanner.play();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        interstitialBanner.resize(width, height);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do nothing
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        ad = null;
+        listener = null;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SAViewInterface
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void load(final int placementId) {
+        loader.loadAd(placementId, new SALoaderInterface() {
+            @Override
+            public void didLoadAd(SAAd saAd) {
+                ad = saAd;
+                if (ad != null) {
+                    if (listener != null) {
+                        listener.adWasLoaded(placementId);
+                    }
+                } else {
+                    if (listener != null) {
+                        listener.adWasNotLoaded(placementId);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setAd(SAAd ad) {
+        this.ad = ad;
+    }
+
+    @Override
+    public SAAd getAd() {
+        return this.ad;
+    }
+
+    @Override
+    public boolean shouldShowPadlock() {
+        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
+    }
+
+    @Override
+    public void play() {
+        if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && context != null) {
+            Intent intent = new Intent(context, SAInterstitialAd.class);
+            intent.putExtra("SAInterstitialAd_ad", ad.writeToJson().toString());
+            intent.putExtra("SAInterstitialAd_isParentalGateEnabled", isParentalGateEnabled);
+            intent.putExtra("SAInterstitialAd_shouldLockOrientation", shouldLockOrientation);
+            intent.putExtra("SAInterstitialAd_lockOrientation", lockOrientation);
+            context.startActivity(intent);
+        } else {
+            if (listener != null) {
+                listener.adFailedToShow(0);
+            }
+        }
+    }
+
+    @Override
+    public void click() {
+        // do nothing
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        // do nothing
+    }
+
+    @Override
+    public void close() {
+        this.ad = null;
+        interstitialBanner.close();
+        if (listener != null) listener.adWasClosed(ad.placementId);
+        super.onBackPressed();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+}
