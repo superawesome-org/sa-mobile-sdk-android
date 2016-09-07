@@ -27,12 +27,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-        SuperAwesome.getInstance().disableTestMode();
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+        bannerAd.setTest(false);
+        bannerAd.setConfigurationStaging();
 
+        SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.setIsParentalGateEnabled(true);
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -66,6 +67,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        SAVideoAd.setConfigurationStaging();
         SAVideoAd.setShouldShowSmallClickButton(true);
         SAVideoAd.setIsParentalGateEnabled(true);
         SAVideoAd.setListener(new SAInterface() {

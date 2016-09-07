@@ -18,21 +18,20 @@ import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SACampaignType;
+import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerClickInterface;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEventInterface;
-import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.sdk.SuperAwesome;
 
 /**
  * Created by gabriel.coman on 30/12/15.
@@ -51,6 +50,7 @@ public class SABannerAd extends RelativeLayout {
     private SAInterface listener;
 
     // the internal loader
+    private SASession session;
     private SAEvents events;
     private SALoader loader;
 
@@ -84,6 +84,7 @@ public class SABannerAd extends RelativeLayout {
         super(context, attrs, defStyleAttr);
 
         // create the loader
+        session = new SASession ();
         loader = new SALoader();
         events = new SAEvents();
 
@@ -180,7 +181,12 @@ public class SABannerAd extends RelativeLayout {
 
         canPlay = false;
 
-        loader.loadAd(placementId, new SALoaderInterface() {
+        // change session data
+        session.setDauId(SuperAwesome.getInstance().getDAUID());
+        session.setVersion(SuperAwesome.getInstance().getSDKVersion());
+
+        // load ad
+        loader.loadAd(placementId, session, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
                 setAd(saAd);
@@ -263,7 +269,7 @@ public class SABannerAd extends RelativeLayout {
         }
 
         // call sa tracking event
-        if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
+        if (!destinationURL.contains(session.getBaseUrl())) {
             events.sendEventsFor("sa_tracking");
         }
 
@@ -272,7 +278,7 @@ public class SABannerAd extends RelativeLayout {
         if (ad.saCampaignType == SACampaignType.CPI) {
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", SuperAwesome.getInstance().getConfiguration(), // used to be ad.advertiserId
+                    "utm_source", session.getConfiguration(), // used to be ad.advertiserId
                     "utm_campaign", ad.campaignId,
                     "utm_term", ad.lineItemId,
                     "utm_content", ad.creative.id,
@@ -336,6 +342,30 @@ public class SABannerAd extends RelativeLayout {
 
     public SAInterface getListener () {
         return listener;
+    }
+
+    public void setTest(boolean isTest) {
+        session.setTest(isTest);
+    }
+
+    public void setTestEnabled () {
+        session.setTestEnabled();
+    }
+
+    public void setTestDisabled () {
+        session.setTestDisabled();
+    }
+
+    public void setConfiguration(int config) {
+        session.setConfiguration(config);
+    }
+
+    public void setConfigurationProduction () {
+        session.setConfigurationProduction();
+    }
+
+    public void setConfigurationStaging () {
+        session.setConfigurationStaging();
     }
 
 }

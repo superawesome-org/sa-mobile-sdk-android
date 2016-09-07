@@ -63,14 +63,11 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         // get the context
         this.context = context;
 
-        // before loading
-        SuperAwesome.getInstance().setConfigurationProduction();
-        SuperAwesome.getInstance().setTestMode(isTestEnabled);
-        SuperAwesome.getInstance().setApplicationContext(this.context);
-
         // save evt listener reference
         evtListener = customEventInterstitialListener;
 
+        SAInterstitialAd.setTest(isTestEnabled);
+        SAInterstitialAd.setConfigurationProduction();
         SAInterstitialAd.setShouldLockOrientation(shouldLockOrientation);
         SAInterstitialAd.setLockOrientation(lockOrientation);
         SAInterstitialAd.setIsParentalGateEnabled(isParentalGateEnabled);

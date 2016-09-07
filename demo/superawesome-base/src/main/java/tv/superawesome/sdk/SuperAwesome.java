@@ -20,41 +20,15 @@ import tv.superawesome.sdk.capper.SACapperInterface;
  */
 public class SuperAwesome {
 
+    // dau id
+    private int dauid = 0;
+
     // variables
     private static SuperAwesome instance = new SuperAwesome();
 
     // constructors
     private SuperAwesome(){
-        setConfigurationProduction();
-        disableTestMode();
-        SASession.getInstance().setVersion(getSDKVersion());
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Setters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public void setConfiguration(int configuration) {
-        SASession.getInstance().setConfiguration(configuration);
-    }
-    public void setConfigurationProduction() {
-        SASession.getInstance().setConfigurationProduction();
-    }
-
-    public void setConfigurationStaging() {
-        SASession.getInstance().setConfigurationStaging();
-    }
-
-    public void enableTestMode() {
-        SASession.getInstance().setTest(true);
-    }
-
-    public void disableTestMode() {
-        SASession.getInstance().setTest(false);
-    }
-
-    public void setTestMode(boolean isTestEnabled) {
-        SASession.getInstance().setTest(isTestEnabled);
     }
 
     public void setApplicationContext(Context _appContext){
@@ -62,7 +36,7 @@ public class SuperAwesome {
         SACapper.enableCapping(_appContext, new SACapperInterface() {
             @Override
             public void didFindDAUId(int id) {
-                SASession.getInstance().setDauId(id);
+                dauid = id;
             }
         });
     }
@@ -87,19 +61,11 @@ public class SuperAwesome {
         return getSdk() + "_" + getVersion();
     }
 
-    public int getConfiguration() { return SASession.getInstance().getConfiguration(); }
-
-    public boolean isTestingEnabled() { return SASession.getInstance().isTestEnabled(); }
-
-    public String getBaseURL() {
-        return SASession.getInstance().getBaseUrl();
-    }
-
     public Context getApplicationContext(){
         return SAApplication.getSAApplicationContext();
     }
 
     public int getDAUID() {
-        return SASession.getInstance().getDauId();
+        return dauid;
     }
 }

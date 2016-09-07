@@ -14,8 +14,10 @@ import android.widget.Button;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.samodelspace.SAAd;
+import tv.superawesome.sdk.SuperAwesome;
 
 public class SAInterstitialAd extends Activity {
 
@@ -30,6 +32,8 @@ public class SAInterstitialAd extends Activity {
     private static boolean isParentalGateEnabled = false;
     private static boolean shouldLockOrientation = false;
     private static int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    private static boolean isTestingEnabled = false;
+    private static int configuration = 0;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Activity initialization & instance methods
@@ -115,8 +119,17 @@ public class SAInterstitialAd extends Activity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void load(final int placementId) {
+
+        // create a current session
+        SASession session = new SASession ();
+        session.setTest(isTestingEnabled);
+        session.setConfiguration(configuration);
+        session.setDauId(SuperAwesome.getInstance().getDAUID());
+        session.setVersion(SuperAwesome.getInstance().getSDKVersion());
+
+        // create a loader
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoaderInterface() {
+        loader.loadAd(placementId, session, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
                 ad = saAd;
@@ -190,5 +203,29 @@ public class SAInterstitialAd extends Activity {
 
     public static int getLockOrientation () {
         return lockOrientation;
+    }
+
+    public static void setTest(boolean isTest) {
+        isTestingEnabled = isTest;
+    }
+
+    public static void setTestEnabled () {
+        isTestingEnabled = true;
+    }
+
+    public static void setTestDisabled () {
+        isTestingEnabled = false;
+    }
+
+    public static void setConfiguration (int config) {
+        configuration = config;
+    }
+
+    public static void setConfigurationProduction () {
+        configuration = SASession.CONFIGURATION_PRODUCTION;
+    }
+
+    public static void setConfigurationStaging () {
+        configuration = SASession.CONFIGURATION_STAGING;
     }
 }

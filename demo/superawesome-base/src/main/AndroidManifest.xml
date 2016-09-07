@@ -14,6 +14,9 @@
             android:label="SAInterstitialAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <receiver android:name="tv.superawesome.sdk.cpi.SACPI" android:exported="true">
+            <intent-filter><action android:name="com.android.vending.INSTALL_REFERRER"/></intent-filter>
+        </receiver>
     </application>
 
 </manifest>

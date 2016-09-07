@@ -50,13 +50,10 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
             isParentalGateEnabled = false;
         }
 
-        /** before loading */
-        SuperAwesome.getInstance().setConfigurationProduction();
-        SuperAwesome.getInstance().setTestMode(isTestEnabled);
-        SuperAwesome.getInstance().setApplicationContext(context);
-
         /** create the banner ad */
         bannerAd = new SABannerAd(context);
+        bannerAd.setTest(isTestEnabled);
+        bannerAd.setConfigurationProduction();
         bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
         bannerAd.setListener(new SAInterface() {
             @Override

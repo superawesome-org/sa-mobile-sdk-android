@@ -117,17 +117,14 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     @Override
     protected void loadWithSdkInitialized(@NonNull final Activity activity, @NonNull Map<String, Object> map, @NonNull Map<String, String> map1) throws Exception {
 
-        // setup
-        SuperAwesome.getInstance().setConfigurationProduction();
-        SuperAwesome.getInstance().setApplicationContext(activity);
-        SuperAwesome.getInstance().setTestMode(isTestEnabled);
-
         // get context
         this.context = activity;
 
         Log.d("SuperAwesome-MoPub", "load SDK with Initialized for " + placementId);
 
         // load and show the ad
+        SAVideoAd.setTest(isTestEnabled);
+        SAVideoAd.setConfigurationProduction();
         SAVideoAd.setIsParentalGateEnabled(isParentalGateEnabled);
         SAVideoAd.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
         SAVideoAd.setShouldShowCloseButton(shouldShowCloseButton);

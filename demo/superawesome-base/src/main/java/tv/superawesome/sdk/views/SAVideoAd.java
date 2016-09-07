@@ -20,6 +20,7 @@ import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
@@ -52,6 +53,8 @@ public class SAVideoAd extends Activity {
     private static boolean shouldShowSmallClickButton = false;
     private static boolean shouldLockOrientation = false;
     private static int     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    private static boolean isTestingEnabled = false;
+    private static int     configuration = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +191,7 @@ public class SAVideoAd extends Activity {
         // get local
         SAInterface listenerL = getListener();
         SAAd adL = getAd();
+        int configurationL = getConfiguration();
 
         // call listener
         if (listenerL != null) {
@@ -212,7 +216,7 @@ public class SAVideoAd extends Activity {
             finalUrl = adL.creative.clickUrl;
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", SuperAwesome.getInstance().getConfiguration(), // used to be ad.advertiserId
+                    "utm_source", configurationL, // used to be ad.advertiserId
                     "utm_campaign", adL.campaignId,
                     "utm_term", adL.lineItemId,
                     "utm_content", adL.creative.id,
@@ -267,8 +271,17 @@ public class SAVideoAd extends Activity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void load(final int placementId) {
+
+        // get a new session
+        SASession session = new SASession ();
+        session.setConfiguration(configuration);
+        session.setTest(isTestingEnabled);
+        session.setVersion(SuperAwesome.getInstance().getSDKVersion());
+        session.setDauId(SuperAwesome.getInstance().getDAUID());
+
+        // create a new loader
         SALoader loader = new SALoader();
-        loader.loadAd(placementId, new SALoaderInterface() {
+        loader.loadAd(placementId, session, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
                 ad = saAd;
@@ -372,5 +385,37 @@ public class SAVideoAd extends Activity {
 
     public static int getLockOrientation () {
         return lockOrientation;
+    }
+
+    public static void setTest(boolean isTest) {
+        isTestingEnabled = isTest;
+    }
+
+    public static void setTestEnabled () {
+        isTestingEnabled = true;
+    }
+
+    public static void setTestDisabled () {
+        isTestingEnabled = false;
+    }
+
+    private static boolean getIsTestEnabled () {
+        return isTestingEnabled;
+    }
+
+    public static void setConfiguration (int config) {
+        configuration = config;
+    }
+
+    public static void setConfigurationProduction () {
+        configuration = SASession.CONFIGURATION_PRODUCTION;
+    }
+
+    public static void setConfigurationStaging () {
+        configuration = SASession.CONFIGURATION_STAGING;
+    }
+
+    private static int getConfiguration () {
+        return configuration;
     }
 }
