@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#000000"
-                tools:context="tv.superawesome.sdk.views.SAVideoAd2$SAVideoAdActivity">
+                tools:context="tv.superawesome.sdk.views.SAVideoAd">
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,5 +33,6 @@
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:maxWidth="83dp"
-        android:maxHeight="31dp"/>
+        android:maxHeight="31dp"
+        android:contentDescription="Padlock image" />
 </RelativeLayout>

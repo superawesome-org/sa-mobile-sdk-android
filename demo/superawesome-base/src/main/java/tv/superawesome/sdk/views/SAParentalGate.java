@@ -40,27 +40,45 @@ public class SAParentalGate {
     private int endNum;
     private Context c = null;
     private WeakReference<Object> parentRef = null;
+    private SAEvents events = null;
     private SAAd refAd;
 
     /** the alert dialog */
     private AlertDialog dialog;
 
+    // vars to hold who has called this
+    private String className = null;
+    private String videoClassName = null;
+    private String bannerClassName = null;
+    private boolean calledByBanner = false;
+    private boolean calledByVideo = false;
+    private Class currentClass;
+
     public SAParentalGate(Context c, Object parent, SAAd _refAd){
         super();
         this.c = c;
-        this.parentRef = new WeakReference<Object> (parent);
+        this.parentRef = new WeakReference<> (parent);
         this.refAd = _refAd;
+        this.events = new SAEvents ();
+        this.events.setAd(this.refAd);
 
         if (this.refAd == null){
             this.refAd = new SAAd();
         }
+
+        className = parentRef.get().getClass().getName();
+        videoClassName = SAVideoAd.class.getCanonicalName();
+        bannerClassName = SABannerAd.class.getCanonicalName();
+        calledByVideo = className.contains(videoClassName);
+        calledByBanner = className.contains(bannerClassName);
+        currentClass = calledByVideo ? SAVideoAd.class : SABannerAd.class;
     }
 
     /** show function */
     public void show() {
 
         // send Open Event
-        SAEvents.sendEventsFor(refAd.creative.events, "pg_open");
+        events.sendEventsFor("pg_open");
 
         startNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
         endNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
@@ -77,12 +95,11 @@ public class SAParentalGate {
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         alert.setView(input);
 
-        /** resume video */
-        final String refClassName = parentRef.get().getClass().getName();
-        String videoName = SAVideoAd2.class.getCanonicalName();
-
-        if (refClassName.contains(videoName)) {
-            ((SAVideoAd2) parentRef.get()).pause();
+        /** pause video */
+        if (calledByVideo) {
+            try {
+                currentClass.getMethod("pause").invoke(null);
+            } catch (Exception ignored) {}
         }
 
         final AlertDialog.Builder aContinue = alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
@@ -97,26 +114,20 @@ public class SAParentalGate {
                     if (userValue == (startNum + endNum)) {
 
                         // send event
-                        SAEvents.sendEventsFor(refAd.creative.events, "pg_success");
+                        events.sendEventsFor("pg_success");
 
-                        /** go on success way */
-//                        if (listener != null) {
-//                            listener.parentalGateWasSucceded(refAd.placementId);
-//                        }
-
-                        String refClassName = parentRef.get().getClass().getName();
-                        String bannerName = SABannerAd.class.getCanonicalName();
-                        String videoName = SAVideoAd2.class.getCanonicalName();
-
-                        if (refClassName.contains(bannerName)) {
+                        // continue w/ click event
+                        if (calledByBanner) {
                             ((SABannerAd) parentRef.get()).click();
-                        } else if (refClassName.contains(videoName)) {
-                            ((SAVideoAd2) parentRef.get()).click();
+                        } else if (calledByVideo) {
+                            try {
+                                currentClass.getMethod("click").invoke(null);
+                            } catch (Exception ignored) {}
                         }
                     } else {
 
                         // send event
-                        SAEvents.sendEventsFor(refAd.creative.events, "pg_fail");
+                        events.sendEventsFor("pg_fail");
 
                         /** go on error way */
                         AlertDialog.Builder erroralert = new android.app.AlertDialog.Builder(c);
@@ -130,19 +141,12 @@ public class SAParentalGate {
                                 /** dismiss this */
                                 dialog.dismiss();
 
-                                /** resume video */
-                                String refClassName = parentRef.get().getClass().getName();
-                                String videoName = SAVideoAd2.class.getCanonicalName();
-
-                                if (refClassName.contains(videoName)) {
-                                    ((SAVideoAd2) parentRef.get()).resume();
+                                // resume video
+                                if (calledByVideo) {
+                                    try {
+                                        currentClass.getMethod("resume").invoke(null);
+                                    } catch (Exception ignored) {}
                                 }
-
-                                /** do nothing */
-//                                if (listener != null) {
-//                                    listener.parentalGateWasFailed(refAd.placementId);
-//                                }
-                                return;
                             }
                         });
                         erroralert.show();
@@ -150,16 +154,13 @@ public class SAParentalGate {
                     }
                 }
                 else {
-                    /** resume video */
-                    String refClassName = parentRef.get().getClass().getName();
-                    String videoName = SAVideoAd2.class.getCanonicalName();
-
-                    if (refClassName.contains(videoName)) {
-                        ((SAVideoAd2) parentRef.get()).resume();
+                    // resume video
+                    if (calledByVideo) {
+                        try {
+                            currentClass.getMethod("resume").invoke(null);
+                        } catch (Exception ignored) {}
                     }
                 }
-
-                return;
             }
         });
 
@@ -168,24 +169,17 @@ public class SAParentalGate {
             public void onClick(DialogInterface dialog, int which) {
 
                 // send event
-                SAEvents.sendEventsFor(refAd.creative.events, "pg_close");
+                events.sendEventsFor("pg_close");
 
                 /** dismiss */
                 dialog.dismiss();
 
-                /** resume video */
-                String refClassName = parentRef.get().getClass().getName();
-                String videoName = SAVideoAd2.class.getCanonicalName();
-
-                if (refClassName.contains(videoName)) {
-                    ((SAVideoAd2) parentRef.get()).resume();
+                // resume video
+                if (calledByVideo) {
+                    try {
+                        currentClass.getMethod("resume").invoke(null);
+                    } catch (Exception ignored) {}
                 }
-
-                /** go on cancel way */
-//                if (listener != null) {
-//                    listener.parentalGateWasCanceled(refAd.placementId);
-//                }
-                return;
             }
         });
 
@@ -199,20 +193,4 @@ public class SAParentalGate {
     public void close() {
         dialog.cancel();
     }
-
-    /**
-     * Setter for the listener
-     * @param listener - listener reference
-     */
-//    public void setListener(SAParentalGateInterface listener){
-//        this.listener = listener;
-//    }
-
-//    /**
-//     * Getter for the listener
-//     * @return the local listener object
-//     */
-//    public SAParentalGateInterface getListener(){
-//        return this.listener;
-//    }
 }

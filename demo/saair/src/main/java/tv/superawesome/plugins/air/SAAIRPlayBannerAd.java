@@ -58,7 +58,7 @@
 //                    SABannerAd banner = new SABannerAd(activity);
 //                    banner.setAd(ad);
 //                    banner.setIsParentalGateEnabled(isParentalGateEnabled);
-//                    banner.setAdListener(new SAInterface() {
+//                    banner.setListener(new SAInterface() {
 //                        @Override
 //                        public void adWasShown(int placementId) {
 //                            String meta = "{\"name\":\"" + name + "\", \"func\":\"adWasShown\"}";

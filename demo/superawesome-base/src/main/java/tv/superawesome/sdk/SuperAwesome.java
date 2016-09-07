@@ -27,7 +27,6 @@ public class SuperAwesome {
     private SuperAwesome(){
         setConfigurationProduction();
         disableTestMode();
-        SAEvents.enableSATracking();
         SASession.getInstance().setVersion(getSDKVersion());
     }
 

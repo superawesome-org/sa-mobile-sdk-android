@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity
-            android:name="tv.superawesome.sdk.views.SAVideoAd2"
+            android:name="tv.superawesome.sdk.views.SAVideoAd"
             android:label="SAFullscreenVideoAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
         <activity

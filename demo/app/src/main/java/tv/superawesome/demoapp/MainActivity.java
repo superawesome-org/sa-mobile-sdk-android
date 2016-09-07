@@ -1,18 +1,14 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.lib.saadloader.SALoader;
-import tv.superawesome.lib.saadloader.SALoaderInterface;
-import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.sdk.views.SABannerAd;
+import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
-import tv.superawesome.sdk.views.SAVideoAd2;
+import tv.superawesome.sdk.views.SAVideoAd;
 
 public class MainActivity extends Activity {
 
@@ -24,9 +20,6 @@ public class MainActivity extends Activity {
 //    private SAAd video1Data = null;
 //    private SAAd video2Data = null;
     private SABannerAd bannerAd = null;
-    private SAInterstitialAd interstitialAd = null;
-    private SAVideoAd2 videoAd2 = null;
-//    private SAVideoAd videoAd = null;
 
     /** the options list */
     @Override
@@ -39,13 +32,114 @@ public class MainActivity extends Activity {
         SuperAwesome.getInstance().disableTestMode();
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-        bannerAd.load(250);
 
-        interstitialAd = new SAInterstitialAd(this);
-        interstitialAd.load(251);
+        SAInterstitialAd.setIsParentalGateEnabled(true);
+        SAInterstitialAd.setListener(new SAInterface() {
+            @Override
+            public void SADidLoadAd(int placementId) {
 
-        videoAd2 = new SAVideoAd2(this);
-        videoAd2.load(252);
+            }
+
+            @Override
+            public void SADidNotLoadAd(int placementId) {
+
+            }
+
+            @Override
+            public void SADidShowAd() {
+
+            }
+
+            @Override
+            public void SADidNotShowAd() {
+
+            }
+
+            @Override
+            public void SADidCloseAd() {
+
+            }
+
+            @Override
+            public void SADidClickAd() {
+
+            }
+        });
+
+        SAVideoAd.setShouldShowSmallClickButton(true);
+        SAVideoAd.setIsParentalGateEnabled(true);
+        SAVideoAd.setListener(new SAInterface() {
+            @Override
+            public void SADidLoadAd(int placementId) {
+
+            }
+
+            @Override
+            public void SADidNotLoadAd(int placementId) {
+
+            }
+
+            @Override
+            public void SADidShowAd() {
+
+            }
+
+            @Override
+            public void SADidNotShowAd() {
+
+            }
+
+            @Override
+            public void SADidCloseAd() {
+
+            }
+
+            @Override
+            public void SADidClickAd() {
+
+            }
+        });
+
+        if (savedInstanceState == null) {
+            bannerAd.load(250);
+            SAInterstitialAd.load(247);
+            SAVideoAd.load(252);
+        }
+
+//        videoAd2 = new SAVideoAd(this);
+//        videoAd2.setShouldShowSmallClickButton(true);
+//        videoAd2.setListener(new SAInterface() {
+//            @Override
+//            public void SADidLoadVideo(Object sender, int placementId) {
+//                Log.d("SA-Interface", "SADidLoadVideo");
+//            }
+//
+//            @Override
+//            public void SADidNotLoadVideo(Object sender, int placementId) {
+//                Log.d("SA-Interface", "SADidNotLoadVideo");
+//            }
+//
+//            @Override
+//            public void SADidShowVideo(Object sender) {
+//                Log.d("SA-Interface", "SADidShowVideo");
+//            }
+//
+//            @Override
+//            public void SADidNotShowVideo(Object sender) {
+//                Log.d("SA-Interface", "SADidNotShowVideo");
+//            }
+//
+//            @Override
+//            public void SADidCloseVideo(Object sender) {
+//                Log.d("SA-Interface", "SADidCloseVideo");
+//            }
+//
+//            @Override
+//            public void SADidClickVideo(Object sender) {
+//                Log.d("SA-Interface", "SADidClickVideo");
+//            }
+//        });
+
 
 //        if (savedInstanceState == null) {
 //            loader = new SALoader();
@@ -115,7 +209,8 @@ public class MainActivity extends Activity {
 
     /** <Button Actions> */
     public void playBanner(View v){
-        bannerAd.play();
+        bannerAd.play(this);
+//        bannerAd.play();
 //        if (bannerData != null) {
 //            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
 //            bannerAd.setAd(bannerData);
@@ -125,7 +220,9 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial1(View v){
-        interstitialAd.play();
+        if (SAInterstitialAd.hasAdAvailable()) {
+            SAInterstitialAd.play(this);
+        }
 //        if (interstitial1Data != null){
 //            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
 //            iad.setAd(interstitial1Data);
@@ -152,7 +249,10 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
-        videoAd2.play();
+        if (SAVideoAd.hasAdAvailable()) {
+            SAVideoAd.play(this);
+        }
+//        videoAd2.play(this);
 //        if (video1Data != null){
 //            SAFullscreenVideoAd fvad = new SAFullscreenVideoAd(MainActivity.this);
 //            fvad.setAd(video1Data);

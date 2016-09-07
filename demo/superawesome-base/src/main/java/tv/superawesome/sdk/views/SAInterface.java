@@ -1,40 +1,24 @@
 package tv.superawesome.sdk.views;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by gabriel.coman on 26/12/15.
  */
-public interface SAInterface {
+public interface SAInterface extends Serializable {
 
-    void adWasLoaded(int placementId);
-    void adWasNotLoaded(int placementId);
+    void SADidLoadAd(int placementId);
 
-    /**
-     * Callback when ad is first shown
-     * @param placementId
-     */
-    void adWasShown(int placementId);
+    void SADidNotLoadAd(int placementId);
 
-    /**
-     * Callback when an ad failed to show
-     * @param placementId
-     */
-    void adFailedToShow(int placementId);
+    void SADidShowAd();
 
-    /**
-     * Callback for interstitial and video ads when closed
-     * @param placementId
-     */
-    void adWasClosed(int placementId);
+    void SADidNotShowAd();
 
-    /**
-     * Callback called when user clicks-through the ad
-     * @param placementId
-     */
-    void adWasClicked(int placementId);
+    void SADidCloseAd();
 
-    /**
-     * Callback when ad has incorrect placement for its purpose (e.g. video ad with banner type placement)
-     * @param placementId
-     */
-    void adHasIncorrectPlacement(int placementId);
+    void SADidClickAd();
+
 }

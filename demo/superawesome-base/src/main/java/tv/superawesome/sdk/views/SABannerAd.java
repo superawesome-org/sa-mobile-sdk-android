@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,27 +38,29 @@ import tv.superawesome.lib.samodelspace.SACreativeFormat;
  * Created by gabriel.coman on 30/12/15.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class SABannerAd extends RelativeLayout implements SAViewInterface {
+public class SABannerAd extends RelativeLayout {
 
-    /** constants */
+    // constants
     private final int DISPLAY_VIEWABILITY_COUNT = 1;
+    private final int BANNER_BACKGROUND = Color.rgb(191, 191, 191);
 
-    /** Private variables */
-    public boolean isParentalGateEnabled = true;
+    // private vars w/ exposed setters & getters
+    private boolean isParentalGateEnabled = true;
     private boolean isPartOfFullscreen = false;
     private SAAd ad;
+    private SAInterface listener;
 
-    /** Subviews */
-    private RelativeLayout contentHolder;
+    // the internal loader
+    private SAEvents events;
     private SALoader loader;
+
+    // private subviews
+    private RelativeLayout contentHolder;
     private SAWebPlayer webView;
     private ImageView padlock;
     private SAParentalGate gate;
 
-    /** listeners */
-    public SAInterface adListener;
-
-    /** helper vars */
+    // aux private vars
     private float cWidth = 0;
     private float cHeight = 0;
     private boolean layoutOK = false;
@@ -65,13 +68,9 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
     private boolean showOnce = false;
     private boolean canPlay = true;
 
-    private int ticks = 0;
-    private int viewabilityCount = 0;
-    private Runnable viewabilityRunnable = null;
-
-    /**********************************************************************************************/
-    /** Init methods */
-    /**********************************************************************************************/
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // View initialization
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public SABannerAd(Context context) {
         this(context, null, 0);
@@ -86,27 +85,37 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
 
         // create the loader
         loader = new SALoader();
+        events = new SAEvents();
 
-        /** get ids */
+        // get view ids dynamically
         String packageName = context.getPackageName();
         int view_sa_bannerId = getResources().getIdentifier("view_sa_banner", "layout", packageName);
         int content_holderId = getResources().getIdentifier("content_holder", "id", packageName);
         int web_viewId = getResources().getIdentifier("web_view", "id", packageName);
         int padlockId = getResources().getIdentifier("padlock_image", "id", packageName);
 
-        /** create / assign the subviews */
+        // inflate the layout
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(view_sa_bannerId, this);
 
-        contentHolder = (RelativeLayout)findViewById(content_holderId);
-        webView = (SAWebPlayer)findViewById(web_viewId);
+        // set the background color
+        this.setBackgroundColor(BANNER_BACKGROUND);
+
+        // get the main relative layout content holder
+        contentHolder = (RelativeLayout) findViewById(content_holderId);
+
+        // get the padlock
+        padlock = (ImageView) findViewById(padlockId);
+
+        // get and customize the web view
+        webView = (SAWebPlayer) findViewById(web_viewId);
         webView.setClickListener(new SAWebPlayerClickInterface() {
             @Override
             public void SAWebPlayerClickHandled(String url) {
-                /** update the destination URL */
+                // update the destination URL
                 destinationURL = url;
 
-                /** check for PG */
+                // check for PG
                 if (isParentalGateEnabled) {
                     gate = new SAParentalGate(getContext(), this, ad);
                     gate.show();
@@ -124,42 +133,32 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
                         if (!showOnce) {
                             showOnce = true;
 
-                            if (isPartOfFullscreen) {
-                                SAEvents.sendEventsFor(ad.creative.events, "viewable_impr");
-                            }
-                            else {
-                                viewabilityRunnable = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        runViewableImpression();
-                                    }
-                                };
-                                postDelayed(viewabilityRunnable, 1000);
-                            }
+                            // send additional impressions
+                            events.sendEventsFor("impression");
 
-                            /** send impression URL, if exits, to 3rd party only */
-                            SAEvents.sendEventsFor(ad.creative.events, "impression");
+                            // send viewable impression
+                            if (isPartOfFullscreen) {
+                                events.sendViewableForFullscreen();
+                            } else {
+                                events.sendViewableForInScreen(SABannerAd.this);
+                            }
 
                             /** call listener */
-                            if (adListener != null) {
-                                adListener.adWasShown(ad.placementId);
+                            if (listener != null) {
+                                listener.SADidShowAd();
                             }
                         }
                         break;
                     }
                     case Web_Error: {
-                        if (adListener != null) {
-                            adListener.adFailedToShow(ad.placementId);
+                        if (listener != null) {
+                            listener.SADidNotShowAd();
                         }
                         break;
                     }
                 }
             }
         });
-        padlock = (ImageView)findViewById(padlockId);
-
-        /** set padlock size vs. screen display */
-        this.setBackgroundColor(Color.rgb(191, 191, 191));
     }
 
     @Override
@@ -173,27 +172,27 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
         }
     }
 
-    /**********************************************************************************************/
-    /** <SAViewInterface> */
-    /**********************************************************************************************/
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Public interface
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Override public void load(final int placementId) {
+    public void load(final int placementId) {
 
         canPlay = false;
 
         loader.loadAd(placementId, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
-                ad = saAd;
+                setAd(saAd);
                 canPlay = true;
 
                 if (ad != null) {
-                    if (adListener != null) {
-                        adListener.adWasLoaded(placementId);
+                    if (listener != null) {
+                        listener.SADidLoadAd(placementId);
                     }
                 } else {
-                    if (adListener != null) {
-                        adListener.adWasNotLoaded(placementId);
+                    if (listener != null) {
+                        listener.SADidNotLoadAd(placementId);
                     }
                 }
             }
@@ -201,18 +200,23 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
 
     }
 
-    @Override public void setAd(SAAd _ad) {
-        this.ad = _ad;
+    public boolean hasAdAvailable () {
+        return ad != null;
     }
 
-    @Override public SAAd getAd() {
+    public void setAd(SAAd _ad) {
+        this.ad = _ad;
+        events.setAd(this.ad);
+    }
+
+    public SAAd getAd() {
         return this.ad;
     }
 
-    @Override public void play() {
+    public void play(Context context) {
 
         if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && canPlay) {
-            /** if ad is still not OK - wait a little while longer */
+            // if ad is still not OK - wait a little while longer
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
@@ -229,10 +233,7 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
                 }
             };
 
-            /**
-             * if the ad is ok (and implicitly the cWidth and cHeight params then start arranging the
-             * ad as we should!
-             */
+            // wait until layout of the whole thing is OK before we start rendering the ad
             if (ad == null || !layoutOK) {
                 this.postDelayed(runnable, 250);
             } else {
@@ -240,31 +241,33 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
             }
 
         } else {
-            if (adListener != null) {
-                adListener.adHasIncorrectPlacement(ad.placementId);
+            if (listener != null) {
+                listener.SADidNotShowAd();
             }
         }
     }
 
-    @Override public boolean shouldShowPadlock () {
+    public boolean shouldShowPadlock () {
         return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
-    @Override public void close() {
-        SAEvents.unregisterDisplayMoatEvent(ad.placementId);
+    public void close() {
+        // unregister MOAT events
+        events.unregisterDisplayMoatEvent(ad.placementId);
     }
 
-    @Override public void click() {
-        /** call listener */
-        if (adListener != null) {
-            adListener.adWasClicked(ad.placementId);
+    public void click() {
+        // callback
+        if (listener != null) {
+            listener.SADidClickAd();
         }
 
+        // call sa tracking event
         if (!destinationURL.contains(SuperAwesome.getInstance().getBaseURL())) {
-            SAEvents.sendEventsFor(ad.creative.events, "sa_tracking");
+            events.sendEventsFor("sa_tracking");
         }
 
-        /** switch between CPM & CPI campaigns */
+        // CPI & CPM handling
         String finalUrl = destinationURL;
         if (ad.saCampaignType == SACampaignType.CPI) {
             finalUrl += "&referrer=";
@@ -283,17 +286,18 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
 
         Log.d("SuperAwesome", "Going to " + finalUrl);
 
-        /** go-to-url */
+        // open URL
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
         getContext().startActivity(browserIntent);
     }
 
-    @Override public void resize(int width, int height){
-        /** get ad width */
+    // todo: make sure Banner Ads don't get reloaded on each screen reload
+    public void resize(int width, int height){
+        // get ad W & H
         int adWidth = ad.creative.details.width,
             adHeight = ad.creative.details.height;
 
-        /** calc new frame */
+        // calc new frame
         Rect newFrame = SAUtils.mapOldSizeIntoNewSize(width, height, adWidth, adHeight);
         int newWidth = newFrame.right,
             newHeight = newFrame.bottom;
@@ -302,64 +306,36 @@ public class SABannerAd extends RelativeLayout implements SAViewInterface {
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         contentHolder.setLayoutParams(params);
 
-        /** prepare moat tracking */
-        HashMap<String, String> adData = new HashMap<>();
-        adData.put("advertiserId", "" + ad.advertiserId);
-        adData.put("campaignId", "" + ad.campaignId);
-        adData.put("lineItemId", "" + ad.lineItemId);
-        adData.put("creativeId", "" + ad.creative.id);
-        adData.put("app", "" + ad.app);
-        adData.put("placementId", "" + ad.placementId);
-        adData.put("publisherId", "" + ad.publisherId);
-        String moatString = SAEvents.registerDisplayMoatEvent((Activity)this.getContext(), webView, adData);
+        // prepare moat tracking
+        String moatString = events.registerDisplayMoatEvent((Activity)this.getContext(), webView);
         String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
 
-        /** update HTML as well */
+        // update HTML as well
         webView.loadHTML(fullHTML, adWidth, adHeight, newWidth, newHeight);
     }
 
-    /**********************************************************************************************/
-    /** setters for listeners */
-    /**********************************************************************************************/
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Setters and getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void setIsPartOfFullscreen(boolean isPartOfFullscreen) {
         this.isPartOfFullscreen = isPartOfFullscreen;
     }
 
-    public void runViewableImpression () {
-        if (ticks >= DISPLAY_VIEWABILITY_COUNT) {
-
-            if (viewabilityCount == DISPLAY_VIEWABILITY_COUNT){
-                SAEvents.sendEventsFor(ad.creative.events, "viewable_impr");
-            } else {
-                Log.d("SuperAwesome", "[AA :: Error] Banner is not in viewable rectangle");
-            }
-
-        } else {
-            ticks++;
-
-            // child
-            int[] array = new int[2];
-            getLocationInWindow(array);
-            Rect banner = new Rect(array[0], array[1], getWidth(), getHeight());
-
-            // super view
-            int[] sarray = new int[2];
-            View parent = (View)getParent();
-            parent.getLocationInWindow(sarray);
-            Rect sbanner = new Rect(sarray[0], sarray[1], parent.getWidth(), parent.getHeight());
-
-            // window
-            SAUtils.SASize screenSize = SAUtils.getRealScreenSize((Activity)getContext(), false);
-            Rect screen = new Rect(0, 0, screenSize.width, screenSize.height);
-
-            if (SAUtils.isTargetRectInFrameRect(banner, sbanner) && SAUtils.isTargetRectInFrameRect(banner, screen)){
-                viewabilityCount++;
-            }
-
-            Log.d("SuperAwesome", "[AA :: Info] Timer tick: " + ticks + "/" + DISPLAY_VIEWABILITY_COUNT + " and viewability count: " + viewabilityCount + "/" + DISPLAY_VIEWABILITY_COUNT);
-
-            postDelayed(viewabilityRunnable, 1000);
-        }
+    public void setIsParentalGateEnabled (boolean value) {
+        isParentalGateEnabled = value;
     }
+
+    public void setListener(SAInterface value) {
+        listener = value;
+    }
+
+    public boolean getIsParentalGateEnabled () {
+        return isParentalGateEnabled;
+    }
+
+    public SAInterface getListener () {
+        return listener;
+    }
+
 }
