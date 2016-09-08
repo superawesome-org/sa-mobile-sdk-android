@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -268,17 +267,19 @@ public class SABannerAd extends RelativeLayout {
             listener.SADidClickAd();
         }
 
-        // call sa tracking event
+        // send tracking events, if needed
         if (!destinationURL.contains(session.getBaseUrl())) {
             events.sendEventsFor("sa_tracking");
         }
 
-        // CPI & CPM handling
+        // get the url to go to
         String finalUrl = destinationURL;
+
+        // append CPI data to it
         if (ad.saCampaignType == SACampaignType.CPI) {
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", session.getConfiguration(), // used to be ad.advertiserId
+                    "utm_source", session.getConfiguration(),
                     "utm_campaign", ad.campaignId,
                     "utm_term", ad.lineItemId,
                     "utm_content", ad.creative.id,

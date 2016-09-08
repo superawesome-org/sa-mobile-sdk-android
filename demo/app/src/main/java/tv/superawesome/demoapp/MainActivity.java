@@ -103,9 +103,11 @@ public class MainActivity extends Activity {
         });
 
         if (savedInstanceState == null) {
-            bannerAd.load(250);
-            SAInterstitialAd.load(247);
-            SAVideoAd.load(252);
+//            bannerAd.load(250);
+//            SAInterstitialAd.load(247);
+            SAVideoAd.load(223);
+//            SAVideoAd.load(224);
+//            SAVideoAd.load(116);
         }
 
 //        videoAd2 = new SAVideoAd(this);

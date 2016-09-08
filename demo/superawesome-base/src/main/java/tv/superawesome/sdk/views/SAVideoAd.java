@@ -20,6 +20,7 @@ import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.SATracking;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -165,7 +166,7 @@ public class SAVideoAd extends Activity {
                 public void SAVideoPlayerClickHandled() {
                     // check for parental gate on click
                     if (isParentalGateEnabledL) {
-                        gate = new SAParentalGate(SAVideoAd.this, this, adL);
+                        gate = new SAParentalGate(SAVideoAd.this, SAVideoAd.this, adL);
                         gate.show();
                     } else {
                         click();
@@ -198,23 +199,19 @@ public class SAVideoAd extends Activity {
             listenerL.SADidClickAd();
         }
 
-        // send click tracking events
-        events.sendEventsFor("click_tracking");
-        events.sendEventsFor("custom_clicks");
-
-        // switch between CPM & CPI campaigns
-        // todo: this will fail since the click URL will be wrong for CPI campaigns
-        String finalUrl = ad.creative.clickUrl;
-
-        // if video CPI
+        // in CPI we:
+        //  - take the click URL provided by the Ad and redirect to it
+        //  - send an event to "click_through"
+        //  - send events to "click_tracking"
+        //  - send all "custom_clicks" events
         if (adL.saCampaignType == SACampaignType.CPI) {
-            // send event
-            events.sendEventToURL(adL.creative.clickUrl); // here clickUrl would have been the https://play.google.com&referrer=com.example.myapp
 
-            // and get the actual creative click URL so that we can append to it and send referral
-            // data to the store :(
-            finalUrl = adL.creative.clickUrl;
-            finalUrl += "&referrer=";
+            // send events
+            events.sendEventsFor("click_tracking");
+            events.sendEventsFor("custom_clicks");
+            events.sendEventsFor("click_through");
+
+            // form the final URL for referral data
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
                     "utm_source", configurationL, // used to be ad.advertiserId
                     "utm_campaign", adL.campaignId,
@@ -226,15 +223,36 @@ public class SAVideoAd extends Activity {
             referrerQuery = referrerQuery.replace("&", "%26");
             referrerQuery = referrerQuery.replace("=", "%3D");
 
-            // finally add the query
-            finalUrl += referrerQuery;
+            // go to the URL
+            if (ad.creative.clickUrl != null) {
+                String finalURL = ad.creative.clickUrl + "&referrer=" + referrerQuery;
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
+                context.startActivity(browserIntent);
+            }
         }
+        // in CPM we:
+        //  - take the "click_through" URL provided by VAST and redirect to it
+        //  - send all "click_tracking" events
+        //  - send all "custom_clicks" events
+        else {
+            // send the events
+            events.sendEventsFor("click_tracking");
+            events.sendEventsFor("custom_clicks");
 
-        Log.d("SuperAwesome", "Going to URL: " + finalUrl);
+            // get the final go-to URL
+            String finalURL = null;
+            for (SATracking tracking : adL.creative.events) {
+                if (tracking.event.equals("click_through")) {
+                    finalURL = tracking.URL;
+                }
+            }
 
-        // go to url
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
-        context.startActivity(browserIntent);
+            // go to the URL
+            if (finalURL != null) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
+                context.startActivity(browserIntent);
+            }
+        }
     }
 
     public void pause () {

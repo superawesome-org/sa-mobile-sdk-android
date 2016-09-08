@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
@@ -47,12 +48,8 @@ public class SAParentalGate {
     private AlertDialog dialog;
 
     // vars to hold who has called this
-    private String className = null;
-    private String videoClassName = null;
-    private String bannerClassName = null;
     private boolean calledByBanner = false;
     private boolean calledByVideo = false;
-    private Class currentClass;
 
     public SAParentalGate(Context c, Object parent, SAAd _refAd){
         super();
@@ -66,12 +63,11 @@ public class SAParentalGate {
             this.refAd = new SAAd();
         }
 
-        className = parentRef.get().getClass().getName();
-        videoClassName = SAVideoAd.class.getCanonicalName();
-        bannerClassName = SABannerAd.class.getCanonicalName();
+        String className = parentRef.get().getClass().getName();
+        String videoClassName = SAVideoAd.class.getCanonicalName();
+        String bannerClassName = SABannerAd.class.getCanonicalName();
         calledByVideo = className.contains(videoClassName);
         calledByBanner = className.contains(bannerClassName);
-        currentClass = calledByVideo ? SAVideoAd.class : SABannerAd.class;
     }
 
     /** show function */
@@ -97,9 +93,7 @@ public class SAParentalGate {
 
         /** pause video */
         if (calledByVideo) {
-            try {
-                currentClass.getMethod("pause").invoke(null);
-            } catch (Exception ignored) {}
+            ((SAVideoAd) parentRef.get()).pause();
         }
 
         final AlertDialog.Builder aContinue = alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
@@ -120,9 +114,7 @@ public class SAParentalGate {
                         if (calledByBanner) {
                             ((SABannerAd) parentRef.get()).click();
                         } else if (calledByVideo) {
-                            try {
-                                currentClass.getMethod("click").invoke(null);
-                            } catch (Exception ignored) {}
+                            ((SAVideoAd) parentRef.get()).click();
                         }
                     } else {
 
@@ -143,9 +135,7 @@ public class SAParentalGate {
 
                                 // resume video
                                 if (calledByVideo) {
-                                    try {
-                                        currentClass.getMethod("resume").invoke(null);
-                                    } catch (Exception ignored) {}
+                                    ((SAVideoAd) parentRef.get()).resume();
                                 }
                             }
                         });
@@ -156,9 +146,7 @@ public class SAParentalGate {
                 else {
                     // resume video
                     if (calledByVideo) {
-                        try {
-                            currentClass.getMethod("resume").invoke(null);
-                        } catch (Exception ignored) {}
+                        ((SAVideoAd) parentRef.get()).resume();
                     }
                 }
             }
@@ -176,9 +164,7 @@ public class SAParentalGate {
 
                 // resume video
                 if (calledByVideo) {
-                    try {
-                        currentClass.getMethod("resume").invoke(null);
-                    } catch (Exception ignored) {}
+                    ((SAVideoAd) parentRef.get()).resume();
                 }
             }
         });
