@@ -8,6 +8,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 import java.util.Map;
 
 import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SABannerAd;
 
@@ -57,41 +58,34 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
         bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
         bannerAd.setListener(new SAInterface() {
             @Override
-            public void SADidLoadAd(int placementId) {
+            public void onEvent(int placementId, SAEvent event) {
+                switch (event) {
+                    case adLoaded: {
+                        if (evtListener != null) {
+                            evtListener.onBannerLoaded(bannerAd);
+                        }
 
-                if (evtListener != null) {
-                    evtListener.onBannerLoaded(bannerAd);
-                }
-
-                bannerAd.play(context);
-            }
-
-            @Override
-            public void SADidNotLoadAd(int placementId) {
-
-            }
-
-            @Override
-            public void SADidShowAd() {
-
-            }
-
-            @Override
-            public void SADidNotShowAd() {
-                if (evtListener != null){
-                    evtListener.onBannerFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
-                }
-            }
-
-            @Override
-            public void SADidCloseAd() {
-
-            }
-
-            @Override
-            public void SADidClickAd() {
-                if (evtListener != null) {
-                    evtListener.onBannerClicked();
+                        bannerAd.play(context);
+                        break;
+                    }
+                    case adFailedToLoad:
+                        break;
+                    case adShown:
+                        break;
+                    case adFailedToShow: {
+                        if (evtListener != null){
+                            evtListener.onBannerFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                        }
+                        break;
+                    }
+                    case adClicked: {
+                        if (evtListener != null) {
+                            evtListener.onBannerClicked();
+                        }
+                        break;
+                    }
+                    case adClosed:
+                        break;
                 }
             }
         });
@@ -100,6 +94,6 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
 
     @Override
     protected void onInvalidate() {
-        /** n/a */
+        // do nothing
     }
 }

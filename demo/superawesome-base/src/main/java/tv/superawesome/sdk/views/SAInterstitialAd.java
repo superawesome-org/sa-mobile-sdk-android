@@ -28,7 +28,7 @@ public class SAInterstitialAd extends Activity {
     private static SAAd ad = null;
 
     // private vars w/ exposed setters & getters (state vars)
-    private static SAInterface listener = null;
+    private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = false;
     private static boolean shouldLockOrientation = false;
     private static int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
@@ -101,13 +101,13 @@ public class SAInterstitialAd extends Activity {
     }
 
     private void close() {
+        // get local listener
+        SAInterface listenerL = getListener();
+        listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+
         // make sure banner is closed and ad is nulled
         nullAd();
         interstitialBanner.close();
-
-        // get local listener
-        SAInterface listenerL = getListener();
-        if (listenerL != null) listenerL.SADidCloseAd();
 
         // close & resume previous activity
         super.onBackPressed();
@@ -132,16 +132,11 @@ public class SAInterstitialAd extends Activity {
         loader.loadAd(placementId, session, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
+                // save ad
                 ad = saAd;
-                if (ad != null) {
-                    if (listener != null) {
-                        listener.SADidLoadAd(placementId);
-                    }
-                } else {
-                    if (listener != null) {
-                        listener.SADidNotLoadAd(placementId);
-                    }
-                }
+
+                // call listener
+                listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
             }
         });
     }
@@ -163,9 +158,7 @@ public class SAInterstitialAd extends Activity {
             Intent intent = new Intent(context, SAInterstitialAd.class);
             context.startActivity(intent);
         } else {
-            if (listener != null) {
-                listener.SADidNotShowAd();
-            }
+            listener.onEvent(0, SAEvent.adFailedToShow);
         }
     }
 
@@ -174,7 +167,7 @@ public class SAInterstitialAd extends Activity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void setListener(SAInterface value) {
-        listener = value;
+        listener = value != null ? value : listener;
     }
 
     public static void setIsParentalGateEnabled(boolean value) {

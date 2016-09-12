@@ -47,7 +47,7 @@ public class SAVideoAd extends Activity {
     private SAParentalGate gate;
 
     // private vars w/ a public interface
-    private static SAInterface listener = null;
+    private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = false;
     private static boolean shouldShowCloseButton = true;
     private static boolean shouldAutomaticallyCloseAtEnd = true;
@@ -114,9 +114,7 @@ public class SAVideoAd extends Activity {
                     switch (saVideoPlayerEvent) {
                         case Video_Start: {
                             // send callback
-                            if (listenerL != null) {
-                                listenerL.SADidShowAd();
-                            }
+                            listenerL.onEvent(adL.placementId, SAEvent.adShown);
 
                             // send other events
                             events.sendEventsFor("impression");
@@ -153,9 +151,7 @@ public class SAVideoAd extends Activity {
                         case Video_Error: {
                             events.sendEventsFor("error");
                             close();
-                            if (listenerL != null) {
-                                listenerL.SADidNotShowAd();
-                            }
+                            listenerL.onEvent(0, SAEvent.adFailedToShow);
                             break;
                         }
                     }
@@ -195,9 +191,7 @@ public class SAVideoAd extends Activity {
         int configurationL = getConfiguration();
 
         // call listener
-        if (listenerL != null) {
-            listenerL.SADidClickAd();
-        }
+        listenerL.onEvent(adL.placementId, SAEvent.adClicked);
 
         // in CPI we:
         //  - take the click URL provided by the Ad and redirect to it
@@ -269,9 +263,7 @@ public class SAVideoAd extends Activity {
         SAInterface listenerL = getListener();
 
         // call listener
-        if (listenerL != null) {
-            listenerL.SADidCloseAd();
-        }
+        listenerL.onEvent(ad.placementId, SAEvent.adClosed);
 
         // unregister MOAT video
         events.unregisterVideoMoatEvent(ad.placementId);
@@ -302,17 +294,12 @@ public class SAVideoAd extends Activity {
         loader.loadAd(placementId, session, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
+                // save ad
                 ad = saAd;
 
-                if (ad != null) {
-                    if (listener != null) {
-                        listener.SADidLoadAd(placementId);
-                    }
-                } else {
-                    if (listener != null) {
-                        listener.SADidNotLoadAd(placementId);
-                    }
-                }
+                // call event
+                listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+
             }
         });
     }
@@ -339,9 +326,7 @@ public class SAVideoAd extends Activity {
             Intent intent = new Intent(context, SAVideoAd.class);
             context.startActivity(intent);
         } else {
-            if (listener != null) {
-                listener.SADidNotShowAd();
-            }
+            listener.onEvent(0, SAEvent.adFailedToShow);
         }
     }
 
@@ -350,7 +335,7 @@ public class SAVideoAd extends Activity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void setListener(SAInterface value) {
-        listener = value;
+        listener = value != null ? value : listener;
     }
 
     public static void setIsParentalGateEnabled (boolean value) {

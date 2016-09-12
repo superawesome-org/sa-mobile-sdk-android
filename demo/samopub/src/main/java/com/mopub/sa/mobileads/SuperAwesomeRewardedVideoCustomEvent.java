@@ -15,6 +15,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 // AwesomeAds
 import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAVideoAd;
 
@@ -120,8 +121,6 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         // get context
         this.context = activity;
 
-        Log.d("SuperAwesome-MoPub", "load SDK with Initialized for " + placementId);
-
         // load and show the ad
         SAVideoAd.setTest(isTestEnabled);
         SAVideoAd.setConfigurationProduction();
@@ -133,35 +132,35 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         SAVideoAd.setLockOrientation(lockOrientation);
         SAVideoAd.setListener(new SAInterface() {
             @Override
-            public void SADidLoadAd(int placementId) {
-                onRewardedVideoLoadSuccess(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
-            }
-
-            @Override
-            public void SADidNotLoadAd(int placementId) {
-                onRewardedVideoLoadFailure(SuperAwesomeRewardedVideoCustomEvent.class, moPubId, MoPubErrorCode.VIDEO_NOT_AVAILABLE);
-            }
-
-            @Override
-            public void SADidShowAd() {
-                onRewardedVideoStarted(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
-            }
-
-            @Override
-            public void SADidNotShowAd() {
-                onRewardedVideoPlaybackError(SuperAwesomeRewardedVideoCustomEvent.class, moPubId, MoPubErrorCode.VIDEO_NOT_AVAILABLE);
-            }
-
-            @Override
-            public void SADidCloseAd() {
-                MoPubReward reward = MoPubReward.success(MoPubReward.NO_REWARD_LABEL, 0);
-                onRewardedVideoCompleted(SuperAwesomeRewardedVideoCustomEvent.class, moPubId, reward);
-                onRewardedVideoClosed(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
-            }
-
-            @Override
-            public void SADidClickAd() {
-                onRewardedVideoClicked(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
+            public void onEvent(int placementId, SAEvent event) {
+                switch (event) {
+                    case adLoaded: {
+                        onRewardedVideoLoadSuccess(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
+                        break;
+                    }
+                    case adFailedToLoad: {
+                        onRewardedVideoLoadFailure(SuperAwesomeRewardedVideoCustomEvent.class, moPubId, MoPubErrorCode.VIDEO_NOT_AVAILABLE);
+                        break;
+                    }
+                    case adShown: {
+                        onRewardedVideoStarted(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
+                        break;
+                    }
+                    case adFailedToShow: {
+                        onRewardedVideoPlaybackError(SuperAwesomeRewardedVideoCustomEvent.class, moPubId, MoPubErrorCode.VIDEO_NOT_AVAILABLE);
+                        break;
+                    }
+                    case adClicked: {
+                        onRewardedVideoClicked(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
+                        break;
+                    }
+                    case adClosed: {
+                        MoPubReward reward = MoPubReward.success(MoPubReward.NO_REWARD_LABEL, 0);
+                        onRewardedVideoCompleted(SuperAwesomeRewardedVideoCustomEvent.class, moPubId, reward);
+                        onRewardedVideoClosed(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
+                        break;
+                    }
+                }
             }
         });
         SAVideoAd.load(placementId);

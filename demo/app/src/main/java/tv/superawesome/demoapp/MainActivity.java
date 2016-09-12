@@ -6,6 +6,7 @@ import android.view.View;
 
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
+import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAVideoAd;
@@ -31,38 +32,15 @@ public class MainActivity extends Activity {
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
         bannerAd.setTest(false);
+        bannerAd.setIsParentalGateEnabled(true);
         bannerAd.setConfigurationStaging();
+        bannerAd.setListener(null);
 
         SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.setIsParentalGateEnabled(true);
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
-            public void SADidLoadAd(int placementId) {
-
-            }
-
-            @Override
-            public void SADidNotLoadAd(int placementId) {
-
-            }
-
-            @Override
-            public void SADidShowAd() {
-
-            }
-
-            @Override
-            public void SADidNotShowAd() {
-
-            }
-
-            @Override
-            public void SADidCloseAd() {
-
-            }
-
-            @Override
-            public void SADidClickAd() {
+            public void onEvent(int placementId, SAEvent event) {
 
             }
         });
@@ -72,40 +50,15 @@ public class MainActivity extends Activity {
         SAVideoAd.setIsParentalGateEnabled(true);
         SAVideoAd.setListener(new SAInterface() {
             @Override
-            public void SADidLoadAd(int placementId) {
-
-            }
-
-            @Override
-            public void SADidNotLoadAd(int placementId) {
-
-            }
-
-            @Override
-            public void SADidShowAd() {
-
-            }
-
-            @Override
-            public void SADidNotShowAd() {
-
-            }
-
-            @Override
-            public void SADidCloseAd() {
-
-            }
-
-            @Override
-            public void SADidClickAd() {
+            public void onEvent(int placementId, SAEvent event) {
 
             }
         });
 
         if (savedInstanceState == null) {
-//            bannerAd.load(250);
+            bannerAd.load(250);
 //            SAInterstitialAd.load(247);
-            SAVideoAd.load(223);
+            SAVideoAd.load(252);
 //            SAVideoAd.load(224);
 //            SAVideoAd.load(116);
         }

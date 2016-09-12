@@ -39,14 +39,13 @@ import tv.superawesome.sdk.SuperAwesome;
 public class SABannerAd extends RelativeLayout {
 
     // constants
-    private final int DISPLAY_VIEWABILITY_COUNT = 1;
     private final int BANNER_BACKGROUND = Color.rgb(191, 191, 191);
 
     // private vars w/ exposed setters & getters
     private boolean isParentalGateEnabled = true;
     private boolean isPartOfFullscreen = false;
     private SAAd ad;
-    private SAInterface listener;
+    private SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
     // the internal loader
     private SASession session;
@@ -117,7 +116,7 @@ public class SABannerAd extends RelativeLayout {
 
                 // check for PG
                 if (isParentalGateEnabled) {
-                    gate = new SAParentalGate(getContext(), this, ad);
+                    gate = new SAParentalGate(getContext(), SABannerAd.this, ad);
                     gate.show();
                 } else {
                     click();
@@ -143,17 +142,13 @@ public class SABannerAd extends RelativeLayout {
                                 events.sendViewableForInScreen(SABannerAd.this);
                             }
 
-                            /** call listener */
-                            if (listener != null) {
-                                listener.SADidShowAd();
-                            }
+                            // call listener
+                            listener.onEvent(ad.placementId, SAEvent.adShown);
                         }
                         break;
                     }
                     case Web_Error: {
-                        if (listener != null) {
-                            listener.SADidNotShowAd();
-                        }
+                        listener.onEvent(0, SAEvent.adFailedToShow);
                         break;
                     }
                 }
@@ -191,15 +186,8 @@ public class SABannerAd extends RelativeLayout {
                 setAd(saAd);
                 canPlay = true;
 
-                if (ad != null) {
-                    if (listener != null) {
-                        listener.SADidLoadAd(placementId);
-                    }
-                } else {
-                    if (listener != null) {
-                        listener.SADidNotLoadAd(placementId);
-                    }
-                }
+                // call listener
+                listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
             }
         });
 
@@ -221,15 +209,16 @@ public class SABannerAd extends RelativeLayout {
     public void play(Context context) {
 
         if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && canPlay) {
+
             // if ad is still not OK - wait a little while longer
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    /** resize the views */
+                    // resize the views
                     canPlay = false;
                     resize((int) cWidth, (int) cHeight);
 
-                    /** make the padlock visible or not */
+                    // make the padlock visible or not
                     if (shouldShowPadlock()) {
                         padlock.setVisibility(View.VISIBLE);
                     } else {
@@ -246,9 +235,7 @@ public class SABannerAd extends RelativeLayout {
             }
 
         } else {
-            if (listener != null) {
-                listener.SADidNotShowAd();
-            }
+            listener.onEvent(0, SAEvent.adFailedToShow);
         }
     }
 
@@ -257,15 +244,12 @@ public class SABannerAd extends RelativeLayout {
     }
 
     public void close() {
-        // unregister MOAT events
         events.unregisterDisplayMoatEvent(ad.placementId);
     }
 
     public void click() {
         // callback
-        if (listener != null) {
-            listener.SADidClickAd();
-        }
+        listener.onEvent(ad.placementId, SAEvent.adClicked);
 
         // send tracking events, if needed
         if (!destinationURL.contains(session.getBaseUrl())) {
@@ -334,7 +318,7 @@ public class SABannerAd extends RelativeLayout {
     }
 
     public void setListener(SAInterface value) {
-        listener = value;
+        listener = value != null ? value : listener;
     }
 
     public boolean getIsParentalGateEnabled () {

@@ -9,6 +9,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 import java.util.Map;
 
 import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 
@@ -73,44 +74,44 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         SAInterstitialAd.setIsParentalGateEnabled(isParentalGateEnabled);
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
-            public void SADidLoadAd(int placementId) {
-                if (evtListener != null) {
-                    evtListener.onInterstitialLoaded();
-                }
-            }
-
-            @Override
-            public void SADidNotLoadAd(int placementId) {
-                if (evtListener != null) {
-                    evtListener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
-                }
-            }
-
-            @Override
-            public void SADidShowAd() {
-                if (evtListener != null) {
-                    evtListener.onInterstitialShown();
-                }
-            }
-
-            @Override
-            public void SADidNotShowAd() {
-                if (evtListener != null) {
-                    evtListener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
-                }
-            }
-
-            @Override
-            public void SADidCloseAd() {
-                if (evtListener != null) {
-                    evtListener.onInterstitialDismissed();
-                }
-            }
-
-            @Override
-            public void SADidClickAd() {
-                if (evtListener != null) {
-                    evtListener.onInterstitialClicked();
+            public void onEvent(int placementId, SAEvent event) {
+                switch (event) {
+                    case adLoaded: {
+                        if (evtListener != null) {
+                            evtListener.onInterstitialLoaded();
+                        }
+                        break;
+                    }
+                    case adFailedToLoad: {
+                        if (evtListener != null) {
+                            evtListener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                        }
+                        break;
+                    }
+                    case adShown: {
+                        if (evtListener != null) {
+                            evtListener.onInterstitialShown();
+                        }
+                        break;
+                    }
+                    case adFailedToShow: {
+                        if (evtListener != null) {
+                            evtListener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                        }
+                        break;
+                    }
+                    case adClicked: {
+                        if (evtListener != null) {
+                            evtListener.onInterstitialClicked();
+                        }
+                        break;
+                    }
+                    case adClosed: {
+                        if (evtListener != null) {
+                            evtListener.onInterstitialDismissed();
+                        }
+                        break;
+                    }
                 }
             }
         });
