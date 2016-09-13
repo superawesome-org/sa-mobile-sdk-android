@@ -202,9 +202,9 @@ public class SABannerAd extends RelativeLayout {
         events.setAd(this.ad);
     }
 
-    public SAAd getAd() {
-        return this.ad;
-    }
+    // public SAAd getAd() {
+    //    return this.ad;
+    // }
 
     public void play(Context context) {
 
@@ -237,10 +237,6 @@ public class SABannerAd extends RelativeLayout {
         } else {
             listener.onEvent(0, SAEvent.adFailedToShow);
         }
-    }
-
-    public boolean shouldShowPadlock () {
-        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     public void close() {
@@ -280,6 +276,10 @@ public class SABannerAd extends RelativeLayout {
         // open URL
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
         getContext().startActivity(browserIntent);
+    }
+
+    private boolean shouldShowPadlock () {
+        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     // todo: make sure Banner Ads don't get reloaded on each screen reload

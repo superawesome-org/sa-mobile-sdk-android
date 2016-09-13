@@ -8,11 +8,18 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAApplication;
@@ -23,9 +30,10 @@ public class SAInterstitialAd extends Activity {
 
     // subviews
     private SABannerAd interstitialBanner = null;
+    private SAAd ad = null;
 
     // fully private variables
-    private static SAAd ad = null;
+    private static List<SAAd> ads = new ArrayList<>();
 
     // private vars w/ exposed setters & getters (state vars)
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
@@ -49,7 +57,8 @@ public class SAInterstitialAd extends Activity {
         boolean shouldLockOrientationL = getShouldLockOrientation();
         int lockOrientationL = getLockOrientation();
         SAInterface listenerL = getListener();
-        SAAd adL = getAd();
+        Bundle bundle = getIntent().getExtras();
+        ad = bundle.getParcelable("ad");
 
         // gather resource names
         String packageName = SAApplication.getSAApplicationContext().getPackageName();
@@ -77,7 +86,7 @@ public class SAInterstitialAd extends Activity {
         // set the interstitial
         interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
         interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
-        interstitialBanner.setAd(adL);
+        interstitialBanner.setAd(ad);
         interstitialBanner.setIsPartOfFullscreen(true);
         interstitialBanner.setListener(listenerL);
         interstitialBanner.setIsParentalGateEnabled(isParentalGateEnabledL);
@@ -106,7 +115,7 @@ public class SAInterstitialAd extends Activity {
         listenerL.onEvent(ad.placementId, SAEvent.adClosed);
 
         // make sure banner is closed and ad is nulled
-        nullAd();
+        removeAdFromLoadedAds(ad);
         interstitialBanner.close();
 
         // close & resume previous activity
@@ -132,33 +141,60 @@ public class SAInterstitialAd extends Activity {
         loader.loadAd(placementId, session, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
-                // save ad
-                ad = saAd;
+
+                // add to the array queue
+                if (saAd != null) {
+                    ads.add(saAd);
+                }
 
                 // call listener
-                listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
             }
         });
     }
 
-    public static boolean hasAdAvailable() {
-        return ad != null;
+    public static boolean hasAdAvailable(int placementId) {
+        Boolean hasAd = false;
+        for (SAAd ad : ads) {
+            if (ad.placementId == placementId) {
+                hasAd = true;
+                break;
+            }
+        }
+        return hasAd;
     }
 
-    public static SAAd getAd() {
-        return ad;
-    }
+    public static void play(int placementId, Context context) {
 
-    public static void nullAd () {
-        ad = null;
-    }
+        // try to get the ad that fits the placement id
+        SAAd adL = null;
+        for (SAAd ad : ads) {
+            if (ad.placementId == placementId) {
+                adL = ad;
+            }
+        }
 
-    public static void play(Context context) {
-        if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && context != null) {
+        // try to start the activity
+        if (adL != null && adL.creative.creativeFormat != SACreativeFormat.video && context != null) {
             Intent intent = new Intent(context, SAInterstitialAd.class);
+            intent.putExtra("ad", adL);
             context.startActivity(intent);
         } else {
-            listener.onEvent(0, SAEvent.adFailedToShow);
+            listener.onEvent(placementId, SAEvent.adFailedToShow);
+        }
+    }
+
+    private static void removeAdFromLoadedAds (SAAd ad) {
+        // have to do this because when I send the ad to the activity, it gets serialized /
+        // de-serialized into a new instance
+        SAAd toRemove = null;
+        for (SAAd ad1 : ads) {
+            if (ad1.placementId == ad.placementId) {
+                toRemove = ad1;
+            }
+        }
+        if (toRemove != null) {
+            ads.remove(toRemove);
         }
     }
 

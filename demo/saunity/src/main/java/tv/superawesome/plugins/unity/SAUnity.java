@@ -280,20 +280,24 @@ public class SAUnity {
     /**
      * Check to see of the interstitial ad has a valid ad loaded
      * @param context the current context
+     * @param placementId the placement id to check for availability
      * @return true / false
      */
-    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable (Context context) {
-        return SAInterstitialAd.hasAdAvailable();
+    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable (Context context,
+                                                                           int placementId) {
+        return SAInterstitialAd.hasAdAvailable(placementId);
     }
 
     /**
      * Play an interstitial ad
      * @param context the current context
+     * @param placementId the placement id to play the ad for
      * @param isParentalGateEnabled true / false
      * @param shouldLockOrientation true / false
      * @param lockOrientation ANY = 0 / PORTRAIT = 1 / LANDSCAPE = 2
      */
     public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context,
+                                                              int placementId,
                                                               boolean isParentalGateEnabled,
                                                               boolean shouldLockOrientation,
                                                               int lockOrientation) {
@@ -307,7 +311,7 @@ public class SAUnity {
             default: orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED; break;
         }
         SAInterstitialAd.setLockOrientation(orientation);
-        SAInterstitialAd.play(context);
+        SAInterstitialAd.play(placementId, context);
     }
 
     /**
@@ -356,15 +360,18 @@ public class SAUnity {
     /**
      * Check if the video ad has an ad present
      * @param context the current context
+     * @param placementId the placement id to check for availability
      * @return true / false
      */
-    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable (Context context) {
-        return SAVideoAd.hasAdAvailable();
+    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable (Context context,
+                                                                    int placementId) {
+        return SAVideoAd.hasAdAvailable(placementId);
     }
 
     /**
      * Play a video ad
      * @param context the current context
+     * @param placementId the placement id to play
      * @param isParentalGateEnabled true / false
      * @param shouldShowCloseButton true /false
      * @param shouldShowSmallClickButton true /false
@@ -373,6 +380,7 @@ public class SAUnity {
      * @param lockOrientation ANY = 0 / PORTRAIT = 1 / LANDSCAPE = 2
      */
     public static void SuperAwesomeUnitySAVideoAdPlay (Context context,
+                                                       int placementId,
                                                        boolean isParentalGateEnabled,
                                                        boolean shouldShowCloseButton,
                                                        boolean shouldShowSmallClickButton,
@@ -392,6 +400,6 @@ public class SAUnity {
             default: orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED; break;
         }
         SAVideoAd.setLockOrientation(orientation);
-        SAVideoAd.play(context);
+        SAVideoAd.play(placementId, context);
     }
 }

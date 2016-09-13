@@ -30,23 +30,23 @@ public class MainActivity extends Activity {
 
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
 
-        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-        bannerAd.setTest(false);
-        bannerAd.setIsParentalGateEnabled(true);
-        bannerAd.setConfigurationStaging();
-        bannerAd.setListener(null);
+//        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+//        bannerAd.setTest(false);
+//        bannerAd.setIsParentalGateEnabled(true);
+//        bannerAd.setConfigurationStaging();
+//        bannerAd.setListener(null);
 
-        SAInterstitialAd.setConfigurationStaging();
-        SAInterstitialAd.setIsParentalGateEnabled(true);
-        SAInterstitialAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-
-            }
-        });
+//        SAInterstitialAd.setConfigurationStaging();
+//        SAInterstitialAd.setIsParentalGateEnabled(true);
+//        SAInterstitialAd.setListener(new SAInterface() {
+//            @Override
+//            public void onEvent(int placementId, SAEvent event) {
+//
+//            }
+//        });
 
         SAVideoAd.setConfigurationStaging();
-        SAVideoAd.setShouldShowSmallClickButton(true);
+        SAVideoAd.setShouldShowSmallClickButton(false);
         SAVideoAd.setIsParentalGateEnabled(true);
         SAVideoAd.setListener(new SAInterface() {
             @Override
@@ -56,11 +56,12 @@ public class MainActivity extends Activity {
         });
 
         if (savedInstanceState == null) {
-            bannerAd.load(250);
+//            bannerAd.load(250);
 //            SAInterstitialAd.load(247);
+//            SAInterstitialAd.load(113);
             SAVideoAd.load(252);
-//            SAVideoAd.load(224);
-//            SAVideoAd.load(116);
+            SAVideoAd.load(224);
+            SAVideoAd.load(116);
         }
 
 //        videoAd2 = new SAVideoAd(this);
@@ -166,7 +167,7 @@ public class MainActivity extends Activity {
 
     /** <Button Actions> */
     public void playBanner(View v){
-        bannerAd.play(this);
+//        bannerAd.play(this);
 //        bannerAd.play();
 //        if (bannerData != null) {
 //            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
@@ -177,8 +178,8 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial1(View v){
-        if (SAInterstitialAd.hasAdAvailable()) {
-            SAInterstitialAd.play(this);
+        if (SAInterstitialAd.hasAdAvailable(247)) {
+            SAInterstitialAd.play(247, this);
         }
 //        if (interstitial1Data != null){
 //            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
@@ -188,6 +189,7 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial2(View v){
+        SAInterstitialAd.play(116, this);
 //        if (interstitial2Data != null) {
 //            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
 //            iad.setAd(interstitial2Data);
@@ -206,27 +208,12 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable()) {
-            SAVideoAd.play(this);
+        if (SAVideoAd.hasAdAvailable(252)) {
+            SAVideoAd.play(252, this);
         }
-//        videoAd2.play(this);
-//        if (video1Data != null){
-//            SAFullscreenVideoAd fvad = new SAFullscreenVideoAd(MainActivity.this);
-//            fvad.setAd(video1Data);
-//            fvad.setShouldAutomaticallyCloseAtEnd(true);
-//            fvad.setShouldLockOrientation(true);
-//            fvad.setIsParentalGateEnabled(true);
-//            fvad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//            fvad.setShouldShowSmallClickButton(true);
-//            fvad.play();
-//        }
     }
 
     public void playVideo2(View v){
-//        if (video2Data != null){
-//            videoAd = (SAVideoAd)findViewById(R.id.myVideoAd);
-//            videoAd.setAd(video2Data);
-//            videoAd.play();
-//        }
+        SAVideoAd.play(224, this);
     }
 }

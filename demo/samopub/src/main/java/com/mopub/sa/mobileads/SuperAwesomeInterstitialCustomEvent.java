@@ -20,6 +20,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
 
     // custom event listener
     private CustomEventInterstitialListener evtListener;
+    private int placementId = 0;
 
     // context
     private Context context;
@@ -27,8 +28,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
     @Override
     protected void loadInterstitial(final Context context, final CustomEventInterstitialListener customEventInterstitialListener, Map<String, Object> map, Map<String, String> map1) {
 
-        /** get map variables */
-        int placementId = 0;
+        // get map variables
         final boolean isTestEnabled;
         final boolean isParentalGateEnabled;
         boolean shouldLockOrientation = false;
@@ -120,12 +120,11 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
 
     @Override
     protected void showInterstitial() {
-        // play the ad
-        SAInterstitialAd.play(this.context);
+        SAInterstitialAd.play(placementId, this.context);
     }
 
     @Override
     protected void onInvalidate() {
-        /** do nothing */
+        // do nothing
     }
 }

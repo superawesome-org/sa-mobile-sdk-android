@@ -71,7 +71,7 @@ public class SACPI extends BroadcastReceiver {
             Context c = SAApplication.getSAApplicationContext();
             if (c != null) ct = SAUtils.getNetworkConnectivity(c);
 
-            /** create the viewable impression URL */
+            // create the viewable impression URL
             JSONObject installDict1 = SAJsonParser.newObject(new Object[]{
                     "placement", cpiData.placementId,
                     "line_item", cpiData.lineItemId,

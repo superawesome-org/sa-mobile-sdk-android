@@ -168,11 +168,11 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
 
     @Override
     protected boolean hasVideoAvailable() {
-        return SAVideoAd.hasAdAvailable();
+        return SAVideoAd.hasAdAvailable(placementId);
     }
 
     @Override
     protected void showVideo() {
-        SAVideoAd.play(context);
+        SAVideoAd.play(placementId, context);
     }
 }

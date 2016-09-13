@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
@@ -35,9 +39,8 @@ import tv.superawesome.sdk.SuperAwesome;
  */
 public class SAVideoAd extends Activity {
 
-    // private vars
-    private static Context context = null;
-    private static SAAd ad = null;
+    // the ad
+    private SAAd ad = null;
 
     // the internal loader
     private SAEvents events = null;
@@ -46,7 +49,11 @@ public class SAVideoAd extends Activity {
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
 
+    // private vars
+    private static Context context = null;
+
     // private vars w/ a public interface
+    private static List<SAAd> ads = new ArrayList<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = false;
     private static boolean shouldShowCloseButton = true;
@@ -61,6 +68,8 @@ public class SAVideoAd extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("SuperAwesome", "ON CREATE");
+
         // local versions of the static vars
         final SAInterface listenerL = getListener();
         final boolean isParentalGateEnabledL = getIsParentalGateEnabled();
@@ -69,11 +78,12 @@ public class SAVideoAd extends Activity {
         final boolean shouldShowSmallClickButtonL = getShouldShowSmallClickButton();
         final boolean shouldLockOrientationL = getShouldLockOrientation();
         int lockOrientationL = getLockOrientation();
-        final SAAd adL = getAd();
+        Bundle bundle = getIntent().getExtras();
+        ad = bundle.getParcelable("ad");
 
         // start events
         events = new SAEvents ();
-        events.setAd(adL);
+        events.setAd(ad);
 
         String packageName = SAApplication.getSAApplicationContext().getPackageName();
         int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
@@ -114,7 +124,7 @@ public class SAVideoAd extends Activity {
                     switch (saVideoPlayerEvent) {
                         case Video_Start: {
                             // send callback
-                            listenerL.onEvent(adL.placementId, SAEvent.adShown);
+                            listenerL.onEvent(ad.placementId, SAEvent.adShown);
 
                             // send other events
                             events.sendEventsFor("impression");
@@ -151,7 +161,7 @@ public class SAVideoAd extends Activity {
                         case Video_Error: {
                             events.sendEventsFor("error");
                             close();
-                            listenerL.onEvent(0, SAEvent.adFailedToShow);
+                            listenerL.onEvent(ad.placementId, SAEvent.adFailedToShow);
                             break;
                         }
                     }
@@ -162,7 +172,7 @@ public class SAVideoAd extends Activity {
                 public void SAVideoPlayerClickHandled() {
                     // check for parental gate on click
                     if (isParentalGateEnabledL) {
-                        gate = new SAParentalGate(SAVideoAd.this, SAVideoAd.this, adL);
+                        gate = new SAParentalGate(SAVideoAd.this, SAVideoAd.this, ad);
                         gate.show();
                     } else {
                         click();
@@ -171,12 +181,24 @@ public class SAVideoAd extends Activity {
             });
 
             // finally play the ad
-            if (adL.creative.details.media.isOnDisk) {
-                videoPlayer.playWithDiskURL(adL.creative.details.media.playableDiskUrl);
-            } else {
-                videoPlayer.playWithMediaURL(adL.creative.details.media.playableMediaUrl);
-            }
+            final Handler handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (ad.creative.details.media.isOnDisk) {
+                        videoPlayer.playWithDiskURL(ad.creative.details.media.playableDiskUrl);
+                    } else {
+                        videoPlayer.playWithMediaURL(ad.creative.details.media.playableMediaUrl);
+                    }
+                }
+            };
+            handler.postDelayed(runnable, 250);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -185,20 +207,20 @@ public class SAVideoAd extends Activity {
     }
 
     public void click() {
+
         // get local
         SAInterface listenerL = getListener();
-        SAAd adL = getAd();
         int configurationL = getConfiguration();
 
         // call listener
-        listenerL.onEvent(adL.placementId, SAEvent.adClicked);
+        listenerL.onEvent(ad.placementId, SAEvent.adClicked);
 
         // in CPI we:
         //  - take the click URL provided by the Ad and redirect to it
         //  - send an event to "click_through"
         //  - send events to "click_tracking"
         //  - send all "custom_clicks" events
-        if (adL.saCampaignType == SACampaignType.CPI) {
+        if (ad.saCampaignType == SACampaignType.CPI) {
 
             // send events
             events.sendEventsFor("click_tracking");
@@ -208,10 +230,10 @@ public class SAVideoAd extends Activity {
             // form the final URL for referral data
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
                     "utm_source", configurationL, // used to be ad.advertiserId
-                    "utm_campaign", adL.campaignId,
-                    "utm_term", adL.lineItemId,
-                    "utm_content", adL.creative.id,
-                    "utm_medium", adL.placementId
+                    "utm_campaign", ad.campaignId,
+                    "utm_term", ad.lineItemId,
+                    "utm_content", ad.creative.id,
+                    "utm_medium", ad.placementId
             });
             String referrerQuery = SAUtils.formGetQueryFromDict(referrerData);
             referrerQuery = referrerQuery.replace("&", "%26");
@@ -235,7 +257,7 @@ public class SAVideoAd extends Activity {
 
             // get the final go-to URL
             String finalURL = null;
-            for (SATracking tracking : adL.creative.events) {
+            for (SATracking tracking : ad.creative.events) {
                 if (tracking.event.equals("click_through")) {
                     finalURL = tracking.URL;
                 }
@@ -257,6 +279,10 @@ public class SAVideoAd extends Activity {
         videoPlayer.resumePlayer();
     }
 
+    private boolean shouldShowPadlock() {
+        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
+    }
+
     private void close() {
 
         // get local
@@ -269,10 +295,10 @@ public class SAVideoAd extends Activity {
         events.unregisterVideoMoatEvent(ad.placementId);
 
         // delete the ad
-        nullAd();
+        removeAdFromLoadedAds(ad);
 
         // close
-        super.onBackPressed();
+        this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
@@ -294,39 +320,65 @@ public class SAVideoAd extends Activity {
         loader.loadAd(placementId, session, new SALoaderInterface() {
             @Override
             public void didLoadAd(SAAd saAd) {
-                // save ad
-                ad = saAd;
+
+                Log.d("SuperAwesome", "Ad " + saAd.creative.details.media.writeToJson().toString());
+
+                // add to the array queue
+                if (saAd != null) {
+                    ads.add(saAd);
+                }
 
                 // call event
-                listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
 
             }
         });
     }
 
-    public static boolean hasAdAvailable () {
-        return ad != null;
+    public static boolean hasAdAvailable (int placementId) {
+        Boolean hasAd = false;
+        for (SAAd ad : ads) {
+            if (ad.placementId == placementId) {
+                hasAd = true;
+                break;
+            }
+        }
+        return hasAd;
     }
 
-    public static SAAd getAd() {
-        return ad;
-    }
-
-    private static void nullAd () {
-        ad = null;
-    }
-
-    private static boolean shouldShowPadlock() {
-        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
-    }
-
-    public static void play(Context c) {
+    public static void play(int placementId, Context c) {
+        // capture context
         context = c;
-        if (ad != null && ad.creative.creativeFormat == SACreativeFormat.video && context != null) {
+
+        // try to get the ad that fits the placement id
+        SAAd adL = null;
+        for (SAAd ad : ads) {
+            if (ad.placementId == placementId) {
+                adL = ad;
+            }
+        }
+
+        // try to start the activity
+        if (adL != null && adL.creative.creativeFormat == SACreativeFormat.video && context != null) {
             Intent intent = new Intent(context, SAVideoAd.class);
+            intent.putExtra("ad", adL);
             context.startActivity(intent);
         } else {
-            listener.onEvent(0, SAEvent.adFailedToShow);
+            listener.onEvent(placementId, SAEvent.adFailedToShow);
+        }
+    }
+
+    private static void removeAdFromLoadedAds (SAAd ad) {
+        // have to do this because when I send the ad to the activity, it gets serialized /
+        // de-serialized into a new instance
+        SAAd toRemove = null;
+        for (SAAd ad1 : ads) {
+            if (ad1.placementId == ad.placementId) {
+                toRemove = ad1;
+            }
+        }
+        if (toRemove != null) {
+            ads.remove(toRemove);
         }
     }
 

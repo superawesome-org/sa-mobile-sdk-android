@@ -18,12 +18,12 @@
         android:text="Play Interstitial 1"
         android:onClick="playInterstitial1"
         android:layout_height="50dp" />
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:id="@+id/playinter2Btn"-->
-        <!--android:text="Play Interstitial 2"-->
-        <!--android:onClick="playInterstitial2"-->
-        <!--android:layout_height="50dp" />-->
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/playinter2Btn"
+        android:text="Play Interstitial 2"
+        android:onClick="playInterstitial2"
+        android:layout_height="50dp" />
     <!--<Button-->
         <!--android:layout_width="match_parent"-->
         <!--android:id="@+id/playinter3Btn"-->
@@ -36,12 +36,12 @@
         android:text="Play Video 1"
         android:onClick="playVideo1"
         android:layout_height="50dp" />
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:id="@+id/playvid2Btn"-->
-        <!--android:text="Play Video 2"-->
-        <!--android:onClick="playVideo2"-->
-        <!--android:layout_height="50dp" />-->
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/playvid2Btn"
+        android:text="Play Video 2"
+        android:onClick="playVideo2"
+        android:layout_height="50dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
