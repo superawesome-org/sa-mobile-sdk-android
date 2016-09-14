@@ -31,13 +31,13 @@ public class MainActivity extends Activity {
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
 
 //        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-//        bannerAd.setTest(false);
-//        bannerAd.setIsParentalGateEnabled(true);
+//        bannerAd.setTestMode(false);
+//        bannerAd.setParentalGate(true);
 //        bannerAd.setConfigurationStaging();
 //        bannerAd.setListener(null);
 
 //        SAInterstitialAd.setConfigurationStaging();
-//        SAInterstitialAd.setIsParentalGateEnabled(true);
+//        SAInterstitialAd.setParentalGate(true);
 //        SAInterstitialAd.setListener(new SAInterface() {
 //            @Override
 //            public void onEvent(int placementId, SAEvent event) {
@@ -46,8 +46,8 @@ public class MainActivity extends Activity {
 //        });
 
         SAVideoAd.setConfigurationStaging();
-        SAVideoAd.setShouldShowSmallClickButton(false);
-        SAVideoAd.setIsParentalGateEnabled(true);
+        SAVideoAd.enableSmallClickButton();
+        SAVideoAd.enableParentalGate();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -172,7 +172,7 @@ public class MainActivity extends Activity {
 //        if (bannerData != null) {
 //            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
 //            bannerAd.setAd(bannerData);
-//            bannerAd.setIsParentalGateEnabled(false);
+//            bannerAd.setParentalGate(false);
 //            bannerAd.play();
 //        }
     }

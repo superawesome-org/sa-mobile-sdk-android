@@ -7,10 +7,9 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
-import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
-import tv.superawesome.sdk.views.SABannerAd;
 
 
 /**
@@ -18,25 +17,16 @@ import tv.superawesome.sdk.views.SABannerAd;
  */
 public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
 
-    /** listeners */
-    private CustomEventBannerListener evtListener = null;
-
-    /** ref to bannerAd */
-    private SABannerAd bannerAd;
-
     @Override
-    protected void loadBanner(final Context context, CustomEventBannerListener customEventBannerListener, Map<String, Object> map, Map<String, String> map1) {
+    protected void loadBanner(final Context context, final CustomEventBannerListener listener, Map<String, Object> map, Map<String, String> map1) {
 
-        /** get the listener */
-        evtListener = customEventBannerListener;
-
-        /** get map variables */
+        // get map variables
         int placementId = 0;
         final boolean isTestEnabled;
         final boolean isParentalGateEnabled;
 
         if (map1.get("placementId") != null ){
-            placementId = Integer.parseInt((String)map1.get("placementId").toString());
+            placementId = Integer.parseInt(map1.get("placementId"));
         }
 
         if (map1.get("isTestEnabled") != null) {
@@ -51,18 +41,26 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
             isParentalGateEnabled = false;
         }
 
-        /** create the banner ad */
-        bannerAd = new SABannerAd(context);
-        bannerAd.setTest(isTestEnabled);
+        // create the banner ad
+        final SABannerAd bannerAd = new SABannerAd(context);
+        if (isTestEnabled) {
+            bannerAd.enableTestMode();
+        } else {
+            bannerAd.disableTestMode();
+        }
+        if (isParentalGateEnabled) {
+            bannerAd.enableParentalGate();
+        } else {
+            bannerAd.disableParentalGate();
+        }
         bannerAd.setConfigurationProduction();
-        bannerAd.setIsParentalGateEnabled(isParentalGateEnabled);
         bannerAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
                     case adLoaded: {
-                        if (evtListener != null) {
-                            evtListener.onBannerLoaded(bannerAd);
+                        if (listener != null) {
+                            listener.onBannerLoaded(bannerAd);
                         }
 
                         bannerAd.play(context);
@@ -73,14 +71,14 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
                     case adShown:
                         break;
                     case adFailedToShow: {
-                        if (evtListener != null){
-                            evtListener.onBannerFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                        if (listener != null){
+                            listener.onBannerFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
                         }
                         break;
                     }
                     case adClicked: {
-                        if (evtListener != null) {
-                            evtListener.onBannerClicked();
+                        if (listener != null) {
+                            listener.onBannerClicked();
                         }
                         break;
                     }

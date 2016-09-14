@@ -7,21 +7,27 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-// MoPub
 import com.mopub.common.LifecycleListener;
 import com.mopub.common.MoPubReward;
 import com.mopub.mobileads.CustomEventRewardedVideo;
 import com.mopub.mobileads.MoPubErrorCode;
 
-// AwesomeAds
-import tv.superawesome.sdk.SuperAwesome;
+import java.util.Map;
+
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAVideoAd;
 
-import java.util.Map;
+import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoClicked;
+import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoClosed;
+import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoCompleted;
+import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoLoadFailure;
+import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoLoadSuccess;
+import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoPlaybackError;
+import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoStarted;
 
-import static com.mopub.mobileads.MoPubRewardedVideoManager.*;
+// MoPub
+// AwesomeAds
 
 /**
  * Created by gabriel.coman on 27/12/15.
@@ -122,14 +128,48 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         this.context = activity;
 
         // load and show the ad
-        SAVideoAd.setTest(isTestEnabled);
         SAVideoAd.setConfigurationProduction();
-        SAVideoAd.setIsParentalGateEnabled(isParentalGateEnabled);
-        SAVideoAd.setShouldAutomaticallyCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setShouldShowCloseButton(shouldShowCloseButton);
-        SAVideoAd.setShouldLockOrientation(shouldLockOrientation);
-        SAVideoAd.setShouldShowSmallClickButton(shouldShowSmallClickButton);
-        SAVideoAd.setLockOrientation(lockOrientation);
+
+        if (isTestEnabled) {
+            SAVideoAd.enableTestMode();
+        } else {
+            SAVideoAd.disableTestMode();
+        }
+
+        if (isParentalGateEnabled) {
+            SAVideoAd.enableParentalGate();
+        } else {
+            SAVideoAd.disableParentalGate();
+        }
+
+        if (shouldAutomaticallyCloseAtEnd) {
+            SAVideoAd.enableCloseAtEnd();
+        } else {
+            SAVideoAd.disableCloseAtEnd();
+        }
+
+        if (shouldShowCloseButton) {
+            SAVideoAd.enableCloseButton();
+        } else {
+            SAVideoAd.disableCloseButton();
+        }
+
+        if (shouldShowSmallClickButton) {
+            SAVideoAd.enableSmallClickButton();
+        } else {
+            SAVideoAd.disableSmallClickButton();
+        }
+
+        if (shouldLockOrientation) {
+            if (lockOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                SAVideoAd.setOrientationPortrait();
+            } else {
+                SAVideoAd.setOrientationLandscape();
+            }
+        } else {
+            SAVideoAd.setOrientationAny();
+        }
+
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -163,6 +203,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                 }
             }
         });
+
         SAVideoAd.load(placementId);
     }
 

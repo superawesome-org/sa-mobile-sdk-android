@@ -8,18 +8,14 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
-import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAApplication;
@@ -87,9 +83,12 @@ public class SAInterstitialAd extends Activity {
         interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
         interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
         interstitialBanner.setAd(ad);
-        interstitialBanner.setIsPartOfFullscreen(true);
         interstitialBanner.setListener(listenerL);
-        interstitialBanner.setIsParentalGateEnabled(isParentalGateEnabledL);
+        if (isParentalGateEnabledL) {
+            interstitialBanner.enableParentalGate();
+        } else {
+            interstitialBanner.disableParentalGate();
+        }
 
         // finally play!
         interstitialBanner.play(this);
@@ -206,48 +205,20 @@ public class SAInterstitialAd extends Activity {
         listener = value != null ? value : listener;
     }
 
-    public static void setIsParentalGateEnabled(boolean value) {
-        isParentalGateEnabled = value;
+    public static void enableParentalGate () {
+        isParentalGateEnabled = true;
     }
 
-    public static void setShouldLockOrientation(boolean value) {
-        shouldLockOrientation = value;
+    public static void disableParentalGate () {
+        isParentalGateEnabled = false;
     }
 
-    public static void setLockOrientation(int value) {
-        lockOrientation = value;
-    }
-
-    public static SAInterface getListener () {
-        return listener;
-    }
-
-    public static boolean getIsParentalGateEnabled () {
-        return isParentalGateEnabled;
-    }
-
-    public static boolean getShouldLockOrientation () {
-        return shouldLockOrientation;
-    }
-
-    public static int getLockOrientation () {
-        return lockOrientation;
-    }
-
-    public static void setTest(boolean isTest) {
-        isTestingEnabled = isTest;
-    }
-
-    public static void setTestEnabled () {
+    public static void enableTestMode () {
         isTestingEnabled = true;
     }
 
-    public static void setTestDisabled () {
+    public static void disableTestMode () {
         isTestingEnabled = false;
-    }
-
-    public static void setConfiguration (int config) {
-        configuration = config;
     }
 
     public static void setConfigurationProduction () {
@@ -256,5 +227,38 @@ public class SAInterstitialAd extends Activity {
 
     public static void setConfigurationStaging () {
         configuration = SASession.CONFIGURATION_STAGING;
+    }
+
+    public static void setOrientationAny () {
+        shouldLockOrientation = false;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+    }
+
+    public static void setOrientationPortrait () {
+        shouldLockOrientation = true;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    }
+
+    public static void setOrientationLandscape () {
+        shouldLockOrientation = true;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    }
+
+    // private methods to access static variables
+
+    private static SAInterface getListener () {
+        return listener;
+    }
+
+    private static boolean getIsParentalGateEnabled () {
+        return isParentalGateEnabled;
+    }
+
+    private static boolean getShouldLockOrientation () {
+        return shouldLockOrientation;
+    }
+
+    private static int getLockOrientation () {
+        return lockOrientation;
     }
 }

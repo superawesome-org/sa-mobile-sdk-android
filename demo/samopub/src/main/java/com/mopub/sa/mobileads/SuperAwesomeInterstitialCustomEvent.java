@@ -8,7 +8,6 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
-import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
@@ -18,15 +17,15 @@ import tv.superawesome.sdk.views.SAInterstitialAd;
  */
 public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial {
 
-    // custom event listener
-    private CustomEventInterstitialListener evtListener;
+    // private state vars
     private int placementId = 0;
-
-    // context
     private Context context;
 
     @Override
-    protected void loadInterstitial(final Context context, final CustomEventInterstitialListener customEventInterstitialListener, Map<String, Object> map, Map<String, String> map1) {
+    protected void loadInterstitial(final Context context, final CustomEventInterstitialListener listener, Map<String, Object> map, Map<String, String> map1) {
+
+        // get the context
+        this.context = context;
 
         // get map variables
         final boolean isTestEnabled;
@@ -61,60 +60,75 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
             }
         }
 
-        // get the context
-        this.context = context;
-
-        // save evt listener reference
-        evtListener = customEventInterstitialListener;
-
-        SAInterstitialAd.setTest(isTestEnabled);
+        // configure & load the interstitial
         SAInterstitialAd.setConfigurationProduction();
-        SAInterstitialAd.setShouldLockOrientation(shouldLockOrientation);
-        SAInterstitialAd.setLockOrientation(lockOrientation);
-        SAInterstitialAd.setIsParentalGateEnabled(isParentalGateEnabled);
+
+        if (isTestEnabled) {
+            SAInterstitialAd.enableTestMode();
+        } else {
+            SAInterstitialAd.disableTestMode();
+        }
+
+        if (isParentalGateEnabled) {
+            SAInterstitialAd.enableParentalGate();
+        } else {
+            SAInterstitialAd.disableParentalGate();
+        }
+
+        if (shouldLockOrientation) {
+            if (lockOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                SAInterstitialAd.setOrientationPortrait();
+            } else {
+                SAInterstitialAd.setOrientationLandscape();
+            }
+        } else {
+            SAInterstitialAd.setOrientationAny();
+        }
+
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
                     case adLoaded: {
-                        if (evtListener != null) {
-                            evtListener.onInterstitialLoaded();
+                        if (listener != null) {
+                            listener.onInterstitialLoaded();
                         }
                         break;
                     }
                     case adFailedToLoad: {
-                        if (evtListener != null) {
-                            evtListener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                        if (listener != null) {
+                            listener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
                         }
                         break;
                     }
                     case adShown: {
-                        if (evtListener != null) {
-                            evtListener.onInterstitialShown();
+                        if (listener != null) {
+                            listener.onInterstitialShown();
                         }
                         break;
                     }
                     case adFailedToShow: {
-                        if (evtListener != null) {
-                            evtListener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                        if (listener != null) {
+                            listener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
                         }
                         break;
                     }
                     case adClicked: {
-                        if (evtListener != null) {
-                            evtListener.onInterstitialClicked();
+                        if (listener != null) {
+                            listener.onInterstitialClicked();
                         }
                         break;
                     }
                     case adClosed: {
-                        if (evtListener != null) {
-                            evtListener.onInterstitialDismissed();
+                        if (listener != null) {
+                            listener.onInterstitialDismissed();
                         }
                         break;
                     }
                 }
             }
         });
+
         SAInterstitialAd.load(placementId);
     }
 

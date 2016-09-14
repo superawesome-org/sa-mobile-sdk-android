@@ -309,40 +309,24 @@ public class SABannerAd extends RelativeLayout {
     // Setters and getters
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void setIsPartOfFullscreen(boolean isPartOfFullscreen) {
-        this.isPartOfFullscreen = isPartOfFullscreen;
-    }
-
-    public void setIsParentalGateEnabled (boolean value) {
-        isParentalGateEnabled = value;
-    }
-
     public void setListener(SAInterface value) {
         listener = value != null ? value : listener;
     }
 
-    public boolean getIsParentalGateEnabled () {
-        return isParentalGateEnabled;
+    public void enableParentalGate () {
+        isParentalGateEnabled = true;
     }
 
-    public SAInterface getListener () {
-        return listener;
+    public void disableParentalGate () {
+        isParentalGateEnabled = false;
     }
 
-    public void setTest(boolean isTest) {
-        session.setTest(isTest);
+    public void enableTestMode () {
+        session.setTest(true);
     }
 
-    public void setTestEnabled () {
-        session.setTestEnabled();
-    }
-
-    public void setTestDisabled () {
-        session.setTestDisabled();
-    }
-
-    public void setConfiguration(int config) {
-        session.setConfiguration(config);
+    public void disableTestMode () {
+        session.setTest(false);
     }
 
     public void setConfigurationProduction () {
@@ -351,6 +335,14 @@ public class SABannerAd extends RelativeLayout {
 
     public void setConfigurationStaging () {
         session.setConfigurationStaging();
+    }
+
+    public void setColorTransparent () {
+        setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    public void setColorGray () {
+        setBackgroundColor(Color.rgb(191, 191, 191));
     }
 
 }

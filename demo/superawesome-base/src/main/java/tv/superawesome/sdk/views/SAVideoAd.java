@@ -390,76 +390,20 @@ public class SAVideoAd extends Activity {
         listener = value != null ? value : listener;
     }
 
-    public static void setIsParentalGateEnabled (boolean value) {
-        isParentalGateEnabled = value;
+    public static void enableParentalGate () {
+        isParentalGateEnabled = true;
     }
 
-    public static void setShouldShowCloseButton (boolean value) {
-        shouldShowCloseButton = value;
+    public static void disableParentalGate () {
+        isParentalGateEnabled = false;
     }
 
-    public static void setShouldAutomaticallyCloseAtEnd (boolean value) {
-        shouldAutomaticallyCloseAtEnd = value;
-    }
-
-    public static void setShouldShowSmallClickButton (boolean value) {
-        shouldShowSmallClickButton = value;
-    }
-
-    public static void setShouldLockOrientation (boolean value) {
-        shouldLockOrientation = value;
-    }
-
-    public static void setLockOrientation (int value) {
-        lockOrientation = value;
-    }
-
-    public static SAInterface getListener () {
-        return listener;
-    }
-
-    public static boolean getIsParentalGateEnabled () {
-        return isParentalGateEnabled;
-    }
-
-    public static boolean getShouldShowCloseButton () {
-        return shouldShowCloseButton;
-    }
-
-    public static boolean getShouldAutomaticallyCloseAtEnd () {
-        return shouldAutomaticallyCloseAtEnd;
-    }
-
-    public static boolean getShouldShowSmallClickButton () {
-        return shouldShowSmallClickButton;
-    }
-
-    public static boolean getShouldLockOrientation () {
-        return shouldLockOrientation;
-    }
-
-    public static int getLockOrientation () {
-        return lockOrientation;
-    }
-
-    public static void setTest(boolean isTest) {
-        isTestingEnabled = isTest;
-    }
-
-    public static void setTestEnabled () {
+    public static void enableTestMode () {
         isTestingEnabled = true;
     }
 
-    public static void setTestDisabled () {
+    public static void disableTestMode () {
         isTestingEnabled = false;
-    }
-
-    private static boolean getIsTestEnabled () {
-        return isTestingEnabled;
-    }
-
-    public static void setConfiguration (int config) {
-        configuration = config;
     }
 
     public static void setConfigurationProduction () {
@@ -468,6 +412,79 @@ public class SAVideoAd extends Activity {
 
     public static void setConfigurationStaging () {
         configuration = SASession.CONFIGURATION_STAGING;
+    }
+
+    public static void setOrientationAny () {
+        shouldLockOrientation = false;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+    }
+
+    public static void setOrientationPortrait () {
+        shouldLockOrientation = true;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    }
+
+    public static void setOrientationLandscape () {
+        shouldLockOrientation = true;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    }
+
+    public static void enableCloseButton () {
+        shouldShowCloseButton = true;
+    }
+
+    public static void disableCloseButton () {
+        shouldShowCloseButton = false;
+    }
+
+    public static void enableCloseAtEnd () {
+        shouldAutomaticallyCloseAtEnd = true;
+    }
+
+    public static void disableCloseAtEnd () {
+        shouldAutomaticallyCloseAtEnd = false;
+    }
+
+    public static void enableSmallClickButton () {
+        shouldShowSmallClickButton = true;
+    }
+
+    public static void disableSmallClickButton () {
+        shouldShowSmallClickButton = false;
+    }
+
+    // private static methods to handle static vars
+
+    private static SAInterface getListener () {
+        return listener;
+    }
+
+    private static boolean getIsTestEnabled () {
+        return isTestingEnabled;
+    }
+
+    private static boolean getIsParentalGateEnabled () {
+        return isParentalGateEnabled;
+    }
+
+    private static boolean getShouldShowCloseButton () {
+        return shouldShowCloseButton;
+    }
+
+    private static boolean getShouldAutomaticallyCloseAtEnd () {
+        return shouldAutomaticallyCloseAtEnd;
+    }
+
+    private static boolean getShouldShowSmallClickButton () {
+        return shouldShowSmallClickButton;
+    }
+
+    private static boolean getShouldLockOrientation () {
+        return shouldLockOrientation;
+    }
+
+    private static int getLockOrientation () {
+        return lockOrientation;
     }
 
     private static int getConfiguration () {

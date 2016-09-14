@@ -17,6 +17,7 @@
         <receiver android:name="tv.superawesome.sdk.cpi.SACPI" android:exported="true">
             <intent-filter><action android:name="com.android.vending.INSTALL_REFERRER"/></intent-filter>
         </receiver>
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
