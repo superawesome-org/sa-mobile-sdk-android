@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -407,7 +408,6 @@ public class SAAIR {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
-
             if (freObjects.length == 3) {
 
                 try {
