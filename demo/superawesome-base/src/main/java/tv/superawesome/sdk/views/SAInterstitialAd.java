@@ -20,6 +20,7 @@ import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.samodelspace.SAAd;
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.SuperAwesome;
 
 public class SAInterstitialAd extends Activity {
@@ -34,10 +35,9 @@ public class SAInterstitialAd extends Activity {
     // private vars w/ exposed setters & getters (state vars)
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = true;
-    private static boolean shouldLockOrientation = false;
-    private static int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     private static boolean isTestingEnabled = false;
-    private static int configuration = 0;
+    private static SAOrientation orientation = SAOrientation.ANY;
+    private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Activity initialization & instance methods
@@ -50,8 +50,7 @@ public class SAInterstitialAd extends Activity {
 
         // local vars
         boolean isParentalGateEnabledL = getIsParentalGateEnabled();
-        boolean shouldLockOrientationL = getShouldLockOrientation();
-        int lockOrientationL = getLockOrientation();
+        SAOrientation orientationL = getOrientation();
         SAInterface listenerL = getListener();
         Bundle bundle = getIntent().getExtras();
         ad = bundle.getParcelable("ad");
@@ -66,8 +65,16 @@ public class SAInterstitialAd extends Activity {
         setContentView(activity_sa_interstitialId);
 
         // make sure direction is locked
-        if (shouldLockOrientationL) {
-            setRequestedOrientation(lockOrientationL);
+        switch (orientationL) {
+            case ANY:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                break;
+            case PORTRAIT:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            case LANDSCAPE:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                break;
         }
 
         // set the close btn
@@ -130,7 +137,7 @@ public class SAInterstitialAd extends Activity {
 
         // create a current session
         SASession session = new SASession ();
-        session.setTest(isTestingEnabled);
+        session.setTestMode(isTestingEnabled);
         session.setConfiguration(configuration);
         session.setDauId(SuperAwesome.getInstance().getDAUID());
         session.setVersion(SuperAwesome.getInstance().getSDKVersion());
@@ -222,26 +229,23 @@ public class SAInterstitialAd extends Activity {
     }
 
     public static void setConfigurationProduction () {
-        configuration = SASession.CONFIGURATION_PRODUCTION;
+        configuration = SAConfiguration.PRODUCTION;
     }
 
     public static void setConfigurationStaging () {
-        configuration = SASession.CONFIGURATION_STAGING;
+        configuration = SAConfiguration.STAGING;
     }
 
     public static void setOrientationAny () {
-        shouldLockOrientation = false;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        orientation = SAOrientation.ANY;
     }
 
     public static void setOrientationPortrait () {
-        shouldLockOrientation = true;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        orientation = SAOrientation.PORTRAIT;
     }
 
     public static void setOrientationLandscape () {
-        shouldLockOrientation = true;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        orientation = SAOrientation.LANDSCAPE;
     }
 
     // private methods to access static variables
@@ -254,11 +258,7 @@ public class SAInterstitialAd extends Activity {
         return isParentalGateEnabled;
     }
 
-    private static boolean getShouldLockOrientation () {
-        return shouldLockOrientation;
-    }
-
-    private static int getLockOrientation () {
-        return lockOrientation;
+    private static SAOrientation getOrientation () {
+        return orientation;
     }
 }

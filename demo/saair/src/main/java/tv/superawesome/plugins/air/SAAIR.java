@@ -25,6 +25,7 @@ import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
+import tv.superawesome.sdk.views.SAOrientation;
 import tv.superawesome.sdk.views.SAVideoAd;
 
 /**
@@ -407,13 +408,12 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 4) {
+            if (freObjects.length == 3) {
 
                 try {
                     int placementId = freObjects[0].getAsInt();
                     boolean isParentalGateEnabled = freObjects[1].getAsBool();
-                    boolean shouldLockOrientation = freObjects[2].getAsBool();
-                    int lockOrientation = freObjects[3].getAsInt();
+                    int orientation = freObjects[2].getAsInt();
                     Context context = freContext.getActivity();
 
                     if (isParentalGateEnabled) {
@@ -422,14 +422,10 @@ public class SAAIR {
                         SAInterstitialAd.disableParentalGate();
                     }
 
-                    if (shouldLockOrientation) {
-
-                        if (lockOrientation == 1) {
-                            SAInterstitialAd.setOrientationPortrait();
-                        } else {
-                            SAInterstitialAd.setOrientationLandscape();
-                        }
-
+                    if (orientation == SAOrientation.LANDSCAPE.getValue()) {
+                        SAInterstitialAd.setOrientationLandscape();
+                    } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
+                        SAInterstitialAd.setOrientationPortrait();
                     } else {
                         SAInterstitialAd.setOrientationAny();
                     }
@@ -556,7 +552,7 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 7) {
+            if (freObjects.length == 6) {
 
                 try {
                     int placementId = freObjects[0].getAsInt();
@@ -564,8 +560,7 @@ public class SAAIR {
                     boolean shouldShowCloseButton = freObjects[2].getAsBool();
                     boolean shouldShowSmallClickButton = freObjects[3].getAsBool();
                     boolean shouldAutomaticallyCloseAtEnd = freObjects[4].getAsBool();
-                    boolean shouldLockOrientation = freObjects[5].getAsBool();
-                    int lockOrientation = freObjects[6].getAsInt();
+                    int orientation = freObjects[5].getAsInt();
                     Context context = freContext.getActivity();
 
                     if (isParentalGateEnabled) {
@@ -592,12 +587,10 @@ public class SAAIR {
                         SAVideoAd.disableCloseAtEnd();
                     }
 
-                    if (shouldLockOrientation) {
-                        if (lockOrientation == 1) {
-                            SAVideoAd.setOrientationPortrait();
-                        } else {
-                            SAVideoAd.setOrientationLandscape();
-                        }
+                    if (orientation == SAOrientation.LANDSCAPE.getValue()) {
+                        SAVideoAd.setOrientationLandscape();
+                    } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
+                        SAVideoAd.setOrientationPortrait();
                     } else {
                         SAVideoAd.setOrientationAny();
                     }

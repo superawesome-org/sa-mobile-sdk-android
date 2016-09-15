@@ -87,15 +87,15 @@ public class SACPI extends BroadcastReceiver {
             });
 
 
-            SASession newsession = new SASession();
-            newsession.setConfiguration(cpiData.configuration);
-
-            // new event URL
-            String cpiEventURL = newsession.getBaseUrl() + "/event?" + SAUtils.formGetQueryFromDict(installDict2);
-
-            // send Event
-            SAEvents events = new SAEvents();
-            events.sendEventToURL(cpiEventURL);
+//            SASession newsession = new SASession();
+//            newsession.setConfiguration(cpiData.configuration);
+//
+//            // new event URL
+//            String cpiEventURL = newsession.getBaseUrl() + "/event?" + SAUtils.formGetQueryFromDict(installDict2);
+//
+//            // send Event
+//            SAEvents events = new SAEvents();
+//            events.sendEventToURL(cpiEventURL);
 
         } catch (JSONException e) {
             e.printStackTrace();

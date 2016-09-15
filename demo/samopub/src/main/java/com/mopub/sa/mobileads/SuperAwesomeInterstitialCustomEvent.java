@@ -11,6 +11,7 @@ import java.util.Map;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
+import tv.superawesome.sdk.views.SAOrientation;
 
 /**
  * Created by gabriel.coman on 27/10/15.
@@ -30,8 +31,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         // get map variables
         boolean isTestEnabled = false;
         boolean isParentalGateEnabled = true;
-        boolean shouldLockOrientation = false;
-        int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        SAOrientation orientation = SAOrientation.ANY;
 
         if (map1.get("placementId") != null ){
             placementId = Integer.parseInt(map1.get("placementId"));
@@ -42,14 +42,18 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         if (map1.get("isParentalGateEnabled") != null){
             isParentalGateEnabled = Boolean.valueOf(map1.get("isParentalGateEnabled"));
         }
-        if (map1.get("shouldLockOrientation") != null) {
-            shouldLockOrientation = Boolean.valueOf(map1.get("shouldLockOrientation"));
-            if (map1.get("lockOrientation") != null) {
-                if (map1.get("lockOrientation").equals("PORTRAIT")) {
-                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                } else if (map1.get("lockOrientation").equals("LANDSCAPE")){
-                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                }
+        if (map1.get("lockOrientation") != null) {
+            if (map1.get("lockOrientation").equals("PORTRAIT")) {
+                orientation = SAOrientation.PORTRAIT;
+            } else if (map1.get("lockOrientation").equals("LANDSCAPE")) {
+                orientation = SAOrientation.LANDSCAPE;
+            }
+        }
+        if (map1.get("orientation") != null) {
+            if (map1.get("orientation").equals("PORTRAIT")) {
+                orientation = SAOrientation.PORTRAIT;
+            } else if (map1.get("orientation").equals("LANDSCAPE")) {
+                orientation = SAOrientation.LANDSCAPE;
             }
         }
 
@@ -68,12 +72,10 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
             SAInterstitialAd.disableParentalGate();
         }
 
-        if (shouldLockOrientation) {
-            if (lockOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                SAInterstitialAd.setOrientationPortrait();
-            } else {
-                SAInterstitialAd.setOrientationLandscape();
-            }
+        if (orientation == SAOrientation.LANDSCAPE) {
+            SAInterstitialAd.setOrientationLandscape();
+        } else if (orientation == SAOrientation.PORTRAIT) {
+            SAInterstitialAd.setOrientationPortrait();
         } else {
             SAInterstitialAd.setOrientationAny();
         }

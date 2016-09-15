@@ -32,6 +32,7 @@ import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerClickInterface;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerEvent;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerEventInterface;
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.SuperAwesome;
 
 /**
@@ -59,10 +60,9 @@ public class SAVideoAd extends Activity {
     private static boolean shouldShowCloseButton = true;
     private static boolean shouldAutomaticallyCloseAtEnd = true;
     private static boolean shouldShowSmallClickButton = false;
-    private static boolean shouldLockOrientation = false;
-    private static int     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     private static boolean isTestingEnabled = false;
-    private static int     configuration = 0;
+    private static SAOrientation orientation = SAOrientation.ANY;
+    private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +76,7 @@ public class SAVideoAd extends Activity {
         final boolean shouldShowCloseButtonL = getShouldShowCloseButton();
         final boolean shouldAutomaticallyCloseAtEndL = getShouldAutomaticallyCloseAtEnd();
         final boolean shouldShowSmallClickButtonL = getShouldShowSmallClickButton();
-        final boolean shouldLockOrientationL = getShouldLockOrientation();
-        int lockOrientationL = getLockOrientation();
+        final SAOrientation orientationL = getOrientation();
         Bundle bundle = getIntent().getExtras();
         ad = bundle.getParcelable("ad");
 
@@ -110,9 +109,17 @@ public class SAVideoAd extends Activity {
 
         if (savedInstanceState == null) {
 
-            // lock orientation
-            if (shouldLockOrientationL) {
-                setRequestedOrientation(lockOrientationL);
+            // make sure direction is locked
+            switch (orientationL) {
+                case ANY:
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                    break;
+                case PORTRAIT:
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    break;
+                case LANDSCAPE:
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    break;
             }
 
             // video player
@@ -210,7 +217,7 @@ public class SAVideoAd extends Activity {
 
         // get local
         SAInterface listenerL = getListener();
-        int configurationL = getConfiguration();
+        SAConfiguration configurationL = getConfiguration();
 
         // call listener
         listenerL.onEvent(ad.placementId, SAEvent.adClicked);
@@ -311,7 +318,7 @@ public class SAVideoAd extends Activity {
         // get a new session
         SASession session = new SASession ();
         session.setConfiguration(configuration);
-        session.setTest(isTestingEnabled);
+        session.setTestMode(isTestingEnabled);
         session.setVersion(SuperAwesome.getInstance().getSDKVersion());
         session.setDauId(SuperAwesome.getInstance().getDAUID());
 
@@ -407,26 +414,23 @@ public class SAVideoAd extends Activity {
     }
 
     public static void setConfigurationProduction () {
-        configuration = SASession.CONFIGURATION_PRODUCTION;
+        configuration = SAConfiguration.PRODUCTION;
     }
 
     public static void setConfigurationStaging () {
-        configuration = SASession.CONFIGURATION_STAGING;
+        configuration = SAConfiguration.STAGING;
     }
 
     public static void setOrientationAny () {
-        shouldLockOrientation = false;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        orientation = SAOrientation.ANY;
     }
 
     public static void setOrientationPortrait () {
-        shouldLockOrientation = true;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        orientation = SAOrientation.PORTRAIT;
     }
 
     public static void setOrientationLandscape () {
-        shouldLockOrientation = true;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        orientation = SAOrientation.LANDSCAPE;
     }
 
     public static void enableCloseButton () {
@@ -479,15 +483,11 @@ public class SAVideoAd extends Activity {
         return shouldShowSmallClickButton;
     }
 
-    private static boolean getShouldLockOrientation () {
-        return shouldLockOrientation;
+    private static SAOrientation getOrientation () {
+        return orientation;
     }
 
-    private static int getLockOrientation () {
-        return lockOrientation;
-    }
-
-    private static int getConfiguration () {
+    private static SAConfiguration getConfiguration () {
         return configuration;
     }
 }

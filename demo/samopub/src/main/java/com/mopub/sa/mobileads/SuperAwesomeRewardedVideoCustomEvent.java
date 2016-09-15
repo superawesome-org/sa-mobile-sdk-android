@@ -16,6 +16,7 @@ import java.util.Map;
 
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
+import tv.superawesome.sdk.views.SAOrientation;
 import tv.superawesome.sdk.views.SAVideoAd;
 
 import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoClicked;
@@ -39,9 +40,8 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     private boolean isParentalGateEnabled;
     private boolean shouldShowCloseButton;
     private boolean shouldAutomaticallyCloseAtEnd;
-    private boolean shouldLockOrientation;
     private boolean shouldShowSmallClickButton;
-    private int lockOrientation;
+    private SAOrientation orientation;
     private String moPubId;
 
     // context
@@ -80,8 +80,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         shouldShowCloseButton = true;
         shouldAutomaticallyCloseAtEnd = true;
         shouldShowSmallClickButton = false;
-        shouldLockOrientation = false;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        orientation = SAOrientation.ANY;
 
         // get data
         if (map.get("com_mopub_ad_unit_id") != null){
@@ -105,14 +104,18 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         if (map1.get("shouldShowSmallClickButton") != null) {
             shouldShowSmallClickButton = Boolean.valueOf(map1.get("shouldShowSmallClickButton"));
         }
-        if (map1.get("shouldLockOrientation") != null) {
-            shouldLockOrientation = Boolean.valueOf(map1.get("shouldLockOrientation"));
-            if (map1.get("lockOrientation") != null) {
-                if (map1.get("lockOrientation").equals("PORTRAIT")) {
-                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                } else if (map1.get("lockOrientation").equals("LANDSCAPE")){
-                    lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                }
+        if (map1.get("lockOrientation") != null) {
+            if (map1.get("lockOrientation").equals("PORTRAIT")) {
+                orientation = SAOrientation.PORTRAIT;
+            } else if (map1.get("lockOrientation").equals("LANDSCAPE")) {
+                orientation = SAOrientation.LANDSCAPE;
+            }
+        }
+        if (map1.get("orientation") != null) {
+            if (map1.get("orientation").equals("PORTRAIT")) {
+                orientation = SAOrientation.PORTRAIT;
+            } else if (map1.get("orientation").equals("LANDSCAPE")) {
+                orientation = SAOrientation.LANDSCAPE;
             }
         }
 
@@ -158,12 +161,10 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
             SAVideoAd.disableSmallClickButton();
         }
 
-        if (shouldLockOrientation) {
-            if (lockOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                SAVideoAd.setOrientationPortrait();
-            } else {
-                SAVideoAd.setOrientationLandscape();
-            }
+        if (orientation == SAOrientation.LANDSCAPE) {
+            SAVideoAd.setOrientationLandscape();
+        } else if (orientation == SAOrientation.PORTRAIT) {
+            SAVideoAd.setOrientationPortrait();
         } else {
             SAVideoAd.setOrientationAny();
         }

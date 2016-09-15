@@ -17,6 +17,7 @@ import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
+import tv.superawesome.sdk.views.SAOrientation;
 import tv.superawesome.sdk.views.SAVideoAd;
 
 /**
@@ -282,7 +283,7 @@ public class SAUnity {
         return SAInterstitialAd.hasAdAvailable(placementId);
     }
 
-    public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldLockOrientation, int lockOrientation) {
+    public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context, int placementId, boolean isParentalGateEnabled, int orientation) {
 
         if (isParentalGateEnabled) {
             SAInterstitialAd.enableParentalGate();
@@ -290,12 +291,10 @@ public class SAUnity {
             SAInterstitialAd.disableParentalGate();
         }
 
-        if (shouldLockOrientation) {
-            if (lockOrientation == 1) {
-                SAInterstitialAd.setOrientationPortrait();
-            } else {
-                SAInterstitialAd.setOrientationLandscape();
-            }
+        if (orientation == SAOrientation.LANDSCAPE.getValue()) {
+            SAInterstitialAd.setOrientationLandscape();
+        } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
+            SAInterstitialAd.setOrientationPortrait();
         } else {
             SAInterstitialAd.setOrientationAny();
         }
@@ -365,7 +364,7 @@ public class SAUnity {
         return SAVideoAd.hasAdAvailable(placementId);
     }
 
-    public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, boolean shouldLockOrientation, int lockOrientation) {
+    public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation) {
 
         if (isParentalGateEnabled) {
             SAVideoAd.enableParentalGate();
@@ -391,12 +390,10 @@ public class SAUnity {
             SAVideoAd.disableSmallClickButton();
         }
 
-        if (shouldLockOrientation) {
-            if (lockOrientation == 1) {
-                SAVideoAd.setOrientationPortrait();
-            } else {
-                SAVideoAd.setOrientationLandscape();
-            }
+        if (orientation == SAOrientation.LANDSCAPE.getValue()) {
+            SAVideoAd.setOrientationLandscape();
+        } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
+            SAVideoAd.setOrientationPortrait();
         } else {
             SAVideoAd.setOrientationAny();
         }

@@ -21,15 +21,15 @@ import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACampaignType;
+import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerClickInterface;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEventInterface;
-import tv.superawesome.lib.samodelspace.SAAd;
-import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.sdk.SuperAwesome;
 
 /**
@@ -322,11 +322,11 @@ public class SABannerAd extends RelativeLayout {
     }
 
     public void enableTestMode () {
-        session.setTest(true);
+        session.enableTestMode();
     }
 
     public void disableTestMode () {
-        session.setTest(false);
+        session.disableTestMode();
     }
 
     public void setConfigurationProduction () {
