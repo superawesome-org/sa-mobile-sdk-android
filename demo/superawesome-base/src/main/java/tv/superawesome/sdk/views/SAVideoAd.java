@@ -55,12 +55,12 @@ public class SAVideoAd extends Activity {
     // private vars w/ a public interface
     private static List<SAAd> ads = new ArrayList<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
-    private static boolean isParentalGateEnabled = false;
+    private static boolean isParentalGateEnabled = true;
     private static boolean shouldShowCloseButton = true;
     private static boolean shouldAutomaticallyCloseAtEnd = true;
     private static boolean shouldShowSmallClickButton = false;
     private static boolean shouldLockOrientation = false;
-    private static int     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    private static int     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     private static boolean isTestingEnabled = false;
     private static int     configuration = 0;
 

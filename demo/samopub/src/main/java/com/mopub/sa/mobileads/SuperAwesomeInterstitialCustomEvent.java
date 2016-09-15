@@ -28,33 +28,26 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         this.context = context;
 
         // get map variables
-        final boolean isTestEnabled;
-        final boolean isParentalGateEnabled;
+        boolean isTestEnabled = false;
+        boolean isParentalGateEnabled = true;
         boolean shouldLockOrientation = false;
-        int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        int lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
 
         if (map1.get("placementId") != null ){
             placementId = Integer.parseInt(map1.get("placementId"));
         }
-
         if (map1.get("isTestEnabled") != null) {
             isTestEnabled = Boolean.valueOf(map1.get("isTestEnabled"));
-        } else {
-            isTestEnabled = true;
         }
-
         if (map1.get("isParentalGateEnabled") != null){
             isParentalGateEnabled = Boolean.valueOf(map1.get("isParentalGateEnabled"));
-        } else {
-            isParentalGateEnabled = false;
         }
-
         if (map1.get("shouldLockOrientation") != null) {
             shouldLockOrientation = Boolean.valueOf(map1.get("shouldLockOrientation"));
-            if (map1.get("lockDirection") != null) {
+            if (map1.get("lockOrientation") != null) {
                 if (map1.get("lockOrientation").equals("PORTRAIT")) {
                     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                } else if (map1.get("lockDirection").equals("LANDSCAPE")){
+                } else if (map1.get("lockOrientation").equals("LANDSCAPE")){
                     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                 }
             }

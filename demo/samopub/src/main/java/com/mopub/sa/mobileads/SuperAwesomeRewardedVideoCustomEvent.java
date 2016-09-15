@@ -77,18 +77,18 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         placementId = 0;
         isTestEnabled = false;
         isParentalGateEnabled = true;
-        shouldShowCloseButton = false;
+        shouldShowCloseButton = true;
         shouldAutomaticallyCloseAtEnd = true;
-        shouldLockOrientation = false;
         shouldShowSmallClickButton = false;
-        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        shouldLockOrientation = false;
+        lockOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
 
         // get data
         if (map.get("com_mopub_ad_unit_id") != null){
-            moPubId = (String)map.get("com_mopub_ad_unit_id").toString();
+            moPubId = map.get("com_mopub_ad_unit_id").toString();
         }
         if (map1.get("placementId") != null ){
-            placementId = Integer.parseInt((String) map1.get("placementId"));
+            placementId = Integer.parseInt(map1.get("placementId"));
         }
         if (map1.get("isTestEnabled") != null) {
             isTestEnabled = Boolean.valueOf(map1.get("isTestEnabled"));
@@ -102,21 +102,19 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         if (map1.get("shouldAutomaticallyCloseAtEnd") != null) {
             shouldAutomaticallyCloseAtEnd = Boolean.valueOf(map1.get("shouldAutomaticallyCloseAtEnd"));
         }
+        if (map1.get("shouldShowSmallClickButton") != null) {
+            shouldShowSmallClickButton = Boolean.valueOf(map1.get("shouldShowSmallClickButton"));
+        }
         if (map1.get("shouldLockOrientation") != null) {
             shouldLockOrientation = Boolean.valueOf(map1.get("shouldLockOrientation"));
-            if (map1.get("lockDirection") != null) {
+            if (map1.get("lockOrientation") != null) {
                 if (map1.get("lockOrientation").equals("PORTRAIT")) {
                     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                } else if (map1.get("lockDirection").equals("LANDSCAPE")){
+                } else if (map1.get("lockOrientation").equals("LANDSCAPE")){
                     lockOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                 }
             }
         }
-        if (map1.get("shouldShowSmallClickButton") != null) {
-            shouldShowSmallClickButton = Boolean.valueOf(map1.get("shouldShowSmallClickButton"));
-        }
-
-        Log.d("SuperAwesome-MoPub", "loaded data until here for " + placementId);
 
         return true;
     }

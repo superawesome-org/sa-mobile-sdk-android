@@ -22,23 +22,17 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
 
         // get map variables
         int placementId = 0;
-        final boolean isTestEnabled;
-        final boolean isParentalGateEnabled;
+        boolean isTestEnabled = false;
+        boolean isParentalGateEnabled = true;
 
         if (map1.get("placementId") != null ){
             placementId = Integer.parseInt(map1.get("placementId"));
         }
-
         if (map1.get("isTestEnabled") != null) {
             isTestEnabled = Boolean.valueOf(map1.get("isTestEnabled"));
-        } else {
-            isTestEnabled = true;
         }
-
         if (map1.get("isParentalGateEnabled") != null){
             isParentalGateEnabled = Boolean.valueOf(map1.get("isParentalGateEnabled"));
-        } else {
-            isParentalGateEnabled = false;
         }
 
         // create the banner ad

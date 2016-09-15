@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import tv.superawesome.lib.samodelspace.SAVASTAdType;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -30,190 +31,59 @@ public class MainActivity extends Activity {
 
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
 
-//        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-//        bannerAd.setTestMode(false);
-//        bannerAd.setParentalGate(true);
-//        bannerAd.setConfigurationStaging();
-//        bannerAd.setListener(null);
+        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+        bannerAd.setConfigurationStaging();
+        bannerAd.disableTestMode();
+        bannerAd.disableParentalGate();
+        bannerAd.load(414);
 
-//        SAInterstitialAd.setConfigurationStaging();
-//        SAInterstitialAd.setParentalGate(true);
-//        SAInterstitialAd.setListener(new SAInterface() {
-//            @Override
-//            public void onEvent(int placementId, SAEvent event) {
-//
-//            }
-//        });
+        SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.setOrientationPortrait();
+        SAInterstitialAd.load(415);
+        SAInterstitialAd.load(418);
 
         SAVideoAd.setConfigurationStaging();
+        SAVideoAd.disableParentalGate();
+        SAVideoAd.setOrientationLandscape();
+        SAVideoAd.disableCloseButton();
         SAVideoAd.enableSmallClickButton();
-        SAVideoAd.enableParentalGate();
-        SAVideoAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-
-            }
-        });
-
-        if (savedInstanceState == null) {
-//            bannerAd.load(250);
-//            SAInterstitialAd.load(247);
-//            SAInterstitialAd.load(113);
-            SAVideoAd.load(252);
-            SAVideoAd.load(224);
-            SAVideoAd.load(116);
-        }
-
-//        videoAd2 = new SAVideoAd(this);
-//        videoAd2.setShouldShowSmallClickButton(true);
-//        videoAd2.setListener(new SAInterface() {
-//            @Override
-//            public void SADidLoadVideo(Object sender, int placementId) {
-//                Log.d("SA-Interface", "SADidLoadVideo");
-//            }
-//
-//            @Override
-//            public void SADidNotLoadVideo(Object sender, int placementId) {
-//                Log.d("SA-Interface", "SADidNotLoadVideo");
-//            }
-//
-//            @Override
-//            public void SADidShowVideo(Object sender) {
-//                Log.d("SA-Interface", "SADidShowVideo");
-//            }
-//
-//            @Override
-//            public void SADidNotShowVideo(Object sender) {
-//                Log.d("SA-Interface", "SADidNotShowVideo");
-//            }
-//
-//            @Override
-//            public void SADidCloseVideo(Object sender) {
-//                Log.d("SA-Interface", "SADidCloseVideo");
-//            }
-//
-//            @Override
-//            public void SADidClickVideo(Object sender) {
-//                Log.d("SA-Interface", "SADidClickVideo");
-//            }
-//        });
-
-
-//        if (savedInstanceState == null) {
-//            loader = new SALoader();
-////            loader.loadAd(236, this);
-////            loader.loadAd(31378, this);
-////            loader.loadAd(222, this);
-////            loader.loadAd(223, this);
-//            loader.loadAd(247, this);
-////            loader.loadAd(113, this);
-////            loader.loadAd(114, this);
-////            loader.loadAd(115, this);
-////            loader.loadAd(116, this);
-////            loader.loadAd(117, this);
-////            loader.loadAd(118, this);
-////            loader.loadAd(230, this);
-////            loader.loadAd(200, this);
-//        } else {
-//            bannerData = (SAAd) savedInstanceState.get("bannerData");
-//            interstitial1Data = (SAAd) savedInstanceState.get("interstitial1Data");
-//            interstitial2Data = (SAAd) savedInstanceState.get("interstitial2Data");
-//            interstitial3Data = (SAAd) savedInstanceState.get("interstitial3Data");
-//            video1Data = (SAAd) savedInstanceState.get("video1Data");
-//            video2Data = (SAAd) savedInstanceState.get("video2Data");
-//        }
-
+        SAVideoAd.load(416);
+        SAVideoAd.load(417);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//        outState.putParcelable("bannerData", bannerData);
-//        outState.putParcelable("interstitial1Data", interstitial1Data);
-//        outState.putParcelable("interstitial2Data", interstitial2Data);
-//        outState.putParcelable("interstitial3Data", interstitial3Data);
-//        outState.putParcelable("video1Data", video1Data);
-//        outState.putParcelable("video2Data", video2Data);
         super.onSaveInstanceState(outState);
     }
 
-//    @Override
-//    public void didLoadAd(SAAd ad) {
-//
-//        Log.d("SuperAwesome-ADData", ad.writeToJson().toString());
-//        Log.d("SuperAwesome-ADData", ad.placementId + " " + ad.saCampaignType.toString());
-//
-//        switch (ad.placementId) {
-////            case 236: interstitial1Data = ad; break;
-////            case 31378: interstitial1Data = ad; break;
-////            case 222: bannerData = ad; break;
-////            case 223: video1Data = ad; break;
-////            case 230: video1Data = ad; break;
-////            case 30260: video1Data = ad; break;
-//            case 247: interstitial1Data = ad; break;
-////            case 113: bannerData = ad; break;
-////            case 114: interstitial1Data = ad; break;
-////            case 115: interstitial2Data = ad; break;
-////            case 116: video1Data = ad; break;
-////            case 117: video2Data = ad; break;
-////            case 118: interstitial3Data = ad; break;
-////            case 200: bannerData = ad; break;
-//        }
-//    }
-//
-//    @Override
-//    public void didFailToLoadAdForPlacementId(int placementId) {
-//        Log.d("SuperAwesome", "Failed for " + placementId);
-//    }
-
-    /** <Button Actions> */
     public void playBanner(View v){
-//        bannerAd.play(this);
-//        bannerAd.play();
-//        if (bannerData != null) {
-//            bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-//            bannerAd.setAd(bannerData);
-//            bannerAd.setParentalGate(false);
-//            bannerAd.play();
-//        }
+        if (bannerAd.hasAdAvailable()) {
+            bannerAd.play(MainActivity.this);
+        }
     }
 
     public void playInterstitial1(View v){
-        if (SAInterstitialAd.hasAdAvailable(247)) {
-            SAInterstitialAd.play(247, this);
+        if (SAInterstitialAd.hasAdAvailable(415)) {
+            SAInterstitialAd.play(415, MainActivity.this);
         }
-//        if (interstitial1Data != null){
-//            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
-//            iad.setAd(interstitial1Data);
-//            iad.play();
-//        }
+
     }
 
     public void playInterstitial2(View v){
-        SAInterstitialAd.play(116, this);
-//        if (interstitial2Data != null) {
-//            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
-//            iad.setAd(interstitial2Data);
-//            iad.setShouldLockOrientation(true);
-//            iad.setLockOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//            iad.play();
-//        }
-    }
-
-    public void playInterstitial3(View v){
-//        if (interstitial3Data != null){
-//            SAInterstitialAd iad = new SAInterstitialAd(MainActivity.this);
-//            iad.setAd(interstitial3Data);
-//            iad.play();
-//        }
+        if (SAInterstitialAd.hasAdAvailable(418)) {
+            SAInterstitialAd.play(418, MainActivity.this);
+        }
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(252)) {
-            SAVideoAd.play(252, this);
+        if (SAVideoAd.hasAdAvailable(416)) {
+            SAVideoAd.play(416, MainActivity.this);
         }
     }
 
     public void playVideo2(View v){
-        SAVideoAd.play(224, this);
+        if (SAVideoAd.hasAdAvailable(417)) {
+            SAVideoAd.play(417, MainActivity.this);
+        }
     }
 }

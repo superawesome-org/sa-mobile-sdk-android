@@ -24,12 +24,6 @@
         android:text="Play Interstitial 2"
         android:onClick="playInterstitial2"
         android:layout_height="50dp" />
-    <!--<Button-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:id="@+id/playinter3Btn"-->
-        <!--android:text="Play Interstitial 3"-->
-        <!--android:onClick="playInterstitial3"-->
-        <!--android:layout_height="50dp" />-->
     <Button
         android:layout_width="match_parent"
         android:id="@+id/playvid1Btn"
