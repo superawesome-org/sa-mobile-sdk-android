@@ -202,10 +202,6 @@ public class SABannerAd extends RelativeLayout {
         events.setAd(this.ad);
     }
 
-    // public SAAd getAd() {
-    //    return this.ad;
-    // }
-
     public void play(Context context) {
 
         if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && canPlay) {
