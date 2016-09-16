@@ -83,15 +83,10 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-        bannerAd.load(414);
-        SAInterstitialAd.load(415);
-        SAInterstitialAd.load(415);
+        bannerAd.load(419);
         SAInterstitialAd.load(415);
         SAInterstitialAd.load(418);
         SAVideoAd.load(416);
-        SAVideoAd.load(416);
-        SAVideoAd.load(416);
-        SAVideoAd.load(417);
         SAVideoAd.load(417);
     }
 

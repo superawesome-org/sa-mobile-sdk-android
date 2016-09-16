@@ -255,7 +255,7 @@ public class SABannerAd extends RelativeLayout {
         if (ad.saCampaignType == SACampaignType.CPI) {
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", session.getConfiguration(),
+                    "utm_source", session.getConfiguration().ordinal(),
                     "utm_campaign", ad.campaignId,
                     "utm_term", ad.lineItemId,
                     "utm_content", ad.creative.id,
@@ -266,7 +266,7 @@ public class SABannerAd extends RelativeLayout {
             referrerQuery = referrerQuery.replace("=", "%3D");
             finalUrl += referrerQuery;
         }
-
+        Log.d("SuperAwesome-CPI", ad.writeToJson().toString());
         Log.d("SuperAwesome", "Going to " + finalUrl);
 
         // open URL
