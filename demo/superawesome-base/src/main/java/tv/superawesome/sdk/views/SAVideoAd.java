@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import tv.superawesome.lib.saadloader.SALoader;
@@ -54,7 +55,7 @@ public class SAVideoAd extends Activity {
     private static Context context = null;
 
     // private vars w/ a public interface
-    private static List<SAAd> ads = new ArrayList<>();
+    private static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = true;
     private static boolean shouldShowCloseButton = true;
@@ -315,42 +316,46 @@ public class SAVideoAd extends Activity {
 
     public static void load(final int placementId) {
 
-        // get a new session
-        SASession session = new SASession ();
-        session.setConfiguration(configuration);
-        session.setTestMode(isTestingEnabled);
-        session.setVersion(SuperAwesome.getInstance().getSDKVersion());
-        session.setDauId(SuperAwesome.getInstance().getDAUID());
+        if (!ads.containsKey(placementId)) {
 
-        // create a new loader
-        SALoader loader = new SALoader();
-        loader.loadAd(placementId, session, new SALoaderInterface() {
-            @Override
-            public void didLoadAd(SAAd saAd) {
+            // set a placeholder
+            ads.put(placementId, new Object());
 
-                Log.d("SuperAwesome", "Ad " + saAd.creative.details.media.writeToJson().toString());
+            // create a current session
+            SASession session = new SASession ();
+            session.setTestMode(isTestingEnabled);
+            session.setConfiguration(configuration);
+            session.setDauId(SuperAwesome.getInstance().getDAUID());
+            session.setVersion(SuperAwesome.getInstance().getSDKVersion());
 
-                // add to the array queue
-                if (saAd != null) {
-                    ads.add(saAd);
+            // create a loader
+            SALoader loader = new SALoader();
+            loader.loadAd(placementId, session, new SALoaderInterface() {
+                @Override
+                public void didLoadAd(SAAd saAd) {
+
+                    // put the correct value
+                    if (saAd != null) {
+                        ads.put(placementId, saAd);
+                    }
+                    // remove existing
+                    else {
+                        ads.remove(placementId);
+                    }
+
+                    // call listener
+                    listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
                 }
+            });
 
-                // call event
-                listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
-
-            }
-        });
+        } else {
+            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+        }
     }
 
     public static boolean hasAdAvailable (int placementId) {
-        Boolean hasAd = false;
-        for (SAAd ad : ads) {
-            if (ad.placementId == placementId) {
-                hasAd = true;
-                break;
-            }
-        }
-        return hasAd;
+        Object object = ads.get(placementId);
+        return object != null && object instanceof SAAd;
     }
 
     public static void play(int placementId, Context c) {
@@ -358,12 +363,7 @@ public class SAVideoAd extends Activity {
         context = c;
 
         // try to get the ad that fits the placement id
-        SAAd adL = null;
-        for (SAAd ad : ads) {
-            if (ad.placementId == placementId) {
-                adL = ad;
-            }
-        }
+        SAAd adL = (SAAd) ads.get(placementId);
 
         // try to start the activity
         if (adL != null && adL.creative.creativeFormat == SACreativeFormat.video && context != null) {
@@ -376,17 +376,7 @@ public class SAVideoAd extends Activity {
     }
 
     private static void removeAdFromLoadedAds (SAAd ad) {
-        // have to do this because when I send the ad to the activity, it gets serialized /
-        // de-serialized into a new instance
-        SAAd toRemove = null;
-        for (SAAd ad1 : ads) {
-            if (ad1.placementId == ad.placementId) {
-                toRemove = ad1;
-            }
-        }
-        if (toRemove != null) {
-            ads.remove(toRemove);
-        }
+        ads.remove(ad.placementId);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

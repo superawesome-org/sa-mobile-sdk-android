@@ -38,7 +38,9 @@ public class SAAIR {
 
     private static void sendToAIR(FREContext context, String name, int placementId, String callback) {
         String meta = "{\"name\":\"" + name + "\", \"placementId\":" + placementId + " , \"callback\":\"" + callback + "\"}";
-        context.dispatchStatusEventAsync(meta, "");
+        if (context != null) {
+            context.dispatchStatusEventAsync(meta, "");
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

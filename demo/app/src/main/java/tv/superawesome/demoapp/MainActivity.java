@@ -2,6 +2,7 @@ package tv.superawesome.demoapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import tv.superawesome.lib.samodelspace.SAVASTAdType;
@@ -35,25 +36,63 @@ public class MainActivity extends Activity {
         bannerAd.setConfigurationStaging();
         bannerAd.disableTestMode();
         bannerAd.disableParentalGate();
-        bannerAd.load(414);
+        bannerAd.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " loaded");
+                } else if (event == SAEvent.adFailedToLoad) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
+                }
+            }
+        });
 
         SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.setOrientationPortrait();
-        SAInterstitialAd.load(415);
-        SAInterstitialAd.load(418);
+        SAInterstitialAd.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " loaded");
+                } else if (event == SAEvent.adFailedToLoad) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
+                }
+            }
+        });
 
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableParentalGate();
         SAVideoAd.setOrientationLandscape();
-        SAVideoAd.disableCloseButton();
-        SAVideoAd.enableSmallClickButton();
-        SAVideoAd.load(416);
-        SAVideoAd.load(417);
+//        SAVideoAd.disableCloseButton();
+//        SAVideoAd.enableSmallClickButton();
+        SAVideoAd.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " loaded");
+                } else if (event == SAEvent.adFailedToLoad) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
+                }
+            }
+        });
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    public void loadAds (View view) {
+        bannerAd.load(414);
+        SAInterstitialAd.load(415);
+        SAInterstitialAd.load(415);
+        SAInterstitialAd.load(415);
+        SAInterstitialAd.load(418);
+        SAVideoAd.load(416);
+        SAVideoAd.load(416);
+        SAVideoAd.load(416);
+        SAVideoAd.load(417);
+        SAVideoAd.load(417);
     }
 
     public void playBanner(View v){

@@ -9,6 +9,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:id="@+id/loadAds"
+        android:text="Load Ads"
+        android:onClick="loadAds"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:id="@+id/playbannerBtn"
         android:text="Play Banner"
         android:onClick="playBanner"/>
