@@ -3,7 +3,6 @@ package tv.superawesome.sdk.cpi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInstaller;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -21,8 +20,6 @@ import tv.superawesome.sdk.SuperAwesome;
  * This class handles all CPI related events in the AwesomeAds SDK
  */
 public class SACPI extends BroadcastReceiver {
-
-    private static final String REF_KEYWORD = "referrer";
 
     @Override
     public void onReceive(Context context, Intent intent) {

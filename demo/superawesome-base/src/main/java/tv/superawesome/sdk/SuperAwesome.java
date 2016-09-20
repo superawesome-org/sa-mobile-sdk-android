@@ -14,6 +14,7 @@ import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.sdk.capper.SACapper;
 import tv.superawesome.sdk.capper.SACapperInterface;
+import tv.superawesome.sdk.cpi.SACPI;
 
 /**
  * This is a Singleton class through which SDK users setup their AwesomeAds instance
@@ -22,21 +23,22 @@ public class SuperAwesome {
 
     // dau id
     private int dauid = 0;
+    private SACapper capper = null;
 
     // variables
     private static SuperAwesome instance = new SuperAwesome();
 
     // constructors
     private SuperAwesome(){
-
+        capper = new SACapper();
     }
 
     public void setApplicationContext(Context _appContext){
         SAApplication.setSAApplicationContext(_appContext);
-        SACapper.enableCapping(_appContext, new SACapperInterface() {
+        capper.enableCapping(_appContext, new SACapperInterface() {
             @Override
-            public void didFindDAUId(int id) {
-                dauid = id;
+            public void didFindDAUId(int newDauId) {
+                dauid = newDauId;
             }
         });
     }
@@ -50,7 +52,7 @@ public class SuperAwesome {
     }
 
     private String getVersion () {
-        return "5.0.4";
+        return "5.0.5";
     }
 
     private String getSdk() {
@@ -59,10 +61,6 @@ public class SuperAwesome {
 
     public String getSDKVersion() {
         return getSdk() + "_" + getVersion();
-    }
-
-    public Context getApplicationContext(){
-        return SAApplication.getSAApplicationContext();
     }
 
     public int getDAUID() {

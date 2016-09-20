@@ -18,7 +18,7 @@ import tv.superawesome.lib.sautils.SAUtils;
  */
 public class SACapper {
 
-    /** constant that specifies the local-pref dict key to use */
+    // constant that specifies the local-pref dict key to use
     private static final String SUPER_AWESOME_FIRST_PART_DAU = "SUPER_AWESOME_FIRST_PART_DAU";
 
     /**
@@ -28,7 +28,7 @@ public class SACapper {
      * or it can be 0 -> in which case it's not valid (user does not have tracking enabled or
      * gms enabled)
      **/
-    public static void enableCapping(final Context context, final SACapperInterface listener) {
+    public void enableCapping(final Context context, final SACapperInterface listener) {
 
         // guard against horrible errors!
         if (!SAUtils.isClassAvailable("com.google.android.gms.ads.identifier.AdvertisingIdClient")) {
@@ -40,7 +40,7 @@ public class SACapper {
             @Override
             protected String doInBackground(Void... params) {
 
-                /** get the ad data from Google Play Services */
+                // get the ad data from Google Play Services
                 String adString = "";
                 try {
                     AdvertisingIdClient.Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
@@ -55,19 +55,18 @@ public class SACapper {
             }
 
             @Override
-            protected void onPostExecute(String adInfo) {
-                super.onPostExecute(adInfo);
+            protected void onPostExecute(String firstPartOfDAU) {
+                super.onPostExecute(firstPartOfDAU);
 
-                if (!adInfo.equals("")){
+                if (firstPartOfDAU != null && !firstPartOfDAU.isEmpty()){
 
-                    /** continue as if  user has Ad Tracking enabled and all ... */
+                    // continue as if  user has Ad Tracking enabled and all
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-                    /** create the dauID */
-                    String firstPartOfDAU = adInfo;
+                    // create the dauID
                     String secondPartOfDAU = preferences.getString(SUPER_AWESOME_FIRST_PART_DAU, null);
 
-                    if (secondPartOfDAU == null || secondPartOfDAU.equals("")) {
+                    if (secondPartOfDAU == null || secondPartOfDAU.isEmpty()) {
                         SharedPreferences.Editor editor = preferences.edit();
                         secondPartOfDAU = SAUtils.generateUniqueKey();
                         editor.putString(SUPER_AWESOME_FIRST_PART_DAU, secondPartOfDAU);
@@ -83,7 +82,7 @@ public class SACapper {
                         listener.didFindDAUId(dauHash);
                     }
                 }
-                /** either the service is not available or the user does not have Google Play Services */
+                // either the service is not available or the user does not have Google Play Services
                 else {
                     if (listener != null) {
                         listener.didFindDAUId(0);
