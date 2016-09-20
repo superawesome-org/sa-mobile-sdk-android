@@ -43,7 +43,6 @@ public class SABannerAd extends RelativeLayout {
 
     // private vars w/ exposed setters & getters
     private boolean isParentalGateEnabled = true;
-    private boolean isPartOfFullscreen = false;
     private SAAd ad;
     private SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
@@ -136,11 +135,7 @@ public class SABannerAd extends RelativeLayout {
                             events.sendEventsFor("impression");
 
                             // send viewable impression
-                            if (isPartOfFullscreen) {
-                                events.sendViewableForFullscreen();
-                            } else {
-                                events.sendViewableForInScreen(SABannerAd.this);
-                            }
+                            events.sendViewableImpressionForDisplay(SABannerAd.this);
 
                             // call listener
                             listener.onEvent(ad.placementId, SAEvent.adShown);

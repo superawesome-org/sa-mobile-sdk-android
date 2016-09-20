@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
 
@@ -48,6 +49,7 @@ public class SAVideoAd extends Activity {
     private SAEvents events = null;
 
     // subviews and associated views
+    private RelativeLayout videoLayout = null;
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
 
@@ -90,9 +92,13 @@ public class SAVideoAd extends Activity {
         int video_playerId = getResources().getIdentifier("sa_videoplayer_id", "id", packageName);
         int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
         int padlockId = getResources().getIdentifier("video_padlock_image", "id", packageName);
+        int ativity_id = getResources().getIdentifier("SAVideoAd", "id", packageName);
 
         // set content view
         setContentView(activity_sa_videoId);
+
+        // activity relative layout
+        videoLayout = (RelativeLayout) findViewById(activity_sa_videoId);
 
         // close btn
         Button closeBtn = (Button) findViewById(close_btnId);
@@ -140,7 +146,7 @@ public class SAVideoAd extends Activity {
                             events.sendEventsFor("creativeView");
 
                             // send viewable
-                            events.sendViewableForFullscreen();
+                            events.sendViewableImpressionForVideo(videoPlayer.getContainerView());
 
                             // moat
                             events.registerVideoMoatEvent(SAVideoAd.this, videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer());
