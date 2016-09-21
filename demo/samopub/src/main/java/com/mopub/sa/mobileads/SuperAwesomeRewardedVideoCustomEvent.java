@@ -2,10 +2,6 @@ package com.mopub.sa.mobileads;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.mopub.common.LifecycleListener;
 import com.mopub.common.MoPubReward;
@@ -47,19 +43,16 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     // context
     private Context context;
 
-    @Nullable
     @Override
     protected CustomEventRewardedVideoListener getVideoListenerForSdk() {
         return null;
     }
 
-    @Nullable
     @Override
     protected LifecycleListener getLifecycleListener() {
         return null;
     }
 
-    @NonNull
     @Override
     protected String getAdNetworkId() {
         return moPubId;
@@ -71,7 +64,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     }
 
     @Override
-    protected boolean checkAndInitializeSdk(@NonNull Activity activity, @NonNull Map<String, Object> map, @NonNull Map<String, String> map1) throws Exception {
+    protected boolean checkAndInitializeSdk(Activity activity, Map<String, Object> map, Map<String, String> map1) throws Exception {
 
         // get map variables
         placementId = 0;
@@ -123,7 +116,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     }
 
     @Override
-    protected void loadWithSdkInitialized(@NonNull final Activity activity, @NonNull Map<String, Object> map, @NonNull Map<String, String> map1) throws Exception {
+    protected void loadWithSdkInitialized(final Activity activity, Map<String, Object> map, Map<String, String> map1) throws Exception {
 
         // get context
         this.context = activity;
@@ -203,7 +196,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
             }
         });
 
-        SAVideoAd.load(placementId);
+        SAVideoAd.load(placementId, context);
     }
 
     @Override

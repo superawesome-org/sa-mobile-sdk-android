@@ -58,8 +58,6 @@ public class SAAIR {
                     final String airName = freObjects[0].getAsString();
                     final Context context = freContext.getActivity();
 
-                    SuperAwesome.getInstance().setApplicationContext(context);
-
                     SABannerAd bannerAd = new SABannerAd(context);
                     bannerAd.setListener(new SAInterface() {
                         @Override
@@ -305,8 +303,6 @@ public class SAAIR {
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-            SuperAwesome.getInstance().setApplicationContext(freContext.getActivity().getApplicationContext());
-
             SAInterstitialAd.setListener(new SAInterface() {
                 @Override
                 public void onEvent(int placementId, SAEvent event) {
@@ -367,7 +363,7 @@ public class SAAIR {
                         SAInterstitialAd.setConfigurationStaging();
                     }
 
-                    SAInterstitialAd.load(placementId);
+                    SAInterstitialAd.load(placementId, freContext.getActivity());
 
                 } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                     e.printStackTrace();
@@ -452,8 +448,6 @@ public class SAAIR {
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-            SuperAwesome.getInstance().setApplicationContext(freContext.getActivity().getApplicationContext());
-
             SAVideoAd.setListener(new SAInterface() {
                 @Override
                 public void onEvent(int placementId, SAEvent event) {
@@ -514,7 +508,7 @@ public class SAAIR {
                         SAVideoAd.setConfigurationStaging();
                     }
 
-                    SAVideoAd.load(placementId);
+                    SAVideoAd.load(placementId, freContext.getActivity());
 
                 } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                     e.printStackTrace();

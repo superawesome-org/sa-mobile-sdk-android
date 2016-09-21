@@ -124,7 +124,7 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
             }
         });
 
-        SAInterstitialAd.load(placementId);
+        SAInterstitialAd.load(placementId, context);
     }
 
     @Override

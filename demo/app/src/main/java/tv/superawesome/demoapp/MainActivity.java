@@ -23,8 +23,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
-
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
         bannerAd.setConfigurationStaging();
         bannerAd.disableTestMode();
@@ -75,7 +73,7 @@ public class MainActivity extends Activity {
 
     public void loadAds (View view) {
         bannerAd.load(444);
-        SAVideoAd.load(445);
+        SAVideoAd.load(445, MainActivity.this);
     }
 
     public void playBanner(View v){

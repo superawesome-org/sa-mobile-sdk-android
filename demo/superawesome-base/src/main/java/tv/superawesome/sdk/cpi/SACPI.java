@@ -12,7 +12,6 @@ import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SACPIData;
 import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 
@@ -65,8 +64,7 @@ public class SACPI extends BroadcastReceiver {
             Log.d("SuperAwesome", "CPI data is " + cpiData.writeToJson().toString());
 
             SAUtils.SAConnectionType ct = SAUtils.SAConnectionType.unknown;
-            Context c = SAApplication.getSAApplicationContext();
-            if (c != null) ct = SAUtils.getNetworkConnectivity(c);
+            if (context != null) ct = SAUtils.getNetworkConnectivity(context);
 
             // create the viewable impression URL
             JSONObject installDict1 = SAJsonParser.newObject(new Object[]{
@@ -84,7 +82,7 @@ public class SACPI extends BroadcastReceiver {
             });
 
 
-            SASession newsession = new SASession();
+            SASession newsession = new SASession(context);
             if (cpiData.configuration == 0) {
                 newsession.setConfigurationProduction();
             } else {
@@ -95,7 +93,7 @@ public class SACPI extends BroadcastReceiver {
             String cpiEventURL = newsession.getBaseUrl() + "/event?" + SAUtils.formGetQueryFromDict(installDict2);
 
             // send Event
-            SAEvents events = new SAEvents();
+            SAEvents events = new SAEvents(context);
             events.sendEventToURL(cpiEventURL);
 
         } catch (JSONException e) {

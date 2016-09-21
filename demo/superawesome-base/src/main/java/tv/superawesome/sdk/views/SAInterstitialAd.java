@@ -17,9 +17,9 @@ import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.lib.sautils.SAApplication;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
 public class SAInterstitialAd extends Activity {
@@ -55,7 +55,7 @@ public class SAInterstitialAd extends Activity {
         ad = bundle.getParcelable("ad");
 
         // gather resource names
-        String packageName = SAApplication.getSAApplicationContext().getPackageName();
+        String packageName = this.getPackageName();
         int activity_sa_interstitialId = getResources().getIdentifier("activity_sa_interstitial", "layout", packageName);
         int interstitial_bannerId = getResources().getIdentifier("interstitial_banner", "id", packageName);
         int interstitial_closeId = getResources().getIdentifier("interstitial_close", "id", packageName);
@@ -132,37 +132,43 @@ public class SAInterstitialAd extends Activity {
     // Class public interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static void load(final int placementId) {
+    public static void load(final int placementId, Context context) {
 
         if (!ads.containsKey(placementId)) {
 
             // set a placeholder
             ads.put(placementId, new Object());
 
+            // create the loader
+            final SALoader loader = new SALoader(context);
+
             // create a current session
-            SASession session = new SASession ();
+            final SASession session = new SASession (context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
-            session.setDauId(SuperAwesome.getInstance().getDAUID());
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());
-
-            // create a loader
-            SALoader loader = new SALoader();
-            loader.loadAd(placementId, session, new SALoaderInterface() {
+            session.prepareSession(new SASessionInterface() {
                 @Override
-                public void didLoadAd(SAAd saAd) {
+                public void sessionReady() {
 
-                    // put the correct value
-                    if (saAd != null) {
-                        ads.put(placementId, saAd);
-                    }
-                    // remove existing
-                    else {
-                        ads.remove(placementId);
-                    }
+                    // after session is prepared, start loading
+                    loader.loadAd(placementId, session, new SALoaderInterface() {
+                        @Override
+                        public void didLoadAd(SAAd saAd) {
 
-                    // call listener
-                    listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                            // put the correct value
+                            if (saAd != null) {
+                                ads.put(placementId, saAd);
+                            }
+                            // remove existing
+                            else {
+                                ads.remove(placementId);
+                            }
+
+                            // call listener
+                            listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                        }
+                    });
                 }
             });
 

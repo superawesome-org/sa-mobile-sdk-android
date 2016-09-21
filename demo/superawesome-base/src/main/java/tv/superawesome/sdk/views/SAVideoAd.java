@@ -15,9 +15,7 @@ import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
@@ -28,7 +26,7 @@ import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.SATracking;
 import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.lib.sautils.SAApplication;
+import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerClickInterface;
@@ -71,8 +69,6 @@ public class SAVideoAd extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("SuperAwesome", "ON CREATE");
-
         // local versions of the static vars
         final SAInterface listenerL = getListener();
         final boolean isParentalGateEnabledL = getIsParentalGateEnabled();
@@ -84,15 +80,14 @@ public class SAVideoAd extends Activity {
         ad = bundle.getParcelable("ad");
 
         // start events
-        events = new SAEvents ();
+        events = new SAEvents (this);
         events.setAd(ad);
 
-        String packageName = SAApplication.getSAApplicationContext().getPackageName();
+        String packageName = this.getPackageName();
         int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
         int video_playerId = getResources().getIdentifier("sa_videoplayer_id", "id", packageName);
         int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
         int padlockId = getResources().getIdentifier("video_padlock_image", "id", packageName);
-        int ativity_id = getResources().getIdentifier("SAVideoAd", "id", packageName);
 
         // set content view
         setContentView(activity_sa_videoId);
@@ -321,37 +316,43 @@ public class SAVideoAd extends Activity {
     // Public class interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static void load(final int placementId) {
+    public static void load(final int placementId, Context context) {
 
         if (!ads.containsKey(placementId)) {
 
             // set a placeholder
             ads.put(placementId, new Object());
 
+            // create a loader
+            final SALoader loader = new SALoader(context);
+
             // create a current session
-            SASession session = new SASession ();
+            final SASession session = new SASession (context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
-            session.setDauId(SuperAwesome.getInstance().getDAUID());
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());
-
-            // create a loader
-            SALoader loader = new SALoader();
-            loader.loadAd(placementId, session, new SALoaderInterface() {
+            session.prepareSession(new SASessionInterface() {
                 @Override
-                public void didLoadAd(SAAd saAd) {
+                public void sessionReady() {
 
-                    // put the correct value
-                    if (saAd != null) {
-                        ads.put(placementId, saAd);
-                    }
-                    // remove existing
-                    else {
-                        ads.remove(placementId);
-                    }
+                    // after session is OK - start loding
+                    loader.loadAd(placementId, session, new SALoaderInterface() {
+                        @Override
+                        public void didLoadAd(SAAd saAd) {
 
-                    // call listener
-                    listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                            // put the correct value
+                            if (saAd != null) {
+                                ads.put(placementId, saAd);
+                            }
+                            // remove existing
+                            else {
+                                ads.remove(placementId);
+                            }
+
+                            // call listener
+                            listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                        }
+                    });
                 }
             });
 

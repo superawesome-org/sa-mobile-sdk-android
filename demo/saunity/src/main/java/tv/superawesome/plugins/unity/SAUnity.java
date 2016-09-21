@@ -57,8 +57,6 @@ public class SAUnity {
 
     public static void SuperAwesomeUnitySABannerAdCreate (Context context, final String unityName) {
 
-        SuperAwesome.getInstance().setApplicationContext(context);
-
         SABannerAd bannerAd = new SABannerAd(context);
 
         bannerAd.setListener(new SAInterface() {
@@ -225,8 +223,6 @@ public class SAUnity {
 
     public static void SuperAwesomeUnitySAInterstitialAdCreate (Context context) {
 
-        SuperAwesome.getInstance().setApplicationContext(context);
-
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -275,7 +271,7 @@ public class SAUnity {
             SAInterstitialAd.setConfigurationStaging();
         }
 
-        SAInterstitialAd.load(placementId);
+        SAInterstitialAd.load(placementId, context);
     }
 
     public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable (Context context,
@@ -307,8 +303,6 @@ public class SAUnity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void SuperAwesomeUnitySAVideoAdCreate (Context context) {
-
-        SuperAwesome.getInstance().setApplicationContext(context);
 
         SAVideoAd.setListener(new SAInterface() {
             @Override
@@ -357,7 +351,7 @@ public class SAUnity {
             SAVideoAd.setConfigurationStaging();
         }
 
-        SAVideoAd.load(placementId);
+        SAVideoAd.load(placementId, context);
     }
 
     public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable (Context context, int placementId) {

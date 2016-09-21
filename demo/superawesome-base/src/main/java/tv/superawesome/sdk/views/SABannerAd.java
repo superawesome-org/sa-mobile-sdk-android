@@ -25,6 +25,7 @@ import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.sasession.SASession;
+import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerClickInterface;
@@ -81,9 +82,9 @@ public class SABannerAd extends RelativeLayout {
         super(context, attrs, defStyleAttr);
 
         // create the loader
-        session = new SASession ();
-        loader = new SALoader();
-        events = new SAEvents();
+        session = new SASession (context);
+        loader = new SALoader(context);
+        events = new SAEvents(context);
 
         // get view ids dynamically
         String packageName = context.getPackageName();
@@ -173,22 +174,22 @@ public class SABannerAd extends RelativeLayout {
 
         canPlay = false;
 
-        // change session data
-        session.setDauId(SuperAwesome.getInstance().getDAUID());
         session.setVersion(SuperAwesome.getInstance().getSDKVersion());
-
-        // load ad
-        loader.loadAd(placementId, session, new SALoaderInterface() {
+        session.prepareSession(new SASessionInterface() {
             @Override
-            public void didLoadAd(SAAd saAd) {
-                setAd(saAd);
-                canPlay = true;
+            public void sessionReady() {
 
-                // call listener
-                listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                // after session is OK, prepare
+                loader.loadAd(placementId, session, new SALoaderInterface() {
+                    @Override
+                    public void didLoadAd(SAAd saAd) {
+                        setAd(saAd);
+                        canPlay = true;
+                        listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                    }
+                });
             }
         });
-
     }
 
     public boolean hasAdAvailable () {

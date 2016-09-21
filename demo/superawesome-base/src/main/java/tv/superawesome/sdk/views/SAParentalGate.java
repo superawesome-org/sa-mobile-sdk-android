@@ -56,7 +56,7 @@ public class SAParentalGate {
         this.c = c;
         this.parentRef = new WeakReference<> (parent);
         this.refAd = _refAd;
-        this.events = new SAEvents ();
+        this.events = new SAEvents (c);
         this.events.setAd(this.refAd);
 
         if (this.refAd == null){
