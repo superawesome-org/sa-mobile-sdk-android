@@ -144,6 +144,7 @@ public class SAVideoAd extends Activity {
                             events.sendEventsFor("impression");
                             events.sendEventsFor("start");
                             events.sendEventsFor("creativeView");
+                            events.sendEventsFor("install");
 
                             // send viewable
                             events.sendViewableImpressionForVideo(videoPlayer.getContainerView());
