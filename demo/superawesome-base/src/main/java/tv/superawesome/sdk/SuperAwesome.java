@@ -52,7 +52,7 @@ public class SuperAwesome {
     }
 
     private String getVersion () {
-        return "5.0.6";
+        return "5.0.7";
     }
 
     private String getSdk() {

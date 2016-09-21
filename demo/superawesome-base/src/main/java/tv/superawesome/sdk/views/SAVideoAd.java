@@ -244,7 +244,7 @@ public class SAVideoAd extends Activity {
 
             // form the final URL for referral data
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", configurationL, // used to be ad.advertiserId
+                    "utm_source", configurationL.ordinal(),
                     "utm_campaign", ad.campaignId,
                     "utm_term", ad.lineItemId,
                     "utm_content", ad.creative.id,
