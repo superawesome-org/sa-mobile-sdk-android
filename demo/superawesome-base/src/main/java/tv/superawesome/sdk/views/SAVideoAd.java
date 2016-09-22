@@ -24,6 +24,7 @@ import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.samodelspace.SATracking;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
@@ -139,7 +140,6 @@ public class SAVideoAd extends Activity {
                             events.sendEventsFor("impression");
                             events.sendEventsFor("start");
                             events.sendEventsFor("creativeView");
-                            events.sendEventsFor("install");
 
                             // send viewable
                             events.sendViewableImpressionForVideo(videoPlayer.getContainerView());
@@ -236,6 +236,7 @@ public class SAVideoAd extends Activity {
             events.sendEventsFor("click_tracking");
             events.sendEventsFor("custom_clicks");
             events.sendEventsFor("click_through");
+            events.sendEventsFor("install");
 
             // form the final URL for referral data
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
@@ -338,11 +339,11 @@ public class SAVideoAd extends Activity {
                     // after session is OK - start loding
                     loader.loadAd(placementId, session, new SALoaderInterface() {
                         @Override
-                        public void didLoadAd(SAAd saAd) {
+                        public void didLoadAd(SAResponse response) {
 
                             // put the correct value
-                            if (saAd != null) {
-                                ads.put(placementId, saAd);
+                            if (response.isValid()) {
+                                ads.put(placementId, response.ads.get(0));
                             }
                             // remove existing
                             else {
@@ -350,7 +351,7 @@ public class SAVideoAd extends Activity {
                             }
 
                             // call listener
-                            listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                            listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
                         }
                     });
                 }

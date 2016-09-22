@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
     public void loadAds (View view) {
         bannerAd.load(444);
         SAVideoAd.load(445, MainActivity.this);
+        SAInterstitialAd.load(892, MainActivity.this);
     }
 
     public void playBanner(View v){

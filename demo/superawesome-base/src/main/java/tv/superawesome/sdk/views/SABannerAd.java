@@ -24,6 +24,7 @@ import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -135,9 +136,6 @@ public class SABannerAd extends RelativeLayout {
                             // send additional impressions
                             events.sendEventsFor("impression");
 
-                            // send install impression
-                            events.sendEventsFor("install");
-
                             // send viewable impression
                             events.sendViewableImpressionForDisplay(SABannerAd.this);
 
@@ -182,10 +180,10 @@ public class SABannerAd extends RelativeLayout {
                 // after session is OK, prepare
                 loader.loadAd(placementId, session, new SALoaderInterface() {
                     @Override
-                    public void didLoadAd(SAAd saAd) {
-                        setAd(saAd);
-                        canPlay = true;
-                        listener.onEvent(placementId, ad != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                    public void didLoadAd(SAResponse response) {
+                        canPlay = response.isValid ();
+                        setAd(response.isValid () ? response.ads.get(0) : null);
+                        listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
                     }
                 });
             }
@@ -252,6 +250,10 @@ public class SABannerAd extends RelativeLayout {
 
         // append CPI data to it
         if (ad.saCampaignType == SACampaignType.CPI) {
+
+            // send install impression
+            events.sendEventsFor("install");
+
             finalUrl += "&referrer=";
             JSONObject referrerData = SAJsonParser.newObject(new Object[]{
                     "utm_source", session.getConfiguration().ordinal(),

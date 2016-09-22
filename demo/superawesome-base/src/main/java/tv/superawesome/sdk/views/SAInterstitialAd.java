@@ -16,6 +16,7 @@ import java.util.HashMap;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.sasession.SAConfiguration;
@@ -154,11 +155,11 @@ public class SAInterstitialAd extends Activity {
                     // after session is prepared, start loading
                     loader.loadAd(placementId, session, new SALoaderInterface() {
                         @Override
-                        public void didLoadAd(SAAd saAd) {
+                        public void didLoadAd(SAResponse response) {
 
                             // put the correct value
-                            if (saAd != null) {
-                                ads.put(placementId, saAd);
+                            if (response.isValid()) {
+                                ads.put(placementId, response.ads.get(0));
                             }
                             // remove existing
                             else {
@@ -166,7 +167,7 @@ public class SAInterstitialAd extends Activity {
                             }
 
                             // call listener
-                            listener.onEvent(placementId, saAd != null ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                            listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
                         }
                     });
                 }
