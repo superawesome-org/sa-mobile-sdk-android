@@ -47,8 +47,6 @@ public class SAVideoAd extends Activity {
     // the internal loader
     private SAEvents events = null;
 
-    // subviews and associated views
-    private RelativeLayout videoLayout = null;
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
 
@@ -78,7 +76,8 @@ public class SAVideoAd extends Activity {
         final boolean shouldShowSmallClickButtonL = getShouldShowSmallClickButton();
         final SAOrientation orientationL = getOrientation();
         Bundle bundle = getIntent().getExtras();
-        ad = bundle.getParcelable("ad");
+        String adString = bundle.getString("ad");
+        ad = new SAAd(SAJsonParser.newObject(adString));
 
         // start events
         events = new SAEvents (this);
@@ -94,7 +93,7 @@ public class SAVideoAd extends Activity {
         setContentView(activity_sa_videoId);
 
         // activity relative layout
-        videoLayout = (RelativeLayout) findViewById(activity_sa_videoId);
+        RelativeLayout videoLayout = (RelativeLayout) findViewById(activity_sa_videoId);
 
         // close btn
         Button closeBtn = (Button) findViewById(close_btnId);
@@ -377,7 +376,7 @@ public class SAVideoAd extends Activity {
         // try to start the activity
         if (adL != null && adL.creative.creativeFormat == SACreativeFormat.video && context != null) {
             Intent intent = new Intent(context, SAVideoAd.class);
-            intent.putExtra("ad", adL);
+            intent.putExtra("ad", adL.writeToJson().toString());
             context.startActivity(intent);
         } else {
             listener.onEvent(placementId, SAEvent.adFailedToShow);

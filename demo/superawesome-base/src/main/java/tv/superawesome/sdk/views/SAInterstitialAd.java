@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SASession;
@@ -53,7 +54,8 @@ public class SAInterstitialAd extends Activity {
         SAOrientation orientationL = getOrientation();
         SAInterface listenerL = getListener();
         Bundle bundle = getIntent().getExtras();
-        ad = bundle.getParcelable("ad");
+        String adStr = bundle.getString("ad");
+        ad = new SAAd(SAJsonParser.newObject(adStr));
 
         // gather resource names
         String packageName = this.getPackageName();
@@ -191,7 +193,7 @@ public class SAInterstitialAd extends Activity {
         // try to start the activity
         if (adL != null && adL.creative.creativeFormat != SACreativeFormat.video && context != null) {
             Intent intent = new Intent(context, SAInterstitialAd.class);
-            intent.putExtra("ad", adL);
+            intent.putExtra("ad", adL.writeToJson().toString());
             context.startActivity(intent);
         } else {
             listener.onEvent(placementId, SAEvent.adFailedToShow);

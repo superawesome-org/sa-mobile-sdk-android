@@ -9,6 +9,7 @@ import tv.superawesome.lib.samodelspace.SAVASTAdType;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
+import tv.superawesome.sdk.views.SAGameWall;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAVideoAd;
@@ -64,6 +65,15 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+        SAGameWall.setConfigurationStaging();
+        SAGameWall.disableTestMode();
+        SAGameWall.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+
+            }
+        });
     }
 
     @Override
@@ -74,7 +84,7 @@ public class MainActivity extends Activity {
     public void loadAds (View view) {
         bannerAd.load(444);
         SAVideoAd.load(445, MainActivity.this);
-        SAInterstitialAd.load(892, MainActivity.this);
+        SAGameWall.load(437, MainActivity.this);
     }
 
     public void playBanner(View v){
@@ -103,6 +113,9 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo2(View v){
+        if (SAGameWall.hasAdAvailable(437)) {
+            SAGameWall.play(437, MainActivity.this);
+        }
 //        if (SAVideoAd.hasAdAvailable(417)) {
 //            SAVideoAd.play(417, MainActivity.this);
 //        }
