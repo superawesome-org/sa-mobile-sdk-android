@@ -6,6 +6,19 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.ComposeShader;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
+import android.graphics.RadialGradient;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +33,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,7 +68,7 @@ public class SAGameWall extends Activity {
     // static private vars
     private static HashMap<Integer, Object> responses = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
-    private static boolean isParentalGateEnabled = false;
+    private static boolean isParentalGateEnabled = true;
     private static boolean isTestingEnabled = false;
     private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
 
@@ -86,14 +98,9 @@ public class SAGameWall extends Activity {
         int activity_sa_gamewallId = getResources().getIdentifier("activity_sa_gamewall", "layout", packageName);
         int close_btnId = getResources().getIdentifier("gamewall_close", "id", packageName);
         int GameWallGridId = getResources().getIdentifier("GameWallGrid", "id", packageName);
-        int GameWallTitleId = getResources().getIdentifier("GameWallTitle", "id", packageName);
 
         // finally start displaying
         setContentView(activity_sa_gamewallId);
-
-        // title
-        TextView title = (TextView) findViewById(GameWallTitleId);
-        title.setText("App Wall");
 
         // close btn
         Button closeBtn = (Button) findViewById(close_btnId);
@@ -110,13 +117,14 @@ public class SAGameWall extends Activity {
         // set the game grid
         GridView gameGrid = (GridView) findViewById(GameWallGridId);
         gameGrid.setAdapter(adapter);
+        gameGrid.setNumColumns(response.ads.size() <= 3 ? 1 : 3);
         gameGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // check for PG
                 SAAd ad = response.ads.get(position);
-                if (isParentalGateEnabled) {
-                    gate = new SAParentalGate(SAGameWall.this, SAGameWall.this, ad);
+                if (isParentalGateEnabledL) {
+                    gate = new SAParentalGate(SAGameWall.this, SAGameWall.this, ad, position);
                     gate.show();
                 } else {
                     click(position);
@@ -143,6 +151,10 @@ public class SAGameWall extends Activity {
     public void onBackPressed() {
         // do nothing
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Custom instance methods
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void click(int position) {
         // get ad
@@ -363,35 +375,146 @@ public class SAGameWall extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
 
-            // get element
+            // get elements that won't change
             SAAd ad = ads.get(position);
-
-            // get IDs dynamically
+            int size = ads.size();
             String packageName = context.getPackageName();
-            int cell_sa_gamewallLayout = getResources().getIdentifier("cell_sa_gamewall", "layout", packageName);
-            int GameWallAppIconId = getResources().getIdentifier("GameWallAppIcon", "id", packageName);
-            int GameWallAppNameId = getResources().getIdentifier("GameWallAppName", "id", packageName);
 
-            if (v == null) {
-                v = LayoutInflater.from(context).inflate(cell_sa_gamewallLayout, null);
-            }
+            // do big layout
+            if (size <= 3) {
+                int GameWallAppIconId = getResources().getIdentifier("GameWallAppIcon", "id", packageName);
+                int GameWallAppNameId = getResources().getIdentifier("GameWallAppName", "id", packageName);
+                int cell_sa_gamewallLayout_Big = getResources().getIdentifier("cell_sa_gamewall_big", "layout", packageName);
 
-            ImageView appIcon = (ImageView) v.findViewById(GameWallAppIconId);
-            TextView appName = (TextView) v.findViewById(GameWallAppNameId);
+                // inflate layout
+                if (v == null) {
+                    v = LayoutInflater.from(context).inflate(cell_sa_gamewallLayout_Big, null);
+                }
 
-            if (appIcon != null) {
-                File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
-                if (file.exists()) {
-                    String fileUrl = file.toString();
-                    Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
-                    appIcon.setImageBitmap(bitmap);
+                ImageView appIcon = (ImageView) v.findViewById(GameWallAppIconId);
+                TextView appName = (TextView) v.findViewById(GameWallAppNameId);
+
+                if (appName != null) {
+                    appName.setText(ad.creative.name != null ? ad.creative.name : "Undefined");
+                }
+                if (appIcon != null) {
+                    File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
+                    if (file.exists()) {
+                        String fileUrl = file.toString();
+                        Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
+
+                        // get actual image w & h
+                        final float density = context.getResources().getDisplayMetrics().density;
+                        int appIconW = (int) (114 * density);
+                        int appIconH = (int) (114 * density);
+                        float radius = 15 * density;
+
+                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
+                        StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
+                        appIcon.setImageDrawable(drawable);
+                    }
                 }
             }
-            if (appName != null) {
-                appName.setText(ad.creative.name != null ? ad.creative.name : "Undefined");
+            // do small layout
+            else {
+                int GameWallAppIconId = getResources().getIdentifier("GameWallAppIcon", "id", packageName);
+                int GameWallAppNameId = getResources().getIdentifier("GameWallAppName", "id", packageName);
+                int cell_sa_gamewallLayout_Small = getResources().getIdentifier("cell_sa_gamewall_small", "layout", packageName);
+
+                // inflate layout
+                if (v == null) {
+                    v = LayoutInflater.from(context).inflate(cell_sa_gamewallLayout_Small, null);
+                }
+
+                ImageView appIcon = (ImageView) v.findViewById(GameWallAppIconId);
+                TextView appName = (TextView) v.findViewById(GameWallAppNameId);
+
+                if (appName != null) {
+                    appName.setText(ad.creative.name != null ? ad.creative.name : "Undefined");
+                }
+                if (appIcon != null) {
+                    File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
+                    if (file.exists()) {
+                        String fileUrl = file.toString();
+                        Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
+
+                        // get actual image w & h
+                        final float density = context.getResources().getDisplayMetrics().density;
+                        int appIconW = (int) (84 * density);
+                        int appIconH = (int) (84 * density);
+                        float radius = 15 * density;
+
+                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
+                        StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
+                        appIcon.setImageDrawable(drawable);
+                    }
+                }
             }
 
             return v;
+        }
+    }
+
+    class StreamDrawable extends Drawable {
+        private static final boolean USE_VIGNETTE = false;
+
+        private final float mCornerRadius;
+        private final RectF mRect = new RectF();
+        private final BitmapShader mBitmapShader;
+        private final Paint mPaint;
+        private final int mMargin;
+
+        StreamDrawable(Bitmap bitmap, float cornerRadius, int margin) {
+            mCornerRadius = cornerRadius;
+
+            mBitmapShader = new BitmapShader(bitmap,
+                    Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setShader(mBitmapShader);
+
+            mMargin = margin;
+        }
+
+        @Override
+        protected void onBoundsChange(Rect bounds) {
+            super.onBoundsChange(bounds);
+            mRect.set(mMargin, mMargin, bounds.width() - mMargin, bounds.height() - mMargin);
+
+            if (USE_VIGNETTE) {
+                RadialGradient vignette = new RadialGradient(
+                        mRect.centerX(), mRect.centerY() * 1.0f / 0.7f, mRect.centerX() * 1.3f,
+                        new int[] { 0, 0, 0x7f000000 }, new float[] { 0.0f, 0.7f, 1.0f },
+                        Shader.TileMode.CLAMP);
+
+                Matrix oval = new Matrix();
+                oval.setScale(1.0f, 0.7f);
+                vignette.setLocalMatrix(oval);
+
+                mPaint.setShader(
+                        new ComposeShader(mBitmapShader, vignette, PorterDuff.Mode.SRC_OVER));
+            }
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            canvas.drawRoundRect(mRect, mCornerRadius, mCornerRadius, mPaint);
+        }
+
+        @Override
+        public int getOpacity() {
+            return PixelFormat.TRANSLUCENT;
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+            mPaint.setAlpha(alpha);
+        }
+
+        @Override
+        public void setColorFilter(ColorFilter cf) {
+            mPaint.setColorFilter(cf);
         }
     }
 }
