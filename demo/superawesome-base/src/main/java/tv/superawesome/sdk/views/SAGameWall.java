@@ -455,9 +455,11 @@ public class SAGameWall extends Activity {
         }
     }
 
-    class StreamDrawable extends Drawable {
-        private static final boolean USE_VIGNETTE = false;
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // StreamDrawable class to paint rounded-endges icons on the screen
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    class StreamDrawable extends Drawable {
         private final float mCornerRadius;
         private final RectF mRect = new RectF();
         private final BitmapShader mBitmapShader;
@@ -466,35 +468,17 @@ public class SAGameWall extends Activity {
 
         StreamDrawable(Bitmap bitmap, float cornerRadius, int margin) {
             mCornerRadius = cornerRadius;
-
-            mBitmapShader = new BitmapShader(bitmap,
-                    Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-
+            mMargin = margin;
+            mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             mPaint = new Paint();
             mPaint.setAntiAlias(true);
             mPaint.setShader(mBitmapShader);
-
-            mMargin = margin;
         }
 
         @Override
         protected void onBoundsChange(Rect bounds) {
             super.onBoundsChange(bounds);
             mRect.set(mMargin, mMargin, bounds.width() - mMargin, bounds.height() - mMargin);
-
-            if (USE_VIGNETTE) {
-                RadialGradient vignette = new RadialGradient(
-                        mRect.centerX(), mRect.centerY() * 1.0f / 0.7f, mRect.centerX() * 1.3f,
-                        new int[] { 0, 0, 0x7f000000 }, new float[] { 0.0f, 0.7f, 1.0f },
-                        Shader.TileMode.CLAMP);
-
-                Matrix oval = new Matrix();
-                oval.setScale(1.0f, 0.7f);
-                vignette.setLocalMatrix(oval);
-
-                mPaint.setShader(
-                        new ComposeShader(mBitmapShader, vignette, PorterDuff.Mode.SRC_OVER));
-            }
         }
 
         @Override
