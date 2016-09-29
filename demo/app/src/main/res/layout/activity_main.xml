@@ -40,7 +40,7 @@
     <Button
         android:layout_width="match_parent"
         android:id="@+id/playvid2Btn"
-        android:text="Play Video 2"
+        android:text="Play GameWall"
         android:onClick="playVideo2"
         android:layout_height="50dp" />
 

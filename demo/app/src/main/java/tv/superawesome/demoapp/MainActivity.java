@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
 
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableParentalGate();
+        SAVideoAd.disableTestMode();
         SAVideoAd.setOrientationLandscape();
         SAVideoAd.setListener(new SAInterface() {
             @Override
@@ -84,6 +85,8 @@ public class MainActivity extends Activity {
     public void loadAds (View view) {
         bannerAd.load(444);
         SAVideoAd.load(445, MainActivity.this);
+        SAInterstitialAd.load(415, MainActivity.this);
+        SAInterstitialAd.load(418, MainActivity.this);
         SAGameWall.load(437, MainActivity.this);
     }
 
@@ -94,16 +97,16 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial1(View v){
-//        if (SAInterstitialAd.hasAdAvailable(415)) {
-//            SAInterstitialAd.play(415, MainActivity.this);
-//        }
+        if (SAInterstitialAd.hasAdAvailable(415)) {
+            SAInterstitialAd.play(415, MainActivity.this);
+        }
 
     }
 
     public void playInterstitial2(View v){
-//        if (SAInterstitialAd.hasAdAvailable(418)) {
-//            SAInterstitialAd.play(418, MainActivity.this);
-//        }
+        if (SAInterstitialAd.hasAdAvailable(418)) {
+            SAInterstitialAd.play(418, MainActivity.this);
+        }
     }
 
     public void playVideo1(View v){

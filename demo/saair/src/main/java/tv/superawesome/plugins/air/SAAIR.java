@@ -24,6 +24,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
+import tv.superawesome.sdk.views.SAGameWall;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAOrientation;
@@ -602,6 +603,140 @@ public class SAAIR {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Unity to SAGameWall interface
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static class SuperAwesomeAIRSAGameWallCreate implements FREFunction {
+
+        @Override
+        public FREObject call(final FREContext freContext, FREObject[] freObjects) {
+
+            SAGameWall.setListener(new SAInterface() {
+                @Override
+                public void onEvent(int placementId, SAEvent event) {
+                    switch (event) {
+                        case adLoaded: {
+                            sendToAIR(freContext, "SAGameWall", placementId, "adLoaded");
+                            break;
+                        }
+                        case adFailedToLoad: {
+                            sendToAIR(freContext, "SAGameWall", placementId, "adFailedToLoad");
+                            break;
+                        }
+                        case adShown: {
+                            sendToAIR(freContext, "SAGameWall", placementId, "adShown");
+                            break;
+                        }
+                        case adFailedToShow: {
+                            sendToAIR(freContext, "SAGameWall", placementId, "adFailedToShow");
+                            break;
+                        }
+                        case adClicked: {
+                            sendToAIR(freContext, "SAGameWall", placementId, "adClicked");
+                            break;
+                        }
+                        case adClosed: {
+                            sendToAIR(freContext, "SAGameWall", placementId, "adClosed");
+                            break;
+                        }
+                    }
+                }
+            });
+
+            return null;
+        }
+    }
+
+    public static class SuperAwesomeAIRSAGameWallLoad implements FREFunction {
+
+        @Override
+        public FREObject call(FREContext freContext, FREObject[] freObjects) {
+
+            if (freObjects.length == 3) {
+
+                try {
+                    int placementId = freObjects[0].getAsInt();
+                    int configuration = freObjects[1].getAsInt();
+                    boolean test = freObjects[2].getAsBool();
+
+                    if (test) {
+                        SAGameWall.enableTestMode();
+                    } else {
+                        SAGameWall.disableTestMode();
+                    }
+
+                    if (configuration == 0) {
+                        SAGameWall.setConfigurationProduction();
+                    } else {
+                        SAGameWall.setConfigurationStaging();
+                    }
+
+                    SAGameWall.load(placementId, freContext.getActivity());
+
+                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+    }
+
+    public static class SuperAwesomeAIRSAGameWallHasAdAvailable implements FREFunction {
+
+        @Override
+        public FREObject call(FREContext freContext, FREObject[] freObjects) {
+
+            if (freObjects.length == 1) {
+
+                try {
+
+                    int placementId = freObjects[0].getAsInt();
+
+                    boolean hasAdAvailable = SAGameWall.hasAdAvailable(placementId);
+
+                    return FREObject.newObject(hasAdAvailable);
+
+                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            try {
+                return FREObject.newObject(false);
+            } catch (FREWrongThreadException e) {
+                return null;
+            }
+        }
+    }
+
+    public static class SuperAwesomeAIRSAGameWallPlay implements FREFunction {
+
+        @Override
+        public FREObject call(FREContext freContext, FREObject[] freObjects) {
+            if (freObjects.length == 2) {
+
+                try {
+                    int placementId = freObjects[0].getAsInt();
+                    boolean isParentalGateEnabled = freObjects[1].getAsBool();
+                    Context context = freContext.getActivity();
+
+                    if (isParentalGateEnabled) {
+                        SAGameWall.enableParentalGate();
+                    } else {
+                        SAGameWall.disableParentalGate();
+                    }
+
+                    SAGameWall.play(placementId, context);
+
+                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+    }
 
 }

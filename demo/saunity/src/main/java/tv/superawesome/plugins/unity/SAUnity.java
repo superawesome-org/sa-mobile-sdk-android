@@ -15,6 +15,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
+import tv.superawesome.sdk.views.SAGameWall;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAOrientation;
@@ -274,8 +275,7 @@ public class SAUnity {
         SAInterstitialAd.load(placementId, context);
     }
 
-    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable (Context context,
-                                                                           int placementId) {
+    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable (Context context, int placementId) {
         return SAInterstitialAd.hasAdAvailable(placementId);
     }
 
@@ -393,5 +393,77 @@ public class SAUnity {
         }
 
         SAVideoAd.play(placementId, context);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Unity to SAGameWall interface
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void SuperAwesomeUnitySAGameWallCreate (Context context) {
+
+        SAGameWall.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                switch (event) {
+                    case adLoaded: {
+                        sendToUnity("SAGameWall", placementId, "adLoaded");
+                        break;
+                    }
+                    case adFailedToLoad: {
+                        sendToUnity("SAGameWall", placementId, "adFailedToLoad");
+                        break;
+                    }
+                    case adShown: {
+                        sendToUnity("SAGameWall", placementId, "adShown");
+                        break;
+                    }
+                    case adFailedToShow: {
+                        sendToUnity("SAGameWall", placementId, "adFailedToShow");
+                        break;
+                    }
+                    case adClicked: {
+                        sendToUnity("SAGameWall", placementId, "adClicked");
+                        break;
+                    }
+                    case adClosed: {
+                        sendToUnity("SAGameWall", placementId, "adClosed");
+                        break;
+                    }
+                }
+            }
+        });
+
+    }
+
+    public static void SuperAwesomeUnitySAGameWallLoad (Context context, int placementId, int configuration, boolean test) {
+
+        if (test) {
+            SAGameWall.enableTestMode();
+        } else {
+            SAGameWall.disableTestMode();
+        }
+
+        if (configuration == 0) {
+            SAGameWall.setConfigurationProduction();
+        } else {
+            SAGameWall.setConfigurationStaging();
+        }
+
+        SAGameWall.load(placementId, context);
+    }
+
+    public static boolean SuperAwesomeUnitySAGameWallHasAdAvailable (Context context, int placementId) {
+        return SAGameWall.hasAdAvailable(placementId);
+    }
+
+    public static void SuperAwesomeUnitySAGameWallPlay (Context context, int placementId, boolean isParentalGateEnabled) {
+
+        if (isParentalGateEnabled) {
+            SAGameWall.enableParentalGate();
+        } else {
+            SAGameWall.disableParentalGate();
+        }
+
+        SAGameWall.play(placementId, context);
     }
 }
