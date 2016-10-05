@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        SAVideoAd.disableBackButton();
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableParentalGate();
         SAVideoAd.disableTestMode();
@@ -67,6 +68,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        SAGameWall.enableBackButton();
         SAGameWall.setConfigurationStaging();
         SAGameWall.disableTestMode();
         SAGameWall.setListener(new SAInterface() {
@@ -83,11 +85,12 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-        bannerAd.load(444);
-        SAVideoAd.load(445, MainActivity.this);
+        bannerAd.load(485);
         SAInterstitialAd.load(415, MainActivity.this);
         SAInterstitialAd.load(418, MainActivity.this);
         SAGameWall.load(437, MainActivity.this);
+        SAVideoAd.load(480, MainActivity.this);
+        SAVideoAd.load(481, MainActivity.this);
     }
 
     public void playBanner(View v){
@@ -98,20 +101,21 @@ public class MainActivity extends Activity {
 
     public void playInterstitial1(View v){
         if (SAInterstitialAd.hasAdAvailable(415)) {
+            SAInterstitialAd.enableBackButton();
             SAInterstitialAd.play(415, MainActivity.this);
         }
-
     }
 
     public void playInterstitial2(View v){
         if (SAInterstitialAd.hasAdAvailable(418)) {
+            SAInterstitialAd.disableBackButton();
             SAInterstitialAd.play(418, MainActivity.this);
         }
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(445)) {
-            SAVideoAd.play(445, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(480)) {
+            SAVideoAd.play(480, MainActivity.this);
         }
     }
 
@@ -119,8 +123,8 @@ public class MainActivity extends Activity {
         if (SAGameWall.hasAdAvailable(437)) {
             SAGameWall.play(437, MainActivity.this);
         }
-//        if (SAVideoAd.hasAdAvailable(417)) {
-//            SAVideoAd.play(417, MainActivity.this);
+//        if (SAVideoAd.hasAdAvailable(481)) {
+//            SAVideoAd.play(481, MainActivity.this);
 //        }
     }
 }

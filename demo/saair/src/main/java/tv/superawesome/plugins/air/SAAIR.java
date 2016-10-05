@@ -407,12 +407,13 @@ public class SAAIR {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
-            if (freObjects.length == 3) {
+            if (freObjects.length == 4) {
 
                 try {
                     int placementId = freObjects[0].getAsInt();
                     boolean isParentalGateEnabled = freObjects[1].getAsBool();
                     int orientation = freObjects[2].getAsInt();
+                    boolean isBackButtonEnabled = freObjects[3].getAsBool();
                     Context context = freContext.getActivity();
 
                     if (isParentalGateEnabled) {
@@ -427,6 +428,12 @@ public class SAAIR {
                         SAInterstitialAd.setOrientationPortrait();
                     } else {
                         SAInterstitialAd.setOrientationAny();
+                    }
+
+                    if (isBackButtonEnabled) {
+                        SAInterstitialAd.enableBackButton();
+                    } else {
+                        SAInterstitialAd.disableBackButton();
                     }
 
                     SAInterstitialAd.play(placementId, context);
@@ -549,7 +556,7 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 6) {
+            if (freObjects.length == 7) {
 
                 try {
                     int placementId = freObjects[0].getAsInt();
@@ -558,6 +565,7 @@ public class SAAIR {
                     boolean shouldShowSmallClickButton = freObjects[3].getAsBool();
                     boolean shouldAutomaticallyCloseAtEnd = freObjects[4].getAsBool();
                     int orientation = freObjects[5].getAsInt();
+                    boolean isBackButtonEnabled = freObjects[6].getAsBool();
                     Context context = freContext.getActivity();
 
                     if (isParentalGateEnabled) {
@@ -590,6 +598,12 @@ public class SAAIR {
                         SAVideoAd.setOrientationPortrait();
                     } else {
                         SAVideoAd.setOrientationAny();
+                    }
+
+                    if (isBackButtonEnabled) {
+                        SAVideoAd.enableBackButton();
+                    } else {
+                        SAVideoAd.disableBackButton();
                     }
 
                     SAVideoAd.play(placementId, context);
@@ -715,17 +729,24 @@ public class SAAIR {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
-            if (freObjects.length == 2) {
+            if (freObjects.length == 3) {
 
                 try {
                     int placementId = freObjects[0].getAsInt();
                     boolean isParentalGateEnabled = freObjects[1].getAsBool();
+                    boolean isBackButtonEnabled = freObjects[2].getAsBool();
                     Context context = freContext.getActivity();
 
                     if (isParentalGateEnabled) {
                         SAGameWall.enableParentalGate();
                     } else {
                         SAGameWall.disableParentalGate();
+                    }
+
+                    if (isBackButtonEnabled) {
+                        SAGameWall.enableBackButton();
+                    } else {
+                        SAGameWall.disableBackButton();
                     }
 
                     SAGameWall.play(placementId, context);

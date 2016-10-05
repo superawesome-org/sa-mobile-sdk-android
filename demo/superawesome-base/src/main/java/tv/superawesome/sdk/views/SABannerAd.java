@@ -135,6 +135,7 @@ public class SABannerAd extends RelativeLayout {
 
                             // send additional impressions
                             events.sendEventsFor("impression");
+                            events.sendEventsFor("sa_impr");
 
                             // send viewable impression
                             events.sendViewableImpressionForDisplay(SABannerAd.this);

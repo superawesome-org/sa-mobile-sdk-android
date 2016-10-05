@@ -70,6 +70,7 @@ public class SAGameWall extends Activity {
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = true;
     private static boolean isTestingEnabled = false;
+    private static boolean isBackButtonEnabled = false;
     private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
 
     // private vars
@@ -135,6 +136,7 @@ public class SAGameWall extends Activity {
         // send events
         for (SAEvents event : events) {
             event.sendEventsFor("impression");
+            event.sendEventsFor("sa_impr");
             event.sendViewableImpressionForDisplay(gameGrid);
         }
 
@@ -149,7 +151,10 @@ public class SAGameWall extends Activity {
 
     @Override
     public void onBackPressed() {
-        // do nothing
+        boolean isBackButtonEnabledL = getIsBackButtonEnabled();
+        if (isBackButtonEnabledL) {
+            super.onBackPressed();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -324,6 +329,15 @@ public class SAGameWall extends Activity {
         configuration = SAConfiguration.STAGING;
     }
 
+    public static void enableBackButton () {
+        isBackButtonEnabled = true;
+    }
+
+    public static void disableBackButton () {
+        isBackButtonEnabled = false;
+    }
+
+
     // private static methods to handle static vars
 
     private static SAInterface getListener () {
@@ -340,6 +354,10 @@ public class SAGameWall extends Activity {
 
     private static SAConfiguration getConfiguration () {
         return configuration;
+    }
+
+    private static boolean getIsBackButtonEnabled () {
+        return isBackButtonEnabled;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

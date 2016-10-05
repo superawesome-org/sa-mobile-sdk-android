@@ -61,6 +61,7 @@ public class SAVideoAd extends Activity {
     private static boolean shouldAutomaticallyCloseAtEnd = true;
     private static boolean shouldShowSmallClickButton = false;
     private static boolean isTestingEnabled = false;
+    private static boolean isBackButtonEnabled = false;
     private static SAOrientation orientation = SAOrientation.ANY;
     private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
 
@@ -212,7 +213,10 @@ public class SAVideoAd extends Activity {
 
     @Override
     public void onBackPressed() {
-        // do nothing
+        boolean isBackButtonEnabledL = getIsBackButtonEnabled();
+        if (isBackButtonEnabledL) {
+            super.onBackPressed();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -339,14 +343,19 @@ public class SAVideoAd extends Activity {
                 @Override
                 public void sessionReady() {
 
-                    // after session is OK - start loding
+                    // after session is OK - start loading
                     loader.loadAd(placementId, session, new SALoaderInterface() {
                         @Override
                         public void didLoadAd(SAResponse response) {
 
+                            // find out the real valid
+                            boolean isValid = response.isValid();
+                            SAAd first = isValid ? response.ads.get(0) : null;
+                            isValid = first != null && isValid && first.creative.details.media.isOnDisk;
+
                             // put the correct value
-                            if (response.isValid()) {
-                                ads.put(placementId, response.ads.get(0));
+                            if (isValid) {
+                                ads.put(placementId, first);
                             }
                             // remove existing
                             else {
@@ -354,7 +363,7 @@ public class SAVideoAd extends Activity {
                             }
 
                             // call listener
-                            listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                            listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
                         }
                     });
                 }
@@ -459,6 +468,15 @@ public class SAVideoAd extends Activity {
         shouldShowSmallClickButton = false;
     }
 
+    public static void enableBackButton () {
+        isBackButtonEnabled = true;
+    }
+
+    public static void disableBackButton () {
+        isBackButtonEnabled = false;
+    }
+
+
     // private static methods to handle static vars
 
     private static SAInterface getListener () {
@@ -491,5 +509,9 @@ public class SAVideoAd extends Activity {
 
     private static SAConfiguration getConfiguration () {
         return configuration;
+    }
+
+    private static boolean getIsBackButtonEnabled () {
+        return isBackButtonEnabled;
     }
 }

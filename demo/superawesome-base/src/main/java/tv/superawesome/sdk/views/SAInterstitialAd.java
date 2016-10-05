@@ -37,6 +37,7 @@ public class SAInterstitialAd extends Activity {
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = true;
     private static boolean isTestingEnabled = false;
+    private static boolean isBackButtonEnabled = false;
     private static SAOrientation orientation = SAOrientation.ANY;
     private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
 
@@ -114,7 +115,10 @@ public class SAInterstitialAd extends Activity {
 
     @Override
     public void onBackPressed() {
-        // do nothing
+        boolean isBackButtonEnabledL = getIsBackButtonEnabled();
+        if (isBackButtonEnabledL) {
+            super.onBackPressed();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,6 +236,14 @@ public class SAInterstitialAd extends Activity {
         isTestingEnabled = false;
     }
 
+    public static void enableBackButton () {
+        isBackButtonEnabled = true;
+    }
+
+    public static void disableBackButton () {
+        isBackButtonEnabled = false;
+    }
+
     public static void setConfigurationProduction () {
         configuration = SAConfiguration.PRODUCTION;
     }
@@ -264,5 +276,9 @@ public class SAInterstitialAd extends Activity {
 
     private static SAOrientation getOrientation () {
         return orientation;
+    }
+
+    private static boolean getIsBackButtonEnabled () {
+        return isBackButtonEnabled;
     }
 }

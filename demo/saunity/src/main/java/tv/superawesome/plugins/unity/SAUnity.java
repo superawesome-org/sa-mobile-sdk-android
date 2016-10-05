@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import tv.superawesome.lib.samodelspace.SAVASTAdType;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -279,7 +280,7 @@ public class SAUnity {
         return SAInterstitialAd.hasAdAvailable(placementId);
     }
 
-    public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context, int placementId, boolean isParentalGateEnabled, int orientation) {
+    public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context, int placementId, boolean isParentalGateEnabled, int orientation, boolean isBackButtonEnabled) {
 
         if (isParentalGateEnabled) {
             SAInterstitialAd.enableParentalGate();
@@ -293,6 +294,12 @@ public class SAUnity {
             SAInterstitialAd.setOrientationPortrait();
         } else {
             SAInterstitialAd.setOrientationAny();
+        }
+
+        if (isBackButtonEnabled) {
+            SAInterstitialAd.enableBackButton();
+        } else {
+            SAInterstitialAd.disableBackButton();
         }
 
         SAInterstitialAd.play(placementId, context);
@@ -358,7 +365,7 @@ public class SAUnity {
         return SAVideoAd.hasAdAvailable(placementId);
     }
 
-    public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation) {
+    public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation, boolean isBackButtonEnabled) {
 
         if (isParentalGateEnabled) {
             SAVideoAd.enableParentalGate();
@@ -390,6 +397,12 @@ public class SAUnity {
             SAVideoAd.setOrientationPortrait();
         } else {
             SAVideoAd.setOrientationAny();
+        }
+
+        if (isBackButtonEnabled) {
+            SAVideoAd.enableBackButton();
+        } else {
+            SAVideoAd.disableBackButton();
         }
 
         SAVideoAd.play(placementId, context);
@@ -456,12 +469,18 @@ public class SAUnity {
         return SAGameWall.hasAdAvailable(placementId);
     }
 
-    public static void SuperAwesomeUnitySAGameWallPlay (Context context, int placementId, boolean isParentalGateEnabled) {
+    public static void SuperAwesomeUnitySAGameWallPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBackButtonEnabled) {
 
         if (isParentalGateEnabled) {
             SAGameWall.enableParentalGate();
         } else {
             SAGameWall.disableParentalGate();
+        }
+
+        if (isBackButtonEnabled) {
+            SAGameWall.enableBackButton();
+        } else {
+            SAGameWall.disableBackButton();
         }
 
         SAGameWall.play(placementId, context);
