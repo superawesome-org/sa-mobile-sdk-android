@@ -153,6 +153,8 @@ public class SAGameWall extends Activity {
     public void onBackPressed() {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
+            SAInterface listenerL = getListener();
+            listenerL.onEvent(response.placementId, SAEvent.adClosed);
             super.onBackPressed();
         }
     }

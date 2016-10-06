@@ -215,6 +215,8 @@ public class SAVideoAd extends Activity {
     public void onBackPressed() {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
+            SAInterface listenerL = getListener();
+            listenerL.onEvent(ad.placementId, SAEvent.adClosed);
             super.onBackPressed();
         }
     }

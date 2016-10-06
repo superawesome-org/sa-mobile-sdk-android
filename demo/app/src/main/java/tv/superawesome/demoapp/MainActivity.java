@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
         });
 
         SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.enableBackButton();
         SAInterstitialAd.setOrientationPortrait();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -48,11 +49,15 @@ public class MainActivity extends Activity {
                     Log.d("SuperAwesome", "Ad " + placementId + " loaded");
                 } else if (event == SAEvent.adFailedToLoad) {
                     Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
+                } else if (event == SAEvent.adShown) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " shown");
+                } else if (event == SAEvent.adClosed) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " closed");
                 }
             }
         });
 
-        SAVideoAd.disableBackButton();
+        SAVideoAd.enableBackButton();
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableParentalGate();
         SAVideoAd.disableTestMode();
@@ -64,6 +69,10 @@ public class MainActivity extends Activity {
                     Log.d("SuperAwesome", "Ad " + placementId + " loaded");
                 } else if (event == SAEvent.adFailedToLoad) {
                     Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
+                } else if (event == SAEvent.adShown) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " shown");
+                } else if (event == SAEvent.adClosed) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " closed");
                 }
             }
         });
