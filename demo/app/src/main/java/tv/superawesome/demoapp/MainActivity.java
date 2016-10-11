@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
@@ -36,6 +37,9 @@ public class MainActivity extends Activity implements SALoaderInterface {
         SuperAwesome.getInstance().setConfigurationStaging();
         SuperAwesome.getInstance().setApplicationContext(getApplicationContext());
         SuperAwesome.getInstance().disableTestMode();
+
+        Log.d("SuperAwesome-UA", "User agent " + SAUtils.getUserAgent());
+
 
         if (savedInstanceState == null) {
             loader = new SALoader();
