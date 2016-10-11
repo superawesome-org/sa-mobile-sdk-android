@@ -58,10 +58,10 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.enableBackButton();
-        SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableParentalGate();
         SAVideoAd.disableTestMode();
         SAVideoAd.setOrientationLandscape();
+        SAVideoAd.setConfigurationProduction();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -94,12 +94,12 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-        bannerAd.load(485);
-        SAInterstitialAd.load(415, MainActivity.this);
-        SAInterstitialAd.load(418, MainActivity.this);
-        SAGameWall.load(437, MainActivity.this);
-        SAVideoAd.load(480, MainActivity.this);
-        SAVideoAd.load(481, MainActivity.this);
+//        bannerAd.load(485);
+//        SAInterstitialAd.load(415, MainActivity.this);
+//        SAInterstitialAd.load(418, MainActivity.this);
+//        SAGameWall.load(437, MainActivity.this);
+        SAVideoAd.load(30492, MainActivity.this);
+//        SAVideoAd.load(481, MainActivity.this);
     }
 
     public void playBanner(View v){
@@ -123,8 +123,8 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(480)) {
-            SAVideoAd.play(480, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(30492)) {
+            SAVideoAd.play(30492, MainActivity.this);
         }
     }
 
