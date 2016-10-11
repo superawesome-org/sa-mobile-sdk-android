@@ -77,7 +77,7 @@ public class SuperAwesome {
     }
 
     private String getVersion () {
-        return "4.1.9.1";
+        return "4.1.9.2";
     }
 
     private String getSdk() {
