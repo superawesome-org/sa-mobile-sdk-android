@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import tv.superawesome.lib.samodelspace.SAVASTAdType;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -98,8 +97,9 @@ public class MainActivity extends Activity {
 //        SAInterstitialAd.load(415, MainActivity.this);
 //        SAInterstitialAd.load(418, MainActivity.this);
 //        SAGameWall.load(437, MainActivity.this);
-        SAVideoAd.load(30492, MainActivity.this);
-//        SAVideoAd.load(481, MainActivity.this);
+//        SAVideoAd.load(32841, MainActivity.this);
+        SAVideoAd.setConfigurationStaging();
+        SAVideoAd.load(481, MainActivity.this);
     }
 
     public void playBanner(View v){
@@ -123,17 +123,17 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(30492)) {
-            SAVideoAd.play(30492, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(32841)) {
+            SAVideoAd.play(32841, MainActivity.this);
         }
     }
 
     public void playVideo2(View v){
-        if (SAGameWall.hasAdAvailable(437)) {
-            SAGameWall.play(437, MainActivity.this);
-        }
-//        if (SAVideoAd.hasAdAvailable(481)) {
-//            SAVideoAd.play(481, MainActivity.this);
+//        if (SAGameWall.hasAdAvailable(437)) {
+//            SAGameWall.play(437, MainActivity.this);
 //        }
+        if (SAVideoAd.hasAdAvailable(481)) {
+            SAVideoAd.play(481, MainActivity.this);
+        }
     }
 }
