@@ -88,7 +88,7 @@ public class SAVideoAd extends Activity {
         int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
         int video_playerId = getResources().getIdentifier("sa_videoplayer_id", "id", packageName);
         int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
-        int padlockId = getResources().getIdentifier("video_padlock_image", "id", packageName);
+        int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
 
         // set content view
         setContentView(activity_sa_videoId);
@@ -107,7 +107,14 @@ public class SAVideoAd extends Activity {
         closeBtn.setVisibility(shouldShowCloseButtonL ? View.VISIBLE : View.INVISIBLE);
 
         // padlock
-        ImageView padlock = (ImageView) findViewById(padlockId);
+        Button padlock = (Button) findViewById(padlockId);
+        padlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+                SAVideoAd.this.startActivity(browserIntent);
+            }
+        });
         padlock.setVisibility(shouldShowPadlock() ? View.VISIBLE : View.INVISIBLE);
 
         if (savedInstanceState == null) {

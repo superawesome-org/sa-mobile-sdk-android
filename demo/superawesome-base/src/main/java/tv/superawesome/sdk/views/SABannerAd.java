@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -56,7 +57,7 @@ public class SABannerAd extends RelativeLayout {
     // private subviews
     private RelativeLayout contentHolder;
     private SAWebPlayer webView;
-    private ImageView padlock;
+    private Button padlock;
     private SAParentalGate gate;
 
     // aux private vars
@@ -92,7 +93,7 @@ public class SABannerAd extends RelativeLayout {
         int view_sa_bannerId = getResources().getIdentifier("view_sa_banner", "layout", packageName);
         int content_holderId = getResources().getIdentifier("content_holder", "id", packageName);
         int web_viewId = getResources().getIdentifier("web_view", "id", packageName);
-        int padlockId = getResources().getIdentifier("padlock_image", "id", packageName);
+        int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
 
         // inflate the layout
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -105,7 +106,14 @@ public class SABannerAd extends RelativeLayout {
         contentHolder = (RelativeLayout) findViewById(content_holderId);
 
         // get the padlock
-        padlock = (ImageView) findViewById(padlockId);
+        padlock = (Button) findViewById(padlockId);
+        padlock.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+                getContext().startActivity(browserIntent);
+            }
+        });
 
         // get and customize the web view
         webView = (SAWebPlayer) findViewById(web_viewId);

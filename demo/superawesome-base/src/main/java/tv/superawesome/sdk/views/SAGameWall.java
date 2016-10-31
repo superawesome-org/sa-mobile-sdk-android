@@ -99,9 +99,20 @@ public class SAGameWall extends Activity {
         int activity_sa_gamewallId = getResources().getIdentifier("activity_sa_gamewall", "layout", packageName);
         int close_btnId = getResources().getIdentifier("gamewall_close", "id", packageName);
         int GameWallGridId = getResources().getIdentifier("GameWallGrid", "id", packageName);
+        int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
 
         // finally start displaying
         setContentView(activity_sa_gamewallId);
+
+        // get the padlock
+        Button padlock = (Button) findViewById(padlockId);
+        padlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+                SAGameWall.this.startActivity(browserIntent);
+            }
+        });
 
         // close btn
         Button closeBtn = (Button) findViewById(close_btnId);
