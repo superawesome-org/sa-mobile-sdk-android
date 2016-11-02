@@ -100,6 +100,7 @@ public class MainActivity extends Activity {
 //        SAVideoAd.load(32841, MainActivity.this);
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.load(481, MainActivity.this);
+        SAVideoAd.load(544, MainActivity.this);
     }
 
     public void playBanner(View v){
@@ -123,12 +124,12 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
-//        if (SAVideoAd.hasAdAvailable(32841)) {
-//            SAVideoAd.play(32841, MainActivity.this);
-//        }
-        if (SAGameWall.hasAdAvailable(437)) {
-            SAGameWall.play(437, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(544)) {
+            SAVideoAd.play(544, MainActivity.this);
         }
+//        if (SAGameWall.hasAdAvailable(437)) {
+//            SAGameWall.play(437, MainActivity.this);
+//        }
     }
 
     public void playVideo2(View v){
