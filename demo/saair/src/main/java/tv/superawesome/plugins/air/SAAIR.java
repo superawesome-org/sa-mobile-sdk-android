@@ -2,11 +2,7 @@ package tv.superawesome.plugins.air;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -21,10 +17,9 @@ import com.adobe.fre.FREWrongThreadException;
 import java.util.HashMap;
 
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
-import tv.superawesome.sdk.views.SAGameWall;
+import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAOrientation;
@@ -618,7 +613,7 @@ public class SAAIR {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Unity to SAGameWall interface
+    // Unity to SAAppWall interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static class SuperAwesomeAIRSAGameWallCreate implements FREFunction {
@@ -626,32 +621,32 @@ public class SAAIR {
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-            SAGameWall.setListener(new SAInterface() {
+            SAAppWall.setListener(new SAInterface() {
                 @Override
                 public void onEvent(int placementId, SAEvent event) {
                     switch (event) {
                         case adLoaded: {
-                            sendToAIR(freContext, "SAGameWall", placementId, "adLoaded");
+                            sendToAIR(freContext, "SAAppWall", placementId, "adLoaded");
                             break;
                         }
                         case adFailedToLoad: {
-                            sendToAIR(freContext, "SAGameWall", placementId, "adFailedToLoad");
+                            sendToAIR(freContext, "SAAppWall", placementId, "adFailedToLoad");
                             break;
                         }
                         case adShown: {
-                            sendToAIR(freContext, "SAGameWall", placementId, "adShown");
+                            sendToAIR(freContext, "SAAppWall", placementId, "adShown");
                             break;
                         }
                         case adFailedToShow: {
-                            sendToAIR(freContext, "SAGameWall", placementId, "adFailedToShow");
+                            sendToAIR(freContext, "SAAppWall", placementId, "adFailedToShow");
                             break;
                         }
                         case adClicked: {
-                            sendToAIR(freContext, "SAGameWall", placementId, "adClicked");
+                            sendToAIR(freContext, "SAAppWall", placementId, "adClicked");
                             break;
                         }
                         case adClosed: {
-                            sendToAIR(freContext, "SAGameWall", placementId, "adClosed");
+                            sendToAIR(freContext, "SAAppWall", placementId, "adClosed");
                             break;
                         }
                     }
@@ -675,18 +670,18 @@ public class SAAIR {
                     boolean test = freObjects[2].getAsBool();
 
                     if (test) {
-                        SAGameWall.enableTestMode();
+                        SAAppWall.enableTestMode();
                     } else {
-                        SAGameWall.disableTestMode();
+                        SAAppWall.disableTestMode();
                     }
 
                     if (configuration == 0) {
-                        SAGameWall.setConfigurationProduction();
+                        SAAppWall.setConfigurationProduction();
                     } else {
-                        SAGameWall.setConfigurationStaging();
+                        SAAppWall.setConfigurationStaging();
                     }
 
-                    SAGameWall.load(placementId, freContext.getActivity());
+                    SAAppWall.load(placementId, freContext.getActivity());
 
                 } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                     e.printStackTrace();
@@ -708,7 +703,7 @@ public class SAAIR {
 
                     int placementId = freObjects[0].getAsInt();
 
-                    boolean hasAdAvailable = SAGameWall.hasAdAvailable(placementId);
+                    boolean hasAdAvailable = SAAppWall.hasAdAvailable(placementId);
 
                     return FREObject.newObject(hasAdAvailable);
 
@@ -738,18 +733,18 @@ public class SAAIR {
                     Context context = freContext.getActivity();
 
                     if (isParentalGateEnabled) {
-                        SAGameWall.enableParentalGate();
+                        SAAppWall.enableParentalGate();
                     } else {
-                        SAGameWall.disableParentalGate();
+                        SAAppWall.disableParentalGate();
                     }
 
                     if (isBackButtonEnabled) {
-                        SAGameWall.enableBackButton();
+                        SAAppWall.enableBackButton();
                     } else {
-                        SAGameWall.disableBackButton();
+                        SAAppWall.disableBackButton();
                     }
 
-                    SAGameWall.play(placementId, context);
+                    SAAppWall.play(placementId, context);
 
                 } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                     e.printStackTrace();

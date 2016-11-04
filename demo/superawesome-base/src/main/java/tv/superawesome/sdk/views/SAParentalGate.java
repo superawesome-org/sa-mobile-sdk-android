@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
@@ -68,7 +67,7 @@ public class SAParentalGate {
         String className = parentRef.get().getClass().getName();
         String videoClassName = SAVideoAd.class.getCanonicalName();
         String bannerClassName = SABannerAd.class.getCanonicalName();
-        String gamewallClassName = SAGameWall.class.getCanonicalName();
+        String gamewallClassName = SAAppWall.class.getCanonicalName();
         calledByVideo = className.contains(videoClassName);
         calledByBanner = className.contains(bannerClassName);
         calledByGameWall = className.contains(gamewallClassName);
@@ -125,7 +124,7 @@ public class SAParentalGate {
                         } else if (calledByVideo) {
                             ((SAVideoAd) parentRef.get()).click();
                         } else if (calledByGameWall) {
-                            ((SAGameWall) parentRef.get()).click(gameWallPos);
+                            ((SAAppWall) parentRef.get()).click(gameWallPos);
                         }
                     } else {
 

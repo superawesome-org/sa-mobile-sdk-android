@@ -9,12 +9,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
-import android.graphics.ComposeShader;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
-import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -56,7 +52,7 @@ import tv.superawesome.sdk.SuperAwesome;
 /**
  * Created by gabriel.coman on 22/09/16.
  */
-public class SAGameWall extends Activity {
+public class SAAppWall extends Activity {
 
     // private instance vars
     private SAResponse response = null;
@@ -110,7 +106,7 @@ public class SAGameWall extends Activity {
             @Override
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
-                SAGameWall.this.startActivity(browserIntent);
+                SAAppWall.this.startActivity(browserIntent);
             }
         });
 
@@ -136,7 +132,7 @@ public class SAGameWall extends Activity {
                 // check for PG
                 SAAd ad = response.ads.get(position);
                 if (isParentalGateEnabledL) {
-                    gate = new SAParentalGate(SAGameWall.this, SAGameWall.this, ad, position);
+                    gate = new SAParentalGate(SAAppWall.this, SAAppWall.this, ad, position);
                     gate.show();
                 } else {
                     click(position);
@@ -298,7 +294,7 @@ public class SAGameWall extends Activity {
 
         // try to start the activity
         if (responseL != null && responseL.format == SACreativeFormat.gamewall && context != null) {
-            Intent intent = new Intent(context, SAGameWall.class);
+            Intent intent = new Intent(context, SAAppWall.class);
             intent.putExtra("response", responseL.writeToJson().toString());
             context.startActivity(intent);
         } else {

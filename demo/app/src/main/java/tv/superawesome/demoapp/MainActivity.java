@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
-import tv.superawesome.sdk.views.SAGameWall;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAVideoAd;
@@ -76,10 +75,10 @@ public class MainActivity extends Activity {
             }
         });
 
-        SAGameWall.enableBackButton();
-        SAGameWall.setConfigurationStaging();
-        SAGameWall.disableTestMode();
-        SAGameWall.setListener(new SAInterface() {
+        SAAppWall.enableBackButton();
+        SAAppWall.setConfigurationStaging();
+        SAAppWall.disableTestMode();
+        SAAppWall.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
 
@@ -96,7 +95,7 @@ public class MainActivity extends Activity {
         bannerAd.load(485);
         SAInterstitialAd.load(415, MainActivity.this);
         SAInterstitialAd.load(418, MainActivity.this);
-        SAGameWall.load(437, MainActivity.this);
+        SAAppWall.load(437, MainActivity.this);
 //        SAVideoAd.load(32841, MainActivity.this);
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.load(481, MainActivity.this);
@@ -127,8 +126,8 @@ public class MainActivity extends Activity {
         if (SAVideoAd.hasAdAvailable(544)) {
             SAVideoAd.play(544, MainActivity.this);
         }
-//        if (SAGameWall.hasAdAvailable(437)) {
-//            SAGameWall.play(437, MainActivity.this);
+//        if (SAAppWall.hasAdAvailable(437)) {
+//            SAAppWall.play(437, MainActivity.this);
 //        }
     }
 

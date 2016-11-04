@@ -32,6 +32,4 @@ repositories {
 
 dependencies {
     compile project(':superawesome-base')
-    testCompile 'junit:junit:4.12'
-
 }

@@ -2,7 +2,6 @@ package tv.superawesome.plugins.unity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -11,12 +10,10 @@ import android.widget.RelativeLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import tv.superawesome.lib.samodelspace.SAVASTAdType;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
-import tv.superawesome.sdk.views.SAGameWall;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAOrientation;
@@ -409,37 +406,37 @@ public class SAUnity {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Unity to SAGameWall interface
+    // Unity to SAAppWall interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void SuperAwesomeUnitySAGameWallCreate (Context context) {
 
-        SAGameWall.setListener(new SAInterface() {
+        SAAppWall.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
                     case adLoaded: {
-                        sendToUnity("SAGameWall", placementId, "adLoaded");
+                        sendToUnity("SAAppWall", placementId, "adLoaded");
                         break;
                     }
                     case adFailedToLoad: {
-                        sendToUnity("SAGameWall", placementId, "adFailedToLoad");
+                        sendToUnity("SAAppWall", placementId, "adFailedToLoad");
                         break;
                     }
                     case adShown: {
-                        sendToUnity("SAGameWall", placementId, "adShown");
+                        sendToUnity("SAAppWall", placementId, "adShown");
                         break;
                     }
                     case adFailedToShow: {
-                        sendToUnity("SAGameWall", placementId, "adFailedToShow");
+                        sendToUnity("SAAppWall", placementId, "adFailedToShow");
                         break;
                     }
                     case adClicked: {
-                        sendToUnity("SAGameWall", placementId, "adClicked");
+                        sendToUnity("SAAppWall", placementId, "adClicked");
                         break;
                     }
                     case adClosed: {
-                        sendToUnity("SAGameWall", placementId, "adClosed");
+                        sendToUnity("SAAppWall", placementId, "adClosed");
                         break;
                     }
                 }
@@ -451,38 +448,38 @@ public class SAUnity {
     public static void SuperAwesomeUnitySAGameWallLoad (Context context, int placementId, int configuration, boolean test) {
 
         if (test) {
-            SAGameWall.enableTestMode();
+            SAAppWall.enableTestMode();
         } else {
-            SAGameWall.disableTestMode();
+            SAAppWall.disableTestMode();
         }
 
         if (configuration == 0) {
-            SAGameWall.setConfigurationProduction();
+            SAAppWall.setConfigurationProduction();
         } else {
-            SAGameWall.setConfigurationStaging();
+            SAAppWall.setConfigurationStaging();
         }
 
-        SAGameWall.load(placementId, context);
+        SAAppWall.load(placementId, context);
     }
 
     public static boolean SuperAwesomeUnitySAGameWallHasAdAvailable (Context context, int placementId) {
-        return SAGameWall.hasAdAvailable(placementId);
+        return SAAppWall.hasAdAvailable(placementId);
     }
 
     public static void SuperAwesomeUnitySAGameWallPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBackButtonEnabled) {
 
         if (isParentalGateEnabled) {
-            SAGameWall.enableParentalGate();
+            SAAppWall.enableParentalGate();
         } else {
-            SAGameWall.disableParentalGate();
+            SAAppWall.disableParentalGate();
         }
 
         if (isBackButtonEnabled) {
-            SAGameWall.enableBackButton();
+            SAAppWall.enableBackButton();
         } else {
-            SAGameWall.disableBackButton();
+            SAAppWall.disableBackButton();
         }
 
-        SAGameWall.play(placementId, context);
+        SAAppWall.play(placementId, context);
     }
 }
