@@ -1,2 +1,0 @@
-include ':app', ':saunity', ':samopub', ':saair', ':superawesome', ':superawesome-base'
-project(':superawesome-base').projectDir = new File('../demo/superawesome-base')
