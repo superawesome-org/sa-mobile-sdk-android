@@ -5,146 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c5b6c205-e41b-4a87-b54f-f6c9dd5fa96a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/FlashRuntimeExtensions.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_22_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/espresso_core_2_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/espresso_idling_resource_2_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/hamcrest_core_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/hamcrest_core_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/hamcrest_integration_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/hamcrest_library_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/javawriter_2_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/javax_annotation_api_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/javax_inject_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/jsr305_2_0_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/junit_4_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/junit_4_12.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/junit_dep_4_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/mopub_sdk_4_3_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/play_services_ads_8_4_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/play_services_basement_8_4_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/saadloader_0_7_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/saevents_0_7_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sajsonparser_0_2_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/samoatevents_0_3_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/samoatevents_0_6_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_4_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sanetwork_0_2_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sasession_0_2_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sautils_0_2_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/savideoplayer_0_2_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sawebplayer_0_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/support_annotations_23_0_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_23_0_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/testing_support_lib_0_1.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/.idea/.name" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/.idea/compiler.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/.idea/copyright/profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/.idea/runConfigurations.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/gradle.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/gradle/wrapper/gradle-wrapper.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/gradle/wrapper/gradle-wrapper.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/gradlew" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/gradlew.bat" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/demo/settings.gradle" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/superawesomesdk/settings.gradle" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/.gitignore" afterPath="$PROJECT_DIR$/app/.gitignore" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/libs/junit-4.1.jar" afterPath="$PROJECT_DIR$/app/libs/junit-4.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/proguard-rules.pro" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/androidTest/java/tv/superawesome/demoapp/AdLoaderTest.java" afterPath="$PROJECT_DIR$/app/src/androidTest/java/tv/superawesome/demoapp/AdLoaderTest.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/androidTest/java/tv/superawesome/demoapp/ApplicationTest.java" afterPath="$PROJECT_DIR$/app/src/androidTest/java/tv/superawesome/demoapp/ApplicationTest.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/androidTest/java/tv/superawesome/demoapp/mocks/FakeUrlLoader.java" afterPath="$PROJECT_DIR$/app/src/androidTest/java/tv/superawesome/demoapp/mocks/FakeUrlLoader.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/ic_launcher-web.png" afterPath="$PROJECT_DIR$/app/src/main/ic_launcher-web.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/values-w820dp/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values-w820dp/dimens.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/values/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/app/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/import-summary.txt" afterPath="$PROJECT_DIR$/import-summary.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/.gitignore" afterPath="$PROJECT_DIR$/saair/.gitignore" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/build.gradle" afterPath="$PROJECT_DIR$/saair/build.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/libs/FlashRuntimeExtensions.jar" afterPath="$PROJECT_DIR$/saair/libs/FlashRuntimeExtensions.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/proguard-rules.pro" afterPath="$PROJECT_DIR$/saair/proguard-rules.pro" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/saair/src/main/AndroidManifest.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtension.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtension.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saair/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/saair/src/main/res/values/strings.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/.gitignore" afterPath="$PROJECT_DIR$/samopub/.gitignore" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/build.gradle" afterPath="$PROJECT_DIR$/samopub/build.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/proguard-rules.pro" afterPath="$PROJECT_DIR$/samopub/proguard-rules.pro" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/samopub/src/main/AndroidManifest.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeBannerCustomEvent.java" afterPath="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeBannerCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeInterstitialCustomEvent.java" afterPath="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeInterstitialCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeRewardedVideoCustomEvent.java" afterPath="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeRewardedVideoCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/samopub/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/samopub/src/main/res/values/strings.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saunity/.gitignore" afterPath="$PROJECT_DIR$/saunity/.gitignore" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saunity/build.gradle" afterPath="$PROJECT_DIR$/saunity/build.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saunity/libs/unity-classes.jar" afterPath="$PROJECT_DIR$/saunity/libs/unity-classes.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saunity/proguard-rules.pro" afterPath="$PROJECT_DIR$/saunity/proguard-rules.pro" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saunity/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/saunity/src/main/AndroidManifest.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnity.java" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnity.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/saunity/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/saunity/src/main/res/values/strings.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/.gitignore" afterPath="$PROJECT_DIR$/superawesome-base/.gitignore" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/build.gradle" afterPath="$PROJECT_DIR$/superawesome-base/build.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/proguard-rules.pro" afterPath="$PROJECT_DIR$/superawesome-base/proguard-rules.pro" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/AndroidManifest.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/assets/html/displayImage.html" afterPath="$PROJECT_DIR$/superawesome-base/src/main/assets/html/displayImage.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/assets/html/displayRichMedia.html" afterPath="$PROJECT_DIR$/superawesome-base/src/main/assets/html/displayRichMedia.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/assets/html/displayTag.html" afterPath="$PROJECT_DIR$/superawesome-base/src/main/assets/html/displayTag.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/cpi/SACPI.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/cpi/SACPI.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAEvent.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterface.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterface.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAOrientation.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAOrientation.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGate.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGate.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/appwall.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/appwall.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/background.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/background.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/bgrheader.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/bgrheader.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/delete.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/delete.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/gamewallcell_imgbg.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/gamewallcell_imgbg.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/sa_close.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/sa_close.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/sa_crono_bg.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/sa_crono_bg.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/sa_header.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/sa_header.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/sa_mark.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/sa_mark.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/drawable/watermark_67x25.png" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/drawable/watermark_67x25.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/layout/activity_sa_gamewall.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_gamewall.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/layout/activity_sa_interstitial.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_interstitial.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/layout/activity_sa_video.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_video.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/layout/cell_sa_gamewall_big.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/layout/cell_sa_gamewall_big.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/layout/cell_sa_gamewall_small.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/layout/cell_sa_gamewall_small.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/layout/view_sa_banner.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/layout/view_sa_banner.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/values/attrs.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/values/attrs.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/values/dimens.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/values/dimens.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome-base/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/res/values/strings.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome/.gitignore" afterPath="$PROJECT_DIR$/superawesome/.gitignore" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome/build.gradle" afterPath="$PROJECT_DIR$/superawesome/build.gradle" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome/proguard-rules.pro" afterPath="$PROJECT_DIR$/superawesome/proguard-rules.pro" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/superawesome/src/main/AndroidManifest.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/demo/superawesome/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/superawesome/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_22_2_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_23_0_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_23_0_0.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.gradle" afterPath="$PROJECT_DIR$/settings.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saair/build.gradle" afterPath="$PROJECT_DIR$/saair/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samopub/build.gradle" afterPath="$PROJECT_DIR$/samopub/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saunity/build.gradle" afterPath="$PROJECT_DIR$/saunity/build.gradle" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -177,7 +46,17 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="39.25926">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/superawesome/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.9031378">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -187,7 +66,7 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
+            <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -204,11 +83,51 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.gradle" pinned="false" current-in-tab="true">
+      <file leaf-file-name="settings.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/settings.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.047468353">
+            <state vertical-scroll-proportion="0.0">
               <caret line="1" column="53" selection-start-line="1" selection-start-column="53" selection-end-line="1" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saair/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.111111">
+              <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/samopub/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.333333">
+              <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saunity/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.5555553">
+              <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-18.88889">
+              <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -630,14 +549,24 @@
                 <option name="name" value="preReleaseUnitTestBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.android.support:appcompat-v7:22.2.1" />
+                <option name="description" value="Prepare com.android.support:animated-vector-drawable:23.4.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareComAndroidSupportAppcompatV72221Library" />
+                <option name="name" value="prepareComAndroidSupportAnimatedVectorDrawable2340Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.android.support:support-v4:23.0.0" />
+                <option name="description" value="Prepare com.android.support:appcompat-v7:23.4.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareComAndroidSupportSupportV42300Library" />
+                <option name="name" value="prepareComAndroidSupportAppcompatV72340Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.android.support:support-v4:23.4.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareComAndroidSupportSupportV42340Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.android.support:support-vector-drawable:23.4.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareComAndroidSupportSupportVectorDrawable2340Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare com.android.support.test.espresso:espresso-core:2.0" />
@@ -1319,14 +1248,24 @@
                 <option name="name" value="preReleaseUnitTestBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.android.support:appcompat-v7:22.2.1" />
+                <option name="description" value="Prepare com.android.support:animated-vector-drawable:23.4.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareComAndroidSupportAppcompatV72221Library" />
+                <option name="name" value="prepareComAndroidSupportAnimatedVectorDrawable2340Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare com.android.support:support-v4:23.0.0" />
+                <option name="description" value="Prepare com.android.support:appcompat-v7:23.4.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareComAndroidSupportSupportV42300Library" />
+                <option name="name" value="prepareComAndroidSupportAppcompatV72340Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.android.support:support-v4:23.4.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareComAndroidSupportSupportV42340Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare com.android.support:support-vector-drawable:23.4.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareComAndroidSupportSupportVectorDrawable2340Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare com.android.support.test.espresso:espresso-core:2.0" />
@@ -4516,7 +4455,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="11817407915000" />
+        <entry key="$PROJECT_DIR$" value="11819182409000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -4772,12 +4711,14 @@
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/android/tools/external/lombok/lombok-ast/0.2.3/lombok-ast-0.2.3.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/intellij/annotations/12.0/annotations-12.0-sources.jar" />
                             <option value="$APPLICATION_HOME_DIR$/gradle/m2repository/com/intellij/annotations/12.0/annotations-12.0.jar" />
-                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/22.2.1/appcompat-v7-22.2.1.aar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/tv.superawesome.lib.saevents/samoatevents/0.3.1/cbae72f35f43af0db787cecfa62c55a34ec9ea1d/samoatevents-0.3.1.aar" />
+                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/23.4.0/appcompat-v7-23.4.0.aar" />
                             <option value="$USER_HOME$/Library/Android/sdk/extras/google/m2repository/com/google/android/gms/play-services-ads/8.4.0/play-services-ads-8.4.0.aar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/tv.superawesome.lib.saevents/samoatevents/0.3.1/cbae72f35f43af0db787cecfa62c55a34ec9ea1d/samoatevents-0.3.1.aar" />
+                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/animated-vector-drawable/23.4.0/animated-vector-drawable-23.4.0.aar" />
+                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/23.4.0/support-v4-23.4.0.aar" />
+                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-vector-drawable/23.4.0/support-vector-drawable-23.4.0.aar" />
                             <option value="$USER_HOME$/Library/Android/sdk/extras/google/m2repository/com/google/android/gms/play-services-basement/8.4.0/play-services-basement-8.4.0.aar" />
-                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/23.0.0/support-v4-23.0.0.aar" />
-                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.0/support-annotations-23.0.0.jar" />
+                            <option value="$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar" />
                             <option value="$MODULE_DIR$/libs/junit-4.1.jar" />
                           </list>
                         </option>
@@ -5551,6 +5492,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/settings.gradle" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/saair/build.gradle" />
+        <option value="$PROJECT_DIR$/samopub/build.gradle" />
+        <option value="$PROJECT_DIR$/saunity/build.gradle" />
       </list>
     </option>
   </component>
@@ -5796,7 +5741,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5479632" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5479632" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -5844,10 +5789,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
+    <entry file="file://$PROJECT_DIR$/gradle.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="39.25926">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="53" selection-start-line="1" selection-start-column="53" selection-end-line="1" selection-end-column="53" />
           <folding />
         </state>
       </provider>
@@ -5860,18 +5813,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gradle.properties">
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-18.88889">
+          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.111111">
+          <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samopub/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.333333">
+          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saunity/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.5555553">
+          <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
+    <entry file="file://$PROJECT_DIR$/superawesome/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.047468353">
-          <caret line="1" column="53" selection-start-line="1" selection-start-column="53" selection-end-line="1" selection-end-column="53" />
+        <state vertical-scroll-proportion="-0.9031378">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
