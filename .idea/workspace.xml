@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c5b6c205-e41b-4a87-b54f-f6c9dd5fa96a" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/saadloader_0_7_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/saadloader_0_7_9.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/saevents_0_7_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/saevents_0_7_5.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/sajsonparser_0_2_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/sajsonparser_0_2_4.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_4_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_4_3.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/sasession_0_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/sasession_0_2_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/build.gradle" afterPath="$PROJECT_DIR$/superawesome-base/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,21 +45,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="local.properties" pinned="false" current-in-tab="true">
+      <file leaf-file-name="local.properties" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/local.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48816568">
+            <state vertical-scroll-proportion="0.0">
               <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/superawesome/build.gradle">
+      <file leaf-file-name="SuperAwesome.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5118343">
+              <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -5508,6 +5501,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
         <option value="$PROJECT_DIR$/superawesome-base/build.gradle" />
         <option value="$PROJECT_DIR$/local.properties" />
+        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
       </list>
     </option>
   </component>
@@ -5551,6 +5545,34 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="Gradle Scripts" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="superawesome-base" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="superawesome-base" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sdk" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -6271,8 +6293,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/local.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48816568">
+        <state vertical-scroll-proportion="0.0">
           <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5118343">
+          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
           <folding />
         </state>
       </provider>
