@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
 
     public void loadAds (View view) {
         bannerAd.load(485);
-        SAInterstitialAd.load(415, MainActivity.this);
+        SAInterstitialAd.load(556, MainActivity.this);
         SAInterstitialAd.load(418, MainActivity.this);
         SAAppWall.load(437, MainActivity.this);
 //        SAVideoAd.load(32841, MainActivity.this);
@@ -109,9 +109,9 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial1(View v){
-        if (SAInterstitialAd.hasAdAvailable(415)) {
+        if (SAInterstitialAd.hasAdAvailable(556)) {
             SAInterstitialAd.enableBackButton();
-            SAInterstitialAd.play(415, MainActivity.this);
+            SAInterstitialAd.play(556, MainActivity.this);
         }
     }
 
