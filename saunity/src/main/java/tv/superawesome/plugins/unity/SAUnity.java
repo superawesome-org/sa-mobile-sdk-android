@@ -409,7 +409,7 @@ public class SAUnity {
     // Unity to SAAppWall interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static void SuperAwesomeUnitySAGameWallCreate (Context context) {
+    public static void SuperAwesomeUnitySAAppWallCreate (Context context) {
 
         SAAppWall.setListener(new SAInterface() {
             @Override
@@ -445,7 +445,7 @@ public class SAUnity {
 
     }
 
-    public static void SuperAwesomeUnitySAGameWallLoad (Context context, int placementId, int configuration, boolean test) {
+    public static void SuperAwesomeUnitySAAppWallLoad (Context context, int placementId, int configuration, boolean test) {
 
         if (test) {
             SAAppWall.enableTestMode();
@@ -462,11 +462,11 @@ public class SAUnity {
         SAAppWall.load(placementId, context);
     }
 
-    public static boolean SuperAwesomeUnitySAGameWallHasAdAvailable (Context context, int placementId) {
+    public static boolean SuperAwesomeUnitySAAppWallHasAdAvailable (Context context, int placementId) {
         return SAAppWall.hasAdAvailable(placementId);
     }
 
-    public static void SuperAwesomeUnitySAGameWallPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBackButtonEnabled) {
+    public static void SuperAwesomeUnitySAAppWallPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBackButtonEnabled) {
 
         if (isParentalGateEnabled) {
             SAAppWall.enableParentalGate();

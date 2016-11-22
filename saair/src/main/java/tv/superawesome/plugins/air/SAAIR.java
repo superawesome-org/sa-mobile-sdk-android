@@ -40,6 +40,18 @@ public class SAAIR {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Stub for CPI
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static class SuperAwesomeAIRSuperAwesomeHandleCPI implements FREFunction {
+
+        @Override
+        public FREObject call(FREContext freContext, FREObject[] freObjects) {
+            return null;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Unity to SABannerAd interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -443,7 +455,7 @@ public class SAAIR {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Unity to SAVideoAd interface
+    // AIR to SAVideoAd interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static class SuperAwesomeAIRSAVideoAdCreate implements FREFunction {
@@ -616,7 +628,7 @@ public class SAAIR {
     // Unity to SAAppWall interface
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static class SuperAwesomeAIRSAGameWallCreate implements FREFunction {
+    public static class SuperAwesomeAIRSAAppWallCreate implements FREFunction {
 
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
@@ -657,7 +669,7 @@ public class SAAIR {
         }
     }
 
-    public static class SuperAwesomeAIRSAGameWallLoad implements FREFunction {
+    public static class SuperAwesomeAIRSAAppWallLoad implements FREFunction {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -692,7 +704,7 @@ public class SAAIR {
         }
     }
 
-    public static class SuperAwesomeAIRSAGameWallHasAdAvailable implements FREFunction {
+    public static class SuperAwesomeAIRSAAppWallHasAdAvailable implements FREFunction {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -720,7 +732,7 @@ public class SAAIR {
         }
     }
 
-    public static class SuperAwesomeAIRSAGameWallPlay implements FREFunction {
+    public static class SuperAwesomeAIRSAAppWallPlay implements FREFunction {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
