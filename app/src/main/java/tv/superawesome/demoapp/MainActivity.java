@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.setConfigurationProduction();
         SAInterstitialAd.enableBackButton();
         SAInterstitialAd.setOrientationPortrait();
         SAInterstitialAd.setListener(new SAInterface() {
@@ -92,11 +92,11 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-        bannerAd.load(485);
-        SAInterstitialAd.load(556, MainActivity.this);
-        SAInterstitialAd.load(418, MainActivity.this);
-        SAAppWall.load(437, MainActivity.this);
-//        SAVideoAd.load(32841, MainActivity.this);
+//        bannerAd.load(485);
+        SAInterstitialAd.load(33220, MainActivity.this);
+//        SAInterstitialAd.load(418, MainActivity.this);
+//        SAAppWall.load(437, MainActivity.this);
+////        SAVideoAd.load(32841, MainActivity.this);
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.load(481, MainActivity.this);
         SAVideoAd.load(544, MainActivity.this);
@@ -109,9 +109,9 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial1(View v){
-        if (SAInterstitialAd.hasAdAvailable(556)) {
+        if (SAInterstitialAd.hasAdAvailable(33220)) {
             SAInterstitialAd.enableBackButton();
-            SAInterstitialAd.play(556, MainActivity.this);
+            SAInterstitialAd.play(33220, MainActivity.this);
         }
     }
 
