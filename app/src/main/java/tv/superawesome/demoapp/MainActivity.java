@@ -1,9 +1,12 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -22,68 +25,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-        bannerAd.setConfigurationStaging();
-        bannerAd.disableTestMode();
-        bannerAd.disableParentalGate();
-        bannerAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                if (event == SAEvent.adLoaded) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " loaded");
-                } else if (event == SAEvent.adFailedToLoad) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
-                }
-            }
-        });
+        // ask users to add two numbers when clicking on an ad
+        SAVideoAd.enableParentalGate ();
 
-        SAInterstitialAd.setConfigurationProduction();
-        SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.setOrientationPortrait();
-        SAInterstitialAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                if (event == SAEvent.adLoaded) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " loaded");
-                } else if (event == SAEvent.adFailedToLoad) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
-                } else if (event == SAEvent.adShown) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " shown");
-                } else if (event == SAEvent.adClosed) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " closed");
-                }
-            }
-        });
+        // lock orientation to portrait or landscape
+        SAVideoAd.setOrientationLandscape ();
 
-        SAVideoAd.enableBackButton();
-        SAVideoAd.disableParentalGate();
-        SAVideoAd.disableTestMode();
-        SAVideoAd.setOrientationLandscape();
-        SAVideoAd.setConfigurationProduction();
-        SAVideoAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                if (event == SAEvent.adLoaded) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " loaded");
-                } else if (event == SAEvent.adFailedToLoad) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " failed to load");
-                } else if (event == SAEvent.adShown) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " shown");
-                } else if (event == SAEvent.adClosed) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " closed");
-                }
-            }
-        });
+        // enable or disable the android back button
+        SAVideoAd.enableBackButton ();
 
-        SAAppWall.enableBackButton();
-        SAAppWall.setConfigurationStaging();
-        SAAppWall.disableTestMode();
-        SAAppWall.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
+        // enable or disable a close button
+        SAVideoAd.enableCloseButton ();
 
-            }
-        });
+        // enable or disable auto-closing at the end
+        SAVideoAd.enableCloseAtEnd ();
+
+        SAVideoAd.load (30961, MainActivity.this);
     }
 
     @Override
@@ -92,18 +49,12 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-//        bannerAd.load(485);
-        SAInterstitialAd.load(33220, MainActivity.this);
-//        SAInterstitialAd.load(418, MainActivity.this);
-//        SAAppWall.load(437, MainActivity.this);
-////        SAVideoAd.load(32841, MainActivity.this);
-        SAVideoAd.setConfigurationStaging();
-        SAVideoAd.load(481, MainActivity.this);
-        SAVideoAd.load(544, MainActivity.this);
+
+
     }
 
     public void playBanner(View v){
-        if (bannerAd.hasAdAvailable()) {
+        if (bannerAd != null && bannerAd.hasAdAvailable()) {
             bannerAd.play(MainActivity.this);
         }
     }
@@ -123,12 +74,9 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(544)) {
-            SAVideoAd.play(544, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(30961)) {
+            SAVideoAd.play(30961, MainActivity.this);
         }
-//        if (SAAppWall.hasAdAvailable(437)) {
-//            SAAppWall.play(437, MainActivity.this);
-//        }
     }
 
     public void playVideo2(View v){

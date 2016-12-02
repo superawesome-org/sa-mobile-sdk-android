@@ -45,15 +45,16 @@
         android:layout_height="50dp" />
 
     <RelativeLayout
+        android:id="@+id/BannerPlaceholder"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#ff0000">
 
-        <tv.superawesome.sdk.views.SABannerAd
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/mybanner"/>
+        <!--<tv.superawesome.sdk.views.SABannerAd-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:id="@+id/mybanner"/>-->
     </RelativeLayout>
 
 </LinearLayout>

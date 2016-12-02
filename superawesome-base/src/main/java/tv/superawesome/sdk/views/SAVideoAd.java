@@ -418,71 +418,71 @@ public class SAVideoAd extends Activity {
     }
 
     public static void enableParentalGate () {
-        isParentalGateEnabled = true;
+        setParentalGate(true);
     }
 
     public static void disableParentalGate () {
-        isParentalGateEnabled = false;
+        setParentalGate(false);
     }
 
     public static void enableTestMode () {
-        isTestingEnabled = true;
+        setTestMode(true);
     }
 
     public static void disableTestMode () {
-        isTestingEnabled = false;
+        setTestMode(false);
     }
 
     public static void setConfigurationProduction () {
-        configuration = SAConfiguration.PRODUCTION;
+        setConfiguration(SAConfiguration.PRODUCTION);
     }
 
     public static void setConfigurationStaging () {
-        configuration = SAConfiguration.STAGING;
+        setConfiguration(SAConfiguration.STAGING);
     }
 
     public static void setOrientationAny () {
-        orientation = SAOrientation.ANY;
+        setOrientation(SAOrientation.ANY);
     }
 
     public static void setOrientationPortrait () {
-        orientation = SAOrientation.PORTRAIT;
+        setOrientation(SAOrientation.PORTRAIT);
     }
 
     public static void setOrientationLandscape () {
-        orientation = SAOrientation.LANDSCAPE;
-    }
-
-    public static void enableCloseButton () {
-        shouldShowCloseButton = true;
-    }
-
-    public static void disableCloseButton () {
-        shouldShowCloseButton = false;
-    }
-
-    public static void enableCloseAtEnd () {
-        shouldAutomaticallyCloseAtEnd = true;
-    }
-
-    public static void disableCloseAtEnd () {
-        shouldAutomaticallyCloseAtEnd = false;
-    }
-
-    public static void enableSmallClickButton () {
-        shouldShowSmallClickButton = true;
-    }
-
-    public static void disableSmallClickButton () {
-        shouldShowSmallClickButton = false;
+        setOrientation(SAOrientation.LANDSCAPE);
     }
 
     public static void enableBackButton () {
-        isBackButtonEnabled = true;
+        setBackButton(true);
     }
 
     public static void disableBackButton () {
-        isBackButtonEnabled = false;
+        setBackButton(false);
+    }
+
+    public static void enableCloseButton () {
+        setCloseButton(true);
+    }
+
+    public static void disableCloseButton () {
+        setCloseButton(false);
+    }
+
+    public static void enableCloseAtEnd () {
+        setCloseAtEnd(true);
+    }
+
+    public static void disableCloseAtEnd () {
+        setCloseAtEnd(false);
+    }
+
+    public static void enableSmallClickButton () {
+        setSmallClick(true);
+    }
+
+    public static void disableSmallClickButton () {
+        setSmallClick(false);
     }
 
 
@@ -523,4 +523,42 @@ public class SAVideoAd extends Activity {
     private static boolean getIsBackButtonEnabled () {
         return isBackButtonEnabled;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Generic setters and getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void setParentalGate (boolean value) {
+        isParentalGateEnabled = value;
+    }
+
+    public static void setTestMode (boolean value) {
+        isTestingEnabled = value;
+    }
+
+    public static void setConfiguration (SAConfiguration value) {
+        configuration = value;
+    }
+
+    public static void setOrientation (SAOrientation value) {
+        orientation = value;
+    }
+
+    public static void setBackButton (boolean value) {
+        isBackButtonEnabled = value;
+    }
+
+    public static void setCloseButton (boolean value) {
+        shouldShowCloseButton = value;
+    }
+
+    public static void setCloseAtEnd (boolean value) {
+        shouldAutomaticallyCloseAtEnd = value;
+    }
+
+    public static void setSmallClick (boolean value) {
+        shouldShowSmallClickButton = value;
+    }
+
+
 }

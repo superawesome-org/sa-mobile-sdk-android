@@ -26,6 +26,7 @@ import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.SAResponse;
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -82,6 +83,8 @@ public class SABannerAd extends RelativeLayout {
 
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        if (isInEditMode()) return;
 
         // create the loader
         session = new SASession (context);
@@ -320,35 +323,59 @@ public class SABannerAd extends RelativeLayout {
     }
 
     public void enableParentalGate () {
-        isParentalGateEnabled = true;
+        setParentalGate(true);
     }
 
     public void disableParentalGate () {
-        isParentalGateEnabled = false;
+        setParentalGate(false);
     }
 
     public void enableTestMode () {
-        session.enableTestMode();
+        setTestMode(true);
     }
 
     public void disableTestMode () {
-        session.disableTestMode();
+        setTestMode(false);
     }
 
     public void setConfigurationProduction () {
-        session.setConfigurationProduction();
+        setConfiguration(SAConfiguration.PRODUCTION);
     }
 
     public void setConfigurationStaging () {
-        session.setConfigurationStaging();
+        setConfiguration(SAConfiguration.STAGING);
     }
 
     public void setColorTransparent () {
-        setBackgroundColor(Color.TRANSPARENT);
+        setColor(true);
     }
 
     public void setColorGray () {
-        setBackgroundColor(Color.rgb(191, 191, 191));
+        setColor(false);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Generic setters and getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void setParentalGate (boolean value) {
+        isParentalGateEnabled = value;
+    }
+
+    public void setTestMode (boolean value) {
+        session.setTestMode(value);
+    }
+
+    public void setConfiguration (SAConfiguration value) {
+        session.setConfiguration(value);
+    }
+
+    public void setColor (boolean value) {
+        if (value) {
+            setBackgroundColor(Color.TRANSPARENT);
+        } else  {
+            setBackgroundColor(Color.rgb(224, 224, 244));
+        }
     }
 
 }

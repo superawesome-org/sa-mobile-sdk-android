@@ -315,37 +315,36 @@ public class SAAppWall extends Activity {
     }
 
     public static void enableParentalGate () {
-        isParentalGateEnabled = true;
+        setParentalGate(true);
     }
 
     public static void disableParentalGate () {
-        isParentalGateEnabled = false;
+        setParentalGate(false);
     }
 
     public static void enableTestMode () {
-        isTestingEnabled = true;
+        setTestMode(true);
     }
 
     public static void disableTestMode () {
-        isTestingEnabled = false;
+        setTestMode(false);
     }
 
     public static void setConfigurationProduction () {
-        configuration = SAConfiguration.PRODUCTION;
+        setConfiguration(SAConfiguration.PRODUCTION);
     }
 
     public static void setConfigurationStaging () {
-        configuration = SAConfiguration.STAGING;
+        setConfiguration(SAConfiguration.STAGING);
     }
 
     public static void enableBackButton () {
-        isBackButtonEnabled = true;
+        setBackButton(true);
     }
 
     public static void disableBackButton () {
-        isBackButtonEnabled = false;
+        setBackButton(false);
     }
-
 
     // private static methods to handle static vars
 
@@ -367,6 +366,26 @@ public class SAAppWall extends Activity {
 
     private static boolean getIsBackButtonEnabled () {
         return isBackButtonEnabled;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Generic setters and getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void setParentalGate (boolean value) {
+        isParentalGateEnabled = value;
+    }
+
+    public static void setTestMode (boolean value) {
+        isTestingEnabled = value;
+    }
+
+    public static void setConfiguration (SAConfiguration value) {
+        configuration = value;
+    }
+
+    public static void setBackButton (boolean value) {
+        isBackButtonEnabled = value;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -527,5 +546,6 @@ public class SAAppWall extends Activity {
         public void setColorFilter(ColorFilter cf) {
             mPaint.setColorFilter(cf);
         }
+
     }
 }
