@@ -92,7 +92,7 @@ public class SAInterstitialAd extends Activity {
 
         // set the interstitial
         interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
-        interstitialBanner.setBackgroundColor(Color.rgb(239, 239, 239));
+        interstitialBanner.setBackgroundColor(Color.rgb(224, 224, 224));
         interstitialBanner.setAd(ad);
         interstitialBanner.setListener(listenerL);
         if (isParentalGateEnabledL) {

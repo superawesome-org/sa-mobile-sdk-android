@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.3.6
+ - Updated SABannerAd and SAInterstitialAd background colors to 224, 224, 224 
+
 5.3.5
  - Added generic setters for each of the properties needed to configure loading & playing for banners, interstitials, videos and app wall
  - Banners:

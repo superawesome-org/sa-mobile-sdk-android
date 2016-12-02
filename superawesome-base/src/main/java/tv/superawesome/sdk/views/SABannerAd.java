@@ -374,7 +374,7 @@ public class SABannerAd extends RelativeLayout {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT);
         } else  {
-            setBackgroundColor(Color.rgb(224, 224, 244));
+            setBackgroundColor(Color.rgb(224, 224, 224));
         }
     }
 
