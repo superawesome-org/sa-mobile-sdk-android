@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.3.7
+ - Fixed another issue with SABannerAd and the background color - namely that at the start, unless calling mybanner.setColor(true/false) the banner background color would be the old color.
+
 5.3.6
  - Updated SABannerAd and SAInterstitialAd background colors to 224, 224, 224 
 

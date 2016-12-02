@@ -43,7 +43,7 @@ import tv.superawesome.sdk.SuperAwesome;
 public class SABannerAd extends RelativeLayout {
 
     // constants
-    private final int BANNER_BACKGROUND = Color.rgb(191, 191, 191);
+    private final int BANNER_BACKGROUND = Color.rgb(224, 224, 224);
 
     // private vars w/ exposed setters & getters
     private boolean isParentalGateEnabled = true;
@@ -103,7 +103,7 @@ public class SABannerAd extends RelativeLayout {
         inflater.inflate(view_sa_bannerId, this);
 
         // set the background color
-        this.setBackgroundColor(BANNER_BACKGROUND);
+        setColor(false);
 
         // get the main relative layout content holder
         contentHolder = (RelativeLayout) findViewById(content_holderId);
@@ -374,7 +374,7 @@ public class SABannerAd extends RelativeLayout {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT);
         } else  {
-            setBackgroundColor(Color.rgb(224, 224, 224));
+            setBackgroundColor(BANNER_BACKGROUND);
         }
     }
 
