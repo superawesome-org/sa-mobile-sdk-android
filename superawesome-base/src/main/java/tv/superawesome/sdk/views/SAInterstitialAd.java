@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,11 +16,11 @@ import java.util.HashMap;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.SAResponse;
-import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.lib.samodelspace.SAAd;
 import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
@@ -36,11 +35,12 @@ public class SAInterstitialAd extends Activity {
 
     // private vars w/ exposed setters & getters (state vars)
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
-    private static boolean isParentalGateEnabled = true;
-    private static boolean isTestingEnabled = false;
-    private static boolean isBackButtonEnabled = false;
-    private static SAOrientation orientation = SAOrientation.ANY;
-    private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
+
+    private static boolean isParentalGateEnabled    = SuperAwesome.getInstance().defaultParentalGate();
+    private static boolean isTestingEnabled         = SuperAwesome.getInstance().defaultTestMode();
+    private static boolean isBackButtonEnabled      = SuperAwesome.getInstance().defaultBackButton();
+    private static SAOrientation orientation        = SuperAwesome.getInstance().defaultOrientation();
+    private static SAConfiguration configuration    = SuperAwesome.getInstance().defaultConfiguration();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Activity initialization & instance methods

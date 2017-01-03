@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -19,9 +20,6 @@ import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAOrientation;
 import tv.superawesome.sdk.views.SAVideoAd;
 
-/**
- * Created by gabriel.coman on 12/09/16.
- */
 public class SAUnity {
 
     private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
@@ -62,30 +60,12 @@ public class SAUnity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
-                    case adLoaded: {
-                        sendToUnity(unityName, placementId, "adLoaded");
-                        break;
-                    }
-                    case adFailedToLoad: {
-                        sendToUnity(unityName, placementId, "adFailedToLoad");
-                        break;
-                    }
-                    case adShown: {
-                        sendToUnity(unityName, placementId, "adShown");
-                        break;
-                    }
-                    case adFailedToShow: {
-                        sendToUnity(unityName, placementId, "adFailedToShow");
-                        break;
-                    }
-                    case adClicked: {
-                        sendToUnity(unityName, placementId, "adClicked");
-                        break;
-                    }
-                    case adClosed: {
-                        sendToUnity(unityName, placementId, "adClosed");
-                        break;
-                    }
+                    case adLoaded: sendToUnity(unityName, placementId, "adLoaded"); break;
+                    case adFailedToLoad: sendToUnity(unityName, placementId, "adFailedToLoad"); break;
+                    case adShown: sendToUnity(unityName, placementId, "adShown"); break;
+                    case adFailedToShow: sendToUnity(unityName, placementId, "adFailedToShow"); break;
+                    case adClicked: sendToUnity(unityName, placementId, "adClicked"); break;
+                    case adClosed: sendToUnity(unityName, placementId, "adClosed"); break;
                 }
             }
         });
@@ -94,39 +74,23 @@ public class SAUnity {
     }
 
     public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
-
         if (bannerAdHashMap.containsKey(unityName)) {
-
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
-
-            if (configuration == 0) {
-                bannerAd.setConfigurationProduction();
-            } else {
-                bannerAd.setConfigurationStaging();
-            }
-
-            if (test) {
-                bannerAd.enableTestMode();
-            } else {
-                bannerAd.disableTestMode();
-            }
-
+            bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
+            bannerAd.setTestMode(test);
             bannerAd.load(placementId);
         }
     }
 
     public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable (Context context, String unityName) {
-
         if (bannerAdHashMap.containsKey(unityName)) {
-
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
-
             return bannerAd.hasAdAvailable();
         }
         return false;
     }
 
-    public static void SuperAwesomeUnitySABannerAdPlay (Context context, String unityName, boolean isParentalGateEnabled, int position, int size, int color) {
+    public static void SuperAwesomeUnitySABannerAdPlay (Context context, String unityName, boolean isParentalGateEnabled, int position, int width, int height, boolean color) {
 
         if (bannerAdHashMap.containsKey(unityName)) {
 
@@ -135,38 +99,8 @@ public class SAUnity {
 
             // get banner ad
             final SABannerAd bannerAd = bannerAdHashMap.get(unityName);
-
-            if (isParentalGateEnabled) {
-                bannerAd.enableParentalGate();
-            } else {
-                bannerAd.disableParentalGate();
-            }
-
-            if (color == 0) {
-                bannerAd.setColorTransparent();
-            } else {
-                bannerAd.setColorGray();
-            }
-
-            // calc actual banner W & H
-            int width, height;
-
-            if (size == 1) {
-                width = 300;
-                height = 50;
-            }
-            else if (size == 2) {
-                width = 728;
-                height = 90;
-            }
-            else if (size == 3) {
-                width = 300;
-                height = 250;
-            }
-            else {
-                width = 320;
-                height = 50;
-            }
+            bannerAd.setParentalGate(isParentalGateEnabled);
+            bannerAd.setColor(color);
 
             // get screen size
             SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
@@ -207,11 +141,11 @@ public class SAUnity {
     }
 
     public static void SuperAwesomeUnitySABannerAdClose (Context context, String unityName) {
-
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.close();
-            ((ViewGroup)bannerAd.getParent()).removeView(bannerAd);
+            ViewGroup parent = (ViewGroup) bannerAd.getParent();
+            if (parent != null) parent.removeView(bannerAd);
             bannerAdHashMap.remove(unityName);
         }
     }
@@ -221,35 +155,16 @@ public class SAUnity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void SuperAwesomeUnitySAInterstitialAdCreate (Context context) {
-
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
-                    case adLoaded: {
-                        sendToUnity("SAInterstitialAd", placementId, "adLoaded");
-                        break;
-                    }
-                    case adFailedToLoad: {
-                        sendToUnity("SAInterstitialAd", placementId, "adFailedToLoad");
-                        break;
-                    }
-                    case adShown: {
-                        sendToUnity("SAInterstitialAd", placementId, "adShown");
-                        break;
-                    }
-                    case adFailedToShow: {
-                        sendToUnity("SAInterstitialAd", placementId, "adFailedToShow");
-                        break;
-                    }
-                    case adClicked: {
-                        sendToUnity("SAInterstitialAd", placementId, "adClicked");
-                        break;
-                    }
-                    case adClosed: {
-                        sendToUnity("SAInterstitialAd", placementId, "adClosed");
-                        break;
-                    }
+                    case adLoaded: sendToUnity("SAInterstitialAd", placementId, "adLoaded"); break;
+                    case adFailedToLoad: sendToUnity("SAInterstitialAd", placementId, "adFailedToLoad"); break;
+                    case adShown: sendToUnity("SAInterstitialAd", placementId, "adShown"); break;
+                    case adFailedToShow: sendToUnity("SAInterstitialAd", placementId, "adFailedToShow"); break;
+                    case adClicked: sendToUnity("SAInterstitialAd", placementId, "adClicked"); break;
+                    case adClosed: sendToUnity("SAInterstitialAd", placementId, "adClosed");break;
                 }
             }
         });
@@ -257,19 +172,8 @@ public class SAUnity {
     }
 
     public static void SuperAwesomeUnitySAInterstitialAdLoad (Context context, int placementId, int configuration, boolean test) {
-
-        if (test) {
-            SAInterstitialAd.enableTestMode();
-        } else {
-            SAInterstitialAd.disableTestMode();
-        }
-
-        if (configuration == 0) {
-            SAInterstitialAd.setConfigurationProduction();
-        } else {
-            SAInterstitialAd.setConfigurationStaging();
-        }
-
+        SAInterstitialAd.setTestMode(test);
+        SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAInterstitialAd.load(placementId, context);
     }
 
@@ -278,27 +182,9 @@ public class SAUnity {
     }
 
     public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context, int placementId, boolean isParentalGateEnabled, int orientation, boolean isBackButtonEnabled) {
-
-        if (isParentalGateEnabled) {
-            SAInterstitialAd.enableParentalGate();
-        } else {
-            SAInterstitialAd.disableParentalGate();
-        }
-
-        if (orientation == SAOrientation.LANDSCAPE.getValue()) {
-            SAInterstitialAd.setOrientationLandscape();
-        } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
-            SAInterstitialAd.setOrientationPortrait();
-        } else {
-            SAInterstitialAd.setOrientationAny();
-        }
-
-        if (isBackButtonEnabled) {
-            SAInterstitialAd.enableBackButton();
-        } else {
-            SAInterstitialAd.disableBackButton();
-        }
-
+        SAInterstitialAd.setParentalGate(isParentalGateEnabled);
+        SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
+        SAInterstitialAd.setBackButton(isBackButtonEnabled);
         SAInterstitialAd.play(placementId, context);
     }
 
@@ -307,54 +193,24 @@ public class SAUnity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void SuperAwesomeUnitySAVideoAdCreate (Context context) {
-
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
-                    case adLoaded: {
-                        sendToUnity("SAVideoAd", placementId, "adLoaded");
-                        break;
-                    }
-                    case adFailedToLoad: {
-                        sendToUnity("SAVideoAd", placementId, "adFailedToShow");
-                        break;
-                    }
-                    case adShown: {
-                        sendToUnity("SAVideoAd", placementId, "adShown");
-                        break;
-                    }
-                    case adFailedToShow: {
-                        sendToUnity("SAVideoAd", placementId, "adFailedToShow");
-                        break;
-                    }
-                    case adClicked: {
-                        sendToUnity("SAVideoAd", placementId, "adClicked");
-                        break;
-                    }
-                    case adClosed: {
-                        sendToUnity("SAVideoAd", placementId, "adClosed");
-                        break;
-                    }
+                    case adLoaded: sendToUnity("SAVideoAd", placementId, "adLoaded"); break;
+                    case adFailedToLoad: sendToUnity("SAVideoAd", placementId, "adFailedToShow"); break;
+                    case adShown: sendToUnity("SAVideoAd", placementId, "adShown"); break;
+                    case adFailedToShow: sendToUnity("SAVideoAd", placementId, "adFailedToShow"); break;
+                    case adClicked: sendToUnity("SAVideoAd", placementId, "adClicked"); break;
+                    case adClosed: sendToUnity("SAVideoAd", placementId, "adClosed"); break;
                 }
             }
         });
     }
 
     public static void SuperAwesomeUnitySAVideoAdLoad(Context context, int placementId, int configuration, boolean test) {
-
-        if (test) {
-            SAVideoAd.enableTestMode();
-        } else {
-            SAVideoAd.disableTestMode();
-        }
-
-        if (configuration == 0) {
-            SAVideoAd.setConfigurationProduction();
-        } else {
-            SAVideoAd.setConfigurationStaging();
-        }
-
+        SAVideoAd.setTestMode(test);
+        SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAVideoAd.load(placementId, context);
     }
 
@@ -363,45 +219,12 @@ public class SAUnity {
     }
 
     public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation, boolean isBackButtonEnabled) {
-
-        if (isParentalGateEnabled) {
-            SAVideoAd.enableParentalGate();
-        } else {
-            SAVideoAd.disableParentalGate();
-        }
-
-        if (shouldAutomaticallyCloseAtEnd) {
-            SAVideoAd.enableCloseAtEnd();
-        } else {
-            SAVideoAd.disableCloseAtEnd();
-        }
-
-        if (shouldShowCloseButton) {
-            SAVideoAd.enableCloseButton();
-        } else {
-            SAVideoAd.disableCloseButton();
-        }
-
-        if (shouldShowSmallClickButton) {
-            SAVideoAd.enableSmallClickButton();
-        } else {
-            SAVideoAd.disableSmallClickButton();
-        }
-
-        if (orientation == SAOrientation.LANDSCAPE.getValue()) {
-            SAVideoAd.setOrientationLandscape();
-        } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
-            SAVideoAd.setOrientationPortrait();
-        } else {
-            SAVideoAd.setOrientationAny();
-        }
-
-        if (isBackButtonEnabled) {
-            SAVideoAd.enableBackButton();
-        } else {
-            SAVideoAd.disableBackButton();
-        }
-
+        SAVideoAd.setParentalGate(isParentalGateEnabled);
+        SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+        SAVideoAd.setCloseButton(shouldShowCloseButton);
+        SAVideoAd.setSmallClick(shouldShowSmallClickButton);
+        SAVideoAd.setBackButton(isBackButtonEnabled);
+        SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.play(placementId, context);
     }
 
@@ -410,55 +233,24 @@ public class SAUnity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void SuperAwesomeUnitySAAppWallCreate (Context context) {
-
         SAAppWall.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
-                    case adLoaded: {
-                        sendToUnity("SAAppWall", placementId, "adLoaded");
-                        break;
-                    }
-                    case adFailedToLoad: {
-                        sendToUnity("SAAppWall", placementId, "adFailedToLoad");
-                        break;
-                    }
-                    case adShown: {
-                        sendToUnity("SAAppWall", placementId, "adShown");
-                        break;
-                    }
-                    case adFailedToShow: {
-                        sendToUnity("SAAppWall", placementId, "adFailedToShow");
-                        break;
-                    }
-                    case adClicked: {
-                        sendToUnity("SAAppWall", placementId, "adClicked");
-                        break;
-                    }
-                    case adClosed: {
-                        sendToUnity("SAAppWall", placementId, "adClosed");
-                        break;
-                    }
+                    case adLoaded: sendToUnity("SAAppWall", placementId, "adLoaded"); break;
+                    case adFailedToLoad: sendToUnity("SAAppWall", placementId, "adFailedToLoad"); break;
+                    case adShown: sendToUnity("SAAppWall", placementId, "adShown"); break;
+                    case adFailedToShow: sendToUnity("SAAppWall", placementId, "adFailedToShow"); break;
+                    case adClicked: sendToUnity("SAAppWall", placementId, "adClicked"); break;
+                    case adClosed: sendToUnity("SAAppWall", placementId, "adClosed"); break;
                 }
             }
         });
-
     }
 
     public static void SuperAwesomeUnitySAAppWallLoad (Context context, int placementId, int configuration, boolean test) {
-
-        if (test) {
-            SAAppWall.enableTestMode();
-        } else {
-            SAAppWall.disableTestMode();
-        }
-
-        if (configuration == 0) {
-            SAAppWall.setConfigurationProduction();
-        } else {
-            SAAppWall.setConfigurationStaging();
-        }
-
+        SAAppWall.setTestMode(test);
+        SAAppWall.setConfiguration(SAConfiguration.fromValue(configuration));
         SAAppWall.load(placementId, context);
     }
 
@@ -467,19 +259,8 @@ public class SAUnity {
     }
 
     public static void SuperAwesomeUnitySAAppWallPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBackButtonEnabled) {
-
-        if (isParentalGateEnabled) {
-            SAAppWall.enableParentalGate();
-        } else {
-            SAAppWall.disableParentalGate();
-        }
-
-        if (isBackButtonEnabled) {
-            SAAppWall.enableBackButton();
-        } else {
-            SAAppWall.disableBackButton();
-        }
-
+        SAAppWall.setParentalGate(isParentalGateEnabled);
+        SAAppWall.setBackButton(isBackButtonEnabled);
         SAAppWall.play(placementId, context);
     }
 }

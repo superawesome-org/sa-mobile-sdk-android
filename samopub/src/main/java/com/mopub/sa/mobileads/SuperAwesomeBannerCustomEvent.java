@@ -7,46 +7,52 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
+import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 
-
-/**
- * Created by gabriel.coman on 27/10/15.
- */
 public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
+
+    private static final String KEY_placementId = "placementId";
+    private static final String KEY_isTestEnabled = "isTestEnabled";
+    private static final String KEY_isParentalGateEnabled = "isParentalGateEnabled";
 
     @Override
     protected void loadBanner(final Context context, final CustomEventBannerListener listener, Map<String, Object> map, Map<String, String> map1) {
 
-        // get map variables
-        int placementId = 0;
-        boolean isTestEnabled = false;
-        boolean isParentalGateEnabled = true;
+        // define & init map variables w/ default values
+        int placementId = SuperAwesome.getInstance().defaultPlacementId();
+        boolean isTestEnabled = SuperAwesome.getInstance().defaultTestMode();
+        boolean isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
 
-        if (map1.get("placementId") != null ){
-            placementId = Integer.parseInt(map1.get("placementId"));
+        // try and get the ones sent over by the MoPub JSON
+        if (map1.containsKey(KEY_placementId)) {
+            try {
+                placementId = Integer.parseInt(map1.get(KEY_placementId));
+            } catch (Exception e) {
+                // do nothing
+            }
         }
-        if (map1.get("isTestEnabled") != null) {
-            isTestEnabled = Boolean.valueOf(map1.get("isTestEnabled"));
+        if (map1.containsKey(KEY_isTestEnabled)) {
+            try {
+                isTestEnabled = Boolean.valueOf(map1.get(KEY_isTestEnabled));
+            } catch (Exception e) {
+                // do nothing
+            }
         }
-        if (map1.get("isParentalGateEnabled") != null){
-            isParentalGateEnabled = Boolean.valueOf(map1.get("isParentalGateEnabled"));
+        if (map1.containsKey(KEY_isParentalGateEnabled)) {
+            try {
+                isParentalGateEnabled = Boolean.valueOf(map1.get(KEY_isParentalGateEnabled));
+            } catch (Exception e) {
+                // do nothing
+            }
         }
 
-        // create the banner ad
+        // create & customise the banner ad
         final SABannerAd bannerAd = new SABannerAd(context);
-        if (isTestEnabled) {
-            bannerAd.enableTestMode();
-        } else {
-            bannerAd.disableTestMode();
-        }
-        if (isParentalGateEnabled) {
-            bannerAd.enableParentalGate();
-        } else {
-            bannerAd.disableParentalGate();
-        }
+        bannerAd.setTestMode(isTestEnabled);
+        bannerAd.setParentalGate(isParentalGateEnabled);
         bannerAd.setConfigurationProduction();
         bannerAd.setListener(new SAInterface() {
             @Override
@@ -81,6 +87,7 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
                 }
             }
         });
+        // load the banner ad
         bannerAd.load(placementId);
     }
 

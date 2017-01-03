@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import tv.superawesome.lib.samodelspace.SAVASTAdType;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -25,22 +26,49 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ask users to add two numbers when clicking on an ad
-        SAVideoAd.enableParentalGate ();
+        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
 
-        // lock orientation to portrait or landscape
-        SAVideoAd.setOrientationLandscape ();
+        bannerAd.setConfigurationStaging();
+        bannerAd.disableTestMode();
+        bannerAd.disableParentalGate();
+        bannerAd.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded){
+                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
+                } else if (event == SAEvent.adFailedToLoad) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                }
+            }
+        });
 
-        // enable or disable the android back button
-        SAVideoAd.enableBackButton ();
+        SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.disableTestMode();
+        SAInterstitialAd.disableParentalGate();
+        SAInterstitialAd.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
+                } else if (event == SAEvent.adFailedToLoad) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                }
+            }
+        });
 
-        // enable or disable a close button
-        SAVideoAd.enableCloseButton ();
-
-        // enable or disable auto-closing at the end
-        SAVideoAd.enableCloseAtEnd ();
-
-        SAVideoAd.load (30961, MainActivity.this);
+        SAVideoAd.setConfigurationStaging();
+        SAVideoAd.disableTestMode();
+        SAVideoAd.disableParentalGate();
+        SAVideoAd.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
+                } else if (event == SAEvent.adFailedToLoad) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                }
+            }
+        });
     }
 
     @Override
@@ -49,8 +77,9 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-
-
+        bannerAd.load(584);
+        SAInterstitialAd.load(585, this);
+        SAVideoAd.load(586, this);
     }
 
     public void playBanner(View v){
@@ -60,28 +89,22 @@ public class MainActivity extends Activity {
     }
 
     public void playInterstitial1(View v){
-        if (SAInterstitialAd.hasAdAvailable(33220)) {
-            SAInterstitialAd.enableBackButton();
-            SAInterstitialAd.play(33220, MainActivity.this);
+        if (SAInterstitialAd.hasAdAvailable(585)) {
+            SAInterstitialAd.play(585, MainActivity.this);
         }
     }
 
     public void playInterstitial2(View v){
-        if (SAInterstitialAd.hasAdAvailable(418)) {
-            SAInterstitialAd.disableBackButton();
-            SAInterstitialAd.play(418, MainActivity.this);
-        }
+        //
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(30961)) {
-            SAVideoAd.play(30961, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(586)) {
+            SAVideoAd.play(586, MainActivity.this);
         }
     }
 
     public void playVideo2(View v){
-        if (SAVideoAd.hasAdAvailable(481)) {
-            SAVideoAd.play(481, MainActivity.this);
-        }
+        //
     }
 }

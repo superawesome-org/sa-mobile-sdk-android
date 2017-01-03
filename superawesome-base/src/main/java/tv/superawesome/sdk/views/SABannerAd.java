@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
@@ -36,9 +35,6 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEventInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
-/**
- * Created by gabriel.coman on 30/12/15.
- */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class SABannerAd extends RelativeLayout {
 
@@ -102,8 +98,11 @@ public class SABannerAd extends RelativeLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(view_sa_bannerId, this);
 
-        // set the background color
-        setColor(false);
+        // set default values
+        setColor(SuperAwesome.getInstance().defaultBgColor());
+        setParentalGate(SuperAwesome.getInstance().defaultParentalGate());
+        setConfiguration(SuperAwesome.getInstance().defaultConfiguration());
+        setTestMode(SuperAwesome.getInstance().defaultTestMode());
 
         // get the main relative layout content holder
         contentHolder = (RelativeLayout) findViewById(content_holderId);

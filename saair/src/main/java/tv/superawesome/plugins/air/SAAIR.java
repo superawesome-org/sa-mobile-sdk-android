@@ -16,7 +16,9 @@ import com.adobe.fre.FREWrongThreadException;
 
 import java.util.HashMap;
 
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAAppWall;
@@ -25,9 +27,6 @@ import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAOrientation;
 import tv.superawesome.sdk.views.SAVideoAd;
 
-/**
- * Created by gabriel.coman on 13/09/16.
- */
 public class SAAIR {
 
     private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
@@ -44,7 +43,6 @@ public class SAAIR {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static class SuperAwesomeAIRSuperAwesomeHandleCPI implements FREFunction {
-
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
             return null;
@@ -60,50 +58,51 @@ public class SAAIR {
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 1) {
+            Context context = freContext.getActivity();
+            String airName = null;
 
-                try {
-                    final String airName = freObjects[0].getAsString();
-                    final Context context = freContext.getActivity();
+            try {
+                airName = freObjects[0].getAsString();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                    SABannerAd bannerAd = new SABannerAd(context);
-                    bannerAd.setListener(new SAInterface() {
-                        @Override
-                        public void onEvent(int placementId, SAEvent event) {
-                            switch (event) {
-                                case adLoaded: {
-                                    sendToAIR(freContext, airName, placementId, "adLoaded");
-                                    break;
-                                }
-                                case adFailedToLoad: {
-                                    sendToAIR(freContext, airName, placementId, "adFailedToLoad");
-                                    break;
-                                }
-                                case adShown: {
-                                    sendToAIR(freContext, airName, placementId, "adShown");
-                                    break;
-                                }
-                                case adFailedToShow: {
-                                    sendToAIR(freContext, airName, placementId, "adFailedToShow");
-                                    break;
-                                }
-                                case adClicked: {
-                                    sendToAIR(freContext, airName, placementId, "adClicked");
-                                    break;
-                                }
-                                case adClosed: {
-                                    sendToAIR(freContext, airName, placementId, "adClosed");
-                                    break;
-                                }
+            final String airName2 = airName;
+
+            if (airName2 != null) {
+                SABannerAd bannerAd = new SABannerAd(context);
+                bannerAd.setListener(new SAInterface() {
+                    @Override
+                    public void onEvent(int placementId, SAEvent event) {
+                        switch (event) {
+                            case adLoaded: {
+                                sendToAIR(freContext, airName2, placementId, "adLoaded");
+                                break;
+                            }
+                            case adFailedToLoad: {
+                                sendToAIR(freContext, airName2, placementId, "adFailedToLoad");
+                                break;
+                            }
+                            case adShown: {
+                                sendToAIR(freContext, airName2, placementId, "adShown");
+                                break;
+                            }
+                            case adFailedToShow: {
+                                sendToAIR(freContext, airName2, placementId, "adFailedToShow");
+                                break;
+                            }
+                            case adClicked: {
+                                sendToAIR(freContext, airName2, placementId, "adClicked");
+                                break;
+                            }
+                            case adClosed: {
+                                sendToAIR(freContext, airName2, placementId, "adClosed");
+                                break;
                             }
                         }
-                    });
-                    bannerAdHashMap.put(airName, bannerAd);
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
-
+                    }
+                });
+                bannerAdHashMap.put(airName2, bannerAd);
             }
 
             return null;
@@ -111,42 +110,43 @@ public class SAAIR {
     }
 
     public static class SuperAwesomeAIRSABannerAdLoad implements FREFunction {
-
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 4) {
+            String airName = null;
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
+            int configuration = SuperAwesome.getInstance().defaultConfiguration().ordinal();
+            boolean test = SuperAwesome.getInstance().defaultTestMode();
 
-                try {
-                    String airName = freObjects[0].getAsString();
-                    int placementId = freObjects[1].getAsInt();
-                    int configuration = freObjects[2].getAsInt();
-                    boolean test = freObjects[3].getAsBool();
+            try {
+                airName = freObjects[0].getAsString();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                    if (bannerAdHashMap.containsKey(airName)) {
-                        SABannerAd bannerAd = bannerAdHashMap.get(airName);
+            try {
+                placementId = freObjects[1].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        // config
-                        if (configuration == 0) {
-                            bannerAd.setConfigurationProduction();
-                        } else {
-                            bannerAd.setConfigurationStaging();
-                        }
+            try {
+                configuration = freObjects[2].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        // test
-                        if (test) {
-                            bannerAd.enableTestMode();
-                        } else {
-                            bannerAd.disableTestMode();
-                        }
+            try {
+                test = freObjects[3].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        bannerAd.load(placementId);
-                    }
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
-
+            if (airName != null && bannerAdHashMap.containsKey(airName)) {
+                SABannerAd bannerAd = bannerAdHashMap.get(airName);
+                bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
+                bannerAd.setTestMode(test);
+                bannerAd.load(placementId);
             }
 
             return null;
@@ -158,26 +158,22 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 1) {
+            String airName = null;
+            boolean hasAdAvailable = false;
 
-                try {
-                    String airName = freObjects[0].getAsString();
+            try {
+                airName = freObjects[0].getAsString();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                    if (bannerAdHashMap.containsKey(airName)) {
-                        SABannerAd bannerAd = bannerAdHashMap.get(airName);
-                        boolean hasAdAvailable = bannerAd.hasAdAvailable();
-                        return FREObject.newObject(hasAdAvailable);
-                    } else {
-                        return FREObject.newObject(false);
-                    }
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
-
+            if (airName != null && bannerAdHashMap.containsKey(airName)) {
+                SABannerAd bannerAd = bannerAdHashMap.get(airName);
+                hasAdAvailable = bannerAd.hasAdAvailable();
             }
 
             try {
-                return FREObject.newObject(false);
+                return FREObject.newObject(hasAdAvailable);
             } catch (FREWrongThreadException e) {
                 return null;
             }
@@ -189,82 +185,95 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 5) {
+            // default values
+            Activity activity = freContext.getActivity();
+            String airName = null;
+            int position = 0;
+            int width = 320;
+            int height = 50;
+            boolean isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
+            boolean color = SuperAwesome.getInstance().defaultBgColor();
 
-                try {
-                    String airName = freObjects[0].getAsString();
-                    boolean isParentalGateEnabled = freObjects[1].getAsBool();
-                    int position = freObjects[2].getAsInt();
-                    int size = freObjects[3].getAsInt();
-                    int color = freObjects[4].getAsInt();
-                    Activity activity = freContext.getActivity();
+            try {
+                airName = freObjects[0].getAsString();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                    if (bannerAdHashMap.containsKey(airName)) {
+            try {
+                isParentalGateEnabled = freObjects[1].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        // get banner ad
-                        final SABannerAd bannerAd = bannerAdHashMap.get(airName);
+            try {
+                position = freObjects[2].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        // parental gate
-                        if (isParentalGateEnabled) {
-                            bannerAd.enableParentalGate();
-                        } else {
-                            bannerAd.disableParentalGate();
-                        }
+            try {
+                width = freObjects[3].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        // color
-                        if (color == 0) {
-                            bannerAd.setColorTransparent();
-                        } else {
-                            bannerAd.setColorGray();
-                        }
+            try {
+                height = freObjects[4].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        /// calc actual banner W & H
-                        int width, height;
-                        if      (size == 1) { width = 300; height = 50;  }
-                        else if (size == 2) { width = 728; height = 90;  }
-                        else if (size == 3) { width = 300; height = 250; }
-                        else                { width = 320; height = 50;  }
+            try {
+                color = freObjects[5].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                        // get real screen size
-                        SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
+            if (airName != null && bannerAdHashMap.containsKey(airName)) {
 
-                        // get scale factor
-                        float factor = SAUtils.getScaleFactor(activity);
+                // get banner ad
+                final SABannerAd bannerAd = bannerAdHashMap.get(airName);
 
-                        // scale it according to the factor
-                        int scaledWidth = (int)(factor * width);
-                        int scaledHeight = (int)(factor * height);
+                // customize
+                bannerAd.setParentalGate(isParentalGateEnabled);
+                bannerAd.setColor(color);
 
-                        // make sure it's not bigger than the screen
-                        if (scaledWidth > screenSize.width) {
-                            scaledHeight = (screenSize.width * scaledHeight) / scaledWidth;
-                        }
+                // get real screen size
+                SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
 
-                        // but not bigger than 15% of the screen's height
-                        if (scaledHeight > 0.15 * screenSize.height) {
-                            scaledHeight = (int)(0.15 * screenSize.height);
-                        }
+                // get scale factor
+                float factor = SAUtils.getScaleFactor(activity);
 
-                        bannerAd.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, scaledHeight));
+                // scale it according to the factor
+                int scaledWidth = (int)(factor * width);
+                int scaledHeight = (int)(factor * height);
 
-                        // create a relative layout as big as the screen
-                        RelativeLayout screenLayout = new RelativeLayout(activity);
-                        screenLayout.setBackgroundColor(Color.TRANSPARENT);
-                        screenLayout.setGravity(position == 0 ? Gravity.TOP : Gravity.BOTTOM);
-                        screenLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-                        // form hierarchy
-                        ViewGroup current = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-                        screenLayout.addView(bannerAd);
-                        current.addView(screenLayout);
-
-                        // finally play banner ad
-                        bannerAd.play(activity);
-                    }
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
+                // make sure it's not bigger than the screen
+                if (scaledWidth > screenSize.width) {
+                    scaledHeight = (screenSize.width * scaledHeight) / scaledWidth;
                 }
+
+                // but not bigger than 15% of the screen's height
+                if (scaledHeight > 0.15 * screenSize.height) {
+                    scaledHeight = (int)(0.15 * screenSize.height);
+                }
+
+                bannerAd.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, scaledHeight));
+
+                // create a relative layout as big as the screen
+                RelativeLayout screenLayout = new RelativeLayout(activity);
+                screenLayout.setBackgroundColor(Color.TRANSPARENT);
+                screenLayout.setGravity(position == 0 ? Gravity.TOP : Gravity.BOTTOM);
+                screenLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+                // form hierarchy
+                ViewGroup current = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+                screenLayout.addView(bannerAd);
+                current.addView(screenLayout);
+
+                // finally play banner ad
+                bannerAd.play(activity);
             }
 
             return null;
@@ -276,26 +285,19 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 1) {
+            String airName = null;
 
-                try {
-                    String airName = freObjects[0].getAsString();
+            try {
+                airName = freObjects[0].getAsString();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
 
-                    if (bannerAdHashMap.containsKey(airName)) {
-
-                        SABannerAd bannerAd = bannerAdHashMap.get(airName);
-
-                        bannerAd.close();
-
-                        ((ViewGroup)bannerAd.getParent()).removeView(bannerAd);
-
-                        bannerAdHashMap.remove(airName);
-                    }
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
-
+            if (airName != null && bannerAdHashMap.containsKey(airName)) {
+                SABannerAd bannerAd = bannerAdHashMap.get(airName);
+                bannerAd.close();
+                ((ViewGroup)bannerAd.getParent()).removeView(bannerAd);
+                bannerAdHashMap.remove(airName);
             }
 
             return null;
@@ -352,31 +354,32 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 3) {
+            Context context = freContext.getActivity();
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
+            int configuration = SuperAwesome.getInstance().defaultConfiguration().ordinal();
+            boolean test = SuperAwesome.getInstance().defaultTestMode();
 
-                try {
-                    int placementId = freObjects[0].getAsInt();
-                    int configuration = freObjects[1].getAsInt();
-                    boolean test = freObjects[2].getAsBool();
-
-                    if (test) {
-                        SAInterstitialAd.enableTestMode();
-                    } else {
-                        SAInterstitialAd.disableTestMode();
-                    }
-
-                    if (configuration == 0) {
-                        SAInterstitialAd.setConfigurationProduction();
-                    } else {
-                        SAInterstitialAd.setConfigurationStaging();
-                    }
-
-                    SAInterstitialAd.load(placementId, freContext.getActivity());
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
+            try {
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
             }
+            try {
+                configuration = freObjects[1].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                test = freObjects[2].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            // configure & load
+            SAInterstitialAd.setTestMode(test);
+            SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
+            SAInterstitialAd.load(placementId, context);
 
             return null;
         }
@@ -387,23 +390,18 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 1) {
-
-                try {
-
-                    int placementId = freObjects[0].getAsInt();
-
-                    boolean hasAdAvailable = SAInterstitialAd.hasAdAvailable(placementId);
-
-                    return FREObject.newObject(hasAdAvailable);
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
-            }
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
 
             try {
-                return FREObject.newObject(false);
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            boolean hasAdAvailable = SAInterstitialAd.hasAdAvailable(placementId);
+
+            try {
+                return FREObject.newObject(hasAdAvailable);
             } catch (FREWrongThreadException e) {
                 return null;
             }
@@ -414,41 +412,42 @@ public class SAAIR {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
-            if (freObjects.length == 4) {
 
-                try {
-                    int placementId = freObjects[0].getAsInt();
-                    boolean isParentalGateEnabled = freObjects[1].getAsBool();
-                    int orientation = freObjects[2].getAsInt();
-                    boolean isBackButtonEnabled = freObjects[3].getAsBool();
-                    Context context = freContext.getActivity();
+            Context context = freContext.getActivity();
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
+            boolean isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
+            int orientation = SuperAwesome.getInstance().defaultOrientation().ordinal();
+            boolean isBackButtonEnabled = SuperAwesome.getInstance().defaultBackButton();
 
-                    if (isParentalGateEnabled) {
-                        SAInterstitialAd.enableParentalGate();
-                    } else {
-                        SAInterstitialAd.disableParentalGate();
-                    }
-
-                    if (orientation == SAOrientation.LANDSCAPE.getValue()) {
-                        SAInterstitialAd.setOrientationLandscape();
-                    } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
-                        SAInterstitialAd.setOrientationPortrait();
-                    } else {
-                        SAInterstitialAd.setOrientationAny();
-                    }
-
-                    if (isBackButtonEnabled) {
-                        SAInterstitialAd.enableBackButton();
-                    } else {
-                        SAInterstitialAd.disableBackButton();
-                    }
-
-                    SAInterstitialAd.play(placementId, context);
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
+            try {
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
             }
+
+            try {
+                isParentalGateEnabled = freObjects[1].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                orientation = freObjects[2].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                isBackButtonEnabled = freObjects[3].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            // config & play
+            SAInterstitialAd.setParentalGate(isParentalGateEnabled);
+            SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
+            SAInterstitialAd.setBackButton(isBackButtonEnabled);
+            SAInterstitialAd.play(placementId, context);
 
             return null;
         }
@@ -504,31 +503,33 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 3) {
+            Context context = freContext.getActivity();
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
+            int configuration = SuperAwesome.getInstance().defaultConfiguration().ordinal();
+            boolean test = SuperAwesome.getInstance().defaultTestMode();
 
-                try {
-                    int placementId = freObjects[0].getAsInt();
-                    int configuration = freObjects[1].getAsInt();
-                    boolean test = freObjects[2].getAsBool();
-
-                    if (test) {
-                        SAVideoAd.enableTestMode();
-                    } else {
-                        SAVideoAd.disableTestMode();
-                    }
-
-                    if (configuration == 0) {
-                        SAVideoAd.setConfigurationProduction();
-                    } else {
-                        SAVideoAd.setConfigurationStaging();
-                    }
-
-                    SAVideoAd.load(placementId, freContext.getActivity());
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
+            try {
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
             }
+
+            try {
+                configuration = freObjects[1].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                test = freObjects[2].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            // configuraton & load
+            SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
+            SAVideoAd.setTestMode(test);
+            SAVideoAd.load(placementId, context);
 
             return null;
         }
@@ -539,19 +540,18 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 1) {
-
-                try {
-                    int placementId = freObjects[0].getAsInt();
-                    boolean hasAdAvailable = SAVideoAd.hasAdAvailable(placementId);
-                    return FREObject.newObject(hasAdAvailable);
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
-            }
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
 
             try {
-                return FREObject.newObject(false);
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            boolean hasAdAvailable = SAVideoAd.hasAdAvailable(placementId);
+
+            try {
+                return FREObject.newObject(hasAdAvailable);
             } catch (FREWrongThreadException e) {
                 return null;
             }
@@ -563,62 +563,65 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 7) {
+            Context context = freContext.getActivity();
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
+            boolean isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
+            boolean shouldShowCloseButton = SuperAwesome.getInstance().defaultCloseButton();
+            boolean shouldShowSmallClickButton = SuperAwesome.getInstance().defaultSmallClick();
+            boolean shouldAutomaticallyCloseAtEnd = SuperAwesome.getInstance().defaultCloseAtEnd();
+            int orientation = SuperAwesome.getInstance().defaultOrientation().ordinal();
+            boolean isBackButtonEnabled = SuperAwesome.getInstance().defaultBackButton();
 
-                try {
-                    int placementId = freObjects[0].getAsInt();
-                    boolean isParentalGateEnabled = freObjects[1].getAsBool();
-                    boolean shouldShowCloseButton = freObjects[2].getAsBool();
-                    boolean shouldShowSmallClickButton = freObjects[3].getAsBool();
-                    boolean shouldAutomaticallyCloseAtEnd = freObjects[4].getAsBool();
-                    int orientation = freObjects[5].getAsInt();
-                    boolean isBackButtonEnabled = freObjects[6].getAsBool();
-                    Context context = freContext.getActivity();
-
-                    if (isParentalGateEnabled) {
-                        SAVideoAd.enableParentalGate();
-                    } else {
-                        SAVideoAd.disableParentalGate();
-                    }
-
-                    if (shouldShowCloseButton) {
-                        SAVideoAd.enableCloseButton();
-                    } else {
-                        SAVideoAd.disableCloseButton();
-                    }
-
-                    if (shouldShowSmallClickButton) {
-                        SAVideoAd.enableSmallClickButton();
-                    } else {
-                        SAVideoAd.disableSmallClickButton();
-                    }
-
-                    if (shouldAutomaticallyCloseAtEnd) {
-                        SAVideoAd.enableCloseAtEnd();
-                    } else {
-                        SAVideoAd.disableCloseAtEnd();
-                    }
-
-                    if (orientation == SAOrientation.LANDSCAPE.getValue()) {
-                        SAVideoAd.setOrientationLandscape();
-                    } else if (orientation == SAOrientation.PORTRAIT.getValue()) {
-                        SAVideoAd.setOrientationPortrait();
-                    } else {
-                        SAVideoAd.setOrientationAny();
-                    }
-
-                    if (isBackButtonEnabled) {
-                        SAVideoAd.enableBackButton();
-                    } else {
-                        SAVideoAd.disableBackButton();
-                    }
-
-                    SAVideoAd.play(placementId, context);
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
+            try {
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
             }
+
+            try {
+                isParentalGateEnabled = freObjects[1].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                shouldShowCloseButton = freObjects[2].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                shouldShowSmallClickButton = freObjects[3].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                shouldAutomaticallyCloseAtEnd = freObjects[4].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                orientation = freObjects[5].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                isBackButtonEnabled = freObjects[6].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            // configure & play
+            SAVideoAd.setParentalGate(isParentalGateEnabled);
+            SAVideoAd.setCloseButton(shouldShowCloseButton);
+            SAVideoAd.setSmallClick(shouldShowSmallClickButton);
+            SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+            SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
+            SAVideoAd.setBackButton(isBackButtonEnabled);
+            SAVideoAd.play(placementId, context);
 
             return null;
         }
@@ -674,31 +677,33 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 3) {
+            Context context = freContext.getActivity();
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
+            int configuration = SuperAwesome.getInstance().defaultConfiguration().ordinal();
+            boolean test = SuperAwesome.getInstance().defaultTestMode();
 
-                try {
-                    int placementId = freObjects[0].getAsInt();
-                    int configuration = freObjects[1].getAsInt();
-                    boolean test = freObjects[2].getAsBool();
-
-                    if (test) {
-                        SAAppWall.enableTestMode();
-                    } else {
-                        SAAppWall.disableTestMode();
-                    }
-
-                    if (configuration == 0) {
-                        SAAppWall.setConfigurationProduction();
-                    } else {
-                        SAAppWall.setConfigurationStaging();
-                    }
-
-                    SAAppWall.load(placementId, freContext.getActivity());
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
+            try {
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
             }
+
+            try {
+                configuration = freObjects[1].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                test = freObjects[2].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            // configure & load
+            SAAppWall.setConfiguration(SAConfiguration.fromValue(configuration));
+            SAAppWall.setTestMode(test);
+            SAAppWall.load(placementId, context);
 
             return null;
         }
@@ -709,23 +714,18 @@ public class SAAIR {
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-            if (freObjects.length == 1) {
-
-                try {
-
-                    int placementId = freObjects[0].getAsInt();
-
-                    boolean hasAdAvailable = SAAppWall.hasAdAvailable(placementId);
-
-                    return FREObject.newObject(hasAdAvailable);
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
-            }
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
 
             try {
-                return FREObject.newObject(false);
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            boolean hasAdAvailable = SAAppWall.hasAdAvailable(placementId);
+
+            try {
+                return FREObject.newObject(hasAdAvailable);
             } catch (FREWrongThreadException e) {
                 return null;
             }
@@ -736,32 +736,33 @@ public class SAAIR {
 
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
-            if (freObjects.length == 3) {
+            Context context = freContext.getActivity();
+            int placementId = SuperAwesome.getInstance().defaultPlacementId();
+            boolean isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
+            boolean isBackButtonEnabled = SuperAwesome.getInstance().defaultBackButton();
 
-                try {
-                    int placementId = freObjects[0].getAsInt();
-                    boolean isParentalGateEnabled = freObjects[1].getAsBool();
-                    boolean isBackButtonEnabled = freObjects[2].getAsBool();
-                    Context context = freContext.getActivity();
-
-                    if (isParentalGateEnabled) {
-                        SAAppWall.enableParentalGate();
-                    } else {
-                        SAAppWall.disableParentalGate();
-                    }
-
-                    if (isBackButtonEnabled) {
-                        SAAppWall.enableBackButton();
-                    } else {
-                        SAAppWall.disableBackButton();
-                    }
-
-                    SAAppWall.play(placementId, context);
-
-                } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
-                    e.printStackTrace();
-                }
+            try {
+                placementId = freObjects[0].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
             }
+
+            try {
+                isParentalGateEnabled = freObjects[1].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                isBackButtonEnabled = freObjects[2].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            // configure & play
+            SAAppWall.setParentalGate(isParentalGateEnabled);
+            SAAppWall.setBackButton(isBackButtonEnabled);
+            SAAppWall.play(placementId, context);
 
             return null;
         }

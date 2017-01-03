@@ -49,9 +49,6 @@ import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 
-/**
- * Created by gabriel.coman on 22/09/16.
- */
 public class SAAppWall extends Activity {
 
     // private instance vars
@@ -64,13 +61,11 @@ public class SAAppWall extends Activity {
     // static private vars
     private static HashMap<Integer, Object> responses = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
-    private static boolean isParentalGateEnabled = true;
-    private static boolean isTestingEnabled = false;
-    private static boolean isBackButtonEnabled = false;
-    private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
 
-    // private vars
-    private static Context context = null;
+    private static boolean isParentalGateEnabled    = SuperAwesome.getInstance().defaultParentalGate();
+    private static boolean isTestingEnabled         = SuperAwesome.getInstance().defaultTestMode();
+    private static boolean isBackButtonEnabled      = SuperAwesome.getInstance().defaultBackButton();
+    private static SAConfiguration configuration    = SuperAwesome.getInstance().defaultConfiguration();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,10 +279,7 @@ public class SAAppWall extends Activity {
         return object != null && object instanceof SAResponse;
     }
 
-    public static void play(int placementId, Context c) {
-
-        // capture context
-        context = c;
+    public static void play(int placementId, Context context) {
 
         // try to get the ad that fits the placement id
         SAResponse responseL = (SAResponse) responses.get(placementId);
@@ -397,7 +389,7 @@ public class SAAppWall extends Activity {
         private Context context = null;
         private List<SAAd> ads = new ArrayList<>();
 
-        public GameWallAdapter(Context context, List<SAAd> ads){
+        GameWallAdapter(Context context, List<SAAd> ads){
             this.context = context;
             this.ads = ads;
         }

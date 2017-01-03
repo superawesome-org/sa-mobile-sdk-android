@@ -10,6 +10,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
+import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAOrientation;
@@ -23,14 +24,21 @@ import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoLoadS
 import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoPlaybackError;
 import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoStarted;
 
-// MoPub
-// AwesomeAds
-
-/**
- * Created by gabriel.coman on 27/12/15.
- */
 public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVideo {
-    /** private vars */
+
+    // constants representing MoPub JSON keys to look for values in
+    private static final String KEY_MoPub = "com_mopub_ad_unit_id";
+    private static final String KEY_placementId = "placementId";
+    private static final String KEY_isTestEnabled = "isTestEnabled";
+    private static final String KEY_isParentalGateEnabled = "isParentalGateEnabled";
+    private static final String KEY_shouldShowCloseButton = "shouldShowCloseButton";
+    private static final String KEY_shouldAutomaticallyCloseAtEnd = "shouldAutomaticallyCloseAtEnd";
+    private static final String KEY_shouldShowSmallClickButton = "shouldShowSmallClickButton";
+    private static final String KEY_lockOrientation = "lockOrientation";
+    private static final String KEY_orientation = "orientation";
+
+    // private state vars
+    private String moPubId;
     private int placementId;
     private boolean isTestEnabled;
     private boolean isParentalGateEnabled;
@@ -38,7 +46,6 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     private boolean shouldAutomaticallyCloseAtEnd;
     private boolean shouldShowSmallClickButton;
     private SAOrientation orientation;
-    private String moPubId;
 
     // context
     private Context context;
@@ -67,48 +74,86 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     protected boolean checkAndInitializeSdk(Activity activity, Map<String, Object> map, Map<String, String> map1) throws Exception {
 
         // get map variables
-        placementId = 0;
-        isTestEnabled = false;
-        isParentalGateEnabled = true;
-        shouldShowCloseButton = true;
-        shouldAutomaticallyCloseAtEnd = true;
-        shouldShowSmallClickButton = false;
-        orientation = SAOrientation.ANY;
+        placementId = SuperAwesome.getInstance().defaultPlacementId();
+        isTestEnabled = SuperAwesome.getInstance().defaultTestMode();
+        isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
+        shouldShowCloseButton = SuperAwesome.getInstance().defaultCloseButton();
+        shouldAutomaticallyCloseAtEnd = SuperAwesome.getInstance().defaultCloseAtEnd();
+        shouldShowSmallClickButton = SuperAwesome.getInstance().defaultSmallClick();
+        orientation = SuperAwesome.getInstance().defaultOrientation();
 
         // get data
-        if (map.get("com_mopub_ad_unit_id") != null){
-            moPubId = map.get("com_mopub_ad_unit_id").toString();
-        }
-        if (map1.get("placementId") != null ){
-            placementId = Integer.parseInt(map1.get("placementId"));
-        }
-        if (map1.get("isTestEnabled") != null) {
-            isTestEnabled = Boolean.valueOf(map1.get("isTestEnabled"));
-        }
-        if (map1.get("isParentalGateEnabled") != null){
-            isParentalGateEnabled = Boolean.valueOf(map1.get("isParentalGateEnabled"));
-        }
-        if (map1.get("shouldShowCloseButton") != null){
-            shouldShowCloseButton = Boolean.valueOf(map1.get("shouldShowCloseButton"));
-        }
-        if (map1.get("shouldAutomaticallyCloseAtEnd") != null) {
-            shouldAutomaticallyCloseAtEnd = Boolean.valueOf(map1.get("shouldAutomaticallyCloseAtEnd"));
-        }
-        if (map1.get("shouldShowSmallClickButton") != null) {
-            shouldShowSmallClickButton = Boolean.valueOf(map1.get("shouldShowSmallClickButton"));
-        }
-        if (map1.get("lockOrientation") != null) {
-            if (map1.get("lockOrientation").equals("PORTRAIT")) {
-                orientation = SAOrientation.PORTRAIT;
-            } else if (map1.get("lockOrientation").equals("LANDSCAPE")) {
-                orientation = SAOrientation.LANDSCAPE;
+        if (map.containsKey(KEY_MoPub)) {
+            try {
+                moPubId = map.get(KEY_MoPub).toString();
+            } catch (Exception e) {
+                // do nothing
             }
         }
-        if (map1.get("orientation") != null) {
-            if (map1.get("orientation").equals("PORTRAIT")) {
-                orientation = SAOrientation.PORTRAIT;
-            } else if (map1.get("orientation").equals("LANDSCAPE")) {
-                orientation = SAOrientation.LANDSCAPE;
+        if (map1.containsKey(KEY_placementId)) {
+            try {
+                placementId = Integer.parseInt(map1.get(KEY_placementId));
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        if (map1.containsKey(KEY_isTestEnabled)) {
+            try {
+                isTestEnabled = Boolean.valueOf(map1.get(KEY_isTestEnabled));
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        if (map1.containsKey(KEY_isParentalGateEnabled)) {
+            try {
+                isParentalGateEnabled = Boolean.valueOf(map1.get(KEY_isParentalGateEnabled));
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        if (map1.containsKey(KEY_shouldShowCloseButton)) {
+            try {
+                shouldShowCloseButton = Boolean.valueOf(map1.get(KEY_shouldShowCloseButton));
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        if (map1.containsKey(KEY_shouldAutomaticallyCloseAtEnd)) {
+            try {
+                shouldAutomaticallyCloseAtEnd = Boolean.valueOf(map1.get(KEY_shouldAutomaticallyCloseAtEnd));
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        if (map1.containsKey(KEY_shouldShowSmallClickButton)) {
+            try {
+                shouldShowSmallClickButton = Boolean.valueOf(map1.get(KEY_shouldShowSmallClickButton));
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        if (map1.containsKey(KEY_lockOrientation)) {
+            try {
+                String stringOrientation = map1.get(KEY_lockOrientation);
+                if (stringOrientation != null && stringOrientation.equals("PORTRAIT")) {
+                    orientation = SAOrientation.PORTRAIT;
+                } else if (stringOrientation != null && stringOrientation.equals("LANDSCAPE")){
+                    orientation = SAOrientation.LANDSCAPE;
+                }
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        if (map1.containsKey(KEY_orientation)) {
+            try {
+                String stringOrientation = map1.get(KEY_orientation);
+                if (stringOrientation != null && stringOrientation.equals("PORTRAIT")) {
+                    orientation = SAOrientation.PORTRAIT;
+                } else if (stringOrientation != null && stringOrientation.equals("LANDSCAPE")){
+                    orientation = SAOrientation.LANDSCAPE;
+                }
+            } catch (Exception e) {
+                // do nothing
             }
         }
 
@@ -121,47 +166,14 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         // get context
         this.context = activity;
 
-        // load and show the ad
+        // configure the ad
         SAVideoAd.setConfigurationProduction();
-
-        if (isTestEnabled) {
-            SAVideoAd.enableTestMode();
-        } else {
-            SAVideoAd.disableTestMode();
-        }
-
-        if (isParentalGateEnabled) {
-            SAVideoAd.enableParentalGate();
-        } else {
-            SAVideoAd.disableParentalGate();
-        }
-
-        if (shouldAutomaticallyCloseAtEnd) {
-            SAVideoAd.enableCloseAtEnd();
-        } else {
-            SAVideoAd.disableCloseAtEnd();
-        }
-
-        if (shouldShowCloseButton) {
-            SAVideoAd.enableCloseButton();
-        } else {
-            SAVideoAd.disableCloseButton();
-        }
-
-        if (shouldShowSmallClickButton) {
-            SAVideoAd.enableSmallClickButton();
-        } else {
-            SAVideoAd.disableSmallClickButton();
-        }
-
-        if (orientation == SAOrientation.LANDSCAPE) {
-            SAVideoAd.setOrientationLandscape();
-        } else if (orientation == SAOrientation.PORTRAIT) {
-            SAVideoAd.setOrientationPortrait();
-        } else {
-            SAVideoAd.setOrientationAny();
-        }
-
+        SAVideoAd.setTestMode(isTestEnabled);
+        SAVideoAd.setParentalGate(isParentalGateEnabled);
+        SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+        SAVideoAd.setCloseButton(shouldShowCloseButton);
+        SAVideoAd.setSmallClick(shouldShowSmallClickButton);
+        SAVideoAd.setOrientation(orientation);
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -195,7 +207,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                 }
             }
         });
-
+        // load the ad
         SAVideoAd.load(placementId, context);
     }
 

@@ -12,13 +12,7 @@ import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.samodelspace.SAAd;
 
-/**
- * Created by connor.leigh-smith on 28/08/15.
- *
- * The SAParentalGate class. It's main goal is to show an AlertDialog
- * that challenges the user to respond to a simple math riddle
- *
- */
+
 public class SAParentalGate {
 
     // constants for the rand nr. generator
@@ -41,7 +35,6 @@ public class SAParentalGate {
     private Context c = null;
     private WeakReference<Object> parentRef = null;
     private SAEvents events = null;
-    private SAAd refAd;
     private int gameWallPos = 0;
 
     // the alert dialog */
@@ -52,17 +45,12 @@ public class SAParentalGate {
     private boolean calledByVideo = false;
     private boolean calledByGameWall = false;
 
-    public SAParentalGate(Context c, Object parent, SAAd _refAd){
+    SAParentalGate(Context c, Object parent, SAAd _refAd){
         super();
         this.c = c;
         this.parentRef = new WeakReference<> (parent);
-        this.refAd = _refAd;
         this.events = new SAEvents (c);
-        this.events.setAd(this.refAd);
-
-        if (this.refAd == null){
-            this.refAd = new SAAd();
-        }
+        this.events.setAd(_refAd != null ? _refAd : new SAAd());
 
         String className = parentRef.get().getClass().getName();
         String videoClassName = SAVideoAd.class.getCanonicalName();
@@ -73,13 +61,13 @@ public class SAParentalGate {
         calledByGameWall = className.contains(gamewallClassName);
     }
 
-    public SAParentalGate(Context c, Object parent, SAAd _refAd, int position) {
+    SAParentalGate(Context c, Object parent, SAAd _refAd, int position) {
         this(c, parent, _refAd);
         gameWallPos = position;
     }
 
     /** show function */
-    public void show() {
+    void show() {
 
         // send Open Event
         events.sendEventsFor("pg_open");

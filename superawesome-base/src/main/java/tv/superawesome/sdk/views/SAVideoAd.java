@@ -7,10 +7,8 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
@@ -26,6 +24,7 @@ import tv.superawesome.lib.samodelspace.SACampaignType;
 import tv.superawesome.lib.samodelspace.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.samodelspace.SATracking;
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -33,12 +32,8 @@ import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerClickInterface;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerEvent;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerEventInterface;
-import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.SuperAwesome;
 
-/**
- * Created by gabriel.coman on 26/08/16.
- */
 public class SAVideoAd extends Activity {
 
     // the ad
@@ -50,20 +45,18 @@ public class SAVideoAd extends Activity {
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
 
-    // private vars
-    private static Context context = null;
-
     // private vars w/ a public interface
     private static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
-    private static boolean isParentalGateEnabled = true;
-    private static boolean shouldShowCloseButton = true;
-    private static boolean shouldAutomaticallyCloseAtEnd = true;
-    private static boolean shouldShowSmallClickButton = false;
-    private static boolean isTestingEnabled = false;
-    private static boolean isBackButtonEnabled = false;
-    private static SAOrientation orientation = SAOrientation.ANY;
-    private static SAConfiguration configuration = SAConfiguration.PRODUCTION;
+
+    private static boolean isParentalGateEnabled            = SuperAwesome.getInstance().defaultParentalGate();
+    private static boolean shouldShowCloseButton            = SuperAwesome.getInstance().defaultCloseButton();
+    private static boolean shouldAutomaticallyCloseAtEnd    = SuperAwesome.getInstance().defaultCloseAtEnd();
+    private static boolean shouldShowSmallClickButton       = SuperAwesome.getInstance().defaultSmallClick();
+    private static boolean isTestingEnabled                 = SuperAwesome.getInstance().defaultTestMode();
+    private static boolean isBackButtonEnabled              = SuperAwesome.getInstance().defaultBackButton();
+    private static SAOrientation orientation                = SuperAwesome.getInstance().defaultOrientation();
+    private static SAConfiguration configuration            = SuperAwesome.getInstance().defaultConfiguration();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,7 +226,6 @@ public class SAVideoAd extends Activity {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void click() {
-
         // get local
         SAInterface listenerL = getListener();
         SAConfiguration configurationL = getConfiguration();
@@ -270,7 +262,7 @@ public class SAVideoAd extends Activity {
             if (ad.creative.clickUrl != null) {
                 String finalURL = ad.creative.clickUrl + "&referrer=" + referrerQuery;
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
-                context.startActivity(browserIntent);
+                startActivity(browserIntent);
             }
         }
         // in CPM we:
@@ -293,7 +285,7 @@ public class SAVideoAd extends Activity {
             // go to the URL
             if (finalURL != null) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
-                context.startActivity(browserIntent);
+                startActivity(browserIntent);
             }
         }
     }
@@ -388,10 +380,7 @@ public class SAVideoAd extends Activity {
         return object != null && object instanceof SAAd;
     }
 
-    public static void play(int placementId, Context c) {
-        // capture context
-        context = c;
-
+    public static void play(int placementId, Context context) {
         // try to get the ad that fits the placement id
         SAAd adL = (SAAd) ads.get(placementId);
 
