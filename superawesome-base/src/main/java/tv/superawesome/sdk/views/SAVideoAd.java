@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -548,6 +549,4 @@ public class SAVideoAd extends Activity {
     public static void setSmallClick (boolean value) {
         shouldShowSmallClickButton = value;
     }
-
-
 }
