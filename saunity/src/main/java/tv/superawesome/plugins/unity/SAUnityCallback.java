@@ -30,13 +30,13 @@ public class SAUnityCallback {
             java.lang.reflect.Method method = unity.getMethod("UnitySendMessage", String.class, String.class, String.class);
             method.invoke(unity, unityAd, "nativeCallback", payload);
         } catch (ClassNotFoundException e) {
-            Log.d("UNITY CALLBACK-Ex", e.toString());
+            //
         } catch (NoSuchMethodException e) {
-            Log.d("UNITY CALLBACK-Ex", e.toString());
+            //
         } catch (InvocationTargetException e) {
-            Log.d("UNITY CALLBACK-Ex", e.toString());
+            //
         } catch (IllegalAccessException e) {
-            Log.d("UNITY CALLBACK-Ex", e.toString());
+            //
         }
     }
 
