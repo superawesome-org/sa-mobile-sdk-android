@@ -1,5 +1,7 @@
 package tv.superawesome.plugins.unity;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +19,7 @@ public class SAUnityCallback {
         // form the payload
         JSONObject data = SAJsonParser.newObject(new Object[] {
                 "placementId", "" + placementId + "",
-                "type", "sacallback" + callback
+                "type", "sacallback_" + callback
         });
 
         String payload = data.toString();
@@ -28,13 +30,13 @@ public class SAUnityCallback {
             java.lang.reflect.Method method = unity.getMethod("UnitySendMessage", String.class, String.class, String.class);
             method.invoke(unity, unityAd, "nativeCallback", payload);
         } catch (ClassNotFoundException e) {
-            // failure
+            Log.d("UNITY CALLBACK-Ex", e.toString());
         } catch (NoSuchMethodException e) {
-            // failure
+            Log.d("UNITY CALLBACK-Ex", e.toString());
         } catch (InvocationTargetException e) {
-            // failure
+            Log.d("UNITY CALLBACK-Ex", e.toString());
         } catch (IllegalAccessException e) {
-            // failure;
+            Log.d("UNITY CALLBACK-Ex", e.toString());
         }
     }
 
