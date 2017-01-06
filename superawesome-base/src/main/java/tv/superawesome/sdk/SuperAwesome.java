@@ -17,7 +17,7 @@ public class SuperAwesome {
 
     // constructors
     private SuperAwesome() {
-        version = "5.3.9";
+        version = "5.3.10";
         sdk = "android";
     }
 
