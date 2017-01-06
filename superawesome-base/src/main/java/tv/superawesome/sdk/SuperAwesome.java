@@ -1,10 +1,3 @@
-/**
- * @class: SuperAwesome.java
- * @copyright: (c) 2015 SuperAwesome Ltd. All rights reserved.
- * @author: Gabriel Coman
- * @date: 28/09/2015
- *
- */
 package tv.superawesome.sdk;
 
 import tv.superawesome.lib.sasession.SAConfiguration;
@@ -18,8 +11,14 @@ public class SuperAwesome {
     // variables
     private static SuperAwesome instance = new SuperAwesome();
 
+    // version & sdk private vars
+    private String version = null;
+    private String sdk = null;
+
     // constructors
     private SuperAwesome() {
+        version = "5.3.9";
+        sdk = "android";
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,11 +30,11 @@ public class SuperAwesome {
     }
 
     private String getVersion() {
-        return "5.3.9";
+        return version;
     }
 
     private String getSdk() {
-        return "android";
+        return sdk;
     }
 
     public String getSDKVersion() {
@@ -73,5 +72,14 @@ public class SuperAwesome {
     }
     public boolean defaultBackButton () {
         return false;
+    }
+
+    // override sdk & version methods
+
+    public void overrideVersion (String version) {
+        this.version = version;
+    }
+    public void overrideSdk (String sdk) {
+        this.sdk = sdk;
     }
 }
