@@ -285,7 +285,7 @@ public class SAAppWall extends Activity {
         SAResponse responseL = (SAResponse) responses.get(placementId);
 
         // try to start the activity
-        if (responseL != null && responseL.format == SACreativeFormat.gamewall && context != null) {
+        if (responseL != null && responseL.format == SACreativeFormat.appwall && context != null) {
             Intent intent = new Intent(context, SAAppWall.class);
             intent.putExtra("response", responseL.writeToJson().toString());
             context.startActivity(intent);
