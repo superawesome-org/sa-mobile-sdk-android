@@ -11,9 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="39dc3bc7-2fbb-472a-8c0f-ac9e1b88dac0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityVersion.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVersion.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -148,11 +148,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SAAIRVideoAd.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVideoAd.java">
+      <file leaf-file-name="SAAIRCallback.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCallback.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
+            <state relative-caret-position="300">
+              <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -170,70 +170,67 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SAUnityInterstitialAd.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityInterstitialAd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAUnityVideoAd.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityVideoAd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="13" column="0" selection-start-line="12" selection-start-column="4" selection-end-line="13" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAUnityAppWall.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityAppWall.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="23" column="72" selection-start-line="23" selection-start-column="72" selection-end-line="23" selection-end-column="72" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAAIRAppWall.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRAppWall.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="35" column="82" selection-start-line="35" selection-start-column="82" selection-end-line="35" selection-end-column="82" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAUnityCallback.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityCallback.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAUnityVersion.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SAUnityVersion.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityVersion.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="9" column="50" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="50" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAAIRVersion.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVersion.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="23" column="36" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAAIRCPI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAAIRExtensionContext.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="36" column="97" selection-start-line="36" selection-start-column="97" selection-end-line="36" selection-end-column="97" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAAIR.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAAIRBannerAd.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="855">
+              <caret line="109" column="5" selection-start-line="67" selection-start-column="4" selection-end-line="109" selection-end-column="5" />
+              <folding>
+                <element signature="e#1573#2559#0" expanded="true" />
+                <element signature="e#2558#2559#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -6104,7 +6101,6 @@
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRInterstitialAd.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVideoAd.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRAppWall.java" />
-        <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java" />
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" />
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityInterstitialAd.java" />
@@ -6113,6 +6109,8 @@
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityCallback.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityVersion.java" />
+        <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" />
+        <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVersion.java" />
       </list>
     </option>
   </component>
@@ -6282,6 +6280,10 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="air" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -6733,13 +6735,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeBannerCustomEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="45" column="51" selection-start-line="45" selection-start-column="51" selection-end-line="45" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeInterstitialCustomEvent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1185">
@@ -6988,50 +6983,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCallback.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRInterstitialAd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="20" column="61" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityAppWall.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -7065,7 +7016,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="35" column="6" selection-start-line="35" selection-start-column="6" selection-end-line="35" selection-end-column="6" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -7114,6 +7067,67 @@
         <state relative-caret-position="105">
           <caret line="9" column="50" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="50" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRInterstitialAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="20" column="61" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="109" column="5" selection-start-line="67" selection-start-column="4" selection-end-line="109" selection-end-column="5" />
+          <folding>
+            <element signature="e#1573#2559#0" expanded="true" />
+            <element signature="e#2558#2559#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="36" column="97" selection-start-line="36" selection-start-column="97" selection-end-line="36" selection-end-column="97" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVersion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="36" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
