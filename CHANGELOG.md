@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+5.3.12
+ - Minor change - update the SAAdLoader dependency to change the "bundle" parameter to "sourceBundle" to work with the actual ad server naming convention
+
+
+5.3.11
+ - Minor change - update the SAAdLoader dependency to add the "bundle" parameter to every click, impression, event; needed for CPI
+
 5.3.10
  - Updated the AIR & Unity plugins to be more modular. That means that in both of them the code is not bundled any more into one big class or file, but split into multiple classes / files, such as SAAIRBannerAd, SAUnityVideoAd, etc. This not only spearates concerns but also makes it more manageable and easier to spot errors.
  - The AIR & Unity plugins can now override the main SDK version & sdk type. Meaning that when bundled as part of any of those SDKs, the Android SDK will report as "air_x.y.z." or "unity_x.y.z" instead of "android_x.y.z". This makes reporting so much more accurate. 
