@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements SALoaderInterface {
             loader = new SALoader();
             loader.loadAd(222, this);
             loader.loadAd(223, this);
-//            loader.loadAd(113, this);
+            loader.loadAd(113, this);
 //            loader.loadAd(114, this);
 //            loader.loadAd(115, this);
 //            loader.loadAd(116, this);
