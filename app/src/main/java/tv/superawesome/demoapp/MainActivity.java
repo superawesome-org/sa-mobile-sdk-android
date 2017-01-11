@@ -9,6 +9,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.samodelspace.SAVASTAdType;
+import tv.superawesome.lib.sasession.SASession;
+import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.cpi.SACPI;
+import tv.superawesome.sdk.cpi.SAInstallEvent;
+import tv.superawesome.sdk.cpi.SAInstallEventInterface;
+import tv.superawesome.sdk.cpi.SASourceBundleInspector;
+import tv.superawesome.sdk.cpi.SASourceBundleInspectorInterface;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -22,12 +29,21 @@ public class MainActivity extends Activity {
 
     /** the options list */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+        SASession session = new SASession(this);
+        session.setConfigurationStaging();
 
+        SuperAwesome.getInstance().handleStagingCPI(this, new SAInstallEventInterface() {
+            @Override
+            public void didCountAnInstall(boolean success) {
+                Log.d("SuperAwesome-CPI-Stag", "Did count install: " + success);
+            }
+        });
+
+        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
         bannerAd.setConfigurationStaging();
         bannerAd.disableTestMode();
         bannerAd.disableParentalGate();

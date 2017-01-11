@@ -28,12 +28,12 @@ public class SAAIRAppWall {
                 @Override
                 public void onEvent(int placementId, SAEvent event) {
                     switch (event) {
-                        case adLoaded: SAAIRCallback.sendToAIR(freContext, airName, placementId, "adLoaded"); break;
-                        case adFailedToLoad: SAAIRCallback.sendToAIR(freContext, airName, placementId, "adFailedToLoad"); break;
-                        case adShown: SAAIRCallback.sendToAIR(freContext, airName, placementId, "adShown"); break;
-                        case adFailedToShow: SAAIRCallback.sendToAIR(freContext, airName, placementId, "adFailedToShow"); break;
-                        case adClicked: SAAIRCallback.sendToAIR(freContext, airName, placementId, "adClicked"); break;
-                        case adClosed: SAAIRCallback.sendToAIR(freContext, airName, placementId, "adClosed"); break;
+                        case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, "adLoaded"); break;
+                        case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName, placementId, "adFailedToLoad"); break;
+                        case adShown: SAAIRCallback.sendAdCallback(freContext, airName, placementId, "adShown"); break;
+                        case adFailedToShow: SAAIRCallback.sendAdCallback(freContext, airName, placementId, "adFailedToShow"); break;
+                        case adClicked: SAAIRCallback.sendAdCallback(freContext, airName, placementId, "adClicked"); break;
+                        case adClosed: SAAIRCallback.sendAdCallback(freContext, airName, placementId, "adClosed"); break;
                     }
                 }
             });

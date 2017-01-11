@@ -11,16 +11,10 @@ import tv.superawesome.lib.sautils.SAUtils;
 
 public class SAUnityCallback {
 
-    public static void sendToUnity(String unityAd, int placementId, String callback) {
+    public static void sendToUnity (String unityAd, JSONObject data) {
 
         // don't do anything if class is not available
         if (!SAUtils.isClassAvailable("com.unity3d.player.UnityPlayer")) return;
-
-        // form the payload
-        JSONObject data = SAJsonParser.newObject(new Object[] {
-                "placementId", "" + placementId + "",
-                "type", "sacallback_" + callback
-        });
 
         String payload = data.toString();
 
@@ -38,6 +32,27 @@ public class SAUnityCallback {
         } catch (IllegalAccessException e) {
             //
         }
+    }
+
+    public static void sendAdCallback (String unityAd, int placementId, String callback) {
+
+        JSONObject data = SAJsonParser.newObject(new Object[] {
+                "placementId", "" + placementId + "",
+                "type", "sacallback_" + callback
+        });
+
+        sendToUnity(unityAd, data);
+    }
+
+    public static void sendCPICallback (String unityAd, boolean success, String callback) {
+
+        JSONObject data = SAJsonParser.newObject(new Object[] {
+                "success", "" + success + "",
+                "type", "sacallback_" + callback
+        });
+
+        sendToUnity(unityAd, data);
+
     }
 
 }

@@ -17,12 +17,12 @@ public class SAUnityVideoAd {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
-                    case adLoaded: SAUnityCallback.sendToUnity(unityName, placementId, "adLoaded"); break;
-                    case adFailedToLoad: SAUnityCallback.sendToUnity(unityName, placementId, "adFailedToShow"); break;
-                    case adShown: SAUnityCallback.sendToUnity(unityName, placementId, "adShown"); break;
-                    case adFailedToShow: SAUnityCallback.sendToUnity(unityName, placementId, "adFailedToShow"); break;
-                    case adClicked: SAUnityCallback.sendToUnity(unityName, placementId, "adClicked"); break;
-                    case adClosed: SAUnityCallback.sendToUnity(unityName, placementId, "adClosed"); break;
+                    case adLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, "adLoaded"); break;
+                    case adFailedToLoad: SAUnityCallback.sendAdCallback(unityName, placementId, "adFailedToShow"); break;
+                    case adShown: SAUnityCallback.sendAdCallback(unityName, placementId, "adShown"); break;
+                    case adFailedToShow: SAUnityCallback.sendAdCallback(unityName, placementId, "adFailedToShow"); break;
+                    case adClicked: SAUnityCallback.sendAdCallback(unityName, placementId, "adClicked"); break;
+                    case adClosed: SAUnityCallback.sendAdCallback(unityName, placementId, "adClosed"); break;
                 }
             }
         });
