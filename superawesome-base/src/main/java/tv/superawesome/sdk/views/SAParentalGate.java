@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.sdk.views;
 
 import android.app.AlertDialog;
@@ -13,6 +17,10 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.samodelspace.SAAd;
 
 
+/**
+ * Class that defines a parental gate - basically a pop-up that, when enables, forces users to
+ * respond to a mini-math quiz in order to proceed forward
+ */
 public class SAParentalGate {
 
     // constants for the rand nr. generator
@@ -45,6 +53,13 @@ public class SAParentalGate {
     private boolean calledByVideo = false;
     private boolean calledByGameWall = false;
 
+    /**
+     * Constructor with context, parent and reference ad
+     *
+     * @param c         the current context (activity or fragment)
+     * @param parent    the parent - which might be a banner, video or app wall
+     * @param _refAd    a reference to the current ad
+     */
     SAParentalGate(Context c, Object parent, SAAd _refAd){
         super();
         this.c = c;
@@ -61,12 +76,23 @@ public class SAParentalGate {
         calledByGameWall = className.contains(gamewallClassName);
     }
 
+    /**
+     * Constructor with context, parent, reference ad and position;
+     * Used by the App wall type ad
+     *
+     * @param c         the current context (activity or fragment)
+     * @param parent    the parent - which might be a banner, video or app wall
+     * @param _refAd    a reference to the current ad
+     * @param position  the position in the app wall
+     */
     SAParentalGate(Context c, Object parent, SAAd _refAd, int position) {
         this(c, parent, _refAd);
         gameWallPos = position;
     }
 
-    /** show function */
+    /**
+     * Method that shows the parental gate popup and fires the necessary events
+     */
     void show() {
 
         // send Open Event
@@ -172,7 +198,7 @@ public class SAParentalGate {
     }
 
     /**
-     * Function that closes this
+     * Function that closes the parental gate
      */
     public void close() {
         dialog.cancel();

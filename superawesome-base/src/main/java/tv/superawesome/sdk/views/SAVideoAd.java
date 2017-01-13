@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.sdk.views;
 
 import android.app.Activity;
@@ -35,6 +39,10 @@ import tv.superawesome.lib.savideoplayer.SAVideoPlayerEvent;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerEventInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
+/**
+ * Class that abstracts away the process of loading & displaying a video type Ad.
+ * A subclass of the Android "Activity" class.
+ */
 public class SAVideoAd extends Activity {
 
     // the ad
@@ -59,6 +67,16 @@ public class SAVideoAd extends Activity {
     private static SAOrientation orientation                = SuperAwesome.getInstance().defaultOrientation();
     private static SAConfiguration configuration            = SuperAwesome.getInstance().defaultConfiguration();
 
+    /**********************************************************************************************
+     * Activity initialization & instance methods
+     **********************************************************************************************/
+
+    /**
+     * Overridden "onCreate" method, part of the Activity standard set of methods.
+     * Here is the part where the activity / video ad gets configured
+     *
+     * @param savedInstanceState previous saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,11 +225,21 @@ public class SAVideoAd extends Activity {
         }
     }
 
+    /**
+     * Overridden "onSaveInstanceState" method of the activity
+     *
+     * @param outState the outgoing state
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Overridden "onBackPressed" method of the activity
+     * Depending on how the ad is customised, this will lock the back button or it will allow it.
+     * If it allows it, it's going to also send an "adClosed" event back to the SDK user
+     */
     @Override
     public void onBackPressed() {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
@@ -222,10 +250,13 @@ public class SAVideoAd extends Activity {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Custom instance methods
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Custom instance methods
+     **********************************************************************************************/
 
+    /**
+     * Method that handles a click on the ad surface
+     */
     public void click() {
         // get local
         SAInterface listenerL = getListener();
@@ -291,18 +322,33 @@ public class SAVideoAd extends Activity {
         }
     }
 
+    /**
+     * Method that handles what should happen when the video pauses
+     */
     public void pause () {
         videoPlayer.pausePlayer();
     }
 
+    /**
+     * Method that handles what should happen when the video resumes
+     */
     public void resume () {
         videoPlayer.resumePlayer();
     }
 
+    /**
+     * Method that determines if an ad should display a padlock over it's content to indicate
+     * it has been properly approved by SuperAwesome
+     *
+     * @return true or false
+     */
     private boolean shouldShowPadlock() {
         return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
+    /**
+     * Method that closes the interstitial ad
+     */
     private void close() {
 
         // get local
@@ -312,7 +358,7 @@ public class SAVideoAd extends Activity {
         listenerL.onEvent(ad.placementId, SAEvent.adClosed);
 
         // unregister MOAT video
-        events.unregisterVideoMoatEvent(ad.placementId);
+        events.unregisterVideoMoatEvent();
 
         // delete the ad
         removeAdFromLoadedAds(ad);
@@ -322,10 +368,17 @@ public class SAVideoAd extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Public class interface
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Public class interface
+     **********************************************************************************************/
 
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     */
     public static void load(final int placementId, Context context) {
 
         if (!ads.containsKey(placementId)) {
@@ -343,7 +396,7 @@ public class SAVideoAd extends Activity {
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());
             session.prepareSession(new SASessionInterface() {
                 @Override
-                public void sessionReady() {
+                public void didFindSessionReady() {
 
                     // after session is OK - start loading
                     loader.loadAd(placementId, session, new SALoaderInterface() {
@@ -376,11 +429,23 @@ public class SAVideoAd extends Activity {
         }
     }
 
+    /**
+     * Static method that returns whether ad data for a certain placement has already been loaded
+     *
+     * @param placementId   the Ad placement id to check for
+     * @return              true or false
+     */
     public static boolean hasAdAvailable (int placementId) {
         Object object = ads.get(placementId);
         return object != null && object instanceof SAAd;
     }
 
+    /**
+     * Static method that, if an ad data is loaded, will play the content for the user
+     *
+     * @param placementId   the Ad placement id to play an ad for
+     * @param context       the current context (activity or fragment)
+     */
     public static void play(int placementId, Context context) {
         // try to get the ad that fits the placement id
         SAAd adL = (SAAd) ads.get(placementId);
@@ -395,13 +460,19 @@ public class SAVideoAd extends Activity {
         }
     }
 
+    /**
+     * Private static method that removes an already played ad from the ad queue so that it can't
+     * be played again until it is reloaded
+     *
+     * @param ad the current ad, since I need the palcement Id from it
+     */
     private static void removeAdFromLoadedAds (SAAd ad) {
         ads.remove(ad.placementId);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Setters & getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Setters & Getters
+     **********************************************************************************************/
 
     public static void setListener(SAInterface value) {
         listener = value != null ? value : listener;
@@ -475,9 +546,6 @@ public class SAVideoAd extends Activity {
         setSmallClick(false);
     }
 
-
-    // private static methods to handle static vars
-
     private static SAInterface getListener () {
         return listener;
     }
@@ -513,10 +581,6 @@ public class SAVideoAd extends Activity {
     private static boolean getIsBackButtonEnabled () {
         return isBackButtonEnabled;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Generic setters and getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void setParentalGate (boolean value) {
         isParentalGateEnabled = value;

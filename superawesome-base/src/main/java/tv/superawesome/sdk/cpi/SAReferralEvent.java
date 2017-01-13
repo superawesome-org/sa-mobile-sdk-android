@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.sdk.cpi;
 
 import android.content.Context;
@@ -7,7 +11,7 @@ import org.json.JSONObject;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
-import tv.superawesome.lib.samodelspace.SACPIData;
+import tv.superawesome.lib.samodelspace.SAReferralData;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
@@ -39,7 +43,7 @@ public class SAReferralEvent {
         referrer = referrer.replace("utm_content", "\"utm_content\"");
         referrer = referrer.replace("utm_medium", "\"utm_medium\"");
 
-        SACPIData cpiData = new SACPIData(referrer);
+        SAReferralData cpiData = new SAReferralData(referrer);
 
         if (cpiData.isValid()) {
 

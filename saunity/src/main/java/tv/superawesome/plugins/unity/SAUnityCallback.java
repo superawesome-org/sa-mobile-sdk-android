@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.plugins.unity;
 
 import android.util.Log;
@@ -9,8 +13,17 @@ import java.lang.reflect.InvocationTargetException;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sautils.SAUtils;
 
+/**
+ * Class that holds a number of static methods used to communicate with Unity
+ */
 public class SAUnityCallback {
 
+    /**
+     * Method that tries to send back data to an Unity app
+     *
+     * @param unityAd   current unity ad to send data to
+     * @param data      the data package
+     */
     public static void sendToUnity (String unityAd, JSONObject data) {
 
         // don't do anything if class is not available
@@ -34,6 +47,13 @@ public class SAUnityCallback {
         }
     }
 
+    /**
+     * Method that sends ad data back to an Adobe AIR app
+     *
+     * @param unityAd       name of the Ad to send back data to
+     * @param placementId   the placement Id
+     * @param callback      the callback name
+     */
     public static void sendAdCallback (String unityAd, int placementId, String callback) {
 
         JSONObject data = SAJsonParser.newObject(new Object[] {
@@ -44,6 +64,13 @@ public class SAUnityCallback {
         sendToUnity(unityAd, data);
     }
 
+    /**
+     * Method that sends CPI data back to an Adobe AIR app
+     *
+     * @param unityAd   name of the Ad to send back data to
+     * @param success   success state of the CPI operation
+     * @param callback  the callback name
+     */
     public static void sendCPICallback (String unityAd, boolean success, String callback) {
 
         JSONObject data = SAJsonParser.newObject(new Object[] {

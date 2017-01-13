@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.plugins.unity;
 
 import android.app.Activity;
@@ -16,13 +20,16 @@ import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 
 /**
- * Created by gabriel.coman on 05/01/2017.
+ * Class that holds a number of static methods used to communicate with Unity
  */
-
 public class SAUnityBannerAd {
 
+    // hash map containing banne rads
     private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
 
+    /**
+     * Method that creates a new banner ad (from Unity)
+     */
     public static void SuperAwesomeUnitySABannerAdCreate (Context context, final String unityName) {
 
         SABannerAd bannerAd = new SABannerAd(context);
@@ -44,6 +51,9 @@ public class SAUnityBannerAd {
         bannerAdHashMap.put(unityName, bannerAd);
     }
 
+    /**
+     * Method that loads a new Banner Ad (from Unity)
+     */
     public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
@@ -53,6 +63,9 @@ public class SAUnityBannerAd {
         }
     }
 
+    /**
+     * Method that checks to see if an ad is available for a banner ad (from Unity)
+     */
     public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable (Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
@@ -61,6 +74,9 @@ public class SAUnityBannerAd {
         return false;
     }
 
+    /**
+     * Method that plays a new Banner ad (from Unity)
+     */
     public static void SuperAwesomeUnitySABannerAdPlay (Context context, String unityName, boolean isParentalGateEnabled, int position, int width, int height, boolean color) {
 
         if (bannerAdHashMap.containsKey(unityName)) {
@@ -111,6 +127,9 @@ public class SAUnityBannerAd {
         }
     }
 
+    /**
+     * Method that closes a banner ad (from Unity)
+     */
     public static void SuperAwesomeUnitySABannerAdClose (Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);

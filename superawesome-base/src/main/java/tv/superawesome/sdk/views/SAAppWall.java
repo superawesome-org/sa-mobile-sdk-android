@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.sdk.views;
 
 import android.app.Activity;
@@ -49,16 +53,22 @@ import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 
+/**
+ * Class that abstracts away the process of loading & displaying an App Wall type Ad.
+ * A subclass of the Android "Activity" class.
+ */
 public class SAAppWall extends Activity {
 
     // private instance vars
     private SAResponse response = null;
 
+    // parental gate
     private SAParentalGate gate;
 
+    // a list of events to fire
     private List<SAEvents> events = new ArrayList<>();
 
-    // static private vars
+    // static private vars used to communicate with the ad
     private static HashMap<Integer, Object> responses = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
@@ -67,6 +77,12 @@ public class SAAppWall extends Activity {
     private static boolean isBackButtonEnabled      = SuperAwesome.getInstance().defaultBackButton();
     private static SAConfiguration configuration    = SuperAwesome.getInstance().defaultConfiguration();
 
+    /**
+     * Overridden "onCreate" method, part of the Activity standard set of methods.
+     * Here is the part where the activity / appwall gets configured
+     *
+     * @param savedInstanceState previous saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +131,7 @@ public class SAAppWall extends Activity {
         });
 
         // create adapter
-        GameWallAdapter adapter = new GameWallAdapter(this, response.ads);
+        AppWallAdapter adapter = new AppWallAdapter(this, response.ads);
 
         // set the game grid
         GridView gameGrid = (GridView) findViewById(GameWallGridId);
@@ -146,11 +162,21 @@ public class SAAppWall extends Activity {
         listenerL.onEvent(response.placementId, SAEvent.adShown);
       }
 
+    /**
+     * Overridden "onSaveInstanceState" method of the activity
+     *
+     * @param outState the outgoing state
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Overridden "onBackPressed" method of the activity
+     * Depending on how the ad is customised, this will lock the back button or it will allow it.
+     * If it allows it, it's going to also send an "adClosed" event back to the SDK user
+     */
     @Override
     public void onBackPressed() {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
@@ -161,10 +187,15 @@ public class SAAppWall extends Activity {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Custom instance methods
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Custom instance methods
+     **********************************************************************************************/
 
+    /**
+     * Method that handles a click on the ad surface
+     *
+     * @param position what cell of the AppWall was clicked
+     */
     public void click(int position) {
         // get ad
         SAAd ad = response.ads.get(position);
@@ -207,6 +238,9 @@ public class SAAppWall extends Activity {
         }
     }
 
+    /**
+     * Method that handles the app wall close button being pressed
+     */
     private void close() {
 
         // get local
@@ -224,10 +258,17 @@ public class SAAppWall extends Activity {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Public class interface
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Public class interface
+     **********************************************************************************************/
 
+    /**
+     * Static method that loads an ad into the App wall queue. Ads can only be loaded once and then
+     * can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     */
     public static void load(final int placementId, Context context) {
 
         if (!responses.containsKey(placementId)) {
@@ -245,8 +286,7 @@ public class SAAppWall extends Activity {
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());
             session.prepareSession(new SASessionInterface() {
                 @Override
-                public void sessionReady() {
-
+                public void didFindSessionReady() {
                     // after session is OK - start loding
                     loader.loadAd(placementId, session, new SALoaderInterface() {
                         @Override
@@ -274,11 +314,23 @@ public class SAAppWall extends Activity {
 
     }
 
+    /**
+     * Static method that returns whether ad data for a certain placement has already been loaded
+     *
+     * @param placementId   the Ad placement id to check for
+     * @return              true or false
+     */
     public static boolean hasAdAvailable (int placementId) {
         Object object = responses.get(placementId);
         return object != null && object instanceof SAResponse;
     }
 
+    /**
+     * Static method that, if an ad data is loaded, will play the content for the user
+     *
+     * @param placementId   the Ad placement id to play an ad for
+     * @param context       the current context (activity or fragment)
+     */
     public static void play(int placementId, Context context) {
 
         // try to get the ad that fits the placement id
@@ -294,13 +346,19 @@ public class SAAppWall extends Activity {
         }
     }
 
+    /**
+     * Private static method that removes an already played ad from the ad queue so that it can't
+     * be played again until it is reloaded
+     *
+     * @param response the response, since I need the palcement Id from it
+     */
     private static void removeAdFromLoadedAds (SAResponse response) {
         responses.remove(response.placementId);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Setters & getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Setters & Getters
+     **********************************************************************************************/
 
     public static void setListener(SAInterface value) {
         listener = value != null ? value : listener;
@@ -360,10 +418,6 @@ public class SAAppWall extends Activity {
         return isBackButtonEnabled;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Generic setters and getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
     public static void setParentalGate (boolean value) {
         isParentalGateEnabled = value;
     }
@@ -380,35 +434,70 @@ public class SAAppWall extends Activity {
         isBackButtonEnabled = value;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // The GameWall adapter
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * The AppWall adapter
+     **********************************************************************************************/
 
-    public class GameWallAdapter extends BaseAdapter {
+    /**
+     * Class that us used as an adapter for the AppWall to display cells in a matrix
+     */
+    public class AppWallAdapter extends BaseAdapter {
 
+        // private variables
         private Context context = null;
         private List<SAAd> ads = new ArrayList<>();
 
-        GameWallAdapter(Context context, List<SAAd> ads){
+        /**
+         * Constructor with a context and a list of ads
+         *
+         * @param context   current context (activity or fragment)
+         * @param ads       a list of ads to populate the data from
+         */
+        AppWallAdapter(Context context, List<SAAd> ads){
             this.context = context;
             this.ads = ads;
         }
 
+        /**
+         * Overridden adapter method to return the number of cells to display
+         *
+         * @return the length of the ads array
+         */
         @Override
-        public int getCount() {
+        public int getCount () {
             return ads.size();
         }
 
+        /**
+         * Overridden adapter method to return the position
+         *
+         * @param position  item position
+         * @return          null
+         */
         @Override
-        public Object getItem(int position) {
+        public Object getItem (int position) {
             return null;
         }
 
+        /**
+         * Overridden adapter method that returns the item id
+         *
+         * @param position  item position
+         * @return          item id
+         */
         @Override
-        public long getItemId(int position) {
+        public long getItemId (int position) {
             return 0;
         }
 
+        /**
+         * Overridden adapter method that returns the current view to display
+         *
+         * @param position      view position
+         * @param convertView   convert view
+         * @param parent        parent of the view
+         * @return              a customised view for the app wall
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
@@ -493,17 +582,29 @@ public class SAAppWall extends Activity {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // StreamDrawable class to paint rounded-endges icons on the screen
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * StreamDrawable class to paint rounded-edges icons on the screen
+     **********************************************************************************************/
 
+    /**
+     * Class that overrides Drawable to paint an image with rounded corners
+     */
     class StreamDrawable extends Drawable {
+
+        // instance members
         private final float mCornerRadius;
         private final RectF mRect = new RectF();
         private final BitmapShader mBitmapShader;
         private final Paint mPaint;
         private final int mMargin;
 
+        /**
+         * Constructor that takes a bitmap, radius and margin
+         *
+         * @param bitmap        current bitmap to paint
+         * @param cornerRadius  the corner radius to add
+         * @param margin        the margin to add
+         */
         StreamDrawable(Bitmap bitmap, float cornerRadius, int margin) {
             mCornerRadius = cornerRadius;
             mMargin = margin;
@@ -513,27 +614,52 @@ public class SAAppWall extends Activity {
             mPaint.setShader(mBitmapShader);
         }
 
+        /**
+         * Overridden Drawable method that repaints the image when the bounds change
+         *
+         * @param bounds a Rect of bounds
+         */
         @Override
         protected void onBoundsChange(Rect bounds) {
             super.onBoundsChange(bounds);
             mRect.set(mMargin, mMargin, bounds.width() - mMargin, bounds.height() - mMargin);
         }
 
+        /**
+         * Overridden Drawable method that draws on a canvas
+         *
+         * @param canvas the current canvas
+         */
         @Override
         public void draw(Canvas canvas) {
             canvas.drawRoundRect(mRect, mCornerRadius, mCornerRadius, mPaint);
         }
 
+        /**
+         * Overridden Drawable method that gets the opacity
+         *
+         * @return a type of pixel format
+         */
         @Override
         public int getOpacity() {
             return PixelFormat.TRANSLUCENT;
         }
 
+        /**
+         * Overridden Drawable method that sets the transparency
+         *
+         * @param alpha the current alpha blending factor
+         */
         @Override
         public void setAlpha(int alpha) {
             mPaint.setAlpha(alpha);
         }
 
+        /**
+         * Overidden Drawable method that sets the color filter
+         *
+         * @param cf the color filter
+         */
         @Override
         public void setColorFilter(ColorFilter cf) {
             mPaint.setColorFilter(cf);

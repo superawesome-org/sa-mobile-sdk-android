@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.sdk.views;
 
 import android.app.Activity;
@@ -24,6 +28,11 @@ import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
+/**
+ * Class that abstracts away the process of loading & displaying an
+ * interstitial / fullscreen type Ad.
+ * A subclass of the Android "Activity" class.
+ */
 public class SAInterstitialAd extends Activity {
 
     // subviews
@@ -42,10 +51,16 @@ public class SAInterstitialAd extends Activity {
     private static SAOrientation orientation        = SuperAwesome.getInstance().defaultOrientation();
     private static SAConfiguration configuration    = SuperAwesome.getInstance().defaultConfiguration();
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Activity initialization & instance methods
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Activity initialization & instance methods
+     **********************************************************************************************/
 
+    /**
+     * Overridden "onCreate" method, part of the Activity standard set of methods.
+     * Here is the part where the activity / interstitial ad gets configured
+     *
+     * @param savedInstanceState previous saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // call super
@@ -105,6 +120,11 @@ public class SAInterstitialAd extends Activity {
         interstitialBanner.play(this);
     }
 
+    /**
+     * Method that takes care of resizing the banner ad once the device rotates
+     *
+     * @param newConfig the new configuration the ad is in
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -114,6 +134,11 @@ public class SAInterstitialAd extends Activity {
         interstitialBanner.resize(width, height);
     }
 
+    /**
+     * Overridden "onBackPressed" method of the activity
+     * Depending on how the ad is customised, this will lock the back button or it will allow it.
+     * If it allows it, it's going to also send an "adClosed" event back to the SDK user
+     */
     @Override
     public void onBackPressed() {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
@@ -124,10 +149,13 @@ public class SAInterstitialAd extends Activity {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Custom instance methods
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Custom instance methods
+     **********************************************************************************************/
 
+    /**
+     * Method that closes the interstitial ad
+     */
     private void close() {
         // get local listener
         SAInterface listenerL = getListener();
@@ -142,10 +170,17 @@ public class SAInterstitialAd extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Class public interface
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Class public interface
+     **********************************************************************************************/
 
+    /**
+     * Static method that loads an ad into the interstitial queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     */
     public static void load(final int placementId, Context context) {
 
         if (!ads.containsKey(placementId)) {
@@ -163,7 +198,7 @@ public class SAInterstitialAd extends Activity {
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());
             session.prepareSession(new SASessionInterface() {
                 @Override
-                public void sessionReady() {
+                public void didFindSessionReady() {
 
                     // after session is prepared, start loading
                     loader.loadAd(placementId, session, new SALoaderInterface() {
@@ -191,11 +226,23 @@ public class SAInterstitialAd extends Activity {
         }
     }
 
+    /**
+     * Static method that returns whether ad data for a certain placement has already been loaded
+     *
+     * @param placementId   the Ad placement id to check for
+     * @return              true or false
+     */
     public static boolean hasAdAvailable(int placementId) {
         Object object = ads.get(placementId);
         return object != null && object instanceof SAAd;
     }
 
+    /**
+     * Static method that, if an ad data is loaded, will play the content for the user
+     *
+     * @param placementId   the Ad placement id to play an ad for
+     * @param context       the current context (activity or fragment)
+     */
     public static void play(int placementId, Context context) {
 
         // try to get the ad that fits the placement id
@@ -211,13 +258,19 @@ public class SAInterstitialAd extends Activity {
         }
     }
 
+    /**
+     * Private static method that removes an already played ad from the ad queue so that it can't
+     * be played again until it is reloaded
+     *
+     * @param ad the current ad, since I need the palcement Id from it
+     */
     private static void removeAdFromLoadedAds (SAAd ad) {
         ads.remove(ad.placementId);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Setters and getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Setters and getters
+     **********************************************************************************************/
 
     public static void setListener(SAInterface value) {
         listener = value != null ? value : listener;
@@ -267,8 +320,6 @@ public class SAInterstitialAd extends Activity {
         setOrientation(SAOrientation.LANDSCAPE);
     }
 
-    // private methods to access static variables
-
     private static SAInterface getListener () {
         return listener;
     }
@@ -284,10 +335,6 @@ public class SAInterstitialAd extends Activity {
     private static boolean getIsBackButtonEnabled () {
         return isBackButtonEnabled;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Generic setters and getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void setParentalGate (boolean value) {
         isParentalGateEnabled = value;

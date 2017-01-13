@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.sdk.views;
 
 import android.annotation.TargetApi;
@@ -35,7 +39,10 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEventInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+/**
+ * Class that abstracts away the process of loading & displaying a banner type Ad.
+ * A subclass of the Android "RelativeLayout" class.
+ */
 public class SABannerAd extends RelativeLayout {
 
     // constants
@@ -65,18 +72,37 @@ public class SABannerAd extends RelativeLayout {
     private boolean showOnce = false;
     private boolean canPlay = true;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // View initialization
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * View initialization
+     **********************************************************************************************/
 
+    /**
+     * Constructor with context
+     *
+     * @param context current context (activity or fragment)
+     */
     public SABannerAd(Context context) {
         this(context, null, 0);
     }
 
+    /**
+     * Constructor with context and attribute sets
+     *
+     * @param context   current context (activity or fragment)
+     * @param attrs     an attribute set
+     */
     public SABannerAd(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
+    /**
+     * Constructor with context, attribute set and default style. This is where the layout
+     * actually gets initialized
+     *
+     * @param context       current context (activity or fragment)
+     * @param attrs         an attribute set
+     * @param defStyleAttr  a default style
+     */
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -164,6 +190,16 @@ public class SABannerAd extends RelativeLayout {
         });
     }
 
+    /**
+     * Overridden RelativeLayout method that is used to get the cWidth & cHeight member
+     * variables updated
+     *
+     * @param changed   bool that holds if the layout changed
+     * @param l         left margin
+     * @param t         top margin
+     * @param r         right margin
+     * @param b         mottom margin
+     */
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
@@ -175,10 +211,16 @@ public class SABannerAd extends RelativeLayout {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Public interface
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Public interface
+     **********************************************************************************************/
 
+    /**
+     * Method that loads an ad into the banner ad queue. Ads can only be loaded once and then
+     * can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     */
     public void load(final int placementId) {
 
         canPlay = false;
@@ -186,7 +228,7 @@ public class SABannerAd extends RelativeLayout {
         session.setVersion(SuperAwesome.getInstance().getSDKVersion());
         session.prepareSession(new SASessionInterface() {
             @Override
-            public void sessionReady() {
+            public void didFindSessionReady() {
 
                 // after session is OK, prepare
                 loader.loadAd(placementId, session, new SALoaderInterface() {
@@ -201,6 +243,11 @@ public class SABannerAd extends RelativeLayout {
         });
     }
 
+    /**
+     * Method that returns whether ad data for a certain placement has already been loaded
+     *
+     * @return              true or false
+     */
     public boolean hasAdAvailable () {
         return ad != null;
     }
@@ -210,6 +257,11 @@ public class SABannerAd extends RelativeLayout {
         events.setAd(this.ad);
     }
 
+    /**
+     * Method that, if an ad data is loaded, will play the content for the user
+     *
+     * @param context       the current context (activity or fragment)
+     */
     public void play(Context context) {
 
         if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && canPlay) {
@@ -243,10 +295,16 @@ public class SABannerAd extends RelativeLayout {
         }
     }
 
+    /**
+     * Method that closes the banner ad (right now it just unsubscribes from moat events)
+     */
     public void close() {
-        events.unregisterDisplayMoatEvent(ad.placementId);
+        events.unregisterDisplayMoatEvent();
     }
 
+    /**
+     * Method that handles a click on the ad surface
+     */
     public void click() {
         // callback
         listener.onEvent(ad.placementId, SAEvent.adClicked);
@@ -286,10 +344,22 @@ public class SABannerAd extends RelativeLayout {
         getContext().startActivity(browserIntent);
     }
 
+    /**
+     * Method that determines if an ad should display a padlock over it's content to indicate
+     * it has been properly approved by SuperAwesome
+     *
+     * @return true or false
+     */
     private boolean shouldShowPadlock () {
         return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
+    /**
+     * Method that resized the content of the Banner Ad; Called every time the superview changes
+     *
+     * @param width     width to resize to
+     * @param height    height to resize to
+     */
     // todo: make sure Banner Ads don't get reloaded on each screen reload
     public void resize(int width, int height){
         // get ad W & H
@@ -313,9 +383,9 @@ public class SABannerAd extends RelativeLayout {
         webView.loadHTML(fullHTML, adWidth, adHeight, newWidth, newHeight);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Setters and getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**********************************************************************************************
+     * Setters & Getters
+     **********************************************************************************************/
 
     public void setListener(SAInterface value) {
         listener = value != null ? value : listener;
@@ -353,10 +423,6 @@ public class SABannerAd extends RelativeLayout {
         setColor(false);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Generic setters and getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
     public void setParentalGate (boolean value) {
         isParentalGateEnabled = value;
     }
@@ -376,5 +442,4 @@ public class SABannerAd extends RelativeLayout {
             setBackgroundColor(BANNER_BACKGROUND);
         }
     }
-
 }

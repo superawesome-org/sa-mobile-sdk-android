@@ -85,6 +85,18 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+        SAAppWall.setConfigurationStaging();
+        SAAppWall.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
+                } else if (event == SAEvent.adFailedToLoad) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                }
+            }
+        });
     }
 
     @Override
@@ -96,6 +108,7 @@ public class MainActivity extends Activity {
         bannerAd.load(584);
         SAInterstitialAd.load(585, this);
         SAVideoAd.load(586, this);
+        SAAppWall.load(437, this);
     }
 
     public void playBanner(View v){
@@ -121,6 +134,8 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo2(View v){
-        //
+        if (SAAppWall.hasAdAvailable(437)) {
+            SAAppWall.play(437, MainActivity.this);
+        }
     }
 }

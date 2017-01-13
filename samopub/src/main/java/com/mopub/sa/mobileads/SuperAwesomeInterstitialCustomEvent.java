@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package com.mopub.sa.mobileads;
 
 import android.content.Context;
@@ -14,8 +18,13 @@ import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
 import tv.superawesome.sdk.views.SAOrientation;
 
+/**
+ * Class that extends the MoPub standard CustomEventInterstitial class in order to communicate with
+ * MoPub and load an interstitial ad
+ */
 public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial {
 
+    // constants
     private static final String KEY_placementId = "placementId";
     private static final String KEY_isTestEnabled = "isTestEnabled";
     private static final String KEY_isParentalGateEnabled = "isParentalGateEnabled";
@@ -26,6 +35,16 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
     private int placementId = 0;
     private Context context;
 
+    /**
+     * Overridden "loadInterstitial" method of CustomEventInterstitial that is
+     * triggered when ad data needs to be loaded by MoPub.
+     * This will trigger the SuperAwesome SDK procedures to create & load an ad
+     *
+     * @param context   current context (activity & fragment)
+     * @param listener  an instance of a MoPub listener
+     * @param map       values passed down from MoPub
+     * @param map1      values passed down from MoPub
+     */
     @Override
     protected void loadInterstitial(final Context context, final CustomEventInterstitialListener listener, Map<String, Object> map, Map<String, String> map1) {
 
@@ -136,11 +155,19 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         SAInterstitialAd.load(placementId, context);
     }
 
+    /**
+     * Overridden "showInterstitial" method of CustomEventInterstitial that actually
+     * displays an interstitial ad, after it has been loaded
+     */
     @Override
     protected void showInterstitial() {
         SAInterstitialAd.play(placementId, this.context);
     }
 
+    /**
+     * Overridden "onInvalidate" method of CustomEventInterstitial that is triggered when ad data
+     * is invalidated
+     */
     @Override
     protected void onInvalidate() {
         // do nothing

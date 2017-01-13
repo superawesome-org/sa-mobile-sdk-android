@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.plugins.air;
 
 import android.content.Context;
@@ -15,12 +19,28 @@ import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 
+/**
+ * Class that holds a number of static methods used to communicate with Adobe AIR
+ */
 public class SAAIRAppWall {
 
+    // constant air name to send callbacks to
     private static final String airName = "SAAppWall";
 
+    /**
+     * Class that creates a new App Wall (from AIR)
+     */
     public static class SuperAwesomeAIRSAAppWallCreate implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
@@ -42,8 +62,20 @@ public class SAAIRAppWall {
         }
     }
 
+    /**
+     * Class that loads ad data into an App Wall (from AIR)
+     */
     public static class SuperAwesomeAIRSAAppWallLoad implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
@@ -79,8 +111,20 @@ public class SAAIRAppWall {
         }
     }
 
+    /**
+     * Class that checks if an ad is available in an App Wall (from AIR)
+     */
     public static class SuperAwesomeAIRSAAppWallHasAdAvailable implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
@@ -102,8 +146,20 @@ public class SAAIRAppWall {
         }
     }
 
+    /**
+     * Class that plays an already loaded ad for an App Wall (from AIR)
+     */
     public static class SuperAwesomeAIRSAAppWallPlay implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
             Context context = freContext.getActivity();

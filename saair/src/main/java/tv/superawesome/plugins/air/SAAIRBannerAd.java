@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.plugins.air;
 
 import android.app.Activity;
@@ -23,12 +27,28 @@ import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 
+/**
+ * Class that holds a number of static methods used to communicate with Adobe AIR
+ */
 public class SAAIRBannerAd {
 
+    // hash map of all the banners that have been created
     private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
 
+    /**
+     * Class that creates a new Banner Ad (from AIR)
+     */
     public static class SuperAwesomeAIRSABannerAdCreate implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
@@ -65,7 +85,20 @@ public class SAAIRBannerAd {
         }
     }
 
+    /**
+     * Class that loads ad data into a Banner Ad (from AIR)
+     */
     public static class SuperAwesomeAIRSABannerAdLoad implements FREFunction {
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
@@ -109,8 +142,20 @@ public class SAAIRBannerAd {
         }
     }
 
+    /**
+     * Class that checks if an ad is available in a Banner Ad (from AIR)
+     */
     public static class SuperAwesomeAIRSABannerAdHasAdAvailable implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
@@ -136,8 +181,20 @@ public class SAAIRBannerAd {
         }
     }
 
+    /**
+     * Class that plays an already loaded ad for a Banner Ad (from AIR)
+     */
     public static class SuperAwesomeAIRSABannerAdPlay implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
@@ -236,8 +293,20 @@ public class SAAIRBannerAd {
         }
     }
 
+    /**
+     * Class that closes an existing Banner Ad (from AIR)
+     */
     public static class SuperAwesomeAIRSABannerAdClose implements FREFunction {
-
+        /**
+         * Overridden FREFunction "call" method;
+         * This needs to be implemented if this class is to correctly implement the FREFunction
+         * interface.
+         * This is the way AIR communicates with native Android code.
+         *
+         * @param freContext    current FREContext
+         * @param freObjects    a list of parameters that might have been sent by adobe AIR
+         * @return              a FREObject that sends back data to Adobe AIR
+         */
         @Override
         public FREObject call(FREContext freContext, FREObject[] freObjects) {
 

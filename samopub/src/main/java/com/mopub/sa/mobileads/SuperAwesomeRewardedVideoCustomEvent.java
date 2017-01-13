@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package com.mopub.sa.mobileads;
 
 import android.app.Activity;
@@ -24,6 +28,10 @@ import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoLoadS
 import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoPlaybackError;
 import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoStarted;
 
+/**
+ * Class that extends the MoPub standard CustomEventRewardedVideo class in order to
+ * communicate with MoPub and load a video ad
+ */
 public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVideo {
 
     // constants representing MoPub JSON keys to look for values in
@@ -50,26 +58,55 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
     // context
     private Context context;
 
+    /**
+     * Overridden "getVideoListenerForSdk" method of CustomEventRewardedVideo
+     *
+     * @return nulls
+     */
     @Override
     protected CustomEventRewardedVideoListener getVideoListenerForSdk() {
         return null;
     }
 
+    /**
+     * Overridden "LifecycleListener" method of CustomEventRewardedVideo
+     *
+     * @return nulls
+     */
     @Override
     protected LifecycleListener getLifecycleListener() {
         return null;
     }
 
+    /**
+     * Overridden "getAdNetworkId" method of CustomEventRewardedVideo
+     *
+     * @return moPubId
+     */
     @Override
     protected String getAdNetworkId() {
         return moPubId;
     }
 
+    /**
+     * Overridden "onInvalidate" method of CustomEventRewardedVideo
+     *
+     */
     @Override
     protected void onInvalidate() {
         return;
     }
 
+    /**
+     * Overridden "checkAndInitializeSdk" method of CustomEventRewardedVideo that will initialize
+     * a video ad from AA SDK
+     *
+     * @param activity      current Activity
+     * @param map           values passed down from MoPub
+     * @param map1          values passed down from MoPub
+     * @return              whether the operation was successfull
+     * @throws Exception    an exception
+     */
     @Override
     protected boolean checkAndInitializeSdk(Activity activity, Map<String, Object> map, Map<String, String> map1) throws Exception {
 
@@ -160,6 +197,15 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         return true;
     }
 
+    /**
+     * Overridden "loadWithSdkInitialized" method of CustomEventRewardedVideo that will load
+     * a video ad from AA SDK
+     *
+     * @param activity      current Activity
+     * @param map           values passed down from MoPub
+     * @param map1          values passed down from MoPub
+     * @throws Exception    an exception
+     */
     @Override
     protected void loadWithSdkInitialized(final Activity activity, Map<String, Object> map, Map<String, String> map1) throws Exception {
 
@@ -211,11 +257,22 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         SAVideoAd.load(placementId, context);
     }
 
+    /**
+     * Overridden "hasVideoAvailable" method of CustomEventRewardedVideo that will check if
+     * ad data is available in SA SDK
+     *
+     * @return true or false
+     */
     @Override
     protected boolean hasVideoAvailable() {
         return SAVideoAd.hasAdAvailable(placementId);
     }
 
+    /**
+     * Overridden "showVideo" method of CustomEventRewardedVideo that will actually
+     * start playing the video, if it has data
+     *
+     */
     @Override
     protected void showVideo() {
         SAVideoAd.play(placementId, context);

@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.plugins.air;
 
 import android.util.Log;
@@ -8,7 +12,16 @@ import com.adobe.fre.FREFunction;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class that extends a FREContext object
+ */
 public class SAAIRExtensionContext extends FREContext{
+    /**
+     * Overridden FREContext "getFunctions" method that will return a hash-map containing
+     * function names and implementation so that AIR knows what to call
+     *
+     * @return a hash-map of function names-implementations
+     */
     @Override
     public Map<String, FREFunction> getFunctions() {
 
@@ -41,6 +54,9 @@ public class SAAIRExtensionContext extends FREContext{
         return functions;
     }
 
+    /**
+     * Method that disposes of the current FREContext
+     */
     @Override
     public void dispose() {
         Log.d("AIREXT", "AIR Extension Context disposed");

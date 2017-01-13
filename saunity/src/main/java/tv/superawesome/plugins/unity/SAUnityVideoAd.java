@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.plugins.unity;
 
 import android.content.Context;
@@ -8,10 +12,16 @@ import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAOrientation;
 import tv.superawesome.sdk.views.SAVideoAd;
 
+/**
+ * Class that holds a number of static methods used to communicate with Unity
+ */
 public class SAUnityVideoAd {
 
     private static final String unityName = "SAVideoAd";
 
+    /**
+     * Method that creates a new Video Ad (from Unity)
+     */
     public static void SuperAwesomeUnitySAVideoAdCreate (Context context) {
         SAVideoAd.setListener(new SAInterface() {
             @Override
@@ -28,16 +38,25 @@ public class SAUnityVideoAd {
         });
     }
 
+    /**
+     * Method that loads a new Video Ad (from Unity)
+     */
     public static void SuperAwesomeUnitySAVideoAdLoad(Context context, int placementId, int configuration, boolean test) {
         SAVideoAd.setTestMode(test);
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAVideoAd.load(placementId, context);
     }
 
+    /**
+     * Method that checks to see if an ad is available for a video ad (from Unity)
+     */
     public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable (Context context, int placementId) {
         return SAVideoAd.hasAdAvailable(placementId);
     }
 
+    /**
+     * Method that plays a new video ad (from Unity)
+     */
     public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation, boolean isBackButtonEnabled) {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);

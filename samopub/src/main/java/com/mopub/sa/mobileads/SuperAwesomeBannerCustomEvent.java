@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package com.mopub.sa.mobileads;
 
 import android.content.Context;
@@ -12,12 +16,27 @@ import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 
+/**
+ * Class that extends the MoPub standard CustomEventBanner class in order to communicate with
+ * MoPub and load a banner ad
+ */
 public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
 
+    // private constants
     private static final String KEY_placementId = "placementId";
     private static final String KEY_isTestEnabled = "isTestEnabled";
     private static final String KEY_isParentalGateEnabled = "isParentalGateEnabled";
 
+    /**
+     * Overridden "loadBanner" method of CustomEventBanner that is triggered when ad data
+     * needs to be loaded by MoPub. This will trigger the SuperAwesome SDK procedures to
+     * create & load an ad
+     *
+     * @param context   current context (activity & fragment)
+     * @param listener  an instance of a MoPub listener
+     * @param map       values passed down from MoPub
+     * @param map1      values passed down from MoPub
+     */
     @Override
     protected void loadBanner(final Context context, final CustomEventBannerListener listener, Map<String, Object> map, Map<String, String> map1) {
 
@@ -91,6 +110,10 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
         bannerAd.load(placementId);
     }
 
+    /**
+     * Overridden "onInvalidate" method of CustomEventBanner that is triggered when ad data
+     * is invalidated
+     */
     @Override
     protected void onInvalidate() {
         // do nothing
