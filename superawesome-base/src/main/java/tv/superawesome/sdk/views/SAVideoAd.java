@@ -149,7 +149,7 @@ public class SAVideoAd extends Activity {
             videoPlayer.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
             videoPlayer.setEventListener(new SAVideoPlayerEventInterface() {
                 @Override
-                public void SAVideoPlayerEventHandled(SAVideoPlayerEvent saVideoPlayerEvent) {
+                public void saVideoPlayerDidReceiveEvent(SAVideoPlayerEvent saVideoPlayerEvent) {
                     switch (saVideoPlayerEvent) {
                         case Video_Start: {
                             // send callback
@@ -198,7 +198,7 @@ public class SAVideoAd extends Activity {
             });
             videoPlayer.setClickListener(new SAVideoPlayerClickInterface() {
                 @Override
-                public void SAVideoPlayerClickHandled() {
+                public void saVideoPlayerDidReceiveClick() {
                     // check for parental gate on click
                     if (isParentalGateEnabledL) {
                         gate = new SAParentalGate(SAVideoAd.this, SAVideoAd.this, ad);
@@ -270,7 +270,7 @@ public class SAVideoAd extends Activity {
         //  - send an event to "click_through"
         //  - send events to "click_tracking"
         //  - send all "custom_clicks" events
-        if (ad.saCampaignType == SACampaignType.CPI) {
+        if (ad.campaignType == SACampaignType.CPI) {
 
             // send events
             events.sendEventsFor("click_tracking");
@@ -343,7 +343,7 @@ public class SAVideoAd extends Activity {
      * @return true or false
      */
     private boolean shouldShowPadlock() {
-        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
+        return ad.creative.format != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     /**
@@ -401,7 +401,7 @@ public class SAVideoAd extends Activity {
                     // after session is OK - start loading
                     loader.loadAd(placementId, session, new SALoaderInterface() {
                         @Override
-                        public void didLoadAd(SAResponse response) {
+                        public void saDidLoadAd(SAResponse response) {
 
                             // find out the real valid
                             boolean isValid = response.isValid();
@@ -451,7 +451,7 @@ public class SAVideoAd extends Activity {
         SAAd adL = (SAAd) ads.get(placementId);
 
         // try to start the activity
-        if (adL != null && adL.creative.creativeFormat == SACreativeFormat.video && context != null) {
+        if (adL != null && adL.creative.format == SACreativeFormat.video && context != null) {
             Intent intent = new Intent(context, SAVideoAd.class);
             intent.putExtra("ad", adL.writeToJson().toString());
             context.startActivity(intent);

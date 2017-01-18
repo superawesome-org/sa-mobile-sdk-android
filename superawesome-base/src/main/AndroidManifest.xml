@@ -20,8 +20,13 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <receiver android:name="tv.superawesome.sdk.cpi.SACPI" android:exported="true">
-            <intent-filter><action android:name="com.android.vending.INSTALL_REFERRER"/></intent-filter>
+        <receiver
+            android:name="tv.superawesome.sdk.cpi.SACPI"
+            android:exported="false"
+            android:permission="tv.superawesome.sdk.SuperAwesomeSDK">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+            </intent-filter>
         </receiver>
     </application>
 

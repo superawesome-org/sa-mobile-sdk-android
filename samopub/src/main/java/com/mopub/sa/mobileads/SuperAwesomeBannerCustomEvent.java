@@ -23,9 +23,9 @@ import tv.superawesome.sdk.views.SAInterface;
 public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
 
     // private constants
-    private static final String KEY_placementId = "placementId";
-    private static final String KEY_isTestEnabled = "isTestEnabled";
-    private static final String KEY_isParentalGateEnabled = "isParentalGateEnabled";
+    private static final String KEY_placementId             = "placementId";
+    private static final String KEY_isTestEnabled           = "isTestEnabled";
+    private static final String KEY_isParentalGateEnabled   = "isParentalGateEnabled";
 
     /**
      * Overridden "loadBanner" method of CustomEventBanner that is triggered when ad data

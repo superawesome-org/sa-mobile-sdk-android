@@ -209,7 +209,7 @@ public class SAAppWall extends Activity {
         // callback
         listenerL.onEvent(response.placementId, SAEvent.adClicked);
 
-        if (ad.saCampaignType == SACampaignType.CPI) {
+        if (ad.campaignType == SACampaignType.CPI) {
 
             // send events
             event.sendEventsFor("install");
@@ -290,7 +290,7 @@ public class SAAppWall extends Activity {
                     // after session is OK - start loding
                     loader.loadAd(placementId, session, new SALoaderInterface() {
                         @Override
-                        public void didLoadAd(SAResponse response) {
+                        public void saDidLoadAd(SAResponse response) {
 
                             // put the correct value
                             if (response.isValid()) {

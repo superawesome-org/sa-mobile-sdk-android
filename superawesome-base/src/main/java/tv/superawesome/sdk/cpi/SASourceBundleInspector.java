@@ -37,7 +37,7 @@ public class SASourceBundleInspector {
 
         network.sendGET(context, checkUrl, new JSONObject(), new JSONObject(), new SANetworkInterface() {
             @Override
-            public void response(int status, String payload, boolean success) {
+            public void saDidGetResponse(int status, String payload, boolean success) {
 
                 // parse the new bundle Ids
                 JSONArray bundleIds = SAJsonParser.newArray(payload);

@@ -233,7 +233,7 @@ public class SABannerAd extends RelativeLayout {
                 // after session is OK, prepare
                 loader.loadAd(placementId, session, new SALoaderInterface() {
                     @Override
-                    public void didLoadAd(SAResponse response) {
+                    public void saDidLoadAd(SAResponse response) {
                         canPlay = response.isValid ();
                         setAd(response.isValid () ? response.ads.get(0) : null);
                         listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
@@ -264,7 +264,7 @@ public class SABannerAd extends RelativeLayout {
      */
     public void play(Context context) {
 
-        if (ad != null && ad.creative.creativeFormat != SACreativeFormat.video && canPlay) {
+        if (ad != null && ad.creative.format != SACreativeFormat.video && canPlay) {
 
             // if ad is still not OK - wait a little while longer
             final Runnable runnable = new Runnable() {
@@ -318,7 +318,7 @@ public class SABannerAd extends RelativeLayout {
         String finalUrl = destinationURL;
 
         // append CPI data to it
-        if (ad.saCampaignType == SACampaignType.CPI) {
+        if (ad.campaignType == SACampaignType.CPI) {
 
             // send install impression
             events.sendEventsFor("install");
@@ -351,7 +351,7 @@ public class SABannerAd extends RelativeLayout {
      * @return true or false
      */
     private boolean shouldShowPadlock () {
-        return ad.creative.creativeFormat != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
+        return ad.creative.format != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     /**
@@ -367,7 +367,7 @@ public class SABannerAd extends RelativeLayout {
             adHeight = ad.creative.details.height;
 
         // calc new frame
-        Rect newFrame = SAUtils.mapOldSizeIntoNewSize(width, height, adWidth, adHeight);
+        Rect newFrame = SAUtils.mapSourceSizeIntoBoundingSize(width, height, adWidth, adHeight);
         int newWidth = newFrame.right,
             newHeight = newFrame.bottom;
 

@@ -1,21 +1,13 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.samodelspace.SAVASTAdType;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.cpi.SACPI;
-import tv.superawesome.sdk.cpi.SAInstallEvent;
 import tv.superawesome.sdk.cpi.SAInstallEventInterface;
-import tv.superawesome.sdk.cpi.SASourceBundleInspector;
-import tv.superawesome.sdk.cpi.SASourceBundleInspectorInterface;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;

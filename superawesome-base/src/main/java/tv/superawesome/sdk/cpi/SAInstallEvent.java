@@ -57,7 +57,7 @@ public class SAInstallEvent {
             SANetwork network = new SANetwork();
             network.sendGET(context, cpiUrl, new JSONObject(), header, new SANetworkInterface() {
                 @Override
-                public void response(int status, String payload, boolean success) {
+                public void saDidGetResponse(int status, String payload, boolean success) {
 
                     // read the payload
                     //  in case of success it's a JSON { "success" : true }

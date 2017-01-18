@@ -25,11 +25,11 @@ import tv.superawesome.sdk.views.SAOrientation;
 public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial {
 
     // constants
-    private static final String KEY_placementId = "placementId";
-    private static final String KEY_isTestEnabled = "isTestEnabled";
-    private static final String KEY_isParentalGateEnabled = "isParentalGateEnabled";
-    private static final String KEY_lockOrientation = "lockOrientation";
-    private static final String KEY_orientation = "orientation";
+    private static final String KEY_placementId             = "placementId";
+    private static final String KEY_isTestEnabled           = "isTestEnabled";
+    private static final String KEY_isParentalGateEnabled   = "isParentalGateEnabled";
+    private static final String KEY_lockOrientation         = "lockOrientation";
+    private static final String KEY_orientation             = "orientation";
 
     // private state vars
     private int placementId = 0;

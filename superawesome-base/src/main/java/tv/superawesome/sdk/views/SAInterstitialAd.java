@@ -203,7 +203,7 @@ public class SAInterstitialAd extends Activity {
                     // after session is prepared, start loading
                     loader.loadAd(placementId, session, new SALoaderInterface() {
                         @Override
-                        public void didLoadAd(SAResponse response) {
+                        public void saDidLoadAd(SAResponse response) {
 
                             // put the correct value
                             if (response.isValid()) {
@@ -249,7 +249,7 @@ public class SAInterstitialAd extends Activity {
         SAAd adL = (SAAd) ads.get(placementId);
 
         // try to start the activity
-        if (adL != null && adL.creative.creativeFormat != SACreativeFormat.video && context != null) {
+        if (adL != null && adL.creative.format != SACreativeFormat.video && context != null) {
             Intent intent = new Intent(context, SAInterstitialAd.class);
             intent.putExtra("ad", adL.writeToJson().toString());
             context.startActivity(intent);

@@ -35,15 +35,15 @@ import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoStart
 public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVideo {
 
     // constants representing MoPub JSON keys to look for values in
-    private static final String KEY_MoPub = "com_mopub_ad_unit_id";
-    private static final String KEY_placementId = "placementId";
-    private static final String KEY_isTestEnabled = "isTestEnabled";
-    private static final String KEY_isParentalGateEnabled = "isParentalGateEnabled";
-    private static final String KEY_shouldShowCloseButton = "shouldShowCloseButton";
-    private static final String KEY_shouldAutomaticallyCloseAtEnd = "shouldAutomaticallyCloseAtEnd";
-    private static final String KEY_shouldShowSmallClickButton = "shouldShowSmallClickButton";
-    private static final String KEY_lockOrientation = "lockOrientation";
-    private static final String KEY_orientation = "orientation";
+    private static final String KEY_MoPub                           = "com_mopub_ad_unit_id";
+    private static final String KEY_placementId                     = "placementId";
+    private static final String KEY_isTestEnabled                   = "isTestEnabled";
+    private static final String KEY_isParentalGateEnabled           = "isParentalGateEnabled";
+    private static final String KEY_shouldShowCloseButton           = "shouldShowCloseButton";
+    private static final String KEY_shouldAutomaticallyCloseAtEnd   = "shouldAutomaticallyCloseAtEnd";
+    private static final String KEY_shouldShowSmallClickButton      = "shouldShowSmallClickButton";
+    private static final String KEY_lockOrientation                 = "lockOrientation";
+    private static final String KEY_orientation                     = "orientation";
 
     // private state vars
     private String moPubId;
