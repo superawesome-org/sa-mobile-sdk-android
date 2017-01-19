@@ -31,13 +31,11 @@ public enum SAOrientation {
     /**
      * Static factory method that creates a new enum starting from an integer value
      *
-     * @param value the integer value
-     * @return      an enum, based on the int value being passed
+     * @param orientation   the integer value
+     * @return              an enum, based on the int value being passed
      */
-    public static SAOrientation fromValue (int value) {
-        if (value == 2) return LANDSCAPE;
-        if (value == 1) return PORTRAIT;
-        return ANY;
+    public static SAOrientation fromValue (int orientation) {
+        return orientation == 2 ? LANDSCAPE : orientation == 1 ? PORTRAIT : ANY;
     }
 
     /**

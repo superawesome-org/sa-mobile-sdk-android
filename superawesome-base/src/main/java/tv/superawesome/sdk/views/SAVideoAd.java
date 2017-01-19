@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +55,9 @@ public class SAVideoAd extends Activity {
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
 
+    // a member holding whether the video has ended or not
+    private static boolean videoEnded = false;
+
     // private vars w/ a public interface
     private static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
@@ -84,7 +88,9 @@ public class SAVideoAd extends Activity {
         // local versions of the static vars
         final SAInterface listenerL = getListener();
         final boolean isParentalGateEnabledL = getIsParentalGateEnabled();
-        final boolean shouldShowCloseButtonL = getShouldShowCloseButton();
+        boolean shouldShowCloseButtonL = getShouldShowCloseButton();
+        if (!shouldShowCloseButtonL && videoEnded) shouldShowCloseButtonL = true;
+
         final boolean shouldAutomaticallyCloseAtEndL = getShouldAutomaticallyCloseAtEnd();
         final boolean shouldShowSmallClickButtonL = getShouldShowSmallClickButton();
         final SAOrientation orientationL = getOrientation();
@@ -93,23 +99,20 @@ public class SAVideoAd extends Activity {
         ad = new SAAd(SAJsonParser.newObject(adString));
 
         // start events
-        events = new SAEvents (this);
+        events = new SAEvents(this);
         events.setAd(ad);
 
         String packageName = this.getPackageName();
         int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
         int video_playerId = getResources().getIdentifier("sa_videoplayer_id", "id", packageName);
-        int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
+        final int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
         int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
 
         // set content view
         setContentView(activity_sa_videoId);
 
-        // activity relative layout
-        RelativeLayout videoLayout = (RelativeLayout) findViewById(activity_sa_videoId);
-
         // close btn
-        Button closeBtn = (Button) findViewById(close_btnId);
+        final Button closeBtn = (Button) findViewById(close_btnId);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,6 +185,15 @@ public class SAVideoAd extends Activity {
                         }
                         case Video_End: {
                             events.sendEventsFor("complete");
+
+                            // mark the video as ended
+                            videoEnded = true;
+
+                            // make btn visible
+                            closeBtn.setVisibility(View.VISIBLE);
+                            recreate(); // must force close button ... :( but don't like it 
+
+                            // autoclose
                             if (shouldAutomaticallyCloseAtEndL) {
                                 close();
                             }
@@ -350,6 +362,9 @@ public class SAVideoAd extends Activity {
      * Method that closes the interstitial ad
      */
     private void close() {
+
+        // set this back
+        videoEnded = false;
 
         // get local
         SAInterface listenerL = getListener();

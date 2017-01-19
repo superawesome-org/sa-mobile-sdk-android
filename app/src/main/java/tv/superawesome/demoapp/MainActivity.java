@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.View;
 
 import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.cpi.SAInstallEventInterface;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -27,13 +25,6 @@ public class MainActivity extends Activity {
 
         SASession session = new SASession(this);
         session.setConfigurationStaging();
-
-        SuperAwesome.getInstance().handleStagingCPI(this, new SAInstallEventInterface() {
-            @Override
-            public void didCountAnInstall(boolean success) {
-                Log.d("SuperAwesome-CPI-Stag", "Did count install: " + success);
-            }
-        });
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
         bannerAd.setConfigurationStaging();
@@ -67,6 +58,8 @@ public class MainActivity extends Activity {
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableTestMode();
         SAVideoAd.disableParentalGate();
+        SAVideoAd.disableCloseAtEnd();
+        SAVideoAd.enableCloseButton();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {

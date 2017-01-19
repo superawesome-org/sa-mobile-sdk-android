@@ -17,7 +17,7 @@ import tv.superawesome.sdk.views.SAOrientation;
  */
 public class SuperAwesome {
 
-    // variables
+    // Super Awesome instance variable that can be setup only once
     private static SuperAwesome instance = new SuperAwesome();
 
     // version & sdk private vars
@@ -27,51 +27,67 @@ public class SuperAwesome {
     // CPI implementation
     private SACPI sacpi;
 
-    // constructors
+    /**
+     * Private constructor that is only called once
+     */
     private SuperAwesome() {
         version = "5.3.11";
         sdk = "android";
         sacpi = new SACPI();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
+    /**
+     * Singleton method to get the only existing instance
+     *
+     * @return an instance of the SuperAwesome class
+     */
     public static SuperAwesome getInstance() {
         return instance;
     }
 
+    /**
+     * Getter for the current version
+     *
+     * @return string representing the current version
+     */
     private String getVersion() {
         return version;
     }
 
+    /**
+     * Getter for the current SDK
+     *
+     * @return string representing the current SDK
+     */
     private String getSdk() {
         return sdk;
     }
 
+    /**
+     * Getter for a string comprising of SDK & version bundled
+     *
+     * @return  a string
+     */
     public String getSDKVersion() {
         return getSdk() + "_" + getVersion();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // CPI Part
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
+    /**
+     * SuperAwesome SDK method handling CPI
+     *
+     * @param context   current context
+     * @param listener  a listener
+     */
     public void handleCPI (Context context, SAInstallEventInterface listener) {
-        SASession session = new SASession(context);
-        session.setConfigurationProduction();
-        sacpi.sendInstallEvent(context, session, listener);
+        sacpi.sendInstallEvent(context, new SASession(context), listener);
     }
 
-    public void handleStagingCPI (Context context, SAInstallEventInterface listener) {
-        SASession session = new SASession(context);
-        session.setConfigurationStaging();
-        sacpi.sendInstallEvent(context, session, listener);
-    }
-
-    // default state vars
-
+    /**
+     * Methods that return default values for each of the variables that can be used to
+     * customize Video, Banner, Interstitial and AppWall ads
+     *
+     * @return whatever return value
+     */
     public int defaultPlacementId () {
         return 0;
     }
@@ -103,11 +119,20 @@ public class SuperAwesome {
         return false;
     }
 
-    // override sdk & version methods
-
+    /**
+     * Method that overrides the current version string. It's used by the AIR & Unity SDKs
+     *
+     * @param version the new version
+     */
     public void overrideVersion (String version) {
         this.version = version;
     }
+
+    /**
+     * Method that overrides the current sdk string. It's used by the AIR & Unity SDKs
+     *
+     * @param sdk the new sdk
+     */
     public void overrideSdk (String sdk) {
         this.sdk = sdk;
     }

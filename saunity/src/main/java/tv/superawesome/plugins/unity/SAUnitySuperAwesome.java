@@ -12,20 +12,22 @@ import tv.superawesome.sdk.cpi.SAInstallEventInterface;
 /**
  * Class that holds a number of static methods used to communicate with Unity
  */
-public class SAUnityCPI {
+public class SAUnitySuperAwesome {
 
     // CPI name
-    private static final String unityName = "SuperAwesomeCPI";
+    private static final String unityName = "SAUnitySuperAwesome";
 
     /**
      * Method that sends a callback to Unity after a
      * CPI operation on production
+     *
+     * @param context current context (activity or fragment)
      */
     public static void SuperAwesomeUnitySuperAwesomeHandleCPI (Context context) {
 
         SuperAwesome.getInstance().handleCPI(context, new SAInstallEventInterface() {
             @Override
-            public void didCountAnInstall(boolean success) {
+            public void saDidCountAnInstall(boolean success) {
                 SAUnityCallback.sendCPICallback(unityName, success, "HandleCPI");
             }
         });
@@ -33,18 +35,16 @@ public class SAUnityCPI {
     }
 
     /**
-     * Method that sends a callback to Unity after a
-     * CPI operation on staging
+     * Method that sets the version
+     *
+     * @param context current context
+     * @param version current version string
+     * @param sdk     current sdk string
      */
-    public static void SuperAwesomeUnitySuperAwesomeHandleStagingCPI (Context context) {
+    public static void SuperAwesomeUnitySuperAwesomeSetVersion (Context context, String version, String sdk) {
 
-        SuperAwesome.getInstance().handleStagingCPI(context, new SAInstallEventInterface() {
-            @Override
-            public void didCountAnInstall(boolean success) {
-                SAUnityCallback.sendCPICallback(unityName, success, "HandleStagingCPI");
-            }
-        });
+        SuperAwesome.getInstance().overrideVersion(version);
+        SuperAwesome.getInstance().overrideSdk(sdk);
 
     }
-
 }

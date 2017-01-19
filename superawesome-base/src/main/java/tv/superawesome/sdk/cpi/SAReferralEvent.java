@@ -12,20 +12,36 @@ import org.json.JSONObject;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.SAReferralData;
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 
+/**
+ * Class that abstracts away dealing with referral data coming from the Google Play Store and
+ * sending an event to the ad server.
+ */
 public class SAReferralEvent {
 
+    // current context and intent private members
     private Context context;
     private Intent intent;
 
+    /**
+     * Constructor taking the current context and an intent as params
+     *
+     * @param context current context (activity or fragment)
+     * @param intent  an intent
+     */
     public SAReferralEvent(Context context, Intent intent) {
         this.context = context;
         this.intent = intent;
     }
 
+    /**
+     * Main method of the class that checks for referral data and, if it's valid, sends a
+     * custom event to the ad server
+     */
     public void sendEvent () {
 
         // now get the referral data
@@ -63,14 +79,13 @@ public class SAReferralEvent {
 
             // setup a configuration
             SASession session = new SASession(this.context);
-            if (cpiData.configuration == 1) {
-                session.setConfigurationStaging();
-            } else {
-                session.setConfigurationProduction();
-            }
+            SAConfiguration configuration = SAConfiguration.fromValue(cpiData.configuration);
+            session.setConfiguration(configuration);
 
+            // form the cpi URL
             String cpiEventURL = session.getBaseUrl() + "/event?" + SAUtils.formGetQueryFromDict(cpiDict);
 
+            // send the event
             SAEvents events = new SAEvents(context);
             events.sendEventToURL(cpiEventURL);
         }
