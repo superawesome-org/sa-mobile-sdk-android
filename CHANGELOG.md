@@ -1,6 +1,34 @@
 CHANGELOG
 =========
 
+5.3.13
+ - Improved the SuperAwesome CPI to do the following:
+ 	- The CPI install event has to be triggered manually now by the SDK user (usually when the app starts). The CPI method now is accessible through the main SuperAwesome singleton interface and returns an async callback to the SDK user to indicate if the Ad Server recognized the install as valid or not.
+	- The CPI install event now checks the user device against a list of possible app packages that the ad server sends to the SDK. If one of the packages sent by the ad server is also found on the user device, that information is passed down to the install event so that the Ad Server counts that install as being much more statistially significant.
+ 	- If the app using the SDK intercepts an INSTALL_REFERRER broadcast, it tries to parse that data and send a "custom.reffered_install" event to the ad server. These types of really direct installs (where the correlation is strict) will now be counted separately, so that advertisers will know they have N impressions/clicks, M statistical installs, out of which P are directly correlated installs.  
+ - Made the Video ad close button appear at the end of the ad, if it's set to be invisible and the ad
+ is set not to automatically close at the end. This removes an issue where if you disable both the close button and auto-close at end, the video would never be closed. This also improves the experience with regards to rewarded videos since now you can trigger your reward UI while still having the video in the background.
+ - Refactored some of the SuperAwesome libraries that go in supporting the main SDK
+        - SANetworking added a new class that downloads files from a list, sequentially
+        - SAVASTParser was updated and now recursively parses VAST tags
+        - SAAdLoader had the VAST & AppWall loading classes removed. Now it depends on SAVASTParser to figure out a VAST tag and the sequential file list downloader to get AppWall data
+        - SAModelSpace added two classes needed for VAST parsing: SAVASTAd and SAVASTMedia
+ 	- Removed VAST elements from the SAAd model class, since now they're contained in SAVASTAd and SAVASTMedia. SAAd models are not associated with VAST and the VAST parser will not try to produce a SAAd model, but a SAVASTAd model.
+	- Added methods to all enum definitions to initiate an enum value from an integer or string or vice-versa. This has taken the burden of getting correct enum values from JSON / Models to the enums, not the parsers.
+        - SAEvents was simplified in relation to handling MOAT
+        - SAUtils now has SAAlert and SALoadingScreen as classes (same for Android)
+        - Small refactoring for the AIR, Unity & MoPub plugins
+        - Renamed a lot of callbacks used by the SDK to include the "sa" particle at the start (so as not to have conflicts with other block definitions) and follow the "saDidDoThisOrThat" pattern.
+        - Renamed a lot of enums to contain the "SA_" particle so as not to have conflicts with other
+ C enum definitions.
+ - Added, updated or improved tests for:
+        - SANetworking
+        - SAModelSpace
+        - SAAdLoader
+        - SAEvents
+        - SAUtils
+ - Added comments to each library and SDK file 
+
 5.3.12
  - Minor change - update the SAAdLoader dependency to change the "bundle" parameter to "sourceBundle" to work with the actual ad server naming convention
 
