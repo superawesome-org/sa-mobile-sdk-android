@@ -186,6 +186,9 @@ public class SAVideoAd extends Activity {
                         case Video_End: {
                             events.sendEventsFor("complete");
 
+                            // send an ad ended event
+                            listenerL.onEvent(ad.placementId, SAEvent.adEnded);
+
                             // mark the video as ended
                             videoEnded = true;
 
@@ -238,16 +241,6 @@ public class SAVideoAd extends Activity {
     }
 
     /**
-     * Overridden "onSaveInstanceState" method of the activity
-     *
-     * @param outState the outgoing state
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    /**
      * Overridden "onBackPressed" method of the activity
      * Depending on how the ad is customised, this will lock the back button or it will allow it.
      * If it allows it, it's going to also send an "adClosed" event back to the SDK user
@@ -284,10 +277,15 @@ public class SAVideoAd extends Activity {
         //  - send all "custom_clicks" events
         if (ad.campaignType == SACampaignType.CPI) {
 
-            // send events
+            // send sa click counter
+            events.sendEventsFor("clk_counter");
+            // send vast click tracking event
             events.sendEventsFor("click_tracking");
+            // send vast custom click events
             events.sendEventsFor("custom_clicks");
+            // send vast events for click through
             events.sendEventsFor("click_through");
+            // send install event
             events.sendEventsFor("install");
 
             // form the final URL for referral data
@@ -314,8 +312,11 @@ public class SAVideoAd extends Activity {
         //  - send all "click_tracking" events
         //  - send all "custom_clicks" events
         else {
-            // send the events
+            // send sa click counter
+            events.sendEventsFor("clk_counter");
+            // send vast click tracking events
             events.sendEventsFor("click_tracking");
+            // senv vast custom clicks
             events.sendEventsFor("custom_clicks");
 
             // get the final go-to URL
@@ -376,7 +377,7 @@ public class SAVideoAd extends Activity {
         events.unregisterVideoMoatEvent();
 
         // delete the ad
-        removeAdFromLoadedAds(ad);
+        ads.remove(ad.placementId);
 
         // close
         this.finish();
@@ -394,8 +395,10 @@ public class SAVideoAd extends Activity {
      * @param placementId   the Ad placement id to load data for
      * @param context       the current context
      */
-    public static void load(final int placementId, Context context) {
+    public static void load (final int placementId, Context context) {
 
+        // if the ad data for the placement id doesn't existing in the "ads" hash map, then
+        // proceed with loading it
         if (!ads.containsKey(placementId)) {
 
             // set a placeholder
@@ -439,8 +442,11 @@ public class SAVideoAd extends Activity {
                 }
             });
 
-        } else {
-            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+        }
+        // else if the ad data for the placement exists in the "ads" hash map, then notify the
+        // user that it already exists and he should just play it
+        else {
+            listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
         }
     }
 
@@ -461,7 +467,7 @@ public class SAVideoAd extends Activity {
      * @param placementId   the Ad placement id to play an ad for
      * @param context       the current context (activity or fragment)
      */
-    public static void play(int placementId, Context context) {
+    public static void play (int placementId, Context context) {
         // try to get the ad that fits the placement id
         SAAd adL = (SAAd) ads.get(placementId);
 
@@ -473,16 +479,6 @@ public class SAVideoAd extends Activity {
         } else {
             listener.onEvent(placementId, SAEvent.adFailedToShow);
         }
-    }
-
-    /**
-     * Private static method that removes an already played ad from the ad queue so that it can't
-     * be played again until it is reloaded
-     *
-     * @param ad the current ad, since I need the palcement Id from it
-     */
-    private static void removeAdFromLoadedAds (SAAd ad) {
-        ads.remove(ad.placementId);
     }
 
     /**********************************************************************************************

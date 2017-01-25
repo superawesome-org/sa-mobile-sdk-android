@@ -4,20 +4,19 @@
  */
 package tv.superawesome.sdk.views;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 import org.json.JSONObject;
 
@@ -43,34 +42,28 @@ import tv.superawesome.sdk.SuperAwesome;
  * Class that abstracts away the process of loading & displaying a banner type Ad.
  * A subclass of the Android "RelativeLayout" class.
  */
-public class SABannerAd extends RelativeLayout {
+public class SABannerAd extends FrameLayout {
 
     // constants
-    private final int BANNER_BACKGROUND = Color.rgb(224, 224, 224);
+    private final int       BANNER_BACKGROUND = Color.rgb(224, 224, 224);
 
     // private vars w/ exposed setters & getters
-    private boolean isParentalGateEnabled = true;
-    private SAAd ad;
-    private SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
+    private boolean         isParentalGateEnabled = true;
+    private SAAd            ad;
+    private SAInterface     listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
     // the internal loader
-    private SASession session;
-    private SAEvents events;
-    private SALoader loader;
+    private SASession       session;
+    private SAEvents        events;
+    private SALoader        loader;
 
     // private subviews
-    private RelativeLayout contentHolder;
-    private SAWebPlayer webView;
-    private Button padlock;
-    private SAParentalGate gate;
+    private SAWebPlayer     webView;
+    private Button          padlock;
+    private SAParentalGate  gate;
 
-    // aux private vars
-    private float cWidth = 0;
-    private float cHeight = 0;
-    private boolean layoutOK = false;
-    private String destinationURL = null;
-    private boolean showOnce = false;
-    private boolean canPlay = true;
+    private String          destinationURL = null;
+    private boolean         canPlay = true;
 
     /**********************************************************************************************
      * View initialization
@@ -97,7 +90,7 @@ public class SABannerAd extends RelativeLayout {
 
     /**
      * Constructor with context, attribute set and default style. This is where the layout
-     * actually gets initialized
+     * actually gets initialized.
      *
      * @param context       current context (activity or fragment)
      * @param attrs         an attribute set
@@ -116,7 +109,6 @@ public class SABannerAd extends RelativeLayout {
         // get view ids dynamically
         String packageName = context.getPackageName();
         int view_sa_bannerId = getResources().getIdentifier("view_sa_banner", "layout", packageName);
-        int content_holderId = getResources().getIdentifier("content_holder", "id", packageName);
         int web_viewId = getResources().getIdentifier("web_view", "id", packageName);
         int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
 
@@ -130,9 +122,6 @@ public class SABannerAd extends RelativeLayout {
         setConfiguration(SuperAwesome.getInstance().defaultConfiguration());
         setTestMode(SuperAwesome.getInstance().defaultTestMode());
 
-        // get the main relative layout content holder
-        contentHolder = (RelativeLayout) findViewById(content_holderId);
-
         // get the padlock
         padlock = (Button) findViewById(padlockId);
         padlock.setOnClickListener(new OnClickListener() {
@@ -144,10 +133,10 @@ public class SABannerAd extends RelativeLayout {
         });
 
         // get and customize the web view
-        webView = (SAWebPlayer) findViewById(web_viewId);
+        webView = (SAWebPlayer) ((Activity)context).getFragmentManager().findFragmentById(web_viewId);
         webView.setClickListener(new SAWebPlayerClickInterface() {
             @Override
-            public void SAWebPlayerClickHandled(String url) {
+            public void saWebPlayerDidReceiveClick(String url) {
                 // update the destination URL
                 destinationURL = url;
 
@@ -162,23 +151,19 @@ public class SABannerAd extends RelativeLayout {
         });
         webView.setEventListener(new SAWebPlayerEventInterface() {
             @Override
-            public void SAWebPlayerEventHandled(SAWebPlayerEvent saWebPlayerEvent) {
+            public void saWebPlayerDidReceiveEvent(SAWebPlayerEvent saWebPlayerEvent) {
                 switch (saWebPlayerEvent) {
                     case Web_Start: {
 
-                        if (!showOnce) {
-                            showOnce = true;
+                        // send additional impressions
+                        events.sendEventsFor("impression");
+                        // events.sendEventsFor("sa_impr");
 
-                            // send additional impressions
-                            events.sendEventsFor("impression");
-                            // events.sendEventsFor("sa_impr");
+                        // send viewable impression
+                        events.sendViewableImpressionForDisplay(SABannerAd.this);
 
-                            // send viewable impression
-                            events.sendViewableImpressionForDisplay(SABannerAd.this);
-
-                            // call listener
-                            listener.onEvent(ad.placementId, SAEvent.adShown);
-                        }
+                        // call listener
+                        listener.onEvent(ad.placementId, SAEvent.adShown);
                         break;
                     }
                     case Web_Error: {
@@ -191,24 +176,38 @@ public class SABannerAd extends RelativeLayout {
     }
 
     /**
-     * Overridden RelativeLayout method that is used to get the cWidth & cHeight member
-     * variables updated
+     * Overridden method that saves the current important instance data for a Banner Ad when
+     * it rotates.
      *
-     * @param changed   bool that holds if the layout changed
-     * @param l         left margin
-     * @param t         top margin
-     * @param r         right margin
-     * @param b         mottom margin
+     * @return a Parcelable object with the current state
      */
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-        cWidth = getWidth();
-        cHeight = getHeight();
-
-        if (cWidth != 0 && cHeight != 0 && !layoutOK){
-            layoutOK = true;
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("superState", super.onSaveInstanceState());
+        if (ad != null) {
+            bundle.putString("ad", this.ad.writeToJson().toString());
         }
+        return bundle;
+    }
+
+    /**
+     * Overridden method that restores a previous state when a Banner Ad rotates
+     *
+     * @param state previous saved state, as a Parcelable object
+     */
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle)  {
+            Bundle bundle = (Bundle) state;
+            String adJson = bundle.getString("ad");
+            if (adJson != null) {
+                SAAd ad = new SAAd(adJson);
+                setAd(ad);
+            }
+            state = bundle.getParcelable("superState");
+        }
+        super.onRestoreInstanceState(state);
     }
 
     /**********************************************************************************************
@@ -221,10 +220,15 @@ public class SABannerAd extends RelativeLayout {
      *
      * @param placementId   the Ad placement id to load data for
      */
-    public void load(final int placementId) {
+    public void load (final int placementId) {
 
+        // when starting an ad loading procedure, re-set this
         canPlay = false;
 
+        // first close any previously existing ads
+        close();
+
+        // next init a new session & prepare it
         session.setVersion(SuperAwesome.getInstance().getSDKVersion());
         session.prepareSession(new SASessionInterface() {
             @Override
@@ -246,68 +250,92 @@ public class SABannerAd extends RelativeLayout {
     /**
      * Method that returns whether ad data for a certain placement has already been loaded
      *
-     * @return              true or false
+     * @return true or false
      */
     public boolean hasAdAvailable () {
         return ad != null;
     }
 
-    public void setAd(SAAd _ad) {
-        this.ad = _ad;
+    /**
+     * More important setter that both copies a reference to a valid, non-null ad and sets the
+     * ad for the events object
+     *
+     * @param ad a copy of a SAAd object
+     */
+    public void setAd(SAAd ad) {
+        this.ad = ad;
         events.setAd(this.ad);
     }
 
     /**
      * Method that, if an ad data is loaded, will play the content for the user
      *
-     * @param context       the current context (activity or fragment)
+     * @param context the current context (activity or fragment)
      */
-    public void play(Context context) {
+    public void play (Context context) {
 
+        // if the banner ad has a valid ad loaded then play it
         if (ad != null && ad.creative.format != SACreativeFormat.video && canPlay) {
 
-            // if ad is still not OK - wait a little while longer
-            final Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    // resize the views
-                    canPlay = false;
-                    resize((int) cWidth, (int) cHeight);
+            // set can play = false
+            canPlay = false;
 
-                    // make the padlock visible or not
-                    if (shouldShowPadlock()) {
-                        padlock.setVisibility(View.VISIBLE);
-                    } else {
-                        padlock.setVisibility(View.GONE);
-                    }
-                }
-            };
+            // set content size
+            webView.setContentSize(ad.creative.details.width, ad.creative.details.height);
 
-            // wait until layout of the whole thing is OK before we start rendering the ad
-            if (ad == null || !layoutOK) {
-                this.postDelayed(runnable, 250);
-            } else {
-                post(runnable);
-            }
+            // prepare moat tracking
+            String moatString = events.registerDisplayMoatEvent((Activity)this.getContext(), webView.getWebView());
+            String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
 
-        } else {
+            // load html
+            webView.loadHTML(fullHTML);
+
+            // make the padlock visible or not
+            padlock.setVisibility(shouldShowPadlock() ? VISIBLE : GONE);
+
+        }
+        // else just send a new event listener
+        else {
             listener.onEvent(0, SAEvent.adFailedToShow);
         }
     }
 
     /**
-     * Method that closes the banner ad (right now it just unsubscribes from moat events)
+     * Overridden onLayout method in which some minor layout setup are being finalised
+     *
+     * @param changed whether the layout has changed
+     * @param left    new left margin of the banner ad
+     * @param top     new top margin of the banner ad
+     * @param right   new right margin of the banner ad
+     * @param bottom  new bottom margin of the banner ad
      */
-    public void close() {
-        events.unregisterDisplayMoatEvent();
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        // call to super
+        super.onLayout(changed, left, top, right, bottom);
+
+        // set visibility for the padlock
+        padlock.setVisibility(shouldShowPadlock() ? VISIBLE : GONE);
+
+        // if the web view exists
+        if (webView != null && webView.getWebView() != null) {
+            // move the padlock so that it looks nice ...
+            float translationX = webView.getWebView().getTranslationX();
+            float translationY = webView.getWebView().getTranslationY();
+            padlock.setTranslationX(translationX);
+            padlock.setTranslationY(translationY);
+        }
     }
 
     /**
      * Method that handles a click on the ad surface
      */
-    public void click() {
+    public void click () {
         // callback
         listener.onEvent(ad.placementId, SAEvent.adClicked);
+
+        // send click counter events
+        events.sendEventsFor("clk_counter");
 
         // send tracking events, if needed
         if (!destinationURL.contains(session.getBaseUrl())) {
@@ -336,7 +364,6 @@ public class SABannerAd extends RelativeLayout {
             referrerQuery = referrerQuery.replace("=", "%3D");
             finalUrl += referrerQuery;
         }
-        Log.d("SuperAwesome-CPI", ad.writeToJson().toString());
         Log.d("SuperAwesome", "Going to " + finalUrl);
 
         // open URL
@@ -351,36 +378,24 @@ public class SABannerAd extends RelativeLayout {
      * @return true or false
      */
     private boolean shouldShowPadlock () {
-        return ad.creative.format != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
+        return ad != null && ad.creative.format != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     /**
-     * Method that resized the content of the Banner Ad; Called every time the superview changes
-     *
-     * @param width     width to resize to
-     * @param height    height to resize to
+     * Method that closes the banner ad (right now it just un-subscribes from moat events)
      */
-    // todo: make sure Banner Ads don't get reloaded on each screen reload
-    public void resize(int width, int height){
-        // get ad W & H
-        int adWidth = ad.creative.details.width,
-            adHeight = ad.creative.details.height;
+    public void close() {
+        // reset any ad that might be in here
+        setAd(null);
 
-        // calc new frame
-        Rect newFrame = SAUtils.mapSourceSizeIntoBoundingSize(width, height, adWidth, adHeight);
-        int newWidth = newFrame.right,
-            newHeight = newFrame.bottom;
+        // set web view content size to 0
+        webView.setContentSize(0, 0);
 
-        android.widget.RelativeLayout.LayoutParams params = new LayoutParams(newWidth, newHeight);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        contentHolder.setLayoutParams(params);
+        // make padlock invisible
+        padlock.setVisibility(GONE);
 
-        // prepare moat tracking
-        String moatString = events.registerDisplayMoatEvent((Activity)this.getContext(), webView);
-        String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
-
-        // update HTML as well
-        webView.loadHTML(fullHTML, adWidth, adHeight, newWidth, newHeight);
+        // unregister moat events
+        events.unregisterDisplayMoatEvent();
     }
 
     /**********************************************************************************************

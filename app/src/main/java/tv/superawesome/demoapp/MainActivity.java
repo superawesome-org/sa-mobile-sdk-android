@@ -6,6 +6,12 @@ import android.util.Log;
 import android.view.View;
 
 import tv.superawesome.lib.sasession.SASession;
+import tv.superawesome.sdk.SuperAwesome;
+import tv.superawesome.sdk.cpi.SACPI;
+import tv.superawesome.sdk.cpi.SAInstallEvent;
+import tv.superawesome.sdk.cpi.SAInstallEventInterface;
+import tv.superawesome.sdk.cpi.SASourceBundleInspector;
+import tv.superawesome.sdk.cpi.SASourceBundleInspectorInterface;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -23,8 +29,23 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SASession session = new SASession(this);
+        final SASession session = new SASession(this);
         session.setConfigurationStaging();
+
+        SuperAwesome.getInstance().handleCPI(this, new SAInstallEventInterface() {
+            @Override
+            public void saDidCountAnInstall(boolean success) {
+
+            }
+        });
+
+        SACPI sacpi = new SACPI();
+        sacpi.sendInstallEvent(this, session, new SAInstallEventInterface() {
+            @Override
+            public void saDidCountAnInstall(boolean success) {
+                Log.d("SuperAwesome", "Install evt with " + success);
+            }
+        });
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
         bannerAd.setConfigurationStaging();
@@ -33,10 +54,10 @@ public class MainActivity extends Activity {
         bannerAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
-                if (event == SAEvent.adLoaded){
-                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
-                } else if (event == SAEvent.adFailedToLoad) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                if (event == SAEvent.adLoaded) {
+                    bannerAd.play(MainActivity.this);
+                } else {
+                    Log.d("SuperAwesome", "Banner " + placementId + " --> " + event);
                 }
             }
         });
@@ -48,9 +69,9 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 if (event == SAEvent.adLoaded) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
-                } else if (event == SAEvent.adFailedToLoad) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                    SAInterstitialAd.play(placementId, MainActivity.this);
+                } else {
+                    Log.d("SuperAwesome", "Interstitial " + placementId + " --> " + event);
                 }
             }
         });
@@ -64,9 +85,9 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 if (event == SAEvent.adLoaded) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
-                } else if (event == SAEvent.adFailedToLoad) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                    SAVideoAd.play(placementId, MainActivity.this);
+                } else {
+                    Log.d("SuperAwesome", "Video " + placementId + " --> " + event);
                 }
             }
         });
@@ -76,9 +97,9 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 if (event == SAEvent.adLoaded) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " Loaded OK");
-                } else if (event == SAEvent.adFailedToLoad) {
-                    Log.d("SuperAwesome", "Ad " + placementId + " Failed to load");
+                    SAAppWall.play(placementId, MainActivity.this);
+                } else {
+                    Log.d("SuperAwesome", "App Wall " + placementId + " --> " + event);
                 }
             }
         });
@@ -90,37 +111,46 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-        bannerAd.load(584);
-        SAInterstitialAd.load(585, this);
-        SAVideoAd.load(586, this);
-        SAAppWall.load(437, this);
+//        bannerAd.load(584);
+//        SAInterstitialAd.load(585, this);
+//        SAVideoAd.load(586, this);
+//        SAAppWall.load(437, this);
+
     }
 
-    public void playBanner(View v){
-        if (bannerAd != null && bannerAd.hasAdAvailable()) {
-            bannerAd.play(MainActivity.this);
-        }
+    public void playBanner1(View v){
+        bannerAd.load(599);
+    }
+
+    public void playBanner2(View v) {
+        bannerAd.load(602);
     }
 
     public void playInterstitial1(View v){
-        if (SAInterstitialAd.hasAdAvailable(585)) {
-            SAInterstitialAd.play(585, MainActivity.this);
-        }
+        SAInterstitialAd.load(600, this);
     }
 
     public void playInterstitial2(View v){
-        //
+        SAInterstitialAd.load(601, this);
+    }
+
+    public void playInterstitial3(View v){
+        SAInterstitialAd.load(605, this);
+    }
+
+    public void playInterstitial4(View v){
+        SAInterstitialAd.load(606, this);
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(586)) {
-            SAVideoAd.play(586, MainActivity.this);
-        }
+        SAVideoAd.load(603, this);
     }
 
     public void playVideo2(View v){
-        if (SAAppWall.hasAdAvailable(437)) {
-            SAAppWall.play(437, MainActivity.this);
-        }
+        SAVideoAd.load(604, this);
+    }
+
+    public void playAppWall(View v){
+        SAAppWall.load(437, this);
     }
 }

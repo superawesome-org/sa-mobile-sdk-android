@@ -27,12 +27,14 @@ public class SAUnityInterstitialAd {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
-                    case adLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, "adLoaded"); break;
-                    case adFailedToLoad: SAUnityCallback.sendAdCallback(unityName, placementId, "adFailedToLoad"); break;
-                    case adShown: SAUnityCallback.sendAdCallback(unityName, placementId, "adShown"); break;
-                    case adFailedToShow: SAUnityCallback.sendAdCallback(unityName, placementId, "adFailedToShow"); break;
-                    case adClicked: SAUnityCallback.sendAdCallback(unityName, placementId, "adClicked"); break;
-                    case adClosed: SAUnityCallback.sendAdCallback(unityName, placementId, "adClosed");break;
+                    case adLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString()); break;
+                    case adFailedToLoad: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString()); break;
+                    case adAlreadyLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString()); break;
+                    case adShown: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString()); break;
+                    case adFailedToShow: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString()); break;
+                    case adClicked: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString()); break;
+                    case adEnded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString()); break;
+                    case adClosed: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());break;
                 }
             }
         });

@@ -154,22 +154,12 @@ public class SAAppWall extends Activity {
         // send events
         for (SAEvents event : events) {
             event.sendEventsFor("impression");
-            event.sendEventsFor("sa_impr");
+            // event.sendEventsFor("sa_impr");
             event.sendViewableImpressionForDisplay(gameGrid);
         }
 
         // send event
         listenerL.onEvent(response.placementId, SAEvent.adShown);
-      }
-
-    /**
-     * Overridden "onSaveInstanceState" method of the activity
-     *
-     * @param outState the outgoing state
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -196,7 +186,7 @@ public class SAAppWall extends Activity {
      *
      * @param position what cell of the AppWall was clicked
      */
-    public void click(int position) {
+    public void click (int position) {
         // get ad
         SAAd ad = response.ads.get(position);
         // get events
@@ -211,8 +201,11 @@ public class SAAppWall extends Activity {
 
         if (ad.campaignType == SACampaignType.CPI) {
 
-            // send events
+            // send click counter event
+            event.sendEventsFor("clk_counter");
+            // send install event
             event.sendEventsFor("install");
+            // send sa click counter event
             event.sendEventsFor("sa_tracking");
 
             // get click URL
@@ -249,8 +242,8 @@ public class SAAppWall extends Activity {
         // call listener
         listenerL.onEvent(response.placementId, SAEvent.adClosed);
 
-        // delete the ad
-        removeAdFromLoadedAds(response);
+        // delete the response
+        responses.remove(response.placementId);
 
         // close
         this.finish();
@@ -269,8 +262,10 @@ public class SAAppWall extends Activity {
      * @param placementId   the Ad placement id to load data for
      * @param context       the current context
      */
-    public static void load(final int placementId, Context context) {
+    public static void load (final int placementId, Context context) {
 
+        // if the ad data for the placement id doesn't existing in the "ads" hash map, then
+        // proceed with loading it
         if (!responses.containsKey(placementId)) {
 
             // set a placeholder
@@ -308,8 +303,11 @@ public class SAAppWall extends Activity {
                 }
             });
 
-        } else {
-            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+        }
+        // else if the ad data for the placement exists in the "ads" hash map, then notify the
+        // user that it already exists and he should just play it
+        else {
+            listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
         }
 
     }
@@ -344,16 +342,6 @@ public class SAAppWall extends Activity {
         } else {
             listener.onEvent(placementId, SAEvent.adFailedToShow);
         }
-    }
-
-    /**
-     * Private static method that removes an already played ad from the ad queue so that it can't
-     * be played again until it is reloaded
-     *
-     * @param response the response, since I need the palcement Id from it
-     */
-    private static void removeAdFromLoadedAds (SAResponse response) {
-        responses.remove(response.placementId);
     }
 
     /**********************************************************************************************

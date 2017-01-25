@@ -48,7 +48,7 @@ public class SASourceBundleInspector {
      * @param session   a session to operate on
      * @param listener  an instance of the response listener, to send a callback
      */
-    void checkPackage(SASession session, final SASourceBundleInspectorInterface listener) {
+    public void checkPackage(SASession session, final SASourceBundleInspectorInterface listener) {
         // get a reference of the listener
         this.listener = listener != null ? listener : this.listener;
 

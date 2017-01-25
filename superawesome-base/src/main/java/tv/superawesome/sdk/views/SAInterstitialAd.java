@@ -8,10 +8,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 
@@ -43,13 +41,13 @@ public class SAInterstitialAd extends Activity {
     private static HashMap<Integer, Object> ads = new HashMap<>();
 
     // private vars w/ exposed setters & getters (state vars)
-    private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
+    private static SAInterface      listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
-    private static boolean isParentalGateEnabled    = SuperAwesome.getInstance().defaultParentalGate();
-    private static boolean isTestingEnabled         = SuperAwesome.getInstance().defaultTestMode();
-    private static boolean isBackButtonEnabled      = SuperAwesome.getInstance().defaultBackButton();
-    private static SAOrientation orientation        = SuperAwesome.getInstance().defaultOrientation();
-    private static SAConfiguration configuration    = SuperAwesome.getInstance().defaultConfiguration();
+    private static boolean          isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
+    private static boolean          isTestingEnabled = SuperAwesome.getInstance().defaultTestMode();
+    private static boolean          isBackButtonEnabled = SuperAwesome.getInstance().defaultBackButton();
+    private static SAOrientation    orientation = SuperAwesome.getInstance().defaultOrientation();
+    private static SAConfiguration  configuration = SuperAwesome.getInstance().defaultConfiguration();
 
     /**********************************************************************************************
      * Activity initialization & instance methods
@@ -110,28 +108,10 @@ public class SAInterstitialAd extends Activity {
         interstitialBanner.setBackgroundColor(Color.rgb(224, 224, 224));
         interstitialBanner.setAd(ad);
         interstitialBanner.setListener(listenerL);
-        if (isParentalGateEnabledL) {
-            interstitialBanner.enableParentalGate();
-        } else {
-            interstitialBanner.disableParentalGate();
-        }
+        interstitialBanner.setParentalGate(isParentalGateEnabledL);
 
         // finally play!
         interstitialBanner.play(this);
-    }
-
-    /**
-     * Method that takes care of resizing the banner ad once the device rotates
-     *
-     * @param newConfig the new configuration the ad is in
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        interstitialBanner.resize(width, height);
     }
 
     /**
@@ -140,7 +120,7 @@ public class SAInterstitialAd extends Activity {
      * If it allows it, it's going to also send an "adClosed" event back to the SDK user
      */
     @Override
-    public void onBackPressed() {
+    public void onBackPressed () {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
             SAInterface listenerL = getListener();
@@ -149,20 +129,18 @@ public class SAInterstitialAd extends Activity {
         }
     }
 
-    /**********************************************************************************************
-     * Custom instance methods
-     **********************************************************************************************/
-
     /**
      * Method that closes the interstitial ad
      */
-    private void close() {
+    private void close () {
         // get local listener
         SAInterface listenerL = getListener();
         listenerL.onEvent(ad.placementId, SAEvent.adClosed);
 
-        // make sure banner is closed and ad is nulled
-        removeAdFromLoadedAds(ad);
+        // remove the ad from the "ads" hash map once it's been played
+        ads.remove(ad.placementId);
+
+        // close the banner as well
         interstitialBanner.close();
 
         // close & resume previous activity
@@ -171,7 +149,7 @@ public class SAInterstitialAd extends Activity {
     }
 
     /**********************************************************************************************
-     * Class public interface
+     * Class public interface - static methods to interact with an Interstitial Ad
      **********************************************************************************************/
 
     /**
@@ -183,6 +161,8 @@ public class SAInterstitialAd extends Activity {
      */
     public static void load(final int placementId, Context context) {
 
+        // if the ad data for the placement id doesn't existing in the "ads" hash map, then
+        // proceed with loading it
         if (!ads.containsKey(placementId)) {
 
             // set a placeholder
@@ -221,8 +201,11 @@ public class SAInterstitialAd extends Activity {
                 }
             });
 
-        } else {
-            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+        }
+        // else if the ad data for the placement exists in the "ads" hash map, then notify the
+        // user that it already exists and he should just play it
+        else {
+            listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
         }
     }
 
@@ -256,16 +239,6 @@ public class SAInterstitialAd extends Activity {
         } else {
             listener.onEvent(placementId, SAEvent.adFailedToShow);
         }
-    }
-
-    /**
-     * Private static method that removes an already played ad from the ad queue so that it can't
-     * be played again until it is reloaded
-     *
-     * @param ad the current ad, since I need the palcement Id from it
-     */
-    private static void removeAdFromLoadedAds (SAAd ad) {
-        ads.remove(ad.placementId);
     }
 
     /**********************************************************************************************

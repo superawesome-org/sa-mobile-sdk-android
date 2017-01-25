@@ -69,12 +69,14 @@ public class SAAIRBannerAd {
                     @Override
                     public void onEvent(int placementId, SAEvent event) {
                         switch (event) {
-                            case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, "adLoaded"); break;
-                            case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, "adFailedToLoad"); break;
-                            case adShown: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, "adShown"); break;
-                            case adFailedToShow: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, "adFailedToShow"); break;
-                            case adClicked: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, "adClicked"); break;
-                            case adClosed: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, "adClosed"); break;
+                            case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adLoaded.toString()); break;
+                            case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adFailedToLoad.toString()); break;
+                            case adAlreadyLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adAlreadyLoaded.toString()); break;
+                            case adShown: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adShown.toString()); break;
+                            case adFailedToShow: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adFailedToShow.toString()); break;
+                            case adClicked: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adClicked.toString()); break;
+                            case adEnded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adEnded.toString()); break;
+                            case adClosed: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adClosed.toString()); break;
                         }
                     }
                 });
