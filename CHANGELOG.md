@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.4.2
+ - Fixed a potentail NulLPointerException in SABannerad
+
 5.4.1
  - Improved SABannerAd to work with dynamically created fragments. This fixes a bug in which more than one banners displayed on the same activity would cause a crash.
 

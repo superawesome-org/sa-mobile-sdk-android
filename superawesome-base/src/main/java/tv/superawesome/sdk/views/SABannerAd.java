@@ -401,7 +401,11 @@ public class SABannerAd extends FrameLayout {
         setAd(null);
 
         // set web view content size to 0
-        webView.setContentSize(0, 0);
+        try {
+            webView.setContentSize(0, 0);
+        } catch (Exception e) {
+            // do nothing
+        }
 
         // make padlock invisible
         padlock.setVisibility(GONE);
