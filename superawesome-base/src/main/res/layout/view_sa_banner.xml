@@ -9,11 +9,11 @@
     android:clipToPadding="false"
     tools:context="tv.superawesome.sdk.views.SABannerAd">
 
-    <fragment
-        android:id="@+id/web_view"
-        android:name="tv.superawesome.lib.sawebplayer.SAWebPlayer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<fragment-->
+        <!--android:id="@+id/web_view"-->
+        <!--android:name="tv.superawesome.lib.sawebplayer.SAWebPlayer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
     <Button
         android:layout_width="83dp"
         android:layout_height="31dp"

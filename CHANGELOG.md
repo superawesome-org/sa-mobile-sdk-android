@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.4.1
+ - Improved SABannerAd to work with dynamically created fragments. This fixes a bug in which more than one banners displayed on the same activity would cause a crash.
+
 5.4.0
  - Refactored the SAWebPlayer class to load & display HTML content at a 1:1 ratio. Then that gets scaled using Matrix transforms to the desired width & height to fit a container properly. This means that ad scaling will not happen in HTML anymore, but in native code.
  - Refactored the SABannerAd & SAInterstitialAd classes to use the new web player and to not reload data on screen rotations, etc.

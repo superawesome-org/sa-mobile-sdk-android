@@ -22,6 +22,7 @@ import tv.superawesome.sdk.views.SAVideoAd;
 public class MainActivity extends Activity {
 
     private SABannerAd bannerAd = null;
+    private SABannerAd bannerAd2 = null;
 
     /** the options list */
     @Override
@@ -48,7 +49,7 @@ public class MainActivity extends Activity {
         });
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-        bannerAd.setConfigurationStaging();
+        bannerAd.setConfigurationProduction();
         bannerAd.disableTestMode();
         bannerAd.disableParentalGate();
         bannerAd.setListener(new SAInterface() {
@@ -58,6 +59,20 @@ public class MainActivity extends Activity {
                     bannerAd.play(MainActivity.this);
                 } else {
                     Log.d("SuperAwesome", "Banner " + placementId + " --> " + event);
+                }
+            }
+        });
+
+        bannerAd2 = (SABannerAd) findViewById(R.id.mybanner2);
+        bannerAd2.setConfigurationProduction();
+        bannerAd2.disableParentalGate();
+        bannerAd2.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    bannerAd2.play(MainActivity.this);
+                } else {
+                    Log.d("SuperAwesome", "Banner 2 " + placementId + " --> " + event);
                 }
             }
         });
@@ -119,11 +134,11 @@ public class MainActivity extends Activity {
     }
 
     public void playBanner1(View v){
-        bannerAd.load(599);
+        bannerAd.load(7185);
     }
 
     public void playBanner2(View v) {
-        bannerAd.load(602);
+        bannerAd2.load(7184);
     }
 
     public void playInterstitial1(View v){

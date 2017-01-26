@@ -5,6 +5,7 @@
 package tv.superawesome.sdk.views;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -59,6 +60,7 @@ public class SABannerAd extends FrameLayout {
 
     // private subviews
     private SAWebPlayer     webView;
+    private String          bannerTag;
     private Button          padlock;
     private SAParentalGate  gate;
 
@@ -109,6 +111,7 @@ public class SABannerAd extends FrameLayout {
         // get view ids dynamically
         String packageName = context.getPackageName();
         int view_sa_bannerId = getResources().getIdentifier("view_sa_banner", "layout", packageName);
+        int sa_banner_adId = getResources().getIdentifier("sa_banner_ad", "id", packageName);
         int web_viewId = getResources().getIdentifier("web_view", "id", packageName);
         int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
 
@@ -133,7 +136,16 @@ public class SABannerAd extends FrameLayout {
         });
 
         // get and customize the web view
-        webView = (SAWebPlayer) ((Activity)context).getFragmentManager().findFragmentById(web_viewId);
+        String bannerTag = "My_WebView";
+
+        FragmentManager manager = ((Activity) context).getFragmentManager();
+        if (manager.findFragmentByTag(bannerTag) == null) {
+            webView = new SAWebPlayer();
+            manager.beginTransaction().add(getId(), webView, bannerTag).commit();
+        } else {
+            webView = (SAWebPlayer) manager.findFragmentByTag(bannerTag);
+        }
+
         webView.setClickListener(new SAWebPlayerClickInterface() {
             @Override
             public void saWebPlayerDidReceiveClick(String url) {
