@@ -33,6 +33,7 @@ public class SAUnityBannerAd {
     public static void SuperAwesomeUnitySABannerAdCreate (Context context, final String unityName) {
 
         SABannerAd bannerAd = new SABannerAd(context);
+        bannerAd.setId(SAUtils.randomNumberBetween(1000000, 1500000));
 
         bannerAd.setListener(new SAInterface() {
             @Override

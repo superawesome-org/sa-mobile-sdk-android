@@ -65,6 +65,7 @@ public class SAAIRBannerAd {
 
             if (airName2 != null) {
                 SABannerAd bannerAd = new SABannerAd(context);
+                bannerAd.setId(SAUtils.randomNumberBetween(1000000, 1500000));
                 bannerAd.setListener(new SAInterface() {
                     @Override
                     public void onEvent(int placementId, SAEvent event) {

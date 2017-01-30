@@ -6,18 +6,15 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="SuperAwesome" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83b1f08b-20ca-4f53-bd6e-ecb1c9d33f36" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sawebplayer_0_3_1.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/sawebplayer_0_3_0.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CHANGELOG.md" afterPath="$PROJECT_DIR$/CHANGELOG.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/build.gradle" afterPath="$PROJECT_DIR$/superawesome-base/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -145,7 +142,7 @@
       <file leaf-file-name="SABannerAd.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
+            <state relative-caret-position="-1044">
               <caret line="183" column="40" selection-start-line="183" selection-start-column="40" selection-end-line="183" selection-end-column="40" />
               <folding />
             </state>
@@ -155,18 +152,8 @@
       <file leaf-file-name="local.properties" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/local.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAInterstitialAd.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1740">
-              <caret line="140" column="0" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+            <state relative-caret-position="210">
+              <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -175,7 +162,7 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="553">
+            <state relative-caret-position="1290">
               <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
               <folding />
             </state>
@@ -185,8 +172,18 @@
       <file leaf-file-name="SAAIRBannerAd.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="306" column="10" selection-start-line="306" selection-start-column="10" selection-end-line="306" selection-end-column="10" />
+            <state relative-caret-position="253">
+              <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="67" selection-end-column="78" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAVideoAd.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="748">
+              <caret line="335" column="5" selection-start-line="335" selection-start-column="5" selection-end-line="335" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -205,8 +202,8 @@
       <file leaf-file-name="SAUnityBannerAd.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="52" column="22" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
+            <state relative-caret-position="300">
+              <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -215,9 +212,12 @@
       <file leaf-file-name="SuperAwesome.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="61" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="360">
+              <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+              <folding>
+                <element signature="e#1551#1552#0" expanded="true" />
+                <element signature="e#1577#1578#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -225,7 +225,7 @@
       <file leaf-file-name="SAAIR.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
+            <state relative-caret-position="173">
               <caret line="33" column="32" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
               <folding />
             </state>
@@ -235,7 +235,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1650">
+            <state relative-caret-position="1425">
               <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
               <folding />
             </state>
@@ -961,6 +961,11 @@
                 <option name="name" value="compileReleaseAidl" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.4" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase544Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="lintRelease" />
@@ -1094,11 +1099,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="generateReleaseResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.3" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase543Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of root project 'sa-mobile-sdk-android'." />
@@ -1684,6 +1684,11 @@
                 <option name="name" value="compileReleaseAidl" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.4" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase544Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="lintRelease" />
@@ -1809,11 +1814,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="generateReleaseResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.3" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase543Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of project ':app'." />
@@ -2357,6 +2357,11 @@
                 <option name="name" value="compileReleaseAidl" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.4" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
+                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase544Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="lintRelease" />
@@ -2480,11 +2485,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="generateReleaseResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.3" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
-                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase543Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of project ':saair'." />
@@ -3043,6 +3043,11 @@
                 <option name="name" value="compileReleaseAidl" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.4" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
+                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase544Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="lintRelease" />
@@ -3166,11 +3171,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="generateReleaseResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.3" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
-                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase543Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of project ':samopub'." />
@@ -3714,6 +3714,11 @@
                 <option name="name" value="compileReleaseAidl" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.4" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
+                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase544Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="lintRelease" />
@@ -3837,11 +3842,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="generateReleaseResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.3" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
-                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase543Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of project ':saunity'." />
@@ -4400,6 +4400,11 @@
                 <option name="name" value="compileReleaseAidl" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.4" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
+                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase544Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="lintRelease" />
@@ -4523,11 +4528,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="generateReleaseResValues" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk:superawesome-base:5.4.3" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
-                <option name="name" value="prepareTvSuperawesomeSdkSuperawesomeBase543Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of project ':superawesome'." />
@@ -6148,12 +6148,12 @@
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd2.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_interstitial.xml" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" />
-        <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" />
         <option value="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeBannerCustomEvent.java" />
-        <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
         <option value="$PROJECT_DIR$/superawesome-base/build.gradle" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" />
+        <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" />
+        <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" />
         <option value="$PROJECT_DIR$/local.properties" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
       </list>
@@ -6188,8 +6188,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -6235,6 +6237,56 @@
               <option name="myItemId" value="sa-mobile-sdk-android" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="superawesome-base" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sdk" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saunity" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saunity" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="unity" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -6252,14 +6304,62 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="saair" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="air" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="demoapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -6658,7 +6758,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5707196" sideWeight="0.50572246" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6364764" sideWeight="0.49427754" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43424317" sideWeight="0.49427754" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45905706" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -6871,21 +6971,14 @@
     </entry>
     <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sawebplayer/sawebplayer/0.2.3/jars/classes.jar!/tv/superawesome/lib/sawebplayer/SAWebPlayer.class" />
     <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sawebplayer/sawebplayer/0.2.3/jars/classes.jar!/tv/superawesome/lib/sawebplayer/SAWebView.class" />
-    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4440">
-          <caret line="335" column="5" selection-start-line="335" selection-start-column="5" selection-end-line="335" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_video.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/tv/superawesome/demoapp/ApplicationTest.java">
@@ -6917,13 +7010,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/layout/view_sa_banner.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="29" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGate.java">
@@ -6949,23 +7042,23 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="539">
           <caret line="102" column="36" selection-start-line="102" selection-start-column="36" selection-end-line="102" selection-end-column="36" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_interstitial.xml">
       <provider editor-type-id="android-designer2">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_interstitial.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java">
@@ -6984,41 +7077,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="52" column="22" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1650">
-          <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="33" column="32" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="306" column="10" selection-start-line="306" selection-start-column="10" selection-end-line="306" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
+        <state relative-caret-position="1290">
           <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
           <folding />
         </state>
@@ -7026,24 +7087,67 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
+        <state relative-caret-position="-1044">
           <caret line="183" column="40" selection-start-line="183" selection-start-column="40" selection-end-line="183" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="33" column="32" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1425">
+          <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="67" column="16" selection-start-line="67" selection-start-column="16" selection-end-line="67" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="335" column="5" selection-start-line="335" selection-start-column="5" selection-end-line="335" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="61" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="360">
+          <caret line="33" column="24" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
+          <folding>
+            <element signature="e#1551#1552#0" expanded="true" />
+            <element signature="e#1577#1578#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/local.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+        <state relative-caret-position="210">
+          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
           <folding />
         </state>
       </provider>
