@@ -181,7 +181,8 @@ public class SABannerAd extends FrameLayout {
             canPlay = false;
 
             // create a new web player fragment object
-            webPlayer = new SAWebPlayer(ad.creative.details.width, ad.creative.details.height);
+            webPlayer = new SAWebPlayer();
+            webPlayer.setContentSize(ad.creative.details.width, ad.creative.details.height);
             // and set it's event listener
             webPlayer.setEventListener(new SAWebPlayerEventInterface() {
                 @Override
