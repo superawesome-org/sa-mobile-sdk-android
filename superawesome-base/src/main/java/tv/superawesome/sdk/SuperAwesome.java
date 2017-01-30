@@ -31,7 +31,7 @@ public class SuperAwesome {
      * Private constructor that is only called once
      */
     private SuperAwesome() {
-        version = "5.4.2";
+        version = "5.4.3";
         sdk = "android";
         sacpi = new SACPI();
     }

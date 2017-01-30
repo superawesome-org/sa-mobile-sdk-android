@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -105,7 +104,7 @@ public class SAInterstitialAd extends Activity {
 
         // set the interstitial
         interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
-        interstitialBanner.setBackgroundColor(Color.rgb(224, 224, 224));
+        interstitialBanner.setColor(false);
         interstitialBanner.setAd(ad);
         interstitialBanner.setListener(listenerL);
         interstitialBanner.setParentalGate(isParentalGateEnabledL);
@@ -133,15 +132,12 @@ public class SAInterstitialAd extends Activity {
      * Method that closes the interstitial ad
      */
     private void close () {
-        // get local listener
-        SAInterface listenerL = getListener();
-        listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+        // close the banner as well
+        interstitialBanner.close();
+        interstitialBanner.setAd(null);
 
         // remove the ad from the "ads" hash map once it's been played
         ads.remove(ad.placementId);
-
-        // close the banner as well
-        interstitialBanner.close();
 
         // close & resume previous activity
         super.onBackPressed();

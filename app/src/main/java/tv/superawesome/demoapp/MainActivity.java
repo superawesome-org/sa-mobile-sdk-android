@@ -6,12 +6,6 @@ import android.util.Log;
 import android.view.View;
 
 import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.cpi.SACPI;
-import tv.superawesome.sdk.cpi.SAInstallEvent;
-import tv.superawesome.sdk.cpi.SAInstallEventInterface;
-import tv.superawesome.sdk.cpi.SASourceBundleInspector;
-import tv.superawesome.sdk.cpi.SASourceBundleInspectorInterface;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -33,46 +27,44 @@ public class MainActivity extends Activity {
         final SASession session = new SASession(this);
         session.setConfigurationStaging();
 
-        SuperAwesome.getInstance().handleCPI(this, new SAInstallEventInterface() {
-            @Override
-            public void saDidCountAnInstall(boolean success) {
+//        SuperAwesome.getInstance().handleCPI(this, new SAInstallEventInterface() {
+//            @Override
+//            public void saDidCountAnInstall(boolean success) {
+//
+//            }
+//        });
 
-            }
-        });
-
-        SACPI sacpi = new SACPI();
-        sacpi.sendInstallEvent(this, session, new SAInstallEventInterface() {
-            @Override
-            public void saDidCountAnInstall(boolean success) {
-                Log.d("SuperAwesome", "Install evt with " + success);
-            }
-        });
+//        SACPI sacpi = new SACPI();
+//        sacpi.sendInstallEvent(this, session, new SAInstallEventInterface() {
+//            @Override
+//            public void saDidCountAnInstall(boolean success) {
+//                Log.d("SuperAwesome", "Install evt with " + success);
+//            }
+//        });
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-        bannerAd.setConfigurationProduction();
+        bannerAd.setConfigurationStaging();
         bannerAd.disableTestMode();
         bannerAd.disableParentalGate();
         bannerAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
+                Log.d("SuperAwesome", "Banner " + placementId + " --> " + event);
                 if (event == SAEvent.adLoaded) {
                     bannerAd.play(MainActivity.this);
-                } else {
-                    Log.d("SuperAwesome", "Banner " + placementId + " --> " + event);
                 }
             }
         });
 
         bannerAd2 = (SABannerAd) findViewById(R.id.mybanner2);
-        bannerAd2.setConfigurationProduction();
+        bannerAd2.setConfigurationStaging();
         bannerAd2.disableParentalGate();
         bannerAd2.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
+                Log.d("SuperAwesome", "Banner 2 " + placementId + " --> " + event);
                 if (event == SAEvent.adLoaded) {
                     bannerAd2.play(MainActivity.this);
-                } else {
-                    Log.d("SuperAwesome", "Banner 2 " + placementId + " --> " + event);
                 }
             }
         });
@@ -130,15 +122,14 @@ public class MainActivity extends Activity {
 //        SAInterstitialAd.load(585, this);
 //        SAVideoAd.load(586, this);
 //        SAAppWall.load(437, this);
-
     }
 
     public void playBanner1(View v){
-        bannerAd.load(7185);
+        bannerAd.load(599);
     }
 
     public void playBanner2(View v) {
-        bannerAd2.load(7184);
+        bannerAd2.load(602);
     }
 
     public void playInterstitial1(View v){
