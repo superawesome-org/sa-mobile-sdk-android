@@ -227,8 +227,10 @@ public class SABannerAd extends FrameLayout {
                             }
 
                             float sf = SAUtils.getScaleFactor((Activity)context);
+                            String packageName = context.getPackageName();
+                            int watermarkId = getResources().getIdentifier("watermark_67x25", "id", packageName);
                             padlock = new Button(context);
-                            padlock.setBackgroundResource(R.drawable.watermark_67x25);
+                            padlock.setBackgroundResource(watermarkId);
                             padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
                             padlock.setVisibility(shouldShowPadlock() ? VISIBLE : GONE);
                             webPlayer.getHolder().addView(padlock);
