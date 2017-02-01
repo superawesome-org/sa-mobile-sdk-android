@@ -85,8 +85,9 @@ public class MainActivity extends Activity {
 
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableTestMode();
-        SAVideoAd.disableParentalGate();
-        SAVideoAd.disableCloseAtEnd();
+        SAVideoAd.enableParentalGate();
+//        SAVideoAd.disableCloseAtEnd();
+//         SAVideoAd.setOrientationLandscape();
         SAVideoAd.enableCloseButton();
         SAVideoAd.setListener(new SAInterface() {
             @Override
@@ -118,10 +119,6 @@ public class MainActivity extends Activity {
     }
 
     public void loadAds (View view) {
-//        bannerAd.load(584);
-//        SAInterstitialAd.load(585, this);
-//        SAVideoAd.load(586, this);
-//        SAAppWall.load(437, this);
     }
 
     public void playBanner1(View v){

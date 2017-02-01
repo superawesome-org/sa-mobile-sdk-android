@@ -8,7 +8,8 @@
         <activity
             android:name="tv.superawesome.sdk.views.SAVideoAd"
             android:label="SAFullscreenVideoAd"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity
             android:name="tv.superawesome.sdk.views.SAInterstitialAd"
             android:label="SAInterstitialAd"

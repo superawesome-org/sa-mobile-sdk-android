@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import java.util.HashMap;
 
@@ -23,6 +25,7 @@ import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 
 /**
@@ -33,7 +36,11 @@ import tv.superawesome.sdk.SuperAwesome;
 public class SAInterstitialAd extends Activity {
 
     // subviews
-    private SABannerAd interstitialBanner = null;
+    private RelativeLayout          parent = null;
+    private SABannerAd              interstitialBanner = null;
+    private Button                  closeButton = null;
+
+    // the ad
     private SAAd ad = null;
 
     // fully private variables
@@ -71,15 +78,6 @@ public class SAInterstitialAd extends Activity {
         String adStr = bundle.getString("ad");
         ad = new SAAd(SAJsonParser.newObject(adStr));
 
-        // gather resource names
-        String packageName = this.getPackageName();
-        int activity_sa_interstitialId = getResources().getIdentifier("activity_sa_interstitial", "layout", packageName);
-        int interstitial_bannerId = getResources().getIdentifier("interstitial_banner", "id", packageName);
-        int interstitial_closeId = getResources().getIdentifier("interstitial_close", "id", packageName);
-
-        // finally start displaying
-        setContentView(activity_sa_interstitialId);
-
         // make sure direction is locked
         switch (orientationL) {
             case ANY:
@@ -93,21 +91,40 @@ public class SAInterstitialAd extends Activity {
                 break;
         }
 
-        // set the close btn
-        Button closeBtn = (Button) findViewById(interstitial_closeId);
-        closeBtn.setOnClickListener(new View.OnClickListener() {
+        // create the parent relative layout
+        parent = new RelativeLayout(this);
+        parent.setId(SAUtils.randomNumberBetween(1000000, 1500000));
+        parent.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+
+        // create the interstitial banner
+        interstitialBanner = new SABannerAd(this);
+        interstitialBanner.setId(SAUtils.randomNumberBetween(1000000, 1500000));
+        interstitialBanner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        interstitialBanner.setColor(false);
+        interstitialBanner.setAd(ad);
+        interstitialBanner.setListener(listenerL);
+        interstitialBanner.setParentalGate(isParentalGateEnabledL);
+
+        // create the close button
+        float fp = SAUtils.getScaleFactor(this);
+        closeButton = new Button(this);
+        int sa_closeId = getResources().getIdentifier("sa_close", "drawable", this.getPackageName());
+        closeButton.setBackgroundResource(sa_closeId);
+        RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30* fp));
+        buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        closeButton.setLayoutParams(buttonLayout);
+        closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 close();
             }
         });
 
-        // set the interstitial
-        interstitialBanner = (SABannerAd) findViewById(interstitial_bannerId);
-        interstitialBanner.setColor(false);
-        interstitialBanner.setAd(ad);
-        interstitialBanner.setListener(listenerL);
-        interstitialBanner.setParentalGate(isParentalGateEnabledL);
+        // set the view hierarchy
+        parent.addView(interstitialBanner);
+        parent.addView(closeButton);
+        setContentView(parent);
 
         // finally play!
         interstitialBanner.play(this);

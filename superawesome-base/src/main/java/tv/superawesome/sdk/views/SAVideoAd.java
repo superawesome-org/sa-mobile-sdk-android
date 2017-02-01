@@ -5,15 +5,14 @@
 package tv.superawesome.sdk.views;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -52,11 +51,12 @@ public class SAVideoAd extends Activity {
     // the internal loader
     private SAEvents events = null;
 
+    private RelativeLayout parent = null;
+    private Button padlock = null;
+    private Button closeButton = null;
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
-
-    // a member holding whether the video has ended or not
-    private static boolean videoEnded = false;
+    private static final String videoTag = "SAVideoTag";
 
     // private vars w/ a public interface
     private static HashMap<Integer, Object> ads = new HashMap<>();
@@ -88,8 +88,7 @@ public class SAVideoAd extends Activity {
         // local versions of the static vars
         final SAInterface listenerL = getListener();
         final boolean isParentalGateEnabledL = getIsParentalGateEnabled();
-        boolean shouldShowCloseButtonL = getShouldShowCloseButton();
-        if (!shouldShowCloseButtonL && videoEnded) shouldShowCloseButtonL = true;
+        final boolean shouldShowCloseButtonL = getShouldShowCloseButton();
 
         final boolean shouldAutomaticallyCloseAtEndL = getShouldAutomaticallyCloseAtEnd();
         final boolean shouldShowSmallClickButtonL = getShouldShowSmallClickButton();
@@ -98,63 +97,86 @@ public class SAVideoAd extends Activity {
         String adString = bundle.getString("ad");
         ad = new SAAd(SAJsonParser.newObject(adString));
 
+        // make sure direction is locked
+        switch (orientationL) {
+            case ANY: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); break;
+            case PORTRAIT: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); break;
+            case LANDSCAPE: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); break;
+        }
+
         // start events
         events = new SAEvents(this);
         events.setAd(ad);
 
-        String packageName = this.getPackageName();
-        int activity_sa_videoId = getResources().getIdentifier("activity_sa_video", "layout", packageName);
-        int video_playerId = getResources().getIdentifier("sa_videoplayer_id", "id", packageName);
-        final int close_btnId = getResources().getIdentifier("video_close", "id", packageName);
-        int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
+        // create main content for activity
+        parent = new RelativeLayout(this);
+        parent.setId(SAUtils.randomNumberBetween(1000000, 1500000));
+        parent.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        // set content view
-        setContentView(activity_sa_videoId);
+        setContentView(parent);
 
-        // close btn
-        final Button closeBtn = (Button) findViewById(close_btnId);
-        closeBtn.setOnClickListener(new View.OnClickListener() {
+        // create the padlock
+        padlock = new Button(this);
+        float sf = SAUtils.getScaleFactor(this);
+        int watermarkId = getResources().getIdentifier("watermark_67x25", "drawable", getPackageName());
+        padlock.setBackgroundResource(watermarkId);
+        padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
+        padlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+                startActivity(browserIntent);
+            }
+        });
+
+        // create the close button
+        closeButton = new Button(this);
+        int sa_closeId = getResources().getIdentifier("sa_close", "drawable", getPackageName());
+        closeButton.setBackgroundResource(sa_closeId);
+        float fp = SAUtils.getScaleFactor(this);
+        RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30* fp));
+        buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        closeButton.setLayoutParams(buttonLayout);
+        closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 close();
             }
         });
-        closeBtn.setVisibility(shouldShowCloseButtonL ? View.VISIBLE : View.INVISIBLE);
 
-        // padlock
-        Button padlock = (Button) findViewById(padlockId);
-        padlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
-                SAVideoAd.this.startActivity(browserIntent);
-            }
-        });
-        padlock.setVisibility(shouldShowPadlock() ? View.VISIBLE : View.INVISIBLE);
+        // create the main video player
+        FragmentManager manager = getFragmentManager();
+        if (manager.findFragmentByTag(videoTag) == null) {
 
-        if (savedInstanceState == null) {
-
-            // make sure direction is locked
-            switch (orientationL) {
-                case ANY:
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                    break;
-                case PORTRAIT:
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    break;
-                case LANDSCAPE:
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    break;
-            }
-
-            // video player
-            videoPlayer = (SAVideoPlayer) getFragmentManager().findFragmentById(video_playerId);
+            videoPlayer = new SAVideoPlayer();
             videoPlayer.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
+
             videoPlayer.setEventListener(new SAVideoPlayerEventInterface() {
                 @Override
                 public void saVideoPlayerDidReceiveEvent(SAVideoPlayerEvent saVideoPlayerEvent) {
                     switch (saVideoPlayerEvent) {
+
+                        case Video_Prepared: {
+
+                            try {
+                                videoPlayer.play(ad.creative.details.media.playableDiskUrl);
+                            } catch (Throwable throwable) {
+                                // do nothing
+                            }
+
+                            break;
+                        }
                         case Video_Start: {
+
+                            // add padlock
+                            padlock.setVisibility(shouldShowPadlock() ? View.VISIBLE : View.GONE);
+                            parent.addView(padlock);
+
+                            // add close button
+                            closeButton.setVisibility(shouldShowCloseButtonL ? View.VISIBLE : View.GONE);
+                            parent.addView(closeButton);
+
                             // send callback
                             listenerL.onEvent(ad.placementId, SAEvent.adShown);
 
@@ -164,7 +186,7 @@ public class SAVideoAd extends Activity {
                             events.sendEventsFor("creativeView");
 
                             // send viewable
-                            events.sendViewableImpressionForVideo(videoPlayer.getContainerView());
+                            events.sendViewableImpressionForVideo(videoPlayer.getVideoHolder());
 
                             // moat
                             events.registerVideoMoatEvent(SAVideoAd.this, videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer());
@@ -184,36 +206,43 @@ public class SAVideoAd extends Activity {
                             break;
                         }
                         case Video_End: {
+
+                            // send events
                             events.sendEventsFor("complete");
 
                             // send an ad ended event
                             listenerL.onEvent(ad.placementId, SAEvent.adEnded);
 
-                            // mark the video as ended
-                            videoEnded = true;
-
                             // make btn visible
-                            closeBtn.setVisibility(View.VISIBLE);
-                            recreate(); // must force close button ... :( but don't like it 
+                            closeButton.setVisibility(View.VISIBLE);
 
-                            // autoclose
+                            // auto close
                             if (shouldAutomaticallyCloseAtEndL) {
                                 close();
                             }
+
                             break;
                         }
                         case Video_Error: {
+
+                            // send events
                             events.sendEventsFor("error");
-                            close();
+
+                            // ad failed to show
                             listenerL.onEvent(ad.placementId, SAEvent.adFailedToShow);
+
+                            // close this whole
+                            close();
+
                             break;
                         }
                     }
                 }
             });
+
             videoPlayer.setClickListener(new SAVideoPlayerClickInterface() {
                 @Override
-                public void saVideoPlayerDidReceiveClick() {
+                public void onClick(View v) {
                     // check for parental gate on click
                     if (isParentalGateEnabledL) {
                         gate = new SAParentalGate(SAVideoAd.this, SAVideoAd.this, ad);
@@ -224,19 +253,14 @@ public class SAVideoAd extends Activity {
                 }
             });
 
-            // finally play the ad
-            final Handler handler = new Handler();
-            final Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (ad.creative.details.media.isOnDisk) {
-                        videoPlayer.playWithDiskURL(ad.creative.details.media.playableDiskUrl);
-                    } else {
-                        videoPlayer.playWithMediaURL(ad.creative.details.media.playableMediaUrl);
-                    }
-                }
-            };
-            handler.postDelayed(runnable, 250);
+            // finally add the video player
+            manager.beginTransaction()
+                    .add(parent.getId(), videoPlayer, videoTag)
+                    .commit();
+
+        }
+        else {
+            videoPlayer = (SAVideoPlayer) manager.findFragmentByTag(videoTag);
         }
     }
 
@@ -332,6 +356,7 @@ public class SAVideoAd extends Activity {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
                 startActivity(browserIntent);
             }
+
         }
     }
 
@@ -364,9 +389,6 @@ public class SAVideoAd extends Activity {
      */
     private void close() {
 
-        // set this back
-        videoEnded = false;
-
         // get local
         SAInterface listenerL = getListener();
 
@@ -378,6 +400,14 @@ public class SAVideoAd extends Activity {
 
         // delete the ad
         ads.remove(ad.placementId);
+
+        // close the video player
+        videoPlayer.close();
+
+//        // remove video player
+//        getFragmentManager().beginTransaction()
+//                .remove(videoPlayer)
+//                .commit();
 
         // close
         this.finish();
