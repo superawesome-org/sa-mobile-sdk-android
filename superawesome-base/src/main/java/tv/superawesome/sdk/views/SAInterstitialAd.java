@@ -8,10 +8,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 
@@ -38,7 +42,7 @@ public class SAInterstitialAd extends Activity {
     // subviews
     private RelativeLayout          parent = null;
     private SABannerAd              interstitialBanner = null;
-    private Button                  closeButton = null;
+    private ImageButton             closeButton = null;
 
     // the ad
     private SAAd ad = null;
@@ -107,9 +111,11 @@ public class SAInterstitialAd extends Activity {
 
         // create the close button
         float fp = SAUtils.getScaleFactor(this);
-        closeButton = new Button(this);
-        int sa_closeId = getResources().getIdentifier("sa_close", "drawable", this.getPackageName());
-        closeButton.setBackgroundResource(sa_closeId);
+        closeButton = new ImageButton(this);
+        closeButton.setImageBitmap(SAImageUtils.closeImage());
+        closeButton.setBackgroundColor(Color.TRANSPARENT);
+        closeButton.setPadding(0, 0, 0, 0);
+        closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
         RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30* fp));
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);

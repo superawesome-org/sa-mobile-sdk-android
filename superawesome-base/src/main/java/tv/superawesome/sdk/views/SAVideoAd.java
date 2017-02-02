@@ -9,11 +9,14 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
@@ -32,6 +35,7 @@ import tv.superawesome.lib.samodelspace.SATracking;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerClickInterface;
@@ -52,8 +56,8 @@ public class SAVideoAd extends Activity {
     private SAEvents events = null;
 
     private RelativeLayout parent = null;
-    private Button padlock = null;
-    private Button closeButton = null;
+    private ImageButton padlock = null;
+    private ImageButton closeButton = null;
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
     private static final String videoTag = "SAVideoTag";
@@ -116,10 +120,12 @@ public class SAVideoAd extends Activity {
         setContentView(parent);
 
         // create the padlock
-        padlock = new Button(this);
+        padlock = new ImageButton(this);
+        padlock.setImageBitmap(SAImageUtils.padlockImage());
+        padlock.setPadding(0, 0, 0, 0);
+        padlock.setBackgroundColor(Color.TRANSPARENT);
+        padlock.setScaleType(ImageView.ScaleType.FIT_XY);
         float sf = SAUtils.getScaleFactor(this);
-        int watermarkId = getResources().getIdentifier("watermark_67x25", "drawable", getPackageName());
-        padlock.setBackgroundResource(watermarkId);
         padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
         padlock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,9 +136,11 @@ public class SAVideoAd extends Activity {
         });
 
         // create the close button
-        closeButton = new Button(this);
-        int sa_closeId = getResources().getIdentifier("sa_close", "drawable", getPackageName());
-        closeButton.setBackgroundResource(sa_closeId);
+        closeButton = new ImageButton(this);
+        closeButton.setImageBitmap(SAImageUtils.closeImage());
+        closeButton.setPadding(0, 0, 0, 0);
+        closeButton.setBackgroundColor(Color.TRANSPARENT);
+        closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
         float fp = SAUtils.getScaleFactor(this);
         RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30* fp));
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);

@@ -31,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -54,6 +55,7 @@ import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 
@@ -106,39 +108,50 @@ public class SAAppWall extends Activity {
         }
 
         // get resources (dynamically)
-        String packageName = this.getPackageName();
         float fp = SAUtils.getScaleFactor(this);
 
         // create the background - which will also serve as the content view for the app wall
-        LinearLayout background = new LinearLayout(this);
-        background.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        background.setOrientation(LinearLayout.VERTICAL);
-        int backgroundId = getResources().getIdentifier("background", "drawable", packageName);
-        background.setBackgroundResource(backgroundId);
+        RelativeLayout background = new RelativeLayout(this);
+        background.setBackgroundColor(Color.BLUE);
+        background.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         setContentView(background);
 
+        // create the bg image
+        ImageView bgImage = new ImageView(this);
+        bgImage.setImageBitmap(SAImageUtils.gameWallBackground());
+        bgImage.setScaleType(ImageView.ScaleType.FIT_XY);
+        bgImage.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        background.addView(bgImage);
+
         // create the header holder
         RelativeLayout header = new RelativeLayout(this);
-        int bgrheaderId = getResources().getIdentifier("bgrheader", "drawable", packageName);
-        header.setBackgroundResource(bgrheaderId);
         RelativeLayout.LayoutParams headerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (fp * 107));
         header.setLayoutParams(headerParams);
         background.addView(header);
 
-        // and the header title ("appwall")
+        // add the header background
+        ImageView headerBg = new ImageView(this);
+        headerBg.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        headerBg.setImageBitmap(SAImageUtils.gameWallHeader());
+        headerBg.setScaleType(ImageView.ScaleType.FIT_XY);
+        header.addView(headerBg);
+
+        // and the header title ("app wall")
         ImageView headerTitle = new ImageView(this);
-        int appwallId = getResources().getIdentifier("appwall", "drawable", packageName);
-        headerTitle.setImageResource(appwallId);
-        RelativeLayout.LayoutParams headerTitleParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        headerTitle.setImageBitmap(SAImageUtils.gameWallAppData());
+        headerTitle.setScaleType(ImageView.ScaleType.FIT_XY);
+        RelativeLayout.LayoutParams headerTitleParams = new RelativeLayout.LayoutParams((int)(200 * fp), (int)(40 * fp));
         headerTitleParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         headerTitle.setLayoutParams(headerTitleParams);
         header.addView(headerTitle);
 
         // and the padlock button
-        Button padlock = new Button(this);
-        int padlockId = getResources().getIdentifier("watermark_67x25", "drawable", packageName);
-        padlock.setBackgroundResource(padlockId);
+        ImageButton padlock = new ImageButton(this);
+        padlock.setImageBitmap(SAImageUtils.padlockImage());
+        padlock.setPadding(0, 0, 0, 0);
+        padlock.setBackgroundColor(Color.TRANSPARENT);
+        padlock.setScaleType(ImageView.ScaleType.FIT_XY);
         RelativeLayout.LayoutParams padlockParams = new RelativeLayout.LayoutParams((int) (83 * fp), (int) (31 * fp));
         padlockParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         padlockParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -153,9 +166,11 @@ public class SAAppWall extends Activity {
         header.addView(padlock);
 
         // and the close button
-        Button close = new Button(this);
-        int closeId = getResources().getIdentifier("delete", "drawable", packageName);
-        close.setBackgroundResource(closeId);
+        ImageButton close = new ImageButton(this);
+        close.setImageBitmap(SAImageUtils.gameWallClose());
+        close.setPadding(0, 0, 0, 0);
+        close.setBackgroundColor(Color.TRANSPARENT);
+        close.setScaleType(ImageView.ScaleType.FIT_XY);
         RelativeLayout.LayoutParams closeParams = new RelativeLayout.LayoutParams((int) (18 * fp), (int) (18 * fp));
         closeParams.setMargins(0, (int)(fp * 7), (int)(fp * 7), 0);
         closeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -193,6 +208,7 @@ public class SAAppWall extends Activity {
             }
         });
         RelativeLayout.LayoutParams gameGridParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        gameGridParams.setMargins(0, (int)(fp * 107), 0, 0);
         gameGrid.setLayoutParams(gameGridParams);
         background.addView(gameGrid);
 
@@ -538,18 +554,20 @@ public class SAAppWall extends Activity {
             // get elements that won't change
             SAAd ad = ads.get(position);
             int size = ads.size();
-            String packageName = context.getPackageName();
 
             // do big layout
             if (size <= 3) {
+
+                // get actual image w & h
+                final float density = context.getResources().getDisplayMetrics().density;
+                float radius = 15 * density;
+                float fp = SAUtils.getScaleFactor((Activity)context);
 
                 // create the main view of the adapter cell view
                 v = new LinearLayout(context);
                 AbsListView.LayoutParams pvParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 v.setLayoutParams(pvParams);
                 ((LinearLayout) v).setOrientation(LinearLayout.HORIZONTAL);
-
-                float fp = SAUtils.getScaleFactor((Activity)context);
 
                 // add to it a relative layout half the width of the screen, to hold the icon
                 SAUtils.SASize screenW = SAUtils.getRealScreenSize((Activity)context, true);
@@ -559,12 +577,16 @@ public class SAAppWall extends Activity {
                 ((LinearLayout) v).addView(iconHolder);
 
                 // and add to the icon holder a background with white rounded background
-                RelativeLayout iconBg = new RelativeLayout(context);
-                RelativeLayout.LayoutParams iconBgParams = new RelativeLayout.LayoutParams((int)(fp * 120), (int) (fp * 120));
-                iconBgParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                iconBg.setLayoutParams(iconBgParams);
-                int gamewallcell_imgbgId = getResources().getIdentifier("gamewallcell_imgbg", "drawable", packageName);
-                iconBg.setBackgroundResource(gamewallcell_imgbgId);
+                Bitmap newBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(newBitmap);
+                canvas.drawColor(0xffffffff);
+                StreamDrawable newBitmapDrawable = new StreamDrawable(newBitmap, radius, 0);
+
+                RelativeLayout iconBg= new RelativeLayout(context);
+                RelativeLayout.LayoutParams iconBgLayoutParams = new RelativeLayout.LayoutParams((int)(fp * 120), (int) (fp * 120));
+                iconBg.setBackgroundDrawable(newBitmapDrawable);
+                iconBgLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                iconBg.setLayoutParams(iconBgLayoutParams);
                 iconHolder.addView(iconBg);
 
                 // and to that an app icon
@@ -576,13 +598,8 @@ public class SAAppWall extends Activity {
                 if (file.exists()) {
                     String fileUrl = file.toString();
                     Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
-
-                    // get actual image w & h
-                    final float density = context.getResources().getDisplayMetrics().density;
                     int appIconW = (int) (114 * density);
                     int appIconH = (int) (114 * density);
-                    float radius = 15 * density;
-
                     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
                     StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
                     appIcon.setImageDrawable(drawable);
@@ -603,25 +620,35 @@ public class SAAppWall extends Activity {
             // do small layout
             else {
 
+                float fp = SAUtils.getScaleFactor((Activity)context);
+                final float density = context.getResources().getDisplayMetrics().density;
+                float radius = 15 * density;
+
                 // create the main view of the adapter cell view
                 v = new LinearLayout(context);
                 AbsListView.LayoutParams vParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 v.setLayoutParams(vParams);
                 ((LinearLayout) v).setOrientation(LinearLayout.VERTICAL);
 
-                float fp = SAUtils.getScaleFactor((Activity)context);
+                // create an icon holder
                 RelativeLayout iconHolder = new RelativeLayout(context);
                 iconHolder.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(fp * 94)));
                 ((LinearLayout) v).addView(iconHolder);
 
+                // and the icon background
+                Bitmap newBitmap = Bitmap.createBitmap(90, 90, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(newBitmap);
+                canvas.drawColor(0xffffffff);
+                StreamDrawable newBitmapDrawable = new StreamDrawable(newBitmap, radius, 0);
+
                 RelativeLayout iconBg = new RelativeLayout(context);
                 RelativeLayout.LayoutParams iconBgParams = new RelativeLayout.LayoutParams((int)(fp * 90), (int) (fp * 90));
+                iconBg.setBackgroundDrawable(newBitmapDrawable);
                 iconBgParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 iconBg.setLayoutParams(iconBgParams);
-                int gamewallcell_imgbgId = getResources().getIdentifier("gamewallcell_imgbg", "drawable", packageName);
-                iconBg.setBackgroundResource(gamewallcell_imgbgId);
                 iconHolder.addView(iconBg);
 
+                // and the actual icon
                 ImageView appIcon = new ImageView(context);
                 RelativeLayout.LayoutParams appIconParams = new RelativeLayout.LayoutParams((int)(fp * 84), (int)(fp * 84));
                 appIconParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -630,19 +657,15 @@ public class SAAppWall extends Activity {
                 if (file.exists()) {
                     String fileUrl = file.toString();
                     Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
-
-                    // get actual image w & h
-                    final float density = context.getResources().getDisplayMetrics().density;
                     int appIconW = (int) (84 * density);
                     int appIconH = (int) (84 * density);
-                    float radius = 15 * density;
-
                     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
                     StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
                     appIcon.setImageDrawable(drawable);
                 }
                 iconBg.addView(appIcon);
 
+                // now add a label underneath
                 TextView appName = new TextView(context);
                 appName.setTextColor(Color.WHITE);
                 appName.setTextSize(15);

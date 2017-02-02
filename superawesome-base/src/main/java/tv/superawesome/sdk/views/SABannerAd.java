@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import org.json.JSONObject;
 
@@ -26,6 +30,7 @@ import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
@@ -51,7 +56,7 @@ public class SABannerAd extends FrameLayout {
     // private subviews
     private static final String    webPlayerTag = "SA_WebPlayer";
     private SAWebPlayer     webPlayer;
-    private Button          padlock;
+    private ImageButton     padlock;
     private SAParentalGate  gate;
 
     // string holding the destination Url
@@ -227,12 +232,20 @@ public class SABannerAd extends FrameLayout {
                             }
 
                             float sf = SAUtils.getScaleFactor((Activity)context);
-                            String packageName = context.getPackageName();
-                            int watermarkId = getResources().getIdentifier("watermark_67x25", "drawable", packageName);
-                            padlock = new Button(context);
-                            padlock.setBackgroundResource(watermarkId);
+                            padlock = new ImageButton(context);
+                            padlock.setImageBitmap(SAImageUtils.padlockImage());
+                            padlock.setBackgroundColor(Color.TRANSPARENT);
+                            padlock.setScaleType(ImageView.ScaleType.FIT_XY);
+                            padlock.setPadding(0, 0, 0, 0);
                             padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
                             padlock.setVisibility(shouldShowPadlock() ? VISIBLE : GONE);
+                            padlock.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+                                    context.startActivity(browserIntent);
+                                }
+                            });
                             webPlayer.getHolder().addView(padlock);
 
                             break;
