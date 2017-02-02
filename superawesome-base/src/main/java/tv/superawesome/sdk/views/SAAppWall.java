@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -22,14 +23,18 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -103,16 +108,42 @@ public class SAAppWall extends Activity {
 
         // get resources (dynamically)
         String packageName = this.getPackageName();
-        int activity_sa_gamewallId = getResources().getIdentifier("activity_sa_gamewall", "layout", packageName);
-        int close_btnId = getResources().getIdentifier("gamewall_close", "id", packageName);
-        int GameWallGridId = getResources().getIdentifier("GameWallGrid", "id", packageName);
-        int padlockId = getResources().getIdentifier("padlock_button", "id", packageName);
+        float fp = SAUtils.getScaleFactor(this);
 
-        // finally start displaying
-        setContentView(activity_sa_gamewallId);
+        // create the background - which will also serve as the content view for the app wall
+        LinearLayout background = new LinearLayout(this);
+        background.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        background.setOrientation(LinearLayout.VERTICAL);
+        int backgroundId = getResources().getIdentifier("background", "drawable", packageName);
+        background.setBackgroundResource(backgroundId);
 
-        // get the padlock
-        Button padlock = (Button) findViewById(padlockId);
+        setContentView(background);
+
+        // create the header holder
+        RelativeLayout header = new RelativeLayout(this);
+        int bgrheaderId = getResources().getIdentifier("bgrheader", "drawable", packageName);
+        header.setBackgroundResource(bgrheaderId);
+        RelativeLayout.LayoutParams headerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (fp * 107));
+        header.setLayoutParams(headerParams);
+        background.addView(header);
+
+        // and the header title ("appwall")
+        ImageView headerTitle = new ImageView(this);
+        int appwallId = getResources().getIdentifier("appwall", "drawable", packageName);
+        headerTitle.setImageResource(appwallId);
+        RelativeLayout.LayoutParams headerTitleParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        headerTitleParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        headerTitle.setLayoutParams(headerTitleParams);
+        header.addView(headerTitle);
+
+        // and the padlock button
+        Button padlock = new Button(this);
+        int padlockId = getResources().getIdentifier("watermark_67x25", "drawable", packageName);
+        padlock.setBackgroundResource(padlockId);
+        RelativeLayout.LayoutParams padlockParams = new RelativeLayout.LayoutParams((int) (83 * fp), (int) (31 * fp));
+        padlockParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        padlockParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        padlock.setLayoutParams(padlockParams);
         padlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,22 +151,34 @@ public class SAAppWall extends Activity {
                 SAAppWall.this.startActivity(browserIntent);
             }
         });
+        header.addView(padlock);
 
-        // close btn
-        Button closeBtn = (Button) findViewById(close_btnId);
-        closeBtn.setOnClickListener(new View.OnClickListener() {
+        // and the close button
+        Button close = new Button(this);
+        int closeId = getResources().getIdentifier("delete", "drawable", packageName);
+        close.setBackgroundResource(closeId);
+        RelativeLayout.LayoutParams closeParams = new RelativeLayout.LayoutParams((int) (18 * fp), (int) (18 * fp));
+        closeParams.setMargins(0, (int)(fp * 7), (int)(fp * 7), 0);
+        closeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        closeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        close.setLayoutParams(closeParams);
+        close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 close();
             }
         });
+        header.addView(close);
 
         // create adapter
         AppWallAdapter adapter = new AppWallAdapter(this, response.ads);
 
-        // set the game grid
-        GridView gameGrid = (GridView) findViewById(GameWallGridId);
+        // create the game grid
+        GridView gameGrid = new GridView(this);
         gameGrid.setAdapter(adapter);
+        gameGrid.setVerticalSpacing(0);
+        gameGrid.setHorizontalSpacing(0);
+        gameGrid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         gameGrid.setNumColumns(response.ads.size() <= 3 ? 1 : 3);
         gameGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -150,6 +193,9 @@ public class SAAppWall extends Activity {
                 }
             }
         });
+        RelativeLayout.LayoutParams gameGridParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        gameGrid.setLayoutParams(gameGridParams);
+        background.addView(gameGrid);
 
         // send events
         for (SAEvents event : events) {
@@ -488,7 +534,7 @@ public class SAAppWall extends Activity {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
+            View v;
 
             // get elements that won't change
             SAAd ad = ads.get(position);
@@ -497,73 +543,116 @@ public class SAAppWall extends Activity {
 
             // do big layout
             if (size <= 3) {
-                int GameWallAppIconId = getResources().getIdentifier("GameWallAppIcon", "id", packageName);
-                int GameWallAppNameId = getResources().getIdentifier("GameWallAppName", "id", packageName);
-                int cell_sa_gamewallLayout_Big = getResources().getIdentifier("cell_sa_gamewall_big", "layout", packageName);
 
-                // inflate layout
-                if (v == null) {
-                    v = LayoutInflater.from(context).inflate(cell_sa_gamewallLayout_Big, null);
+                // create the main view of the adapter cell view
+                v = new LinearLayout(context);
+                AbsListView.LayoutParams pvParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                v.setLayoutParams(pvParams);
+                ((LinearLayout) v).setOrientation(LinearLayout.HORIZONTAL);
+
+                float fp = SAUtils.getScaleFactor((Activity)context);
+
+                // add to it a relative layout half the width of the screen, to hold the icon
+                SAUtils.SASize screenW = SAUtils.getRealScreenSize((Activity)context, true);
+                RelativeLayout iconHolder = new RelativeLayout(context);
+                RelativeLayout.LayoutParams iconHolderParams = new RelativeLayout.LayoutParams(screenW.height / 2, (int)(fp * 160));
+                iconHolder.setLayoutParams(iconHolderParams);
+                ((LinearLayout) v).addView(iconHolder);
+
+                // and add to the icon holder a background with white rounded background
+                RelativeLayout iconBg = new RelativeLayout(context);
+                RelativeLayout.LayoutParams iconBgParams = new RelativeLayout.LayoutParams((int)(fp * 120), (int) (fp * 120));
+                iconBgParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                iconBg.setLayoutParams(iconBgParams);
+                int gamewallcell_imgbgId = getResources().getIdentifier("gamewallcell_imgbg", "drawable", packageName);
+                iconBg.setBackgroundResource(gamewallcell_imgbgId);
+                iconHolder.addView(iconBg);
+
+                // and to that an app icon
+                ImageView appIcon = new ImageView(context);
+                RelativeLayout.LayoutParams appIconParams = new RelativeLayout.LayoutParams((int)(fp * 114), (int)(fp * 114));
+                appIconParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                appIcon.setLayoutParams(appIconParams);
+                File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
+                if (file.exists()) {
+                    String fileUrl = file.toString();
+                    Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
+
+                    // get actual image w & h
+                    final float density = context.getResources().getDisplayMetrics().density;
+                    int appIconW = (int) (114 * density);
+                    int appIconH = (int) (114 * density);
+                    float radius = 15 * density;
+
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
+                    StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
+                    appIcon.setImageDrawable(drawable);
                 }
+                iconBg.addView(appIcon);
 
-                ImageView appIcon = (ImageView) v.findViewById(GameWallAppIconId);
-                TextView appName = (TextView) v.findViewById(GameWallAppNameId);
+                // in the other half of the adapter cell view put a text view
+                TextView appName = new TextView(context);
+                appName.setTextColor(Color.WHITE);
+                appName.setTextSize(22);
+                appName.setGravity(Gravity.CENTER_VERTICAL);
+                appName.setText(ad.creative.name != null ? ad.creative.name : "Undefined");
+                LinearLayout.LayoutParams appNameParams = new LinearLayout.LayoutParams(screenW.height / 2, (int)(fp * 160));
+                appName.setLayoutParams(appNameParams );
+                ((LinearLayout) v).addView(appName);
 
-                if (appName != null) {
-                    appName.setText(ad.creative.name != null ? ad.creative.name : "Undefined");
-                }
-                if (appIcon != null) {
-                    File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
-                    if (file.exists()) {
-                        String fileUrl = file.toString();
-                        Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
-
-                        // get actual image w & h
-                        final float density = context.getResources().getDisplayMetrics().density;
-                        int appIconW = (int) (114 * density);
-                        int appIconH = (int) (114 * density);
-                        float radius = 15 * density;
-
-                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
-                        StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
-                        appIcon.setImageDrawable(drawable);
-                    }
-                }
             }
             // do small layout
             else {
-                int GameWallAppIconId = getResources().getIdentifier("GameWallAppIcon", "id", packageName);
-                int GameWallAppNameId = getResources().getIdentifier("GameWallAppName", "id", packageName);
-                int cell_sa_gamewallLayout_Small = getResources().getIdentifier("cell_sa_gamewall_small", "layout", packageName);
 
-                // inflate layout
-                if (v == null) {
-                    v = LayoutInflater.from(context).inflate(cell_sa_gamewallLayout_Small, null);
+                // create the main view of the adapter cell view
+                v = new LinearLayout(context);
+                AbsListView.LayoutParams vParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                v.setLayoutParams(vParams);
+                ((LinearLayout) v).setOrientation(LinearLayout.VERTICAL);
+
+                float fp = SAUtils.getScaleFactor((Activity)context);
+                RelativeLayout iconHolder = new RelativeLayout(context);
+                iconHolder.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(fp * 94)));
+                ((LinearLayout) v).addView(iconHolder);
+
+                RelativeLayout iconBg = new RelativeLayout(context);
+                RelativeLayout.LayoutParams iconBgParams = new RelativeLayout.LayoutParams((int)(fp * 90), (int) (fp * 90));
+                iconBgParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                iconBg.setLayoutParams(iconBgParams);
+                int gamewallcell_imgbgId = getResources().getIdentifier("gamewallcell_imgbg", "drawable", packageName);
+                iconBg.setBackgroundResource(gamewallcell_imgbgId);
+                iconHolder.addView(iconBg);
+
+                ImageView appIcon = new ImageView(context);
+                RelativeLayout.LayoutParams appIconParams = new RelativeLayout.LayoutParams((int)(fp * 84), (int)(fp * 84));
+                appIconParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                appIcon.setLayoutParams(appIconParams);
+                File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
+                if (file.exists()) {
+                    String fileUrl = file.toString();
+                    Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
+
+                    // get actual image w & h
+                    final float density = context.getResources().getDisplayMetrics().density;
+                    int appIconW = (int) (84 * density);
+                    int appIconH = (int) (84 * density);
+                    float radius = 15 * density;
+
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
+                    StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
+                    appIcon.setImageDrawable(drawable);
                 }
+                iconBg.addView(appIcon);
 
-                ImageView appIcon = (ImageView) v.findViewById(GameWallAppIconId);
-                TextView appName = (TextView) v.findViewById(GameWallAppNameId);
-
-                if (appName != null) {
-                    appName.setText(ad.creative.name != null ? ad.creative.name : "Undefined");
-                }
-                if (appIcon != null) {
-                    File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
-                    if (file.exists()) {
-                        String fileUrl = file.toString();
-                        Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
-
-                        // get actual image w & h
-                        final float density = context.getResources().getDisplayMetrics().density;
-                        int appIconW = (int) (84 * density);
-                        int appIconH = (int) (84 * density);
-                        float radius = 15 * density;
-
-                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
-                        StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
-                        appIcon.setImageDrawable(drawable);
-                    }
-                }
+                TextView appName = new TextView(context);
+                appName.setTextColor(Color.WHITE);
+                appName.setTextSize(15);
+                appName.setGravity(Gravity.CENTER);
+                appName.setText(ad.creative.name != null ? ad.creative.name : "Undefined");
+                RelativeLayout.LayoutParams appNameParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                appNameParams.setMargins(0, (int)(10 * fp), 0, 0);
+                appName.setLayoutParams(appNameParams);
+                ((LinearLayout) v).addView(appName);
             }
 
             return v;
