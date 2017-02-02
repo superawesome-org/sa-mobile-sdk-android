@@ -271,10 +271,15 @@ public class SABannerAd extends FrameLayout {
             });
 
             // actually add the fragment
-            ((Activity)getContext()).getFragmentManager()
-                    .beginTransaction()
-                    .add(getId(), webPlayer, webPlayerTag)
-                    .commit();
+            try {
+                ((Activity) getContext()).getFragmentManager()
+                        .beginTransaction()
+                        .add(getId(), webPlayer, webPlayerTag)
+                        .commit();
+            } catch (Exception e) {
+                // catch this error
+                listener.onEvent(0, SAEvent.adFailedToShow);
+            }
 
         }
         // if no ad has been loaded, send an ad failure event
