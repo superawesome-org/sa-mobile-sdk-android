@@ -85,9 +85,9 @@ public class MainActivity extends Activity {
 
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableTestMode();
-        SAVideoAd.enableParentalGate();
+        SAVideoAd.disableParentalGate();
 //        SAVideoAd.disableCloseAtEnd();
-//         SAVideoAd.setOrientationLandscape();
+         SAVideoAd.setOrientationLandscape();
         SAVideoAd.enableCloseButton();
         SAVideoAd.setListener(new SAInterface() {
             @Override

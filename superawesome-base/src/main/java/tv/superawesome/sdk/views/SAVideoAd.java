@@ -404,11 +404,6 @@ public class SAVideoAd extends Activity {
         // close the video player
         videoPlayer.close();
 
-//        // remove video player
-//        getFragmentManager().beginTransaction()
-//                .remove(videoPlayer)
-//                .commit();
-
         // close
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
