@@ -55,6 +55,7 @@ import tv.superawesome.lib.samodelspace.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sautils.SADrawable;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
@@ -119,7 +120,7 @@ public class SAAppWall extends Activity {
 
         // create the bg image
         ImageView bgImage = new ImageView(this);
-        bgImage.setImageBitmap(SAImageUtils.gameWallBackground());
+        bgImage.setImageBitmap(SAImageUtils.createAppWallBackgroundBitmap());
         bgImage.setScaleType(ImageView.ScaleType.FIT_XY);
         bgImage.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         background.addView(bgImage);
@@ -133,13 +134,13 @@ public class SAAppWall extends Activity {
         // add the header background
         ImageView headerBg = new ImageView(this);
         headerBg.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        headerBg.setImageBitmap(SAImageUtils.gameWallHeader());
+        headerBg.setImageBitmap(SAImageUtils.createAppWallHeaderBitmap());
         headerBg.setScaleType(ImageView.ScaleType.FIT_XY);
         header.addView(headerBg);
 
         // and the header title ("app wall")
         ImageView headerTitle = new ImageView(this);
-        headerTitle.setImageBitmap(SAImageUtils.gameWallAppData());
+        headerTitle.setImageBitmap(SAImageUtils.createAppWallTitleBitmap());
         headerTitle.setScaleType(ImageView.ScaleType.FIT_XY);
         RelativeLayout.LayoutParams headerTitleParams = new RelativeLayout.LayoutParams((int)(200 * fp), (int)(40 * fp));
         headerTitleParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -148,7 +149,7 @@ public class SAAppWall extends Activity {
 
         // and the padlock button
         ImageButton padlock = new ImageButton(this);
-        padlock.setImageBitmap(SAImageUtils.padlockImage());
+        padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
         padlock.setPadding(0, 0, 0, 0);
         padlock.setBackgroundColor(Color.TRANSPARENT);
         padlock.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -167,7 +168,7 @@ public class SAAppWall extends Activity {
 
         // and the close button
         ImageButton close = new ImageButton(this);
-        close.setImageBitmap(SAImageUtils.gameWallClose());
+        close.setImageBitmap(SAImageUtils.createAppWallCloseButtonBitmap());
         close.setPadding(0, 0, 0, 0);
         close.setBackgroundColor(Color.TRANSPARENT);
         close.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -577,14 +578,9 @@ public class SAAppWall extends Activity {
                 ((LinearLayout) v).addView(iconHolder);
 
                 // and add to the icon holder a background with white rounded background
-                Bitmap newBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(newBitmap);
-                canvas.drawColor(0xffffffff);
-                StreamDrawable newBitmapDrawable = new StreamDrawable(newBitmap, radius, 0);
-
                 RelativeLayout iconBg= new RelativeLayout(context);
                 RelativeLayout.LayoutParams iconBgLayoutParams = new RelativeLayout.LayoutParams((int)(fp * 120), (int) (fp * 120));
-                iconBg.setBackgroundDrawable(newBitmapDrawable);
+                iconBg.setBackgroundDrawable(SAImageUtils.createDrawable(120, 120, 0xFFFFFFFF, radius));
                 iconBgLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 iconBg.setLayoutParams(iconBgLayoutParams);
                 iconHolder.addView(iconBg);
@@ -594,16 +590,14 @@ public class SAAppWall extends Activity {
                 RelativeLayout.LayoutParams appIconParams = new RelativeLayout.LayoutParams((int)(fp * 114), (int)(fp * 114));
                 appIconParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 appIcon.setLayoutParams(appIconParams);
-                File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
-                if (file.exists()) {
-                    String fileUrl = file.toString();
-                    Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
-                    int appIconW = (int) (114 * density);
-                    int appIconH = (int) (114 * density);
-                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
-                    StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
-                    appIcon.setImageDrawable(drawable);
-                }
+
+                Drawable drawable = SAImageUtils.createDrawable(
+                        context,
+                        ad.creative.details.media.playableDiskUrl,
+                        (int) (114 * density),
+                        (int) (114 * density),
+                        radius);
+                appIcon.setImageDrawable(drawable);
                 iconBg.addView(appIcon);
 
                 // in the other half of the adapter cell view put a text view
@@ -636,14 +630,9 @@ public class SAAppWall extends Activity {
                 ((LinearLayout) v).addView(iconHolder);
 
                 // and the icon background
-                Bitmap newBitmap = Bitmap.createBitmap(90, 90, Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(newBitmap);
-                canvas.drawColor(0xffffffff);
-                StreamDrawable newBitmapDrawable = new StreamDrawable(newBitmap, radius, 0);
-
                 RelativeLayout iconBg = new RelativeLayout(context);
                 RelativeLayout.LayoutParams iconBgParams = new RelativeLayout.LayoutParams((int)(fp * 90), (int) (fp * 90));
-                iconBg.setBackgroundDrawable(newBitmapDrawable);
+                iconBg.setBackgroundDrawable(SAImageUtils.createDrawable(90, 90, 0xFFFFFFFF, radius));
                 iconBgParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 iconBg.setLayoutParams(iconBgParams);
                 iconHolder.addView(iconBg);
@@ -653,16 +642,14 @@ public class SAAppWall extends Activity {
                 RelativeLayout.LayoutParams appIconParams = new RelativeLayout.LayoutParams((int)(fp * 84), (int)(fp * 84));
                 appIconParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
                 appIcon.setLayoutParams(appIconParams);
-                File file = new File(context.getFilesDir(), ad.creative.details.media.playableDiskUrl);
-                if (file.exists()) {
-                    String fileUrl = file.toString();
-                    Bitmap bitmap = BitmapFactory.decodeFile(fileUrl);
-                    int appIconW = (int) (84 * density);
-                    int appIconH = (int) (84 * density);
-                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, appIconW, appIconH, true);
-                    StreamDrawable drawable = new StreamDrawable(scaledBitmap, radius, 0);
-                    appIcon.setImageDrawable(drawable);
-                }
+
+                Drawable drawable = SAImageUtils.createDrawable(
+                        context,
+                        ad.creative.details.media.playableDiskUrl,
+                        (int) (84 * density),
+                        (int) (84 * density),
+                        radius);
+                appIcon.setImageDrawable(drawable);
                 iconBg.addView(appIcon);
 
                 // now add a label underneath
@@ -681,88 +668,88 @@ public class SAAppWall extends Activity {
         }
     }
 
-    /**********************************************************************************************
-     * StreamDrawable class to paint rounded-edges icons on the screen
-     **********************************************************************************************/
-
-    /**
-     * Class that overrides Drawable to paint an image with rounded corners
-     */
-    class StreamDrawable extends Drawable {
-
-        // instance members
-        private final float mCornerRadius;
-        private final RectF mRect = new RectF();
-        private final BitmapShader mBitmapShader;
-        private final Paint mPaint;
-        private final int mMargin;
-
-        /**
-         * Constructor that takes a bitmap, radius and margin
-         *
-         * @param bitmap        current bitmap to paint
-         * @param cornerRadius  the corner radius to add
-         * @param margin        the margin to add
-         */
-        StreamDrawable(Bitmap bitmap, float cornerRadius, int margin) {
-            mCornerRadius = cornerRadius;
-            mMargin = margin;
-            mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-            mPaint = new Paint();
-            mPaint.setAntiAlias(true);
-            mPaint.setShader(mBitmapShader);
-        }
-
-        /**
-         * Overridden Drawable method that repaints the image when the bounds change
-         *
-         * @param bounds a Rect of bounds
-         */
-        @Override
-        protected void onBoundsChange(Rect bounds) {
-            super.onBoundsChange(bounds);
-            mRect.set(mMargin, mMargin, bounds.width() - mMargin, bounds.height() - mMargin);
-        }
-
-        /**
-         * Overridden Drawable method that draws on a canvas
-         *
-         * @param canvas the current canvas
-         */
-        @Override
-        public void draw(Canvas canvas) {
-            canvas.drawRoundRect(mRect, mCornerRadius, mCornerRadius, mPaint);
-        }
-
-        /**
-         * Overridden Drawable method that gets the opacity
-         *
-         * @return a type of pixel format
-         */
-        @Override
-        public int getOpacity() {
-            return PixelFormat.TRANSLUCENT;
-        }
-
-        /**
-         * Overridden Drawable method that sets the transparency
-         *
-         * @param alpha the current alpha blending factor
-         */
-        @Override
-        public void setAlpha(int alpha) {
-            mPaint.setAlpha(alpha);
-        }
-
-        /**
-         * Overidden Drawable method that sets the color filter
-         *
-         * @param cf the color filter
-         */
-        @Override
-        public void setColorFilter(ColorFilter cf) {
-            mPaint.setColorFilter(cf);
-        }
-
-    }
+//    /**********************************************************************************************
+//     * StreamDrawable class to paint rounded-edges icons on the screen
+//     **********************************************************************************************/
+//
+//    /**
+//     * Class that overrides Drawable to paint an image with rounded corners
+//     */
+//    class StreamDrawable extends Drawable {
+//
+//        // instance members
+//        private final float mCornerRadius;
+//        private final RectF mRect = new RectF();
+//        private final BitmapShader mBitmapShader;
+//        private final Paint mPaint;
+//        private final int mMargin;
+//
+//        /**
+//         * Constructor that takes a bitmap, radius and margin
+//         *
+//         * @param bitmap        current bitmap to paint
+//         * @param cornerRadius  the corner radius to add
+//         * @param margin        the margin to add
+//         */
+//        StreamDrawable(Bitmap bitmap, float cornerRadius, int margin) {
+//            mCornerRadius = cornerRadius;
+//            mMargin = margin;
+//            mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+//            mPaint = new Paint();
+//            mPaint.setAntiAlias(true);
+//            mPaint.setShader(mBitmapShader);
+//        }
+//
+//        /**
+//         * Overridden Drawable method that repaints the image when the bounds change
+//         *
+//         * @param bounds a Rect of bounds
+//         */
+//        @Override
+//        protected void onBoundsChange(Rect bounds) {
+//            super.onBoundsChange(bounds);
+//            mRect.set(mMargin, mMargin, bounds.width() - mMargin, bounds.height() - mMargin);
+//        }
+//
+//        /**
+//         * Overridden Drawable method that draws on a canvas
+//         *
+//         * @param canvas the current canvas
+//         */
+//        @Override
+//        public void draw(Canvas canvas) {
+//            canvas.drawRoundRect(mRect, mCornerRadius, mCornerRadius, mPaint);
+//        }
+//
+//        /**
+//         * Overridden Drawable method that gets the opacity
+//         *
+//         * @return a type of pixel format
+//         */
+//        @Override
+//        public int getOpacity() {
+//            return PixelFormat.TRANSLUCENT;
+//        }
+//
+//        /**
+//         * Overridden Drawable method that sets the transparency
+//         *
+//         * @param alpha the current alpha blending factor
+//         */
+//        @Override
+//        public void setAlpha(int alpha) {
+//            mPaint.setAlpha(alpha);
+//        }
+//
+//        /**
+//         * Overidden Drawable method that sets the color filter
+//         *
+//         * @param cf the color filter
+//         */
+//        @Override
+//        public void setColorFilter(ColorFilter cf) {
+//            mPaint.setColorFilter(cf);
+//        }
+//
+//    }
 }

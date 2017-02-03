@@ -112,7 +112,7 @@ public class SAInterstitialAd extends Activity {
         // create the close button
         float fp = SAUtils.getScaleFactor(this);
         closeButton = new ImageButton(this);
-        closeButton.setImageBitmap(SAImageUtils.closeImage());
+        closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap());
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setPadding(0, 0, 0, 0);
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);

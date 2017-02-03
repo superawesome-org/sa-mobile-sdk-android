@@ -233,7 +233,7 @@ public class SABannerAd extends FrameLayout {
 
                             float sf = SAUtils.getScaleFactor((Activity)context);
                             padlock = new ImageButton(context);
-                            padlock.setImageBitmap(SAImageUtils.padlockImage());
+                            padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
                             padlock.setBackgroundColor(Color.TRANSPARENT);
                             padlock.setScaleType(ImageView.ScaleType.FIT_XY);
                             padlock.setPadding(0, 0, 0, 0);

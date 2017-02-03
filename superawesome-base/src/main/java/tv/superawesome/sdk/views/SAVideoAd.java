@@ -121,7 +121,7 @@ public class SAVideoAd extends Activity {
 
         // create the padlock
         padlock = new ImageButton(this);
-        padlock.setImageBitmap(SAImageUtils.padlockImage());
+        padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
         padlock.setPadding(0, 0, 0, 0);
         padlock.setBackgroundColor(Color.TRANSPARENT);
         padlock.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -137,7 +137,7 @@ public class SAVideoAd extends Activity {
 
         // create the close button
         closeButton = new ImageButton(this);
-        closeButton.setImageBitmap(SAImageUtils.closeImage());
+        closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap());
         closeButton.setPadding(0, 0, 0, 0);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
