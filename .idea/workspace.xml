@@ -10,30 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83b1f08b-20ca-4f53-bd6e-ecb1c9d33f36" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/saadloader_0_9_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/saevents_0_9_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/samoatevents_0_9_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_5_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sasession_0_3_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/sautils_0_3_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/savastparser_0_5_4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/savideoplayer_0_3_6.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/saadloader_0_9_5.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/saevents_0_9_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/samoatevents_0_9_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_5_5.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/sasession_0_2_8.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/sautils_0_3_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/savastparser_0_5_2.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/savideoplayer_0_3_4.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/build.gradle" afterPath="$PROJECT_DIR$/superawesome-base/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome/build.gradle" afterPath="$PROJECT_DIR$/superawesome/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CHANGELOG.md" afterPath="$PROJECT_DIR$/CHANGELOG.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -171,7 +151,7 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="658">
+            <state relative-caret-position="1395">
               <caret line="93" column="60" selection-start-line="93" selection-start-column="60" selection-end-line="93" selection-end-column="60" />
               <folding />
             </state>
@@ -181,14 +161,14 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="631">
+            <state relative-caret-position="1275">
               <caret line="85" column="60" selection-start-line="85" selection-start-column="60" selection-end-line="85" selection-end-column="60" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SAAppWall.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SAAppWall.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="298">
@@ -198,31 +178,31 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="local.properties" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/local.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SuperAwesome.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="34" column="24" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="SAImageUtils.class" pinned="false" current-in-tab="false">
         <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sautils/sautils/0.3.4/jars/classes.jar!/tv/superawesome/lib/sautils/SAImageUtils.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
+            <state relative-caret-position="630">
               <caret line="60" column="27" selection-start-line="60" selection-start-column="27" selection-end-line="60" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="attrs.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/values/attrs.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="11" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/values/dimens.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="11" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -6162,8 +6142,6 @@
         <option value="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SuperAwesomeBannerCustomEvent.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" />
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" />
-        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
-        <option value="$PROJECT_DIR$/local.properties" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/res/layout/activity_sa_video.xml" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/res/values/attrs.xml" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/res/values/dimens.xml" />
@@ -6176,6 +6154,8 @@
         <option value="$PROJECT_DIR$/superawesome-base/build.gradle" />
         <option value="$PROJECT_DIR$/superawesome/build.gradle" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" />
+        <option value="$PROJECT_DIR$/local.properties" />
+        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
       </list>
     </option>
   </component>
@@ -6209,9 +6189,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -6302,6 +6279,9 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -6838,7 +6818,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="379">
           <caret line="1609" column="19" selection-start-line="1609" selection-start-column="19" selection-end-line="1609" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6852,13 +6831,6 @@
     </entry>
     <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.savideoplayer/savideoplayer/0.3.0/jars/classes.jar!/tv/superawesome/lib/savideoplayer/SAVideoPlayer.class" />
     <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.savideoplayer/savideoplayer/0.3.1/jars/classes.jar!/tv/superawesome/lib/savideoplayer/SAVideoPlayer.class" />
-    <entry file="file://$PROJECT_DIR$/local.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/widget/GridView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="14820">
@@ -6870,112 +6842,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="73350">
           <caret line="5011" column="0" selection-start-line="5011" selection-start-column="0" selection-end-line="5011" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#295920#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#20129#20130#0" expanded="false" />
-            <element signature="e#20164#20165#0" expanded="false" />
-            <element signature="e#20224#20225#0" expanded="false" />
-            <element signature="e#20259#20260#0" expanded="false" />
-            <element signature="e#20322#20323#0" expanded="false" />
-            <element signature="e#20357#20358#0" expanded="false" />
-            <element signature="e#20414#20415#0" expanded="false" />
-            <element signature="e#20449#20450#0" expanded="false" />
-            <element signature="e#20516#20517#0" expanded="false" />
-            <element signature="e#20551#20552#0" expanded="false" />
-            <element signature="e#20599#20600#0" expanded="false" />
-            <element signature="e#20634#20635#0" expanded="false" />
-            <element signature="e#20695#20696#0" expanded="false" />
-            <element signature="e#20734#20735#0" expanded="false" />
-            <element signature="e#25715#25716#0" expanded="false" />
-            <element signature="e#25774#25775#0" expanded="false" />
-            <element signature="e#36762#36763#0" expanded="false" />
-            <element signature="e#36793#36794#0" expanded="false" />
-            <element signature="e#37254#37255#0" expanded="false" />
-            <element signature="e#37333#37334#0" expanded="false" />
-            <element signature="e#70345#70346#0" expanded="false" />
-            <element signature="e#70393#70394#0" expanded="false" />
-            <element signature="e#73445#73446#0" expanded="false" />
-            <element signature="e#73473#73474#0" expanded="false" />
-            <element signature="e#104616#104617#0" expanded="false" />
-            <element signature="e#104644#104645#0" expanded="false" />
-            <element signature="e#116312#116313#0" expanded="false" />
-            <element signature="e#116360#116361#0" expanded="false" />
-            <element signature="e#123516#123517#0" expanded="false" />
-            <element signature="e#123580#123581#0" expanded="false" />
-            <element signature="e#124790#124791#0" expanded="false" />
-            <element signature="e#124830#124831#0" expanded="false" />
-            <element signature="e#133675#133803#0" expanded="false" />
-            <element signature="e#133802#133803#0" expanded="false" />
-            <element signature="e#135504#135505#0" expanded="false" />
-            <element signature="e#135528#135529#0" expanded="false" />
-            <element signature="e#137366#137544#0" expanded="false" />
-            <element signature="e#137543#137544#0" expanded="false" />
-            <element signature="e#140770#140771#0" expanded="false" />
-            <element signature="e#140834#140835#0" expanded="false" />
-            <element signature="e#143224#143225#0" expanded="false" />
-            <element signature="e#143283#143284#0" expanded="false" />
-            <element signature="e#147812#147813#0" expanded="false" />
-            <element signature="e#147840#147841#0" expanded="false" />
-            <element signature="e#156324#156325#0" expanded="false" />
-            <element signature="e#156358#156359#0" expanded="false" />
-            <element signature="e#158600#158601#0" expanded="false" />
-            <element signature="e#158642#158643#0" expanded="false" />
-            <element signature="e#160313#160314#0" expanded="false" />
-            <element signature="e#160346#160347#0" expanded="false" />
-            <element signature="e#172868#172869#0" expanded="false" />
-            <element signature="e#172908#172909#0" expanded="false" />
-            <element signature="e#173501#173502#0" expanded="false" />
-            <element signature="e#173550#173551#0" expanded="false" />
-            <element signature="e#178444#178445#0" expanded="false" />
-            <element signature="e#178478#178479#0" expanded="false" />
-            <element signature="e#187367#187368#0" expanded="false" />
-            <element signature="e#187419#187420#0" expanded="false" />
-            <element signature="e#188306#188307#0" expanded="false" />
-            <element signature="e#188344#188345#0" expanded="false" />
-            <element signature="e#189319#189320#0" expanded="false" />
-            <element signature="e#189364#189365#0" expanded="false" />
-            <element signature="e#208596#208597#0" expanded="false" />
-            <element signature="e#208653#208654#0" expanded="false" />
-            <element signature="e#209270#209271#0" expanded="false" />
-            <element signature="e#209319#209320#0" expanded="false" />
-            <element signature="e#209966#209967#0" expanded="false" />
-            <element signature="e#210015#210016#0" expanded="false" />
-            <element signature="e#216694#216695#0" expanded="false" />
-            <element signature="e#216745#216746#0" expanded="false" />
-            <element signature="e#217787#217788#0" expanded="false" />
-            <element signature="e#217833#217834#0" expanded="false" />
-            <element signature="e#222391#222392#0" expanded="false" />
-            <element signature="e#222415#222416#0" expanded="false" />
-            <element signature="e#224457#224458#0" expanded="false" />
-            <element signature="e#224494#224495#0" expanded="false" />
-            <element signature="e#239608#239609#0" expanded="false" />
-            <element signature="e#239646#239647#0" expanded="false" />
-            <element signature="e#241742#241743#0" expanded="false" />
-            <element signature="e#241783#241784#0" expanded="false" />
-            <element signature="e#251780#251781#0" expanded="false" />
-            <element signature="e#251807#251808#0" expanded="false" />
-            <element signature="e#253190#253191#0" expanded="false" />
-            <element signature="e#253218#253219#0" expanded="false" />
-            <element signature="e#253718#253719#0" expanded="false" />
-            <element signature="e#253758#253759#0" expanded="false" />
-            <element signature="e#279427#279428#0" expanded="false" />
-            <element signature="e#279496#279497#0" expanded="false" />
-            <element signature="e#287329#287356#0" expanded="false" />
-            <element signature="e#287437#287443#0" expanded="false" />
-            <element signature="e#287524#287544#0" expanded="false" />
-            <element signature="e#288007#288008#0" expanded="false" />
-            <element signature="e#288054#288055#0" expanded="false" />
-            <element signature="e#288099#288100#0" expanded="false" />
-            <element signature="e#288150#288151#0" expanded="false" />
-            <element signature="e#288198#288199#0" expanded="false" />
-            <element signature="e#288253#288254#0" expanded="false" />
-            <element signature="e#290147#290148#0" expanded="false" />
-            <element signature="e#290188#290189#0" expanded="false" />
-            <element signature="e#290700#290720#0" expanded="false" />
-            <element signature="e#291438#291439#0" expanded="false" />
-            <element signature="e#291492#291493#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -7001,7 +6867,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -7016,14 +6881,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="34" column="24" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
@@ -7035,9 +6892,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1365">
           <caret line="102" column="19" selection-start-line="102" selection-start-column="19" selection-end-line="102" selection-end-column="19" />
-          <folding>
-            <element signature="method#loadAds#0;class#MainActivity#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -7052,7 +6906,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251955">
           <caret line="17227" column="16" selection-start-line="17227" selection-start-column="16" selection-end-line="17227" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -7106,7 +6959,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
+        <state relative-caret-position="1275">
           <caret line="85" column="60" selection-start-line="85" selection-start-column="60" selection-end-line="85" selection-end-column="60" />
           <folding />
         </state>
@@ -7114,7 +6967,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="658">
+        <state relative-caret-position="1395">
           <caret line="93" column="60" selection-start-line="93" selection-start-column="60" selection-end-line="93" selection-end-column="60" />
           <folding />
         </state>
@@ -7122,7 +6975,7 @@
     </entry>
     <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sautils/sautils/0.3.4/jars/classes.jar!/tv/superawesome/lib/sautils/SAImageUtils.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
+        <state relative-caret-position="630">
           <caret line="60" column="27" selection-start-line="60" selection-start-column="27" selection-end-line="60" selection-end-column="27" />
           <folding />
         </state>
@@ -7132,6 +6985,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="298">
           <caret line="631" column="28" selection-start-line="631" selection-start-column="28" selection-end-line="631" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/local.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="34" column="24" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
           <folding />
         </state>
       </provider>

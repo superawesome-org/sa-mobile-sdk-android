@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+5.4.8
+ - Added a new SAImageUtils class in the SAUtils library. This helps create bitmaps and drawables from base colors, base64 encoded strings or files. It can also add round corners.
+ - Refactored the video player library to be more simple and reliable. All drawables in this lib have been replaced by calles to SAImageUtils, so there are no dependencies, just code.
+ - Refactored the main SDK banner, interstitial, video and app wall classes to have all their UI elements created in code and not dependent on xml layouts. This removes the need to add a layouts folder when you integrate the SDK as .jar files.
+ - Refactored the main SDK banner, interstitial, video and app wall classes to have all their resources (drawables, pngs, etc) created by using the SAImageUtils class in the SAUtils library. This removes the need to add a res/drawables folder when you integrate the DSK as .jar files.
+ - Refactored the main SDK video class to work with the new video player library.
+ - Overall the SDK now does not depend on layouts or drawables to perform it's task and is more versatile when it comes to video playing. Also, when adding the SDK as a series of .jar dependencies, you don't have to worry about adding resoures, etc., just updating your manifest file.  
+
 5.4.7
 5.4.6
 5.4.5
