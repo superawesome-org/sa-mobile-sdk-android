@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sasession.SASession;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -43,6 +46,16 @@ public class MainActivity extends Activity {
 //        });
 
         bannerAd = (SABannerAd) findViewById(R.id.mybanner);
+
+//        RelativeLayout refBanner = (RelativeLayout) findViewById(R.id.RelBanner);
+//        bannerAd = new SABannerAd(this);
+//        if (savedInstanceState != null) {
+//            int bannerId = savedInstanceState.getInt("banner1_Id");
+//            bannerAd.setId(bannerId);
+//        } else {
+//            bannerAd.setId(SAUtils.randomNumberBetween(10000, 15000));
+//        }
+//        bannerAd.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         bannerAd.setConfigurationStaging();
         bannerAd.disableTestMode();
         bannerAd.disableParentalGate();
@@ -55,6 +68,7 @@ public class MainActivity extends Activity {
                 }
             }
         });
+//        refBanner.addView(bannerAd);
 
         bannerAd2 = (SABannerAd) findViewById(R.id.mybanner2);
         bannerAd2.setConfigurationStaging();
@@ -86,9 +100,9 @@ public class MainActivity extends Activity {
         SAVideoAd.setConfigurationStaging();
         SAVideoAd.disableTestMode();
         SAVideoAd.disableParentalGate();
-//        SAVideoAd.disableCloseAtEnd();
-         SAVideoAd.setOrientationLandscape();
-        SAVideoAd.enableCloseButton();
+        SAVideoAd.disableCloseAtEnd();
+        SAVideoAd.setOrientationLandscape();
+//        SAVideoAd.enableCloseButton();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -115,6 +129,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+//        outState.putInt("banner1_Id", bannerAd.getId());
         super.onSaveInstanceState(outState);
     }
 

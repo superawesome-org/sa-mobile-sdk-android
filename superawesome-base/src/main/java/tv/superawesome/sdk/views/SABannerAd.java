@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -12,7 +11,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,7 +34,6 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEventInterface;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.base.R;
 
 public class SABannerAd extends FrameLayout {
 
@@ -63,6 +60,7 @@ public class SABannerAd extends FrameLayout {
     private String          destinationURL = null;
     // bool
     private boolean         canPlay = true;
+    private boolean         firstPlay = true;
 
     /**
      * Constructor with context
@@ -149,7 +147,9 @@ public class SABannerAd extends FrameLayout {
         canPlay = false;
 
         // close
-        close();
+        if (!firstPlay) {
+            close();
+        }
 
         // next init a new session & prepare it
         session.setVersion(SuperAwesome.getInstance().getSDKVersion());
@@ -168,7 +168,6 @@ public class SABannerAd extends FrameLayout {
                 });
             }
         });
-
     }
 
     /**
@@ -184,6 +183,7 @@ public class SABannerAd extends FrameLayout {
 
             // canPlay becomes "false" again so no other playing can happen until a new load
             canPlay = false;
+            firstPlay = false;
 
             // create a new web player fragment object
             webPlayer = new SAWebPlayer();
@@ -358,10 +358,14 @@ public class SABannerAd extends FrameLayout {
 
         // remove the web player
         if (webPlayer != null) {
-            ((Activity)getContext()).getFragmentManager()
-                    .beginTransaction()
-                    .remove(webPlayer)
-                    .commit();
+            try {
+                ((Activity) getContext()).getFragmentManager()
+                        .beginTransaction()
+                        .remove(webPlayer)
+                        .commit();
+            } catch (Exception e) {
+                // this means the fragment wasn't set yet
+            }
         }
 
         // make padlock invisible

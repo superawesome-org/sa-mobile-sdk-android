@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+5.4.9
+ - Banner ads don't fire up an "adClosed" event on first load
+ - Fixed a bug with the Unity plugin that meant that "adFailedToLoad" events were sent back to Unity as "adFailedToShow" for video ads.
+ - The video ad close button will appear by default after 15 seconds of content playing, meaning that disabling
+the close button will have effect only for the first 15 seconds of play, or for ads shorter than 15 seconds. The close button will appear once the ad has ended nonetheless in that scenario.
+
 5.4.8
  - Added a new SAImageUtils class in the SAUtils library. This helps create bitmaps and drawables from base colors, base64 encoded strings or files. It can also add round corners.
  - Refactored the video player library to be more simple and reliable. All drawables in this lib have been replaced by calles to SAImageUtils, so there are no dependencies, just code.

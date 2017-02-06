@@ -231,6 +231,12 @@ public class SAVideoAd extends Activity {
 
                             break;
                         }
+                        case Video_15s:{
+                            // make the btn visible after 15s to comply w/ Google Play Store
+                            // video ad policy
+                            closeButton.setVisibility(View.VISIBLE);
+                            break;
+                        }
                         case Video_Error: {
 
                             // send events
