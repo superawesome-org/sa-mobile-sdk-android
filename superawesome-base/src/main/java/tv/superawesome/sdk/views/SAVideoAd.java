@@ -12,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,7 +48,7 @@ import tv.superawesome.sdk.SuperAwesome;
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAVideoAd extends Activity {
+public class SAVideoAd extends Activity implements SAParentalGateInterface {
 
     // the ad
     private SAAd ad = null;
@@ -257,20 +258,41 @@ public class SAVideoAd extends Activity {
             videoPlayer.setClickListener(new SAVideoPlayerClickInterface() {
                 @Override
                 public void onClick(View v) {
-                    // check for parental gate on click
-                    if (isParentalGateEnabledL) {
-                        gate = new SAParentalGate(SAVideoAd.this, SAVideoAd.this, ad);
-                        gate.show();
-                    } else {
-                        click();
+
+                    // check to see if there is a click through url
+                    String destinationUrl = null;
+                    for (SATracking tracking : ad.creative.events) {
+                        if (tracking.event.equals("click_through")) {
+                            destinationUrl = tracking.URL;
+                        }
+                    }
+
+                    // if the campaign is a CPI one, supercede that with the normal "click url"
+                    if (ad.campaignType == SACampaignType.CPI) {
+                        destinationUrl = ad.creative.clickUrl;
+                    }
+
+                    if (destinationUrl != null) {
+                        // check for parental gate on click
+                        if (isParentalGateEnabledL) {
+                            gate = new SAParentalGate(SAVideoAd.this, 0, destinationUrl);
+                            gate.setListener(SAVideoAd.this);
+                            gate.show();
+                        } else {
+                            click(destinationUrl);
+                        }
                     }
                 }
             });
 
             // finally add the video player
-            manager.beginTransaction()
-                    .add(parent.getId(), videoPlayer, videoTag)
-                    .commit();
+            try {
+                manager.beginTransaction()
+                        .add(parent.getId(), videoPlayer, videoTag)
+                        .commit();
+            } catch (Exception e) {
+                // do nothing
+            }
 
         }
         else {
@@ -300,78 +322,37 @@ public class SAVideoAd extends Activity {
     /**
      * Method that handles a click on the ad surface
      */
-    public void click() {
+    public void click(String destination) {
+
+        Log.d("SuperAwesome", "Trying to go to: " + destination);
+
         // get local
         SAInterface listenerL = getListener();
-        SAConfiguration configurationL = getConfiguration();
-
         // call listener
         listenerL.onEvent(ad.placementId, SAEvent.adClicked);
 
-        // in CPI we:
-        //  - take the click URL provided by the Ad and redirect to it
-        //  - send an event to "click_through"
-        //  - send events to "click_tracking"
-        //  - send all "custom_clicks" events
+        // send sa click counter
+        events.sendEventsFor("clk_counter");
+
+        // send vast click tracking events
+        events.sendEventsFor("click_tracking");
+
+        // senv vast custom clicks
+        events.sendEventsFor("custom_clicks");
+
+        // send install event
+        events.sendEventsFor("install");
+
+        // send only in case of CPI
         if (ad.campaignType == SACampaignType.CPI) {
-
-            // send sa click counter
-            events.sendEventsFor("clk_counter");
-            // send vast click tracking event
-            events.sendEventsFor("click_tracking");
-            // send vast custom click events
-            events.sendEventsFor("custom_clicks");
-            // send vast events for click through
             events.sendEventsFor("click_through");
-            // send install event
-            events.sendEventsFor("install");
-
-            // form the final URL for referral data
-            JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", configurationL.ordinal(),
-                    "utm_campaign", ad.campaignId,
-                    "utm_term", ad.lineItemId,
-                    "utm_content", ad.creative.id,
-                    "utm_medium", ad.placementId
-            });
-            String referrerQuery = SAUtils.formGetQueryFromDict(referrerData);
-            referrerQuery = referrerQuery.replace("&", "%26");
-            referrerQuery = referrerQuery.replace("=", "%3D");
-
-            // go to the URL
-            if (ad.creative.clickUrl != null) {
-                String finalURL = ad.creative.clickUrl + "&referrer=" + referrerQuery;
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
-                startActivity(browserIntent);
-            }
         }
-        // in CPM we:
-        //  - take the "click_through" URL provided by VAST and redirect to it
-        //  - send all "click_tracking" events
-        //  - send all "custom_clicks" events
-        else {
-            // send sa click counter
-            events.sendEventsFor("clk_counter");
-            // send vast click tracking events
-            events.sendEventsFor("click_tracking");
-            // senv vast custom clicks
-            events.sendEventsFor("custom_clicks");
 
-            // get the final go-to URL
-            String finalURL = null;
-            for (SATracking tracking : ad.creative.events) {
-                if (tracking.event.equals("click_through")) {
-                    finalURL = tracking.URL;
-                }
-            }
+        // if it's a CPI campaign
+        destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referralData.writeToReferralQuery()) : "";
 
-            // go to the URL
-            if (finalURL != null) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalURL));
-                startActivity(browserIntent);
-            }
-
-        }
+        // start browser
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
     }
 
     /**
@@ -409,6 +390,12 @@ public class SAVideoAd extends Activity {
         // call listener
         listenerL.onEvent(ad.placementId, SAEvent.adClosed);
 
+        // close the parental gate
+        if (gate != null) {
+            gate.close();
+        }
+        gate = null;
+
         // unregister MOAT video
         events.unregisterVideoMoatEvent();
 
@@ -421,6 +408,40 @@ public class SAVideoAd extends Activity {
         // close
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
+    @Override
+    public void parentalGateOpen(int position) {
+        // send Open Event
+        events.sendEventsFor("pg_open");
+        // pause
+        this.pause();
+    }
+
+    @Override
+    public void parentalGateFailure(int position) {
+        // send event
+        events.sendEventsFor("pg_fail");
+        // resume the video
+        this.resume();
+    }
+
+    @Override
+    public void parentalGateCancel(int position) {
+        // send event
+        events.sendEventsFor("pg_close");
+        // resume the video
+        this.resume();
+    }
+
+    @Override
+    public void parentalGateSuccess(int position, String destination) {
+        // send event
+        events.sendEventsFor("pg_success");
+        // pause the video
+        this.pause();
+        // click
+        click(destination);
     }
 
     /**********************************************************************************************

@@ -37,57 +37,27 @@ public class SAParentalGate {
     private static final String SA_ERROR_ALERTVIEW_MESSAGE = "Please seek guidance from a responsible adult to help you continue.";
     private static final String SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE = "Ok";
 
+    // the alert dialog
+    private AlertDialog dialog = null;
+
+    // the pg listener
+    private SAParentalGateInterface listener = null;
+
     // private vars
-    private int startNum;
-    private int endNum;
     private Context c = null;
-    private WeakReference<Object> parentRef = null;
-    private SAEvents events = null;
-    private int gameWallPos = 0;
+    private int position = 0;
+    private String destination = null;
 
-    // the alert dialog */
-    private AlertDialog dialog;
-
-    // vars to hold who has called this
-    private boolean calledByBanner = false;
-    private boolean calledByVideo = false;
-    private boolean calledByGameWall = false;
-
-    /**
-     * Constructor with context, parent and reference ad
-     *
-     * @param c         the current context (activity or fragment)
-     * @param parent    the parent - which might be a banner, video or app wall
-     * @param _refAd    a reference to the current ad
-     */
-    SAParentalGate(Context c, Object parent, SAAd _refAd){
-        super();
-        this.c = c;
-        this.parentRef = new WeakReference<> (parent);
-        this.events = new SAEvents (c);
-        this.events.setAd(_refAd != null ? _refAd : new SAAd());
-
-        String className = parentRef.get().getClass().getName();
-        String videoClassName = SAVideoAd.class.getCanonicalName();
-        String bannerClassName = SABannerAd.class.getCanonicalName();
-        String gamewallClassName = SAAppWall.class.getCanonicalName();
-        calledByVideo = className.contains(videoClassName);
-        calledByBanner = className.contains(bannerClassName);
-        calledByGameWall = className.contains(gamewallClassName);
-    }
-
-    /**
-     * Constructor with context, parent, reference ad and position;
-     * Used by the App wall type ad
-     *
-     * @param c         the current context (activity or fragment)
-     * @param parent    the parent - which might be a banner, video or app wall
-     * @param _refAd    a reference to the current ad
-     * @param position  the position in the app wall
-     */
-    SAParentalGate(Context c, Object parent, SAAd _refAd, int position) {
-        this(c, parent, _refAd);
-        gameWallPos = position;
+    SAParentalGate (Context context, int position, String destination) {
+        this.c = context;
+        this.position = position;
+        this.destination = destination;
+        listener = new SAParentalGateInterface() {
+            @Override public void parentalGateOpen (int position) {}
+            @Override public void parentalGateSuccess(int position, String destination) {}
+            @Override public void parentalGateFailure(int position) {}
+            @Override public void parentalGateCancel(int position) {}
+        };
     }
 
     /**
@@ -95,11 +65,10 @@ public class SAParentalGate {
      */
     void show() {
 
-        // send Open Event
-        events.sendEventsFor("pg_open");
+        listener.parentalGateOpen(position);
 
-        startNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
-        endNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
+        final int startNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
+        final int endNum = SAUtils.randomNumberBetween(RAND_MIN, RAND_MAX);
 
         // we have an alert dialog builder
         final AlertDialog.Builder alert = new AlertDialog.Builder(c);
@@ -113,37 +82,21 @@ public class SAParentalGate {
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         alert.setView(input);
 
-        // pause video
-        if (calledByVideo) {
-            ((SAVideoAd) parentRef.get()).pause();
-        }
-
-        final AlertDialog.Builder aContinue = alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
+        // create positive dialog
+        alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                if (!input.getText().toString().equals("")) {
-                    int userValue = Integer.parseInt(input.getText().toString());
+                int userValue = -1;
 
-                    // dismiss
-                    dialog.dismiss();
+                // try parsing the result and check for mathematical corectness
+                try {
+                    userValue = Integer.parseInt(input.getText().toString());
 
                     if (userValue == (startNum + endNum)) {
 
-                        // send event
-                        events.sendEventsFor("pg_success");
+                        listener.parentalGateSuccess(position, destination);
 
-                        // continue w/ click event
-                        if (calledByBanner) {
-                            ((SABannerAd) parentRef.get()).click();
-                        } else if (calledByVideo) {
-                            ((SAVideoAd) parentRef.get()).click();
-                        } else if (calledByGameWall) {
-                            ((SAAppWall) parentRef.get()).click(gameWallPos);
-                        }
                     } else {
-
-                        // send event
-                        events.sendEventsFor("pg_fail");
 
                         // go on error way
                         AlertDialog.Builder erroralert = new android.app.AlertDialog.Builder(c);
@@ -154,42 +107,39 @@ public class SAParentalGate {
                         erroralert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
+                                listener.parentalGateFailure(position);
+
                                 // dismiss this
                                 dialog.dismiss();
 
-                                // resume video
-                                if (calledByVideo) {
-                                    ((SAVideoAd) parentRef.get()).resume();
-                                }
                             }
                         });
                         erroralert.show();
+                    }
 
-                    }
                 }
-                else {
-                    // resume video
-                    if (calledByVideo) {
-                        ((SAVideoAd) parentRef.get()).resume();
-                    }
+                // catch the number format error and calce the parental gate
+                catch (Exception e) {
+
+                    listener.parentalGateCancel(position);
+
                 }
+
+                // dismiss
+                dialog.dismiss();
             }
         });
 
+        // create negative dialog
         alert.setNegativeButton(SA_CHALLANGE_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
 
-                // send event
-                events.sendEventsFor("pg_close");
-
                 // dismiss
                 dialog.dismiss();
 
-                // resume video
-                if (calledByVideo) {
-                    ((SAVideoAd) parentRef.get()).resume();
-                }
+                listener.parentalGateCancel(position);
+
             }
         });
 
@@ -198,9 +148,20 @@ public class SAParentalGate {
     }
 
     /**
-     * Function that closes the parental gate
+     * Close method for the dialog
      */
-    public void close() {
-        dialog.cancel();
+    public void close () {
+        if (dialog != null) {
+            dialog.cancel();
+        }
+    }
+
+    /**
+     * Set the parental gate listener
+     *
+     * @param listener the listener instance
+     */
+    public void setListener (SAParentalGateInterface listener) {
+        this.listener = listener != null ? listener : this.listener;
     }
 }

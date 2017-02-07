@@ -64,7 +64,7 @@ import tv.superawesome.sdk.SuperAwesome;
  * Class that abstracts away the process of loading & displaying an App Wall type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAAppWall extends Activity {
+public class SAAppWall extends Activity implements SAParentalGateInterface {
 
     // private instance vars
     private SAResponse response = null;
@@ -200,11 +200,18 @@ public class SAAppWall extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // check for PG
                 SAAd ad = response.ads.get(position);
-                if (isParentalGateEnabledL) {
-                    gate = new SAParentalGate(SAAppWall.this, SAAppWall.this, ad, position);
-                    gate.show();
-                } else {
-                    click(position);
+
+                // only execute the click operation if the ad's click url is not null
+                if (ad.creative.clickUrl != null) {
+
+                    if (isParentalGateEnabledL) {
+                        gate = new SAParentalGate(SAAppWall.this, position, ad.creative.clickUrl);
+                        gate.setListener(SAAppWall.this);
+                        gate.show();
+                    } else {
+                        click(position, ad.creative.clickUrl);
+                    }
+
                 }
             }
         });
@@ -246,51 +253,37 @@ public class SAAppWall extends Activity {
     /**
      * Method that handles a click on the ad surface
      *
-     * @param position what cell of the AppWall was clicked
+     * @param position    current ad position
+     * @param destination destination URL
      */
-    public void click (int position) {
-        // get ad
+    public void click (int position, String destination) {
+
+        Log.d("SuperAwesome", "Trying to go to: " + destination);
+
+        // get the ad
         SAAd ad = response.ads.get(position);
+
         // get events
         SAEvents event = events.get(position);
 
         // get local
         SAInterface listenerL = getListener();
-        SAConfiguration configurationL = getConfiguration();
-
-        // callback
         listenerL.onEvent(response.placementId, SAEvent.adClicked);
 
-        if (ad.campaignType == SACampaignType.CPI) {
+        // send click counter event
+        event.sendEventsFor("clk_counter");
 
-            // send click counter event
-            event.sendEventsFor("clk_counter");
-            // send install event
-            event.sendEventsFor("install");
-            // send sa click counter event
-            event.sendEventsFor("sa_tracking");
+        // send install event
+        event.sendEventsFor("install");
 
-            // get click URL
-            String clickUrl = ad.creative.clickUrl;
-            clickUrl += "&referrer=";
-            JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", configurationL.ordinal(),
-                    "utm_campaign", ad.campaignId,
-                    "utm_term", ad.lineItemId,
-                    "utm_content", ad.creative.id,
-                    "utm_medium", ad.placementId
-            });
-            String referrerQuery = SAUtils.formGetQueryFromDict(referrerData);
-            referrerQuery = referrerQuery.replace("&", "%26");
-            referrerQuery = referrerQuery.replace("=", "%3D");
-            clickUrl += referrerQuery;
+        // send sa click counter event
+        event.sendEventsFor("sa_tracking");
 
-            Log.d("SuperAwesome", "Going to " + clickUrl);
+        // form the final URL with attached referral data
+        destination += "&referrer=" + ad.creative.referralData.writeToReferralQuery();
 
-            // open URL
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(clickUrl));
-            startActivity(browserIntent);
-        }
+        // open URL
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
     }
 
     /**
@@ -311,6 +304,32 @@ public class SAAppWall extends Activity {
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
+    }
+
+    @Override
+    public void parentalGateOpen(int position) {
+        // send Open Event
+        events.get(position).sendEventsFor("pg_open");
+    }
+
+    @Override
+    public void parentalGateSuccess(int position, String destination) {
+        // send event
+        events.get(position).sendEventsFor("pg_success");
+        // call click
+        click(position, destination);
+    }
+
+    @Override
+    public void parentalGateFailure(int position) {
+        // send event
+        events.get(position).sendEventsFor("pg_fail");
+    }
+
+    @Override
+    public void parentalGateCancel(int position) {
+        // send event
+        events.get(position).sendEventsFor("pg_close");
     }
 
     /**********************************************************************************************
@@ -667,89 +686,4 @@ public class SAAppWall extends Activity {
             return v;
         }
     }
-
-//    /**********************************************************************************************
-//     * StreamDrawable class to paint rounded-edges icons on the screen
-//     **********************************************************************************************/
-//
-//    /**
-//     * Class that overrides Drawable to paint an image with rounded corners
-//     */
-//    class StreamDrawable extends Drawable {
-//
-//        // instance members
-//        private final float mCornerRadius;
-//        private final RectF mRect = new RectF();
-//        private final BitmapShader mBitmapShader;
-//        private final Paint mPaint;
-//        private final int mMargin;
-//
-//        /**
-//         * Constructor that takes a bitmap, radius and margin
-//         *
-//         * @param bitmap        current bitmap to paint
-//         * @param cornerRadius  the corner radius to add
-//         * @param margin        the margin to add
-//         */
-//        StreamDrawable(Bitmap bitmap, float cornerRadius, int margin) {
-//            mCornerRadius = cornerRadius;
-//            mMargin = margin;
-//            mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-//            mPaint = new Paint();
-//            mPaint.setAntiAlias(true);
-//            mPaint.setShader(mBitmapShader);
-//        }
-//
-//        /**
-//         * Overridden Drawable method that repaints the image when the bounds change
-//         *
-//         * @param bounds a Rect of bounds
-//         */
-//        @Override
-//        protected void onBoundsChange(Rect bounds) {
-//            super.onBoundsChange(bounds);
-//            mRect.set(mMargin, mMargin, bounds.width() - mMargin, bounds.height() - mMargin);
-//        }
-//
-//        /**
-//         * Overridden Drawable method that draws on a canvas
-//         *
-//         * @param canvas the current canvas
-//         */
-//        @Override
-//        public void draw(Canvas canvas) {
-//            canvas.drawRoundRect(mRect, mCornerRadius, mCornerRadius, mPaint);
-//        }
-//
-//        /**
-//         * Overridden Drawable method that gets the opacity
-//         *
-//         * @return a type of pixel format
-//         */
-//        @Override
-//        public int getOpacity() {
-//            return PixelFormat.TRANSLUCENT;
-//        }
-//
-//        /**
-//         * Overridden Drawable method that sets the transparency
-//         *
-//         * @param alpha the current alpha blending factor
-//         */
-//        @Override
-//        public void setAlpha(int alpha) {
-//            mPaint.setAlpha(alpha);
-//        }
-//
-//        /**
-//         * Overidden Drawable method that sets the color filter
-//         *
-//         * @param cf the color filter
-//         */
-//        @Override
-//        public void setColorFilter(ColorFilter cf) {
-//            mPaint.setColorFilter(cf);
-//        }
-//
-//    }
 }

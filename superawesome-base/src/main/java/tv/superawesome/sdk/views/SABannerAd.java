@@ -15,8 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import org.json.JSONObject;
-
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
@@ -35,7 +33,7 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
 import tv.superawesome.lib.sawebplayer.SAWebPlayerEventInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
-public class SABannerAd extends FrameLayout {
+public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
     // constants
     private final int       BANNER_BACKGROUND = Color.rgb(224, 224, 224);
@@ -56,8 +54,6 @@ public class SABannerAd extends FrameLayout {
     private ImageButton     padlock;
     private SAParentalGate  gate;
 
-    // string holding the destination Url
-    private String          destinationURL = null;
     // bool
     private boolean         canPlay = true;
     private boolean         firstPlay = true;
@@ -266,15 +262,17 @@ public class SABannerAd extends FrameLayout {
                         // and this is in case of click
                         case Web_Click: {
 
-                            // update the destination URL
-                            destinationURL = destination;
+                            if (destination != null) {
 
-                            // check for PG
-                            if (isParentalGateEnabled) {
-                                gate = new SAParentalGate(getContext(), SABannerAd.this, ad);
-                                gate.show();
-                            } else {
-                                click();
+                                // check for PG
+                                if (isParentalGateEnabled) {
+                                    gate = new SAParentalGate(getContext(), 0, destination);
+                                    gate.setListener(SABannerAd.this);
+                                    gate.show();
+                                } else {
+                                    click(destination);
+                                }
+
                             }
 
                             break;
@@ -304,46 +302,32 @@ public class SABannerAd extends FrameLayout {
     /**
      * One of the main public methods of the SABannerAd class that gets called when the web view
      * surface detects a click of some sort.
+     *
+     * @param destination the destination url
      */
-    public void click () {
+    public void click (String destination) {
+
+        Log.d("SuperAwesome", "Trying to go to: " + destination);
+
         // callback
         listener.onEvent(ad.placementId, SAEvent.adClicked);
 
         // send click counter events
         events.sendEventsFor("clk_counter");
 
+        // send install impression
+        events.sendEventsFor("install");
+
         // send tracking events, if needed
-        if (!destinationURL.contains(session.getBaseUrl())) {
+        if (!destination.contains(session.getBaseUrl())) {
             events.sendEventsFor("sa_tracking");
         }
 
-        // get the url to go to
-        String finalUrl = destinationURL;
-
         // append CPI data to it
-        if (ad.campaignType == SACampaignType.CPI) {
+        destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referralData.writeToReferralQuery()) : "";
 
-            // send install impression
-            events.sendEventsFor("install");
-
-            finalUrl += "&referrer=";
-            JSONObject referrerData = SAJsonParser.newObject(new Object[]{
-                    "utm_source", session.getConfiguration().ordinal(),
-                    "utm_campaign", ad.campaignId,
-                    "utm_term", ad.lineItemId,
-                    "utm_content", ad.creative.id,
-                    "utm_medium", ad.placementId
-            });
-            String referrerQuery = SAUtils.formGetQueryFromDict(referrerData);
-            referrerQuery = referrerQuery.replace("&", "%26");
-            referrerQuery = referrerQuery.replace("=", "%3D");
-            finalUrl += referrerQuery;
-        }
-        Log.d("SuperAwesome", "Going to " + finalUrl);
-
-        // open URL
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
-        getContext().startActivity(browserIntent);
+        // start browser
+        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
     }
 
     /**
@@ -403,6 +387,32 @@ public class SABannerAd extends FrameLayout {
      */
     private boolean shouldShowPadlock () {
         return ad != null && ad.creative.format != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
+    }
+
+    @Override
+    public void parentalGateOpen(int position) {
+        // send Open Event
+        events.sendEventsFor("pg_open");
+    }
+
+    @Override
+    public void parentalGateSuccess(int position, String destination) {
+        // send event
+        events.sendEventsFor("pg_success");
+        // go to click
+        click(destination);
+    }
+
+    @Override
+    public void parentalGateFailure(int position) {
+        // send event
+        events.sendEventsFor("pg_fail");
+    }
+
+    @Override
+    public void parentalGateCancel(int position) {
+        // send event
+        events.sendEventsFor("pg_close");
     }
 
     /**********************************************************************************************
