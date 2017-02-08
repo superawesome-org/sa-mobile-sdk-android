@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         SAVideoAd.disableTestMode();
 //        SAVideoAd.setOrientationLandscape();
         SAVideoAd.setConfigurationStaging();
-        SAVideoAd.disableCloseAtEnd();
+//        SAVideoAd.disableCloseAtEnd();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -135,8 +135,8 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo2(View v){
-        if (SAVideoAd.hasAdAvailable(603)) {
-            SAVideoAd.play(603, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(604)) {
+            SAVideoAd.play(604, MainActivity.this);
         }
     }
 }
