@@ -50,6 +50,9 @@ public class SAVideoAd extends Activity {
     private SAVideoPlayer videoPlayer = null;
     private SAParentalGate gate;
 
+    // a member holding whether the video has ended or not
+    private static boolean videoEnded = false;
+
     // private vars
     private static Context context = null;
 
@@ -57,7 +60,7 @@ public class SAVideoAd extends Activity {
     private static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
     private static boolean isParentalGateEnabled = true;
-    private static boolean shouldShowCloseButton = true;
+    private static boolean shouldShowCloseButton = false;
     private static boolean shouldAutomaticallyCloseAtEnd = true;
     private static boolean shouldShowSmallClickButton = false;
     private static boolean isTestingEnabled = false;
@@ -72,7 +75,9 @@ public class SAVideoAd extends Activity {
         // local versions of the static vars
         final SAInterface listenerL = getListener();
         final boolean isParentalGateEnabledL = getIsParentalGateEnabled();
-        final boolean shouldShowCloseButtonL = getShouldShowCloseButton();
+        boolean shouldShowCloseButtonL = getShouldShowCloseButton();
+        if (!shouldShowCloseButtonL && videoEnded) shouldShowCloseButtonL = true;
+
         final boolean shouldAutomaticallyCloseAtEndL = getShouldAutomaticallyCloseAtEnd();
         final boolean shouldShowSmallClickButtonL = getShouldShowSmallClickButton();
         final SAOrientation orientationL = getOrientation();
@@ -97,7 +102,7 @@ public class SAVideoAd extends Activity {
         RelativeLayout videoLayout = (RelativeLayout) findViewById(activity_sa_videoId);
 
         // close btn
-        Button closeBtn = (Button) findViewById(close_btnId);
+        final Button closeBtn = (Button) findViewById(close_btnId);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +174,18 @@ public class SAVideoAd extends Activity {
                             break;
                         }
                         case Video_End: {
+                            // send an ad ended event
+                            listenerL.onEvent(ad.placementId, SAEvent.adEnded);
+
                             events.sendEventsFor("complete");
+
+                            // mark the video as ended
+                            videoEnded = true;
+
+                            // make btn visible
+                            closeBtn.setVisibility(View.VISIBLE);
+                            recreate(); // must force close button ... :( but don't like it
+
                             if (shouldAutomaticallyCloseAtEndL) {
                                 close();
                             }

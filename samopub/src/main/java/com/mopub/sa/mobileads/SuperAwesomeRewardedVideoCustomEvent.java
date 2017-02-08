@@ -70,7 +70,7 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
         placementId = 0;
         isTestEnabled = false;
         isParentalGateEnabled = true;
-        shouldShowCloseButton = true;
+        shouldShowCloseButton = false;
         shouldAutomaticallyCloseAtEnd = true;
         shouldShowSmallClickButton = false;
         orientation = SAOrientation.ANY;

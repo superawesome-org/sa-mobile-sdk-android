@@ -58,8 +58,9 @@ public class MainActivity extends Activity {
         SAVideoAd.enableBackButton();
         SAVideoAd.disableParentalGate();
         SAVideoAd.disableTestMode();
-        SAVideoAd.setOrientationLandscape();
-        SAVideoAd.setConfigurationProduction();
+//        SAVideoAd.setOrientationLandscape();
+        SAVideoAd.setConfigurationStaging();
+        SAVideoAd.disableCloseAtEnd();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -71,6 +72,8 @@ public class MainActivity extends Activity {
                     Log.d("SuperAwesome", "Ad " + placementId + " shown");
                 } else if (event == SAEvent.adClosed) {
                     Log.d("SuperAwesome", "Ad " + placementId + " closed");
+                } else if (event == SAEvent.adEnded) {
+                    Log.d("SuperAwesome", "Ad " + placementId + " ended");
                 }
             }
         });
@@ -93,13 +96,13 @@ public class MainActivity extends Activity {
 
     public void loadAds (View view) {
 //        bannerAd.load(485);
-        SAInterstitialAd.load(33220, MainActivity.this);
+//        SAInterstitialAd.load(33220, MainActivity.this);
 //        SAInterstitialAd.load(418, MainActivity.this);
 //        SAAppWall.load(437, MainActivity.this);
 ////        SAVideoAd.load(32841, MainActivity.this);
-        SAVideoAd.setConfigurationStaging();
-        SAVideoAd.load(481, MainActivity.this);
-        SAVideoAd.load(544, MainActivity.this);
+//        SAVideoAd.setConfigurationStaging();
+        SAVideoAd.load(603, MainActivity.this);
+        SAVideoAd.load(604, MainActivity.this);
     }
 
     public void playBanner(View v){
@@ -123,8 +126,8 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo1(View v){
-        if (SAVideoAd.hasAdAvailable(544)) {
-            SAVideoAd.play(544, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(603)) {
+            SAVideoAd.play(603, MainActivity.this);
         }
 //        if (SAAppWall.hasAdAvailable(437)) {
 //            SAAppWall.play(437, MainActivity.this);
@@ -132,8 +135,8 @@ public class MainActivity extends Activity {
     }
 
     public void playVideo2(View v){
-        if (SAVideoAd.hasAdAvailable(481)) {
-            SAVideoAd.play(481, MainActivity.this);
+        if (SAVideoAd.hasAdAvailable(603)) {
+            SAVideoAd.play(603, MainActivity.this);
         }
     }
 }
