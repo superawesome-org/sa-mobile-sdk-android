@@ -6,8 +6,8 @@ package tv.superawesome.plugins.unity;
 
 import android.content.Context;
 
+import tv.superawesome.lib.sacpi.SACPIInterface;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.cpi.SAInstallEventInterface;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -25,7 +25,7 @@ public class SAUnitySuperAwesome {
      */
     public static void SuperAwesomeUnitySuperAwesomeHandleCPI (Context context) {
 
-        SuperAwesome.getInstance().handleCPI(context, new SAInstallEventInterface() {
+        SuperAwesome.getInstance().handleCPI(context, new SACPIInterface() {
             @Override
             public void saDidCountAnInstall(boolean success) {
                 SAUnityCallback.sendCPICallback(unityName, success, "HandleCPI");

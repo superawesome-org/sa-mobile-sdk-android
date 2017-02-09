@@ -6,10 +6,9 @@ package tv.superawesome.sdk;
 
 import android.content.Context;
 
+import tv.superawesome.lib.sacpi.SACPI;
+import tv.superawesome.lib.sacpi.SACPIInterface;
 import tv.superawesome.lib.sasession.SAConfiguration;
-import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.sdk.cpi.SACPI;
-import tv.superawesome.sdk.cpi.SAInstallEventInterface;
 import tv.superawesome.sdk.views.SAOrientation;
 
 /**
@@ -24,16 +23,12 @@ public class SuperAwesome {
     private String version = null;
     private String sdk = null;
 
-    // CPI implementation
-    private SACPI sacpi;
-
     /**
      * Private constructor that is only called once
      */
     private SuperAwesome() {
         version = "5.4.9";
         sdk = "android";
-        sacpi = new SACPI();
     }
 
     /**
@@ -78,8 +73,8 @@ public class SuperAwesome {
      * @param context   current context
      * @param listener  a listener
      */
-    public void handleCPI (Context context, SAInstallEventInterface listener) {
-        sacpi.sendInstallEvent(context, new SASession(context), listener);
+    public void handleCPI (Context context, SACPIInterface listener) {
+        SACPI.getInstance().sendInstallEvent(context, listener);
     }
 
     /**

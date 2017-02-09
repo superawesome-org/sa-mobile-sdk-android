@@ -11,8 +11,8 @@ import com.adobe.fre.FREObject;
 import com.adobe.fre.FRETypeMismatchException;
 import com.adobe.fre.FREWrongThreadException;
 
+import tv.superawesome.lib.sacpi.SACPIInterface;
 import tv.superawesome.sdk.SuperAwesome;
-import tv.superawesome.sdk.cpi.SAInstallEventInterface;
 
 /**
  * Class that holds a number of static methods used to communicate with Adobe AIR
@@ -40,7 +40,7 @@ public class SAAIRSuperAwesome {
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-            SuperAwesome.getInstance().handleCPI(freContext.getActivity(), new SAInstallEventInterface() {
+            SuperAwesome.getInstance().handleCPI(freContext.getActivity(), new SACPIInterface() {
                 @Override
                 public void saDidCountAnInstall(boolean success) {
 

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="savastparser-0.5.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.savastparser/savastparser/0.5.6/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.savastparser/savastparser/0.5.6/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

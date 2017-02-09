@@ -208,7 +208,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                         case Web_Loaded: {
 
                             // send additional impressions
-                            events.sendEventsFor("impression");
+                            // events.sendEventsFor("impression");
                             // events.sendEventsFor("sa_impr");
 
                             // send viewable impression

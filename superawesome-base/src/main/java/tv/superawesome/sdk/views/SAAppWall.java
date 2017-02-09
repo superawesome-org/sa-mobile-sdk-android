@@ -222,7 +222,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
         // send events
         for (SAEvents event : events) {
-            event.sendEventsFor("impression");
+            // event.sendEventsFor("impression");
             // event.sendEventsFor("sa_impr");
             event.sendViewableImpressionForDisplay(gameGrid);
         }
