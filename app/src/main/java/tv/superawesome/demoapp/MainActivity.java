@@ -1,10 +1,25 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -15,144 +30,209 @@ import tv.superawesome.sdk.views.SAVideoAd;
 
 public class MainActivity extends Activity {
 
-    private SABannerAd bannerAd = null;
-    private SABannerAd bannerAd2 = null;
-
     /** the options list */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final SASession session = new SASession(this);
-        session.setConfigurationStaging();
-
-//        SuperAwesome.getInstance().handleCPI(this, new SAInstallEventInterface() {
-//            @Override
-//            public void saDidCountAnInstall(boolean success) {
-//
-//            }
-//        });
-
-        bannerAd = (SABannerAd) findViewById(R.id.mybanner);
-        bannerAd.setConfigurationStaging();
-        bannerAd.disableTestMode();
-        bannerAd.disableParentalGate();
-        bannerAd.setListener(new SAInterface() {
+        final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
+        myBanner.setConfigurationStaging();
+        myBanner.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
-                Log.d("SuperAwesome", "Banner " + placementId + " --> " + event);
-                if (event == SAEvent.adLoaded) {
-                    bannerAd.play(MainActivity.this);
-                }
-            }
-        });
 
-        bannerAd2 = (SABannerAd) findViewById(R.id.mybanner2);
-        bannerAd2.setConfigurationStaging();
-        bannerAd2.disableParentalGate();
-        bannerAd2.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                Log.d("SuperAwesome", "Banner 2 " + placementId + " --> " + event);
+                Log.d("SuperAwesome", "BANNER AD: " + placementId + " -> Event : " + event);
+
                 if (event == SAEvent.adLoaded) {
-                    bannerAd2.play(MainActivity.this);
+                    myBanner.play(MainActivity.this);
                 }
             }
         });
 
         SAInterstitialAd.setConfigurationStaging();
-        SAInterstitialAd.disableTestMode();
-        SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
+
+                Log.d("SuperAwesome", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);
+
                 if (event == SAEvent.adLoaded) {
                     SAInterstitialAd.play(placementId, MainActivity.this);
-                } else {
-                    Log.d("SuperAwesome", "Interstitial " + placementId + " --> " + event);
                 }
             }
         });
 
         SAVideoAd.setConfigurationStaging();
-        SAVideoAd.disableTestMode();
-        SAVideoAd.enableParentalGate();
-        SAVideoAd.disableCloseAtEnd();
-        SAVideoAd.setOrientationLandscape();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
+
+                Log.d("SuperAwesome", "VIDEO AD: " + placementId + " -> Event : " + event);
+
                 if (event == SAEvent.adLoaded) {
                     SAVideoAd.play(placementId, MainActivity.this);
-                } else {
-                    Log.d("SuperAwesome", "Video " + placementId + " --> " + event);
                 }
             }
         });
 
         SAAppWall.setConfigurationStaging();
-        SAAppWall.enableParentalGate();
         SAAppWall.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
+
+                Log.d("SuperAwesome", "APP WALL AD: " + placementId + " -> Event : " + event);
+
                 if (event == SAEvent.adLoaded) {
                     SAAppWall.play(placementId, MainActivity.this);
-                } else {
-                    Log.d("SuperAwesome", "App Wall " + placementId + " --> " + event);
                 }
             }
         });
+
+        ListView myList = (ListView) findViewById(R.id.MyList);
+        final List<AdapterItem> data = Arrays.asList(
+                new HeaderItem("Banners"),
+                new PlacementItem("CPM Banner 1 (Image)", 636, Type.BANNER),
+                new PlacementItem("CPM Banner 2 (Image)", 635, Type.BANNER),
+                new PlacementItem("CPI Banner 1 (Image)", 618, Type.BANNER),
+                new PlacementItem("CPM MPU 1 (Tag)", 639, Type.BANNER),
+                new HeaderItem("Interstitials"),
+                new PlacementItem("CPM Interstitial 1 (Image)", 620, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 2 (Rich Media)", 621, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 3 (Rich Media)", 622, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 4 (Rich Media)", 637, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 5 (Rich Media)", 624, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 6 (Rich Media)", 625, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 7 (Tag)", 626, Type.INTERSTITIAL),
+                new HeaderItem("Videos"),
+                new PlacementItem("CPM Preroll 1 (Video)", 628, Type.VIDEO),
+                new PlacementItem("CPM Preroll 2 (Video)", 629, Type.VIDEO),
+                new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
+                new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),
+                new PlacementItem("CPI Preroll 1 (Video)", 627, Type.VIDEO),
+                new HeaderItem("App Wall"),
+                new PlacementItem("CPI AppWall 1 (Images)", 633, Type.APPWALL)
+        );
+        ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
+        myList.setAdapter(adapter);
+        adapter.updateData(data);
+        adapter.reloadList();
+
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AdapterItem item = data.get(position);
+                if (item instanceof PlacementItem) {
+                    PlacementItem placement = (PlacementItem)item;
+
+                    switch (placement.type) {
+                        case BANNER: myBanner.load(placement.pid); break;
+                        case INTERSTITIAL: SAInterstitialAd.load(placement.pid, MainActivity.this); break;
+                        case VIDEO: SAVideoAd.load(placement.pid, MainActivity.this); break;
+                        case APPWALL: SAAppWall.load(placement.pid, MainActivity.this); break;
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
+}
 
-    public void loadAds (View view) {
+enum Type {
+    BANNER,
+    INTERSTITIAL,
+    VIDEO,
+    APPWALL
+}
+
+class AdapterItem {
+    // do nothing
+}
+
+class HeaderItem extends AdapterItem {
+    public String title;
+    public HeaderItem (String title) {
+        this.title = title;
+    }
+}
+
+class PlacementItem extends AdapterItem {
+    public String name;
+    public int pid;
+    public Type type;
+    public PlacementItem (String name, int pid, Type type) {
+        this.name = name;
+        this.pid = pid;
+        this.type = type;
+    }
+}
+
+class ListAdapter <T extends AdapterItem> extends ArrayAdapter<T> {
+
+    private List<T> data;
+
+    public ListAdapter(Context context) {
+        super(context, 0);
     }
 
-    public void playBanner1(View v){
-        bannerAd.enableParentalGate();
-        bannerAd.load(599);
+    public void updateData (List<T> newData) {
+        data = newData;
     }
 
-    public void playBanner2(View v) {
-//        bannerAd2.load(602);
-        bannerAd2.enableParentalGate();
-        bannerAd2.load(611);
+    public void reloadList () {
+        notifyDataSetChanged();
     }
 
-    public void playInterstitial1(View v){
-        SAInterstitialAd.load(600, this);
+    @Nullable
+    @Override
+    public T getItem(int i) {
+        return data.get(i);
     }
 
-    public void playInterstitial2(View v){
-        SAInterstitialAd.load(601, this);
+    @Override
+    public int getViewTypeCount() {
+        return 2;
     }
 
-    public void playInterstitial3(View v){
-        SAInterstitialAd.load(605, this);
+    @Override
+    public int getItemViewType(int i) {
+        return getItem(i) instanceof HeaderItem ? 0 : 1;
     }
 
-    public void playInterstitial4(View v){
-//        SAInterstitialAd.load(606, this);
-//        SAInterstitialAd.load(613, this);
-        SAInterstitialAd.enableParentalGate();
-        SAInterstitialAd.load(614, this);
+    @Override
+    public int getCount() {
+        return data != null ? data.size() : 0;
     }
 
-    public void playVideo1(View v){
-        SAVideoAd.load(603, this);
-    }
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-    public void playVideo2(View v){
-//        SAVideoAd.load(604, this);
-        SAVideoAd.load(612, this);
-    }
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_placement, parent, false);
+        }
 
-    public void playAppWall(View v){
-        SAAppWall.load(437, this);
+        TextView title = (TextView) convertView.findViewById(R.id.RowTitle);
+
+        T item = getItem(position);
+
+        if (item instanceof HeaderItem) {
+            HeaderItem header = (HeaderItem) item;
+            title.setText(header.title);
+            convertView.setBackgroundColor(Color.LTGRAY);
+        }
+        else {
+            PlacementItem placement = (PlacementItem) item;
+            title.setText(placement.pid + " | " + placement.name);
+            title.setBackgroundColor(Color.WHITE);
+        }
+
+
+        return convertView;
     }
 }

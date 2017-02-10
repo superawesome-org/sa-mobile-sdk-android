@@ -191,6 +191,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
 
                             // send other events
                             // events.sendEventsFor("impression");
+                            events.sendEventsFor("sa_impr");
                             events.sendEventsFor("start");
                             events.sendEventsFor("creativeView");
 

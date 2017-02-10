@@ -6,104 +6,16 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
+    <ListView
+        android:id="@+id/MyList"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/loadAds"
-        android:text="Load Ads"
-        android:onClick="loadAds"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/playbannerBtn1"
-            android:text="Img Banner"
-            android:onClick="playBanner1"/>
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/playbannerBtn2"
-            android:text="Tag Banner"
-            android:onClick="playBanner2"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/playinter1Btn"
-            android:text="Inter 1"
-            android:onClick="playInterstitial1"
-            android:layout_height="match_parent" />
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/playinter2Btn"
-            android:text="Inter 2"
-            android:onClick="playInterstitial2"
-            android:layout_height="match_parent" />
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/playinter3Btn"
-            android:text="Inter 3"
-            android:onClick="playInterstitial3"
-            android:layout_height="match_parent" />
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/playinter4Btn"
-            android:text="Inter 2"
-            android:onClick="playInterstitial4"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/playvid1Btn"
-            android:text="Video 1"
-            android:onClick="playVideo1"
-            android:layout_height="50dp" />
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/playvid2Btn"
-            android:text="Video 2"
-            android:onClick="playVideo2"
-            android:layout_height="50dp" />
-        <Button
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:id="@+id/playAppWall"
-            android:text="App Wall"
-            android:onClick="playAppWall"
-            android:layout_height="50dp" />
-    </LinearLayout>
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
+        android:scrollbars="none"/>
     <tv.superawesome.sdk.views.SABannerAd
-        android:id="@+id/mybanner"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"/>
-    <tv.superawesome.sdk.views.SABannerAd
-        android:layout_width="match_parent"
+        android:id="@+id/MyBanner"
         android:layout_height="80dp"
-        android:id="@+id/mybanner2"/>
+        android:layout_width="match_parent"
+        android:layout_marginTop="-80dp"/>
 
 </LinearLayout>
