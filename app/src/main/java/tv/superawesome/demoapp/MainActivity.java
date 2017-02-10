@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import tv.superawesome.lib.sacpi.SACPI;
+import tv.superawesome.lib.sacpi.SACPIInterface;
+import tv.superawesome.lib.sacpi.install.SAOnce;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.sdk.views.SAAppWall;
@@ -35,6 +38,19 @@ public class MainActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SAOnce once = new SAOnce(this);
+        once.resetCPISent();
+
+        SASession session = new SASession(this);
+        session.setConfigurationStaging();
+
+        SACPI.getInstance().sendInstallEvent(this, session, new SACPIInterface() {
+            @Override
+            public void saDidCountAnInstall(boolean b) {
+                Log.d("SuperAwesome", "Install event is " + b);
+            }
+        });
 
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
         myBanner.setConfigurationStaging();

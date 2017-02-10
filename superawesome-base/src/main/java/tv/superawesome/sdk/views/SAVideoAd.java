@@ -189,9 +189,8 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             // send callback
                             listenerL.onEvent(ad.placementId, SAEvent.adShown);
 
-                            // send other events
-                            // events.sendEventsFor("impression");
-                            events.sendEventsFor("sa_impr");
+                            // send vast events - including impression
+                            events.sendEventsFor("impression");
                             events.sendEventsFor("start");
                             events.sendEventsFor("creativeView");
 
