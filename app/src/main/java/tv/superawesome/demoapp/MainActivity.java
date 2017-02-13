@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         SASession session = new SASession(this);
         session.setConfigurationStaging();
 
-        SACPI.getInstance().sendInstallEvent(this, session, new SACPIInterface() {
+        SACPI.getInstance().handleInstall(this, session, new SACPIInterface() {
             @Override
             public void saDidCountAnInstall(boolean b) {
                 Log.d("SuperAwesome", "Install event is " + b);

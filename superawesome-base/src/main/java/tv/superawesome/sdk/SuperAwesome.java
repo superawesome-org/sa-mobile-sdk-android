@@ -4,10 +4,6 @@
  */
 package tv.superawesome.sdk;
 
-import android.content.Context;
-
-import tv.superawesome.lib.sacpi.SACPI;
-import tv.superawesome.lib.sacpi.SACPIInterface;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.views.SAOrientation;
 
@@ -65,16 +61,6 @@ public class SuperAwesome {
      */
     public String getSDKVersion() {
         return getSdk() + "_" + getVersion();
-    }
-
-    /**
-     * SuperAwesome SDK method handling CPI
-     *
-     * @param context   current context
-     * @param listener  a listener
-     */
-    public void handleCPI (Context context, SACPIInterface listener) {
-        SACPI.getInstance().sendInstallEvent(context, listener);
     }
 
     /**

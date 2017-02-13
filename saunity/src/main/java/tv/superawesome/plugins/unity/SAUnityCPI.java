@@ -25,7 +25,7 @@ public class SAUnityCPI {
      */
     public static void SuperAwesomeUnitySACPIHandleCPI (Context context) {
 
-        SACPI.getInstance().sendInstallEvent(context, new SACPIInterface() {
+        SACPI.getInstance().handleInstall(context, new SACPIInterface() {
             @Override
             public void saDidCountAnInstall(boolean success) {
                 SAUnityCallback.sendCPICallback(unityName, success, "HandleCPI");

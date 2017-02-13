@@ -37,7 +37,7 @@ public class SAAIRCPI {
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-            SACPI.getInstance().sendInstallEvent(freContext.getActivity(), new SACPIInterface() {
+            SACPI.getInstance().handleInstall(freContext.getActivity(), new SACPIInterface() {
                 @Override
                 public void saDidCountAnInstall(boolean success) {
                     SAAIRCallback.sendCPICallback(freContext, airName, success, "HandleCPI");
