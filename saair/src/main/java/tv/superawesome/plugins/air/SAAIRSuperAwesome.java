@@ -19,40 +19,6 @@ import tv.superawesome.sdk.SuperAwesome;
  */
 public class SAAIRSuperAwesome {
 
-    // air CPI name
-    private static final String airName = "SAAIRSuperAwesome";
-
-    /**
-     * Inner class that implements a method to send back a callback to Adobe AIR after a
-     * CPI operation on production
-     */
-    public static class SuperAwesomeAIRSuperAwesomeHandleCPI implements FREFunction {
-        /**
-         * Overridden FREFunction "call" method;
-         * This needs to be implemented if this class is to correctly implement the FREFunction
-         * interface.
-         * This is the way AIR communicates with native Android code.
-         *
-         * @param freContext    current FREContext
-         * @param freObjects    a list of parameters that might have been sent by adobe AIR
-         * @return              a FREObject that sends back data to Adobe AIR
-         */
-        @Override
-        public FREObject call(final FREContext freContext, FREObject[] freObjects) {
-
-            SuperAwesome.getInstance().handleCPI(freContext.getActivity(), new SACPIInterface() {
-                @Override
-                public void saDidCountAnInstall(boolean success) {
-
-                    SAAIRCallback.sendCPICallback(freContext, airName, success, "HandleCPI");
-
-                }
-            });
-
-            return null;
-        }
-    }
-
     /**
      * Inner static class that implements FREFunction.
      * This class will implement the "call" method from FREFunction and be able to override the

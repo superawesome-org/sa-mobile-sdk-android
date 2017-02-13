@@ -1,3 +1,7 @@
+/**
+ * @Copyright:   SuperAwesome Trading Limited 2017
+ * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ */
 package tv.superawesome.plugins.unity;
 
 import android.content.Context;
@@ -11,7 +15,7 @@ import tv.superawesome.lib.sacpi.SACPIInterface;
 public class SAUnityCPI {
 
     // CPI name
-    private static final String unityName = "SAUnityCPI";
+    private static final String unityName = "SACPI";
 
     /**
      * Method that sends a callback to Unity after a

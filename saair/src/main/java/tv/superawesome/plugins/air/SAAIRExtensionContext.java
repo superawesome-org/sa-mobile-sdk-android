@@ -46,7 +46,7 @@ public class SAAIRExtensionContext extends FREContext{
         functions.put("SuperAwesomeAIRSAAppWallLoad", new SAAIRAppWall.SuperAwesomeAIRSAAppWallLoad());
         functions.put("SuperAwesomeAIRSAAppWallPlay", new SAAIRAppWall.SuperAwesomeAIRSAAppWallPlay());
         functions.put("SuperAwesomeAIRSAAppWallHasAdAvailable", new SAAIRAppWall.SuperAwesomeAIRSAAppWallHasAdAvailable());
-        functions.put("SuperAwesomeAIRSuperAwesomeHandleCPI", new SAAIRSuperAwesome.SuperAwesomeAIRSuperAwesomeHandleCPI());
+        functions.put("SuperAwesomeAIRSACPIHandleCPI", new SAAIRCPI.SuperAwesomeAIRSACPIHandleCPI());
         functions.put("SuperAwesomeAIRSuperAwesomeSetVersion", new SAAIRSuperAwesome.SuperAwesomeAIRSuperAwesomeSetVersion());
 
         // return the result for the context
