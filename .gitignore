@@ -33,7 +33,6 @@ proguard/
 *.iml
 
 build/*
-app/*
 wrapper/*
 .gradle/*
 local.properties
