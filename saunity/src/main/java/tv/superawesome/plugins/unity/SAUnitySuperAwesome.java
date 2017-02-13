@@ -14,26 +14,6 @@ import tv.superawesome.sdk.SuperAwesome;
  */
 public class SAUnitySuperAwesome {
 
-    // CPI name
-    private static final String unityName = "SAUnitySuperAwesome";
-
-    /**
-     * Method that sends a callback to Unity after a
-     * CPI operation on production
-     *
-     * @param context current context (activity or fragment)
-     */
-    public static void SuperAwesomeUnitySuperAwesomeHandleCPI (Context context) {
-
-        SuperAwesome.getInstance().handleCPI(context, new SACPIInterface() {
-            @Override
-            public void saDidCountAnInstall(boolean success) {
-                SAUnityCallback.sendCPICallback(unityName, success, "HandleCPI");
-            }
-        });
-
-    }
-
     /**
      * Method that sets the version
      *
