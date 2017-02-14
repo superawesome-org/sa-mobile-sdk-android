@@ -54,6 +54,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     private SAAd ad = null;
 
     // the internal loader
+    private static SASession session = null;
     private SAEvents events = null;
 
     private RelativeLayout parent = null;
@@ -179,7 +180,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                         case Video_Start: {
 
                             // add padlock
-                            padlock.setVisibility(shouldShowPadlock() ? View.VISIBLE : View.GONE);
+                            padlock.setVisibility(ad.showPadlock ? View.VISIBLE : View.GONE);
                             parent.addView(padlock);
 
                             // add close button
@@ -190,9 +191,9 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             listenerL.onEvent(ad.placementId, SAEvent.adShown);
 
                             // send vast events - including impression
-                            events.sendEventsFor("impression");
-                            events.sendEventsFor("start");
-                            events.sendEventsFor("creativeView");
+                            events.sendEventsFor("vast_impression");
+                            events.sendEventsFor("vast_start");
+                            events.sendEventsFor("vast_creativeView");
 
                             // send viewable
                             events.sendViewableImpressionForVideo(videoPlayer.getVideoHolder());
@@ -203,21 +204,21 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             break;
                         }
                         case Video_1_4: {
-                            events.sendEventsFor("firstQuartile");
+                            events.sendEventsFor("vast_firstQuartile");
                             break;
                         }
                         case Video_1_2: {
-                            events.sendEventsFor("midpoint");
+                            events.sendEventsFor("vast_midpoint");
                             break;
                         }
                         case Video_3_4: {
-                            events.sendEventsFor("thirdQuartile");
+                            events.sendEventsFor("vast_thirdQuartile");
                             break;
                         }
                         case Video_End: {
 
                             // send events
-                            events.sendEventsFor("complete");
+                            events.sendEventsFor("vast_complete");
 
                             // send an ad ended event
                             listenerL.onEvent(ad.placementId, SAEvent.adEnded);
@@ -233,15 +234,13 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             break;
                         }
                         case Video_15s:{
-                            // make the btn visible after 15s to comply w/ Google Play Store
-                            // video ad policy
-                            closeButton.setVisibility(View.VISIBLE);
+                            // do nothing
                             break;
                         }
                         case Video_Error: {
 
                             // send events
-                            events.sendEventsFor("error");
+                            events.sendEventsFor("vast_error");
 
                             // ad failed to show
                             listenerL.onEvent(ad.placementId, SAEvent.adFailedToShow);
@@ -262,12 +261,14 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                     // check to see if there is a click through url
                     String destinationUrl = null;
                     for (SATracking tracking : ad.creative.events) {
-                        if (tracking.event.equals("click_through")) {
+                        if (tracking.event.equals("vast_click_through")) {
                             destinationUrl = tracking.URL;
                         }
                     }
 
-                    // if the campaign is a CPI one, supercede that with the normal "click url"
+                    // if the campaign is a CPI one, get the normal CPI url so that
+                    // we can append the "referrer data" to it (since most likely
+                    // "click_through" will have a redirect)
                     if (ad.campaignType == SACampaignType.CPI) {
                         destinationUrl = ad.creative.clickUrl;
                     }
@@ -331,21 +332,15 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         // call listener
         listenerL.onEvent(ad.placementId, SAEvent.adClicked);
 
-        // send sa click counter
-        events.sendEventsFor("clk_counter");
-
         // send vast click tracking events
-        events.sendEventsFor("click_tracking");
+        events.sendEventsFor("vast_click_tracking");
 
         // senv vast custom clicks
-        events.sendEventsFor("custom_clicks");
-
-        // send install event
-        events.sendEventsFor("install");
+        events.sendEventsFor("vast_custom_clicks");
 
         // send only in case of CPI
-        if (ad.campaignType == SACampaignType.CPI) {
-            events.sendEventsFor("click_through");
+        if (session != null && !destination.contains(session.getBaseUrl())) {
+            events.sendEventsFor("vast_click_through");
         }
 
         // if it's a CPI campaign
@@ -367,16 +362,6 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
      */
     public void resume () {
         videoPlayer.resumePlayer();
-    }
-
-    /**
-     * Method that determines if an ad should display a padlock over it's content to indicate
-     * it has been properly approved by SuperAwesome
-     *
-     * @return true or false
-     */
-    private boolean shouldShowPadlock() {
-        return ad.creative.format != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
     }
 
     /**
@@ -413,7 +398,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateOpen(int position) {
         // send Open Event
-        events.sendEventsFor("pg_open");
+        events.sendEventsFor("superawesome_pg_open");
         // pause
         this.pause();
     }
@@ -421,7 +406,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateFailure(int position) {
         // send event
-        events.sendEventsFor("pg_fail");
+        events.sendEventsFor("superawesome_pg_fail");
         // resume the video
         this.resume();
     }
@@ -429,7 +414,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateCancel(int position) {
         // send event
-        events.sendEventsFor("pg_close");
+        events.sendEventsFor("superawesome_pg_close");
         // resume the video
         this.resume();
     }
@@ -437,7 +422,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateSuccess(int position, String destination) {
         // send event
-        events.sendEventsFor("pg_success");
+        events.sendEventsFor("superawesome_pg_success");
         // pause the video
         this.pause();
         // click
@@ -468,7 +453,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
             final SALoader loader = new SALoader(context);
 
             // create a current session
-            final SASession session = new SASession (context);
+            session = new SASession (context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());

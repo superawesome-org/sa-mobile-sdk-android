@@ -209,10 +209,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                         // events are fired
                         case Web_Loaded: {
 
-                            // send additional impressions
-                            // events.sendEventsFor("impression");
-                            // events.sendEventsFor("sa_impr");
-
                             // send viewable impression
                             events.sendViewableImpressionForDisplay(SABannerAd.this);
 
@@ -236,7 +232,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                             padlock.setScaleType(ImageView.ScaleType.FIT_XY);
                             padlock.setPadding(0, 0, 0, 0);
                             padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
-                            padlock.setVisibility(shouldShowPadlock() ? VISIBLE : GONE);
+                            padlock.setVisibility(ad.showPadlock ? VISIBLE : GONE);
                             padlock.setOnClickListener(new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -314,15 +310,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         // callback
         listener.onEvent(ad.placementId, SAEvent.adClicked);
 
-        // send click counter events
-        events.sendEventsFor("clk_counter");
-
-        // send install impression
-        events.sendEventsFor("install");
-
         // send tracking events, if needed
-        if (!destination.contains(session.getBaseUrl())) {
-            events.sendEventsFor("sa_tracking");
+        if (session != null && !destination.contains(session.getBaseUrl())) {
+            events.sendEventsFor("superawesome_click");
         }
 
         // append CPI data to it
@@ -382,25 +372,16 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         return ad != null;
     }
 
-    /**
-     * Private method that determines whether a padlock should be shown
-     *
-     * @return true or false
-     */
-    private boolean shouldShowPadlock () {
-        return ad != null && ad.creative.format != SACreativeFormat.tag && !ad.isFallback && !(ad.isHouse && !ad.safeAdApproved);
-    }
-
     @Override
     public void parentalGateOpen(int position) {
         // send Open Event
-        events.sendEventsFor("pg_open");
+        events.sendEventsFor("superawesome_pg_open");
     }
 
     @Override
     public void parentalGateSuccess(int position, String destination) {
         // send event
-        events.sendEventsFor("pg_success");
+        events.sendEventsFor("superawesome_pg_success");
         // go to click
         click(destination);
     }
@@ -408,13 +389,13 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     @Override
     public void parentalGateFailure(int position) {
         // send event
-        events.sendEventsFor("pg_fail");
+        events.sendEventsFor("superawesome_pg_fail");
     }
 
     @Override
     public void parentalGateCancel(int position) {
         // send event
-        events.sendEventsFor("pg_close");
+        events.sendEventsFor("superawesome_pg_close");
     }
 
     /**********************************************************************************************

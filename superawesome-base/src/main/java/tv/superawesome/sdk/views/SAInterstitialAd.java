@@ -47,6 +47,9 @@ public class SAInterstitialAd extends Activity {
     // the ad
     private SAAd ad = null;
 
+    // static session
+    private static SASession session = null;
+
     // fully private variables
     private static HashMap<Integer, Object> ads = new HashMap<>();
 
@@ -106,6 +109,8 @@ public class SAInterstitialAd extends Activity {
         interstitialBanner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         interstitialBanner.setColor(false);
         interstitialBanner.setAd(ad);
+        interstitialBanner.setTestMode(isTestingEnabled);
+        interstitialBanner.setConfiguration(configuration);
         interstitialBanner.setListener(listenerL);
         interstitialBanner.setParentalGate(isParentalGateEnabledL);
 
@@ -191,7 +196,7 @@ public class SAInterstitialAd extends Activity {
             final SALoader loader = new SALoader(context);
 
             // create a current session
-            final SASession session = new SASession (context);
+            session = new SASession (context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());

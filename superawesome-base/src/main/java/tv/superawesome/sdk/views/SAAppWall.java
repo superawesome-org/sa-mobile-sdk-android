@@ -73,6 +73,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
     private SAParentalGate gate;
 
     // a list of events to fire
+    private static SASession session = null;
     private List<SAEvents> events = new ArrayList<>();
 
     // static private vars used to communicate with the ad
@@ -222,8 +223,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
         // send events
         for (SAEvents event : events) {
-            // event.sendEventsFor("impression");
-            // event.sendEventsFor("sa_impr");
+            // send viewable impression
             event.sendViewableImpressionForDisplay(gameGrid);
         }
 
@@ -270,14 +270,10 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         SAInterface listenerL = getListener();
         listenerL.onEvent(response.placementId, SAEvent.adClicked);
 
-        // send click counter event
-        event.sendEventsFor("clk_counter");
-
-        // send install event
-        event.sendEventsFor("install");
-
-        // send sa click counter event
-        event.sendEventsFor("sa_tracking");
+        // send tracking event
+        if (session != null && !destination.contains(session.getBaseUrl())) {
+            event.sendEventsFor("superawesome_click");
+        }
 
         // form the final URL with attached referral data
         destination += "&referrer=" + ad.creative.referralData.writeToReferralQuery();
@@ -309,13 +305,13 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateOpen(int position) {
         // send Open Event
-        events.get(position).sendEventsFor("pg_open");
+        events.get(position).sendEventsFor("superawesome_pg_open");
     }
 
     @Override
     public void parentalGateSuccess(int position, String destination) {
         // send event
-        events.get(position).sendEventsFor("pg_success");
+        events.get(position).sendEventsFor("superawesome_pg_success");
         // call click
         click(position, destination);
     }
@@ -323,13 +319,13 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateFailure(int position) {
         // send event
-        events.get(position).sendEventsFor("pg_fail");
+        events.get(position).sendEventsFor("superawesome_pg_fail");
     }
 
     @Override
     public void parentalGateCancel(int position) {
         // send event
-        events.get(position).sendEventsFor("pg_close");
+        events.get(position).sendEventsFor("superawesome_pg_close");
     }
 
     /**********************************************************************************************
@@ -356,7 +352,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
             final SALoader loader = new SALoader(context);
 
             // create a current session
-            final SASession session = new SASession (context);
+            session = new SASession(context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
             session.setVersion(SuperAwesome.getInstance().getSDKVersion());

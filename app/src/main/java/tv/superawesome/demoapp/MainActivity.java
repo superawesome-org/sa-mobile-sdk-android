@@ -80,6 +80,8 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationStaging();
+        SAVideoAd.disableCloseAtEnd();
+        SAVideoAd.enableCloseButton();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
