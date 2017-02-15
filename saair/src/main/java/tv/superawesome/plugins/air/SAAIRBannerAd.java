@@ -246,7 +246,7 @@ public class SAAIRBannerAd {
                 e.printStackTrace();
             }
 
-            if (airName != null && bannerAdHashMap.containsKey(airName)) {
+            if (airName != null && bannerAdHashMap.containsKey(airName) && !bannerAdHashMap.get(airName).isClosed()) {
 
                 // get banner ad
                 final SABannerAd bannerAd = bannerAdHashMap.get(airName);
@@ -325,7 +325,7 @@ public class SAAIRBannerAd {
                 SABannerAd bannerAd = bannerAdHashMap.get(airName);
                 bannerAd.close();
                 ((ViewGroup)bannerAd.getParent()).removeView(bannerAd);
-                bannerAdHashMap.remove(airName);
+                // bannerAdHashMap.remove(airName);
             }
 
             return null;

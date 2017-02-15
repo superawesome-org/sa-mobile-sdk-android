@@ -335,11 +335,8 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         // send vast click tracking events
         events.sendEventsFor("vast_click_tracking");
 
-        // senv vast custom clicks
-        events.sendEventsFor("vast_custom_clicks");
-
-        // send only in case of CPI
-        if (session != null && !destination.contains(session.getBaseUrl())) {
+        // send only in case of CPI where we'll use the direct click url
+        if (ad.campaignType == SACampaignType.CPI) {
             events.sendEventsFor("vast_click_through");
         }
 

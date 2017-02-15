@@ -82,7 +82,7 @@ public class SAUnityBannerAd {
      */
     public static void SuperAwesomeUnitySABannerAdPlay (Context context, String unityName, boolean isParentalGateEnabled, int position, int width, int height, boolean color) {
 
-        if (bannerAdHashMap.containsKey(unityName)) {
+        if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
 
             // get activity
             Activity activity = (Activity) context;
@@ -139,7 +139,7 @@ public class SAUnityBannerAd {
             bannerAd.close();
             ViewGroup parent = (ViewGroup) bannerAd.getParent();
             if (parent != null) parent.removeView(bannerAd);
-            bannerAdHashMap.remove(unityName);
+            // bannerAdHashMap.remove(unityName);
         }
     }
 }

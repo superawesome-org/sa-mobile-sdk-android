@@ -57,6 +57,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     // bool
     private boolean         canPlay = true;
     private boolean         firstPlay = true;
+    private boolean         isClosed = false;
 
     /**
      * Constructor with context
@@ -149,6 +150,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
             close();
         }
 
+        // set this to false
+        isClosed = false;
+
         // next init a new session & prepare it
         session.setVersion(SuperAwesome.getInstance().getSDKVersion());
         session.prepareSession(new SASessionInterface() {
@@ -177,7 +181,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     public void play (final Context context) {
 
         // if the banner ad has a valid ad loaded then play it
-        if (ad != null && ad.creative.format != SACreativeFormat.video && canPlay) {
+        if (ad != null && ad.creative.format != SACreativeFormat.video && canPlay && !isClosed) {
 
             // canPlay becomes "false" again so no other playing can happen until a new load
             canPlay = false;
@@ -349,6 +353,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
             padlock.setVisibility(GONE);
         }
 
+        // close ad
+        isClosed = true;
+
         // unregister moat events
         events.unregisterDisplayMoatEvent();
     }
@@ -401,6 +408,10 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     /**********************************************************************************************
      * Setters & Getters
      **********************************************************************************************/
+
+    public boolean isClosed () {
+        return isClosed;
+    }
 
     public void setListener(SAInterface value) {
         listener = value != null ? value : listener;
