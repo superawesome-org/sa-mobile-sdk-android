@@ -236,7 +236,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                             padlock.setScaleType(ImageView.ScaleType.FIT_XY);
                             padlock.setPadding(0, 0, 0, 0);
                             padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
-                            padlock.setVisibility(ad.showPadlock ? VISIBLE : GONE);
+                            padlock.setVisibility(ad.isPadlockVisible ? VISIBLE : GONE);
                             padlock.setOnClickListener(new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -320,7 +320,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         }
 
         // append CPI data to it
-        destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referralData.writeToReferralQuery()) : "";
+        destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referral.writeToReferralQuery()) : "";
 
         // start browser
         getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));

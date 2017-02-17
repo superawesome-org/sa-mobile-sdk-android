@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.5.1
+ - Minor update to rename some internal SAAd object members to have shorter names
+
 5.5.0
  - Refactored click handling to now ignore null click urls
     - ads that now have a null click url won't fire either the parental gate or any associated click urls (for video, for example). 

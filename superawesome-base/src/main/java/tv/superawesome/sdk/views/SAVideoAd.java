@@ -15,12 +15,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -170,7 +167,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                         case Video_Prepared: {
 
                             try {
-                                videoPlayer.play(ad.creative.details.media.playableDiskUrl);
+                                videoPlayer.play(ad.creative.details.media.path);
                             } catch (Throwable throwable) {
                                 // do nothing
                             }
@@ -180,7 +177,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                         case Video_Start: {
 
                             // add padlock
-                            padlock.setVisibility(ad.showPadlock ? View.VISIBLE : View.GONE);
+                            padlock.setVisibility(ad.isPadlockVisible ? View.VISIBLE : View.GONE);
                             parent.addView(padlock);
 
                             // add close button
@@ -341,7 +338,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         }
 
         // if it's a CPI campaign
-        destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referralData.writeToReferralQuery()) : "";
+        destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referral.writeToReferralQuery()) : "";
 
         // start browser
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
@@ -466,7 +463,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             // find out the real valid
                             boolean isValid = response.isValid();
                             SAAd first = isValid ? response.ads.get(0) : null;
-                            isValid = first != null && isValid && first.creative.details.media.isOnDisk;
+                            isValid = first != null && isValid && first.creative.details.media.isDownloaded;
 
                             // put the correct value
                             if (isValid) {

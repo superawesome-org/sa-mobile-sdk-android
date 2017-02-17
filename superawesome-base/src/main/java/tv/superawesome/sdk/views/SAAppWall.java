@@ -276,7 +276,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         }
 
         // form the final URL with attached referral data
-        destination += "&referrer=" + ad.creative.referralData.writeToReferralQuery();
+        destination += "&referrer=" + ad.creative.referral.writeToReferralQuery();
 
         // open URL
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
@@ -608,7 +608,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
                 Drawable drawable = SAImageUtils.createDrawable(
                         context,
-                        ad.creative.details.media.playableDiskUrl,
+                        ad.creative.details.media.path,
                         (int) (114 * density),
                         (int) (114 * density),
                         radius);
@@ -660,7 +660,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
                 Drawable drawable = SAImageUtils.createDrawable(
                         context,
-                        ad.creative.details.media.playableDiskUrl,
+                        ad.creative.details.media.path,
                         (int) (84 * density),
                         (int) (84 * density),
                         radius);
