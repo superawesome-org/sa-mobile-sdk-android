@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="saadloader-1.0.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.saadloader/saadloader/1.0.7/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.saadloader/saadloader/1.0.7/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

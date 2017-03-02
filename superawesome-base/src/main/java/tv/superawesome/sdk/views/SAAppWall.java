@@ -8,17 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,9 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,15 +33,14 @@ import java.util.List;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
-import tv.superawesome.lib.samodelspace.SAAd;
-import tv.superawesome.lib.samodelspace.SACampaignType;
-import tv.superawesome.lib.samodelspace.SACreativeFormat;
-import tv.superawesome.lib.samodelspace.SAResponse;
+import tv.superawesome.lib.samodelspace.saad.SAAd;
+import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
-import tv.superawesome.lib.sautils.SADrawable;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
@@ -104,8 +89,8 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
         // create the events array
         for (SAAd ad : response.ads) {
-            SAEvents event = new SAEvents(this);
-            event.setAd(ad);
+            SAEvents event = new SAEvents();
+            event.setAd(this, session, ad);
             events.add(event);
         }
 
@@ -222,9 +207,16 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         background.addView(gameGrid);
 
         // send events
-        for (SAEvents event : events) {
+        for (final SAEvents event : events) {
             // send viewable impression
-            event.sendViewableImpressionForDisplay(gameGrid);
+            event.checkViewableStatusForDisplay(gameGrid, new SAViewableModule.Listener() {
+                @Override
+                public void saDidFindViewOnScreen(boolean success) {
+                    if (success) {
+                        event.triggerViewableImpressionEvent();
+                    }
+                }
+            });
         }
 
         // send event
@@ -272,7 +264,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
         // send tracking event
         if (session != null && !destination.contains(session.getBaseUrl())) {
-            event.sendEventsFor("superawesome_click");
+            event.triggerClickEvent();
         }
 
         // form the final URL with attached referral data
@@ -305,13 +297,13 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateOpen(int position) {
         // send Open Event
-        events.get(position).sendEventsFor("superawesome_pg_open");
+        events.get(position).triggerPgOpenEvent();
     }
 
     @Override
     public void parentalGateSuccess(int position, String destination) {
         // send event
-        events.get(position).sendEventsFor("superawesome_pg_success");
+        events.get(position).triggerPgSuccessEvent();
         // call click
         click(position, destination);
     }
@@ -319,13 +311,13 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateFailure(int position) {
         // send event
-        events.get(position).sendEventsFor("superawesome_pg_fail");
+        events.get(position).triggerPgFailEvent();
     }
 
     @Override
     public void parentalGateCancel(int position) {
         // send event
-        events.get(position).sendEventsFor("superawesome_pg_close");
+        events.get(position).triggerPgCloseEvent();
     }
 
     /**********************************************************************************************

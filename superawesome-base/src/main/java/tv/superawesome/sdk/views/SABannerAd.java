@@ -18,11 +18,11 @@ import android.widget.ImageView;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
-import tv.superawesome.lib.sajsonparser.SAJsonParser;
-import tv.superawesome.lib.samodelspace.SAAd;
-import tv.superawesome.lib.samodelspace.SACampaignType;
-import tv.superawesome.lib.samodelspace.SACreativeFormat;
-import tv.superawesome.lib.samodelspace.SAResponse;
+import tv.superawesome.lib.saevents.SAViewableModule;
+import tv.superawesome.lib.samodelspace.saad.SAAd;
+import tv.superawesome.lib.samodelspace.saad.SACampaignType;
+import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
@@ -93,7 +93,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         // create the loader
         session = new SASession (context);
         loader = new SALoader(context);
-        events = new SAEvents(context);
+        events = new SAEvents();
 
         // set default values
         setColor(SuperAwesome.getInstance().defaultBgColor());
@@ -214,8 +214,14 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                         case Web_Loaded: {
 
                             // send viewable impression
-                            events.sendViewableImpressionForDisplay(SABannerAd.this);
-
+                            events.checkViewableStatusForDisplay(SABannerAd.this, new SAViewableModule.Listener() {
+                                @Override
+                                public void saDidFindViewOnScreen(boolean success) {
+                                    if (success) {
+                                        events.triggerViewableImpressionEvent();
+                                    }
+                                }
+                            });
                             // call listener
                             listener.onEvent(ad.placementId, SAEvent.adShown);
 
@@ -316,7 +322,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
         // send tracking events, if needed
         if (session != null && !destination.contains(session.getBaseUrl())) {
-            events.sendEventsFor("superawesome_click");
+            events.triggerClickEvent();
         }
 
         // append CPI data to it
@@ -367,7 +373,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
      */
     public void setAd(SAAd ad) {
         this.ad = ad;
-        events.setAd(this.ad);
+        events.setAd(getContext(), session, this.ad);
     }
 
     /**
@@ -382,13 +388,13 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     @Override
     public void parentalGateOpen(int position) {
         // send Open Event
-        events.sendEventsFor("superawesome_pg_open");
+        events.triggerPgOpenEvent();
     }
 
     @Override
     public void parentalGateSuccess(int position, String destination) {
         // send event
-        events.sendEventsFor("superawesome_pg_success");
+        events.triggerPgSuccessEvent();
         // go to click
         click(destination);
     }
@@ -396,13 +402,13 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     @Override
     public void parentalGateFailure(int position) {
         // send event
-        events.sendEventsFor("superawesome_pg_fail");
+        events.triggerPgFailEvent();
     }
 
     @Override
     public void parentalGateCancel(int position) {
         // send event
-        events.sendEventsFor("superawesome_pg_close");
+        events.triggerPgCloseEvent();
     }
 
     /**********************************************************************************************

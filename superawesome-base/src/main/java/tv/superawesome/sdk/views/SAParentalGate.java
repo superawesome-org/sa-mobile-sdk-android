@@ -10,11 +10,7 @@ import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
 
-import java.lang.ref.WeakReference;
-
-import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.lib.samodelspace.SAAd;
 
 
 /**

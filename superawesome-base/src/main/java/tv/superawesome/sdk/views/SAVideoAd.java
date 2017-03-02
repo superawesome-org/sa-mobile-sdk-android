@@ -24,12 +24,12 @@ import java.util.HashMap;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
-import tv.superawesome.lib.samodelspace.SAAd;
-import tv.superawesome.lib.samodelspace.SACampaignType;
-import tv.superawesome.lib.samodelspace.SACreativeFormat;
-import tv.superawesome.lib.samodelspace.SAResponse;
-import tv.superawesome.lib.samodelspace.SATracking;
+import tv.superawesome.lib.samodelspace.saad.SAAd;
+import tv.superawesome.lib.samodelspace.saad.SACampaignType;
+import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
@@ -108,8 +108,8 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         }
 
         // start events
-        events = new SAEvents(this);
-        events.setAd(ad);
+        events = new SAEvents();
+        events.setAd(this, session, ad);
 
         // create main content for activity
         parent = new RelativeLayout(this);
@@ -188,12 +188,19 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             listenerL.onEvent(ad.placementId, SAEvent.adShown);
 
                             // send vast events - including impression
-                            events.sendEventsFor("vast_impression");
-                            events.sendEventsFor("vast_start");
-                            events.sendEventsFor("vast_creativeView");
+                            events.triggerVASTImpressionEvent();
+                            events.triggerVASTStartEvent();
+                            events.triggerVASTCreativeViewEvent();
 
                             // send viewable
-                            events.sendViewableImpressionForVideo(videoPlayer.getVideoHolder());
+                            events.checkViewableStatusForVideo(videoPlayer.getVideoHolder(), new SAViewableModule.Listener() {
+                                @Override
+                                public void saDidFindViewOnScreen(boolean success) {
+                                    if (success) {
+                                        events.triggerViewableImpressionEvent();
+                                    }
+                                }
+                            });
 
                             // moat
                             events.registerVideoMoatEvent(SAVideoAd.this, videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer());
@@ -201,21 +208,21 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             break;
                         }
                         case Video_1_4: {
-                            events.sendEventsFor("vast_firstQuartile");
+                            events.triggerVASTFirstQuartileEvent();
                             break;
                         }
                         case Video_1_2: {
-                            events.sendEventsFor("vast_midpoint");
+                            events.triggerVASTMidpointEvent();
                             break;
                         }
                         case Video_3_4: {
-                            events.sendEventsFor("vast_thirdQuartile");
+                            events.triggerVASTThirdQuartileEvent();
                             break;
                         }
                         case Video_End: {
 
                             // send events
-                            events.sendEventsFor("vast_complete");
+                            events.triggerVASTCompleteEvent();
 
                             // send an ad ended event
                             listenerL.onEvent(ad.placementId, SAEvent.adEnded);
@@ -237,7 +244,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                         case Video_Error: {
 
                             // send events
-                            events.sendEventsFor("vast_error");
+                            events.triggerVASTErrorEvent();
 
                             // ad failed to show
                             listenerL.onEvent(ad.placementId, SAEvent.adFailedToShow);
@@ -256,18 +263,15 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                 public void onClick(View v) {
 
                     // check to see if there is a click through url
-                    String destinationUrl = null;
-                    for (SATracking tracking : ad.creative.events) {
-                        if (tracking.event.equals("vast_click_through")) {
-                            destinationUrl = tracking.URL;
-                        }
-                    }
+                    String destinationUrl;
 
                     // if the campaign is a CPI one, get the normal CPI url so that
                     // we can append the "referrer data" to it (since most likely
                     // "click_through" will have a redirect)
                     if (ad.campaignType == SACampaignType.CPI) {
                         destinationUrl = ad.creative.clickUrl;
+                    } else {
+                        destinationUrl = events.getVASTClickThroughEvent();
                     }
 
                     if (destinationUrl != null) {
@@ -330,11 +334,11 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         listenerL.onEvent(ad.placementId, SAEvent.adClicked);
 
         // send vast click tracking events
-        events.sendEventsFor("vast_click_tracking");
+        events.triggerVASTClickTrackingEvent();
 
         // send only in case of CPI where we'll use the direct click url
         if (ad.campaignType == SACampaignType.CPI) {
-            events.sendEventsFor("vast_click_through");
+            events.triggerVASTClickThroughEvent();
         }
 
         // if it's a CPI campaign
@@ -392,7 +396,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateOpen(int position) {
         // send Open Event
-        events.sendEventsFor("superawesome_pg_open");
+        events.triggerPgOpenEvent();
         // pause
         this.pause();
     }
@@ -400,7 +404,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateFailure(int position) {
         // send event
-        events.sendEventsFor("superawesome_pg_fail");
+        events.triggerPgFailEvent();
         // resume the video
         this.resume();
     }
@@ -408,7 +412,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateCancel(int position) {
         // send event
-        events.sendEventsFor("superawesome_pg_close");
+        events.triggerPgCloseEvent();
         // resume the video
         this.resume();
     }
@@ -416,7 +420,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     @Override
     public void parentalGateSuccess(int position, String destination) {
         // send event
-        events.sendEventsFor("superawesome_pg_success");
+        events.triggerPgSuccessEvent();
         // pause the video
         this.pause();
         // click
