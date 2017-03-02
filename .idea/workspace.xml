@@ -10,23 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83b1f08b-20ca-4f53-bd6e-ecb1c9d33f36" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/samoatevents_1_0_1.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/samoatevents_0_9_7.xml" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/saadloader_1_0_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/saadloader_1_0_7.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/sacpi_1_0_6.xml" afterPath="$PROJECT_DIR$/.idea/libraries/sacpi_1_0_7.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/saevents_0_9_7.xml" afterPath="$PROJECT_DIR$/.idea/libraries/saevents_1_0_1.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_6_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_6_5.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/savastparser_0_5_9.xml" afterPath="$PROJECT_DIR$/.idea/libraries/savastparser_0_6_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/build.gradle" afterPath="$PROJECT_DIR$/superawesome-base/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGate.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome/build.gradle" afterPath="$PROJECT_DIR$/superawesome/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -174,8 +159,8 @@
       <file leaf-file-name="SuperAwesome.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+            <state relative-caret-position="315">
+              <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -183,21 +168,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java">
+      <file leaf-file-name="local.properties" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/local.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="111" column="42" selection-start-line="111" selection-start-column="42" selection-end-line="111" selection-end-column="42" />
+            <state relative-caret-position="150">
+              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SAInterstitialAd.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+            <state relative-caret-position="238">
+              <caret line="111" column="42" selection-start-line="111" selection-start-column="42" selection-end-line="111" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -236,7 +221,7 @@
       <file leaf-file-name="SAVideoAd.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4425">
+            <state relative-caret-position="4515">
               <caret line="341" column="9" selection-start-line="341" selection-start-column="9" selection-end-line="341" selection-end-column="9" />
               <folding />
             </state>
@@ -6198,8 +6183,6 @@
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCPI.java" />
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" />
-        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
-        <option value="$PROJECT_DIR$/local.properties" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGate.java" />
@@ -6208,11 +6191,14 @@
         <option value="$PROJECT_DIR$/superawesome/build.gradle" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
+        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" />
+        <option value="$PROJECT_DIR$/local.properties" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1440" />
+    <option name="x" value="1440" />
+    <option name="width" value="1600" />
     <option name="height" value="900" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -6240,7 +6226,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -6357,9 +6346,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -6757,7 +6743,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="6" />
+    <frame x="1440" y="0" width="1600" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -6777,7 +6763,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63151366" sideWeight="0.50834405" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32188842" sideWeight="0.49503723" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28883183" sideWeight="0.49503723" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21387696" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297568" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -7050,13 +7036,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/local.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="37" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -7119,19 +7098,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4425">
+        <state relative-caret-position="4515">
           <caret line="341" column="9" selection-start-line="341" selection-start-column="9" selection-end-line="341" selection-end-column="9" />
           <folding />
         </state>
@@ -7149,6 +7118,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="111" column="42" selection-start-line="111" selection-start-column="42" selection-end-line="111" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="25" column="24" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/local.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
           <folding />
         </state>
       </provider>
