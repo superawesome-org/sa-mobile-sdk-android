@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.5.3
+ - Added support for scrollable interstitials
+
 5.5.2
  - Refactored the SAModelSpace library to:
     - remove all Ad Events from the SACreative object
