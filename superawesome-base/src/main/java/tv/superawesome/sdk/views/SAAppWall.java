@@ -381,6 +381,12 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
     }
 
+    public static void setAd (SAResponse response) {
+        if (response.isValid()) {
+            responses.put(response.placementId, response);
+        }
+    }
+
     /**
      * Static method that returns whether ad data for a certain placement has already been loaded
      *

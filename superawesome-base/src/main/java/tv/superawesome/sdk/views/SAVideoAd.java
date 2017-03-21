@@ -524,6 +524,14 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         }
     }
 
+    public static void setAd (SAResponse response) {
+        if (response.isValid()) {
+            SAAd ad = response.ads.get(0);
+            int placementId = ad.placementId;
+            ads.put(placementId, ad);
+        }
+    }
+
     /**********************************************************************************************
      * Setters & Getters
      **********************************************************************************************/
