@@ -205,7 +205,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                             String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
 
                             // load the HTML
-                            webPlayer.loadHTML(fullHTML);
+                            webPlayer.loadHTML(ad.creative.details.base, fullHTML);
 
                             break;
                         }

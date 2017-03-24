@@ -381,8 +381,14 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
     }
 
-    public static void setAd (SAResponse response) {
-        if (response.isValid()) {
+    /**
+     * Method used for testing purposes (and the AwesomeApp) to manually put a response in the
+     * app wall ads map
+     *
+     * @param response an instance of SAResponse
+     */
+    public static void setResponse (SAResponse response) {
+        if (response != null && response.isValid()) {
             responses.put(response.placementId, response);
         }
     }

@@ -524,11 +524,15 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         }
     }
 
-    public static void setAd (SAResponse response) {
-        if (response.isValid()) {
-            SAAd ad = response.ads.get(0);
-            int placementId = ad.placementId;
-            ads.put(placementId, ad);
+    /**
+     * Method used for testing purposes (and the AwesomeApp) to manually put an ad in the
+     * video ads map
+     *
+     * @param ad an instance of SAAd
+     */
+    public static void setAd (SAAd ad) {
+        if (ad != null && ad.isValid()) {
+            ads.put(ad.placementId, ad);
         }
     }
 
