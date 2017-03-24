@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-5.5.4
+5.5.6
  - Updated the Model space SADetails class to have a "base" string member to hold the base Url of the creative
  - Updated the Web Player to work with a base url and eliminate a series of minor bugs where 3rd party tags weren't rendered correctly
  - Added a guard in the Web Player to not call the layout observer on a null container 
