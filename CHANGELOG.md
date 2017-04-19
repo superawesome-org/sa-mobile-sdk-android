@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-5.5.8
+5.5.7
  - Added camel & snake case options when parsing the SACreative object - for click, impression and install
  - Added the osTarget parameter to the SACreative
  - Added more error checks to SAEvents
