@@ -56,10 +56,9 @@ public class SAUnityCallback {
      */
     public static void sendAdCallback (String unityAd, int placementId, String callback) {
 
-        JSONObject data = SAJsonParser.newObject(new Object[] {
+        JSONObject data = SAJsonParser.newObject(
                 "placementId", "" + placementId + "",
-                "type", "sacallback_" + callback
-        });
+                "type", "sacallback_" + callback);
 
         sendToUnity(unityAd, data);
     }
@@ -73,10 +72,8 @@ public class SAUnityCallback {
      */
     public static void sendCPICallback (String unityAd, boolean success, String callback) {
 
-        JSONObject data = SAJsonParser.newObject(new Object[] {
-                "success", "" + success + "",
-                "type", "sacallback_" + callback
-        });
+        JSONObject data = SAJsonParser.newObject("success", "" + success + "",
+                "type", "sacallback_" + callback);
 
         sendToUnity(unityAd, data);
 

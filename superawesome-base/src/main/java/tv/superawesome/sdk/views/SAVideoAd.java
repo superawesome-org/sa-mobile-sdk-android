@@ -511,15 +511,26 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
      * @param context       the current context (activity or fragment)
      */
     public static void play (int placementId, Context context) {
-        // try to get the ad that fits the placement id
-        SAAd adL = (SAAd) ads.get(placementId);
 
-        // try to start the activity
-        if (adL != null && adL.creative.format == SACreativeFormat.video && context != null) {
-            Intent intent = new Intent(context, SAVideoAd.class);
-            intent.putExtra("ad", adL.writeToJson().toString());
-            context.startActivity(intent);
-        } else {
+        // get the generic Object
+        Object generic = ads.get(placementId);
+
+        // if notnull & instance of SAAd
+        if (generic != null && generic instanceof SAAd) {
+
+            // try to get the ad that fits the placement id
+            SAAd adL = (SAAd) generic;
+
+            // try to start the activity
+            if (adL.creative.format == SACreativeFormat.video && context != null) {
+                Intent intent = new Intent(context, SAVideoAd.class);
+                intent.putExtra("ad", adL.writeToJson().toString());
+                context.startActivity(intent);
+            } else {
+                listener.onEvent(placementId, SAEvent.adFailedToShow);
+            }
+        }
+        else {
             listener.onEvent(placementId, SAEvent.adFailedToShow);
         }
     }

@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+5.5.8
+ - Added camel & snake case options when parsing the SACreative object - for click, impression and install
+ - Added the osTarget parameter to the SACreative
+ - Added more error checks to SAEvents
+ - Fixed bugs in SAVideoAd, SAInterstitialAd & SAAppWall when trying to play an ad that's not yet been properly loaded
+ - The SAJsonParser library can now create JSON objects & arrays by giving a variable number of arguments instead of an array of arguments
+ - Fixed tests
+
 5.5.6
  - Updated the Model space SADetails class to have a "base" string member to hold the base Url of the creative
  - Updated the Web Player to work with a base url and eliminate a series of minor bugs where 3rd party tags weren't rendered correctly

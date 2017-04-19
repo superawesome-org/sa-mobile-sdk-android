@@ -41,11 +41,10 @@ public class SAAIRCallback {
      */
     public static void sendAdCallback(FREContext context, String name, int placementId, String callback) {
 
-        JSONObject data = SAJsonParser.newObject(new Object[] {
+        JSONObject data = SAJsonParser.newObject(
                 "name", name,
                 "placementId", placementId,
-                "callback", callback
-        });
+                "callback", callback);
         sendToAIR(context, data);
 
     }
@@ -60,11 +59,10 @@ public class SAAIRCallback {
      */
     public static void sendCPICallback (FREContext context, String name, boolean success, String callback) {
 
-        JSONObject data = SAJsonParser.newObject(new Object[] {
+        JSONObject data = SAJsonParser.newObject(
                 "name", name,
                 "success", success,
-                "callback", callback
-        });
+                "callback", callback);
         sendToAIR(context, data);
 
     }

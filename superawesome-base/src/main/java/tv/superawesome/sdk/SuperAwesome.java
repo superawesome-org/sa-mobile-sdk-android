@@ -23,7 +23,7 @@ public class SuperAwesome {
      * Private constructor that is only called once
      */
     private SuperAwesome() {
-        version = "5.5.6";
+        version = "5.5.7";
         sdk = "android";
     }
 

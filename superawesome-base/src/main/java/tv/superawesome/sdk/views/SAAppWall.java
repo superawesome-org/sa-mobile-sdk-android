@@ -412,15 +412,25 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
      */
     public static void play(int placementId, Context context) {
 
-        // try to get the ad that fits the placement id
-        SAResponse responseL = (SAResponse) responses.get(placementId);
+        // get the generic Object
+        Object generic = responses.get(placementId);
 
-        // try to start the activity
-        if (responseL != null && responseL.format == SACreativeFormat.appwall && context != null) {
-            Intent intent = new Intent(context, SAAppWall.class);
-            intent.putExtra("response", responseL.writeToJson().toString());
-            context.startActivity(intent);
-        } else {
+        // if notnull & instance of SAAd
+        if (generic != null && generic instanceof SAResponse) {
+
+            // try to get the ad that fits the placement id
+            SAResponse responseL = (SAResponse) generic;
+
+            // try to start the activity
+            if (responseL.format == SACreativeFormat.appwall && context != null) {
+                Intent intent = new Intent(context, SAAppWall.class);
+                intent.putExtra("response", responseL.writeToJson().toString());
+                context.startActivity(intent);
+            } else {
+                listener.onEvent(placementId, SAEvent.adFailedToShow);
+            }
+        }
+        else {
             listener.onEvent(placementId, SAEvent.adFailedToShow);
         }
     }

@@ -15,14 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sacpi.SACPI;
 import tv.superawesome.lib.sacpi.SACPIInterface;
 import tv.superawesome.lib.sacpi.install.SAOnce;
-import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -130,6 +128,8 @@ public class MainActivity extends Activity {
                 new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
                 new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),
                 new PlacementItem("CPI Preroll 1 (Video)", 627, Type.VIDEO),
+
+                new PlacementItem("CPI Preroll 1 (Video)", 33766, Type.VIDEO),
                 new HeaderItem("App Wall"),
                 new PlacementItem("CPI AppWall 1 (Images)", 633, Type.APPWALL)
         );
