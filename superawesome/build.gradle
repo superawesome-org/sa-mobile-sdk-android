@@ -82,5 +82,5 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':superawesome-base')
-    compile 'tv.superawesome.lib.saevents:samoatevents:1.0.1'
+    compile 'tv.superawesome.lib.saevents:samoatevents:1.0.9'
 }

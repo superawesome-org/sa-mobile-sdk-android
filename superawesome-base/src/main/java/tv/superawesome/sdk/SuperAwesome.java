@@ -23,7 +23,7 @@ public class SuperAwesome {
      * Private constructor that is only called once
      */
     private SuperAwesome() {
-        version = "5.5.7";
+        version = "5.6.0";
         sdk = "android";
     }
 
@@ -99,6 +99,7 @@ public class SuperAwesome {
     public boolean defaultBackButton () {
         return false;
     }
+    public boolean defaultMoatLimitingState () { return true; }
 
     /**
      * Method that overrides the current version string. It's used by the AIR & Unity SDKs

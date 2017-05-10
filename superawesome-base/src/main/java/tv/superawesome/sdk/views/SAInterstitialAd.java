@@ -61,6 +61,7 @@ public class SAInterstitialAd extends Activity {
     private static boolean          isBackButtonEnabled = SuperAwesome.getInstance().defaultBackButton();
     private static SAOrientation    orientation = SuperAwesome.getInstance().defaultOrientation();
     private static SAConfiguration  configuration = SuperAwesome.getInstance().defaultConfiguration();
+    private static boolean          isMoatLimitingEnabled = SuperAwesome.getInstance().defaultMoatLimitingState();
 
     /**********************************************************************************************
      * Activity initialization & instance methods
@@ -81,6 +82,7 @@ public class SAInterstitialAd extends Activity {
         boolean isParentalGateEnabledL = getIsParentalGateEnabled();
         SAOrientation orientationL = getOrientation();
         SAInterface listenerL = getListener();
+        boolean isMoatLimitingEnabledL = getMoatLimitingState();
         Bundle bundle = getIntent().getExtras();
         String adStr = bundle.getString("ad");
         ad = new SAAd(SAJsonParser.newObject(adStr));
@@ -113,6 +115,9 @@ public class SAInterstitialAd extends Activity {
         interstitialBanner.setConfiguration(configuration);
         interstitialBanner.setListener(listenerL);
         interstitialBanner.setParentalGate(isParentalGateEnabledL);
+        if (!isMoatLimitingEnabledL) {
+            interstitialBanner.disableMoatLimiting();
+        }
 
         // create the close button
         float fp = SAUtils.getScaleFactor(this);
@@ -374,4 +379,10 @@ public class SAInterstitialAd extends Activity {
     public static void setOrientation (SAOrientation value) {
         orientation = value;
     }
+
+    public static void disableMoatLimiting () {
+        isMoatLimitingEnabled = false;
+    }
+
+    private static boolean getMoatLimitingState () { return isMoatLimitingEnabled; }
 }

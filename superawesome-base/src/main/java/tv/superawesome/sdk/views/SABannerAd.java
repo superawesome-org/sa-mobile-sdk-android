@@ -29,8 +29,6 @@ import tv.superawesome.lib.sasession.SASessionInterface;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
-import tv.superawesome.lib.sawebplayer.SAWebPlayerEvent;
-import tv.superawesome.lib.sawebplayer.SAWebPlayerEventInterface;
 import tv.superawesome.sdk.SuperAwesome;
 
 public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
@@ -58,6 +56,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     private boolean         canPlay = true;
     private boolean         firstPlay = true;
     private boolean         isClosed = false;
+    private boolean         moatLimiting;
 
     /**
      * Constructor with context
@@ -100,6 +99,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         setParentalGate(SuperAwesome.getInstance().defaultParentalGate());
         setConfiguration(SuperAwesome.getInstance().defaultConfiguration());
         setTestMode(SuperAwesome.getInstance().defaultTestMode());
+        moatLimiting = SuperAwesome.getInstance().defaultMoatLimitingState();
     }
 
     /**
@@ -180,6 +180,10 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
      */
     public void play (final Context context) {
 
+        if (!moatLimiting && events != null) {
+            events.disableMoatLimiting();
+        }
+
         // if the banner ad has a valid ad loaded then play it
         if (ad != null && ad.creative.format != SACreativeFormat.video && canPlay && !isClosed) {
 
@@ -191,9 +195,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
             webPlayer = new SAWebPlayer();
             webPlayer.setContentSize(ad.creative.details.width, ad.creative.details.height);
             // and set it's event listener
-            webPlayer.setEventListener(new SAWebPlayerEventInterface() {
+            webPlayer.setEventListener(new SAWebPlayer.Listener() {
                 @Override
-                public void saWebPlayerDidReceiveEvent(SAWebPlayerEvent event, String destination) {
+                public void saWebPlayerDidReceiveEvent(SAWebPlayer.Event event, String destination) {
 
                     switch (event) {
                         // this is called when the web player is on screen and prepared to load
@@ -201,10 +205,11 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                         case Web_Prepared: {
 
                             // prepare moat tracking
-                            String moatString = events.registerDisplayMoatEvent((Activity)context, webPlayer.getWebView());
+                            String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
                             String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
 
                             // load the HTML
+                            Log.d("SuperAwesome", "Full HTML is " + fullHTML);
                             webPlayer.loadHTML(ad.creative.details.base, fullHTML);
 
                             break;
@@ -339,6 +344,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         // set listener
         listener.onEvent(ad != null ? ad.placementId : 0, SAEvent.adClosed);
 
+        // unregister moat events
+        events.stopMoatTrackingForDisplay();
+
         // reset any ad that might be in here
         setAd(null);
 
@@ -361,9 +369,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
         // close ad
         isClosed = true;
-
-        // unregister moat events
-        events.unregisterDisplayMoatEvent();
     }
 
     /**
@@ -473,5 +478,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         } else  {
             setBackgroundColor(BANNER_BACKGROUND);
         }
+    }
+
+    public void disableMoatLimiting () {
+        moatLimiting = false;
     }
 }

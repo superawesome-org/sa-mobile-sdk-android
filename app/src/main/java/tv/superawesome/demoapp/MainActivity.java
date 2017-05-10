@@ -37,21 +37,23 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SAOnce once = new SAOnce(this);
-        once.resetCPISent();
 
-        SASession session = new SASession(this);
-        session.setConfigurationStaging();
-
-        SACPI.getInstance().handleInstall(this, session, new SACPIInterface() {
-            @Override
-            public void saDidCountAnInstall(boolean b) {
-                Log.d("SuperAwesome", "Install event is " + b);
-            }
-        });
+//        SAOnce once = new SAOnce(this);
+//        once.resetCPISent();
+//
+//        SASession session = new SASession(this);
+//        session.setConfigurationStaging();
+//
+//        SACPI.getInstance().handleInstall(this, session, new SACPIInterface() {
+//            @Override
+//            public void saDidCountAnInstall(boolean b) {
+//                Log.d("SuperAwesome", "Install event is " + b);
+//            }
+//        });
 
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
         myBanner.setConfigurationStaging();
+        myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -65,6 +67,7 @@ public class MainActivity extends Activity {
         });
 
         SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -78,6 +81,7 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationStaging();
+        SAVideoAd.disableMoatLimiting();
         SAVideoAd.disableCloseAtEnd();
         SAVideoAd.enableCloseButton();
         SAVideoAd.setListener(new SAInterface() {
@@ -128,8 +132,7 @@ public class MainActivity extends Activity {
                 new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
                 new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),
                 new PlacementItem("CPI Preroll 1 (Video)", 627, Type.VIDEO),
-
-                new PlacementItem("CPI Preroll 1 (Video)", 33766, Type.VIDEO),
+                new PlacementItem("Level 5 CPI Test (Video)", 33766, Type.VIDEO),
                 new HeaderItem("App Wall"),
                 new PlacementItem("CPI AppWall 1 (Images)", 633, Type.APPWALL)
         );

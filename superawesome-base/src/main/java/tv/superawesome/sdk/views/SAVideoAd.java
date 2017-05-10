@@ -73,6 +73,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     private static boolean isBackButtonEnabled              = SuperAwesome.getInstance().defaultBackButton();
     private static SAOrientation orientation                = SuperAwesome.getInstance().defaultOrientation();
     private static SAConfiguration configuration            = SuperAwesome.getInstance().defaultConfiguration();
+    private static boolean isMoatLimitingEnabled            = SuperAwesome.getInstance().defaultMoatLimitingState();
 
     /**********************************************************************************************
      * Activity initialization & instance methods
@@ -96,6 +97,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         final boolean shouldAutomaticallyCloseAtEndL = getShouldAutomaticallyCloseAtEnd();
         final boolean shouldShowSmallClickButtonL = getShouldShowSmallClickButton();
         final SAOrientation orientationL = getOrientation();
+        final boolean isMoatLimitingEnabledL = getMoatLimitingState();
         Bundle bundle = getIntent().getExtras();
         String adString = bundle.getString("ad");
         ad = new SAAd(SAJsonParser.newObject(adString));
@@ -110,6 +112,9 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         // start events
         events = new SAEvents();
         events.setAd(this, session, ad);
+        if (!isMoatLimitingEnabledL) {
+            events.disableMoatLimiting();
+        }
 
         // create main content for activity
         parent = new RelativeLayout(this);
@@ -203,7 +208,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             });
 
                             // moat
-                            events.registerVideoMoatEvent(SAVideoAd.this, videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer());
+                            events.startMoatTrackingForVideoPlayer(videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer());
 
                             break;
                         }
@@ -370,6 +375,9 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         // get local
         SAInterface listenerL = getListener();
 
+        // close moat
+        events.stopMoatTrackingForVideoPlayer();
+
         // call listener
         listenerL.onEvent(ad.placementId, SAEvent.adClosed);
 
@@ -378,9 +386,6 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
             gate.close();
         }
         gate = null;
-
-        // unregister MOAT video
-        events.unregisterVideoMoatEvent();
 
         // delete the ad
         ads.remove(ad.placementId);
@@ -643,6 +648,8 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         return shouldAutomaticallyCloseAtEnd;
     }
 
+    private static boolean getMoatLimitingState () { return isMoatLimitingEnabled; }
+
     private static boolean getShouldShowSmallClickButton () {
         return shouldShowSmallClickButton;
     }
@@ -689,5 +696,9 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
 
     public static void setSmallClick (boolean value) {
         shouldShowSmallClickButton = value;
+    }
+
+    public static void disableMoatLimiting () {
+        isMoatLimitingEnabled = false;
     }
 }

@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+5.6.0
+ - Added MRAID capabilities to banner & interstitial ads
+ - Updated the MOAT implementation to the latest one available
+ - Updated the Padlock to have the new SA logo
+
+
 5.5.7
  - Added camel & snake case options when parsing the SACreative object - for click, impression and install
  - Added the osTarget parameter to the SACreative

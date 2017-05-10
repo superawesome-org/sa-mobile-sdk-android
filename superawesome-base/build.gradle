@@ -72,7 +72,6 @@ install {
                     connection gitUrl
                     developerConnection gitUrl
                     url siteUrl
-
                 }
             }
         }
@@ -87,10 +86,10 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'tv.superawesome.lib.sautils:sautils:0.3.4'
-    compile 'tv.superawesome.lib.saevents:saevents:1.0.4'
-    compile 'tv.superawesome.lib.savideoplayer:savideoplayer:0.3.7'
-    compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.3.3'
-    compile 'tv.superawesome.lib.saadloader:saadloader:1.1.1'
-    compile 'tv.superawesome.lib.sacpi:sacpi:1.1.0'
+    compile 'tv.superawesome.lib.sautils:sautils:0.3.5'
+    compile 'tv.superawesome.lib.saevents:saevents:1.0.9'
+    compile 'tv.superawesome.lib.savideoplayer:savideoplayer:0.3.8'
+    compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.4.3'
+    compile 'tv.superawesome.lib.saadloader:saadloader:1.1.2'
+    compile 'tv.superawesome.lib.sacpi:sacpi:1.1.1'
 }
