@@ -2,6 +2,7 @@ package tv.superawesome.demoapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,6 +53,7 @@ public class MainActivity extends Activity {
 //        });
 
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
+//        myBanner.enableReloadOnStateChange();
         myBanner.setConfigurationStaging();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
@@ -163,6 +165,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    public void gotoAdmob(View view) {
+        Intent intent = new Intent(this, AdMobActivity.class);
+        this.startActivity(intent);
     }
 }
 

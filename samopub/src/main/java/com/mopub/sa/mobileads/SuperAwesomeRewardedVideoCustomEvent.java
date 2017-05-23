@@ -244,9 +244,12 @@ public class SuperAwesomeRewardedVideoCustomEvent extends CustomEventRewardedVid
                         onRewardedVideoClicked(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
                         break;
                     }
-                    case adClosed: {
+                    case adEnded: {
                         MoPubReward reward = MoPubReward.success(MoPubReward.NO_REWARD_LABEL, 0);
                         onRewardedVideoCompleted(SuperAwesomeRewardedVideoCustomEvent.class, moPubId, reward);
+                        break;
+                    }
+                    case adClosed: {
                         onRewardedVideoClosed(SuperAwesomeRewardedVideoCustomEvent.class, moPubId);
                         break;
                     }

@@ -53,10 +53,11 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     private SAParentalGate  gate;
 
     // bool
-    private boolean         canPlay = true;
-    private boolean         firstPlay = true;
-    private boolean         isClosed = false;
+    private boolean         canPlay              = true;
+    private boolean         firstPlay            = true;
+    private boolean         isClosed             = false;
     private boolean         moatLimiting;
+    private boolean         reloadsOnStateChange = false;
 
     /**
      * Constructor with context
@@ -193,6 +194,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
             // create a new web player fragment object
             webPlayer = new SAWebPlayer();
+            if (reloadsOnStateChange) {
+                webPlayer.disableRetainInstance();
+            }
             webPlayer.setContentSize(ad.creative.details.width, ad.creative.details.height);
             // and set it's event listener
             webPlayer.setEventListener(new SAWebPlayer.Listener() {
@@ -296,6 +300,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
             // actually add the fragment
             try {
+
                 ((Activity) getContext()).getFragmentManager()
                         .beginTransaction()
                         .add(getId(), webPlayer, webPlayerTag)
@@ -482,5 +487,17 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
     public void disableMoatLimiting () {
         moatLimiting = false;
+    }
+
+    public void enableReloadOnStateChange () {
+        setReloadOnStateChange(true);
+    }
+
+    public void disableReloadOnStateChange () {
+        setReloadOnStateChange(false);
+    }
+
+    public void setReloadOnStateChange(boolean value) {
+        reloadsOnStateChange = value;
     }
 }

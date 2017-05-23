@@ -11,7 +11,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName version
@@ -32,6 +32,6 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('libs/FlashRuntimeExtensions.jar')
     compile project(':superawesome-base')
+    compile 'com.google.android.gms:play-services-ads:10.2.4'
 }
