@@ -14,12 +14,15 @@ import com.google.android.gms.ads.mediation.MediationAdRequest;
 import com.google.android.gms.ads.mediation.customevent.CustomEventBanner;
 import com.google.android.gms.ads.mediation.customevent.CustomEventBannerListener;
 
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
+import tv.superawesome.sdk.views.SAInterstitialAd;
+import tv.superawesome.sdk.views.SAOrientation;
 
-public class SABannerCustomEvent implements CustomEventBanner {
+public class SAAdMobBannerCustomEvent implements CustomEventBanner {
 
     private final int ID = SAUtils.randomNumberBetween(1000000, 1500000);
     private boolean layouted = false;
@@ -33,7 +36,6 @@ public class SABannerCustomEvent implements CustomEventBanner {
         bannerAd = new SABannerAd(context);
         bannerAd.enableReloadOnStateChange();
         bannerAd.setId(ID);
-        bannerAd.setConfigurationStaging();
 
         // Internally, smart banners use constants to represent their ad size, which means a call to
         // AdSize.getHeight could return a negative value. You can accommodate this by using
@@ -46,7 +48,13 @@ public class SABannerCustomEvent implements CustomEventBanner {
         int heightInDp = Math.round(heightInPixels / displayMetrics.density);
 
         bannerAd.setLayoutParams(new ViewGroup.LayoutParams(widthInDp, heightInDp));
-        bannerAd.setTestMode(mediationAdRequest.isTesting());
+
+        if (bundle != null) {
+            bannerAd.setTestMode(bundle.getBoolean(SAAdMobExtras.kKEY_TEST));
+            bannerAd.setConfiguration(SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
+            bannerAd.setColor(bundle.getBoolean(SAAdMobExtras.kKEY_TRANSPARENT));
+            bannerAd.setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE));
+        }
 
         bannerAd.setListener(new SAInterface() {
             @Override
@@ -59,8 +67,6 @@ public class SABannerCustomEvent implements CustomEventBanner {
                         }
 
                         loaded = true;
-
-                        Log.d("SuperAwesome-AdMob", "Ad Loaded! " + ID);
 
                         if (layouted && bannerAd != null && !setup) {
                             bannerAd.play(context);

@@ -8,11 +8,13 @@ import com.google.android.gms.ads.mediation.MediationAdRequest;
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitial;
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitialListener;
 
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
 import tv.superawesome.sdk.views.SAInterstitialAd;
+import tv.superawesome.sdk.views.SAOrientation;
 
-public class SAInterstitialCustomEvent implements CustomEventInterstitial {
+public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
 
     private Context context = null;
     private Integer loadedPlacementId = 0;
@@ -23,8 +25,17 @@ public class SAInterstitialCustomEvent implements CustomEventInterstitial {
         // save the context
         this.context = context;
 
-        SAInterstitialAd.setConfigurationStaging();
-        SAInterstitialAd.setTestMode(mediationAdRequest.isTesting());
+
+
+        // set values
+        if (bundle != null) {
+            SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
+            SAInterstitialAd.setTestMode(bundle.getBoolean(SAAdMobExtras.kKEY_TEST));
+            SAInterstitialAd.setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE));
+            SAInterstitialAd.setBackButton(bundle.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON));
+            SAInterstitialAd.setOrientation(SAOrientation.fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION)));
+        }
+
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -58,6 +69,7 @@ public class SAInterstitialCustomEvent implements CustomEventInterstitial {
                     case adClicked: {
                         if (listener != null) {
                             listener.onAdClicked();
+                            listener.onAdLeftApplication();
                         }
                         break;
                     }
