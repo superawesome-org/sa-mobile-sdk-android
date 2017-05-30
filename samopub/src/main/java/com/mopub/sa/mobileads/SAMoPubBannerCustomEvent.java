@@ -4,13 +4,18 @@
  */
 package com.mopub.sa.mobileads;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
+import android.view.View;
 
 import com.mopub.mobileads.CustomEventBanner;
 import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
+import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SABannerAd;
 import tv.superawesome.sdk.views.SAEvent;
@@ -20,12 +25,10 @@ import tv.superawesome.sdk.views.SAInterface;
  * Class that extends the MoPub standard CustomEventBanner class in order to communicate with
  * MoPub and load a banner ad
  */
-public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
+public class SAMoPubBannerCustomEvent extends CustomEventBanner {
 
-    // private constants
-    private static final String KEY_placementId             = "placementId";
-    private static final String KEY_isTestEnabled           = "isTestEnabled";
-    private static final String KEY_isParentalGateEnabled   = "isParentalGateEnabled";
+    private final int ID = SAUtils.randomNumberBetween(1000000, 1500000);
+    private SABannerAd bannerAd;
 
     /**
      * Overridden "loadBanner" method of CustomEventBanner that is triggered when ad data
@@ -40,39 +43,43 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
     @Override
     protected void loadBanner(final Context context, final CustomEventBannerListener listener, Map<String, Object> map, Map<String, String> map1) {
 
-        // define & init map variables w/ default values
-        int placementId = SuperAwesome.getInstance().defaultPlacementId();
-        boolean isTestEnabled = SuperAwesome.getInstance().defaultTestMode();
-        boolean isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
+        int placementId;
+        try {
+            placementId = Integer.parseInt(map1.get(SAMoPub.kPLACEMENT_ID));
+        } catch (Exception e) {
+            placementId = SuperAwesome.getInstance().defaultPlacementId();
+        }
 
-        // try and get the ones sent over by the MoPub JSON
-        if (map1.containsKey(KEY_placementId)) {
-            try {
-                placementId = Integer.parseInt(map1.get(KEY_placementId));
-            } catch (Exception e) {
-                // do nothing
-            }
+        boolean isTestEnabled;
+        try {
+            isTestEnabled = Boolean.valueOf(map1.get(SAMoPub.kTEST_ENABLED));
+        } catch (Exception e) {
+            isTestEnabled = SuperAwesome.getInstance().defaultTestMode();
         }
-        if (map1.containsKey(KEY_isTestEnabled)) {
-            try {
-                isTestEnabled = Boolean.valueOf(map1.get(KEY_isTestEnabled));
-            } catch (Exception e) {
-                // do nothing
-            }
+
+        boolean isParentalGateEnabled;
+        try {
+            isParentalGateEnabled = Boolean.valueOf(map1.get(SAMoPub.kPARENTAL_GATE));
+        } catch (Exception e) {
+            isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
         }
-        if (map1.containsKey(KEY_isParentalGateEnabled)) {
-            try {
-                isParentalGateEnabled = Boolean.valueOf(map1.get(KEY_isParentalGateEnabled));
-            } catch (Exception e) {
-                // do nothing
+
+        SAConfiguration configuration = SuperAwesome.getInstance().defaultConfiguration();
+        try {
+            String config = map1.get(SAMoPub.kCONFIGURATION);
+            if (config != null && config.equals("STAGING")) {
+                configuration = SAConfiguration.STAGING;
             }
+        } catch (Exception e) {
+            // do nothing
         }
 
         // create & customise the banner ad
-        final SABannerAd bannerAd = new SABannerAd(context);
+        bannerAd = new SABannerAd(context);
+        bannerAd.setId(ID);
         bannerAd.setTestMode(isTestEnabled);
         bannerAd.setParentalGate(isParentalGateEnabled);
-        bannerAd.setConfigurationProduction();
+        bannerAd.setConfiguration(configuration);
         bannerAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -90,7 +97,7 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
                     case adShown:
                         break;
                     case adFailedToShow: {
-                        if (listener != null){
+                        if (listener != null) {
                             listener.onBannerFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
                         }
                         break;
@@ -106,7 +113,6 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
                 }
             }
         });
-        // load the banner ad
         bannerAd.load(placementId);
     }
 
@@ -116,6 +122,7 @@ public class SuperAwesomeBannerCustomEvent extends CustomEventBanner {
      */
     @Override
     protected void onInvalidate() {
+        Log.d("SuperAwesome/MoPub", "On invalidate!");
         // do nothing
     }
 }

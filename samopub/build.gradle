@@ -16,7 +16,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        minSdkVersion 11
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName version
@@ -83,6 +83,8 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.mopub:mopub-sdk:4.3.0@aar'
+    compile('com.mopub:mopub-sdk:4.14.0@aar') {
+        transitive = true
+    }
     compile project(':superawesome-base')
 }

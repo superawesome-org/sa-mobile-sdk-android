@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+5.7.0
+ - Added AdMob support
+ - Refactored MoPub classes to use the same naming convention as the AdMob, Unity and AIR plugins
+ - Refactored SAWebPlayer to not be a Fragment but a View (that means that banner instances won't be saved between orientation changes anymore, but some other bugs will be fixed, related to adding & removing Fragments)
+ - Refactored MoPub classes to better read values form the MoPub configuration JSON 
+
 5.6.0
  - Added MRAID capabilities to banner & interstitial ads
  - Updated the MOAT implementation to the latest one available

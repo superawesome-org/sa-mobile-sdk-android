@@ -34,7 +34,6 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
     public void requestBannerAd(final Context context, final CustomEventBannerListener listener, String s, AdSize adSize, MediationAdRequest mediationAdRequest, Bundle bundle) {
 
         bannerAd = new SABannerAd(context);
-        bannerAd.enableReloadOnStateChange();
         bannerAd.setId(ID);
 
         // Internally, smart banners use constants to represent their ad size, which means a call to

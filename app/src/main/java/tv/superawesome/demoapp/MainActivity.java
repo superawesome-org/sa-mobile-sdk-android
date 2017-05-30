@@ -19,9 +19,13 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
+import tv.superawesome.lib.saadloader.SALoader;
+import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.sacpi.SACPI;
 import tv.superawesome.lib.sacpi.SACPIInterface;
 import tv.superawesome.lib.sacpi.install.SAOnce;
+import tv.superawesome.lib.samodelspace.saad.SAResponse;
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.sdk.views.SAAppWall;
 import tv.superawesome.sdk.views.SABannerAd;
@@ -167,8 +171,13 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(outState);
     }
 
-    public void gotoAdmob(View view) {
+    public void gotoAdMob(View view) {
         Intent intent = new Intent(this, AdMobActivity.class);
+        this.startActivity(intent);
+    }
+
+    public void gotoMoPub(View view) {
+        Intent intent = new Intent(this, MoPubActivity.class);
         this.startActivity(intent);
     }
 }

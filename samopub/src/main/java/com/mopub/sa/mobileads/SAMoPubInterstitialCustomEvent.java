@@ -12,6 +12,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
+import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.SuperAwesome;
 import tv.superawesome.sdk.views.SAEvent;
 import tv.superawesome.sdk.views.SAInterface;
@@ -22,14 +23,7 @@ import tv.superawesome.sdk.views.SAOrientation;
  * Class that extends the MoPub standard CustomEventInterstitial class in order to communicate with
  * MoPub and load an interstitial ad
  */
-public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial {
-
-    // constants
-    private static final String KEY_placementId             = "placementId";
-    private static final String KEY_isTestEnabled           = "isTestEnabled";
-    private static final String KEY_isParentalGateEnabled   = "isParentalGateEnabled";
-    private static final String KEY_lockOrientation         = "lockOrientation";
-    private static final String KEY_orientation             = "orientation";
+public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
 
     // private state vars
     private int placementId = 0;
@@ -51,60 +45,51 @@ public class SuperAwesomeInterstitialCustomEvent extends CustomEventInterstitial
         // get the context
         this.context = context;
 
-        // get map variables
-        placementId = SuperAwesome.getInstance().defaultPlacementId();
-        boolean isTestEnabled = SuperAwesome.getInstance().defaultTestMode();
-        boolean isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
-        SAOrientation orientation = SuperAwesome.getInstance().defaultOrientation();
+        try {
+            placementId = Integer.parseInt(map1.get(SAMoPub.kPLACEMENT_ID));
+        } catch (Exception e) {
+            placementId = SuperAwesome.getInstance().defaultPlacementId();
+        }
 
-        if (map1.containsKey(KEY_placementId)) {
-            try {
-                placementId = Integer.parseInt(map1.get(KEY_placementId));
-            } catch (Exception e) {
-                // do nothing
-            }
+        boolean isTestEnabled;
+        try {
+            isTestEnabled = Boolean.valueOf(map1.get(SAMoPub.kTEST_ENABLED));
+        } catch (Exception e) {
+            isTestEnabled = SuperAwesome.getInstance().defaultTestMode();
         }
-        if (map1.containsKey(KEY_isTestEnabled)) {
-            try {
-                isTestEnabled = Boolean.valueOf(map1.get(KEY_isTestEnabled));
-            } catch (Exception e) {
-                // do nothing
-            }
+
+        boolean isParentalGateEnabled;
+        try {
+            isParentalGateEnabled = Boolean.valueOf(map1.get(SAMoPub.kPARENTAL_GATE));
+        } catch (Exception e) {
+            isParentalGateEnabled = SuperAwesome.getInstance().defaultParentalGate();
         }
-        if (map1.containsKey(KEY_isParentalGateEnabled)) {
-            try {
-                isParentalGateEnabled = Boolean.valueOf(map1.get(KEY_isParentalGateEnabled));
-            } catch (Exception e) {
-                // do nothing
+
+        SAConfiguration configuration = SuperAwesome.getInstance().defaultConfiguration();
+        try {
+            String config = map1.get(SAMoPub.kCONFIGURATION);
+            if (config != null && config.equals("STAGING")) {
+                configuration = SAConfiguration.STAGING;
             }
+        } catch (Exception e) {
+            // do nothing
         }
-        if (map1.containsKey(KEY_lockOrientation)) {
-            try {
-                String stringOrientation = map1.get(KEY_lockOrientation);
-                if (stringOrientation != null && stringOrientation.equals("PORTRAIT")) {
-                    orientation = SAOrientation.PORTRAIT;
-                } else if (stringOrientation != null && stringOrientation.equals("LANDSCAPE")){
-                    orientation = SAOrientation.LANDSCAPE;
-                }
-            } catch (Exception e) {
-                // do nothing
+
+        SAOrientation orientation = SuperAwesome.getInstance().defaultOrientation();
+        try {
+            String orient = map1.get(SAMoPub.kORIENTATION);
+            if (orient != null && orient.equals("PORTRAIT")) {
+                orientation = SAOrientation.PORTRAIT;
             }
-        }
-        if (map1.containsKey(KEY_orientation)) {
-            try {
-                String stringOrientation = map1.get(KEY_orientation);
-                if (stringOrientation != null && stringOrientation.equals("PORTRAIT")) {
-                    orientation = SAOrientation.PORTRAIT;
-                } else if (stringOrientation != null && stringOrientation.equals("LANDSCAPE")){
-                    orientation = SAOrientation.LANDSCAPE;
-                }
-            } catch (Exception e) {
-                // do nothing
+            if (orient != null && orient.equals("LANDSCAPE")) {
+                orientation = SAOrientation.LANDSCAPE;
             }
+        } catch (Exception e) {
+            // do nothing
         }
 
         // configure the interstitial
-        SAInterstitialAd.setConfigurationProduction();
+        SAInterstitialAd.setConfiguration(configuration);
         SAInterstitialAd.setTestMode(isTestEnabled);
         SAInterstitialAd.setParentalGate(isParentalGateEnabled);
         SAInterstitialAd.setOrientation(orientation);

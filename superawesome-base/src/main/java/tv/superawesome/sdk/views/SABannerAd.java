@@ -47,7 +47,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     private SALoader        loader;
 
     // private subviews
-    private static final String    webPlayerTag = "SA_WebPlayer";
     private SAWebPlayer     webPlayer;
     private ImageButton     padlock;
     private SAParentalGate  gate;
@@ -57,7 +56,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     private boolean         firstPlay            = true;
     private boolean         isClosed             = false;
     private boolean         moatLimiting;
-    private boolean         reloadsOnStateChange = false;
 
     /**
      * Constructor with context
@@ -193,11 +191,9 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
             firstPlay = false;
 
             // create a new web player fragment object
-            webPlayer = new SAWebPlayer();
-            if (reloadsOnStateChange) {
-                webPlayer.disableRetainInstance();
-            }
+            webPlayer = new SAWebPlayer(context);
             webPlayer.setContentSize(ad.creative.details.width, ad.creative.details.height);
+            webPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             // and set it's event listener
             webPlayer.setEventListener(new SAWebPlayer.Listener() {
                 @Override
@@ -240,10 +236,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                         // the fragment has started
                         case Web_Started:{
 
-                            if (padlock != null) {
-                                webPlayer.getHolder().removeView(padlock);
-                            }
-
                             float sf = SAUtils.getScaleFactor((Activity)context);
                             padlock = new ImageButton(context);
                             padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
@@ -260,13 +252,17 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                                 }
                             });
                             webPlayer.getHolder().addView(padlock);
+                            padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
+                            padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
 
                             break;
                         }
                         // this is called when the fragment & web view have all been laid out
                         case Web_Layout:{
-                            padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
-                            padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+                            if (webPlayer.getWebView() != null && padlock != null) {
+                                padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
+                                padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+                            }
                             break;
                         }
                         // this is in case of error
@@ -298,18 +294,8 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                 }
             });
 
-            // actually add the fragment
-            try {
-
-                ((Activity) getContext()).getFragmentManager()
-                        .beginTransaction()
-                        .add(getId(), webPlayer, webPlayerTag)
-                        .commit();
-            } catch (Exception e) {
-                // catch this error
-                listener.onEvent(0, SAEvent.adFailedToShow);
-            }
-
+            this.addView(webPlayer);
+            webPlayer.setup();
         }
         // if no ad has been loaded, send an ad failure event
         else {
@@ -357,14 +343,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
         // remove the web player
         if (webPlayer != null) {
-            try {
-                ((Activity) getContext()).getFragmentManager()
-                        .beginTransaction()
-                        .remove(webPlayer)
-                        .commit();
-            } catch (Exception e) {
-                // this means the fragment wasn't set yet
-            }
+            this.removeView(webPlayer);
         }
 
         // make padlock invisible
@@ -487,17 +466,5 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
     public void disableMoatLimiting () {
         moatLimiting = false;
-    }
-
-    public void enableReloadOnStateChange () {
-        setReloadOnStateChange(true);
-    }
-
-    public void disableReloadOnStateChange () {
-        setReloadOnStateChange(false);
-    }
-
-    public void setReloadOnStateChange(boolean value) {
-        reloadsOnStateChange = value;
     }
 }

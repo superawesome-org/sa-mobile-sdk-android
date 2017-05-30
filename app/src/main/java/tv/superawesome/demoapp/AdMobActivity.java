@@ -13,6 +13,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.mopub.common.MoPub;
 
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.plugins.admob.SAAdMobExtras;
@@ -40,7 +41,7 @@ public class AdMobActivity extends Activity {
         MobileAds.initialize(this, "ca-app-pub-7706302691807937~5001530003");
 
         Bundle extras1 = SAAdMobExtras.extras()
-                    .setTestMode(true)
+                    .setTestMode(false)
                     .setConfiguration(SAConfiguration.STAGING)
                     .setParentalGate(false)
                     .setTransparent(true)
@@ -77,7 +78,7 @@ public class AdMobActivity extends Activity {
 
 
         Bundle extras2 = SAAdMobExtras.extras()
-                .setTestMode(true)
+                .setTestMode(false)
                 .setConfiguration(SAConfiguration.STAGING)
                 .setOrientation(SAOrientation.PORTRAIT)
                 .setParentalGate(true)
@@ -178,5 +179,11 @@ public class AdMobActivity extends Activity {
         } else {
             Log.d("SuperAwesome/MoPub", "Video Ad not loaded yet");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adView.destroy();
     }
 }

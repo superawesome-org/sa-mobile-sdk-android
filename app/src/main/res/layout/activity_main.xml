@@ -7,11 +7,23 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:text="AD Mob Plugin"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:onClick="gotoAdmob"
-        android:layout_height="50dp" />
+        android:layout_height="50dp">
+        <Button
+            android:text="Ad Mob Plugin"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:onClick="gotoAdMob"
+            android:layout_height="50dp" />
+        <Button
+            android:text="MoPub Plugin"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:onClick="gotoMoPub"
+            android:layout_height="50dp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/MyList"
