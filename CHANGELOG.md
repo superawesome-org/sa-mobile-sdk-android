@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.7.1
+ - Renamed a folder in SAWebPlayer from "aux" to "utilities" so as to make the whole library correctly work on Windowds
+
 5.7.0
  - Added AdMob support
  - Refactored MoPub classes to use the same naming convention as the AdMob, Unity and AIR plugins
