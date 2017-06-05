@@ -177,6 +177,10 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                                 // do nothing
                             }
 
+                            boolean result = events.startMoatTrackingForVideoPlayer(videoPlayer.getVideoPlayer());
+
+                            Log.d("SuperAwesome", "Moat Video start: " + result);
+
                             break;
                         }
                         case Video_Start: {
@@ -208,25 +212,30 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                             });
 
                             // moat
-                            events.startMoatTrackingForVideoPlayer(videoPlayer.getVideoPlayer(), videoPlayer.getMediaPlayer());
+                            events.sendMoatPlayingEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
+                            events.sendMoatStartEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
 
                             break;
                         }
                         case Video_1_4: {
+                            events.sendMoatFirstQuartileEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
                             events.triggerVASTFirstQuartileEvent();
                             break;
                         }
                         case Video_1_2: {
+                            events.sendMoatMidpointEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
                             events.triggerVASTMidpointEvent();
                             break;
                         }
                         case Video_3_4: {
+                            events.sendMoatThirdQuartileEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
                             events.triggerVASTThirdQuartileEvent();
                             break;
                         }
                         case Video_End: {
 
                             // send events
+                            events.stopMoatTrackingForVideoPlayer();
                             events.triggerVASTCompleteEvent();
 
                             // send an ad ended event
@@ -249,6 +258,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                         case Video_Error: {
 
                             // send events
+                            events.stopMoatTrackingForVideoPlayer();
                             events.triggerVASTErrorEvent();
 
                             // ad failed to show

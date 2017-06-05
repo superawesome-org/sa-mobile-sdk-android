@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+5.7.2
+ - Updated the Moat SDK for video & display yet again to a more manual event triggered approach
+
 5.7.1
  - Renamed a folder in SAWebPlayer from "aux" to "utilities" so as to make the whole library correctly work on Windowds
 

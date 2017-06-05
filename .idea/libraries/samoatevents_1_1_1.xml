@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="samoatevents-1.1.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/superawesome/build/intermediates/exploded-aar/tv.superawesome.lib.saevents/samoatevents/1.1.1/jars/classes.jar!/" />
+      <root url="jar://$PROJECT_DIR$/superawesome/build/intermediates/exploded-aar/tv.superawesome.lib.saevents/samoatevents/1.1.1/jars/libs/moatlib.jar!/" />
+      <root url="file://$PROJECT_DIR$/superawesome/build/intermediates/exploded-aar/tv.superawesome.lib.saevents/samoatevents/1.1.1/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

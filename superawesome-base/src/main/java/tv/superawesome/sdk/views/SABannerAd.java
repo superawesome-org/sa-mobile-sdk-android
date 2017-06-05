@@ -102,38 +102,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     }
 
     /**
-     * Method that gets called when the state of the banner changes (e.g. when screen rotates).
-     * This will save the current ad data for later use
-     *
-     * @return a new Parcelable bundle to be saved
-     */
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("superState", super.onSaveInstanceState());
-        bundle.putString("ad", ad != null ? ad.writeToJson().toString() : new SAAd().writeToJson().toString());
-        return bundle;
-    }
-
-    /**
-     * Method that gets called when the state of the banner is restored (e.g. after a screen
-     * rotation). This will try to get a previously saved ad and assign it to the banner.
-     *
-     * @param state a Parcelable state object (usually a Bundle)
-     */
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        if (state instanceof Bundle)  {
-            Bundle bundle = (Bundle) state;
-            state = bundle.getParcelable("superState");
-            String adJson = bundle.getString("ad");
-            SAAd ad = new SAAd(adJson);
-            setAd(ad.isValid() ? ad : null);
-        }
-        super.onRestoreInstanceState(state);
-    }
-
-    /**
      * One of the main public methods of the SABannerAd class. This will load a new SAAd object
      * corresponding to a given placement Id.
      *
@@ -206,6 +174,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
                             // prepare moat tracking
                             String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
+                            Log.d("SuperAwesome", "Moat string is " + moatString);
                             String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
 
                             // load the HTML
