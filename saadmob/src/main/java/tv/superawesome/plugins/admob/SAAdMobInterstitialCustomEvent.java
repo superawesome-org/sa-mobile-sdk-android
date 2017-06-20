@@ -50,6 +50,7 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
                         }
                         break;
                     }
+                    case adEmpty:
                     case adFailedToLoad: {
                         if (listener != null) {
                             listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);

@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+5.7.3 
+ - Added a new ad callback event called adEmpty. This will be forwarded when the ad server returns successfully (status code 200) but has no actual ad to serve.
+ - Added this event to the AIR and Unity plugins
+ - It is also handled by the AdMob/MoPub adapters in their own internal logic
+ - Updated the way the Unity plugin displays banners in reaction to changes in Unity v5.6.x. Now all banners are displayed in as a subview of custom dialogs, above the main activity.
+
 5.7.2
  - Updated the Moat SDK for video & display yet again to a more manual event triggered approach
 

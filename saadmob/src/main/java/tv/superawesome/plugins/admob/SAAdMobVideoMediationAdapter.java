@@ -94,6 +94,7 @@ public class SAAdMobVideoMediationAdapter implements MediationRewardedVideoAdAda
                         listener.onAdLoaded(SAAdMobVideoMediationAdapter.this);
                         break;
                     }
+                    case adEmpty:
                     case adFailedToLoad: {
                         listener.onAdFailedToLoad(SAAdMobVideoMediationAdapter.this, AdRequest.ERROR_CODE_INTERNAL_ERROR);
                         break;

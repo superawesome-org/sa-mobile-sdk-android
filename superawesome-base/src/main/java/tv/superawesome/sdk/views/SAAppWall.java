@@ -356,17 +356,22 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
                         @Override
                         public void saDidLoadAd(SAResponse response) {
 
-                            // put the correct value
-                            if (response.isValid()) {
-                                responses.put(placementId, response);
+                            if (response.status != 200) {
+                                listener.onEvent(placementId, SAEvent.adFailedToLoad);
                             }
-                            // remove existing
                             else {
-                                responses.remove(placementId);
-                            }
+                                // put the correct value
+                                if (response.isValid()) {
+                                    responses.put(placementId, response);
+                                }
+                                // remove existing
+                                else {
+                                    responses.remove(placementId);
+                                }
 
-                            // call listener
-                            listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                                // call listener
+                                listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adEmpty);
+                            }
                         }
                     });
                 }

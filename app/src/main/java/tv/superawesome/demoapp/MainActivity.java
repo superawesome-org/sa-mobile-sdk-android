@@ -132,13 +132,15 @@ public class MainActivity extends Activity {
                 new PlacementItem("CPM Scalable Interstitial 7", 645, Type.INTERSTITIAL),
                 new PlacementItem("CPM Scrollable Interstitial 8", 653, Type.INTERSTITIAL),
                 new PlacementItem("CPM Interstitial 9 (Tag)", 626, Type.INTERSTITIAL),
+                new PlacementItem("Popstitial 700", 700, Type.INTERSTITIAL),
+                new PlacementItem("400 Interstitial", 702, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("CPM Preroll 1 (Video)", 628, Type.VIDEO),
                 new PlacementItem("CPM Preroll 2 (Video)", 629, Type.VIDEO),
                 new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
                 new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),
                 new PlacementItem("CPI Preroll 1 (Video)", 627, Type.VIDEO),
-                new PlacementItem("Level 5 CPI Test (Video)", 33766, Type.VIDEO),
+                new PlacementItem("Beano CPI Test (Video)", 33766, Type.VIDEO),
                 new HeaderItem("App Wall"),
                 new PlacementItem("CPI AppWall 1 (Images)", 633, Type.APPWALL)
         );

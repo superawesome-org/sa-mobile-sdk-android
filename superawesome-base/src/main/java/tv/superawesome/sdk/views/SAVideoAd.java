@@ -479,22 +479,27 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                         @Override
                         public void saDidLoadAd(SAResponse response) {
 
-                            // find out the real valid
-                            boolean isValid = response.isValid();
-                            SAAd first = isValid ? response.ads.get(0) : null;
-                            isValid = first != null && isValid && first.creative.details.media.isDownloaded;
-
-                            // put the correct value
-                            if (isValid) {
-                                ads.put(placementId, first);
+                            if (response.status != 200) {
+                                listener.onEvent(placementId, SAEvent.adFailedToLoad);
                             }
-                            // remove existing
                             else {
-                                ads.remove(placementId);
-                            }
+                                // find out the real valid
+                                boolean isValid = response.isValid();
+                                SAAd first = isValid ? response.ads.get(0) : null;
+                                isValid = first != null && isValid && first.creative.details.media.isDownloaded;
 
-                            // call listener
-                            listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                                // put the correct value
+                                if (isValid) {
+                                    ads.put(placementId, first);
+                                }
+                                // remove existing
+                                else {
+                                    ads.remove(placementId);
+                                }
+
+                                // call listener
+                                listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                            }
                         }
                     });
                 }

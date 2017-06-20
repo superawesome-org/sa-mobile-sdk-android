@@ -64,13 +64,14 @@ public class SAAIRBannerAd {
             final String airName2 = airName;
 
             if (airName2 != null) {
-                SABannerAd bannerAd = new SABannerAd(context);
+                final SABannerAd bannerAd = new SABannerAd(context);
                 bannerAd.setId(SAUtils.randomNumberBetween(1000000, 1500000));
                 bannerAd.setListener(new SAInterface() {
                     @Override
                     public void onEvent(int placementId, SAEvent event) {
                         switch (event) {
                             case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adLoaded.toString()); break;
+                            case adEmpty: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adEmpty.toString()); break;
                             case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adFailedToLoad.toString()); break;
                             case adAlreadyLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adAlreadyLoaded.toString()); break;
                             case adShown: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adShown.toString()); break;

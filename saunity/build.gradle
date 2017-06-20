@@ -32,4 +32,5 @@ repositories {
 
 dependencies {
     compile project(':superawesome-base')
+    compile files('libs/unity-classes.jar')
 }

@@ -130,9 +130,15 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                 loader.loadAd(placementId, session, new SALoaderInterface() {
                     @Override
                     public void saDidLoadAd(SAResponse response) {
-                        canPlay = response.isValid ();
-                        setAd(response.isValid () ? response.ads.get(0) : null);
-                        listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+
+                        if (response.status != 200) {
+                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                        }
+                        else {
+                            canPlay = response.isValid();
+                            setAd(response.isValid() ? response.ads.get(0) : null);
+                            listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                        }
                     }
                 });
             }

@@ -103,6 +103,7 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
                         }
                         break;
                     }
+                    case adEmpty:
                     case adFailedToLoad: {
                         if (listener != null) {
                             listener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);

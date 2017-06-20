@@ -214,17 +214,22 @@ public class SAInterstitialAd extends Activity {
                         @Override
                         public void saDidLoadAd(SAResponse response) {
 
-                            // put the correct value
-                            if (response.isValid()) {
-                                ads.put(placementId, response.ads.get(0));
+                            if (response.status != 200) {
+                                listener.onEvent(placementId, SAEvent.adFailedToLoad);
                             }
-                            // remove existing
                             else {
-                                ads.remove(placementId);
-                            }
+                                // put the correct value
+                                if (response.isValid()) {
+                                    ads.put(placementId, response.ads.get(0));
+                                }
+                                // remove existing
+                                else {
+                                    ads.remove(placementId);
+                                }
 
-                            // call listener
-                            listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adFailedToLoad);
+                                // call listener
+                                listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adEmpty);
+                            }
                         }
                     });
                 }

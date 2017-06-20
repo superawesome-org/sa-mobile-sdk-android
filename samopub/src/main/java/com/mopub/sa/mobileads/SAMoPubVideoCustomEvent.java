@@ -210,6 +210,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
                         onRewardedVideoLoadSuccess(SAMoPubVideoCustomEvent.class, moPubId);
                         break;
                     }
+                    case adEmpty:
                     case adFailedToLoad: {
                         onRewardedVideoLoadFailure(SAMoPubVideoCustomEvent.class, moPubId, MoPubErrorCode.VIDEO_NOT_AVAILABLE);
                         break;

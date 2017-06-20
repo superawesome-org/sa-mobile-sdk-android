@@ -49,6 +49,7 @@ public class SAAIRVideoAd {
                 public void onEvent(int placementId, SAEvent event) {
                     switch (event) {
                         case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adLoaded.toString()); break;
+                        case adEmpty: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adEmpty.toString()); break;
                         case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adFailedToLoad.toString()); break;
                         case adAlreadyLoaded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adAlreadyLoaded.toString()); break;
                         case adShown: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adShown.toString()); break;

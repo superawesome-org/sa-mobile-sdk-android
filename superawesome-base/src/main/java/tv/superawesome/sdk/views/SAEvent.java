@@ -7,6 +7,7 @@ package tv.superawesome.sdk.views;
 /**
  * This enum holds all the possible callback values that an ad sends during its lifetime
  *  - adLoaded:         ad was loaded successfully and is ready to be displayed
+ *  - adEmpty:          ad was empty
  *  - adFailedToLoad:   ad was not loaded successfully and will not be able to play
  *  - adAlreadyLoaded   ad was previously loaded in an interstitial, video or app wall queue
  *  - adShown:          triggered once when the ad first displays
@@ -20,6 +21,12 @@ public enum SAEvent {
         @Override
         public String toString() {
             return "adLoaded";
+        }
+    },
+    adEmpty {
+        @Override
+        public String toString() {
+            return "adEmpty";
         }
     },
     adFailedToLoad {
@@ -64,5 +71,4 @@ public enum SAEvent {
             return "adClosed";
         }
     }
-
 }

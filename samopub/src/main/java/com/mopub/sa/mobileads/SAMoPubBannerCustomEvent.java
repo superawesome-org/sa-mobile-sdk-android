@@ -92,6 +92,7 @@ public class SAMoPubBannerCustomEvent extends CustomEventBanner {
                         bannerAd.play(context);
                         break;
                     }
+                    case adEmpty:
                     case adFailedToLoad:
                         break;
                     case adShown:
