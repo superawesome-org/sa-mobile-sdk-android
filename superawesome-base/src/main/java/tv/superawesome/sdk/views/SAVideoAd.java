@@ -480,6 +480,12 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                         public void saDidLoadAd(SAResponse response) {
 
                             if (response.status != 200) {
+                                //
+                                // remove from here
+                                ads.remove(placementId);
+
+                                //
+                                // send callback
                                 listener.onEvent(placementId, SAEvent.adFailedToLoad);
                             }
                             else {
