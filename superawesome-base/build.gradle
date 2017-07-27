@@ -53,7 +53,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'SuperAwesome Base Mobile SDK for Android'
+                name 'SADefaults Base Mobile SDK for Android'
                 url siteUrl
                 licenses {
                     license {
@@ -89,7 +89,6 @@ dependencies {
     compile 'tv.superawesome.lib.sautils:sautils:0.3.5'
     compile 'tv.superawesome.lib.saevents:saevents:1.1.1'
     compile 'tv.superawesome.lib.savideoplayer:savideoplayer:0.3.8'
-    compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.4.8'
+    compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.4.9'
     compile 'tv.superawesome.lib.saadloader:saadloader:1.1.2'
-    compile 'tv.superawesome.lib.sacpi:sacpi:1.1.1'
 }

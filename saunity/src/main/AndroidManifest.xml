@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tv.superawesome.plugins.unity">
+    package="tv.superawesome.plugins.publisher.unity">
 
     <application
         android:allowBackup="true"

@@ -36,27 +36,27 @@ public class MoPubActivity extends Activity {
         banner.setBannerAdListener(new MoPubView.BannerAdListener() {
             @Override
             public void onBannerLoaded(MoPubView banner) {
-                Log.d("SuperAwesome/MoPub", "Banner ad loaded");
+                Log.d("SADefaults/MoPub", "Banner ad loaded");
             }
 
             @Override
             public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
-                Log.d("SuperAwesome/MoPub", "Banner ad failed");
+                Log.d("SADefaults/MoPub", "Banner ad failed");
             }
 
             @Override
             public void onBannerClicked(MoPubView banner) {
-                Log.d("SuperAwesome/MoPub", "Banner ad clicked");
+                Log.d("SADefaults/MoPub", "Banner ad clicked");
             }
 
             @Override
             public void onBannerExpanded(MoPubView banner) {
-                Log.d("SuperAwesome/MoPub", "Banner ad expanded");
+                Log.d("SADefaults/MoPub", "Banner ad expanded");
             }
 
             @Override
             public void onBannerCollapsed(MoPubView banner) {
-                Log.d("SuperAwesome/MoPub", "Banner ad collapsed");
+                Log.d("SADefaults/MoPub", "Banner ad collapsed");
             }
         });
         banner.loadAd();
@@ -65,27 +65,27 @@ public class MoPubActivity extends Activity {
         interstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override
             public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                Log.d("SuperAwesome/MoPub", "Interstitial loaded");
+                Log.d("SADefaults/MoPub", "Interstitial loaded");
             }
 
             @Override
             public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
-                Log.d("SuperAwesome/MoPub", "Interstitial failed");
+                Log.d("SADefaults/MoPub", "Interstitial failed");
             }
 
             @Override
             public void onInterstitialShown(MoPubInterstitial interstitial) {
-                Log.d("SuperAwesome/MoPub", "Interstitial shown");
+                Log.d("SADefaults/MoPub", "Interstitial shown");
             }
 
             @Override
             public void onInterstitialClicked(MoPubInterstitial interstitial) {
-                Log.d("SuperAwesome/MoPub", "Interstitial clicked");
+                Log.d("SADefaults/MoPub", "Interstitial clicked");
             }
 
             @Override
             public void onInterstitialDismissed(MoPubInterstitial interstitial) {
-                Log.d("SuperAwesome/MoPub", "Interstitial dimissed");
+                Log.d("SADefaults/MoPub", "Interstitial dimissed");
             }
         });
         interstitial.load();
@@ -95,37 +95,37 @@ public class MoPubActivity extends Activity {
         MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
             @Override
             public void onRewardedVideoLoadSuccess(@NonNull String adUnitId) {
-                Log.d("SuperAwesome/MoPub", "Video loaded");
+                Log.d("SADefaults/MoPub", "Video loaded");
             }
 
             @Override
             public void onRewardedVideoLoadFailure(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
-                Log.d("SuperAwesome/MoPub", "Video failure");
+                Log.d("SADefaults/MoPub", "Video failure");
             }
 
             @Override
             public void onRewardedVideoStarted(@NonNull String adUnitId) {
-                Log.d("SuperAwesome/MoPub", "Video started");
+                Log.d("SADefaults/MoPub", "Video started");
             }
 
             @Override
             public void onRewardedVideoPlaybackError(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
-                Log.d("SuperAwesome/MoPub", "Video errpr");
+                Log.d("SADefaults/MoPub", "Video errpr");
             }
 
             @Override
             public void onRewardedVideoClicked(@NonNull String adUnitId) {
-                Log.d("SuperAwesome/MoPub", "Video clicked");
+                Log.d("SADefaults/MoPub", "Video clicked");
             }
 
             @Override
             public void onRewardedVideoClosed(@NonNull String adUnitId) {
-                Log.d("SuperAwesome/MoPub", "Video closed");
+                Log.d("SADefaults/MoPub", "Video closed");
             }
 
             @Override
             public void onRewardedVideoCompleted(@NonNull Set<String> adUnitIds, @NonNull MoPubReward reward) {
-                Log.d("SuperAwesome/MoPub", "Video completed");
+                Log.d("SADefaults/MoPub", "Video completed");
             }
         });
         MoPubRewardedVideos.loadRewardedVideo(kVIDEO_ID);
@@ -136,7 +136,7 @@ public class MoPubActivity extends Activity {
         if (interstitial.isReady()) {
             interstitial.show();
         } else {
-            Log.d("SuperAwesome/MoPub", "Interstitial not ready yet");
+            Log.d("SADefaults/MoPub", "Interstitial not ready yet");
         }
     }
 
@@ -144,7 +144,7 @@ public class MoPubActivity extends Activity {
         if (MoPubRewardedVideos.hasRewardedVideo(kVIDEO_ID)) {
             MoPubRewardedVideos.showRewardedVideo(kVIDEO_ID);
         } else {
-            Log.d("SuperAwesome/MoPub", "Video not ready yet");
+            Log.d("SADefaults/MoPub", "Video not ready yet");
         }
     }
 

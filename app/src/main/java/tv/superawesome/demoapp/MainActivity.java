@@ -19,20 +19,12 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
-import tv.superawesome.lib.saadloader.SALoader;
-import tv.superawesome.lib.saadloader.SALoaderInterface;
-import tv.superawesome.lib.sacpi.SACPI;
-import tv.superawesome.lib.sacpi.SACPIInterface;
-import tv.superawesome.lib.sacpi.install.SAOnce;
-import tv.superawesome.lib.samodelspace.saad.SAResponse;
-import tv.superawesome.lib.sasession.SAConfiguration;
-import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.sdk.views.SAAppWall;
-import tv.superawesome.sdk.views.SABannerAd;
-import tv.superawesome.sdk.views.SAEvent;
-import tv.superawesome.sdk.views.SAInterface;
-import tv.superawesome.sdk.views.SAInterstitialAd;
-import tv.superawesome.sdk.views.SAVideoAd;
+import tv.superawesome.sdk.publisher.SAAppWall;
+import tv.superawesome.sdk.publisher.SABannerAd;
+import tv.superawesome.sdk.publisher.SAEvent;
+import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SAInterstitialAd;
+import tv.superawesome.sdk.publisher.SAVideoAd;
 
 public class MainActivity extends Activity {
 
@@ -42,20 +34,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-//        SAOnce once = new SAOnce(this);
-//        once.resetCPISent();
-//
-//        SASession session = new SASession(this);
-//        session.setConfigurationStaging();
-//
-//        SACPI.getInstance().handleInstall(this, session, new SACPIInterface() {
-//            @Override
-//            public void saDidCountAnInstall(boolean b) {
-//                Log.d("SuperAwesome", "Install event is " + b);
-//            }
-//        });
-
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
 //        myBanner.enableReloadOnStateChange();
         myBanner.setConfigurationStaging();
@@ -64,7 +42,7 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
 
-                Log.d("SuperAwesome", "BANNER AD: " + placementId + " -> Event : " + event);
+                Log.d("SADefaults", "BANNER AD: " + placementId + " -> Event : " + event);
 
                 if (event == SAEvent.adLoaded) {
                     myBanner.play(MainActivity.this);
@@ -78,7 +56,7 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
 
-                Log.d("SuperAwesome", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);
+                Log.d("SADefaults", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);
 
                 if (event == SAEvent.adLoaded) {
                     SAInterstitialAd.play(placementId, MainActivity.this);
@@ -94,7 +72,7 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
 
-                Log.d("SuperAwesome", "VIDEO AD: " + placementId + " -> Event : " + event);
+                Log.d("SADefaults", "VIDEO AD: " + placementId + " -> Event : " + event);
 
                 if (event == SAEvent.adLoaded) {
                     SAVideoAd.play(placementId, MainActivity.this);
@@ -107,7 +85,7 @@ public class MainActivity extends Activity {
             @Override
             public void onEvent(int placementId, SAEvent event) {
 
-                Log.d("SuperAwesome", "APP WALL AD: " + placementId + " -> Event : " + event);
+                Log.d("SADefaults", "APP WALL AD: " + placementId + " -> Event : " + event);
 
                 if (event == SAEvent.adLoaded) {
                     SAAppWall.play(placementId, MainActivity.this);
@@ -134,13 +112,13 @@ public class MainActivity extends Activity {
                 new PlacementItem("CPM Interstitial 9 (Tag)", 626, Type.INTERSTITIAL),
                 new PlacementItem("Popstitial 700", 700, Type.INTERSTITIAL),
                 new PlacementItem("400 Interstitial", 702, Type.INTERSTITIAL),
+                new PlacementItem("Rich Media Video", 715, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("CPM Preroll 1 (Video)", 628, Type.VIDEO),
                 new PlacementItem("CPM Preroll 2 (Video)", 629, Type.VIDEO),
                 new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
                 new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),
                 new PlacementItem("CPI Preroll 1 (Video)", 627, Type.VIDEO),
-                new PlacementItem("Beano CPI Test (Video)", 33766, Type.VIDEO),
                 new HeaderItem("App Wall"),
                 new PlacementItem("CPI AppWall 1 (Images)", 633, Type.APPWALL)
         );

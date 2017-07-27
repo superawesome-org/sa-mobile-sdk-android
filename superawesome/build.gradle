@@ -48,7 +48,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'SuperAwesome Full Mobile SDK for Android'
+                name 'SADefaults Full Mobile SDK for Android'
                 url siteUrl
                 licenses {
                     license {

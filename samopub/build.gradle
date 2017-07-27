@@ -49,7 +49,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'SuperAwesome Mobile SDK for Android with MoPub extension'
+                name 'SADefaults Mobile SDK for Android with MoPub extension'
                 url siteUrl
                 licenses {
                     license {
