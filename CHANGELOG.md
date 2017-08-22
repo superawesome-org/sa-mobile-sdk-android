@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+6.0.2
+ - Updated version file
+ 
 6.0.1
  - Fix an issue with MoPub fallbacks crashing banner type ads
 
