@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+6.0.1
+ - Fix an issue with MoPub fallbacks crashing banner type ads
+
 6.0.0
  - Refactor & rename things
  - Split the SDK to have a more Publisher centric role by eliminating the CPI library (as opposed to the new Advertisers SDK)
