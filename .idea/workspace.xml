@@ -11,60 +11,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83b1f08b-20ca-4f53-bd6e-ecb1c9d33f36" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityVersion.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SADefaults.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVersion.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/sacpi_1_1_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCPI.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityCPI.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnitySuperAwesome.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/SuperAwesome.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/sawebplayer_0_4_8.xml" afterPath="$PROJECT_DIR$/.idea/libraries/sawebplayer_0_4_9.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/admob/SAAdMobBannerCustomEvent.java" afterPath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/publisher/admob/SAAdMobBannerCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/admob/SAAdMobExtras.java" afterPath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/publisher/admob/SAAdMobExtras.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/admob/SAAdMobInterstitialCustomEvent.java" afterPath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/publisher/admob/SAAdMobInterstitialCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/admob/SAAdMobVideoMediationAdapter.java" afterPath="$PROJECT_DIR$/saadmob/src/main/java/tv/superawesome/plugins/publisher/admob/SAAdMobVideoMediationAdapter.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIR.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIR.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRAppWall.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRAppWall.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRBannerAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCallback.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRCallback.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRExtensionContext.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRInterstitialAd.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRInterstitialAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRSuperAwesome.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRVersion.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVideoAd.java" afterPath="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRVideoAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SAMoPub.java" afterPath="$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPub.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SAMoPubBannerCustomEvent.java" afterPath="$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPubBannerCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SAMoPubInterstitialCustomEvent.java" afterPath="$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPubInterstitialCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/samopub/src/main/java/com/mopub/sa/mobileads/SAMoPubVideoCustomEvent.java" afterPath="$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPubVideoCustomEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityAppWall.java" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityAppWall.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityBannerAd.java" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityBannerAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityCallback.java" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityCallback.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityInterstitialAd.java" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityInterstitialAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityVideoAd.java" afterPath="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityVideoAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAAppWall.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAAppWall.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SABannerAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAEvent.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAEvent.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterface.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAInterface.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAInterstitialAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAInterstitialAd.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAOrientation.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAOrientation.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGate.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAParentalGate.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAParentalGateInterface.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAParentalGateInterface.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/views/SAVideoAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/hamcrest_core_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/hamcrest_core_1_1.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/saadloader_1_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/saadloader_1_1_3.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/saevents_1_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/saevents_1_1_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/samoatevents_1_1_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/samoatevents_1_1_2.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_6_9.xml" afterPath="$PROJECT_DIR$/.idea/libraries/samodelspace_0_7_0.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/savastparser_0_6_7.xml" afterPath="$PROJECT_DIR$/.idea/libraries/savastparser_0_6_8.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CHANGELOG.md" afterPath="$PROJECT_DIR$/CHANGELOG.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/AdMobActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/AdMobActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MoPubActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MoPubActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saadmob/build.gradle" afterPath="$PROJECT_DIR$/saadmob/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saadmob/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/saadmob/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saair/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/saair/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samopub/build.gradle" afterPath="$PROJECT_DIR$/samopub/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/samopub/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/samopub/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/saunity/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/saunity/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/build.gradle" afterPath="$PROJECT_DIR$/superawesome-base/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/superawesome-base/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java" afterPath="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superawesome/build.gradle" afterPath="$PROJECT_DIR$/superawesome/build.gradle" />
     </list>
     <ignored path="sa-mobile-sdk-android.iws" />
@@ -105,7 +62,94 @@
           <activation />
         </task>
         <projects_view>
-          <tree_state />
+          <tree_state>
+            <PATH>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ExternalProjectsStructure$RootNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ProjectNode" />
+              </PATH_ELEMENT>
+            </PATH>
+            <PATH>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ExternalProjectsStructure$RootNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ProjectNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ModuleNode" />
+              </PATH_ELEMENT>
+            </PATH>
+            <PATH>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ExternalProjectsStructure$RootNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ProjectNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ModuleNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="Tasks" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.TasksNode" />
+              </PATH_ELEMENT>
+            </PATH>
+            <PATH>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ExternalProjectsStructure$RootNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ProjectNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ModuleNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="Tasks" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.TasksNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="publishing" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.TasksNode$1" />
+              </PATH_ELEMENT>
+            </PATH>
+            <PATH>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ExternalProjectsStructure$RootNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ProjectNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="sa-mobile-sdk-android" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ModuleNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="Tasks" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.TasksNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="other" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.TasksNode$1" />
+              </PATH_ELEMENT>
+            </PATH>
+          </tree_state>
         </projects_view>
       </state>
     </system>
@@ -115,73 +159,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
+      <file leaf-file-name="SABannerAd.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-92">
-              <caret line="42" column="33" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
+            <state relative-caret-position="402">
+              <caret line="298" column="20" selection-start-line="298" selection-start-column="20" selection-end-line="298" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SAAIRVersion.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRVersion.java">
+      <file leaf-file-name="local.properties" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/local.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="25" column="56" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="56" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAAIRCallback.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRCallback.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAAIRBannerAd.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRBannerAd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="975">
-              <caret line="211" column="39" selection-start-line="211" selection-start-column="39" selection-end-line="211" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAAIRInterstitialAd.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRInterstitialAd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2265">
-              <caret line="171" column="52" selection-start-line="171" selection-start-column="52" selection-end-line="171" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAUnityVersion.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityVersion.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="22" column="57" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SAUnityAppWall.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityAppWall.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+            <state relative-caret-position="240">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -190,31 +182,78 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/superawesome/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+            <state relative-caret-position="276">
+              <caret line="84" column="60" selection-start-line="84" selection-start-column="60" selection-end-line="84" selection-end-column="60" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/saadmob/src/main/AndroidManifest.xml">
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <state relative-caret-position="463">
+              <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
               <folding />
             </state>
           </provider>
-          <provider editor-type-id="android-manifest">
-            <state />
+        </entry>
+      </file>
+      <file leaf-file-name="SAWebPlayer.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sawebplayer/sawebplayer/0.4.9/jars/classes.jar!/tv/superawesome/lib/sawebplayer/SAWebPlayer.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="93">
+              <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="local.properties" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/local.properties">
+      <file leaf-file-name="SAWebClient.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sawebplayer/sawebplayer/0.4.9/jars/classes.jar!/tv/superawesome/lib/sawebplayer/SAWebClient.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+            <state relative-caret-position="102">
+              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAUnityBannerAd.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityBannerAd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1290">
+              <caret line="107" column="57" selection-start-line="107" selection-start-column="57" selection-end-line="107" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAUtils.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sautils/sautils/0.3.5/jars/classes.jar!/tv/superawesome/lib/sautils/SAUtils.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1440">
+              <caret line="122" column="19" selection-start-line="122" selection-start-column="19" selection-end-line="122" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAAIRBannerAd.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRBannerAd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="478">
+              <caret line="287" column="120" selection-start-line="287" selection-start-column="16" selection-end-line="287" selection-end-column="120" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SAMoPub.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPub.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="47" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -298,11 +337,6 @@
                 <option name="name" value="projects" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="packageReleaseResources" />
               </ExternalTaskPojo>
@@ -345,11 +379,6 @@
                 <option name="description" value="Prepare com.mopub:mopub-sdk-native-static:4.14.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="prepareComMopubMopubSdkNativeStatic4140Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesome574Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Runs all device checks using Device Providers and Test Servers." />
@@ -395,11 +424,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by root project 'sa-mobile-sdk-android'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="components" />
@@ -427,11 +451,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
@@ -533,6 +552,11 @@
                 <option name="description" value="Installs the android (on device) tests for the Debug build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="installDebugAndroidTest" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:samoatevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSamoatevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Runs all device checks on currently connected devices." />
@@ -666,6 +690,11 @@
                 <option name="name" value="jarDebugClasses" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesome600Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Installs the Debug build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="installDebug" />
@@ -733,6 +762,11 @@
                 <option name="name" value="prepareDebugUnitTestDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="generateReleaseResources" />
               </ExternalTaskPojo>
@@ -755,6 +789,11 @@
                 <option name="name" value="transformNative_libsWithSyncJniLibsForDebug" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:samopub:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSamopub600Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="generateDebugBuildConfig" />
               </ExternalTaskPojo>
@@ -772,18 +811,8 @@
                 <option name="name" value="mergeDebugProguardFiles" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles a bundle containing the library in debug." />
@@ -817,6 +846,11 @@
                 <option name="description" value="Displays the configuration model of root project 'sa-mobile-sdk-android'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the tasks runnable from root project 'sa-mobile-sdk-android' (some of the displayed tasks may belong to subprojects)." />
@@ -904,6 +938,11 @@
                 <option name="name" value="assembleDebug" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Extracts Android annotations for the debug variant into the archive file" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="extractDebugAnnotations" />
@@ -951,11 +990,6 @@
                 <option name="description" value="Prepare com.google.android.gms:play-services-clearcut:9.8.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="prepareComGoogleAndroidGmsPlayServicesClearcut980Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:saadmob:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSaadmob574Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
@@ -1026,11 +1060,6 @@
                 <option name="name" value="generateDebugAndroidTestResValues" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:samopub:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSamopub574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the Android dependencies of the project." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="androidDependencies" />
@@ -1084,11 +1113,6 @@
                 <option name="name" value="connectedAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:samoatevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSamoatevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="transformClassesWithDexForRelease" />
               </ExternalTaskPojo>
@@ -1116,6 +1140,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="transformResourcesWithMergeJavaResForDebug" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
@@ -1183,6 +1212,16 @@
                 <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAds1024Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:saadmob:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSaadmob600Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase600Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="build" />
@@ -1225,19 +1264,9 @@
                 <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAdsLite1024Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the sub-projects of project ':app'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="projects" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase574Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
@@ -1246,11 +1275,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
@@ -1294,6 +1318,11 @@
                 <option name="name" value="model" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sajsonparser:sajsonparser:0.2.7" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="prepareTvSuperawesomeLibSajsonparserSajsonparser027Library" />
@@ -1320,11 +1349,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="incrementalDebugJavaCompilationSafeguard" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesome574Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Runs all device checks using Device Providers and Test Servers." />
@@ -1396,11 +1420,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by project ':app'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="components" />
@@ -1432,6 +1451,11 @@
                 <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="transformClassesWithDexForDebug" />
               </ExternalTaskPojo>
@@ -1442,11 +1466,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
@@ -1568,11 +1587,6 @@
                 <option name="name" value="prepareComGoogleAndroidGmsPlayServicesBase1024Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:saadmob:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSaadmob574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="incrementalDebugUnitTestJavaCompilationSafeguard" />
               </ExternalTaskPojo>
@@ -1597,6 +1611,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="mergeDebugAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:samoatevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSamoatevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare com.android.support:animated-vector-drawable:23.4.0" />
@@ -1672,11 +1691,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="mergeReleaseShaders" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:samopub:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSamopub574Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the Android dependencies of the project." />
@@ -1796,11 +1810,6 @@
                 <option name="name" value="connectedAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:samoatevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSamoatevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sautils:sautils:0.3.5" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="prepareTvSuperawesomeLibSautilsSautils035Library" />
@@ -1812,6 +1821,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="transformClassesWithDexForRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesome600Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Installs the Debug build." />
@@ -1855,6 +1869,11 @@
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="lintRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
@@ -1924,6 +1943,11 @@
                 <option name="name" value="prepareComMopubMopubSdkRewardedvideo4140Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Prepare com.mopub:mopub-sdk-base:4.14.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="prepareComMopubMopubSdkBase4140Library" />
@@ -1970,8 +1994,23 @@
                 <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAds1024Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:samopub:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSamopub600Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="generateDebugBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:saadmob:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSaadmob600Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase600Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project." />
@@ -2029,11 +2068,6 @@
                 <option name="name" value="prepareComGoogleAndroidGmsPlayServicesAdsLite1024Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the sub-projects of project ':saadmob'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="projects" />
@@ -2043,22 +2077,12 @@
                 <option name="name" value="packageReleaseResources" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="validateSigningDebugAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
@@ -2109,6 +2133,11 @@
                 <option name="description" value="Displays the configuration model of project ':saadmob'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sajsonparser:sajsonparser:0.2.7" />
@@ -2211,11 +2240,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by project ':saadmob'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="components" />
@@ -2246,6 +2270,11 @@
                 <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="preDebugAndroidTestBuild" />
               </ExternalTaskPojo>
@@ -2257,11 +2286,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
@@ -2605,6 +2629,11 @@
                 <option name="name" value="lintRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="buildDependents" />
@@ -2666,6 +2695,11 @@
                 <option name="name" value="prepareDebugUnitTestDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="generateReleaseResources" />
               </ExternalTaskPojo>
@@ -2703,6 +2737,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
                 <option name="name" value="generateDebugBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saadmob" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase600Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project." />
@@ -2755,11 +2794,6 @@
                 <option name="name" value="mergeDebugProguardFiles" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the sub-projects of project ':saair'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="projects" />
@@ -2769,22 +2803,12 @@
                 <option name="name" value="packageReleaseResources" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="validateSigningDebugAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
@@ -2830,6 +2854,11 @@
                 <option name="description" value="Displays the configuration model of project ':saair'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sajsonparser:sajsonparser:0.2.7" />
@@ -2927,11 +2956,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by project ':saair'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="components" />
@@ -2962,17 +2986,17 @@
                 <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="preDebugAndroidTestBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
@@ -3286,6 +3310,11 @@
                 <option name="name" value="lintRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="buildDependents" />
@@ -3342,6 +3371,11 @@
                 <option name="name" value="prepareDebugUnitTestDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="generateReleaseResources" />
               </ExternalTaskPojo>
@@ -3374,6 +3408,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
                 <option name="name" value="generateDebugBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saair" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase600Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project." />
@@ -3426,11 +3465,6 @@
                 <option name="name" value="mergeDebugProguardFiles" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the sub-projects of project ':samopub'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="projects" />
@@ -3440,22 +3474,12 @@
                 <option name="name" value="packageReleaseResources" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="validateSigningDebugAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
@@ -3501,6 +3525,11 @@
                 <option name="description" value="Displays the configuration model of project ':samopub'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sajsonparser:sajsonparser:0.2.7" />
@@ -3613,11 +3642,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by project ':samopub'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="components" />
@@ -3653,6 +3677,11 @@
                 <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="preDebugAndroidTestBuild" />
               </ExternalTaskPojo>
@@ -3664,11 +3693,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
@@ -4012,6 +4036,11 @@
                 <option name="name" value="lintRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="buildDependents" />
@@ -4078,6 +4107,11 @@
                 <option name="name" value="prepareComMopubMopubSdkRewardedvideo4140Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Prepare com.mopub:mopub-sdk-base:4.14.0" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="prepareComMopubMopubSdkBase4140Library" />
@@ -4115,6 +4149,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
                 <option name="name" value="generateDebugBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/samopub" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase600Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project." />
@@ -4167,11 +4206,6 @@
                 <option name="name" value="mergeDebugProguardFiles" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the sub-projects of project ':saunity'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="projects" />
@@ -4181,22 +4215,12 @@
                 <option name="name" value="packageReleaseResources" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="validateSigningDebugAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
@@ -4242,6 +4266,11 @@
                 <option name="description" value="Displays the configuration model of project ':saunity'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sajsonparser:sajsonparser:0.2.7" />
@@ -4339,11 +4368,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by project ':saunity'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="components" />
@@ -4374,17 +4398,17 @@
                 <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="preDebugAndroidTestBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
@@ -4698,6 +4722,11 @@
                 <option name="name" value="lintRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="buildDependents" />
@@ -4754,6 +4783,11 @@
                 <option name="name" value="prepareDebugUnitTestDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="generateReleaseResources" />
               </ExternalTaskPojo>
@@ -4786,6 +4820,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
                 <option name="name" value="generateDebugBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/saunity" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase600Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project." />
@@ -4838,11 +4877,6 @@
                 <option name="name" value="mergeDebugProguardFiles" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the sub-projects of project ':superawesome'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="projects" />
@@ -4852,22 +4886,12 @@
                 <option name="name" value="packageReleaseResources" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:5.7.4" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
-                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase574Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="validateSigningDebugAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
@@ -4913,6 +4937,11 @@
                 <option name="description" value="Displays the configuration model of project ':superawesome'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sajsonparser:sajsonparser:0.2.7" />
@@ -5015,11 +5044,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by project ':superawesome'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="components" />
@@ -5050,6 +5074,11 @@
                 <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="preDebugAndroidTestBuild" />
               </ExternalTaskPojo>
@@ -5061,11 +5090,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
@@ -5194,6 +5218,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="mergeDebugAssets" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:samoatevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSamoatevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Runs all device checks on currently connected devices." />
@@ -5376,11 +5405,6 @@
                 <option name="name" value="connectedAndroidTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:samoatevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSamoatevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sautils:sautils:0.3.5" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="prepareTvSuperawesomeLibSautilsSautils035Library" />
@@ -5417,6 +5441,11 @@
                 <option name="description" value="Runs lint on the Release build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="lintRelease" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
@@ -5490,6 +5519,11 @@
                 <option name="name" value="prepareDebugUnitTestDependencies" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="generateReleaseResources" />
               </ExternalTaskPojo>
@@ -5522,6 +5556,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
                 <option name="name" value="generateDebugBuildConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.sdk.publisher:superawesome-base:6.0.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome" />
+                <option name="name" value="prepareTvSuperawesomeSdkPublisherSuperawesomeBase600Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project." />
@@ -5574,11 +5613,6 @@
                 <option name="name" value="mergeDebugProguardFiles" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.1" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
-                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents111Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the sub-projects of project ':superawesome-base'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="projects" />
@@ -5594,11 +5628,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="assembleReleaseUnitTest" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.6.9" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
-                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace069Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
@@ -5644,6 +5673,11 @@
                 <option name="description" value="Displays the configuration model of project ':superawesome-base'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saevents:saevents:1.1.2" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
+                <option name="name" value="prepareTvSuperawesomeLibSaeventsSaevents112Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Prepare tv.superawesome.lib.sajsonparser:sajsonparser:0.2.7" />
@@ -5746,11 +5780,6 @@
                 <option name="name" value="compileDebugAndroidTestJavaWithJavac" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.2" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
-                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader112Library" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the components produced by project ':superawesome-base'. [incubating]" />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="components" />
@@ -5781,17 +5810,17 @@
                 <option name="name" value="transformResourcesWithMergeJavaResForReleaseUnitTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.8" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
+                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser068Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="preDebugAndroidTestBuild" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="processDebugAndroidTestJavaRes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare tv.superawesome.lib.savastparser:savastparser:0.6.7" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
-                <option name="name" value="prepareTvSuperawesomeLibSavastparserSavastparser067Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
@@ -6110,6 +6139,11 @@
                 <option name="name" value="lintRelease" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.saadloader:saadloader:1.1.3" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
+                <option name="name" value="prepareTvSuperawesomeLibSaadloaderSaadloader113Library" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Assembles and tests this project and all projects that depend on it." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="buildDependents" />
@@ -6164,6 +6198,11 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
                 <option name="name" value="prepareDebugUnitTestDependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Prepare tv.superawesome.lib.samodelspace:samodelspace:0.7.0" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
+                <option name="name" value="prepareTvSuperawesomeLibSamodelspaceSamodelspace070Library" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/superawesome-base" />
@@ -6246,7 +6285,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="13476905448000" />
+        <entry key="$PROJECT_DIR$" value="13478942097000" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -7254,7 +7293,6 @@
       <list>
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/AdMobActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MoPubActivity.java" />
         <option value="$PROJECT_DIR$/samopub/build.gradle" />
         <option value="$PROJECT_DIR$/saadmob/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_admob.xml" />
@@ -7275,7 +7313,6 @@
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCallback.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRExtensionContext.java" />
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityCallback.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVersion.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SuperAwesome.java" />
@@ -7283,12 +7320,8 @@
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnitySuperAwesome.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRVersion.java" />
         <option value="$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityVersion.java" />
-        <option value="$PROJECT_DIR$/superawesome-base/build.gradle" />
-        <option value="$PROJECT_DIR$/superawesome/build.gradle" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SADefaults.java" />
-        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAInterstitialAd.java" />
-        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java" />
         <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAAppWall.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRAppWall.java" />
         <option value="$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRBannerAd.java" />
@@ -7302,13 +7335,18 @@
         <option value="$PROJECT_DIR$/samopub/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/saair/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/saadmob/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/superawesome-base/build.gradle" />
+        <option value="$PROJECT_DIR$/superawesome/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MoPubActivity.java" />
+        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java" />
+        <option value="$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java" />
         <option value="$PROJECT_DIR$/local.properties" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1440" />
-    <option name="width" value="1600" />
+    <option name="width" value="1440" />
     <option name="height" value="900" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -7337,6 +7375,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -7357,6 +7396,14 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="superawesome-base" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -7386,19 +7433,11 @@
               <option name="myItemId" value="superawesome-base" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="sa-mobile-sdk-android" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="superawesome" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -7439,8 +7478,16 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="unity" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SAUnityBannerAd.java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -7477,20 +7524,6 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="samopub" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sa-mobile-sdk-android" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="saair" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
@@ -7519,54 +7552,8 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="saair" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sa-mobile-sdk-android" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="saadmob" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sa-mobile-sdk-android" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saadmob" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="admob" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sa-mobile-sdk-android" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saadmob" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -7577,6 +7564,96 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="demoapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="demoapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MainActivity.java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sa-mobile-sdk-android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -7616,7 +7693,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -7625,7 +7701,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../sa-mobile-sdk-advertiser-android/settings.gradle" />
     <property name="UI_DESIGNER_EDITOR_MODE.NlPaletteManager-NlPreviewForm.SHOW" value="false" />
-    <property name="device.picker.selection" value="07da743a0245eb47" />
+    <property name="device.picker.selection" value="192.168.65.101:5555" />
     <property name="android.project.structure.last.selected" value="Project" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="show.do.not.ask.upgrade.gradle.plugin.version" value="2.2.2" />
@@ -8083,7 +8159,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1440" y="0" width="1600" height="900" extended-state="0" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -8095,21 +8171,21 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.62903225" sideWeight="0.5143061" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.58560795" sideWeight="0.4914163" order="7" side_tool="false" content_ui="tabs" x="4" y="23" width="1436" height="877" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33995038" sideWeight="0.48569384" order="2" side_tool="false" content_ui="tabs" x="21" y="187" width="1398" height="525" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33995038" sideWeight="0.48569384" order="2" side_tool="false" content_ui="tabs" x="21" y="187" width="1398" height="525" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287841" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63151366" sideWeight="0.50834405" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2856226" sideWeight="0.49503723" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32331902" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31831187" sideWeight="0.49503723" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3597997" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297568" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44168735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44168735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -8150,82 +8226,16 @@
           <properties />
           <option name="timeStamp" value="56" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java</url>
-          <line>178</line>
-          <properties />
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
       </breakpoints>
       <option name="time" value="63" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/saair/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="24" selection-start-line="0" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/air/SAAIRCPI.java" />
-    <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/unity/SAUnityCPI.java" />
-    <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/proguard-rules.pro">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saadmob/proguard-rules.pro">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/saair/proguard-rules.pro">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/samopub/proguard-rules.pro">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gradle.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/saunity/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8233,7 +8243,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8241,14 +8250,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="48" column="7" selection-start-line="48" selection-start-column="7" selection-end-line="48" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPub.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -8259,18 +8260,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="78" column="17" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/samopub/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-662">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8278,7 +8271,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="50" column="1" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8286,7 +8278,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="61" column="71" selection-start-line="61" selection-start-column="71" selection-end-line="61" selection-end-column="71" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8297,27 +8288,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="72" column="55" selection-start-line="72" selection-start-column="55" selection-end-line="72" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="95" column="33" selection-start-line="95" selection-start-column="33" selection-end-line="95" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAAppWall.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="69" column="64" selection-start-line="69" selection-start-column="64" selection-end-line="69" selection-end-column="64" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8346,7 +8320,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="133" column="41" selection-start-line="133" selection-start-column="41" selection-end-line="133" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8354,7 +8327,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8362,14 +8334,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-182">
           <caret line="175" column="52" selection-start-line="175" selection-start-column="52" selection-end-line="175" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPubBannerCustomEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="64" column="50" selection-start-line="64" selection-start-column="50" selection-end-line="64" selection-end-column="50" />
         </state>
       </provider>
     </entry>
@@ -8391,7 +8355,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="433">
           <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8420,7 +8383,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8483,7 +8445,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -8491,17 +8452,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="22" column="57" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="57" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRVersion.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
+        <state relative-caret-position="225">
           <caret line="25" column="56" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -8509,46 +8466,169 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRInterstitialAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2310">
+          <caret line="171" column="52" selection-start-line="171" selection-start-column="52" selection-end-line="171" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPubBannerCustomEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="36" column="55" selection-start-line="36" selection-start-column="55" selection-end-line="36" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/tv/superawesome/demoapp/MoPubActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1785">
+          <caret line="137" column="47" selection-start-line="137" selection-start-column="47" selection-end-line="137" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SAVideoAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4845">
+          <caret line="362" column="77" selection-start-line="362" selection-start-column="8" selection-end-line="362" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/values/attrs.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/saunity/src/main/java/tv/superawesome/plugins/publisher/unity/SAUnityBannerAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1290">
+          <caret line="107" column="57" selection-start-line="107" selection-start-column="57" selection-end-line="107" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sautils/sautils/0.3.5/jars/classes.jar!/tv/superawesome/lib/sautils/SAUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1440">
+          <caret line="122" column="19" selection-start-line="122" selection-start-column="19" selection-end-line="122" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRBannerAd.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="211" column="39" selection-start-line="211" selection-start-column="39" selection-end-line="211" selection-end-column="39" />
+        <state relative-caret-position="478">
+          <caret line="287" column="120" selection-start-line="287" selection-start-column="16" selection-end-line="287" selection-end-column="120" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/saair/src/main/java/tv/superawesome/plugins/publisher/air/SAAIRInterstitialAd.java">
+    <entry file="file://$PROJECT_DIR$/samopub/src/main/java/tv/superawesome/plugins/publisher/mopub/SAMoPub.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2265">
-          <caret line="171" column="52" selection-start-line="171" selection-start-column="52" selection-end-line="171" selection-end-column="52" />
+        <state relative-caret-position="0">
+          <caret line="0" column="47" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sawebplayer/sawebplayer/0.4.9/jars/classes.jar!/tv/superawesome/lib/sawebplayer/SAWebClient.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/superawesome-base/build/intermediates/exploded-aar/tv.superawesome.lib.sawebplayer/sawebplayer/0.4.9/jars/classes.jar!/tv/superawesome/lib/sawebplayer/SAWebPlayer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+        <state relative-caret-position="276">
+          <caret line="84" column="60" selection-start-line="84" selection-start-column="60" selection-end-line="84" selection-end-column="60" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/superawesome-base/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-92">
-          <caret line="42" column="33" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
+        <state relative-caret-position="463">
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superawesome-base/src/main/java/tv/superawesome/sdk/publisher/SABannerAd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="298" column="20" selection-start-line="298" selection-start-column="20" selection-end-line="298" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/local.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+        <state relative-caret-position="240">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
         </state>
       </provider>

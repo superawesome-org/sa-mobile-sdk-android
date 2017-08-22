@@ -297,7 +297,11 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referral.writeToReferralQuery()) : "";
 
         // start browser
-        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
+        try {
+            getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
+        } catch (Exception e) {
+            // do nothing
+        }
     }
 
     /**

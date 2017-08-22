@@ -16,6 +16,10 @@ import com.mopub.mobileads.MoPubView;
 
 import java.util.Set;
 
+import tv.superawesome.sdk.publisher.SAEvent;
+import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SAVideoAd;
+
 
 public class MoPubActivity extends Activity {
 
@@ -130,6 +134,16 @@ public class MoPubActivity extends Activity {
         });
         MoPubRewardedVideos.loadRewardedVideo(kVIDEO_ID);
 
+        SAVideoAd.enableTestMode();
+        SAVideoAd.setConfigurationProduction();
+        SAVideoAd.setListener(new SAInterface() {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                Log.d("SuperAwesome", "Ext callback " + placementId + " | " + event);
+            }
+        });
+        SAVideoAd.load(28000, this);
+
     }
 
     public void playInterstitial (View view) {
@@ -141,10 +155,13 @@ public class MoPubActivity extends Activity {
     }
 
     public void playVideo (View view) {
-        if (MoPubRewardedVideos.hasRewardedVideo(kVIDEO_ID)) {
-            MoPubRewardedVideos.showRewardedVideo(kVIDEO_ID);
-        } else {
-            Log.d("SADefaults/MoPub", "Video not ready yet");
+//        if (MoPubRewardedVideos.hasRewardedVideo(kVIDEO_ID)) {
+//            MoPubRewardedVideos.showRewardedVideo(kVIDEO_ID);
+//        } else {
+//            Log.d("SADefaults/MoPub", "Video not ready yet");
+//        }
+        if (SAVideoAd.hasAdAvailable(28000)) {
+            SAVideoAd.play(28000, this);
         }
     }
 

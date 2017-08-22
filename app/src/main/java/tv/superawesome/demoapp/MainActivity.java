@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationStaging();
+        SAVideoAd.enableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.disableCloseAtEnd();
         SAVideoAd.enableCloseButton();
