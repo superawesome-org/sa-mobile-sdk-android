@@ -1,4 +1,4 @@
-package tv.superawesome.plugins.publisher.mopub;
+package com.mopub.sa.mobileads;
 
 class SAMoPub {
 

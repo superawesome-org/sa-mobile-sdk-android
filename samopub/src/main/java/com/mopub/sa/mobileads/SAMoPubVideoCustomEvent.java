@@ -2,7 +2,7 @@
  * @Copyright:   SADefaults Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
-package tv.superawesome.plugins.publisher.mopub;
+package com.mopub.sa.mobileads;
 
 import android.app.Activity;
 import android.content.Context;

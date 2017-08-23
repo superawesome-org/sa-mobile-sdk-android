@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+6.0.3
+ - Reverted back to MoPub classic class path
+
 6.0.2
  - Updated version file
  
