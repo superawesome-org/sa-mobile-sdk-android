@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationStaging();
-        SAVideoAd.enableTestMode();
+        SAVideoAd.disableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.disableCloseAtEnd();
         SAVideoAd.enableCloseButton();
@@ -120,6 +120,7 @@ public class MainActivity extends Activity {
                 new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
                 new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),
                 new PlacementItem("CPI Preroll 1 (Video)", 627, Type.VIDEO),
+                new PlacementItem("CPI Preroll 1 (Video)", 28000, Type.VIDEO),
                 new HeaderItem("App Wall"),
                 new PlacementItem("CPI AppWall 1 (Images)", 633, Type.APPWALL)
         );

@@ -215,7 +215,17 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
                             padlock.setScaleType(ImageView.ScaleType.FIT_XY);
                             padlock.setPadding(0, 0, 0, 0);
                             padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
-                            padlock.setVisibility(ad.isPadlockVisible ? VISIBLE : GONE);
+
+                            //
+                            // weird condition: if banner is closed (and ad is nulled) in the time
+                            // it was "play()-ed" and the time "Web_Started" gets called,
+                            // then ad is null-ed and we get an exception.
+                            try {
+                                padlock.setVisibility(ad.isPadlockVisible ? VISIBLE : GONE);
+                            } catch (Exception e) {
+                                padlock.setVisibility(GONE);
+                            }
+
                             padlock.setOnClickListener(new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

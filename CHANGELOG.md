@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+6.0.4
+ - Add a null pointer exception check to SABannerAd to guard against the case when an ad started playing but is closed before "Web_Loaded" gets called
+
 6.0.3
  - Reverted back to MoPub classic class path
 
