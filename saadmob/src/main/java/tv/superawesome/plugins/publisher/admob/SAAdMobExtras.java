@@ -13,6 +13,7 @@ public class SAAdMobExtras {
     static final String kKEY_ORIENTATION    = "SA_ORIENTATION";
     static final String kKEY_CONFIGURATION  = "SA_CONFIGURATION";
     static final String kKEY_PARENTAL_GATE  = "SA_PG";
+    static final String kKEY_BUMPER_PAGE    = "SA_BUMPER";
     static final String kKEY_BACK_BUTTON    = "SA_BACK_BUTTON";
     static final String kKEY_CLOSE_BUTTON   = "SA_CLOSE_BUTTON";
     static final String kKEY_CLOSE_AT_END   = "SA_CLOSE_AT_END";
@@ -23,6 +24,7 @@ public class SAAdMobExtras {
     private SAOrientation orientation       = SADefaults.defaultOrientation();
     private SAConfiguration configuration   = SADefaults.defaultConfiguration();
     private boolean parentalGate            = SADefaults.defaultParentalGate();
+    private boolean bumperPage              = SADefaults.defaultBumperPage();
     private boolean backButton              = SADefaults.defaultBackButton();
     private boolean closeButton             = SADefaults.defaultCloseButton();
     private boolean closeAtEnd              = SADefaults.defaultCloseAtEnd();
@@ -61,6 +63,11 @@ public class SAAdMobExtras {
         return this;
     }
 
+    public SAAdMobExtras setBumperPage(boolean value) {
+        bumperPage = value;
+        return this;
+    }
+
     public SAAdMobExtras setBackButton(boolean value) {
         backButton = value;
         return this;
@@ -88,6 +95,7 @@ public class SAAdMobExtras {
         bundle.putInt(kKEY_ORIENTATION, orientation.ordinal());
         bundle.putInt(kKEY_CONFIGURATION, configuration.ordinal());
         bundle.putBoolean(kKEY_PARENTAL_GATE, parentalGate);
+        bundle.putBoolean(kKEY_BUMPER_PAGE, bumperPage);
         bundle.putBoolean(kKEY_BACK_BUTTON, backButton);
         bundle.putBoolean(kKEY_CLOSE_BUTTON, closeButton);
         bundle.putBoolean(kKEY_CLOSE_AT_END, closeAtEnd);

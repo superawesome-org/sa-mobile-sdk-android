@@ -55,6 +55,7 @@ public class SAInterstitialAd extends Activity {
     private static SAInterface      listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
     private static boolean          isParentalGateEnabled = SADefaults.defaultParentalGate();
+    private static boolean          isBumperPageEnabled = SADefaults.defaultBumperPage();
     private static boolean          isTestingEnabled = SADefaults.defaultTestMode();
     private static boolean          isBackButtonEnabled = SADefaults.defaultBackButton();
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
@@ -78,6 +79,7 @@ public class SAInterstitialAd extends Activity {
 
         // local vars
         boolean isParentalGateEnabledL = getIsParentalGateEnabled();
+        boolean isBumperPageEnabledL = getIsBumperPageEnabled();
         SAOrientation orientationL = getOrientation();
         SAInterface listenerL = getListener();
         boolean isMoatLimitingEnabledL = getMoatLimitingState();
@@ -112,6 +114,7 @@ public class SAInterstitialAd extends Activity {
         interstitialBanner.setTestMode(isTestingEnabled);
         interstitialBanner.setConfiguration(configuration);
         interstitialBanner.setListener(listenerL);
+        interstitialBanner.setBumperPage(isBumperPageEnabledL);
         interstitialBanner.setParentalGate(isParentalGateEnabledL);
         if (!isMoatLimitingEnabledL) {
             interstitialBanner.disableMoatLimiting();
@@ -317,6 +320,14 @@ public class SAInterstitialAd extends Activity {
         setParentalGate(false);
     }
 
+    public static void enableBumperPage () {
+        setBumperPage(true);
+    }
+
+    public static void disableBumperPage () {
+        setBumperPage(false);
+    }
+
     public static void enableTestMode () {
         setTestMode(true);
     }
@@ -361,6 +372,10 @@ public class SAInterstitialAd extends Activity {
         return isParentalGateEnabled;
     }
 
+    public static boolean getIsBumperPageEnabled () {
+        return isBumperPageEnabled;
+    }
+
     private static SAOrientation getOrientation () {
         return orientation;
     }
@@ -371,6 +386,10 @@ public class SAInterstitialAd extends Activity {
 
     public static void setParentalGate (boolean value) {
         isParentalGateEnabled = value;
+    }
+
+    public static void setBumperPage (boolean value) {
+        isBumperPageEnabled = value;
     }
 
     public static void setTestMode (boolean value) {

@@ -168,6 +168,7 @@ public class SAAIRAppWall {
             Context context = freContext.getActivity();
             int placementId = SADefaults.defaultPlacementId();
             boolean isParentalGateEnabled = SADefaults.defaultParentalGate();
+            boolean isBumperPageEnabled = SADefaults.defaultBumperPage();
             boolean isBackButtonEnabled = SADefaults.defaultBackButton();
 
             try {
@@ -183,13 +184,20 @@ public class SAAIRAppWall {
             }
 
             try {
-                isBackButtonEnabled = freObjects[2].getAsBool();
+                isBumperPageEnabled = freObjects[2].getAsBool();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                isBackButtonEnabled = freObjects[3].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             // configure & play
             SAAppWall.setParentalGate(isParentalGateEnabled);
+            SAAppWall.setBumperPage(isBumperPageEnabled);
             SAAppWall.setBackButton(isBackButtonEnabled);
             SAAppWall.play(placementId, context);
 

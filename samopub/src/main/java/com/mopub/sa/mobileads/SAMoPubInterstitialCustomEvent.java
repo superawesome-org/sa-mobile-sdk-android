@@ -64,6 +64,13 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
             isParentalGateEnabled = SADefaults.defaultParentalGate();
         }
 
+        boolean isBumperPageEnabled;
+        try {
+            isBumperPageEnabled = Boolean.valueOf(map1.get(SAMoPub.kBUMPER_PAGE));
+        } catch (Exception e) {
+            isBumperPageEnabled = SADefaults.defaultBumperPage();
+        }
+
         SAConfiguration configuration = SADefaults.defaultConfiguration();
         try {
             String config = map1.get(SAMoPub.kCONFIGURATION);
@@ -91,6 +98,7 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
         SAInterstitialAd.setConfiguration(configuration);
         SAInterstitialAd.setTestMode(isTestEnabled);
         SAInterstitialAd.setParentalGate(isParentalGateEnabled);
+        SAInterstitialAd.setBumperPage(isBumperPageEnabled);
         SAInterstitialAd.setOrientation(orientation);
         SAInterstitialAd.setListener(new SAInterface() {
             @Override

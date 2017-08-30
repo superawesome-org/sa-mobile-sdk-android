@@ -15,12 +15,15 @@ import android.widget.ImageView;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
+import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
+import tv.superawesome.lib.samodelspace.saad.SADetails;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
+import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
@@ -28,13 +31,14 @@ import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 
-public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
+public class SABannerAd extends FrameLayout {
 
     // constants
     private final int       BANNER_BACKGROUND = Color.rgb(224, 224, 224);
 
     // private vars w/ exposed setters & getters
-    private boolean         isParentalGateEnabled = true;
+    private boolean         isParentalGateEnabled = false;
+    private boolean         isBumperPageEnabled = false;
     private SAAd            ad;
     private SAInterface     listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
@@ -46,7 +50,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
     // private subviews
     private SAWebPlayer     webPlayer;
     private ImageButton     padlock;
-    private SAParentalGate  gate;
 
     // bool
     private boolean         canPlay              = true;
@@ -93,6 +96,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         // set default values
         setColor(SADefaults.defaultBgColor());
         setParentalGate(SADefaults.defaultParentalGate());
+        setBumperPage(SADefaults.defaultBumperPage());
         setConfiguration(SADefaults.defaultConfiguration());
         setTestMode(SADefaults.defaultTestMode());
         moatLimiting = SADefaults.defaultMoatLimitingState();
@@ -168,7 +172,7 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
             // and set it's event listener
             webPlayer.setEventListener(new SAWebPlayer.Listener() {
                 @Override
-                public void saWebPlayerDidReceiveEvent(SAWebPlayer.Event event, String destination) {
+                public void saWebPlayerDidReceiveEvent(final SAWebPlayer.Event event, final String destination) {
 
                     switch (event) {
                         // this is called when the web player is on screen and prepared to load
@@ -261,9 +265,29 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
                                 // check for PG
                                 if (isParentalGateEnabled) {
-                                    gate = new SAParentalGate(getContext(), 0, destination);
-                                    gate.setListener(SABannerAd.this);
-                                    gate.show();
+                                    SAParentalGate.setListener(new SAParentalGate.Interface() {
+                                        @Override
+                                        public void parentalGateOpen() {
+                                            events.triggerPgOpenEvent();
+                                        }
+
+                                        @Override
+                                        public void parentalGateSuccess() {
+                                            events.triggerPgSuccessEvent();
+                                            click(destination);
+                                        }
+
+                                        @Override
+                                        public void parentalGateFailure() {
+                                            events.triggerPgFailEvent();
+                                        }
+
+                                        @Override
+                                        public void parentalGateCancel() {
+                                            events.triggerPgCloseEvent();
+                                        }
+                                    });
+                                    SAParentalGate.show(context);
                                 } else {
                                     click(destination);
                                 }
@@ -291,7 +315,22 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
      *
      * @param destination the destination url
      */
-    public void click (String destination) {
+    public void click (final String destination) {
+
+        if (isBumperPageEnabled) {
+            SABumperPage.setListener(new SABumperPage.Interface() {
+                @Override
+                public void didEndBumper() {
+                    handleUrl(destination);
+                }
+            });
+            SABumperPage.play((Activity)getContext());
+        } else {
+            handleUrl(destination);
+        }
+    }
+
+    private void handleUrl (String destination) {
 
         Log.d("SADefaults", "Trying to go to: " + destination);
 
@@ -360,31 +399,6 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
         return ad != null;
     }
 
-    @Override
-    public void parentalGateOpen(int position) {
-        // send Open Event
-        events.triggerPgOpenEvent();
-    }
-
-    @Override
-    public void parentalGateSuccess(int position, String destination) {
-        // send event
-        events.triggerPgSuccessEvent();
-        // go to click
-        click(destination);
-    }
-
-    @Override
-    public void parentalGateFailure(int position) {
-        // send event
-        events.triggerPgFailEvent();
-    }
-
-    @Override
-    public void parentalGateCancel(int position) {
-        // send event
-        events.triggerPgCloseEvent();
-    }
 
     /**********************************************************************************************
      * Setters & Getters
@@ -404,6 +418,14 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
     public void disableParentalGate () {
         setParentalGate(false);
+    }
+
+    public void enableBumperPage () {
+        setBumperPage(true);
+    }
+
+    public void disableBumperPage () {
+        setBumperPage(false);
     }
 
     public void enableTestMode () {
@@ -432,6 +454,10 @@ public class SABannerAd extends FrameLayout implements SAParentalGateInterface {
 
     public void setParentalGate (boolean value) {
         isParentalGateEnabled = value;
+    }
+
+    public void setBumperPage (boolean value) {
+        isBumperPageEnabled = value;
     }
 
     public void setTestMode (boolean value) {

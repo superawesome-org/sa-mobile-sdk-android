@@ -32,12 +32,14 @@ import java.util.List;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
+import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
+import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
@@ -48,13 +50,10 @@ import tv.superawesome.lib.sautils.SAUtils;
  * Class that abstracts away the process of loading & displaying an App Wall type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAAppWall extends Activity implements SAParentalGateInterface {
+public class SAAppWall extends Activity {
 
     // private instance vars
     private SAResponse response = null;
-
-    // parental gate
-    private SAParentalGate gate;
 
     // a list of events to fire
     private static SASession session = null;
@@ -65,6 +64,7 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
     private static boolean isParentalGateEnabled    = SADefaults.defaultParentalGate();
+    private static boolean isBumperPageEnabled      = SADefaults.defaultBumperPage();
     private static boolean isTestingEnabled         = SADefaults.defaultTestMode();
     private static boolean isBackButtonEnabled      = SADefaults.defaultBackButton();
     private static SAConfiguration configuration    = SADefaults.defaultConfiguration();
@@ -182,17 +182,39 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         gameGrid.setNumColumns(response.ads.size() <= 3 ? 1 : 3);
         gameGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 // check for PG
-                SAAd ad = response.ads.get(position);
+                final SAAd ad = response.ads.get(position);
 
                 // only execute the click operation if the ad's click url is not null
                 if (ad.creative.clickUrl != null) {
 
                     if (isParentalGateEnabledL) {
-                        gate = new SAParentalGate(SAAppWall.this, position, ad.creative.clickUrl);
-                        gate.setListener(SAAppWall.this);
-                        gate.show();
+                        SAParentalGate.setListener(new SAParentalGate.Interface() {
+                            @Override
+                            public void parentalGateOpen() {
+                                events.get(position).triggerPgOpenEvent();
+                            }
+
+                            @Override
+                            public void parentalGateSuccess() {
+                                // send event
+                                events.get(position).triggerPgSuccessEvent();
+                                // call click
+                                click(position, ad.creative.clickCounterUrl);
+                            }
+
+                            @Override
+                            public void parentalGateFailure() {
+                                events.get(position).triggerPgFailEvent();
+                            }
+
+                            @Override
+                            public void parentalGateCancel() {
+                                events.get(position).triggerPgCloseEvent();
+                            }
+                        });
+                        SAParentalGate.show(SAAppWall.this);
                     } else {
                         click(position, ad.creative.clickUrl);
                     }
@@ -247,7 +269,24 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
      * @param position    current ad position
      * @param destination destination URL
      */
-    public void click (int position, String destination) {
+    public void click (final int position, final String destination) {
+
+        boolean isBumperPageEnabledL = getIsBumperPageEnabled();
+
+        if (isBumperPageEnabledL) {
+            SABumperPage.setListener(new SABumperPage.Interface() {
+                @Override
+                public void didEndBumper() {
+                    handleUrl(position, destination);
+                }
+            });
+            SABumperPage.play(this);
+        } else {
+            handleUrl(position, destination);
+        }
+    }
+
+    private void handleUrl (int position, String destination) {
 
         Log.d("SADefaults", "Trying to go to: " + destination);
 
@@ -270,7 +309,11 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         destination += "&referrer=" + ad.creative.referral.writeToReferralQuery();
 
         // open URL
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
+        } catch (Exception e) {
+            // do nothing
+        }
     }
 
     /**
@@ -291,32 +334,6 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
-    }
-
-    @Override
-    public void parentalGateOpen(int position) {
-        // send Open Event
-        events.get(position).triggerPgOpenEvent();
-    }
-
-    @Override
-    public void parentalGateSuccess(int position, String destination) {
-        // send event
-        events.get(position).triggerPgSuccessEvent();
-        // call click
-        click(position, destination);
-    }
-
-    @Override
-    public void parentalGateFailure(int position) {
-        // send event
-        events.get(position).triggerPgFailEvent();
-    }
-
-    @Override
-    public void parentalGateCancel(int position) {
-        // send event
-        events.get(position).triggerPgCloseEvent();
     }
 
     /**********************************************************************************************
@@ -461,6 +478,14 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         setParentalGate(false);
     }
 
+    public static void enableBumperPage () {
+        setBumperPage(true);
+    }
+
+    public static void disableBumperPage () {
+        setBumperPage(false);
+    }
+
     public static void enableTestMode () {
         setTestMode(true);
     }
@@ -499,6 +524,10 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
         return isParentalGateEnabled;
     }
 
+    private static boolean getIsBumperPageEnabled () {
+        return isBumperPageEnabled;
+    }
+
     private static SAConfiguration getConfiguration () {
         return configuration;
     }
@@ -509,6 +538,10 @@ public class SAAppWall extends Activity implements SAParentalGateInterface {
 
     public static void setParentalGate (boolean value) {
         isParentalGateEnabled = value;
+    }
+
+    public static void setBumperPage (boolean value) {
+        isBumperPageEnabled = value;
     }
 
     public static void setTestMode (boolean value) {

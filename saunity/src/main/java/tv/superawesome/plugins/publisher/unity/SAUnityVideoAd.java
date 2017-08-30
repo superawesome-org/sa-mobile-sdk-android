@@ -60,8 +60,9 @@ public class SAUnityVideoAd {
     /**
      * Method that plays a new video ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation, boolean isBackButtonEnabled) {
+    public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBumperPageEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation, boolean isBackButtonEnabled) {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
+        SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
         SAVideoAd.setCloseButton(shouldShowCloseButton);
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);

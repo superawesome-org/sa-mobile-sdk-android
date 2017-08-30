@@ -16,6 +16,7 @@ import com.google.android.gms.ads.mediation.customevent.CustomEventBannerListene
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.SABannerAd;
+import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 
@@ -50,6 +51,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
             bannerAd.setConfiguration(SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
             bannerAd.setColor(bundle.getBoolean(SAAdMobExtras.kKEY_TRANSPARENT));
             bannerAd.setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE));
+            bannerAd.setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE));
         }
 
         bannerAd.setListener(new SAInterface() {

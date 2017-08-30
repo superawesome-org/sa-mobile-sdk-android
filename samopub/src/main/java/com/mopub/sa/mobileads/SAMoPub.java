@@ -6,6 +6,7 @@ class SAMoPub {
     static final String kPLACEMENT_ID        = "placementId";
     static final String kTEST_ENABLED        = "isTestEnabled";
     static final String kPARENTAL_GATE       = "isParentalGateEnabled";
+    static final String kBUMPER_PAGE         = "isBumperPageEnabled";
     static final String kORIENTATION         = "orientation";
     static final String kCONFIGURATION       = "configuration";
     static final String kSHOULD_SHOW_CLOSE   = "shouldShowCloseButton";

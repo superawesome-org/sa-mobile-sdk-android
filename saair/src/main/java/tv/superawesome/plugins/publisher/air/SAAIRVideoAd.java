@@ -169,6 +169,7 @@ public class SAAIRVideoAd {
             Context context = freContext.getActivity();
             int placementId = SADefaults.defaultPlacementId();
             boolean isParentalGateEnabled = SADefaults.defaultParentalGate();
+            boolean isBumperPageEnabled = SADefaults.defaultBumperPage();
             boolean shouldShowCloseButton = SADefaults.defaultCloseButton();
             boolean shouldShowSmallClickButton = SADefaults.defaultSmallClick();
             boolean shouldAutomaticallyCloseAtEnd = SADefaults.defaultCloseAtEnd();
@@ -188,37 +189,44 @@ public class SAAIRVideoAd {
             }
 
             try {
-                shouldShowCloseButton = freObjects[2].getAsBool();
+                isBumperPageEnabled = freObjects[2].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                shouldShowSmallClickButton = freObjects[3].getAsBool();
+                shouldShowCloseButton = freObjects[3].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                shouldAutomaticallyCloseAtEnd = freObjects[4].getAsBool();
+                shouldShowSmallClickButton = freObjects[4].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                orientation = freObjects[5].getAsInt();
+                shouldAutomaticallyCloseAtEnd = freObjects[5].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                isBackButtonEnabled = freObjects[6].getAsBool();
+                orientation = freObjects[6].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                isBackButtonEnabled = freObjects[7].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             // configure & play
             SAVideoAd.setParentalGate(isParentalGateEnabled);
+            SAVideoAd.setBumperPage(isBumperPageEnabled);
             SAVideoAd.setCloseButton(shouldShowCloseButton);
             SAVideoAd.setSmallClick(shouldShowSmallClickButton);
             SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);

@@ -41,6 +41,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
     private int placementId;
     private boolean isTestEnabled;
     private boolean isParentalGateEnabled;
+    private boolean isBumperPageEnabled;
     private boolean shouldShowCloseButton;
     private boolean shouldAutomaticallyCloseAtEnd;
     private boolean shouldShowSmallClickButton;
@@ -128,6 +129,12 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
             isParentalGateEnabled = SADefaults.defaultParentalGate();
         }
 
+        try {
+            isBumperPageEnabled = Boolean.valueOf(map1.get(SAMoPub.kBUMPER_PAGE));
+        } catch (Exception e) {
+            isBumperPageEnabled = SADefaults.defaultBumperPage();
+        }
+
         configuration = SADefaults.defaultConfiguration();
         try {
             String config = map1.get(SAMoPub.kCONFIGURATION);
@@ -197,6 +204,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
         SAVideoAd.setConfiguration(configuration);
         SAVideoAd.setTestMode(isTestEnabled);
         SAVideoAd.setParentalGate(isParentalGateEnabled);
+        SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
         SAVideoAd.setCloseButton(shouldShowCloseButton);
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);

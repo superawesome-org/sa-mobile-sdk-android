@@ -209,6 +209,7 @@ public class SAAIRBannerAd {
             int width = 320;
             int height = 50;
             boolean isParentalGateEnabled = SADefaults.defaultParentalGate();
+            boolean isBumperPageEnabled = SADefaults.defaultBumperPage();
             boolean color = SADefaults.defaultBgColor();
 
             try {
@@ -224,25 +225,31 @@ public class SAAIRBannerAd {
             }
 
             try {
-                position = freObjects[2].getAsInt();
+                isBumperPageEnabled = freObjects[2].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                width = freObjects[3].getAsInt();
+                position = freObjects[3].getAsInt();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                height = freObjects[4].getAsInt();
+                width = freObjects[4].getAsInt();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                color = freObjects[5].getAsBool();
+                height = freObjects[5].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                color = freObjects[6].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
@@ -254,6 +261,7 @@ public class SAAIRBannerAd {
 
                 // customize
                 bannerAd.setParentalGate(isParentalGateEnabled);
+                bannerAd.setBumperPage(isBumperPageEnabled);
                 bannerAd.setColor(color);
 
                 // get real screen size

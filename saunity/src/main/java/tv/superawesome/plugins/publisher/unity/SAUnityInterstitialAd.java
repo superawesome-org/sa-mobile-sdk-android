@@ -61,8 +61,9 @@ public class SAUnityInterstitialAd {
     /**
      * Method that plays a new Interstitial Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context, int placementId, boolean isParentalGateEnabled, int orientation, boolean isBackButtonEnabled) {
+    public static void SuperAwesomeUnitySAInterstitialAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int orientation, boolean isBackButtonEnabled) {
         SAInterstitialAd.setParentalGate(isParentalGateEnabled);
+        SAInterstitialAd.setBumperPage(isBumperPageEnabled);
         SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
         SAInterstitialAd.setBackButton(isBackButtonEnabled);
         SAInterstitialAd.play(placementId, context);

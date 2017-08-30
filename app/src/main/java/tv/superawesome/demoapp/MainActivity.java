@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
+import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.sdk.publisher.SAAppWall;
 import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
@@ -36,7 +37,10 @@ public class MainActivity extends Activity {
 
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
 //        myBanner.enableReloadOnStateChange();
+        myBanner.enableBumperPage();
+        myBanner.enableParentalGate();
         myBanner.setConfigurationStaging();
+        myBanner.enableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
             @Override
@@ -51,6 +55,9 @@ public class MainActivity extends Activity {
         });
 
         SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.enableParentalGate();
+        SAInterstitialAd.enableBumperPage();
+        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -65,7 +72,9 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationStaging();
-        SAVideoAd.disableTestMode();
+        SAVideoAd.enableParentalGate();
+        SAVideoAd.enableBumperPage();
+        SAVideoAd.enableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.disableCloseAtEnd();
         SAVideoAd.enableCloseButton();

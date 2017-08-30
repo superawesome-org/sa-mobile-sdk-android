@@ -92,7 +92,7 @@ public class SAUnityBannerAd {
     /**
      * Method that plays a new Banner ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdPlay (Context context, String unityName, boolean isParentalGateEnabled, int position, int width, int height, boolean color) {
+    public static void SuperAwesomeUnitySABannerAdPlay (Context context, String unityName, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int position, int width, int height, boolean color) {
 
         if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
 
@@ -102,6 +102,7 @@ public class SAUnityBannerAd {
             // get banner ad
             final SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setParentalGate(isParentalGateEnabled);
+            bannerAd.setBumperPage(isBumperPageEnabled);
             bannerAd.setColor(color);
 
             // get screen size

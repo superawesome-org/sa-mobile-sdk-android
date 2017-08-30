@@ -10,6 +10,7 @@ import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.publisher.SAAppWall;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SAVideoAd;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -60,8 +61,9 @@ public class SAUnityAppWall {
     /**
      * Method that plays a new App Wall (from Unity)
      */
-    public static void SuperAwesomeUnitySAAppWallPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBackButtonEnabled) {
+    public static void SuperAwesomeUnitySAAppWallPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBumperPageEnabled, boolean isBackButtonEnabled) {
         SAAppWall.setParentalGate(isParentalGateEnabled);
+        SAAppWall.setBumperPage(isBumperPageEnabled);
         SAAppWall.setBackButton(isBackButtonEnabled);
         SAAppWall.play(placementId, context);
     }

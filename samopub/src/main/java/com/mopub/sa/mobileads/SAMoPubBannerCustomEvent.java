@@ -62,6 +62,13 @@ public class SAMoPubBannerCustomEvent extends CustomEventBanner {
             isParentalGateEnabled = SADefaults.defaultParentalGate();
         }
 
+        boolean isBumperPageEnabled;
+        try {
+            isBumperPageEnabled = Boolean.valueOf(map1.get(SAMoPub.kBUMPER_PAGE));
+        } catch (Exception e) {
+            isBumperPageEnabled = SADefaults.defaultBumperPage();
+        }
+
         SAConfiguration configuration = SADefaults.defaultConfiguration();
         try {
             String config = map1.get(SAMoPub.kCONFIGURATION);
@@ -77,6 +84,7 @@ public class SAMoPubBannerCustomEvent extends CustomEventBanner {
         bannerAd.setId(ID);
         bannerAd.setTestMode(isTestEnabled);
         bannerAd.setParentalGate(isParentalGateEnabled);
+        bannerAd.setBumperPage(isBumperPageEnabled);
         bannerAd.setConfiguration(configuration);
         bannerAd.setListener(new SAInterface() {
             @Override

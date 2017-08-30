@@ -24,7 +24,10 @@ public class SADefaults {
         return false;
     }
     public static boolean defaultParentalGate () {
-        return true;
+        return false;
+    }
+    public static boolean defaultBumperPage () {
+        return false;
     }
     public static SAConfiguration defaultConfiguration () {
         return SAConfiguration.PRODUCTION;

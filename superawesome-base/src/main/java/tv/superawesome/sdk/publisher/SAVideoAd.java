@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
+import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
@@ -30,6 +31,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
+import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sasession.SASession;
 import tv.superawesome.lib.sasession.SASessionInterface;
@@ -44,7 +46,7 @@ import tv.superawesome.lib.savideoplayer.SAVideoPlayerEventInterface;
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAVideoAd extends Activity implements SAParentalGateInterface {
+public class SAVideoAd extends Activity {
 
     // the ad
     private SAAd ad = null;
@@ -57,7 +59,6 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     private ImageButton padlock = null;
     private ImageButton closeButton = null;
     private SAVideoPlayer videoPlayer = null;
-    private SAParentalGate gate;
     private static final String videoTag = "SAVideoTag";
 
     // private vars w/ a public interface
@@ -66,6 +67,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     private static SAInterface forceloadlistener = new SAInterface() {@Override public void onEvent(int placementId, SAEvent event) {}};
 
     private static boolean isParentalGateEnabled            = SADefaults.defaultParentalGate();
+    private static boolean isBumperPageEnabled              = SADefaults.defaultBumperPage();
     private static boolean shouldShowCloseButton            = SADefaults.defaultCloseButton();
     private static boolean shouldAutomaticallyCloseAtEnd    = SADefaults.defaultCloseAtEnd();
     private static boolean shouldShowSmallClickButton       = SADefaults.defaultSmallClick();
@@ -278,7 +280,7 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                 public void onClick(View v) {
 
                     // check to see if there is a click through url
-                    String destinationUrl;
+                    final String destinationUrl;
 
                     // if the campaign is a CPI one, get the normal CPI url so that
                     // we can append the "referrer data" to it (since most likely
@@ -292,9 +294,33 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
                     if (destinationUrl != null) {
                         // check for parental gate on click
                         if (isParentalGateEnabledL) {
-                            gate = new SAParentalGate(SAVideoAd.this, 0, destinationUrl);
-                            gate.setListener(SAVideoAd.this);
-                            gate.show();
+                            SAParentalGate.setListener(new SAParentalGate.Interface() {
+                                @Override
+                                public void parentalGateOpen() {
+                                    SAVideoAd.this.pause();
+                                    events.triggerPgOpenEvent();
+                                }
+
+                                @Override
+                                public void parentalGateSuccess() {
+                                    events.triggerPgSuccessEvent();
+                                    click(destinationUrl);
+                                    SAVideoAd.this.pause();
+                                }
+
+                                @Override
+                                public void parentalGateFailure() {
+                                    events.triggerPgFailEvent();
+                                    SAVideoAd.this.resume();
+                                }
+
+                                @Override
+                                public void parentalGateCancel() {
+                                    events.triggerPgCloseEvent();
+                                    SAVideoAd.this.resume();
+                                }
+                            });
+                            SAParentalGate.show(SAVideoAd.this);
                         } else {
                             click(destinationUrl);
                         }
@@ -339,8 +365,24 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
     /**
      * Method that handles a click on the ad surface
      */
-    public void click(String destination) {
+    public void click(final String destination) {
 
+        boolean isBumperPageEnabledL = getIsBumperPageEnabled();
+
+        if (isBumperPageEnabledL) {
+            SABumperPage.setListener(new SABumperPage.Interface() {
+                @Override
+                public void didEndBumper() {
+                    handleUrl(destination);
+                }
+            });
+            SABumperPage.play(this);
+        } else {
+            handleUrl(destination);
+        }
+    }
+
+    private void handleUrl (String destination) {
         Log.d("SADefaults", "Trying to go to: " + destination);
 
         // get local
@@ -360,7 +402,11 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referral.writeToReferralQuery()) : "";
 
         // start browser
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
+        } catch (Exception e) {
+            // do nothing
+        }
     }
 
     /**
@@ -391,11 +437,8 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         // call listener
         listenerL.onEvent(ad.placementId, SAEvent.adClosed);
 
-        // close the parental gate
-        if (gate != null) {
-            gate.close();
-        }
-        gate = null;
+        // close
+        SAParentalGate.close();
 
         // delete the ad
         ads.remove(ad.placementId);
@@ -406,40 +449,6 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         // close
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-    }
-
-    @Override
-    public void parentalGateOpen(int position) {
-        // send Open Event
-        events.triggerPgOpenEvent();
-        // pause
-        this.pause();
-    }
-
-    @Override
-    public void parentalGateFailure(int position) {
-        // send event
-        events.triggerPgFailEvent();
-        // resume the video
-        this.resume();
-    }
-
-    @Override
-    public void parentalGateCancel(int position) {
-        // send event
-        events.triggerPgCloseEvent();
-        // resume the video
-        this.resume();
-    }
-
-    @Override
-    public void parentalGateSuccess(int position, String destination) {
-        // send event
-        events.triggerPgSuccessEvent();
-        // pause the video
-        this.pause();
-        // click
-        click(destination);
     }
 
     /**********************************************************************************************
@@ -616,6 +625,14 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         setParentalGate(false);
     }
 
+    public static void enableBumperPage () {
+        setBumperPage(true);
+    }
+
+    public static void disableBumperPage () {
+        setBumperPage(false);
+    }
+
     public static void enableTestMode () {
         setTestMode(true);
     }
@@ -688,6 +705,10 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
         return isParentalGateEnabled;
     }
 
+    private static boolean getIsBumperPageEnabled () {
+        return isBumperPageEnabled;
+    }
+
     private static boolean getShouldShowCloseButton () {
         return shouldShowCloseButton;
     }
@@ -716,6 +737,10 @@ public class SAVideoAd extends Activity implements SAParentalGateInterface {
 
     public static void setParentalGate (boolean value) {
         isParentalGateEnabled = value;
+    }
+
+    public static void setBumperPage (boolean value) {
+        isBumperPageEnabled = value;
     }
 
     public static void setTestMode (boolean value) {

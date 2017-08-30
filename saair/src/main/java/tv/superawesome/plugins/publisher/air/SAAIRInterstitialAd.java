@@ -168,6 +168,7 @@ public class SAAIRInterstitialAd {
             Context context = freContext.getActivity();
             int placementId = SADefaults.defaultPlacementId();
             boolean isParentalGateEnabled = SADefaults.defaultParentalGate();
+            boolean isBumperPageEnabled = SADefaults.defaultBumperPage();
             int orientation = SADefaults.defaultOrientation().ordinal();
             boolean isBackButtonEnabled = SADefaults.defaultBackButton();
 
@@ -184,19 +185,26 @@ public class SAAIRInterstitialAd {
             }
 
             try {
-                orientation = freObjects[2].getAsInt();
+                isBumperPageEnabled = freObjects[2].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             try {
-                isBackButtonEnabled = freObjects[3].getAsBool();
+                orientation = freObjects[3].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                isBackButtonEnabled = freObjects[4].getAsBool();
             } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
                 e.printStackTrace();
             }
 
             // config & play
             SAInterstitialAd.setParentalGate(isParentalGateEnabled);
+            SAInterstitialAd.setBumperPage(isBumperPageEnabled);
             SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
             SAInterstitialAd.setBackButton(isBackButtonEnabled);
             SAInterstitialAd.play(placementId, context);
