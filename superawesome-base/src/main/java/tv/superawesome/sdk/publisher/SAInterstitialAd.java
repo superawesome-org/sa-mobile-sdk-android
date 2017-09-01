@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -157,7 +158,12 @@ public class SAInterstitialAd extends Activity {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
             SAInterface listenerL = getListener();
-            listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+            if (listenerL != null) {
+                listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+            } else {
+                Log.w("SuperAwesome", "Insterstitial Ad listener not implemented. Should have been adClosed");
+            }
+
             super.onBackPressed();
         }
     }
@@ -222,7 +228,11 @@ public class SAInterstitialAd extends Activity {
 
                                 //
                                 // send callback
-                                listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                                if (listener != null) {
+                                    listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                                } else {
+                                    Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adFailedToLoad");
+                                }
                             }
                             else {
                                 // put the correct value
@@ -235,7 +245,11 @@ public class SAInterstitialAd extends Activity {
                                 }
 
                                 // call listener
-                                listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adEmpty);
+                                if (listener != null) {
+                                    listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                                } else {
+                                    Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                                }
                             }
                         }
                     });
@@ -246,7 +260,11 @@ public class SAInterstitialAd extends Activity {
         // else if the ad data for the placement exists in the "ads" hash map, then notify the
         // user that it already exists and he should just play it
         else {
-            listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            } else {
+                Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adAlreadyLoaded");
+            }
         }
     }
 
@@ -284,11 +302,19 @@ public class SAInterstitialAd extends Activity {
                 intent.putExtra("ad", adL.writeToJson().toString());
                 context.startActivity(intent);
             } else {
-                listener.onEvent(placementId, SAEvent.adFailedToShow);
+                if (listener != null) {
+                    listener.onEvent(placementId, SAEvent.adFailedToShow);
+                } else {
+                    Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adFailedToShow");
+                }
             }
         }
         else {
-            listener.onEvent(placementId, SAEvent.adFailedToShow);
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adFailedToShow);
+            } else {
+                Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adFailedToShow");
+            }
         }
     }
 

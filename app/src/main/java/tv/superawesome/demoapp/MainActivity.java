@@ -54,10 +54,11 @@ public class MainActivity extends Activity {
             }
         });
 
-        SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.setConfigurationProduction();
         SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.enableBumperPage();
-        SAInterstitialAd.enableTestMode();
+        SAInterstitialAd.disableTestMode();
+//        SAInterstitialAd.setOrientationPortrait();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -123,6 +124,7 @@ public class MainActivity extends Activity {
                 new PlacementItem("Popstitial 700", 700, Type.INTERSTITIAL),
                 new PlacementItem("400 Interstitial", 702, Type.INTERSTITIAL),
                 new PlacementItem("Rich Media Video", 715, Type.INTERSTITIAL),
+                new PlacementItem("34602", 34602, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("CPM Preroll 1 (Video)", 628, Type.VIDEO),
                 new PlacementItem("CPM Preroll 2 (Video)", 629, Type.VIDEO),

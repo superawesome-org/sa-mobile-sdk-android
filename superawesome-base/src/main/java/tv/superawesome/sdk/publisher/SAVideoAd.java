@@ -196,7 +196,11 @@ public class SAVideoAd extends Activity {
                             parent.addView(closeButton);
 
                             // send callback
-                            listenerL.onEvent(ad.placementId, SAEvent.adShown);
+                            if (listenerL != null) {
+                                listenerL.onEvent(ad.placementId, SAEvent.adShown);
+                            } else {
+                                Log.w("SuperAwesome", "Video Ad listener not implemented. Should have been adShown");
+                            }
 
                             // send vast events - including impression
                             events.triggerVASTImpressionEvent();
@@ -241,7 +245,11 @@ public class SAVideoAd extends Activity {
                             events.triggerVASTCompleteEvent();
 
                             // send an ad ended event
-                            listenerL.onEvent(ad.placementId, SAEvent.adEnded);
+                            if (listenerL != null) {
+                                listenerL.onEvent(ad.placementId, SAEvent.adEnded);
+                            } else {
+                                Log.w("SuperAwesome", "Video Ad listener not implemented. Should have been adEnded");
+                            }
 
                             // make btn visible
                             closeButton.setVisibility(View.VISIBLE);
@@ -264,7 +272,11 @@ public class SAVideoAd extends Activity {
                             events.triggerVASTErrorEvent();
 
                             // ad failed to show
-                            listenerL.onEvent(ad.placementId, SAEvent.adFailedToShow);
+                            if (listenerL != null) {
+                                listenerL.onEvent(ad.placementId, SAEvent.adFailedToShow);
+                            } else {
+                                Log.w("SuperAwesome", "Video Ad listener not implemented. Should have been adFailedToShow");
+                            }
 
                             // close this whole
                             close();
@@ -353,7 +365,12 @@ public class SAVideoAd extends Activity {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
             SAInterface listenerL = getListener();
-            listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+            if (listenerL != null) {
+                listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+            } else {
+                Log.w("SuperAwesome", "Video Ad listener not implemented. Should have been adClosed");
+            }
+
             super.onBackPressed();
         }
     }
@@ -369,7 +386,7 @@ public class SAVideoAd extends Activity {
 
         boolean isBumperPageEnabledL = getIsBumperPageEnabled();
 
-        if (isBumperPageEnabledL) {
+        if (isBumperPageEnabledL || ad.creative.bumper) {
             SABumperPage.setListener(new SABumperPage.Interface() {
                 @Override
                 public void didEndBumper() {
@@ -388,7 +405,11 @@ public class SAVideoAd extends Activity {
         // get local
         SAInterface listenerL = getListener();
         // call listener
-        listenerL.onEvent(ad.placementId, SAEvent.adClicked);
+        if (listenerL != null) {
+            listenerL.onEvent(ad.placementId, SAEvent.adClicked);
+        } else {
+            Log.w("SuperAwesome", "Video Ad listener not implemented. Should have been adClicked");
+        }
 
         // send vast click tracking events
         events.triggerVASTClickTrackingEvent();
@@ -435,7 +456,11 @@ public class SAVideoAd extends Activity {
         events.stopMoatTrackingForVideoPlayer();
 
         // call listener
-        listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+        if (listenerL != null) {
+            listenerL.onEvent(ad.placementId, SAEvent.adClosed);
+        } else {
+            Log.w("SuperAwesome", "Video Ad listener not implemented. Should have been adClosed");
+        }
 
         // close
         SAParentalGate.close();
@@ -495,7 +520,11 @@ public class SAVideoAd extends Activity {
 
                                 //
                                 // send callback
-                                listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                                if (listener != null) {
+                                    listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                                } else {
+                                    Log.w("SuperAwesome", "Video Ad listener not implemented. Event would have been adFailedToLoad");
+                                }
                             }
                             else {
                                 // find out the real valid
@@ -513,8 +542,15 @@ public class SAVideoAd extends Activity {
                                 }
 
                                 // call listener(s)
-                                listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
-                                forceloadlistener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                                if (listener != null) {
+                                    listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                                } else {
+                                    Log.w("SuperAwesome", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                                }
+
+                                if (forceloadlistener != null) {
+                                    forceloadlistener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                                }
                             }
                         }
                     });
@@ -525,7 +561,11 @@ public class SAVideoAd extends Activity {
         // else if the ad data for the placement exists in the "ads" hash map, then notify the
         // user that it already exists and he should just play it
         else {
-            listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            } else {
+                Log.w("SuperAwesome", "Video Ad listener not implemented. Event would have been adAlreadyLoaded");
+            }
         }
     }
 
@@ -589,11 +629,19 @@ public class SAVideoAd extends Activity {
                     context.startActivity(intent);
                 }
             } else {
-                listener.onEvent(placementId, SAEvent.adFailedToShow);
+                if (listener != null) {
+                    listener.onEvent(placementId, SAEvent.adFailedToShow);
+                } else {
+                    Log.w("SuperAwesome", "Video Ad listener not implemented. Event would have been adFailedToShow");
+                }
             }
         }
         else {
-            listener.onEvent(placementId, SAEvent.adFailedToShow);
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adFailedToShow);
+            } else {
+                Log.w("SuperAwesome", "Video Ad listener not implemented. Event would have been adFailedToShow");
+            }
         }
     }
 

@@ -127,7 +127,7 @@ public class SAAppWall extends Activity {
         ImageView headerTitle = new ImageView(this);
         headerTitle.setImageBitmap(SAImageUtils.createAppWallTitleBitmap());
         headerTitle.setScaleType(ImageView.ScaleType.FIT_XY);
-        RelativeLayout.LayoutParams headerTitleParams = new RelativeLayout.LayoutParams((int)(200 * fp), (int)(40 * fp));
+        RelativeLayout.LayoutParams headerTitleParams = new RelativeLayout.LayoutParams((int) (200 * fp), (int) (40 * fp));
         headerTitleParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         headerTitle.setLayoutParams(headerTitleParams);
         header.addView(headerTitle);
@@ -158,7 +158,7 @@ public class SAAppWall extends Activity {
         close.setBackgroundColor(Color.TRANSPARENT);
         close.setScaleType(ImageView.ScaleType.FIT_XY);
         RelativeLayout.LayoutParams closeParams = new RelativeLayout.LayoutParams((int) (18 * fp), (int) (18 * fp));
-        closeParams.setMargins(0, (int)(fp * 7), (int)(fp * 7), 0);
+        closeParams.setMargins(0, (int) (fp * 7), (int) (fp * 7), 0);
         closeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         closeParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         close.setLayoutParams(closeParams);
@@ -223,7 +223,7 @@ public class SAAppWall extends Activity {
             }
         });
         RelativeLayout.LayoutParams gameGridParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        gameGridParams.setMargins(0, (int)(fp * 107), 0, 0);
+        gameGridParams.setMargins(0, (int) (fp * 107), 0, 0);
         gameGrid.setLayoutParams(gameGridParams);
         background.addView(gameGrid);
 
@@ -241,7 +241,11 @@ public class SAAppWall extends Activity {
         }
 
         // send event
-        listenerL.onEvent(response.placementId, SAEvent.adShown);
+        if (listenerL != null) {
+            listenerL.onEvent(response.placementId, SAEvent.adShown);
+        } else {
+            Log.w("SuperAwesome", "AppWall listener not implemented. Should have been adShown");
+        }
     }
 
     /**
@@ -254,7 +258,12 @@ public class SAAppWall extends Activity {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
             SAInterface listenerL = getListener();
-            listenerL.onEvent(response.placementId, SAEvent.adClosed);
+            if (listenerL != null) {
+                listenerL.onEvent(response.placementId, SAEvent.adClosed);
+            } else {
+                Log.w("SuperAwesome", "AppWall listener not implemented. Should have been adClosed");
+            }
+
             super.onBackPressed();
         }
     }
@@ -273,7 +282,7 @@ public class SAAppWall extends Activity {
 
         boolean isBumperPageEnabledL = getIsBumperPageEnabled();
 
-        if (isBumperPageEnabledL) {
+        if (isBumperPageEnabledL || response.ads.get(position).creative.bumper) {
             SABumperPage.setListener(new SABumperPage.Interface() {
                 @Override
                 public void didEndBumper() {
@@ -298,7 +307,11 @@ public class SAAppWall extends Activity {
 
         // get local
         SAInterface listenerL = getListener();
-        listenerL.onEvent(response.placementId, SAEvent.adClicked);
+        if (listenerL != null) {
+            listenerL.onEvent(response.placementId, SAEvent.adClicked);
+        } else {
+            Log.w("SuperAwesome", "AppWall listener not implemented. Should have been adClicked");
+        }
 
         // send tracking event
         if (session != null && !destination.contains(session.getBaseUrl())) {
@@ -325,7 +338,11 @@ public class SAAppWall extends Activity {
         SAInterface listenerL = getListener();
 
         // call listener
-        listenerL.onEvent(response.placementId, SAEvent.adClosed);
+        if (listenerL != null) {
+            listenerL.onEvent(response.placementId, SAEvent.adClosed);
+        } else {
+            Log.w("SuperAwesome", "AppWall listener not implemented. Should have been adClosed");
+        }
 
         // delete the response
         responses.remove(response.placementId);
@@ -379,7 +396,11 @@ public class SAAppWall extends Activity {
 
                                 //
                                 // send callback
-                                listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                                if (listener != null) {
+                                    listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                                } else {
+                                    Log.w("SuperAwesome", "AppWall listener not implemented. Event would have been adFailedToLoad");
+                                }
                             }
                             else {
                                 // put the correct value
@@ -392,7 +413,11 @@ public class SAAppWall extends Activity {
                                 }
 
                                 // call listener
-                                listener.onEvent(placementId, response.isValid () ? SAEvent.adLoaded : SAEvent.adEmpty);
+                                if (listener != null) {
+                                    listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                                } else {
+                                    Log.w("SuperAwesome", "AppWall listener not implemented. Event would have been either adLoaded or adEmpty");
+                                }
                             }
                         }
                     });
@@ -403,7 +428,11 @@ public class SAAppWall extends Activity {
         // else if the ad data for the placement exists in the "ads" hash map, then notify the
         // user that it already exists and he should just play it
         else {
-            listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            } else {
+                Log.w("SuperAwesome", "AppWall listener not implemented. Event would have been adAlreadyLoaded");
+            }
         }
 
     }
@@ -454,11 +483,19 @@ public class SAAppWall extends Activity {
                 intent.putExtra("response", responseL.writeToJson().toString());
                 context.startActivity(intent);
             } else {
-                listener.onEvent(placementId, SAEvent.adFailedToShow);
+                if (listener != null) {
+                    listener.onEvent(placementId, SAEvent.adFailedToShow);
+                } else {
+                    Log.w("SuperAwesome", "AppWall listener not implemented. Event would have been adFailedToShow");
+                }
             }
         }
         else {
-            listener.onEvent(placementId, SAEvent.adFailedToShow);
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adFailedToShow);
+            } else {
+                Log.w("SuperAwesome", "AppWall listener not implemented. Event would have been adFailedToShow");
+            }
         }
     }
 
