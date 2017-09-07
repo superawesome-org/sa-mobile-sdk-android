@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+6.1.2
+ - Fixed MoPub failLoad error that was prevening the MoPub Adapter t
+o correctly signal either an empty ad or a mopub://failLoad tag
+
 6.1.1
  - Small general bug fixes
  - Added null checks to callbacks

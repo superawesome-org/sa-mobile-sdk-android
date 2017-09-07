@@ -219,8 +219,8 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
                         break;
                     }
                     case adEmpty:
-                    case adFailedToLoad: {
-                        onRewardedVideoLoadFailure(SAMoPubVideoCustomEvent.class, moPubId, MoPubErrorCode.VIDEO_NOT_AVAILABLE);
+                    case adFailedToLoad:{
+                        onRewardedVideoLoadFailure(SAMoPubVideoCustomEvent.class, moPubId, MoPubErrorCode.NETWORK_NO_FILL);
                         break;
                     }
                     case adShown: {
@@ -244,6 +244,8 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
                         onRewardedVideoClosed(SAMoPubVideoCustomEvent.class, moPubId);
                         break;
                     }
+                    case adAlreadyLoaded:
+                        break;
                 }
             }
         });

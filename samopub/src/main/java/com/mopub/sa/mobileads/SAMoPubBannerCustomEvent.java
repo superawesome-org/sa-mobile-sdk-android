@@ -12,6 +12,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
+import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.SADefaults;
@@ -92,20 +93,36 @@ public class SAMoPubBannerCustomEvent extends CustomEventBanner {
                 switch (event) {
                     case adLoaded: {
                         if (listener != null) {
-                            listener.onBannerLoaded(bannerAd);
+
+                            SAAd ad = bannerAd.getAd();
+                            String html = null;
+                            if (ad != null) {
+                                html = ad.creative.details.media.html;
+                            }
+                            boolean isEmpty = html != null && html.contains("mopub://failLoad");
+
+                            //
+                            // send back
+                            if (isEmpty) {
+                                listener.onBannerFailed(MoPubErrorCode.NETWORK_NO_FILL);
+                            } else {
+                                listener.onBannerLoaded(bannerAd);
+                                bannerAd.play(context);
+                            }
                         }
 
-                        bannerAd.play(context);
                         break;
                     }
                     case adEmpty:
-                    case adFailedToLoad:
+                    case adFailedToLoad:{
+                        if (listener != null) {
+                            listener.onBannerFailed(MoPubErrorCode.NETWORK_NO_FILL);
+                        }
                         break;
-                    case adShown:
-                        break;
+                    }
                     case adFailedToShow: {
                         if (listener != null) {
-                            listener.onBannerFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                            listener.onBannerFailed(MoPubErrorCode.NETWORK_INVALID_STATE);
                         }
                         break;
                     }
@@ -115,6 +132,9 @@ public class SAMoPubBannerCustomEvent extends CustomEventBanner {
                         }
                         break;
                     }
+                    case adShown:
+                    case adAlreadyLoaded:
+                    case adEnded:
                     case adClosed:
                         break;
                 }

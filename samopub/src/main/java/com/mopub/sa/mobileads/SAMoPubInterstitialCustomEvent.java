@@ -5,12 +5,14 @@
 package com.mopub.sa.mobileads;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.mopub.mobileads.CustomEventInterstitial;
 import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
+import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
@@ -106,14 +108,29 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
                 switch (event) {
                     case adLoaded: {
                         if (listener != null) {
-                            listener.onInterstitialLoaded();
+
+                            SAAd ad = SAInterstitialAd.getAd(placementId);
+                            String html = null;
+                            if (ad != null) {
+                                html = ad.creative.details.media.html;
+                            }
+                            boolean isEmpty = html != null && html.contains("mopub://failLoad");
+
+                            //
+                            // send back
+                            if (isEmpty) {
+                                listener.onInterstitialFailed(MoPubErrorCode.NETWORK_NO_FILL);
+                            } else {
+                                listener.onInterstitialLoaded();
+                            }
+
                         }
                         break;
                     }
                     case adEmpty:
-                    case adFailedToLoad: {
+                    case adFailedToLoad:{
                         if (listener != null) {
-                            listener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                            listener.onInterstitialFailed(MoPubErrorCode.NETWORK_NO_FILL);
                         }
                         break;
                     }
@@ -125,7 +142,7 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
                     }
                     case adFailedToShow: {
                         if (listener != null) {
-                            listener.onInterstitialFailed(MoPubErrorCode.MRAID_LOAD_ERROR);
+                            listener.onInterstitialFailed(MoPubErrorCode.NETWORK_INVALID_STATE);
                         }
                         break;
                     }
@@ -141,6 +158,9 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
                         }
                         break;
                     }
+                    case adAlreadyLoaded:
+                    case adEnded:
+                        break;
                 }
             }
         });

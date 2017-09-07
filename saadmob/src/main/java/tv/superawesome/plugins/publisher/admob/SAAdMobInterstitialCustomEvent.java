@@ -54,7 +54,7 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
                     case adEmpty:
                     case adFailedToLoad: {
                         if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
+                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
                         }
                         break;
                     }
@@ -66,8 +66,12 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
                         }
                         break;
                     }
-                    case adFailedToShow:
+                    case adFailedToShow: {
+                        if (listener != null) {
+                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
+                        }
                         break;
+                    }
                     case adClicked: {
                         if (listener != null) {
                             listener.onAdClicked();

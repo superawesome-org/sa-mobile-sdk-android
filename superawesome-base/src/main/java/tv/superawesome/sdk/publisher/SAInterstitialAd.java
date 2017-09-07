@@ -244,6 +244,7 @@ public class SAInterstitialAd extends Activity {
                                     ads.remove(placementId);
                                 }
 
+
                                 // call listener
                                 if (listener != null) {
                                     listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
@@ -277,6 +278,19 @@ public class SAInterstitialAd extends Activity {
     public static boolean hasAdAvailable(int placementId) {
         Object object = ads.get(placementId);
         return object != null && object instanceof SAAd;
+    }
+
+    public static SAAd getAd (int placementId) {
+        if (ads.containsKey(placementId)) {
+            Object object = ads.get(placementId);
+            if (object instanceof SAAd) {
+                return (SAAd) object;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     /**

@@ -97,7 +97,7 @@ public class SAAdMobVideoMediationAdapter implements MediationRewardedVideoAdAda
                     }
                     case adEmpty:
                     case adFailedToLoad: {
-                        listener.onAdFailedToLoad(SAAdMobVideoMediationAdapter.this, AdRequest.ERROR_CODE_INTERNAL_ERROR);
+                        listener.onAdFailedToLoad(SAAdMobVideoMediationAdapter.this, AdRequest.ERROR_CODE_NO_FILL);
                         break;
                     }
                     case adAlreadyLoaded:
@@ -106,8 +106,10 @@ public class SAAdMobVideoMediationAdapter implements MediationRewardedVideoAdAda
                         listener.onAdOpened(SAAdMobVideoMediationAdapter.this);
                         break;
                     }
-                    case adFailedToShow:
+                    case adFailedToShow: {
+                        listener.onAdFailedToLoad(SAAdMobVideoMediationAdapter.this, AdRequest.ERROR_CODE_INVALID_REQUEST);
                         break;
+                    }
                     case adClicked: {
                         listener.onAdClicked(SAAdMobVideoMediationAdapter.this);
                         listener.onAdLeftApplication(SAAdMobVideoMediationAdapter.this);

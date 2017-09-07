@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.StringBuilderPrinter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -271,6 +272,16 @@ public class SABannerAd extends FrameLayout {
                             }
                             break;
                         }
+                        // this is most likely from MoPub and other types of fallbacks indicating
+                        // a failure in loading a proper ad (through mopub://failLoad)
+                        case Web_Empty:{
+                            if (listener != null) {
+                                listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
+                            } else {
+                                Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been adFailedToLoad");
+                            }
+                            break;
+                        }
                         // and this is in case of click
                         case Web_Click: {
 
@@ -422,6 +433,10 @@ public class SABannerAd extends FrameLayout {
      */
     public boolean hasAdAvailable () {
         return ad != null;
+    }
+
+    public SAAd getAd () {
+        return ad;
     }
 
 

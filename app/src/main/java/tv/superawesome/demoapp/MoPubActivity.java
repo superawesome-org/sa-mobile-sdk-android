@@ -35,35 +35,35 @@ public class MoPubActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mopub);
 
-        banner = (MoPubView) findViewById(R.id.adview);
-        banner.setAdUnitId(kBANNER_ID);
-        banner.setBannerAdListener(new MoPubView.BannerAdListener() {
-            @Override
-            public void onBannerLoaded(MoPubView banner) {
-                Log.d("SADefaults/MoPub", "Banner ad loaded");
-            }
-
-            @Override
-            public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
-                Log.d("SADefaults/MoPub", "Banner ad failed");
-            }
-
-            @Override
-            public void onBannerClicked(MoPubView banner) {
-                Log.d("SADefaults/MoPub", "Banner ad clicked");
-            }
-
-            @Override
-            public void onBannerExpanded(MoPubView banner) {
-                Log.d("SADefaults/MoPub", "Banner ad expanded");
-            }
-
-            @Override
-            public void onBannerCollapsed(MoPubView banner) {
-                Log.d("SADefaults/MoPub", "Banner ad collapsed");
-            }
-        });
-        banner.loadAd();
+//        banner = (MoPubView) findViewById(R.id.adview);
+//        banner.setAdUnitId(kBANNER_ID);
+//        banner.setBannerAdListener(new MoPubView.BannerAdListener() {
+//            @Override
+//            public void onBannerLoaded(MoPubView banner) {
+//                Log.d("SADefaults/MoPub", "Banner ad loaded");
+//            }
+//
+//            @Override
+//            public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
+//                Log.d("SADefaults/MoPub", "Banner ad failed");
+//            }
+//
+//            @Override
+//            public void onBannerClicked(MoPubView banner) {
+//                Log.d("SADefaults/MoPub", "Banner ad clicked");
+//            }
+//
+//            @Override
+//            public void onBannerExpanded(MoPubView banner) {
+//                Log.d("SADefaults/MoPub", "Banner ad expanded");
+//            }
+//
+//            @Override
+//            public void onBannerCollapsed(MoPubView banner) {
+//                Log.d("SADefaults/MoPub", "Banner ad collapsed");
+//            }
+//        });
+//        banner.loadAd();
 
         interstitial = new MoPubInterstitial(this, kINTER_ID);
         interstitial.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
@@ -95,54 +95,54 @@ public class MoPubActivity extends Activity {
         interstitial.load();
 
 
-        MoPubRewardedVideos.initializeRewardedVideo(this);
-        MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
-            @Override
-            public void onRewardedVideoLoadSuccess(@NonNull String adUnitId) {
-                Log.d("SADefaults/MoPub", "Video loaded");
-            }
+//        MoPubRewardedVideos.initializeRewardedVideo(this);
+//        MoPubRewardedVideos.setRewardedVideoListener(new MoPubRewardedVideoListener() {
+//            @Override
+//            public void onRewardedVideoLoadSuccess(@NonNull String adUnitId) {
+//                Log.d("SADefaults/MoPub", "Video loaded");
+//            }
+//
+//            @Override
+//            public void onRewardedVideoLoadFailure(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
+//                Log.d("SADefaults/MoPub", "Video failure");
+//            }
+//
+//            @Override
+//            public void onRewardedVideoStarted(@NonNull String adUnitId) {
+//                Log.d("SADefaults/MoPub", "Video started");
+//            }
+//
+//            @Override
+//            public void onRewardedVideoPlaybackError(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
+//                Log.d("SADefaults/MoPub", "Video errpr");
+//            }
+//
+//            @Override
+//            public void onRewardedVideoClicked(@NonNull String adUnitId) {
+//                Log.d("SADefaults/MoPub", "Video clicked");
+//            }
+//
+//            @Override
+//            public void onRewardedVideoClosed(@NonNull String adUnitId) {
+//                Log.d("SADefaults/MoPub", "Video closed");
+//            }
+//
+//            @Override
+//            public void onRewardedVideoCompleted(@NonNull Set<String> adUnitIds, @NonNull MoPubReward reward) {
+//                Log.d("SADefaults/MoPub", "Video completed");
+//            }
+//        });
+//        MoPubRewardedVideos.loadRewardedVideo(kVIDEO_ID);
 
-            @Override
-            public void onRewardedVideoLoadFailure(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
-                Log.d("SADefaults/MoPub", "Video failure");
-            }
-
-            @Override
-            public void onRewardedVideoStarted(@NonNull String adUnitId) {
-                Log.d("SADefaults/MoPub", "Video started");
-            }
-
-            @Override
-            public void onRewardedVideoPlaybackError(@NonNull String adUnitId, @NonNull MoPubErrorCode errorCode) {
-                Log.d("SADefaults/MoPub", "Video errpr");
-            }
-
-            @Override
-            public void onRewardedVideoClicked(@NonNull String adUnitId) {
-                Log.d("SADefaults/MoPub", "Video clicked");
-            }
-
-            @Override
-            public void onRewardedVideoClosed(@NonNull String adUnitId) {
-                Log.d("SADefaults/MoPub", "Video closed");
-            }
-
-            @Override
-            public void onRewardedVideoCompleted(@NonNull Set<String> adUnitIds, @NonNull MoPubReward reward) {
-                Log.d("SADefaults/MoPub", "Video completed");
-            }
-        });
-        MoPubRewardedVideos.loadRewardedVideo(kVIDEO_ID);
-
-        SAVideoAd.enableTestMode();
-        SAVideoAd.setConfigurationProduction();
-        SAVideoAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                Log.d("SuperAwesome", "Ext callback " + placementId + " | " + event);
-            }
-        });
-        SAVideoAd.load(28000, this);
+//        SAVideoAd.enableTestMode();
+//        SAVideoAd.setConfigurationProduction();
+//        SAVideoAd.setListener(new SAInterface() {
+//            @Override
+//            public void onEvent(int placementId, SAEvent event) {
+//                Log.d("SuperAwesome", "Ext callback " + placementId + " | " + event);
+//            }
+//        });
+//        SAVideoAd.load(28000, this);
 
     }
 
@@ -155,14 +155,14 @@ public class MoPubActivity extends Activity {
     }
 
     public void playVideo (View view) {
-//        if (MoPubRewardedVideos.hasRewardedVideo(kVIDEO_ID)) {
-//            MoPubRewardedVideos.showRewardedVideo(kVIDEO_ID);
-//        } else {
-//            Log.d("SADefaults/MoPub", "Video not ready yet");
-//        }
-        if (SAVideoAd.hasAdAvailable(28000)) {
-            SAVideoAd.play(28000, this);
+        if (MoPubRewardedVideos.hasRewardedVideo(kVIDEO_ID)) {
+            MoPubRewardedVideos.showRewardedVideo(kVIDEO_ID);
+        } else {
+            Log.d("SADefaults/MoPub", "Video not ready yet");
         }
+//        if (SAVideoAd.hasAdAvailable(28000)) {
+//            SAVideoAd.play(28000, this);
+//        }
     }
 
     @Override

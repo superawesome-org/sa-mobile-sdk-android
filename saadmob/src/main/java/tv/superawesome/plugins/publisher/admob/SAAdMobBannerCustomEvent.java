@@ -75,7 +75,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                     case adEmpty:
                     case adFailedToLoad: {
                         if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
+                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
                         }
                         break;
                     }
@@ -87,8 +87,12 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                         }
                         break;
                     }
-                    case adFailedToShow:
+                    case adFailedToShow: {
+                        if (listener != null) {
+                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
+                        }
                         break;
+                    }
                     case adClicked: {
                         if (listener != null) {
                             listener.onAdClicked();

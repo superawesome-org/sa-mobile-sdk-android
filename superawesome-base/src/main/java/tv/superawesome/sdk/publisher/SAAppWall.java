@@ -460,6 +460,19 @@ public class SAAppWall extends Activity {
         return object != null && object instanceof SAResponse;
     }
 
+    public static SAResponse getResponse (int placementId) {
+        if (responses.containsKey(placementId)) {
+            Object object = responses.get(placementId);
+            if (object instanceof SAResponse) {
+                return (SAResponse) object;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Static method that, if an ad data is loaded, will play the content for the user
      *
