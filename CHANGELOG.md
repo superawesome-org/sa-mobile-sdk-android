@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+6.1.3
+ - Update BumperPage copy
+
 6.1.2
  - Fixed MoPub failLoad error that was prevening the MoPub Adapter t
 o correctly signal either an empty ad or a mopub://failLoad tag

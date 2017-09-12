@@ -35,8 +35,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
-//        myBanner.enableReloadOnStateChange();
         myBanner.enableBumperPage();
         myBanner.enableParentalGate();
         myBanner.setConfigurationStaging();
