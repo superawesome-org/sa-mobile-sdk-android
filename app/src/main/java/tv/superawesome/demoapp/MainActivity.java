@@ -55,8 +55,8 @@ public class MainActivity extends Activity {
         });
 
         SAInterstitialAd.setConfigurationProduction();
-        SAInterstitialAd.enableParentalGate();
-        SAInterstitialAd.enableBumperPage();
+        SAInterstitialAd.disableParentalGate();
+        SAInterstitialAd.disableBumperPage();
         SAInterstitialAd.disableTestMode();
 //        SAInterstitialAd.setOrientationPortrait();
         SAInterstitialAd.disableMoatLimiting();
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        SAVideoAd.setConfigurationStaging();
+        SAVideoAd.setConfigurationProduction();
         SAVideoAd.enableParentalGate();
         SAVideoAd.enableBumperPage();
         SAVideoAd.enableTestMode();
@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        SAAppWall.setConfigurationStaging();
+        SAAppWall.setConfigurationProduction();
         SAAppWall.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -124,9 +124,9 @@ public class MainActivity extends Activity {
                 new PlacementItem("Popstitial 700", 700, Type.INTERSTITIAL),
                 new PlacementItem("400 Interstitial", 702, Type.INTERSTITIAL),
                 new PlacementItem("Rich Media Video", 715, Type.INTERSTITIAL),
-                new PlacementItem("34602", 34602, Type.INTERSTITIAL),
+                new PlacementItem("34602", 33615, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("CPM Preroll 1 (Video)", 628, Type.VIDEO),
+                new PlacementItem("CPM Preroll 1 (Video)", 30479, Type.VIDEO),
                 new PlacementItem("CPM Preroll 2 (Video)", 629, Type.VIDEO),
                 new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
                 new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),

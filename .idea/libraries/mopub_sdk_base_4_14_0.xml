@@ -1,8 +1,5 @@
 <component name="libraryTable">
   <library name="mopub-sdk-base-4.14.0">
-    <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/samopub/build/intermediates/exploded-aar/com.mopub/mopub-sdk-base/4.14.0/annotations.zip!/" />
-    </ANNOTATIONS>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/samopub/build/intermediates/exploded-aar/com.mopub/mopub-sdk-base/4.14.0/res" />
       <root url="jar://$PROJECT_DIR$/samopub/build/intermediates/exploded-aar/com.mopub/mopub-sdk-base/4.14.0/jars/classes.jar!/" />
