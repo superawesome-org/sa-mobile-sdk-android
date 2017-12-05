@@ -92,5 +92,5 @@ dependencies {
     compile 'tv.superawesome.lib.sawebplayer:sawebplayer:0.5.1'
     compile 'tv.superawesome.lib.saadloader:saadloader:1.1.5'
     compile 'tv.superawesome.lib.saparentalgate:saparentalgate:1.0.2'
-    compile 'tv.superawesome.lib.sabumperpage:sabumperpage:1.0.2'
+    compile 'tv.superawesome.lib.sabumperpage:sabumperpage:1.0.3'
 }

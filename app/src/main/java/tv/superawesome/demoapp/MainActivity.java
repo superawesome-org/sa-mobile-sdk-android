@@ -36,6 +36,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
+        SABumperPage.overrideName("Test app");
+
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
         myBanner.enableBumperPage();
         myBanner.enableParentalGate();
