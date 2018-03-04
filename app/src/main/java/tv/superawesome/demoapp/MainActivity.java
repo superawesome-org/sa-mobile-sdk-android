@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
-import tv.superawesome.sdk.publisher.SAAppWall;
 import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
@@ -41,8 +40,8 @@ public class MainActivity extends Activity {
         final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
         myBanner.enableBumperPage();
         myBanner.enableParentalGate();
-        myBanner.setConfigurationStaging();
-        myBanner.enableTestMode();
+        myBanner.setConfigurationProduction();
+        myBanner.disableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
             @Override
@@ -58,9 +57,9 @@ public class MainActivity extends Activity {
 
         SAInterstitialAd.setConfigurationProduction();
         SAInterstitialAd.disableParentalGate();
-        SAInterstitialAd.disableBumperPage();
+        SAInterstitialAd.enableBumperPage();
+        SAInterstitialAd.enableBackButton();
         SAInterstitialAd.disableTestMode();
-//        SAInterstitialAd.setOrientationPortrait();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -75,12 +74,13 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationProduction();
-        SAVideoAd.enableParentalGate();
+        SAVideoAd.disableParentalGate();
         SAVideoAd.enableBumperPage();
-        SAVideoAd.enableTestMode();
+        SAVideoAd.disableTestMode();
         SAVideoAd.disableMoatLimiting();
-        SAVideoAd.disableCloseAtEnd();
+        SAVideoAd.enableCloseAtEnd();
         SAVideoAd.enableCloseButton();
+        SAVideoAd.enableBackButton();
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
@@ -89,19 +89,7 @@ public class MainActivity extends Activity {
 
                 if (event == SAEvent.adLoaded) {
                     SAVideoAd.play(placementId, MainActivity.this);
-                }
-            }
-        });
-
-        SAAppWall.setConfigurationProduction();
-        SAAppWall.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-
-                Log.d("SADefaults", "APP WALL AD: " + placementId + " -> Event : " + event);
-
-                if (event == SAEvent.adLoaded) {
-                    SAAppWall.play(placementId, MainActivity.this);
+                    SAVideoAd.play(placementId, MainActivity.this);
                 }
             }
         });
@@ -109,33 +97,11 @@ public class MainActivity extends Activity {
         ListView myList = (ListView) findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("CPM Banner 1 (Image)", 636, Type.BANNER),
-                new PlacementItem("CPM Banner 2 (Image)", 635, Type.BANNER),
-                new PlacementItem("CPI Banner 1 (Image)", 618, Type.BANNER),
-                new PlacementItem("CPM MPU 1 (Tag)", 639, Type.BANNER),
+                new PlacementItem("CPM Banner 1 (Image)", 36470, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("CPM Interstitial 1 (Image)", 620, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 2 (Rich Media)", 621, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 3 (Rich Media)", 622, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 4 (Rich Media)", 637, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 5 (Rich Media)", 624, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 6 (Rich Media)", 625, Type.INTERSTITIAL),
-                new PlacementItem("CPM Scalable Interstitial 7", 645, Type.INTERSTITIAL),
-                new PlacementItem("CPM Scrollable Interstitial 8", 653, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 9 (Tag)", 626, Type.INTERSTITIAL),
-                new PlacementItem("Popstitial 700", 700, Type.INTERSTITIAL),
-                new PlacementItem("400 Interstitial", 702, Type.INTERSTITIAL),
-                new PlacementItem("Rich Media Video", 715, Type.INTERSTITIAL),
-                new PlacementItem("34602", 33615, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 1 (Image)", 36471, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("CPM Preroll 1 (Video)", 30479, Type.VIDEO),
-                new PlacementItem("CPM Preroll 2 (Video)", 629, Type.VIDEO),
-                new PlacementItem("CPM Preroll 3 (Video)", 630, Type.VIDEO),
-                new PlacementItem("CPM Preroll 4 (Tag)", 631, Type.VIDEO),
-                new PlacementItem("CPI Preroll 1 (Video)", 627, Type.VIDEO),
-                new PlacementItem("CPI Preroll 1 (Video)", 28000, Type.VIDEO),
-                new HeaderItem("App Wall"),
-                new PlacementItem("CPI AppWall 1 (Images)", 633, Type.APPWALL)
+                new PlacementItem("CPM Preroll 1 (Video)", 36472, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
@@ -152,8 +118,17 @@ public class MainActivity extends Activity {
                     switch (placement.type) {
                         case BANNER: myBanner.load(placement.pid); break;
                         case INTERSTITIAL: SAInterstitialAd.load(placement.pid, MainActivity.this); break;
-                        case VIDEO: SAVideoAd.load(placement.pid, MainActivity.this); break;
-                        case APPWALL: SAAppWall.load(placement.pid, MainActivity.this); break;
+                        case VIDEO: {
+                            if (SAVideoAd.hasAdAvailable(placement.pid)) {
+                                Log.e("SuperAwesome", "PLAYING VIDEO");
+                                SAVideoAd.play(placement.pid, MainActivity.this);
+                            }
+                            else {
+                                Log.e("SuperAwesome", "LOADING VIDEO");
+                                SAVideoAd.load(placement.pid, MainActivity.this);
+                            }
+                            break;
+                        }
                     }
                 }
             }

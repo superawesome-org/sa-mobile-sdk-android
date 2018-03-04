@@ -64,7 +64,6 @@ public class SAVideoAd extends Activity {
     // private vars w/ a public interface
     private static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
-    private static SAInterface forceloadlistener = new SAInterface() {@Override public void onEvent(int placementId, SAEvent event) {}};
 
     private static boolean isParentalGateEnabled            = SADefaults.defaultParentalGate();
     private static boolean isBumperPageEnabled              = SADefaults.defaultBumperPage();
@@ -364,13 +363,7 @@ public class SAVideoAd extends Activity {
     public void onBackPressed() {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
-            SAInterface listenerL = getListener();
-            if (listenerL != null) {
-                listenerL.onEvent(ad.placementId, SAEvent.adClosed);
-            } else {
-                Log.w("SuperAwesome", "Video Ad listener not implemented. Should have been adClosed");
-            }
-
+            close();
             super.onBackPressed();
         }
     }
@@ -547,10 +540,6 @@ public class SAVideoAd extends Activity {
                                 } else {
                                     Log.w("SuperAwesome", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                                 }
-
-                                if (forceloadlistener != null) {
-                                    forceloadlistener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
-                                }
                             }
                         }
                     });
@@ -613,34 +602,16 @@ public class SAVideoAd extends Activity {
             // try to start the activity
             if (adL.creative.format == SACreativeFormat.video && context != null) {
 
-//                long current = System.currentTimeMillis() / 1000L;
-//                long diff = current - adL.loadTime;
-//                long diffMinutes = diff / 60;
-//                long maxMinutes = 60;
-//
-//                if (diffMinutes >= maxMinutes) {
-//
-//                    // remove
-//                    ads.remove(placementId);
-//
-//                    forceloadlistener = new SAInterface() {
-//                        @Override
-//                        public void onEvent(int placementId, SAEvent event) {
-//                            if (event == SAEvent.adLoaded) {
-//                                play(placementId, context);
-//                            }
-//                        }
-//                    };
-//
-//                    //
-//                    // load again
-//                    load(placementId, context);
-//
-//                } else {
-                    Intent intent = new Intent(context, SAVideoAd.class);
-                    intent.putExtra("ad", adL.writeToJson().toString());
-                    context.startActivity(intent);
-//                }
+                // create intent
+                Intent intent = new Intent(context, SAVideoAd.class);
+                intent.putExtra("ad", adL.writeToJson().toString());
+
+                // clear ad - meaning that it's been played
+                ads.remove(placementId);
+
+                // start new activity
+                context.startActivity(intent);
+
             } else {
                 if (listener != null) {
                     listener.onEvent(placementId, SAEvent.adFailedToShow);

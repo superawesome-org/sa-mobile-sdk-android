@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+6.1.6 
+ - Fixed a bug that meant that calling "play" twice on a Video ad meant you had two impressions vs one ad attempted event
+ - Fixed a bug with closing the video ad by pressing the back button
+ - Made sure image ads of sizes greater than 320x480 can be displayed correctly
+ - Made a fix to the bumper being closed with the back button and causing a crash
+ - Generalised the mediaPlayer.prepare () catch statement
+ - Fixed a bug related to closing the Interstitial Ad
+ - Removed unecessary code in SAUtils, SABumperPage, SAAgeGate, etc
+
 6.1.5
  - Improved Bumper Page experience
 

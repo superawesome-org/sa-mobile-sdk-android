@@ -157,13 +157,7 @@ public class SAInterstitialAd extends Activity {
     public void onBackPressed () {
         boolean isBackButtonEnabledL = getIsBackButtonEnabled();
         if (isBackButtonEnabledL) {
-            SAInterface listenerL = getListener();
-            if (listenerL != null) {
-                listenerL.onEvent(ad.placementId, SAEvent.adClosed);
-            } else {
-                Log.w("SuperAwesome", "Insterstitial Ad listener not implemented. Should have been adClosed");
-            }
-
+            close();
             super.onBackPressed();
         }
     }
@@ -180,7 +174,7 @@ public class SAInterstitialAd extends Activity {
         ads.remove(ad.placementId);
 
         // close & resume previous activity
-        super.onBackPressed();
+        this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
@@ -312,8 +306,15 @@ public class SAInterstitialAd extends Activity {
 
             // try to start the activity
             if (adL.creative.format != SACreativeFormat.video && context != null) {
+
+                // create intent
                 Intent intent = new Intent(context, SAInterstitialAd.class);
                 intent.putExtra("ad", adL.writeToJson().toString());
+
+                // clear ad - meaning that it's been played
+                ads.remove(placementId);
+
+                // start new activity
                 context.startActivity(intent);
             } else {
                 if (listener != null) {
