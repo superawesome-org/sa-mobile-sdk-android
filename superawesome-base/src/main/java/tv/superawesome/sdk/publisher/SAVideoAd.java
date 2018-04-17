@@ -167,7 +167,7 @@ public class SAVideoAd extends Activity {
 
             videoPlayer.setEventListener(new SAVideoPlayerEventInterface() {
                 @Override
-                public void saVideoPlayerDidReceiveEvent(SAVideoPlayerEvent saVideoPlayerEvent) {
+                public void saVideoPlayerDidReceiveEvent(SAVideoPlayerEvent saVideoPlayerEvent, int time, int duration) {
                     switch (saVideoPlayerEvent) {
 
                         case Video_Prepared: {
@@ -178,13 +178,13 @@ public class SAVideoAd extends Activity {
                                 // do nothing
                             }
 
-                            boolean result = events.startMoatTrackingForVideoPlayer(videoPlayer.getVideoPlayer());
-
-                            Log.d("SADefaults", "Moat Video start: " + result);
-
                             break;
                         }
                         case Video_Start: {
+
+                            boolean result = events.startMoatTrackingForVideoPlayer(videoPlayer.getVideoPlayer(), duration);
+
+                            Log.d("SADefaults", "Moat Video start: " + result);
 
                             // add padlock
                             padlock.setVisibility(ad.isPadlockVisible ? View.VISIBLE : View.GONE);
@@ -217,23 +217,26 @@ public class SAVideoAd extends Activity {
                             });
 
                             // moat
-                            events.sendMoatPlayingEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
-                            events.sendMoatStartEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
+                            events.sendMoatPlayingEvent(time);
+                            events.sendMoatStartEvent(time);
 
                             break;
                         }
+                        case Video_2s: {
+                            break;
+                        }
                         case Video_1_4: {
-                            events.sendMoatFirstQuartileEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
+                            events.sendMoatFirstQuartileEvent(time);
                             events.triggerVASTFirstQuartileEvent();
                             break;
                         }
                         case Video_1_2: {
-                            events.sendMoatMidpointEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
+                            events.sendMoatMidpointEvent(time);
                             events.triggerVASTMidpointEvent();
                             break;
                         }
                         case Video_3_4: {
-                            events.sendMoatThirdQuartileEvent(videoPlayer.getVideoPlayer().getCurrentPosition());
+                            events.sendMoatThirdQuartileEvent(time);
                             events.triggerVASTThirdQuartileEvent();
                             break;
                         }

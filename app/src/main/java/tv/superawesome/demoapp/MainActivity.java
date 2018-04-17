@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
         SAVideoAd.disableParentalGate();
         SAVideoAd.enableBumperPage();
         SAVideoAd.disableTestMode();
-        SAVideoAd.disableMoatLimiting();
+//        SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
         SAVideoAd.enableCloseButton();
         SAVideoAd.enableBackButton();
@@ -99,9 +99,9 @@ public class MainActivity extends Activity {
                 new HeaderItem("Banners"),
                 new PlacementItem("CPM Banner 1 (Image)", 36470, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("CPM Interstitial 1 (Image)", 36471, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 1 (Image)", 36744, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("CPM Preroll 1 (Video)", 36472, Type.VIDEO)
+                new PlacementItem("Moat Video", 36745, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
