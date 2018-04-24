@@ -7,7 +7,7 @@ version = properties.getProperty("project.version")
 group = properties.getProperty("project.group")
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion '26.0.0'
 
     defaultConfig {
