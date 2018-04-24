@@ -206,16 +206,6 @@ public class SAVideoAd extends Activity {
                             events.triggerVASTStartEvent();
                             events.triggerVASTCreativeViewEvent();
 
-                            // send viewable
-                            events.checkViewableStatusForVideo(videoPlayer.getVideoHolder(), new SAViewableModule.Listener() {
-                                @Override
-                                public void saDidFindViewOnScreen(boolean success) {
-                                    if (success) {
-                                        events.triggerViewableImpressionEvent();
-                                    }
-                                }
-                            });
-
                             // moat
                             events.sendMoatPlayingEvent(time);
                             events.sendMoatStartEvent(time);
@@ -223,6 +213,11 @@ public class SAVideoAd extends Activity {
                             break;
                         }
                         case Video_2s: {
+                            boolean isViewable = events.isChildInRect(videoPlayer.getVideoHolder());
+                            Log.d("SuperAwesome", "Is viewable is " + isViewable);
+                            if (isViewable) {
+                                events.triggerViewableImpressionEvent();
+                            }
                             break;
                         }
                         case Video_1_4: {
@@ -243,7 +238,7 @@ public class SAVideoAd extends Activity {
                         case Video_End: {
 
                             // send events
-                            events.stopMoatTrackingForVideoPlayer();
+                            events.sendMoatCompleteEvent(duration);
                             events.triggerVASTCompleteEvent();
 
                             // send an ad ended event
