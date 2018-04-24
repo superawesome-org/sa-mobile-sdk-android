@@ -114,6 +114,7 @@ public class AdMobActivity extends Activity {
         mInterstitialAd.loadAd(new AdRequest.Builder().addCustomEventExtrasBundle(SAAdMobInterstitialCustomEvent.class, extras2).build());
 
         mAd = MobileAds.getRewardedVideoAdInstance(this);
+
         mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
@@ -148,6 +149,11 @@ public class AdMobActivity extends Activity {
             @Override
             public void onRewardedVideoAdFailedToLoad(int i) {
                 Log.d("SADefaults/AdMob", "Video Ad Failed to load");
+            }
+
+            @Override
+            public void onRewardedVideoCompleted() {
+                Log.d("SADefaults/AdMob", "Video Ad Completed");
             }
         });
 
