@@ -74,6 +74,7 @@ public class SAVideoAd extends Activity {
     private static boolean isBackButtonEnabled              = SADefaults.defaultBackButton();
     private static SAOrientation orientation                = SADefaults.defaultOrientation();
     private static SAConfiguration configuration            = SADefaults.defaultConfiguration();
+    private static SAPlaybackMode playback                  = SADefaults.defaultPlaybackMode();
     private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
 
     /**********************************************************************************************
@@ -489,6 +490,19 @@ public class SAVideoAd extends Activity {
 
             // create a loader
             final SALoader loader = new SALoader(context);
+            loader.setPos(7);
+            loader.setPlaybackmethod(5);
+            loader.setInstl(1);
+            loader.setSkip(shouldShowCloseButton ? 1 : 0);
+            loader.setStartdelay(getPlaybackMode().getValue());
+
+            try {
+                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
+                loader.setWidth(size.width);
+                loader.setHeight(size.height);
+            } catch (Exception e) {
+                // do nothing
+            }
 
             // create a current session
             session = new SASession (context);
@@ -691,6 +705,10 @@ public class SAVideoAd extends Activity {
         setOrientation(SAOrientation.LANDSCAPE);
     }
 
+    public static void setPlaybackMode (SAPlaybackMode mode) {
+        playback = mode;
+    }
+
     public static void enableBackButton () {
         setBackButton(true);
     }
@@ -741,6 +759,10 @@ public class SAVideoAd extends Activity {
 
     private static boolean getShouldShowCloseButton () {
         return shouldShowCloseButton;
+    }
+
+    private static SAPlaybackMode getPlaybackMode () {
+        return playback;
     }
 
     private static boolean getShouldAutomaticallyCloseAtEnd () {

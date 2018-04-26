@@ -51,4 +51,7 @@ public class SADefaults {
         return false;
     }
     public static boolean defaultMoatLimitingState () { return true; }
+    public static SAPlaybackMode defaultPlaybackMode () {
+        return SAPlaybackMode.PREROLL;
+    }
 }

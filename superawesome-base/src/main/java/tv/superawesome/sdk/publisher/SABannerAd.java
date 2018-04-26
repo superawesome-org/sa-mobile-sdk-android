@@ -122,6 +122,19 @@ public class SABannerAd extends FrameLayout {
         // set this to false
         isClosed = false;
 
+        loader.setPos(1);
+        loader.setPlaybackmethod(5);
+        loader.setInstl(0);
+        loader.setSkip(0);
+        loader.setStartdelay(0);
+
+        try {
+            loader.setWidth(getWidth());
+            loader.setHeight(getHeight());
+        } catch (Exception e) {
+            // do nothing
+        }
+
         // next init a new session & prepare it
         session.setVersion(SAVersion.getSDKVersion());
         session.prepareSession(new SASessionInterface() {
