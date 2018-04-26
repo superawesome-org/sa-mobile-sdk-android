@@ -20,6 +20,7 @@ import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
+import tv.superawesome.sdk.publisher.SAPlaybackMode;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 
 import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoClicked;
@@ -48,6 +49,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
     private boolean enableBackButton;
     private SAOrientation orientation;
     private SAConfiguration configuration;
+    private SAPlaybackMode playback;
 
     // context
     private Context context;
@@ -158,6 +160,29 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
             // do nothing
         }
 
+        playback = SADefaults.defaultPlaybackMode();
+        try {
+            String play = map1.get(SAMoPub.kPLAYBACK_MODE);
+            if (play != null) {
+                switch (play) {
+                    case "POSTROLL": {
+                        playback = SAPlaybackMode.POSTROLL;
+                    }
+                    case "MIDROLL": {
+                        playback = SAPlaybackMode.MIDROLL;
+                    }
+                    case "PREROLL": {
+                        playback = SAPlaybackMode.PREROLL;
+                    }
+                    case "MIDROLL_WITH_DELAY": {
+                        playback = SAPlaybackMode.MIDROLL_WITH_DELAY;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+
         try {
             shouldShowCloseButton = Boolean.valueOf(map1.get(SAMoPub.kSHOULD_SHOW_CLOSE));
         } catch (Exception e) {
@@ -210,6 +235,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);
         SAVideoAd.setBackButton(enableBackButton);
         SAVideoAd.setOrientation(orientation);
+        SAVideoAd.setPlaybackMode(playback);
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {

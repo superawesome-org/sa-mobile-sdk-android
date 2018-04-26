@@ -13,5 +13,6 @@ class SAMoPub {
     static final String kSHOULD_AUTO_CLOSE   = "shouldAutomaticallyCloseAtEnd";
     static final String kVIDEO_BUTTON_STYLE  = "shouldShowSmallClickButton";
     static final String kBACK_BUTTON         = "shouldEnableBackButton";
+    static final String kPLAYBACK_MODE       = "playBackMode";
 
 }

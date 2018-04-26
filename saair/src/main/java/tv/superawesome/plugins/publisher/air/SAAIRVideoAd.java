@@ -18,6 +18,7 @@ import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
+import tv.superawesome.sdk.publisher.SAPlaybackMode;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 
 /**
@@ -86,6 +87,7 @@ public class SAAIRVideoAd {
             int placementId = SADefaults.defaultPlacementId();
             int configuration = SADefaults.defaultConfiguration().ordinal();
             boolean test = SADefaults.defaultTestMode();
+            int playback = SADefaults.defaultPlaybackMode().ordinal();
 
             try {
                 placementId = freObjects[0].getAsInt();
@@ -105,9 +107,16 @@ public class SAAIRVideoAd {
                 e.printStackTrace();
             }
 
-            // configuraton & load
+            try {
+                playback = freObjects[3].getAsInt();
+            } catch (FRETypeMismatchException | FREInvalidObjectException | FREWrongThreadException e) {
+                e.printStackTrace();
+            }
+
+            // config & load
             SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
             SAVideoAd.setTestMode(test);
+            SAVideoAd.setPlaybackMode(SAPlaybackMode.fromValue(playback));
             SAVideoAd.load(placementId, context);
 
             return null;

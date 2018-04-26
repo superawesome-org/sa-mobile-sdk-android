@@ -10,6 +10,7 @@ import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
+import tv.superawesome.sdk.publisher.SAPlaybackMode;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 
 /**
@@ -44,9 +45,10 @@ public class SAUnityVideoAd {
     /**
      * Method that loads a new Video Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAVideoAdLoad(Context context, int placementId, int configuration, boolean test) {
+    public static void SuperAwesomeUnitySAVideoAdLoad(Context context, int placementId, int configuration, boolean test, int playback) {
         SAVideoAd.setTestMode(test);
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
+        SAVideoAd.setPlaybackMode(SAPlaybackMode.fromValue(playback));
         SAVideoAd.load(placementId, context);
     }
 
