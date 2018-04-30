@@ -5,6 +5,7 @@ import android.os.Bundle;
 import tv.superawesome.lib.sasession.SAConfiguration;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAOrientation;
+import tv.superawesome.sdk.publisher.SAPlaybackMode;
 
 public class SAAdMobExtras {
 
@@ -18,11 +19,13 @@ public class SAAdMobExtras {
     static final String kKEY_CLOSE_BUTTON   = "SA_CLOSE_BUTTON";
     static final String kKEY_CLOSE_AT_END   = "SA_CLOSE_AT_END";
     static final String kKEY_SMALL_CLICK    = "SA_SMALL_CLICK";
+    static final String kKEY_PLAYBACK_MODE  = "SA_PLAYBACK_MODE";
 
     private boolean transparent             = SADefaults.defaultBgColor();
     private boolean testMode                = SADefaults.defaultTestMode();
     private SAOrientation orientation       = SADefaults.defaultOrientation();
     private SAConfiguration configuration   = SADefaults.defaultConfiguration();
+    private SAPlaybackMode playback         = SADefaults.defaultPlaybackMode();
     private boolean parentalGate            = SADefaults.defaultParentalGate();
     private boolean bumperPage              = SADefaults.defaultBumperPage();
     private boolean backButton              = SADefaults.defaultBackButton();
@@ -88,12 +91,18 @@ public class SAAdMobExtras {
         return this;
     }
 
+    public SAAdMobExtras setPlayabckMode (SAPlaybackMode mode) {
+        playback = mode;
+        return this;
+    }
+
     public Bundle build () {
         Bundle bundle = new Bundle();
         bundle.putBoolean(kKEY_TEST, testMode);
         bundle.putBoolean(kKEY_TRANSPARENT, transparent);
         bundle.putInt(kKEY_ORIENTATION, orientation.ordinal());
         bundle.putInt(kKEY_CONFIGURATION, configuration.ordinal());
+        bundle.putInt(kKEY_PLAYBACK_MODE, playback.ordinal());
         bundle.putBoolean(kKEY_PARENTAL_GATE, parentalGate);
         bundle.putBoolean(kKEY_BUMPER_PAGE, bumperPage);
         bundle.putBoolean(kKEY_BACK_BUTTON, backButton);

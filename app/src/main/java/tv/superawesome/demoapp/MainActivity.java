@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
                 new HeaderItem("Videos"),
                 new PlacementItem("Moat Video", 36981, Type.VIDEO),
                 new PlacementItem("Moat Video", 33766, Type.VIDEO),
-                new PlacementItem("Man City video", 33766, Type.VIDEO)
+                new PlacementItem("Man City video", 31864, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);

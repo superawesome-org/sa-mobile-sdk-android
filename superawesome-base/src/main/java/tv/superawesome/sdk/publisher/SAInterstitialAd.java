@@ -200,6 +200,19 @@ public class SAInterstitialAd extends Activity {
 
             // create the loader
             final SALoader loader = new SALoader(context);
+            loader.setPos(7);
+            loader.setPlaybackmethod(5);
+            loader.setInstl(1);
+            loader.setSkip(1);
+            loader.setStartdelay(0);
+
+            try {
+                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
+                loader.setWidth(size.width);
+                loader.setHeight(size.height);
+            } catch (Exception e) {
+                // do nothing
+            }
 
             // create a current session
             session = new SASession (context);
