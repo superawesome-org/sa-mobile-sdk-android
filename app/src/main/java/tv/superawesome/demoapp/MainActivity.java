@@ -171,7 +171,7 @@ public class MainActivity extends Activity {
                 } else {
                     message = "Oops! Something went wrong. No valid model for 'Age Check'...";
                 }
-                
+
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
             }
         });
