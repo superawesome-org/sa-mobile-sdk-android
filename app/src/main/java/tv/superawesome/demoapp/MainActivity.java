@@ -32,7 +32,9 @@ import tv.superawesome.sdk.publisher.SAVideoAd;
 
 public class MainActivity extends Activity {
 
-    /** the options list */
+    /**
+     * the options list
+     */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,17 +121,20 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AdapterItem item = data.get(position);
                 if (item instanceof PlacementItem) {
-                    PlacementItem placement = (PlacementItem)item;
+                    PlacementItem placement = (PlacementItem) item;
 
                     switch (placement.type) {
-                        case BANNER: myBanner.load(placement.pid); break;
-                        case INTERSTITIAL: SAInterstitialAd.load(placement.pid, MainActivity.this); break;
+                        case BANNER:
+                            myBanner.load(placement.pid);
+                            break;
+                        case INTERSTITIAL:
+                            SAInterstitialAd.load(placement.pid, MainActivity.this);
+                            break;
                         case VIDEO: {
                             if (SAVideoAd.hasAdAvailable(placement.pid)) {
                                 Log.e("SuperAwesome", "PLAYING VIDEO");
                                 SAVideoAd.play(placement.pid, MainActivity.this);
-                            }
-                            else {
+                            } else {
                                 Log.e("SuperAwesome", "LOADING VIDEO");
                                 SAVideoAd.load(placement.pid, MainActivity.this);
                             }
@@ -167,7 +172,10 @@ public class MainActivity extends Activity {
 
                 String message = null;
                 if (isMinorModel != null) {
-                    message = "Min age for '" + isMinorModel.getCountry() + "' is '" + isMinorModel.getConsentAgeForCountry() + "'.\nIs '" + dateOfBirth + "' a minor? -> '"+ String.valueOf(isMinorModel.isMinor()) + "'";
+                    message = "Min age for '" + isMinorModel.getCountry() + "' is '"
+                            + isMinorModel.getConsentAgeForCountry() + "' "
+                            + "\nThe age is '" + isMinorModel.getAge() + "' "
+                            + "'.\nIs '" + dateOfBirth + "' a minor? -> '" + String.valueOf(isMinorModel.isMinor()) + "'";
                 } else {
                     message = "Oops! Something went wrong. No valid model for 'Age Check'...";
                 }
@@ -192,7 +200,8 @@ class AdapterItem {
 
 class HeaderItem extends AdapterItem {
     public String title;
-    public HeaderItem (String title) {
+
+    public HeaderItem(String title) {
         this.title = title;
     }
 }
@@ -201,14 +210,15 @@ class PlacementItem extends AdapterItem {
     public String name;
     public int pid;
     public Type type;
-    public PlacementItem (String name, int pid, Type type) {
+
+    public PlacementItem(String name, int pid, Type type) {
         this.name = name;
         this.pid = pid;
         this.type = type;
     }
 }
 
-class ListAdapter <T extends AdapterItem> extends ArrayAdapter<T> {
+class ListAdapter<T extends AdapterItem> extends ArrayAdapter<T> {
 
     private List<T> data;
 
@@ -216,11 +226,11 @@ class ListAdapter <T extends AdapterItem> extends ArrayAdapter<T> {
         super(context, 0);
     }
 
-    public void updateData (List<T> newData) {
+    public void updateData(List<T> newData) {
         data = newData;
     }
 
-    public void reloadList () {
+    public void reloadList() {
         notifyDataSetChanged();
     }
 
@@ -261,8 +271,7 @@ class ListAdapter <T extends AdapterItem> extends ArrayAdapter<T> {
             HeaderItem header = (HeaderItem) item;
             title.setText(header.title);
             convertView.setBackgroundColor(Color.LTGRAY);
-        }
-        else {
+        } else {
             PlacementItem placement = (PlacementItem) item;
             title.setText(placement.pid + " | " + placement.name);
             title.setBackgroundColor(Color.WHITE);
