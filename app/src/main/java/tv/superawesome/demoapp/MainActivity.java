@@ -167,7 +167,7 @@ public class MainActivity extends Activity {
 
                 String message = null;
                 if (isMinorModel != null) {
-                    message = "Min age for '" + isMinorModel.getCountry() + "' is '" + isMinorModel.getAge() + "'.\nIs '" + dateOfBirth + "' a minor? -> '"+ String.valueOf(isMinorModel.isMinor()) + "'";
+                    message = "Min age for '" + isMinorModel.getCountry() + "' is '" + isMinorModel.getConsentAgeForCountry() + "'.\nIs '" + dateOfBirth + "' a minor? -> '"+ String.valueOf(isMinorModel.isMinor()) + "'";
                 } else {
                     message = "Oops! Something went wrong. No valid model for 'Age Check'...";
                 }
