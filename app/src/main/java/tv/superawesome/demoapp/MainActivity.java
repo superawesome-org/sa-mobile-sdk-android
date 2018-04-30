@@ -15,11 +15,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
+import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
+import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
+import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
@@ -151,6 +155,26 @@ public class MainActivity extends Activity {
     public void gotoMoPub(View view) {
         Intent intent = new Intent(this, MoPubActivity.class);
         this.startActivity(intent);
+    }
+
+    public void ageCheck(View view) {
+
+        final String dateOfBirth = "2012-02-02";
+
+        SAAgeCheck.sdk.getIsMinor(this, dateOfBirth, new GetIsMinorInterface() {
+            @Override
+            public void getIsMinorData(GetIsMinorModel isMinorModel) {
+
+                String message = null;
+                if (isMinorModel != null) {
+                    message = "Min age for '" + isMinorModel.getCountry() + "' is '" + isMinorModel.getAge() + "'.\nIs '" + dateOfBirth + "' a minor? -> '"+ String.valueOf(isMinorModel.isMinor()) + "'";
+                } else {
+                    message = "Oops! Something went wrong. No valid model for 'Age Check'...";
+                }
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }
 
