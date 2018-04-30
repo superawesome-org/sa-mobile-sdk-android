@@ -1,8 +1,6 @@
 dependencies:
   pre:
-    - run:
-       name: Approve license for build tools
-       command: (echo y; echo y; echo y; echo y; echo y; echo y) | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+    - (echo y; echo y; echo y; echo y; echo y; echo y) | $ANDROID_HOME/tools/bin/sdkmanager --licenses
 
     - echo y | android update sdk --no-ui --all --filter build-tools-23.0.3,build-tools-26.0.2,android-26,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository
 
