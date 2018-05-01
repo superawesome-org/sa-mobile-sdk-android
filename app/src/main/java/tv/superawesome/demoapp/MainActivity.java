@@ -15,11 +15,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
+import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
+import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
+import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
@@ -28,7 +32,9 @@ import tv.superawesome.sdk.publisher.SAVideoAd;
 
 public class MainActivity extends Activity {
 
-    /** the options list */
+    /**
+     * the options list
+     */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,17 +121,20 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AdapterItem item = data.get(position);
                 if (item instanceof PlacementItem) {
-                    PlacementItem placement = (PlacementItem)item;
+                    PlacementItem placement = (PlacementItem) item;
 
                     switch (placement.type) {
-                        case BANNER: myBanner.load(placement.pid); break;
-                        case INTERSTITIAL: SAInterstitialAd.load(placement.pid, MainActivity.this); break;
+                        case BANNER:
+                            myBanner.load(placement.pid);
+                            break;
+                        case INTERSTITIAL:
+                            SAInterstitialAd.load(placement.pid, MainActivity.this);
+                            break;
                         case VIDEO: {
                             if (SAVideoAd.hasAdAvailable(placement.pid)) {
                                 Log.e("SuperAwesome", "PLAYING VIDEO");
                                 SAVideoAd.play(placement.pid, MainActivity.this);
-                            }
-                            else {
+                            } else {
                                 Log.e("SuperAwesome", "LOADING VIDEO");
                                 SAVideoAd.load(placement.pid, MainActivity.this);
                             }
@@ -152,6 +161,30 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, MoPubActivity.class);
         this.startActivity(intent);
     }
+
+    public void ageCheck(View view) {
+
+        final String dateOfBirth = "2012-02-02";
+
+        SAAgeCheck.sdk.getIsMinor(this, dateOfBirth, new GetIsMinorInterface() {
+            @Override
+            public void getIsMinorData(GetIsMinorModel isMinorModel) {
+
+                String message = null;
+                if (isMinorModel != null) {
+                    message = "Min age for '" + isMinorModel.getCountry() + "' is '"
+                            + isMinorModel.getConsentAgeForCountry() + "' "
+                            + "\nThe age is '" + isMinorModel.getAge() + "' "
+                            + "'.\nIs '" + dateOfBirth + "' a minor? -> '" + String.valueOf(isMinorModel.isMinor()) + "'";
+                } else {
+                    message = "Oops! Something went wrong. No valid model for 'Age Check'...";
+                }
+
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
 }
 
 enum Type {
@@ -167,7 +200,8 @@ class AdapterItem {
 
 class HeaderItem extends AdapterItem {
     public String title;
-    public HeaderItem (String title) {
+
+    public HeaderItem(String title) {
         this.title = title;
     }
 }
@@ -176,14 +210,15 @@ class PlacementItem extends AdapterItem {
     public String name;
     public int pid;
     public Type type;
-    public PlacementItem (String name, int pid, Type type) {
+
+    public PlacementItem(String name, int pid, Type type) {
         this.name = name;
         this.pid = pid;
         this.type = type;
     }
 }
 
-class ListAdapter <T extends AdapterItem> extends ArrayAdapter<T> {
+class ListAdapter<T extends AdapterItem> extends ArrayAdapter<T> {
 
     private List<T> data;
 
@@ -191,11 +226,11 @@ class ListAdapter <T extends AdapterItem> extends ArrayAdapter<T> {
         super(context, 0);
     }
 
-    public void updateData (List<T> newData) {
+    public void updateData(List<T> newData) {
         data = newData;
     }
 
-    public void reloadList () {
+    public void reloadList() {
         notifyDataSetChanged();
     }
 
@@ -236,8 +271,7 @@ class ListAdapter <T extends AdapterItem> extends ArrayAdapter<T> {
             HeaderItem header = (HeaderItem) item;
             title.setText(header.title);
             convertView.setBackgroundColor(Color.LTGRAY);
-        }
-        else {
+        } else {
             PlacementItem placement = (PlacementItem) item;
             title.setText(placement.pid + " | " + placement.name);
             title.setBackgroundColor(Color.WHITE);
