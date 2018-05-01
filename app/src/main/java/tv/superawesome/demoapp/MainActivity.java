@@ -34,13 +34,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         SABumperPage.overrideName("Test app");
 
-        final SABannerAd myBanner = (SABannerAd) findViewById(R.id.MyBanner);
-        myBanner.enableBumperPage();
-        myBanner.enableParentalGate();
+        final SABannerAd myBanner = findViewById(R.id.MyBanner);
         myBanner.setConfigurationProduction();
+        myBanner.disableBumperPage();
+        myBanner.disableParentalGate();
         myBanner.disableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
@@ -57,7 +56,7 @@ public class MainActivity extends Activity {
 
         SAInterstitialAd.setConfigurationProduction();
         SAInterstitialAd.disableParentalGate();
-        SAInterstitialAd.enableBumperPage();
+        SAInterstitialAd.disableBumperPage();
         SAInterstitialAd.enableBackButton();
         SAInterstitialAd.disableTestMode();
         SAInterstitialAd.disableMoatLimiting();
@@ -75,7 +74,7 @@ public class MainActivity extends Activity {
 
         SAVideoAd.setConfigurationProduction();
         SAVideoAd.disableParentalGate();
-        SAVideoAd.enableBumperPage();
+        SAVideoAd.disableBumperPage();
         SAVideoAd.disableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
@@ -97,13 +96,11 @@ public class MainActivity extends Activity {
         ListView myList = (ListView) findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("CPM Banner 1 (Image)", 36982, Type.BANNER),
-                new HeaderItem("Interstitials"),
-                new PlacementItem("CPM Interstitial 1 (Image)", 36744, Type.INTERSTITIAL),
+                new PlacementItem("Moat Banner", 36982, Type.BANNER),
+//                new HeaderItem("Interstitials"),
+//                new PlacementItem("CPM Interstitial 1 (Image)", 36744, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Moat Video", 36981, Type.VIDEO),
-                new PlacementItem("Moat Video", 33766, Type.VIDEO),
-                new PlacementItem("Man City video", 31864, Type.VIDEO)
+                new PlacementItem("Moat Video", 36981, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
