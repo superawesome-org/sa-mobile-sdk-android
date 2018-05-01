@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,21 +7,36 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content">
+
+
         <Button
-            android:text="Ad Mob Plugin"
             android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:onClick="ageCheck"
+            android:text="Age Check" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:onClick="gotoAdMob"
-            android:layout_height="50dp" />
+            android:text="Ad Mob Plugin" />
+
         <Button
-            android:text="MoPub Plugin"
             android:layout_width="0dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:onClick="gotoMoPub"
-            android:layout_height="50dp" />
+            android:text="MoPub Plugin" />
     </LinearLayout>
 
     <ListView
@@ -30,11 +44,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="80dp"
-        android:scrollbars="none"/>
+        android:scrollbars="none" />
+
     <tv.superawesome.sdk.publisher.SABannerAd
         android:id="@+id/MyBanner"
-        android:layout_height="80dp"
         android:layout_width="match_parent"
-        android:layout_marginTop="-80dp"/>
+        android:layout_height="80dp"
+        android:layout_marginTop="-80dp" />
 
 </LinearLayout>
