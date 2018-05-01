@@ -201,9 +201,11 @@ public class SABannerAd extends FrameLayout {
                         // HTML data
                         case Web_Prepared: {
 
+                            // trigger impression
+                            events.triggerImpressionEvent();
+
                             // prepare moat tracking
                             String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
-                            Log.d("SADefaults", "Moat string is " + moatString);
                             String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
 
                             // load the HTML
