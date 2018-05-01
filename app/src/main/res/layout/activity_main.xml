@@ -26,17 +26,16 @@
 
         <Button
             android:layout_width="0dp"
-            android:layout_height="50dp"
             android:layout_weight="1"
             android:onClick="gotoAdMob"
-            android:text="Ad Mob Plugin" />
-
+            android:layout_height="50dp"
+            android:enabled="false"/>
         <Button
             android:layout_width="0dp"
-            android:layout_height="50dp"
             android:layout_weight="1"
             android:onClick="gotoMoPub"
-            android:text="MoPub Plugin" />
+            android:layout_height="50dp"
+            android:enabled="false"/>
     </LinearLayout>
 
     <ListView
