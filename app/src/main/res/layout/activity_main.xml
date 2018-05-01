@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <Button
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -27,12 +26,14 @@
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:text="AdMob"
             android:onClick="gotoAdMob"
             android:layout_height="50dp"
             android:enabled="false"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:text="MoPub"
             android:onClick="gotoMoPub"
             android:layout_height="50dp"
             android:enabled="false"/>
