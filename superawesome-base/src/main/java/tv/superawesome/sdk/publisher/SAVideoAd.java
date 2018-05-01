@@ -59,6 +59,9 @@ public class SAVideoAd extends Activity {
     private ImageButton padlock = null;
     private ImageButton closeButton = null;
     private SAVideoPlayer videoPlayer = null;
+
+    private Long currentClickThreshold = 0L;
+
     private static final String videoTag = "SAVideoTag";
 
     // private vars w/ a public interface
@@ -392,7 +395,18 @@ public class SAVideoAd extends Activity {
     }
 
     private void handleUrl (String destination) {
-        Log.d("SADefaults", "Trying to go to: " + destination);
+
+        Long currentTime = System.currentTimeMillis()/1000;
+        Long diff = Math.abs(currentTime - currentClickThreshold);
+
+        if (diff < SADefaults.defaultClickThreshold()) {
+            Log.d("SuperAwesome-2", "Current diff is " + diff);
+            return;
+        }
+
+        currentClickThreshold = currentTime;
+
+        Log.d("SuperAwesome-2", "Going to " + destination);
 
         // get local
         SAInterface listenerL = getListener();
