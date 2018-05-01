@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,7 +21,6 @@ import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
-import tv.superawesome.lib.samodelspace.saad.SADetails;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sasession.SAConfiguration;
@@ -57,6 +55,9 @@ public class SABannerAd extends FrameLayout {
     private boolean         firstPlay            = true;
     private boolean         isClosed             = false;
     private boolean         moatLimiting;
+
+    private Long            currentClickThreshold = 0L;
+
 
     /**
      * Constructor with context
@@ -375,7 +376,19 @@ public class SABannerAd extends FrameLayout {
 
     private void handleUrl (String destination) {
 
-        Log.d("SADefaults", "Trying to go to: " + destination);
+        Log.d("SuperAwesome-2", "Got here!");
+
+        Long currentTime = System.currentTimeMillis()/1000;
+        Long diff = Math.abs(currentTime - currentClickThreshold);
+
+        if (diff < SADefaults.defaultClickThreshold()) {
+            Log.d("SuperAwesome-2", "Current diff is " + diff);
+            return;
+        }
+
+        currentClickThreshold = currentTime;
+
+        Log.d("SuperAwesome-2", "Going to " + destination);
 
         // callback
         if (listener != null) {

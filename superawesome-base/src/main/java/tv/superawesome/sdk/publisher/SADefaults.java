@@ -54,4 +54,7 @@ public class SADefaults {
     public static SAPlaybackMode defaultPlaybackMode () {
         return SAPlaybackMode.PREROLL;
     }
+    public static Long defaultClickThreshold () {
+        return 5L;
+    }
 }
