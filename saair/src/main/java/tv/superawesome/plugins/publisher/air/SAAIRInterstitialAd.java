@@ -13,7 +13,7 @@ import com.adobe.fre.FREObject;
 import com.adobe.fre.FRETypeMismatchException;
 import com.adobe.fre.FREWrongThreadException;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;

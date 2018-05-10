@@ -6,7 +6,7 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;

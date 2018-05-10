@@ -13,12 +13,12 @@ import com.adobe.fre.FREObject;
 import com.adobe.fre.FRETypeMismatchException;
 import com.adobe.fre.FREWrongThreadException;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
-import tv.superawesome.sdk.publisher.SAPlaybackMode;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 
 /**
@@ -116,7 +116,7 @@ public class SAAIRVideoAd {
             // config & load
             SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
             SAVideoAd.setTestMode(test);
-            SAVideoAd.setPlaybackMode(SAPlaybackMode.fromValue(playback));
+            SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
             SAVideoAd.load(placementId, context);
 
             return null;

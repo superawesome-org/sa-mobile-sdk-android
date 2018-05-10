@@ -10,11 +10,11 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.mediation.MediationRewardedVideoAdAdapter;
 import com.google.android.gms.ads.reward.mediation.MediationRewardedVideoAdListener;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
-import tv.superawesome.sdk.publisher.SAPlaybackMode;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 
 public class SAAdMobVideoMediationAdapter implements MediationRewardedVideoAdAdapter{
@@ -72,7 +72,7 @@ public class SAAdMobVideoMediationAdapter implements MediationRewardedVideoAdAda
             SAVideoAd.setCloseButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_BUTTON));
             SAVideoAd.setCloseAtEnd(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_AT_END));
             SAVideoAd.setBackButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON));
-            SAVideoAd.setPlaybackMode(SAPlaybackMode.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE)));
+            SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE)));
         }
 
         //

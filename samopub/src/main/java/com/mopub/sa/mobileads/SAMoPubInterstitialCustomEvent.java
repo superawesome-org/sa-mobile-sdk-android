@@ -5,7 +5,6 @@
 package com.mopub.sa.mobileads;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.mopub.mobileads.CustomEventInterstitial;
 import com.mopub.mobileads.MoPubErrorCode;
@@ -13,7 +12,7 @@ import com.mopub.mobileads.MoPubErrorCode;
 import java.util.Map;
 
 import tv.superawesome.lib.samodelspace.saad.SAAd;
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;

@@ -2,10 +2,10 @@ package tv.superawesome.plugins.publisher.admob;
 
 import android.os.Bundle;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAOrientation;
-import tv.superawesome.sdk.publisher.SAPlaybackMode;
 
 public class SAAdMobExtras {
 
@@ -25,7 +25,7 @@ public class SAAdMobExtras {
     private boolean testMode                = SADefaults.defaultTestMode();
     private SAOrientation orientation       = SADefaults.defaultOrientation();
     private SAConfiguration configuration   = SADefaults.defaultConfiguration();
-    private SAPlaybackMode playback         = SADefaults.defaultPlaybackMode();
+    private SARTBStartDelay playback        = SADefaults.defaultPlaybackMode();
     private boolean parentalGate            = SADefaults.defaultParentalGate();
     private boolean bumperPage              = SADefaults.defaultBumperPage();
     private boolean backButton              = SADefaults.defaultBackButton();
@@ -91,7 +91,7 @@ public class SAAdMobExtras {
         return this;
     }
 
-    public SAAdMobExtras setPlayabckMode (SAPlaybackMode mode) {
+    public SAAdMobExtras setPlayabckMode (SARTBStartDelay mode) {
         playback = mode;
         return this;
     }

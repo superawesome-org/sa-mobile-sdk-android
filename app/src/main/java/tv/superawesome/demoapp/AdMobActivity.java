@@ -14,7 +14,7 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.plugins.publisher.admob.SAAdMobExtras;
 import tv.superawesome.plugins.publisher.admob.SAAdMobBannerCustomEvent;
 import tv.superawesome.plugins.publisher.admob.SAAdMobInterstitialCustomEvent;
