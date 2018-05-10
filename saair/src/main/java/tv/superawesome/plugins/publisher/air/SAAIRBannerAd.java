@@ -20,7 +20,7 @@ import com.adobe.fre.FREWrongThreadException;
 
 import java.util.HashMap;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SABannerAd;

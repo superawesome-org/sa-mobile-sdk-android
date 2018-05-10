@@ -6,11 +6,11 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
-import tv.superawesome.sdk.publisher.SAPlaybackMode;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 
 /**
@@ -48,7 +48,7 @@ public class SAUnityVideoAd {
     public static void SuperAwesomeUnitySAVideoAdLoad(Context context, int placementId, int configuration, boolean test, int playback) {
         SAVideoAd.setTestMode(test);
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
-        SAVideoAd.setPlaybackMode(SAPlaybackMode.fromValue(playback));
+        SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
         SAVideoAd.load(placementId, context);
     }
 

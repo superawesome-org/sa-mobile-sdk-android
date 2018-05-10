@@ -15,12 +15,12 @@ import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.SADefaults;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
-import tv.superawesome.sdk.publisher.SAPlaybackMode;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 
 import static com.mopub.mobileads.MoPubRewardedVideoManager.onRewardedVideoClicked;
@@ -49,7 +49,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
     private boolean enableBackButton;
     private SAOrientation orientation;
     private SAConfiguration configuration;
-    private SAPlaybackMode playback;
+    private SARTBStartDelay playback;
 
     // context
     private Context context;
@@ -165,17 +165,17 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
             String play = map1.get(SAMoPub.kPLAYBACK_MODE);
             if (play != null) {
                 switch (play) {
-                    case "POSTROLL": {
-                        playback = SAPlaybackMode.POSTROLL;
+                    case "POST_ROLL": {
+                        playback = SARTBStartDelay.POST_ROLL;
                     }
-                    case "MIDROLL": {
-                        playback = SAPlaybackMode.MIDROLL;
+                    case "MID_ROLL": {
+                        playback = SARTBStartDelay.MID_ROLL;
                     }
-                    case "PREROLL": {
-                        playback = SAPlaybackMode.PREROLL;
+                    case "PRE_ROLL": {
+                        playback = SARTBStartDelay.PRE_ROLL;
                     }
-                    case "MIDROLL_WITH_DELAY": {
-                        playback = SAPlaybackMode.MIDROLL_WITH_DELAY;
+                    case "GENERIC_MID_ROLL": {
+                        playback = SARTBStartDelay.GENERIC_MID_ROLL;
                     }
                 }
             }

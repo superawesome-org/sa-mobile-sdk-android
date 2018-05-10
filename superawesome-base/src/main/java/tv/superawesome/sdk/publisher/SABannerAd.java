@@ -23,9 +23,14 @@ import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
-import tv.superawesome.lib.sasession.SAConfiguration;
-import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBInstl;
+import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
+import tv.superawesome.lib.sasession.defines.SARTBPosition;
+import tv.superawesome.lib.sasession.defines.SARTBSkip;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
@@ -123,21 +128,20 @@ public class SABannerAd extends FrameLayout {
         // set this to false
         isClosed = false;
 
-        loader.setPos(1);
-        loader.setPlaybackmethod(5);
-        loader.setInstl(0);
-        loader.setSkip(0);
-        loader.setStartdelay(0);
-
+        // next init a new session & prepare it
+        session.setVersion(SAVersion.getSDKVersion());
+        session.setPos(SARTBPosition.ABOVE_THE_FOLD);
+        session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+        session.setInstl(SARTBInstl.NOT_FULLSCREEN);
+        session.setSkip(SARTBSkip.NO_SKIP);
+        session.setStartDelay(SARTBStartDelay.PRE_ROLL);
         try {
-            loader.setWidth(getWidth());
-            loader.setHeight(getHeight());
+            session.setWidth(getWidth());
+            session.setHeight(getHeight());
         } catch (Exception e) {
             // do nothing
         }
 
-        // next init a new session & prepare it
-        session.setVersion(SAVersion.getSDKVersion());
         session.prepareSession(new SASessionInterface() {
             @Override
             public void didFindSessionReady() {

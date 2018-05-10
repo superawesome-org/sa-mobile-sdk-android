@@ -25,9 +25,14 @@ import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
-import tv.superawesome.lib.sasession.SAConfiguration;
-import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBInstl;
+import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
+import tv.superawesome.lib.sasession.defines.SARTBPosition;
+import tv.superawesome.lib.sasession.defines.SARTBSkip;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 
@@ -200,25 +205,26 @@ public class SAInterstitialAd extends Activity {
 
             // create the loader
             final SALoader loader = new SALoader(context);
-            loader.setPos(7);
-            loader.setPlaybackmethod(5);
-            loader.setInstl(1);
-            loader.setSkip(1);
-            loader.setStartdelay(0);
-
-            try {
-                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
-                loader.setWidth(size.width);
-                loader.setHeight(size.height);
-            } catch (Exception e) {
-                // do nothing
-            }
 
             // create a current session
             session = new SASession (context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
             session.setVersion(SAVersion.getSDKVersion());
+            session.setPos(SARTBPosition.FULLSCREEN);
+            session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+            session.setInstl(SARTBInstl.FULLSCREEN);
+            session.setSkip(SARTBSkip.SKIP);
+            session.setStartDelay(SARTBStartDelay.PRE_ROLL);
+
+            try {
+                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
+                session.setWidth(size.width);
+                session.setHeight(size.height);
+            } catch (Exception e) {
+                // do nothing
+            }
+
             session.prepareSession(new SASessionInterface() {
                 @Override
                 public void didFindSessionReady() {

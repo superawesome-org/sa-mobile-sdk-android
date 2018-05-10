@@ -4,7 +4,9 @@
  */
 package tv.superawesome.sdk.publisher;
 
-import tv.superawesome.lib.sasession.SAConfiguration;
+
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 
 /**
  * This is a Singleton class through which SDK users setup their AwesomeAds instance
@@ -51,8 +53,8 @@ public class SADefaults {
         return false;
     }
     public static boolean defaultMoatLimitingState () { return true; }
-    public static SAPlaybackMode defaultPlaybackMode () {
-        return SAPlaybackMode.PREROLL;
+    public static SARTBStartDelay defaultPlaybackMode () {
+        return SARTBStartDelay.PRE_ROLL;
     }
     public static Long defaultClickThreshold () {
         return 5L;

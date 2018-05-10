@@ -13,6 +13,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SuperAwesome.init(this);
+        SuperAwesome.init(this, true);
     }
 }

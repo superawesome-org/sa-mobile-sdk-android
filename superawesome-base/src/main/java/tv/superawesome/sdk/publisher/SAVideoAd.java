@@ -25,16 +25,20 @@ import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
-import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
-import tv.superawesome.lib.sasession.SAConfiguration;
-import tv.superawesome.lib.sasession.SASession;
-import tv.superawesome.lib.sasession.SASessionInterface;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBInstl;
+import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
+import tv.superawesome.lib.sasession.defines.SARTBPosition;
+import tv.superawesome.lib.sasession.defines.SARTBSkip;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
@@ -77,7 +81,7 @@ public class SAVideoAd extends Activity {
     private static boolean isBackButtonEnabled              = SADefaults.defaultBackButton();
     private static SAOrientation orientation                = SADefaults.defaultOrientation();
     private static SAConfiguration configuration            = SADefaults.defaultConfiguration();
-    private static SAPlaybackMode playback                  = SADefaults.defaultPlaybackMode();
+    private static SARTBStartDelay playback                 = SADefaults.defaultPlaybackMode();
     private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
 
     /**********************************************************************************************
@@ -178,6 +182,7 @@ public class SAVideoAd extends Activity {
 
                             try {
                                 videoPlayer.play(ad.creative.details.media.path);
+                                Log.d("SuperAwesome", "PLAYING " + ad.creative.details.media.path);
                             } catch (Throwable throwable) {
                                 // do nothing
                             }
@@ -504,25 +509,26 @@ public class SAVideoAd extends Activity {
 
             // create a loader
             final SALoader loader = new SALoader(context);
-            loader.setPos(7);
-            loader.setPlaybackmethod(5);
-            loader.setInstl(1);
-            loader.setSkip(shouldShowCloseButton ? 1 : 0);
-            loader.setStartdelay(getPlaybackMode().getValue());
-
-            try {
-                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
-                loader.setWidth(size.width);
-                loader.setHeight(size.height);
-            } catch (Exception e) {
-                // do nothing
-            }
 
             // create a current session
             session = new SASession (context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
             session.setVersion(SAVersion.getSDKVersion());
+            session.setPos(SARTBPosition.FULLSCREEN);
+            session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+            session.setInstl(SARTBInstl.FULLSCREEN);
+            session.setSkip(shouldShowCloseButton ? SARTBSkip.SKIP : SARTBSkip.NO_SKIP);
+            session.setStartDelay(getPlaybackMode());
+
+            try {
+                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
+                session.setWidth(size.width);
+                session.setHeight(size.height);
+            } catch (Exception e) {
+                // do nothing
+            }
+
             session.prepareSession(new SASessionInterface() {
                 @Override
                 public void didFindSessionReady() {
@@ -719,7 +725,7 @@ public class SAVideoAd extends Activity {
         setOrientation(SAOrientation.LANDSCAPE);
     }
 
-    public static void setPlaybackMode (SAPlaybackMode mode) {
+    public static void setPlaybackMode (SARTBStartDelay mode) {
         playback = mode;
     }
 
@@ -775,7 +781,7 @@ public class SAVideoAd extends Activity {
         return shouldShowCloseButton;
     }
 
-    private static SAPlaybackMode getPlaybackMode () {
+    private static SARTBStartDelay getPlaybackMode () {
         return playback;
     }
 
