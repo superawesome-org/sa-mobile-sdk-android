@@ -12,17 +12,15 @@ import org.json.JSONObject;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
 import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
-import tv.superawesome.sdk.publisher.SADefaults;
-import tv.superawesome.sdk.publisher.SAVersion;
-import tv.superawesome.sdk.publisher.SuperAwesome;
+import tv.superawesome.sdk.publisher.AwesomeAds;
 
 /**
  * Created by gabriel.coman on 13/05/2018.
  */
 
-public class SAAIRSuperAwesome {
+public class SAAIRAwesomeAds {
 
-    private static final String airName = "SuperAwesome";
+    private static final String airName = "AwesomeAds";
 
 
     /**
@@ -30,7 +28,7 @@ public class SAAIRSuperAwesome {
      * This class will implement the "call" method from FREFunction and be able to override the
      * current native Android SDK version with the AIR SDK version
      */
-    public static class SuperAwesomeAIRInit implements FREFunction {
+    public static class SuperAwesomeAIRAwesomeAdsInit implements FREFunction {
         /**
          * Overridden FREFunction "call" method;
          * This needs to be implemented if this class is to correctly implement the FREFunction
@@ -53,7 +51,7 @@ public class SAAIRSuperAwesome {
             }
 
             try {
-                SuperAwesome.init(freContext.getActivity().getApplication(), loggingEnabled);
+                AwesomeAds.init(freContext.getActivity().getApplication(), loggingEnabled);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -62,7 +60,7 @@ public class SAAIRSuperAwesome {
         }
     }
 
-    public static class SuperAwesomeAIRTriggerAgeCheck implements FREFunction {
+    public static class SuperAwesomeAIRAwesomeAdsTriggerAgeCheck implements FREFunction {
 
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
@@ -76,7 +74,7 @@ public class SAAIRSuperAwesome {
             }
 
             try {
-                SuperAwesome.triggerAgeCheck(freContext.getActivity(), dateOfBirth, new GetIsMinorInterface() {
+                AwesomeAds.triggerAgeCheck(freContext.getActivity(), dateOfBirth, new GetIsMinorInterface() {
                     @Override
                     public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
 

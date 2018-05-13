@@ -24,6 +24,7 @@ import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
 import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
+import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
@@ -129,10 +130,10 @@ public class MainActivity extends Activity {
                             break;
                         case VIDEO: {
                             if (SAVideoAd.hasAdAvailable(placement.pid)) {
-                                Log.e("SuperAwesome", "PLAYING VIDEO");
+                                Log.e("AwesomeAds", "PLAYING VIDEO");
                                 SAVideoAd.play(placement.pid, MainActivity.this);
                             } else {
-                                Log.e("SuperAwesome", "LOADING VIDEO");
+                                Log.e("AwesomeAds", "LOADING VIDEO");
                                 SAVideoAd.load(placement.pid, MainActivity.this);
                             }
                             break;
@@ -163,11 +164,11 @@ public class MainActivity extends Activity {
 
         final String dateOfBirth = "2012-02-02";
 
-        SAAgeCheck.sdk.getIsMinor(this, dateOfBirth, new GetIsMinorInterface() {
+        AwesomeAds.triggerAgeCheck(this, dateOfBirth, new GetIsMinorInterface() {
             @Override
             public void getIsMinorData(GetIsMinorModel isMinorModel) {
 
-                String message = null;
+                String message;
                 if (isMinorModel != null) {
                     message = "Min age for '" + isMinorModel.getCountry() + "' is '"
                             + isMinorModel.getConsentAgeForCountry() + "' "
@@ -180,15 +181,13 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
             }
         });
-
     }
 }
 
 enum Type {
     BANNER,
     INTERSTITIAL,
-    VIDEO,
-    APPWALL
+    VIDEO
 }
 
 class AdapterItem {

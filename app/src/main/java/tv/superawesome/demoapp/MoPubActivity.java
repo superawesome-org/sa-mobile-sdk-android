@@ -139,7 +139,7 @@ public class MoPubActivity extends Activity {
 //        SAVideoAd.setListener(new SAInterface() {
 //            @Override
 //            public void onEvent(int placementId, SAEvent event) {
-//                Log.d("SuperAwesome", "Ext callback " + placementId + " | " + event);
+//                Log.d("AwesomeAds", "Ext callback " + placementId + " | " + event);
 //            }
 //        });
 //        SAVideoAd.load(28000, this);

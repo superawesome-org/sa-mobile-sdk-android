@@ -12,7 +12,7 @@ import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
  * Created by gabriel.coman on 30/04/2018.
  */
 
-public class SuperAwesome {
+public class AwesomeAds {
 
     public static void init (Application application, boolean loggingEnabled) {
         SAEvents.initMoat(application, loggingEnabled);

@@ -244,7 +244,7 @@ public class SAInterstitialAd extends Activity {
                                 if (listener != null) {
                                     listener.onEvent(placementId, SAEvent.adFailedToLoad);
                                 } else {
-                                    Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adFailedToLoad");
+                                    Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adFailedToLoad");
                                 }
                             }
                             else {
@@ -262,7 +262,7 @@ public class SAInterstitialAd extends Activity {
                                 if (listener != null) {
                                     listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
                                 } else {
-                                    Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                                    Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                                 }
                             }
                         }
@@ -277,7 +277,7 @@ public class SAInterstitialAd extends Activity {
             if (listener != null) {
                 listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
             } else {
-                Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adAlreadyLoaded");
+                Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adAlreadyLoaded");
             }
         }
     }
@@ -339,7 +339,7 @@ public class SAInterstitialAd extends Activity {
                 if (listener != null) {
                     listener.onEvent(placementId, SAEvent.adFailedToShow);
                 } else {
-                    Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adFailedToShow");
+                    Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adFailedToShow");
                 }
             }
         }
@@ -347,7 +347,7 @@ public class SAInterstitialAd extends Activity {
             if (listener != null) {
                 listener.onEvent(placementId, SAEvent.adFailedToShow);
             } else {
-                Log.w("SuperAwesome", "Interstitial Ad listener not implemented. Event would have been adFailedToShow");
+                Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adFailedToShow");
             }
         }
     }
