@@ -155,7 +155,7 @@ public class SABannerAd extends FrameLayout {
                             if (listener != null) {
                                 listener.onEvent(placementId, SAEvent.adFailedToLoad);
                             } else {
-                                Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
+                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
                             }
                         }
                         else {
@@ -164,7 +164,7 @@ public class SABannerAd extends FrameLayout {
                             if (listener != null) {
                                 listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
                             } else {
-                                Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                             }
                         }
                     }
@@ -236,7 +236,7 @@ public class SABannerAd extends FrameLayout {
                             if (listener != null) {
                                 listener.onEvent(ad.placementId, SAEvent.adShown);
                             } else {
-                                Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been adShown");
+                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
                             }
                             break;
                         }
@@ -288,7 +288,7 @@ public class SABannerAd extends FrameLayout {
                             if (listener != null) {
                                 listener.onEvent(ad.placementId, SAEvent.adFailedToShow);
                             } else {
-                                Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been adFailedToShow");
+                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToShow");
                             }
                             break;
                         }
@@ -298,7 +298,7 @@ public class SABannerAd extends FrameLayout {
                             if (listener != null) {
                                 listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
                             } else {
-                                Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been adFailedToLoad");
+                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToLoad");
                             }
                             break;
                         }
@@ -352,7 +352,7 @@ public class SABannerAd extends FrameLayout {
             if (listener != null) {
                 listener.onEvent(0, SAEvent.adFailedToShow);
             } else {
-                Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been adFailedToShow");
+                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToShow");
             }
         }
     }
@@ -380,25 +380,25 @@ public class SABannerAd extends FrameLayout {
 
     private void handleUrl (String destination) {
 
-        Log.d("SuperAwesome-2", "Got here!");
+        Log.d("AwesomeAds-2", "Got here!");
 
         Long currentTime = System.currentTimeMillis()/1000;
         Long diff = Math.abs(currentTime - currentClickThreshold);
 
         if (diff < SADefaults.defaultClickThreshold()) {
-            Log.d("SuperAwesome-2", "Current diff is " + diff);
+            Log.d("AwesomeAds-2", "Current diff is " + diff);
             return;
         }
 
         currentClickThreshold = currentTime;
 
-        Log.d("SuperAwesome-2", "Going to " + destination);
+        Log.d("AwesomeAds-2", "Going to " + destination);
 
         // callback
         if (listener != null) {
             listener.onEvent(ad.placementId, SAEvent.adClicked);
         } else {
-            Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been adClicked");
+            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClicked");
         }
 
         // send tracking events, if needed
@@ -425,7 +425,7 @@ public class SABannerAd extends FrameLayout {
         if (listener != null) {
             listener.onEvent(ad != null ? ad.placementId : 0, SAEvent.adClosed);
         } else {
-            Log.w("SuperAwesome", "Banner Ad listener not implemented. Event would have been adClosed");
+            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClosed");
         }
         
         // unregister moat events

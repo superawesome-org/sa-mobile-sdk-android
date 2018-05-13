@@ -44,8 +44,8 @@ public class SAAIRExtensionContext extends FREContext{
         functions.put("SuperAwesomeAIRSABannerAdClose", new SAAIRBannerAd.SuperAwesomeAIRSABannerAdClose());
         functions.put("SuperAwesomeAIRVersionSetVersion", new SAAIRVersion.SuperAwesomeAIRVersionSetVersion());
         functions.put("SuperAwesomeAIRBumperOverrideName", new SAAIRBumperPage.SuperAwesomeAIRBumperOverrideName());
-        functions.put("SuperAwesomeAIRInit", new SAAIRSuperAwesome.SuperAwesomeAIRInit());
-        functions.put("SuperAwesomeAIRTriggerAgeCheck", new SAAIRSuperAwesome.SuperAwesomeAIRTriggerAgeCheck());
+        functions.put("SuperAwesomeAIRAwesomeAdsInit", new SAAIRAwesomeAds.SuperAwesomeAIRAwesomeAdsInit());
+        functions.put("SuperAwesomeAIRAwesomeAdsTriggerAgeCheck", new SAAIRAwesomeAds.SuperAwesomeAIRAwesomeAdsTriggerAgeCheck());
 
         // return the result for the context
         return functions;
