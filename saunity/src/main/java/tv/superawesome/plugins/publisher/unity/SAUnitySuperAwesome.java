@@ -15,8 +15,8 @@ import tv.superawesome.sdk.publisher.SuperAwesome;
 
 public class SAUnitySuperAwesome {
 
-    public static void SuperAwesomeUnityInit (Activity activity) {
-        SuperAwesome.init(activity.getApplication(), false);
+    public static void SuperAwesomeUnityInit (Activity activity, boolean loggingEnabled) {
+        SuperAwesome.init(activity.getApplication(), loggingEnabled);
     }
 
     public static void SuperAwesomeUnityTriggerAgeCheck (Context context, String dateOfBirth) {
