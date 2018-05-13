@@ -18,6 +18,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SuperAwesome;
 
 public class SAAdMobBannerCustomEvent implements CustomEventBanner {
 

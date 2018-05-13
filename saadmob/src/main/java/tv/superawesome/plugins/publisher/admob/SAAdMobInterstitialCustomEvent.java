@@ -25,8 +25,6 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
         // save the context
         this.context = context;
 
-
-
         // set values
         if (bundle != null) {
             SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
