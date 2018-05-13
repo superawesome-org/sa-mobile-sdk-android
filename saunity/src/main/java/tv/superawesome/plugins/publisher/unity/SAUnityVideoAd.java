@@ -45,7 +45,11 @@ public class SAUnityVideoAd {
     /**
      * Method that loads a new Video Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAVideoAdLoad(Context context, int placementId, int configuration, boolean test, int playback) {
+    public static void SuperAwesomeUnitySAVideoAdLoad(Context context,
+                                                      int placementId,
+                                                      int configuration,
+                                                      boolean test,
+                                                      int playback) {
         SAVideoAd.setTestMode(test);
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
@@ -55,14 +59,23 @@ public class SAUnityVideoAd {
     /**
      * Method that checks to see if an ad is available for a video ad (from Unity)
      */
-    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable (Context context, int placementId) {
+    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable (Context context,
+                                                                    int placementId) {
         return SAVideoAd.hasAdAvailable(placementId);
     }
 
     /**
      * Method that plays a new video ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAVideoAdPlay (Context context, int placementId, boolean isParentalGateEnabled, boolean isBumperPageEnabled, boolean shouldShowCloseButton, boolean shouldShowSmallClickButton, boolean shouldAutomaticallyCloseAtEnd, int orientation, boolean isBackButtonEnabled) {
+    public static void SuperAwesomeUnitySAVideoAdPlay (Context context,
+                                                       int placementId,
+                                                       boolean isParentalGateEnabled,
+                                                       boolean isBumperPageEnabled,
+                                                       boolean shouldShowCloseButton,
+                                                       boolean shouldShowSmallClickButton,
+                                                       boolean shouldAutomaticallyCloseAtEnd,
+                                                       int orientation,
+                                                       boolean isBackButtonEnabled) {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);

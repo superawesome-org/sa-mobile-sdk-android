@@ -14,9 +14,14 @@ import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 
 public class AwesomeAds {
 
+    private static boolean isInitialised = false;
+
     public static void init (Application application, boolean loggingEnabled) {
-        SAEvents.initMoat(application, loggingEnabled);
-        SAFileDownloader.cleanup(application);
+        if (!isInitialised) {
+            SAEvents.initMoat(application, loggingEnabled);
+            SAFileDownloader.cleanup(application);
+            isInitialised = true;
+        }
     }
 
     public static void triggerAgeCheck (Context context, String dateOfBirth, GetIsMinorInterface listener) {
