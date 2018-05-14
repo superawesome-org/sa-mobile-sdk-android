@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+7.0.0
+ - Prepare and improve SDK for GDPR Release
+ - Improved tests for a lot of sub-components (networking, parsing, etc)
+ - Added a module that dynamically checks a user's "isMinor" status based on country, etc
+ - Simplified a lot of the code in different sub-components (networking, parsing, etc)
+
 6.1.6 
  - Fixed a bug that meant that calling "play" twice on a Video ad meant you had two impressions vs one ad attempted event
  - Fixed a bug with closing the video ad by pressing the back button
