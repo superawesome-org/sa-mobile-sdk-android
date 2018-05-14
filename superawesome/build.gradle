@@ -35,7 +35,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "SuperAwesomeSDK"
+        name = "SuperAwesome"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
