@@ -117,6 +117,13 @@ public class SABannerAd extends FrameLayout {
      */
     public void load (final int placementId) {
 
+        // very late init of the AwesomeAds SDK
+        try {
+            AwesomeAds.init(((Activity)this.getContext()).getApplication(), false);
+        } catch (Exception e) {
+            // do nothing
+        }
+
         // from this moment on the ad can't be played, to avoid wierd things
         canPlay = false;
 

@@ -500,6 +500,13 @@ public class SAVideoAd extends Activity {
      */
     public static void load (final int placementId, Context context) {
 
+        // very late init of the AwesomeAds SDK
+        try {
+            AwesomeAds.init(((Activity)context).getApplication(), false);
+        } catch (Exception e) {
+            // do nothing
+        }
+
         // if the ad data for the placement id doesn't existing in the "ads" hash map, then
         // proceed with loading it
         if (!ads.containsKey(placementId)) {
