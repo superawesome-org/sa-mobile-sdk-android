@@ -98,5 +98,5 @@ dependencies {
     compile 'tv.superawesome.lib.saadloader:saadloader:1.5.1'
     compile 'tv.superawesome.lib.saparentalgate:saparentalgate:1.0.3'
     compile 'tv.superawesome.lib.sabumperpage:sabumperpage:1.0.6'
-    compile 'tv.superawesome.sagdprisminorsdk:sagdprisminorsdk:1.10.0'
+    compile 'tv.superawesome.sagdprisminorsdk:sagdprisminorsdk:2.0.0'
 }
