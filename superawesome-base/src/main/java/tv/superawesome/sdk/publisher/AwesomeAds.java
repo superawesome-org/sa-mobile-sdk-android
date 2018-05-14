@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
@@ -18,9 +19,12 @@ public class AwesomeAds {
 
     public static void init (Application application, boolean loggingEnabled) {
         if (!isInitialised) {
+            Log.d("SuperAwesome", "Initialising AwesomeAds!");
             SAEvents.initMoat(application, loggingEnabled);
             SAFileDownloader.cleanup(application);
             isInitialised = true;
+        } else {
+            Log.d("SuperAwesome", "Already initialised AwesomeAds!");
         }
     }
 
