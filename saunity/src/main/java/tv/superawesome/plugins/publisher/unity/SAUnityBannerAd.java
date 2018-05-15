@@ -10,6 +10,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -30,7 +31,7 @@ import tv.superawesome.sdk.publisher.SAInterface;
 public class SAUnityBannerAd {
 
     // hash map containing banner ads
-    private static HashMap<String, SABannerSupport> supportHashMap = new HashMap<>();
+//    private static HashMap<String, SABannerSupport> supportHashMap = new HashMap<>();
     private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
 
     /**
@@ -62,8 +63,8 @@ public class SAUnityBannerAd {
         bannerAdHashMap.put(unityName, bannerAd);
 
         // create the dialog
-        SABannerSupport dialog = new SABannerSupport(context);
-        supportHashMap.put(unityName, dialog);
+//        SABannerSupport dialog = new SABannerSupport(context);
+//        supportHashMap.put(unityName, dialog);
     }
 
     /**
@@ -126,17 +127,26 @@ public class SAUnityBannerAd {
             }
 
             FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(screenSize.width, scaledHeight);
+            layout.gravity = position == 0 ? Gravity.TOP : Gravity.BOTTOM;
 
-            SABannerSupport support = supportHashMap.get(unityName);
-            support.setGravity(position == 0 ? Gravity.TOP : Gravity.BOTTOM);
-            support.setFeatures();
+            try {
+                activity.addContentView(bannerAd, layout);
+                bannerAd.play(context);
+            } catch (Exception e) {
+                Log.e("SuperAwesome", "Failed to add banner to Unity activity! " + e.getMessage());
+            }
 
-            support.setContentView(bannerAd, layout);
-            support.setCanceledOnTouchOutside(false);
-            support.show();
-
-            // finally play banner ad
-            bannerAd.play(context);
+            // !!OLD CODE!!
+//            SABannerSupport support = supportHashMap.get(unityName);
+//            support.setGravity(position == 0 ? Gravity.TOP : Gravity.BOTTOM);
+//            support.setFeatures();
+//
+//            support.setContentView(bannerAd, layout);
+//            support.setCanceledOnTouchOutside(false);
+//            support.show();
+//
+//            // finally play banner ad
+//            bannerAd.play(context);
         }
     }
 
@@ -148,71 +158,74 @@ public class SAUnityBannerAd {
             // close the banner
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.close();
+            bannerAd.setVisibility(View.GONE);
+            // !!OLD CODE!!
             // close the dialog
-            Dialog dialog = supportHashMap.get(unityName);
-            dialog.hide();
+//            Dialog dialog = supportHashMap.get(unityName);
+//            dialog.hide();
         }
     }
 }
 
-class SABannerSupport extends Dialog {
-
-    SABannerSupport(Context context) {
-        super(context);
-    }
-
-    void setGravity(int gravity) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setGravity(gravity);
-        }
-    }
-
-    void  setFeatures () {
-        Window window = getWindow();
-
-        if (window != null) {
-            // setup window & dialog support
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            window.requestFeature(Window.FEATURE_NO_TITLE);
-            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-
-            // Set the dialog to not focusable.
-            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                window.getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE);
-            } else {
-                window.getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN);
-            }
-        }
-    }
-
-    /**
-     * An hack used to show the dialogs in Immersive Mode (that is with the NavBar hidden). To
-     * obtain this, the method makes the dialog not focusable before showing it, change the UI
-     * visibility of the window like the owner activity of the dialog and then (after showing it)
-     * makes the dialog focusable again.
-     */
-    @Override
-    public void show() {
-        // Show the dialog with NavBar hidden.
-        super.show();
-
-        // Set the dialog to focusable again.
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-    }
-}
+//class SABannerSupport extends Dialog {
+//
+//    SABannerSupport(Context context) {
+//        super(context);
+//    }
+//
+//    void setGravity(int gravity) {
+//        Window window = getWindow();
+//        if (window != null) {
+//            window.setGravity(gravity);
+//        }
+//    }
+//
+//    void  setFeatures () {
+//        Window window = getWindow();
+//
+//        if (window != null) {
+//            // setup window & dialog support
+//            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+////            window.requestFeature(Window.FEATURE_NO_TITLE);
+////            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+////
+////            // Set the dialog to not focusable.
+////            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+////                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+//
+////            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+////
+////                window.getDecorView().setSystemUiVisibility(
+////                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+////                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+////                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+////                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+////                                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+////                                | View.SYSTEM_UI_FLAG_IMMERSIVE);
+////            } else {
+////                window.getDecorView().setSystemUiVisibility(
+////                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+////                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+////                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+////                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+////                                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+////            }
+//        }
+//    }
+//
+//    /**
+//     * An hack used to show the dialogs in Immersive Mode (that is with the NavBar hidden). To
+//     * obtain this, the method makes the dialog not focusable before showing it, change the UI
+//     * visibility of the window like the owner activity of the dialog and then (after showing it)
+//     * makes the dialog focusable again.
+//     */
+//    @Override
+//    public void show() {
+//        // Show the dialog with NavBar hidden.
+//        super.show();
+//
+//        // Set the dialog to focusable again.
+////        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+//    }
+//}
