@@ -24,11 +24,14 @@ public class SAUnityAwesomeAds {
             @Override
             public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
 
+                GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
+
                 try {
-                    JSONObject jsonObject = getIsMinorModel.writeToJson();
+                    JSONObject jsonObject = model.writeToJson();
                     SAUnityCallback.sendToUnity("AwesomeAds", jsonObject);
                 } catch (Exception e) {
-                    // do nothing
+                    e.printStackTrace();
+                    SAUnityCallback.sendToUnity("AwesomeAds", new JSONObject());
                 }
             }
         });

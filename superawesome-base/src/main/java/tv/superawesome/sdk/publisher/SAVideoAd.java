@@ -504,7 +504,7 @@ public class SAVideoAd extends Activity {
         try {
             AwesomeAds.init(((Activity)context).getApplication(), false);
         } catch (Exception e) {
-            // do nothing
+            Log.d("SuperAwesome", "Error initing AwesomeAds in SAVideoAd " + e.getMessage());
         }
 
         // if the ad data for the placement id doesn't existing in the "ads" hash map, then
