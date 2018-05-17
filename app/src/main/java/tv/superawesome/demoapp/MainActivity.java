@@ -41,6 +41,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AwesomeAds.triggerAgeCheck(this, "2012", new GetIsMinorInterface() {
+            @Override
+            public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
+                Log.d("SuperAwesome", "Get is minor " + getIsMinorModel.isMinor + " | " + getIsMinorModel.age);
+            }
+        });
+
         SABumperPage.overrideName("Test app");
 
         final SABannerAd myBanner = findViewById(R.id.MyBanner);
