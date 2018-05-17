@@ -78,18 +78,17 @@ public class SAAIRAwesomeAds {
                     @Override
                     public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
 
-                        if (getIsMinorModel != null) {
+                        GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
 
-                            JSONObject payload = SAJsonParser.newObject(
-                                    "name", airName,
-                                    "isMinor", getIsMinorModel.isMinor(),
-                                    "age", getIsMinorModel.getAge(),
-                                    "consentAgeForCountry", getIsMinorModel.getConsentAgeForCountry(),
-                                    "country", getIsMinorModel.getCountry()
-                            );
+                        JSONObject payload = SAJsonParser.newObject(
+                                "name", airName,
+                                "isMinor", model.isMinor(),
+                                "age", model.getAge(),
+                                "consentAgeForCountry", model.getConsentAgeForCountry(),
+                                "country", model.getCountry()
+                        );
 
-                            SAAIRCallback.sendToAIR(freContext, payload);
-                        }
+                        SAAIRCallback.sendToAIR(freContext, payload);
                     }
                 });
 
