@@ -78,9 +78,14 @@ public class SAAIRAwesomeAds {
                     @Override
                     public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
 
+                        GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
+
                         JSONObject payload = SAJsonParser.newObject(
-                            "name", airName,
-                                "payload", getIsMinorModel.writeToJson().toString()
+                                "name", airName,
+                                "isMinor", model.isMinor(),
+                                "age", model.getAge(),
+                                "consentAgeForCountry", model.getConsentAgeForCountry(),
+                                "country", model.getCountry()
                         );
 
                         SAAIRCallback.sendToAIR(freContext, payload);

@@ -121,7 +121,7 @@ public class SABannerAd extends FrameLayout {
         try {
             AwesomeAds.init(((Activity)this.getContext()).getApplication(), false);
         } catch (Exception e) {
-            // do nothing
+            Log.d("SuperAwesome", "Error initing AwesomeAds in SABannerAd " + e.getMessage());
         }
 
         // from this moment on the ad can't be played, to avoid wierd things
