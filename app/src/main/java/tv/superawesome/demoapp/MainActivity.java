@@ -111,8 +111,8 @@ public class MainActivity extends Activity {
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
                 new PlacementItem("Moat Banner", 36982, Type.BANNER),
-//                new HeaderItem("Interstitials"),
-//                new PlacementItem("CPM Interstitial 1 (Image)", 36744, Type.INTERSTITIAL),
+                new HeaderItem("Interstitials"),
+                new PlacementItem("CPM Interstitial 1 (Image)", 37141, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("Moat Video", 36981, Type.VIDEO)
         );
