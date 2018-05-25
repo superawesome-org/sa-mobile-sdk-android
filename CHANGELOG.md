@@ -6,6 +6,7 @@ CHANGELOG
  - Improved tests for a lot of sub-components (networking, parsing, etc)
  - Added a module that dynamically checks a user's "isMinor" status based on country, etc
  - Simplified a lot of the code in different sub-components (networking, parsing, etc)
+ - Fixed iFrame issue
 
 6.1.6 
  - Fixed a bug that meant that calling "play" twice on a Video ad meant you had two impressions vs one ad attempted event
