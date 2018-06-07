@@ -110,11 +110,11 @@ public class MainActivity extends Activity {
         ListView myList = (ListView) findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("Moat Banner", 36982, Type.BANNER),
+                new PlacementItem("Moat Banner", 36508, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("CPM Interstitial 1 (Image)", 37141, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 1 (Image)", 37031, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Moat Video", 36981, Type.VIDEO)
+                new PlacementItem("Moat Video", 36512, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
