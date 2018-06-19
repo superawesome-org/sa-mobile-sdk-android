@@ -201,8 +201,8 @@ public class SABannerAd extends FrameLayout {
 
             // create a new web player fragment object
             webPlayer = new SAWebPlayer(context);
-            webPlayer.setContentSize(ad.creative.details.width, ad.creative.details.height);
             webPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            webPlayer.setContentSize(ad.creative.details.width, ad.creative.details.height);
             // and set it's event listener
             webPlayer.setEventListener(new SAWebPlayer.Listener() {
                 @Override
@@ -245,6 +245,7 @@ public class SABannerAd extends FrameLayout {
                             } else {
                                 Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
                             }
+
                             break;
                         }
                         // this is actually a fragment event notifying the banner class that
@@ -284,6 +285,7 @@ public class SABannerAd extends FrameLayout {
                         }
                         // this is called when the fragment & web view have all been laid out
                         case Web_Layout:{
+
                             if (webPlayer.getWebView() != null && padlock != null) {
                                 padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
                                 padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
@@ -409,7 +411,11 @@ public class SABannerAd extends FrameLayout {
         }
 
         // send tracking events, if needed
-        if (session != null && !destination.contains(session.getBaseUrl())) {
+        if (ad != null &&
+                ad.creative != null &&
+                ad.creative.format != SACreativeFormat.rich &&
+                session != null &&
+                !destination.contains(session.getBaseUrl())) {
             events.triggerClickEvent();
         }
 
