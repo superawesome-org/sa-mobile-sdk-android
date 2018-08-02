@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
 import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
@@ -92,7 +94,8 @@ public class MainActivity extends Activity {
         SAVideoAd.disableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
-        SAVideoAd.enableCloseButton();
+        SAVideoAd.disableCloseButton();
+        SAVideoAd.setPlaybackMode(SARTBStartDelay.POST_ROLL);
         SAVideoAd.enableBackButton();
         SAVideoAd.setListener(new SAInterface() {
             @Override
@@ -110,11 +113,17 @@ public class MainActivity extends Activity {
         ListView myList = (ListView) findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("Moat Banner", 36508, Type.BANNER),
+                new PlacementItem("Moat Banner", 37189, Type.BANNER),
+                // new PlacementItem("New Banner", 37217, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("CPM Interstitial 1 (Image)", 37031, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 1 (Rich Media)", 37191, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 37193, Type.INTERSTITIAL),
+//                new PlacementItem("Image #1", 37218, Type.INTERSTITIAL),
+//                new PlacementItem("Rich Media #2", 37219, Type.INTERSTITIAL),
+//                new PlacementItem("Rich Media #3", 37220, Type.INTERSTITIAL),
+//                new PlacementItem("Rich Media #4", 37221, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Moat Video", 36512, Type.VIDEO)
+                new PlacementItem("Moat Video", 37187, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
