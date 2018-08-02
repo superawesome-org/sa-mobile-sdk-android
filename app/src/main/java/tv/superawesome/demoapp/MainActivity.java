@@ -114,14 +114,14 @@ public class MainActivity extends Activity {
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
                 new PlacementItem("Moat Banner", 37189, Type.BANNER),
+                // new PlacementItem("New Banner", 37217, Type.BANNER),
                 new HeaderItem("Interstitials"),
                 new PlacementItem("CPM Interstitial 1 (Rich Media)", 37191, Type.INTERSTITIAL),
                 new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 37193, Type.INTERSTITIAL),
-                new PlacementItem("Moat Banner", 37217, Type.BANNER),
-                new PlacementItem("CPM Interstitial 1 (Rich Media)", 37218, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 1 (Rich Media)", 37219, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 1 (Rich Media)", 37220, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 1 (Rich Media)", 37221, Type.INTERSTITIAL),
+//                new PlacementItem("Image #1", 37218, Type.INTERSTITIAL),
+//                new PlacementItem("Rich Media #2", 37219, Type.INTERSTITIAL),
+//                new PlacementItem("Rich Media #3", 37220, Type.INTERSTITIAL),
+//                new PlacementItem("Rich Media #4", 37221, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("Moat Video", 37187, Type.VIDEO)
         );
