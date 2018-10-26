@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
         SAInterstitialAd.disableParentalGate();
         SAInterstitialAd.disableBumperPage();
         SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.disableTestMode();
+        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -116,8 +116,8 @@ public class MainActivity extends Activity {
                 new PlacementItem("Moat Banner", 37189, Type.BANNER),
                 // new PlacementItem("New Banner", 37217, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("CPM Interstitial 1 (Rich Media)", 37191, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 37193, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 1 (Rich Media)", 39308, Type.INTERSTITIAL),
+                new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 39309, Type.INTERSTITIAL),
 //                new PlacementItem("Image #1", 37218, Type.INTERSTITIAL),
 //                new PlacementItem("Rich Media #2", 37219, Type.INTERSTITIAL),
 //                new PlacementItem("Rich Media #3", 37220, Type.INTERSTITIAL),
