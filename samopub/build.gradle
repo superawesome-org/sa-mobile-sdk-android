@@ -86,8 +86,7 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile('com.mopub:mopub-sdk:4.14.0@aar') {
-        transitive = true
-    }
     compile project(':superawesome-base')
+
+    implementation 'com.mopub:mopub-sdk:4.14.0'
 }
