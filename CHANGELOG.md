@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+7.0.3
+ - Fix click handling with a null ad bug
+
 7.0.1
  - Transitioned to a non-scaling WebView to display banner & interstitial type ads
 
