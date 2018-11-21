@@ -374,7 +374,7 @@ public class SABannerAd extends FrameLayout {
      */
     public void click (final String destination) {
 
-        if (isBumperPageEnabled || ad.creative.bumper) {
+        if ((ad != null && ad.creative != null && ad.creative.bumper) || isBumperPageEnabled) {
             SABumperPage.setListener(new SABumperPage.Interface() {
                 @Override
                 public void didEndBumper() {
@@ -388,6 +388,11 @@ public class SABannerAd extends FrameLayout {
     }
 
     private void handleUrl (String destination) {
+
+        // if someone's closed this thing
+        if (ad == null || ad.creative == null) {
+            return;
+        }
 
         Log.d("AwesomeAds-2", "Got here!");
 
