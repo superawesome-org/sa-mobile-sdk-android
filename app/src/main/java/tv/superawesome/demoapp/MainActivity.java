@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
 
         final SABannerAd myBanner = findViewById(R.id.MyBanner);
         myBanner.setConfigurationProduction();
-        myBanner.disableBumperPage();
+        myBanner.enableBumperPage();
         myBanner.disableParentalGate();
         myBanner.disableTestMode();
         myBanner.disableMoatLimiting();
@@ -72,9 +72,9 @@ public class MainActivity extends Activity {
 
         SAInterstitialAd.setConfigurationProduction();
         SAInterstitialAd.disableParentalGate();
-        SAInterstitialAd.disableBumperPage();
+        SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.enableTestMode();
+        SAInterstitialAd.disableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -110,14 +110,14 @@ public class MainActivity extends Activity {
             }
         });
 
-        ListView myList = (ListView) findViewById(R.id.MyList);
+        ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("Moat Banner", 37189, Type.BANNER),
+                new PlacementItem("O7 Banner", 36508, Type.BANNER),
                 // new PlacementItem("New Banner", 37217, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("CPM Interstitial 1 (Rich Media)", 39308, Type.INTERSTITIAL),
-                new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 39309, Type.INTERSTITIAL),
+                new PlacementItem("O7 Interstitial", 36510, Type.INTERSTITIAL),
+//                new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 39309, Type.INTERSTITIAL),
 //                new PlacementItem("Image #1", 37218, Type.INTERSTITIAL),
 //                new PlacementItem("Rich Media #2", 37219, Type.INTERSTITIAL),
 //                new PlacementItem("Rich Media #3", 37220, Type.INTERSTITIAL),
