@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity
-            android:name="tv.superawesome.sdk.publisher.SAVideoAd"
+            android:name="tv.superawesome.sdk.publisher.SAVideoActivity"
             android:label="SAFullscreenVideoAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"/>

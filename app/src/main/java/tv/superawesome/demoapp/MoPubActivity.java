@@ -2,23 +2,13 @@ package tv.superawesome.demoapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
-import com.mopub.common.MoPub;
-import com.mopub.common.MoPubReward;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
-import com.mopub.mobileads.MoPubRewardedVideoListener;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.mopub.mobileads.MoPubView;
-
-import java.util.Set;
-
-import tv.superawesome.sdk.publisher.SAEvent;
-import tv.superawesome.sdk.publisher.SAInterface;
-import tv.superawesome.sdk.publisher.SAVideoAd;
 
 
 public class MoPubActivity extends Activity {
@@ -134,15 +124,15 @@ public class MoPubActivity extends Activity {
 //        });
 //        MoPubRewardedVideos.loadRewardedVideo(kVIDEO_ID);
 
-//        SAVideoAd.enableTestMode();
-//        SAVideoAd.setConfigurationProduction();
-//        SAVideoAd.setListener(new SAInterface() {
+//        SAVideoActivity.enableTestMode();
+//        SAVideoActivity.setConfigurationProduction();
+//        SAVideoActivity.setListener(new SAInterface() {
 //            @Override
 //            public void onEvent(int placementId, SAEvent event) {
 //                Log.d("AwesomeAds", "Ext callback " + placementId + " | " + event);
 //            }
 //        });
-//        SAVideoAd.load(28000, this);
+//        SAVideoActivity.load(28000, this);
 
     }
 
@@ -160,8 +150,8 @@ public class MoPubActivity extends Activity {
         } else {
             Log.d("SADefaults/MoPub", "Video not ready yet");
         }
-//        if (SAVideoAd.hasAdAvailable(28000)) {
-//            SAVideoAd.play(28000, this);
+//        if (SAVideoActivity.hasAdAvailable(28000)) {
+//            SAVideoActivity.play(28000, this);
 //        }
     }
 

@@ -473,7 +473,7 @@ public class SABannerAd extends FrameLayout {
      */
     public void setAd(SAAd ad) {
         this.ad = ad;
-        events.setAd(getContext(), session, this.ad);
+        events.setAd(session, this.ad);
     }
 
     /**
