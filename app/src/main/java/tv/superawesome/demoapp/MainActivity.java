@@ -22,8 +22,6 @@ import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
-import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
 import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.sdk.publisher.AwesomeAds;
@@ -94,7 +92,7 @@ public class MainActivity extends Activity {
         SAVideoAd.disableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
-        SAVideoAd.disableCloseButton();
+        SAVideoAd.enableCloseButton();
         SAVideoAd.setPlaybackMode(SARTBStartDelay.POST_ROLL);
         SAVideoAd.enableBackButton();
         SAVideoAd.setListener(new SAInterface() {
@@ -123,7 +121,7 @@ public class MainActivity extends Activity {
 //                new PlacementItem("Rich Media #3", 37220, Type.INTERSTITIAL),
 //                new PlacementItem("Rich Media #4", 37221, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Moat Video", 37187, Type.VIDEO)
+                new PlacementItem("Social SDK Video", 39521, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
