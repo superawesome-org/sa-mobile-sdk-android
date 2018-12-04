@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
+import tv.superawesome.lib.saevents.events.SAViewableImpressionEvent;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
@@ -81,6 +82,8 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         setContentView(parent);
 
         chrome = new SAMediaController(this);
+        chrome.shouldShowPadlock(ad.isPadlockVisible);
+        chrome.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
         chrome.padlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +93,6 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         });
 
         videoPlayer = new SAVideoPlayer(this);
-        videoPlayer.shouldShowPadlock(ad.isPadlockVisible);
-        videoPlayer.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
         videoPlayer.setMediaControl(SAVideoAd.control);
         videoPlayer.setChromeControl(chrome);
         parent.addView(videoPlayer);
@@ -118,7 +119,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         SAVideoAd.control.addListener(this);
 
-        videoPlayer.setClickListener(new SAVideoPlayerClickInterface() {
+        chrome.setClickListener(new SAVideoPlayerClickInterface() {
             @Override
             public void onClick(View v) {
 
@@ -311,6 +312,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         // close the video player
         videoPlayer.close();
+        SAVideoAd.control.setDisplay(null);
         SAVideoAd.control.reset();
 
         // close

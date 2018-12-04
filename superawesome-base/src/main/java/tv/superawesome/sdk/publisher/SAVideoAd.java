@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
-import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
@@ -22,9 +21,6 @@ import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.lib.savideoplayer.media.SAMediaControl;
-import tv.superawesome.lib.savideoplayer.media.SAMediaControlDelegate;
-import tv.superawesome.lib.savideoplayer.media.SAMediaPlayer;
 import tv.superawesome.lib.savideoplayer.v2.AwesomeMediaControl;
 import tv.superawesome.lib.savideoplayer.v2.MediaControl;
 
