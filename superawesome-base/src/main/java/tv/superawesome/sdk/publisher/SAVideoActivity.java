@@ -132,123 +132,6 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
 
         SAVideoAd.control.addDelegate(this);
 
-//        videoPlayer.setEventListener(new SAVideoPlayerEventInterface() {
-//            @Override
-//            public void saVideoPlayerDidReceiveEvent(SAVideoPlayerEvent saVideoPlayerEvent, int time, int duration) {
-//                switch (saVideoPlayerEvent) {
-//
-//                    case Video_Prepared: {
-//
-//                        break;
-//                    }
-//                    case Video_Start: {
-//
-////                        Log.d("SuperAwesome", "EVENT: Video_Start");
-//
-//                        // TODO: FIX THIS
-////                        boolean result = events.startMoatTrackingForVideoPlayer(videoPlayer.getVideoView(), duration);
-//
-////                        // send callback
-////                        if (listenerL != null) {
-////                            listenerL.onEvent(ad.placementId, SAEvent.adShown);
-////                        } else {
-////                            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adShown");
-////                        }
-////
-////                        // send vast events - including impression
-////                        events.triggerVASTImpressionEvent();
-////                        events.triggerVASTStartEvent();
-////                        events.triggerVASTCreativeViewEvent();
-////
-////                        // moat
-////                        events.sendMoatPlayingEvent(time);
-////                        events.sendMoatStartEvent(time);
-//
-//                        break;
-//                    }
-//                    case Video_2s: {
-////                        Log.d("SuperAwesome", "EVENT: Video_2s");
-//
-//                        // TODO: FIX THIS
-////                        boolean isViewable = events.isChildInRect(videoPlayer);
-////                        if (isViewable) {
-////                            events.triggerViewableImpressionEvent();
-////                        }
-//                        break;
-//                    }
-//                    case Video_1_4: {
-////                        Log.d("SuperAwesome", "EVENT: Video_1_4");
-//
-////                        events.sendMoatFirstQuartileEvent(time);
-////                        events.triggerVASTFirstQuartileEvent();
-//                        break;
-//                    }
-//                    case Video_1_2: {
-////                        Log.d("SuperAwesome", "EVENT: Video_1_2");
-//
-////                        events.sendMoatMidpointEvent(time);
-////                        events.triggerVASTMidpointEvent();
-//                        break;
-//                    }
-//                    case Video_3_4: {
-////                        Log.d("SuperAwesome", "EVENT: Video_3_4");
-//
-////                        events.sendMoatThirdQuartileEvent(time);
-////                        events.triggerVASTThirdQuartileEvent();
-//                        break;
-//                    }
-//                    case Video_End: {
-////                        Log.d("SuperAwesome", "EVENT: Video_End");
-//
-////                        // send events
-////                        events.sendMoatCompleteEvent(duration);
-////                        events.triggerVASTCompleteEvent();
-////
-////                        // send an ad ended event
-////                        if (listenerL != null) {
-////                            listenerL.onEvent(ad.placementId, SAEvent.adEnded);
-////                        } else {
-////                            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adEnded");
-////                        }
-//
-////                        // make btn visible
-////                        closeButton.setVisibility(View.VISIBLE);
-////
-////                        // auto close
-////                        if (shouldAutomaticallyCloseAtEndL) {
-////                            close();
-////                        }
-//
-//                        break;
-//                    }
-//                    case Video_15s:{
-////                        Log.d("SuperAwesome", "EVENT: Video_15s");
-//                        // do nothing
-//                        break;
-//                    }
-//                    case Video_Error: {
-////                        Log.d("SuperAwesome", "EVENT: Video_Error");
-//
-////                        // send events
-////                        events.stopMoatTrackingForVideoPlayer();
-////                        events.triggerVASTErrorEvent();
-////
-////                        // ad failed to show
-////                        if (listenerL != null) {
-////                            listenerL.onEvent(ad.placementId, SAEvent.adFailedToShow);
-////                        } else {
-////                            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adFailedToShow");
-////                        }
-//
-////                         close this whole
-////                        close();
-//
-//                        break;
-//                    }
-//                }
-//            }
-//        });
-
         videoPlayer.setClickListener(new SAVideoPlayerClickInterface() {
             @Override
             public void onClick(View v) {
@@ -309,7 +192,7 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
         });
 
         Log.d("SuperAwesome", "EVENT: Video_Prepared");
-        videoPlayer.play(this, ad.creative.details.media.path);
+        SAVideoAd.control.play(this, ad.creative.details.media.path);
     }
 
     /**
@@ -439,6 +322,7 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
 
         // close the video player
         videoPlayer.close();
+        SAVideoAd.control.reset();
 
         // close
         this.finish();
