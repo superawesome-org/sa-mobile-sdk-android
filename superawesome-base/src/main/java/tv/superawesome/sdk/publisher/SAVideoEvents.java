@@ -5,14 +5,11 @@ import android.util.Log;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.savideoplayer.media.SAMediaControl;
-import tv.superawesome.lib.savideoplayer.media.SAMediaControlDelegate;
+import tv.superawesome.lib.savideoplayer.v2.MediaControl;
 
-public class SAVideoEvents implements SAMediaControlDelegate {
+public class SAVideoEvents implements MediaControl.Listener {
 
     private int placementId;
-    private SAAd ad;
-    private SASession session;
     private SAEvents events;
 
     private boolean isStartHandled = false;
@@ -26,8 +23,6 @@ public class SAVideoEvents implements SAMediaControlDelegate {
     
     void reset(int placementId, SAAd ad, SASession session, boolean isMoatLimitingEnabled) {
         this.placementId = placementId;
-        this.ad = ad;
-        this.session = session;
 
         events = new SAEvents();
         events.setAd(session, ad);
@@ -44,12 +39,12 @@ public class SAVideoEvents implements SAMediaControlDelegate {
     }
     
     @Override
-    public void onPrepared(SAMediaControl saMediaControl) {
+    public void onPrepared(MediaControl saMediaControl) {
         saMediaControl.start();
     }
 
     @Override
-    public void onTimeUpdated(SAMediaControl saMediaControl, int time, int duration) {
+    public void onTimeUpdated(MediaControl saMediaControl, int time, int duration) {
         // Start
         if (time >= 1 && !isStartHandled) {
             isStartHandled = true;
@@ -105,7 +100,7 @@ public class SAVideoEvents implements SAMediaControlDelegate {
     }
 
     @Override
-    public void onMediaComplete(SAMediaControl saMediaControl, int time, int duration) {
+    public void onMediaComplete(MediaControl saMediaControl, int time, int duration) {
 
         saMediaControl.setDisplay(null);
         saMediaControl.reset();
@@ -126,7 +121,7 @@ public class SAVideoEvents implements SAMediaControlDelegate {
     }
 
     @Override
-    public void onError(SAMediaControl saMediaControl, Throwable throwable, int time, int duration) {
+    public void onError(MediaControl saMediaControl, Throwable throwable, int time, int duration) {
         // destroy media control
         saMediaControl.setDisplay(null);
         saMediaControl.reset();
@@ -141,6 +136,11 @@ public class SAVideoEvents implements SAMediaControlDelegate {
         } else {
             Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adFailedToShow");
         }
+    }
+
+    @Override
+    public void onSeekComplete(MediaControl mediaControl) {
+        // N/A
     }
 
     public void setListener(SAInterface listener) {

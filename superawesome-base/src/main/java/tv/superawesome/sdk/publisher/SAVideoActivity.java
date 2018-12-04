@@ -27,21 +27,17 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayerClickInterface;
 import tv.superawesome.lib.savideoplayer.chrome.SAMediaController;
-import tv.superawesome.lib.savideoplayer.media.SAMediaControl;
-import tv.superawesome.lib.savideoplayer.media.SAMediaControlDelegate;
+import tv.superawesome.lib.savideoplayer.utils.VideoUtils;
+import tv.superawesome.lib.savideoplayer.v2.MediaControl;
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAVideoActivity extends Activity implements SAMediaControlDelegate {
+public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
     // the ad
     private SAAd ad = null;
-
-    // the internal loader
-//    private static SASession session = null;
-//    private SAEvents events = null;
 
     private RelativeLayout parent = null;
     private SAMediaController chrome;
@@ -61,14 +57,11 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
         super.onCreate(savedInstanceState);
 
         // local versions of the static vars
-//        final SAInterface listenerL = SAVideoAd.getListener();
         final boolean isParentalGateEnabledL = SAVideoAd.getIsParentalGateEnabled();
         final boolean shouldShowCloseButtonL = SAVideoAd.getShouldShowCloseButton();
 
-//        final boolean shouldAutomaticallyCloseAtEndL = SAVideoAd.getShouldAutomaticallyCloseAtEnd();
         final boolean shouldShowSmallClickButtonL = SAVideoAd.getShouldShowSmallClickButton();
         final SAOrientation orientationL = SAVideoAd.getOrientation();
-        final boolean isMoatLimitingEnabledL = SAVideoAd.getMoatLimitingState();
         Bundle bundle = getIntent().getExtras();
         String adString = bundle.getString("ad");
         ad = new SAAd(SAJsonParser.newObject(adString));
@@ -79,13 +72,6 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
             case PORTRAIT: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); break;
             case LANDSCAPE: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); break;
         }
-
-//        // start events
-//        events = new SAEvents();
-//        events.setAd(this, session, ad);
-//        if (!isMoatLimitingEnabledL) {
-//            events.disableMoatLimiting();
-//        }
 
         // create main content for activity
         parent = new RelativeLayout(this);
@@ -130,7 +116,7 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
         });
         parent.addView(closeButton);
 
-        SAVideoAd.control.addDelegate(this);
+        SAVideoAd.control.addListener(this);
 
         videoPlayer.setClickListener(new SAVideoPlayerClickInterface() {
             @Override
@@ -192,7 +178,10 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
         });
 
         Log.d("SuperAwesome", "EVENT: Video_Prepared");
-        SAVideoAd.control.play(this, ad.creative.details.media.path);
+        try {
+            Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
+            SAVideoAd.control.play(this, fileUri);
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -291,7 +280,7 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
      */
     public void resume () {
         try {
-            SAVideoAd.control.resume();
+            SAVideoAd.control.start();
         } catch (Exception ignored) {}
     }
 
@@ -334,17 +323,17 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onPrepared(SAMediaControl saMediaControl) {
+    public void onPrepared(MediaControl saMediaControl) {
 
     }
 
     @Override
-    public void onTimeUpdated(SAMediaControl saMediaControl, int time, int duration) {
+    public void onTimeUpdated(MediaControl saMediaControl, int time, int duration) {
         chrome.setTime(time, duration);
     }
 
     @Override
-    public void onMediaComplete(SAMediaControl saMediaControl, int i, int i1) {
+    public void onMediaComplete(MediaControl saMediaControl, int i, int i1) {
         // make btn visible
         closeButton.setVisibility(View.VISIBLE);
 
@@ -356,8 +345,13 @@ public class SAVideoActivity extends Activity implements SAMediaControlDelegate 
     }
 
     @Override
-    public void onError(SAMediaControl saMediaControl, Throwable throwable, int i, int i1) {
+    public void onError(MediaControl saMediaControl, Throwable throwable, int i, int i1) {
 //        saMediaControl.removeDelegate(this);
         close();
+    }
+
+    @Override
+    public void onSeekComplete(MediaControl mediaControl) {
+        // N/A
     }
 }

@@ -25,6 +25,8 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savideoplayer.media.SAMediaControl;
 import tv.superawesome.lib.savideoplayer.media.SAMediaControlDelegate;
 import tv.superawesome.lib.savideoplayer.media.SAMediaPlayer;
+import tv.superawesome.lib.savideoplayer.v2.AwesomeMediaControl;
+import tv.superawesome.lib.savideoplayer.v2.MediaControl;
 
 public class SAVideoAd {
 
@@ -47,7 +49,7 @@ public class SAVideoAd {
     private static SARTBStartDelay playback                 = SADefaults.defaultPlaybackMode();
     private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
 
-    public static SAMediaControl control = new SAMediaPlayer();
+    public static MediaControl control = new AwesomeMediaControl();
     private static SAVideoEvents videoEvents = new SAVideoEvents();
 
     public static void load (final int placementId, final Context context) {
@@ -127,7 +129,7 @@ public class SAVideoAd {
 
                                 // reset video events
                                 videoEvents.reset(placementId, first, session, isMoatLimitingEnabled);
-                                control.addDelegate(videoEvents);
+                                control.addListener(videoEvents);
 
                                 // call listener(s)
                                 if (listener != null) {
