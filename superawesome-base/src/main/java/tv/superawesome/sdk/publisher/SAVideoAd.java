@@ -48,8 +48,9 @@ public class SAVideoAd {
     private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
 
     public static SAMediaControl control = new SAMediaPlayer();
+    private static SAVideoEvents videoEvents = new SAVideoEvents();
 
-    public static void load (final int placementId, Context context) {
+    public static void load (final int placementId, final Context context) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -124,7 +125,9 @@ public class SAVideoAd {
                                     ads.remove(placementId);
                                 }
 
-                                prepareMediaPlayer(placementId, first);
+                                // reset video events
+                                videoEvents.reset(placementId, first, session, isMoatLimitingEnabled);
+                                control.addDelegate(videoEvents);
 
                                 // call listener(s)
                                 if (listener != null) {
@@ -166,125 +169,6 @@ public class SAVideoAd {
         } else {
             return null;
         }
-    }
-
-    private static void prepareMediaPlayer (final int placementId, final SAAd adL) {
-        // create the events
-        final SAEvents events = new SAEvents();
-        events.setAd(session, adL);
-        if (!isMoatLimitingEnabled) {
-            events.disableMoatLimiting();
-        }
-
-        // create the media player
-        control = new SAMediaPlayer();
-
-        final boolean[] isStartHandled = {false};
-        final boolean[] is2SHandled = {false};
-        final boolean[] isFirstQuartileHandled = {false};
-        final boolean[] isMidpointHandled = {false};
-        final boolean[] isThirdQuartileHandled = {false};
-        final boolean[] is15sHandled = {false};
-
-        SAMediaControlDelegate controlDelegate = new SAMediaControlDelegate() {
-            @Override
-            public void onPrepared(SAMediaControl saMediaControl) {
-                saMediaControl.start();
-            }
-
-            @Override
-            public void onTimeUpdated(SAMediaControl saMediaControl, int time, int duration) {
-                // Start
-                if (time >= 1 && !isStartHandled[0]) {
-                    isStartHandled[0] = true;
-
-                    // send callback
-                    if (listener != null) {
-                        listener.onEvent(placementId, SAEvent.adShown);
-                    } else {
-                        Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adShown");
-                    }
-
-                    // send vast events - including impression
-                    events.triggerVASTImpressionEvent();
-                    events.triggerVASTStartEvent();
-                    events.triggerVASTCreativeViewEvent();
-
-                    // moat
-                    events.sendMoatPlayingEvent(time);
-                    events.sendMoatStartEvent(time);
-                }
-                // 2 second (viewability)
-                if (time >= 2000 && !is2SHandled[0]) {
-                    is2SHandled[0] = true;
-                }
-                // 1/4
-                if (time >= duration / 4 && !isFirstQuartileHandled[0]) {
-                    isFirstQuartileHandled[0] = true;
-
-                    // send events
-                    events.sendMoatFirstQuartileEvent(time);
-                    events.triggerVASTFirstQuartileEvent();
-                }
-                // 1/2
-                if (time >= duration / 2 && !isMidpointHandled[0]) {
-                    isMidpointHandled[0] = true;
-
-                    // send events
-                    events.sendMoatMidpointEvent(time);
-                    events.triggerVASTMidpointEvent();
-                }
-                // 3/4
-                if (time >= 3 * duration / 4 && !isThirdQuartileHandled[0]) {
-                    isThirdQuartileHandled[0] = true;
-
-                    // send events
-                    events.sendMoatThirdQuartileEvent(time);
-                    events.triggerVASTThirdQuartileEvent();
-                }
-                // end
-                if (time >= 15000 && !is15sHandled[0]) {
-                    is15sHandled[0] = true;
-                }
-            }
-
-            @Override
-            public void onMediaComplete(SAMediaControl saMediaControl, int time, int duration) {
-                saMediaControl.destroy();
-//                saMediaControl.reset();
-
-                // send events
-                events.sendMoatCompleteEvent(duration);
-                events.triggerVASTCompleteEvent();
-
-                // send an ad ended event
-                if (listener != null) {
-                    listener.onEvent(placementId, SAEvent.adEnded);
-                } else {
-                    Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adEnded");
-                }
-            }
-
-            @Override
-            public void onError(SAMediaControl saMediaControl, Throwable throwable, int time, int duration) {
-                // destroy media control
-                saMediaControl.destroy();
-//                saMediaControl.reset();
-
-                // send events
-                events.stopMoatTrackingForVideoPlayer();
-                events.triggerVASTErrorEvent();
-
-                // ad failed to show
-                if (listener != null) {
-                    listener.onEvent(placementId, SAEvent.adFailedToShow);
-                } else {
-                    Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adFailedToShow");
-                }
-            }
-        };
-
-        control.addDelegate(controlDelegate);
     }
 
     public static void play (final int placementId, final Context context) {
@@ -344,6 +228,7 @@ public class SAVideoAd {
 
     public static void setListener(SAInterface value) {
         listener = value != null ? value : listener;
+        videoEvents.setListener(listener);
     }
 
     public static void enableParentalGate () {
