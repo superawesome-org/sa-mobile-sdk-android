@@ -18,18 +18,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
-import tv.superawesome.lib.saevents.events.SAViewableImpressionEvent;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.lib.savideoplayer.MediaControl;
 import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
-import tv.superawesome.lib.savideoplayer.SAVideoPlayerClickInterface;
-import tv.superawesome.lib.savideoplayer.chrome.SAMediaController;
-import tv.superawesome.lib.savideoplayer.utils.VideoUtils;
-import tv.superawesome.lib.savideoplayer.v2.MediaControl;
+import tv.superawesome.sdk.publisher.video.SAChromeControl;
+import tv.superawesome.sdk.publisher.video.VideoUtils;
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
@@ -41,7 +39,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     private SAAd ad = null;
 
     private RelativeLayout parent = null;
-    private SAMediaController chrome;
+    private SAChromeControl chrome;
     private ImageButton closeButton = null;
     private SAVideoPlayer videoPlayer = null;
 
@@ -81,7 +79,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         setContentView(parent);
 
-        chrome = new SAMediaController(this);
+        chrome = new SAChromeControl(this);
         chrome.shouldShowPadlock(ad.isPadlockVisible);
         chrome.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
         chrome.padlock.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +117,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         SAVideoAd.control.addListener(this);
 
-        chrome.setClickListener(new SAVideoPlayerClickInterface() {
+        chrome.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
