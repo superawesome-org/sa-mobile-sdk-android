@@ -5,7 +5,7 @@ import android.util.Log;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.savideoplayer.v2.MediaControl;
+import tv.superawesome.lib.savideoplayer.MediaControl;
 
 public class SAVideoEvents implements MediaControl.Listener {
 
