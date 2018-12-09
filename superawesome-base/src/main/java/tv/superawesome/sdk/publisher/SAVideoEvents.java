@@ -3,14 +3,18 @@ package tv.superawesome.sdk.publisher;
 import android.util.Log;
 
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.savideoplayer.AwesomeVideoPlayer;
 import tv.superawesome.lib.savideoplayer.MediaControl;
 
 public class SAVideoEvents implements MediaControl.Listener {
 
-    private int placementId;
     private SAEvents events;
+
+    private int placementId;
+    private SAInterface listener;
 
     private boolean isStartHandled = false;
     private boolean is2SHandled = false;
@@ -18,10 +22,12 @@ public class SAVideoEvents implements MediaControl.Listener {
     private boolean isMidpointHandled = false;
     private boolean isThirdQuartileHandled = false;
     private boolean is15sHandled = false;
-    
-    private SAInterface listener;
-    
-    void reset(int placementId, SAAd ad, SASession session, boolean isMoatLimitingEnabled) {
+
+    void reset(int placementId,
+               SAAd ad,
+               SASession session,
+               boolean isMoatLimitingEnabled) {
+
         this.placementId = placementId;
 
         events = new SAEvents();
@@ -39,7 +45,13 @@ public class SAVideoEvents implements MediaControl.Listener {
     }
     
     @Override
-    public void onPrepared(MediaControl saMediaControl) {}
+    public void onPrepared(MediaControl saMediaControl) {
+        // start moat tracking
+        AwesomeVideoPlayer player = saMediaControl.getVideoPlayerReference();
+        if (player != null) {
+            events.startMoatTrackingForVideoPlayer(player.getSurface(), saMediaControl.getDuration());
+        }
+    }
 
     @Override
     public void onTimeUpdated(MediaControl saMediaControl, int time, int duration) {
@@ -54,9 +66,6 @@ public class SAVideoEvents implements MediaControl.Listener {
                 Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adShown");
             }
 
-            // start moat tracking
-            events.startMoatTrackingForVideoPlayer(null, duration);
-
             // send vast events - including impression
             events.triggerVASTImpressionEvent();
             events.triggerVASTStartEvent();
@@ -69,6 +78,18 @@ public class SAVideoEvents implements MediaControl.Listener {
         // 2 second (viewability)
         if (time >= 2000 && !is2SHandled) {
             is2SHandled = true;
+
+            AwesomeVideoPlayer player = saMediaControl.getVideoPlayerReference();
+            if (player != null) {
+                events.checkViewableStatusForVideo(player, new SAViewableModule.Listener() {
+                    @Override
+                    public void saDidFindViewOnScreen(boolean isViewable) {
+                        if (isViewable) {
+                            events.triggerViewableImpressionEvent();
+                        }
+                    }
+                });
+            }
         }
         // 1/4
         if (time >= duration / 4 && !isFirstQuartileHandled) {
@@ -106,12 +127,12 @@ public class SAVideoEvents implements MediaControl.Listener {
         saMediaControl.setDisplay(null);
         saMediaControl.reset();
 
-        // stop moat events
-        events.stopMoatTrackingForVideoPlayer();
-
         // send events
         events.sendMoatCompleteEvent(duration);
         events.triggerVASTCompleteEvent();
+
+        // stop moat events
+        events.stopMoatTrackingForVideoPlayer();
 
         // send an ad ended event
         if (listener != null) {
@@ -146,5 +167,13 @@ public class SAVideoEvents implements MediaControl.Listener {
 
     public void setListener(SAInterface listener) {
         this.listener = listener;
+    }
+
+    public SAEvents getEvents() {
+        return events;
+    }
+
+    public SAInterface getListener() {
+        return listener;
     }
 }

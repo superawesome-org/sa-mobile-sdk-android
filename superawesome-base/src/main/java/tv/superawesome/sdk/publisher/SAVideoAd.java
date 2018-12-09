@@ -46,7 +46,7 @@ public class SAVideoAd {
     private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
 
     public static MediaControl control = new AwesomeMediaControl();
-    private static SAVideoEvents videoEvents = new SAVideoEvents();
+    static SAVideoEvents videoEvents = new SAVideoEvents();
 
     public static void load (final int placementId, final Context context) {
 
