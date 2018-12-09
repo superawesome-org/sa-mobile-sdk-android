@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -24,8 +23,8 @@ import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.lib.savideoplayer.AwesomeVideoPlayer;
 import tv.superawesome.lib.savideoplayer.MediaControl;
-import tv.superawesome.lib.savideoplayer.SAVideoPlayer;
 import tv.superawesome.sdk.publisher.video.SAChromeControl;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
 
@@ -41,7 +40,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     private RelativeLayout parent = null;
     private SAChromeControl chrome;
     private ImageButton closeButton = null;
-    private SAVideoPlayer videoPlayer = null;
+    private AwesomeVideoPlayer videoPlayer = null;
 
     private Long currentClickThreshold = 0L;
 
@@ -61,8 +60,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         final boolean shouldShowSmallClickButtonL = SAVideoAd.getShouldShowSmallClickButton();
         final SAOrientation orientationL = SAVideoAd.getOrientation();
-        Bundle bundle = getIntent().getExtras();
-        String adString = bundle.getString("ad");
+        String adString = getIntent().getStringExtra("ad");
         ad = new SAAd(SAJsonParser.newObject(adString));
 
         // make sure direction is locked
@@ -72,11 +70,13 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
             case LANDSCAPE: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); break;
         }
 
+        int size = RelativeLayout.LayoutParams.MATCH_PARENT;
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
+
         // create main content for activity
         parent = new RelativeLayout(this);
         parent.setId(SAUtils.randomNumberBetween(1000000, 1500000));
-        parent.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
+        parent.setLayoutParams(params);
         setContentView(parent);
 
         chrome = new SAChromeControl(this);
@@ -90,9 +90,11 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
             }
         });
 
-        videoPlayer = new SAVideoPlayer(this);
-        videoPlayer.setMediaControl(SAVideoAd.control);
-        videoPlayer.setChromeControl(chrome);
+        videoPlayer = new AwesomeVideoPlayer(this);
+        videoPlayer.setLayoutParams(params);
+        videoPlayer.setControl(SAVideoAd.control);
+        videoPlayer.setChrome(chrome);
+        videoPlayer.setBackgroundColor(Color.MAGENTA);
         parent.addView(videoPlayer);
 
         // create the close button
@@ -117,69 +119,69 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         SAVideoAd.control.addListener(this);
 
-        chrome.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // check to see if there is a click through url
-                final String destinationUrl;
-
-                // if the campaign is a CPI one, get the normal CPI url so that
-                // we can append the "referrer data" to it (since most likely
-                // "click_through" will have a redirect)
-                if (ad.campaignType == SACampaignType.CPI) {
-                    destinationUrl = ad.creative.clickUrl;
-                } else {
-                    // TODO: FIX THIS
-                    destinationUrl = "";
-//                    destinationUrl = events.getVASTClickThroughEvent();
-                }
-
-                if (destinationUrl != null) {
-                    // check for parental gate on click
-                    if (isParentalGateEnabledL) {
-                        SAParentalGate.setListener(new SAParentalGate.Interface() {
-                            @Override
-                            public void parentalGateOpen() {
-                                SAVideoActivity.this.pause();
-                                // TODO: FIX THIS
-//                                events.triggerPgOpenEvent();
-                            }
-
-                            @Override
-                            public void parentalGateSuccess() {
-                                // TODO: FIX THIS
-//                                events.triggerPgSuccessEvent();
-                                click(destinationUrl);
-                                SAVideoActivity.this.pause();
-                            }
-
-                            @Override
-                            public void parentalGateFailure() {
-                                // TODO: FIX THIS
-//                                events.triggerPgFailEvent();
-                                SAVideoActivity.this.resume();
-                            }
-
-                            @Override
-                            public void parentalGateCancel() {
-                                // TODO: FIX THIS
-//                                events.triggerPgCloseEvent();
-                                SAVideoActivity.this.resume();
-                            }
-                        });
-                        SAParentalGate.show(SAVideoActivity.this);
-                    } else {
-                        click(destinationUrl);
-                    }
-                }
-            }
-        });
+//        chrome.setClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                // check to see if there is a click through url
+//                final String destinationUrl;
+//
+//                // if the campaign is a CPI one, get the normal CPI url so that
+//                // we can append the "referrer data" to it (since most likely
+//                // "click_through" will have a redirect)
+//                if (ad.campaignType == SACampaignType.CPI) {
+//                    destinationUrl = ad.creative.clickUrl;
+//                } else {
+//                    // TODO: FIX THIS
+//                    destinationUrl = "";
+////                    destinationUrl = events.getVASTClickThroughEvent();
+//                }
+//
+//                if (destinationUrl != null) {
+//                    // check for parental gate on click
+//                    if (isParentalGateEnabledL) {
+//                        SAParentalGate.setListener(new SAParentalGate.Interface() {
+//                            @Override
+//                            public void parentalGateOpen() {
+//                                SAVideoActivity.this.pause();
+//                                // TODO: FIX THIS
+////                                events.triggerPgOpenEvent();
+//                            }
+//
+//                            @Override
+//                            public void parentalGateSuccess() {
+//                                // TODO: FIX THIS
+////                                events.triggerPgSuccessEvent();
+//                                click(destinationUrl);
+//                                SAVideoActivity.this.pause();
+//                            }
+//
+//                            @Override
+//                            public void parentalGateFailure() {
+//                                // TODO: FIX THIS
+////                                events.triggerPgFailEvent();
+//                                SAVideoActivity.this.resume();
+//                            }
+//
+//                            @Override
+//                            public void parentalGateCancel() {
+//                                // TODO: FIX THIS
+////                                events.triggerPgCloseEvent();
+//                                SAVideoActivity.this.resume();
+//                            }
+//                        });
+//                        SAParentalGate.show(SAVideoActivity.this);
+//                    } else {
+//                        click(destinationUrl);
+//                    }
+//                }
+//            }
+//        });
 
         Log.d("SuperAwesome", "EVENT: Video_Prepared");
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
-            SAVideoAd.control.play(this, fileUri);
+            SAVideoAd.control.playAsync(this, fileUri);
         } catch (Exception ignored) {}
     }
 
@@ -341,12 +343,12 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         if (SAVideoAd.getShouldAutomaticallyCloseAtEnd()) {
             close();
         }
-//        saMediaControl.removeDelegate(this);
+        saMediaControl.removeListener(this);
     }
 
     @Override
     public void onError(MediaControl saMediaControl, Throwable throwable, int i, int i1) {
-//        saMediaControl.removeDelegate(this);
+        saMediaControl.removeListener(this);
         close();
     }
 
