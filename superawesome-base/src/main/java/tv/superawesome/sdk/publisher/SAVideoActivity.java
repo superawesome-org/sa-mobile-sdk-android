@@ -16,10 +16,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
-import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -42,7 +40,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     private ImageButton closeButton = null;
     private AwesomeVideoPlayer videoPlayer = null;
 
-    private Long currentClickThreshold = 0L;
+    private SAVideoClick click;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -57,6 +55,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         // local versions of the static vars
         final boolean isParentalGateEnabledL = SAVideoAd.getIsParentalGateEnabled();
         final boolean shouldShowCloseButtonL = SAVideoAd.getShouldShowCloseButton();
+        final boolean isBumperPageEnabledL = SAVideoAd.getIsBumperPageEnabled();
 
         final boolean shouldShowSmallClickButtonL = SAVideoAd.getShouldShowSmallClickButton();
         final SAOrientation orientationL = SAVideoAd.getOrientation();
@@ -79,9 +78,17 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         parent.setLayoutParams(params);
         setContentView(parent);
 
+        click = new SAVideoClick(this,
+                ad,
+                isParentalGateEnabledL,
+                isBumperPageEnabledL,
+                SAVideoAd.videoEvents.getEvents(),
+                SAVideoAd.videoEvents.getListener());
+
         chrome = new SAChromeControl(this);
         chrome.shouldShowPadlock(ad.isPadlockVisible);
         chrome.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
+        chrome.setClickListener(click);
         chrome.padlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,65 +126,6 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         SAVideoAd.control.addListener(this);
 
-//        chrome.setClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                // check to see if there is a click through url
-//                final String destinationUrl;
-//
-//                // if the campaign is a CPI one, get the normal CPI url so that
-//                // we can append the "referrer data" to it (since most likely
-//                // "click_through" will have a redirect)
-//                if (ad.campaignType == SACampaignType.CPI) {
-//                    destinationUrl = ad.creative.clickUrl;
-//                } else {
-//                    // TODO: FIX THIS
-//                    destinationUrl = "";
-////                    destinationUrl = events.getVASTClickThroughEvent();
-//                }
-//
-//                if (destinationUrl != null) {
-//                    // check for parental gate on click
-//                    if (isParentalGateEnabledL) {
-//                        SAParentalGate.setListener(new SAParentalGate.Interface() {
-//                            @Override
-//                            public void parentalGateOpen() {
-//                                SAVideoActivity.this.pause();
-//                                // TODO: FIX THIS
-////                                events.triggerPgOpenEvent();
-//                            }
-//
-//                            @Override
-//                            public void parentalGateSuccess() {
-//                                // TODO: FIX THIS
-////                                events.triggerPgSuccessEvent();
-//                                click(destinationUrl);
-//                                SAVideoActivity.this.pause();
-//                            }
-//
-//                            @Override
-//                            public void parentalGateFailure() {
-//                                // TODO: FIX THIS
-////                                events.triggerPgFailEvent();
-//                                SAVideoActivity.this.resume();
-//                            }
-//
-//                            @Override
-//                            public void parentalGateCancel() {
-//                                // TODO: FIX THIS
-////                                events.triggerPgCloseEvent();
-//                                SAVideoActivity.this.resume();
-//                            }
-//                        });
-//                        SAParentalGate.show(SAVideoActivity.this);
-//                    } else {
-//                        click(destinationUrl);
-//                    }
-//                }
-//            }
-//        });
-
         Log.d("SuperAwesome", "EVENT: Video_Prepared");
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
@@ -199,91 +147,9 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         }
     }
 
-    /**********************************************************************************************
-     * Custom instance methods
-     **********************************************************************************************/
-
-    /**
-     * Method that handles a click on the ad surface
-     */
-    public void click(final String destination) {
-
-        boolean isBumperPageEnabledL = SAVideoAd.getIsBumperPageEnabled();
-
-        if (isBumperPageEnabledL || ad.creative.bumper) {
-            SABumperPage.setListener(new SABumperPage.Interface() {
-                @Override
-                public void didEndBumper() {
-                    handleUrl(destination);
-                }
-            });
-            SABumperPage.play(this);
-        } else {
-            handleUrl(destination);
-        }
-    }
-
-    private void handleUrl (String destination) {
-
-        Long currentTime = System.currentTimeMillis()/1000;
-        Long diff = Math.abs(currentTime - currentClickThreshold);
-
-        if (diff < SADefaults.defaultClickThreshold()) {
-            Log.d("AwesomeAds-2", "Current diff is " + diff);
-            return;
-        }
-
-        currentClickThreshold = currentTime;
-
-        Log.d("AwesomeAds-2", "Going to " + destination);
-
-        // get local
-        SAInterface listenerL = SAVideoAd.getListener();
-        // call listener
-        if (listenerL != null) {
-            listenerL.onEvent(ad.placementId, SAEvent.adClicked);
-        } else {
-            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adClicked");
-        }
-
-        // send vast click tracking events
-        // TODO: FIX THIS
-//        events.triggerVASTClickTrackingEvent();
-
-        // send only in case of CPI where we'll use the direct click url
-        // TODO: FIX THIS
-//        if (ad.campaignType == SACampaignType.CPI) {
-//            events.triggerVASTClickThroughEvent();
-//        }
-
-        // if it's a CPI campaign
-        destination += ad.campaignType == SACampaignType.CPI ? ("&referrer=" + ad.creative.referral.writeToReferralQuery()) : "";
-
-        // start browser
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
-        } catch (Exception e) {
-            // do nothing
-        }
-    }
-
-    /**
-     * Method that handles what should happen when the video pauses
-     */
-    public void pause () {
-        try {
-            SAVideoAd.control.pause();
-        } catch (Exception ignored) {}
-    }
-
-    /**
-     * Method that handles what should happen when the video resumes
-     */
-    public void resume () {
-        try {
-            SAVideoAd.control.start();
-        } catch (Exception ignored) {}
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Custom instance methods
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Method that closes the interstitial ad
@@ -292,10 +158,6 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         // get local
         SAInterface listenerL = SAVideoAd.getListener();
-
-        // close moat
-        // TODO: FIX THIS
-//        events.stopMoatTrackingForVideoPlayer();
 
         // call listener
         if (listenerL != null) {
@@ -335,19 +197,20 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     }
 
     @Override
-    public void onMediaComplete(MediaControl saMediaControl, int i, int i1) {
+    public void onMediaComplete(MediaControl saMediaControl, int time, int duration) {
         // make btn visible
         closeButton.setVisibility(View.VISIBLE);
+
+        saMediaControl.removeListener(this);
 
         // auto close
         if (SAVideoAd.getShouldAutomaticallyCloseAtEnd()) {
             close();
         }
-        saMediaControl.removeListener(this);
     }
 
     @Override
-    public void onError(MediaControl saMediaControl, Throwable throwable, int i, int i1) {
+    public void onError(MediaControl saMediaControl, Throwable throwable, int time, int duration) {
         saMediaControl.removeListener(this);
         close();
     }
