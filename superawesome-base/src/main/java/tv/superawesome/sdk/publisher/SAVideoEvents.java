@@ -39,9 +39,7 @@ public class SAVideoEvents implements MediaControl.Listener {
     }
     
     @Override
-    public void onPrepared(MediaControl saMediaControl) {
-        saMediaControl.start();
-    }
+    public void onPrepared(MediaControl saMediaControl) {}
 
     @Override
     public void onTimeUpdated(MediaControl saMediaControl, int time, int duration) {
@@ -55,6 +53,9 @@ public class SAVideoEvents implements MediaControl.Listener {
             } else {
                 Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adShown");
             }
+
+            // start moat tracking
+            events.startMoatTrackingForVideoPlayer(null, duration);
 
             // send vast events - including impression
             events.triggerVASTImpressionEvent();

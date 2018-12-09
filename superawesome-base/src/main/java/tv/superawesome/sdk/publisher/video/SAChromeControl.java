@@ -119,7 +119,7 @@ public class SAChromeControl extends RelativeLayout implements ChromeControl {
 
     @Override
     public boolean isPlaying() {
-        return false;
+        return true;
     }
 
     @Override
@@ -136,7 +136,7 @@ public class SAChromeControl extends RelativeLayout implements ChromeControl {
 
     @Override
     public boolean isMaximised() {
-        return false;
+        return true;
     }
 
     @Override
