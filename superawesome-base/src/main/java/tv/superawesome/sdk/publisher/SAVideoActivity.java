@@ -101,7 +101,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         videoPlayer.setLayoutParams(params);
         videoPlayer.setControl(SAVideoAd.control);
         videoPlayer.setChrome(chrome);
-        videoPlayer.setBackgroundColor(Color.MAGENTA);
+        videoPlayer.setBackgroundColor(Color.BLACK);
         parent.addView(videoPlayer);
 
         // create the close button
@@ -126,7 +126,6 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         SAVideoAd.control.addListener(this);
 
-        Log.d("SuperAwesome", "EVENT: Video_Prepared");
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
             SAVideoAd.control.playAsync(this, fileUri);
@@ -187,9 +186,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onPrepared(MediaControl saMediaControl) {
-
-    }
+    public void onPrepared(MediaControl saMediaControl) { /* N/A */ }
 
     @Override
     public void onTimeUpdated(MediaControl saMediaControl, int time, int duration) {
@@ -216,7 +213,5 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     }
 
     @Override
-    public void onSeekComplete(MediaControl mediaControl) {
-        // N/A
-    }
+    public void onSeekComplete(MediaControl mediaControl) { /* N/A */ }
 }
