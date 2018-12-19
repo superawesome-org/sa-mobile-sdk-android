@@ -120,7 +120,7 @@ public class SAVideoAd extends Activity {
 
         // start events
         events = new SAEvents();
-        events.setAd(this, session, ad);
+        events.setAd(session, ad);
         if (!isMoatLimitingEnabledL) {
             events.disableMoatLimiting();
         }
