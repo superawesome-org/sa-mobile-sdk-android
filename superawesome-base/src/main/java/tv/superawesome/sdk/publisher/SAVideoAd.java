@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saadloader.SALoaderInterface;
+import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
@@ -28,6 +29,7 @@ public class SAVideoAd {
 
     // the internal loader
     private static SASession session = null;
+    private static SAEvents events = null;
 
     // private vars w/ a public interface
     public static HashMap<Integer, Object> ads = new HashMap<>();
@@ -40,13 +42,14 @@ public class SAVideoAd {
     private static boolean shouldShowSmallClickButton       = SADefaults.defaultSmallClick();
     private static boolean isTestingEnabled                 = SADefaults.defaultTestMode();
     private static boolean isBackButtonEnabled              = SADefaults.defaultBackButton();
+    private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
     private static SAOrientation orientation                = SADefaults.defaultOrientation();
     private static SAConfiguration configuration            = SADefaults.defaultConfiguration();
     private static SARTBStartDelay playback                 = SADefaults.defaultPlaybackMode();
-    private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
 
     public static MediaControl control = new AwesomeMediaControl();
     static SAVideoEvents videoEvents = new SAVideoEvents();
+    static SAVideoClick clickEvents = null;
 
     public static void load (final int placementId, final Context context) {
 
@@ -112,7 +115,7 @@ public class SAVideoAd {
                                 // find out the real valid
                                 boolean isValid = response.isValid();
                                 SAAd first = isValid ? response.ads.get(0) : null;
-                                isValid = first != null && isValid && first.creative.details.media.isDownloaded;
+                                isValid = first != null && first.creative.details.media.isDownloaded;
 
                                 // put the correct value
                                 if (isValid) {
@@ -123,9 +126,41 @@ public class SAVideoAd {
                                     ads.remove(placementId);
                                 }
 
+                                events = new SAEvents();
+                                events.setAd(session, first);
+                                if (!isMoatLimitingEnabled) {
+                                    events.disableMoatLimiting();
+                                }
+
                                 // reset video events
-                                videoEvents.reset(placementId, first, session, isMoatLimitingEnabled);
-                                control.addListener(videoEvents);
+                                videoEvents.reset(events);
+                                videoEvents.setListener(new SAVideoEvents.Listener() {
+                                    @Override
+                                    public void onShow() {
+                                        listener.onEvent(placementId, SAEvent.adShown);
+                                    }
+
+                                    @Override
+                                    public void onCompleted() {
+                                        listener.onEvent(placementId, SAEvent.adEnded);
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        listener.onEvent(placementId, SAEvent.adFailedToShow);
+                                    }
+                                });
+                                clickEvents = new SAVideoClick(
+                                        first,
+                                        isParentalGateEnabled,
+                                        isBumperPageEnabled,
+                                        events);
+                                clickEvents.setListener(new SAVideoClick.Listener() {
+                                    @Override
+                                    public void onClick() {
+                                        listener.onEvent(placementId, SAEvent.adClicked);
+                                    }
+                                });
 
                                 // call listener(s)
                                 if (listener != null) {
@@ -226,7 +261,6 @@ public class SAVideoAd {
 
     public static void setListener(SAInterface value) {
         listener = value != null ? value : listener;
-        videoEvents.setListener(listener);
     }
 
     public static void enableParentalGate () {

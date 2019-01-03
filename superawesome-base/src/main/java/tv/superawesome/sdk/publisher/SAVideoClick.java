@@ -15,7 +15,6 @@ import tv.superawesome.lib.saparentalgate.SAParentalGate;
 
 public class SAVideoClick implements View.OnClickListener {
 
-    private Context context;
     private SAAd ad;
     private boolean isParentalGateEnabled;
     private boolean isBumperPageEnabled;
@@ -23,22 +22,17 @@ public class SAVideoClick implements View.OnClickListener {
 
     private Long currentClickThreshold = 0L;
 
-    private SAInterface listener;
+    private Listener listener;
 
-    SAVideoClick(Context context,
-                 SAAd ad,
+    SAVideoClick(SAAd ad,
                  boolean isParentalGateEnabled,
                  boolean isBumperPageEnabled,
-                 SAEvents events,
-                 SAInterface listener) {
-        this.context = context;
+                 SAEvents events) {
         this.ad = ad;
         this.isParentalGateEnabled = isParentalGateEnabled;
         this.isBumperPageEnabled = isBumperPageEnabled;
-        this.listener = listener;
         this.events = events;
     }
-
 
     @Override
     public void onClick(View view) {
@@ -54,7 +48,9 @@ public class SAVideoClick implements View.OnClickListener {
             destinationUrl = events.getVASTClickThroughEvent();
         }
 
-        if (destinationUrl != null) {
+        final Context context = view.getContext();
+
+        if (destinationUrl != null && context != null) {
             // check for parental gate on click
             if (isParentalGateEnabled) {
                 SAParentalGate.setListener(new SAParentalGate.Interface() {
@@ -67,7 +63,7 @@ public class SAVideoClick implements View.OnClickListener {
                     @Override
                     public void parentalGateSuccess() {
                         events.triggerPgSuccessEvent();
-                        click(destinationUrl);
+                        click(context, destinationUrl);
                         SAVideoAd.control.pause();
                     }
 
@@ -86,7 +82,7 @@ public class SAVideoClick implements View.OnClickListener {
 
                 SAParentalGate.show(context);
             } else {
-                click(destinationUrl);
+                click(context, destinationUrl);
             }
         }
     }
@@ -94,27 +90,27 @@ public class SAVideoClick implements View.OnClickListener {
     /**
      * Method that handles a click on the ad surface
      */
-    private void click(final String destination) {
+    private void click(final Context context, final String destination) {
 
         if (isBumperPageEnabled || ad.creative.bumper) {
             SABumperPage.setListener(new SABumperPage.Interface() {
                 @Override
                 public void didEndBumper() {
-                    handleUrl(destination);
+                    handleUrl(context, destination);
                 }
             });
 
             if (context instanceof Activity) {
                 SABumperPage.play((Activity)context);
             } else {
-                handleUrl(destination);
+                handleUrl(context, destination);
             }
         } else {
-            handleUrl(destination);
+            handleUrl(context, destination);
         }
     }
 
-    private void handleUrl (String destination) {
+    private void handleUrl (Context context, String destination) {
 
         Long currentTime = System.currentTimeMillis()/1000;
         Long diff = Math.abs(currentTime - currentClickThreshold);
@@ -131,7 +127,7 @@ public class SAVideoClick implements View.OnClickListener {
         // get local
         // call listener
         if (listener != null) {
-            listener.onEvent(ad.placementId, SAEvent.adClicked);
+            listener.onClick();
         } else {
             Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adClicked");
         }
@@ -153,5 +149,13 @@ public class SAVideoClick implements View.OnClickListener {
         } catch (Exception e) {
             // do nothing
         }
+    }
+
+    void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    interface Listener {
+        void onClick();
     }
 }

@@ -1,20 +1,17 @@
 package tv.superawesome.sdk.publisher;
 
 import android.util.Log;
+import android.view.ViewGroup;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.saevents.SAViewableModule;
-import tv.superawesome.lib.samodelspace.saad.SAAd;
-import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.savideoplayer.AwesomeVideoPlayer;
-import tv.superawesome.lib.savideoplayer.MediaControl;
+import tv.superawesome.lib.savideoplayer.VideoPlayer;
 
-public class SAVideoEvents implements MediaControl.Listener {
+public class SAVideoEvents implements VideoPlayer.Listener {
 
     private SAEvents events;
 
-    private int placementId;
-    private SAInterface listener;
+    private Listener listener;
 
     private boolean isStartHandled = false;
     private boolean is2SHandled = false;
@@ -23,19 +20,10 @@ public class SAVideoEvents implements MediaControl.Listener {
     private boolean isThirdQuartileHandled = false;
     private boolean is15sHandled = false;
 
-    void reset(int placementId,
-               SAAd ad,
-               SASession session,
-               boolean isMoatLimitingEnabled) {
+    void reset(SAEvents events) {
 
-        this.placementId = placementId;
+        this.events = events;
 
-        events = new SAEvents();
-        events.setAd(session, ad);
-        if (!isMoatLimitingEnabled) {
-            events.disableMoatLimiting();
-        }
-        
         isStartHandled = false;
         is2SHandled = false;
         isFirstQuartileHandled = false;
@@ -43,25 +31,25 @@ public class SAVideoEvents implements MediaControl.Listener {
         isThirdQuartileHandled = false;
         is15sHandled = false;
     }
-    
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // VideoPlayer.Listener
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
-    public void onPrepared(MediaControl saMediaControl) {
-        // start moat tracking
-        AwesomeVideoPlayer player = saMediaControl.getVideoPlayerReference();
-        if (player != null) {
-            events.startMoatTrackingForVideoPlayer(player.getSurface(), saMediaControl.getDuration());
-        }
+    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) {
+        events.startMoatTrackingForVideoPlayer(videoPlayer.getSurface(), duration);
     }
 
     @Override
-    public void onTimeUpdated(MediaControl saMediaControl, int time, int duration) {
+    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) {
         // Start
         if (time >= 1 && !isStartHandled) {
             isStartHandled = true;
 
             // send callback
             if (listener != null) {
-                listener.onEvent(placementId, SAEvent.adShown);
+                listener.onShow();
             } else {
                 Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adShown");
             }
@@ -79,8 +67,8 @@ public class SAVideoEvents implements MediaControl.Listener {
         if (time >= 2000 && !is2SHandled) {
             is2SHandled = true;
 
-            AwesomeVideoPlayer player = saMediaControl.getVideoPlayerReference();
-            if (player != null) {
+            if (videoPlayer instanceof ViewGroup) {
+                ViewGroup player = (ViewGroup) videoPlayer;
                 events.checkViewableStatusForVideo(player, new SAViewableModule.Listener() {
                     @Override
                     public void saDidFindViewOnScreen(boolean isViewable) {
@@ -122,11 +110,7 @@ public class SAVideoEvents implements MediaControl.Listener {
     }
 
     @Override
-    public void onMediaComplete(MediaControl saMediaControl, int time, int duration) {
-
-        saMediaControl.setDisplay(null);
-        saMediaControl.reset();
-
+    public void onComplete(VideoPlayer videoPlayer, int time, int duration) {
         // send events
         events.sendMoatCompleteEvent(duration);
         events.triggerVASTCompleteEvent();
@@ -136,44 +120,33 @@ public class SAVideoEvents implements MediaControl.Listener {
 
         // send an ad ended event
         if (listener != null) {
-            listener.onEvent(placementId, SAEvent.adEnded);
+            listener.onCompleted();
         } else {
             Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adEnded");
         }
     }
 
     @Override
-    public void onError(MediaControl saMediaControl, Throwable throwable, int time, int duration) {
-        // destroy media control
-        saMediaControl.setDisplay(null);
-        saMediaControl.reset();
-
+    public void onError(VideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
         // send events
         events.stopMoatTrackingForVideoPlayer();
         events.triggerVASTErrorEvent();
 
         // ad failed to show
         if (listener != null) {
-            listener.onEvent(placementId, SAEvent.adFailedToShow);
+            listener.onError();
         } else {
             Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adFailedToShow");
         }
     }
 
-    @Override
-    public void onSeekComplete(MediaControl mediaControl) {
-        // N/A
-    }
-
-    public void setListener(SAInterface listener) {
+    public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    public SAEvents getEvents() {
-        return events;
-    }
-
-    public SAInterface getListener() {
-        return listener;
+    interface Listener {
+        void onShow();
+        void onCompleted();
+        void onError();
     }
 }
