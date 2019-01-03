@@ -22,7 +22,7 @@ import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savideoplayer.AwesomeVideoPlayer;
-import tv.superawesome.lib.savideoplayer.MediaControl;
+import tv.superawesome.lib.savideoplayer.VideoPlayer;
 import tv.superawesome.sdk.publisher.video.SAChromeControl;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
 
@@ -30,7 +30,7 @@ import tv.superawesome.sdk.publisher.video.VideoUtils;
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAVideoActivity extends Activity implements MediaControl.Listener {
+public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
 
     // the ad
     private SAAd ad = null;
@@ -39,8 +39,6 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     private SAChromeControl chrome;
     private ImageButton closeButton = null;
     private AwesomeVideoPlayer videoPlayer = null;
-
-    private SAVideoClick click;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -53,10 +51,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         super.onCreate(savedInstanceState);
 
         // local versions of the static vars
-        final boolean isParentalGateEnabledL = SAVideoAd.getIsParentalGateEnabled();
         final boolean shouldShowCloseButtonL = SAVideoAd.getShouldShowCloseButton();
-        final boolean isBumperPageEnabledL = SAVideoAd.getIsBumperPageEnabled();
-
         final boolean shouldShowSmallClickButtonL = SAVideoAd.getShouldShowSmallClickButton();
         final SAOrientation orientationL = SAVideoAd.getOrientation();
         String adString = getIntent().getStringExtra("ad");
@@ -78,17 +73,10 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         parent.setLayoutParams(params);
         setContentView(parent);
 
-        click = new SAVideoClick(this,
-                ad,
-                isParentalGateEnabledL,
-                isBumperPageEnabledL,
-                SAVideoAd.videoEvents.getEvents(),
-                SAVideoAd.videoEvents.getListener());
-
         chrome = new SAChromeControl(this);
         chrome.shouldShowPadlock(ad.isPadlockVisible);
         chrome.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
-        chrome.setClickListener(click);
+        chrome.setClickListener(SAVideoAd.clickEvents);
         chrome.padlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +91,9 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
         videoPlayer.setChrome(chrome);
         videoPlayer.setBackgroundColor(Color.BLACK);
         parent.addView(videoPlayer);
+
+        videoPlayer.addListener(SAVideoAd.videoEvents);
+        videoPlayer.addListener(this);
 
         // create the close button
         closeButton = new ImageButton(this);
@@ -123,8 +114,6 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
             }
         });
         parent.addView(closeButton);
-
-        SAVideoAd.control.addListener(this);
 
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
@@ -173,8 +162,7 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
 
         // close the video player
         videoPlayer.close();
-        SAVideoAd.control.setDisplay(null);
-        SAVideoAd.control.reset();
+        videoPlayer.destroy();
 
         // close
         this.finish();
@@ -182,36 +170,28 @@ public class SAVideoActivity extends Activity implements MediaControl.Listener {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // SAMediaControlDelegate
+    // VideoPlayer.Listener
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onPrepared(MediaControl saMediaControl) { /* N/A */ }
+    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) { /* N/A */ }
 
     @Override
-    public void onTimeUpdated(MediaControl saMediaControl, int time, int duration) {
-        chrome.setTime(time, duration);
-    }
+    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) { /* N/A */ }
 
     @Override
-    public void onMediaComplete(MediaControl saMediaControl, int time, int duration) {
-        // make btn visible
+    public void onComplete(VideoPlayer videoPlayer, int time, int duration) {
         closeButton.setVisibility(View.VISIBLE);
+        videoPlayer.removeListener(this);
 
-        saMediaControl.removeListener(this);
-
-        // auto close
         if (SAVideoAd.getShouldAutomaticallyCloseAtEnd()) {
             close();
         }
     }
 
     @Override
-    public void onError(MediaControl saMediaControl, Throwable throwable, int time, int duration) {
-        saMediaControl.removeListener(this);
+    public void onError(VideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
+        videoPlayer.removeListener(this);
         close();
     }
-
-    @Override
-    public void onSeekComplete(MediaControl mediaControl) { /* N/A */ }
 }
