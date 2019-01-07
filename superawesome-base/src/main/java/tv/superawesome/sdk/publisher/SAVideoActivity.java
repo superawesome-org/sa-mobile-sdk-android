@@ -7,9 +7,11 @@ package tv.superawesome.sdk.publisher;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -121,6 +123,17 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         } catch (Exception ignored) {}
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        videoPlayer.updateLayout(width, height);
+    }
+
     /**
      * Overridden "onBackPressed" method of the activity
      * Depending on how the ad is customised, this will lock the back button or it will allow it.
@@ -194,4 +207,5 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         videoPlayer.removeListener(this);
         close();
     }
+
 }

@@ -48,7 +48,7 @@ public class SAVideoAd {
     private static SARTBStartDelay playback                 = SADefaults.defaultPlaybackMode();
 
     public static MediaControl control = new AwesomeMediaControl();
-    static SAVideoEvents videoEvents = new SAVideoEvents();
+    public static SAVideoEvents videoEvents = new SAVideoEvents();
     static SAVideoClick clickEvents = null;
 
     public static void load (final int placementId, final Context context) {

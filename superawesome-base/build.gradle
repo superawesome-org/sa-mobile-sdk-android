@@ -96,16 +96,24 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'tv.superawesome.lib.sautils:sautils:1.0.3'
-    compile 'tv.superawesome.lib.saevents:saevents:1.5.7'
-    // tmp videoplayer
-    compile fileTree(dir: '../../sa-mobile-lib-android-videoplayer/savideoplayer/build/outputs/aar/', include: ['*.aar'])
-//    compile 'tv.superawesome.lib.savideoplayer:savideoplayer:1.0.2'
-    compile 'tv.superawesome.lib.sawebplayer:sawebplayer:1.1.1'
-    compile 'tv.superawesome.lib.saadloader:saadloader:1.5.5'
-    compile 'tv.superawesome.lib.saparentalgate:saparentalgate:1.0.3'
-    compile 'tv.superawesome.lib.sabumperpage:sabumperpage:1.0.6'
-    compile 'tv.superawesome.sagdprisminorsdk:sagdprisminorsdk:2.1.0'
+
+    def saUtils = "1.0.3"
+    def saEvents = "1.5.7"
+    def saVideoPlayer = "2.0.0-beta"
+    def saWebPlayer = "1.1.1"
+    def saAdLoader = "1.5.5"
+    def saParentalGate = "1.0.3"
+    def saBumperPage = "1.0.6"
+    def saIsMinor = "2.1.0"
+
+    compile "tv.superawesome.lib.sautils:sautils:$saUtils"
+    compile "tv.superawesome.lib.saevents:saevents:$saEvents"
+    compile "tv.superawesome.lib.savideoplayer:savideoplayer:$saVideoPlayer"
+    compile "tv.superawesome.lib.sawebplayer:sawebplayer:$saWebPlayer"
+    compile "tv.superawesome.lib.saadloader:saadloader:$saAdLoader"
+    compile "tv.superawesome.lib.saparentalgate:saparentalgate:$saParentalGate"
+    compile "tv.superawesome.lib.sabumperpage:sabumperpage:$saBumperPage"
+    compile "tv.superawesome.sagdprisminorsdk:sagdprisminorsdk:$saIsMinor"
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Tests

@@ -136,7 +136,7 @@ public class SAChromeControl extends RelativeLayout implements ChromeControl {
 
     @Override
     public boolean isMaximised() {
-        return true;
+        return false;
     }
 
     @Override
