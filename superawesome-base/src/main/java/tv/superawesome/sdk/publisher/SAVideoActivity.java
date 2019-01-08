@@ -174,6 +174,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         SAVideoAd.removeAd(ad.placementId);
 
         // close the video player
+        videoPlayer.removeListener(this);
         videoPlayer.close();
         videoPlayer.destroy();
 

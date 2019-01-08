@@ -124,6 +124,8 @@ public class SAVideoEvents implements VideoPlayer.Listener {
         } else {
             Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adEnded");
         }
+
+        videoPlayer.removeListener(SAVideoEvents.this);
     }
 
     @Override
@@ -138,6 +140,8 @@ public class SAVideoEvents implements VideoPlayer.Listener {
         } else {
             Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adFailedToShow");
         }
+
+        videoPlayer.removeListener(SAVideoEvents.this);
     }
 
     public void setListener(Listener listener) {
