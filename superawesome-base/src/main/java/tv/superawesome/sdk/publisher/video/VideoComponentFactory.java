@@ -14,29 +14,29 @@ import tv.superawesome.lib.sautils.SAImageUtils;
 
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 
-public class VideoComponentFactory {
+class VideoComponentFactory {
 
-    public static ImageView getChronographBackground(int id, Context context) {
+    static ImageView getChronographBackground(int id, Context context) {
         return bgcreator.createComponent(id, context);
     }
 
-    public static TextView getChronograph(int id, Context context) {
+    static TextView getChronograph(int id, Context context) {
         return chronoCreator.createComponent(id, context);
     }
 
-    public static ImageView getMask(int id, Context context) {
+    static ImageView getMask(int id, Context context) {
         return maskCreator.createComponent(id, context);
     }
 
-    public static Button getClick(int id, Context context) {
+    static Button getClick(int id, Context context) {
         return clickCreator.createComponent(id, context);
     }
 
-    public static Button getSmallClick(int id, Context context) {
+    static Button getSmallClick(int id, Context context) {
         return smallClickCreator.createComponent(id, context);
     }
 
-    public static ImageButton getPadlock(int id, Context context) {
+    static ImageButton getPadlock(int id, Context context) {
         return padlock.createComponent(id, context);
     }
 

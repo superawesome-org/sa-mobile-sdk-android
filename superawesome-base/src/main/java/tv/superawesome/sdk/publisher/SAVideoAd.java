@@ -134,22 +134,6 @@ public class SAVideoAd {
 
                                 // reset video events
                                 videoEvents.reset(events);
-                                videoEvents.setListener(new SAVideoEvents.Listener() {
-                                    @Override
-                                    public void onShow() {
-                                        listener.onEvent(placementId, SAEvent.adShown);
-                                    }
-
-                                    @Override
-                                    public void onCompleted() {
-                                        listener.onEvent(placementId, SAEvent.adEnded);
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        listener.onEvent(placementId, SAEvent.adFailedToShow);
-                                    }
-                                });
                                 clickEvents = new SAVideoClick(
                                         first,
                                         isParentalGateEnabled,
@@ -260,7 +244,7 @@ public class SAVideoAd {
      **********************************************************************************************/
 
     public static void setListener(SAInterface value) {
-        listener = value != null ? value : listener;
+        listener = value; // != null ? value : listener;
     }
 
     public static void enableParentalGate () {

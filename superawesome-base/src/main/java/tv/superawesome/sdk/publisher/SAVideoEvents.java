@@ -1,24 +1,20 @@
 package tv.superawesome.sdk.publisher;
 
-import android.util.Log;
 import android.view.ViewGroup;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.savideoplayer.VideoPlayer;
 
-public class SAVideoEvents implements VideoPlayer.Listener {
+public class SAVideoEvents {
 
     private SAEvents events;
-
-    private Listener listener;
 
     private boolean isStartHandled = false;
     private boolean is2SHandled = false;
     private boolean isFirstQuartileHandled = false;
     private boolean isMidpointHandled = false;
     private boolean isThirdQuartileHandled = false;
-    private boolean is15sHandled = false;
 
     void reset(SAEvents events) {
 
@@ -29,30 +25,27 @@ public class SAVideoEvents implements VideoPlayer.Listener {
         isFirstQuartileHandled = false;
         isMidpointHandled = false;
         isThirdQuartileHandled = false;
-        is15sHandled = false;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // VideoPlayer.Listener
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) {
+    public void prepare(VideoPlayer videoPlayer, int time, int duration) {
         events.startMoatTrackingForVideoPlayer(videoPlayer.getSurface(), duration);
     }
 
-    @Override
-    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) {
+    public void complete(VideoPlayer videoPlayer, int time, int duration) {
+        events.sendMoatCompleteEvent(duration);
+        events.triggerVASTCompleteEvent();
+        events.stopMoatTrackingForVideoPlayer();
+    }
+
+    public void error(VideoPlayer videoPlayer, int time, int duration) {
+        events.stopMoatTrackingForVideoPlayer();
+        events.triggerVASTErrorEvent();
+    }
+
+    public void time(VideoPlayer videoPlayer, int time, int duration) {
         // Start
         if (time >= 1 && !isStartHandled) {
             isStartHandled = true;
-
-            // send callback
-            if (listener != null) {
-                listener.onShow();
-            } else {
-                Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adShown");
-            }
 
             // send vast events - including impression
             events.triggerVASTImpressionEvent();
@@ -103,54 +96,5 @@ public class SAVideoEvents implements VideoPlayer.Listener {
             events.sendMoatThirdQuartileEvent(time);
             events.triggerVASTThirdQuartileEvent();
         }
-        // end
-        if (time >= 15000 && !is15sHandled) {
-            is15sHandled = true;
-        }
-    }
-
-    @Override
-    public void onComplete(VideoPlayer videoPlayer, int time, int duration) {
-        // send events
-        events.sendMoatCompleteEvent(duration);
-        events.triggerVASTCompleteEvent();
-
-        // stop moat events
-        events.stopMoatTrackingForVideoPlayer();
-
-        // send an ad ended event
-        if (listener != null) {
-            listener.onCompleted();
-        } else {
-            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adEnded");
-        }
-
-        videoPlayer.removeListener(SAVideoEvents.this);
-    }
-
-    @Override
-    public void onError(VideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
-        // send events
-        events.stopMoatTrackingForVideoPlayer();
-        events.triggerVASTErrorEvent();
-
-        // ad failed to show
-        if (listener != null) {
-            listener.onError();
-        } else {
-            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adFailedToShow");
-        }
-
-        videoPlayer.removeListener(SAVideoEvents.this);
-    }
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-
-    interface Listener {
-        void onShow();
-        void onCompleted();
-        void onError();
     }
 }
