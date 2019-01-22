@@ -140,10 +140,7 @@ public class SAChromeControl extends RelativeLayout implements ChromeControl {
     }
 
     @Override
-    public void addListener(Listener listener) { /* N/A */ }
-
-    @Override
-    public void removeListener(Listener listener) { /* N/A */ }
+    public void setListener(Listener listener) { /* N/A */ }
 
     @Override
     public void close() { /* N/A */ }

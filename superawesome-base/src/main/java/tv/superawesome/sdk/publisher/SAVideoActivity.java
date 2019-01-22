@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,6 +41,8 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     private ImageButton closeButton = null;
     private AwesomeVideoPlayer videoPlayer = null;
 
+    private SAInterface listenerRef = null;
+
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
      * Here is the part where the activity / video ad gets configured
@@ -51,6 +52,8 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        listenerRef = SAVideoAd.getListener();
 
         // local versions of the static vars
         final boolean shouldShowCloseButtonL = SAVideoAd.getShouldShowCloseButton();
@@ -94,8 +97,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         videoPlayer.setBackgroundColor(Color.BLACK);
         parent.addView(videoPlayer);
 
-        videoPlayer.addListener(SAVideoAd.videoEvents);
-        videoPlayer.addListener(this);
+        videoPlayer.setListener(this);
 
         // create the close button
         closeButton = new ImageButton(this);
@@ -157,14 +159,9 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
      */
     private void close() {
 
-        // get local
-        SAInterface listenerL = SAVideoAd.getListener();
-
         // call listener
-        if (listenerL != null) {
-            listenerL.onEvent(ad.placementId, SAEvent.adClosed);
-        } else {
-            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adClosed");
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adClosed);
         }
 
         // close
@@ -174,7 +171,6 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         SAVideoAd.removeAd(ad.placementId);
 
         // close the video player
-        videoPlayer.removeListener(this);
         videoPlayer.close();
         videoPlayer.destroy();
 
@@ -188,15 +184,28 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) { /* N/A */ }
+    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) {
+
+        SAVideoAd.videoEvents.prepare(videoPlayer, time, duration);
+
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adShown);
+        }
+    }
 
     @Override
-    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) { /* N/A */ }
+    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) {
+        SAVideoAd.videoEvents.time(videoPlayer, time, duration);
+    }
 
     @Override
     public void onComplete(VideoPlayer videoPlayer, int time, int duration) {
+        SAVideoAd.videoEvents.complete(videoPlayer, time, duration);
         closeButton.setVisibility(View.VISIBLE);
-        videoPlayer.removeListener(this);
+
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
+        }
 
         if (SAVideoAd.getShouldAutomaticallyCloseAtEnd()) {
             close();
@@ -205,7 +214,12 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
 
     @Override
     public void onError(VideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
-        videoPlayer.removeListener(this);
+        SAVideoAd.videoEvents.error(videoPlayer, time, duration);
+
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adFailedToShow);
+        }
+
         close();
     }
 

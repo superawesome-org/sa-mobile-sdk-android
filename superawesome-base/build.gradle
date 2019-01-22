@@ -99,21 +99,22 @@ dependencies {
 
     def saUtils = "1.0.3"
     def saEvents = "1.5.7"
-    def saVideoPlayer = "2.0.0-beta"
     def saWebPlayer = "1.1.1"
     def saAdLoader = "1.5.5"
     def saParentalGate = "1.0.3"
     def saBumperPage = "1.0.6"
     def saIsMinor = "2.1.0"
+//    def saVideoPlayer = "2.0.0-beta"
 
     compile "tv.superawesome.lib.sautils:sautils:$saUtils"
     compile "tv.superawesome.lib.saevents:saevents:$saEvents"
-    compile "tv.superawesome.lib.savideoplayer:savideoplayer:$saVideoPlayer"
     compile "tv.superawesome.lib.sawebplayer:sawebplayer:$saWebPlayer"
     compile "tv.superawesome.lib.saadloader:saadloader:$saAdLoader"
     compile "tv.superawesome.lib.saparentalgate:saparentalgate:$saParentalGate"
     compile "tv.superawesome.lib.sabumperpage:sabumperpage:$saBumperPage"
     compile "tv.superawesome.sagdprisminorsdk:sagdprisminorsdk:$saIsMinor"
+//    compile "tv.superawesome.lib.savideoplayer:savideoplayer:$saVideoPlayer"
+    compile fileTree(dir: '../../sa-mobile-lib-android-videoplayer/savideoplayer/build/outputs/aar', include: ['*.aar'])
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Tests
