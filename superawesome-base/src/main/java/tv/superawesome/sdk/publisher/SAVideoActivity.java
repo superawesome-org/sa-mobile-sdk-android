@@ -24,7 +24,9 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.lib.savideoplayer.AwesomeMediaControl;
 import tv.superawesome.lib.savideoplayer.AwesomeVideoPlayer;
+import tv.superawesome.lib.savideoplayer.MediaControl;
 import tv.superawesome.lib.savideoplayer.VideoPlayer;
 import tv.superawesome.sdk.publisher.video.SAChromeControl;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
@@ -41,6 +43,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     private SAEvents events = null;
     private SAInterface listenerRef = null;
     // derived objects
+    private MediaControl control = new AwesomeMediaControl();
     private SAVideoEvents videoEvents = null;
     private SAVideoClick videoClick = null;
 
@@ -107,7 +110,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
 
         videoPlayer = new AwesomeVideoPlayer(this);
         videoPlayer.setLayoutParams(params);
-        videoPlayer.setControl(SAVideoAd.control);
+        videoPlayer.setControl(control);
         videoPlayer.setChrome(chrome);
         videoPlayer.setBackgroundColor(Color.BLACK);
         parent.addView(videoPlayer);
@@ -136,7 +139,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
 
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
-            SAVideoAd.control.playAsync(this, fileUri);
+            control.playAsync(this, fileUri);
         } catch (Exception ignored) {}
     }
 
@@ -245,7 +248,6 @@ class Config implements Parcelable {
     boolean shouldCloseAtEnd;
     boolean shouldShowCloseButton;
     SAOrientation orientation;
-
 
     Config(boolean shouldShowPadlock,
            boolean isParentalGateEnabled,
