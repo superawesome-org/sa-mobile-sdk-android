@@ -28,7 +28,7 @@ import tv.superawesome.lib.savideoplayer.AwesomeMediaControl;
 import tv.superawesome.lib.savideoplayer.AwesomeVideoPlayer;
 import tv.superawesome.lib.savideoplayer.MediaControl;
 import tv.superawesome.lib.savideoplayer.VideoPlayer;
-import tv.superawesome.sdk.publisher.video.SAChromeControl;
+import tv.superawesome.sdk.publisher.video.SAAdChromeControl;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
 
 /**
@@ -48,7 +48,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     private SAVideoClick videoClick = null;
 
     private RelativeLayout parent = null;
-    private SAChromeControl chrome;
+    private SAAdChromeControl chrome;
     private ImageButton closeButton = null;
     private AwesomeVideoPlayer videoPlayer = null;
 
@@ -91,7 +91,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         parent.setLayoutParams(params);
         setContentView(parent);
 
-        chrome = new SAChromeControl(this);
+        chrome = new SAAdChromeControl(this);
         chrome.shouldShowPadlock(config.shouldShowPadlock);
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
         chrome.setClickListener(new View.OnClickListener() {
@@ -229,7 +229,6 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         SAParentalGate.close();
 
         // close the video player
-        videoPlayer.close();
         videoPlayer.destroy();
 
         // close

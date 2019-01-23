@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import tv.superawesome.sdk.publisher.BaseInstrumentationTest;
 import tv.superawesome.sdk.publisher.spies.OnClickListenerSpy;
-import tv.superawesome.sdk.publisher.video.SAChromeControl;
+import tv.superawesome.sdk.publisher.video.SAAdChromeControl;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -21,10 +21,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 
-public class SAChromeControlTests extends BaseInstrumentationTest {
+public class SAAdChromeControlTests extends BaseInstrumentationTest {
 
     private OnClickListenerSpy spy = new OnClickListenerSpy();
-    private SAChromeControl controller;
+    private SAAdChromeControl controller;
 
     @Before
     @Override
@@ -34,7 +34,7 @@ public class SAChromeControlTests extends BaseInstrumentationTest {
         /*
          * Create controller
          */
-        controller = new SAChromeControl(rule().getActivity());
+        controller = new SAAdChromeControl(rule().getActivity());
         int size = ViewGroup.LayoutParams.MATCH_PARENT;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
         controller.setLayoutParams(params);
@@ -54,26 +54,26 @@ public class SAChromeControlTests extends BaseInstrumentationTest {
 
     @Test
     public void chrome_ToHave_Correct_DefaultState() {
-        onView(withId(SAChromeControl.CRONO_BG_ID))
+        onView(withId(SAAdChromeControl.CRONO_BG_ID))
                 .check(matches(isDisplayed()));
 
-        onView(withId(SAChromeControl.CRONO_ID))
+        onView(withId(SAAdChromeControl.CRONO_ID))
                 .check(matches(isDisplayed()))
                 .check(matches(withText("Ad: 0")));
 
-        onView(withId(SAChromeControl.MASK_ID))
+        onView(withId(SAAdChromeControl.MASK_ID))
                 .check(matches(isDisplayed()));
 
-        onView(withId(SAChromeControl.SHOW_MORE_ID))
+        onView(withId(SAAdChromeControl.SHOW_MORE_ID))
                 .check(matches(isDisplayed()))
                 .check(matches(withText("")))
                 .check(matches(isEnabled()))
                 .check(matches(not(isSelected())));
 
-        onView(withId(SAChromeControl.SMALL_SHOW_MORE_ID))
+        onView(withId(SAAdChromeControl.SMALL_SHOW_MORE_ID))
                 .check(matches(not(isDisplayed())));
 
-        onView(withId(SAChromeControl.PADLOCK_ID))
+        onView(withId(SAAdChromeControl.PADLOCK_ID))
                 .check(matches(isDisplayed()));
     }
 
@@ -86,26 +86,26 @@ public class SAChromeControlTests extends BaseInstrumentationTest {
             }
         });
 
-        onView(withId(SAChromeControl.CRONO_BG_ID))
+        onView(withId(SAAdChromeControl.CRONO_BG_ID))
                 .check(matches(isDisplayed()));
 
-        onView(withId(SAChromeControl.CRONO_ID))
+        onView(withId(SAAdChromeControl.CRONO_ID))
                 .check(matches(isDisplayed()))
                 .check(matches(withText("Ad: 0")));
 
-        onView(withId(SAChromeControl.MASK_ID))
+        onView(withId(SAAdChromeControl.MASK_ID))
                 .check(matches(isDisplayed()));
 
-        onView(withId(SAChromeControl.SHOW_MORE_ID))
+        onView(withId(SAAdChromeControl.SHOW_MORE_ID))
                 .check(matches(not(isDisplayed())));
 
-        onView(withId(SAChromeControl.SMALL_SHOW_MORE_ID))
+        onView(withId(SAAdChromeControl.SMALL_SHOW_MORE_ID))
                 .check(matches(isDisplayed()))
                 .check(matches(withText("Find out more »")))
                 .check(matches(isEnabled()))
                 .check(matches(not(isSelected())));
 
-        onView(withId(SAChromeControl.PADLOCK_ID))
+        onView(withId(SAAdChromeControl.PADLOCK_ID))
                 .check(matches(isDisplayed()));
     }
 
@@ -119,7 +119,7 @@ public class SAChromeControlTests extends BaseInstrumentationTest {
             }
         });
 
-        onView(withId(SAChromeControl.PADLOCK_ID))
+        onView(withId(SAAdChromeControl.PADLOCK_ID))
                 .check(matches(not(isDisplayed())));
     }
 
@@ -132,7 +132,7 @@ public class SAChromeControlTests extends BaseInstrumentationTest {
             }
         });
 
-        onView(withId(SAChromeControl.CRONO_ID))
+        onView(withId(SAAdChromeControl.CRONO_ID))
                 .check(matches(isDisplayed()))
                 .check(matches(withText("Ad: 15")));
     }
@@ -140,7 +140,7 @@ public class SAChromeControlTests extends BaseInstrumentationTest {
     @Test
     public void chrome_ToRegister_Clicks_ViaDelegation() {
         // when
-        onView(withId(SAChromeControl.SHOW_MORE_ID))
+        onView(withId(SAAdChromeControl.SHOW_MORE_ID))
                 .perform(click())
                 .perform(click());
 
