@@ -93,7 +93,6 @@ public class MainActivity extends Activity {
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
         SAVideoAd.enableCloseButton();
-        SAVideoAd.setOrientationLandscape();
         SAVideoAd.setPlaybackMode(SARTBStartDelay.POST_ROLL);
         SAVideoAd.enableBackButton();
         SAVideoAd.setListener(new SAInterface() {

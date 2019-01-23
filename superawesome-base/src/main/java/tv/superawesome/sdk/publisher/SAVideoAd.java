@@ -27,11 +27,8 @@ import tv.superawesome.lib.savideoplayer.MediaControl;
 
 public class SAVideoAd {
 
-    // the internal loader
-    private static SASession session = null;
-    private static SAEvents events = null;
-
     // private vars w/ a public interface
+    private static SAEvents events = null;
     public static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
@@ -46,8 +43,6 @@ public class SAVideoAd {
     private static SAOrientation orientation                = SADefaults.defaultOrientation();
     private static SAConfiguration configuration            = SADefaults.defaultConfiguration();
     private static SARTBStartDelay playback                 = SADefaults.defaultPlaybackMode();
-
-    public static MediaControl control = new AwesomeMediaControl();
 
     public static void load (final int placementId, final Context context) {
 
@@ -69,7 +64,7 @@ public class SAVideoAd {
             final SALoader loader = new SALoader(context);
 
             // create a current session
-            session = new SASession (context);
+            final SASession session = new SASession (context);
             session.setTestMode(isTestingEnabled);
             session.setConfiguration(configuration);
             session.setVersion(SAVersion.getSDKVersion());
