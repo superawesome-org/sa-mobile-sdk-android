@@ -69,7 +69,6 @@ public class SAVideoClick {
                 SAParentalGate.setListener(new SAParentalGate.Interface() {
                     @Override
                     public void parentalGateOpen() {
-//                        SAVideoAd.control.pause();
                         events.triggerPgOpenEvent();
                     }
 
@@ -77,19 +76,16 @@ public class SAVideoClick {
                     public void parentalGateSuccess() {
                         events.triggerPgSuccessEvent();
                         click(context, destinationUrl);
-//                        SAVideoAd.control.pause();
                     }
 
                     @Override
                     public void parentalGateFailure() {
                         events.triggerPgFailEvent();
-//                        SAVideoAd.control.start();
                     }
 
                     @Override
                     public void parentalGateCancel() {
                         events.triggerPgCloseEvent();
-//                        SAVideoAd.control.start();
                     }
                 });
 

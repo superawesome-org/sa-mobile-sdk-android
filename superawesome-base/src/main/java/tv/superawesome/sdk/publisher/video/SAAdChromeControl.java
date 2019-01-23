@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import tv.superawesome.lib.savideoplayer.ChromeControl;
 
-public class SAChromeControl extends RelativeLayout implements ChromeControl {
+public class SAAdChromeControl extends RelativeLayout implements ChromeControl {
 
     // constants
     private final static String CRONO_DEF_TXT = "Ad: ";
@@ -34,15 +34,15 @@ public class SAChromeControl extends RelativeLayout implements ChromeControl {
     public static final int CLOSE_ID = 0x1115;
     public static final int PADLOCK_ID = 0x1116;
 
-    public SAChromeControl(Context context) {
+    public SAAdChromeControl(Context context) {
         this(context, null, 0);
     }
 
-    public SAChromeControl(Context context, AttributeSet attrs) {
+    public SAAdChromeControl(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SAChromeControl(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SAAdChromeControl(Context context, AttributeSet attrs, int defStyleAttr) {
         // call to super
         super(context, attrs, defStyleAttr);
 
