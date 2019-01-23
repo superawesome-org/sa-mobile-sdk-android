@@ -16,15 +16,8 @@ public class SAVideoEvents {
     private boolean isMidpointHandled = false;
     private boolean isThirdQuartileHandled = false;
 
-    void reset(SAEvents events) {
-
+    public SAVideoEvents(SAEvents events) {
         this.events = events;
-
-        isStartHandled = false;
-        is2SHandled = false;
-        isFirstQuartileHandled = false;
-        isMidpointHandled = false;
-        isThirdQuartileHandled = false;
     }
 
     public void prepare(VideoPlayer videoPlayer, int time, int duration) {
