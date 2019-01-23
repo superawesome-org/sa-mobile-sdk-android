@@ -48,8 +48,6 @@ public class SAVideoAd {
     private static SARTBStartDelay playback                 = SADefaults.defaultPlaybackMode();
 
     public static MediaControl control = new AwesomeMediaControl();
-    public static SAVideoEvents videoEvents = new SAVideoEvents();
-    static SAVideoClick clickEvents = null;
 
     public static void load (final int placementId, final Context context) {
 
@@ -132,20 +130,6 @@ public class SAVideoAd {
                                     events.disableMoatLimiting();
                                 }
 
-                                // reset video events
-                                videoEvents.reset(events);
-                                clickEvents = new SAVideoClick(
-                                        first,
-                                        isParentalGateEnabled,
-                                        isBumperPageEnabled,
-                                        events);
-                                clickEvents.setListener(new SAVideoClick.Listener() {
-                                    @Override
-                                    public void onClick() {
-                                        listener.onEvent(placementId, SAEvent.adClicked);
-                                    }
-                                });
-
                                 // call listener(s)
                                 if (listener != null) {
                                     listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
@@ -204,7 +188,19 @@ public class SAVideoAd {
 
                 // create intent
                 Intent intent = new Intent(context, SAVideoActivity.class);
-                intent.putExtra("ad", adL.writeToJson().toString());
+
+                Config config = new Config(
+                        adL.isPadlockVisible,
+                        isParentalGateEnabled,
+                        isBumperPageEnabled || adL.creative.bumper,
+                        shouldShowSmallClickButton,
+                        isBackButtonEnabled,
+                        shouldAutomaticallyCloseAtEnd,
+                        shouldShowCloseButton,
+                        orientation);
+
+                intent.putExtra("ad", adL);
+                intent.putExtra("config", config);
 
                 // clear ad - meaning that it's been played
                 ads.remove(placementId);
@@ -411,5 +407,9 @@ public class SAVideoAd {
 
     public static void disableMoatLimiting () {
         isMoatLimitingEnabled = false;
+    }
+
+    public static SAEvents getEvents() {
+        return events;
     }
 }

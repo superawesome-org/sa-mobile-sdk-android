@@ -11,13 +11,15 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
@@ -33,15 +35,19 @@ import tv.superawesome.sdk.publisher.video.VideoUtils;
  */
 public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
 
-    // the ad
+    // fed-in data
     private SAAd ad = null;
+    private Config config = null;
+    private SAEvents events = null;
+    private SAInterface listenerRef = null;
+    // derived objects
+    private SAVideoEvents videoEvents = null;
+    private SAVideoClick videoClick = null;
 
     private RelativeLayout parent = null;
     private SAChromeControl chrome;
     private ImageButton closeButton = null;
     private AwesomeVideoPlayer videoPlayer = null;
-
-    private SAInterface listenerRef = null;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -53,17 +59,21 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listenerRef = SAVideoAd.getListener();
+        // get values from the intent
+        Intent myIntent = getIntent();
+        ad = myIntent.getParcelableExtra("ad");
+        config = myIntent.getParcelableExtra("config");
 
-        // local versions of the static vars
-        final boolean shouldShowCloseButtonL = SAVideoAd.getShouldShowCloseButton();
-        final boolean shouldShowSmallClickButtonL = SAVideoAd.getShouldShowSmallClickButton();
-        final SAOrientation orientationL = SAVideoAd.getOrientation();
-        String adString = getIntent().getStringExtra("ad");
-        ad = new SAAd(SAJsonParser.newObject(adString));
+        // get listener & events from static ad context
+        listenerRef = SAVideoAd.getListener();
+        events = SAVideoAd.getEvents();
+
+        // setup derived objects
+        videoEvents = new SAVideoEvents(events);
+        videoClick = new SAVideoClick(ad, config.isParentalGateEnabled, config.isBumperPageEnabled, events);
 
         // make sure direction is locked
-        switch (orientationL) {
+        switch (config.orientation) {
             case ANY: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); break;
             case PORTRAIT: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); break;
             case LANDSCAPE: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); break;
@@ -79,14 +89,19 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         setContentView(parent);
 
         chrome = new SAChromeControl(this);
-        chrome.shouldShowPadlock(ad.isPadlockVisible);
-        chrome.setShouldShowSmallClickButton(shouldShowSmallClickButtonL);
-        chrome.setClickListener(SAVideoAd.clickEvents);
+        chrome.shouldShowPadlock(config.shouldShowPadlock);
+        chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
+        chrome.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoClick.handleAdClick(view);
+                listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
+            }
+        });
         chrome.padlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
-                startActivity(browserIntent);
+                videoClick.handleSafeAdClick(view);
             }
         });
 
@@ -104,7 +119,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap());
         closeButton.setPadding(0, 0, 0, 0);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
-        closeButton.setVisibility(shouldShowCloseButtonL ? View.VISIBLE : View.GONE);
+        closeButton.setVisibility(config.shouldShowCloseButton ? View.VISIBLE : View.GONE);
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
         float fp = SAUtils.getScaleFactor(this);
         RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30* fp));
@@ -143,15 +158,58 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
      */
     @Override
     public void onBackPressed() {
-        boolean isBackButtonEnabledL = SAVideoAd.getIsBackButtonEnabled();
-        if (isBackButtonEnabledL) {
+       if (config.isBackButtonEnabled) {
             close();
             super.onBackPressed();
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Custom instance methods
+    // VideoPlayer.Listener
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) {
+
+        videoEvents.prepare(videoPlayer, time, duration);
+
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adShown);
+        }
+    }
+
+    @Override
+    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) {
+        videoEvents.time(videoPlayer, time, duration);
+    }
+
+    @Override
+    public void onComplete(VideoPlayer videoPlayer, int time, int duration) {
+        videoEvents.complete(videoPlayer, time, duration);
+        closeButton.setVisibility(View.VISIBLE);
+
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
+        }
+
+        if (config.shouldCloseAtEnd) {
+            close();
+        }
+    }
+
+    @Override
+    public void onError(VideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
+        videoEvents.error(videoPlayer, time, duration);
+
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adFailedToShow);
+        }
+
+        close();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Custom private methods
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -167,9 +225,6 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         // close
         SAParentalGate.close();
 
-        // delete the ad
-        SAVideoAd.removeAd(ad.placementId);
-
         // close the video player
         videoPlayer.close();
         videoPlayer.destroy();
@@ -178,49 +233,75 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
+}
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // VideoPlayer.Listener
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+class Config implements Parcelable {
+
+    boolean shouldShowPadlock;
+    boolean isParentalGateEnabled;
+    boolean isBumperPageEnabled;
+    boolean shouldShowSmallClick;
+    boolean isBackButtonEnabled;
+    boolean shouldCloseAtEnd;
+    boolean shouldShowCloseButton;
+    SAOrientation orientation;
+
+
+    Config(boolean shouldShowPadlock,
+           boolean isParentalGateEnabled,
+           boolean isBumperPageEnabled,
+           boolean shouldShowSmallClick,
+           boolean isBackButtonEnabled,
+           boolean shouldCloseAtEnd,
+           boolean shouldShowCloseButton,
+           SAOrientation orientation) {
+        this.shouldShowPadlock = shouldShowPadlock;
+        this.isParentalGateEnabled = isParentalGateEnabled;
+        this.isBumperPageEnabled = isBumperPageEnabled;
+        this.shouldShowSmallClick = shouldShowSmallClick;
+        this.isBackButtonEnabled = isBackButtonEnabled;
+        this.shouldCloseAtEnd = shouldCloseAtEnd;
+        this.shouldShowCloseButton = shouldShowCloseButton;
+        this.orientation = orientation;
+    }
+
+    protected Config(Parcel in) {
+        shouldShowPadlock = in.readByte() != 0;
+        isParentalGateEnabled = in.readByte() != 0;
+        isBumperPageEnabled = in.readByte() != 0;
+        shouldShowSmallClick = in.readByte() != 0;
+        isBackButtonEnabled = in.readByte() != 0;
+        shouldCloseAtEnd = in.readByte() != 0;
+        shouldShowCloseButton = in.readByte() != 0;
+        orientation = SAOrientation.fromValue(in.readInt());
+    }
+
+    public static final Creator<Config> CREATOR = new Creator<Config>() {
+        @Override
+        public Config createFromParcel(Parcel in) {
+            return new Config(in);
+        }
+
+        @Override
+        public Config[] newArray(int size) {
+            return new Config[size];
+        }
+    };
 
     @Override
-    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) {
-
-        SAVideoAd.videoEvents.prepare(videoPlayer, time, duration);
-
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adShown);
-        }
+    public int describeContents() {
+        return 0;
     }
 
     @Override
-    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) {
-        SAVideoAd.videoEvents.time(videoPlayer, time, duration);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeByte((byte) (shouldShowPadlock ? 1 : 0));
+        parcel.writeByte((byte) (isParentalGateEnabled ? 1 : 0));
+        parcel.writeByte((byte) (isBumperPageEnabled ? 1 : 0));
+        parcel.writeByte((byte) (shouldShowSmallClick ? 1 : 0));
+        parcel.writeByte((byte) (isBackButtonEnabled ? 1 : 0));
+        parcel.writeByte((byte) (shouldCloseAtEnd ? 1 : 0));
+        parcel.writeByte((byte) (shouldShowCloseButton ? 1 : 0));
+        parcel.writeInt(orientation.ordinal());
     }
-
-    @Override
-    public void onComplete(VideoPlayer videoPlayer, int time, int duration) {
-        SAVideoAd.videoEvents.complete(videoPlayer, time, duration);
-        closeButton.setVisibility(View.VISIBLE);
-
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
-        }
-
-        if (SAVideoAd.getShouldAutomaticallyCloseAtEnd()) {
-            close();
-        }
-    }
-
-    @Override
-    public void onError(VideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
-        SAVideoAd.videoEvents.error(videoPlayer, time, duration);
-
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adFailedToShow);
-        }
-
-        close();
-    }
-
 }

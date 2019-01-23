@@ -13,7 +13,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 
-public class SAVideoClick implements View.OnClickListener {
+public class SAVideoClick {
 
     private SAAd ad;
     private boolean isParentalGateEnabled;
@@ -22,7 +22,7 @@ public class SAVideoClick implements View.OnClickListener {
 
     private Long currentClickThreshold = 0L;
 
-    private Listener listener;
+    private static String PADLOCK_URL = "https://ads.superawesome.tv/v2/safead";
 
     SAVideoClick(SAAd ad,
                  boolean isParentalGateEnabled,
@@ -34,8 +34,21 @@ public class SAVideoClick implements View.OnClickListener {
         this.events = events;
     }
 
-    @Override
-    public void onClick(View view) {
+    public void handleSafeAdClick(View view) {
+        Context context = view.getContext();
+
+        Uri uri = null;
+        try {
+            uri = Uri.parse(PADLOCK_URL);
+        } catch (Exception ignored) {}
+
+        if (context != null && uri != null) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
+            context.startActivity(browserIntent);
+        }
+    }
+
+    public void handleAdClick(View view) {
         // check to see if there is a click through url
         final String destinationUrl;
 
@@ -92,7 +105,7 @@ public class SAVideoClick implements View.OnClickListener {
      */
     private void click(final Context context, final String destination) {
 
-        if (isBumperPageEnabled || ad.creative.bumper) {
+        if (isBumperPageEnabled) {
             SABumperPage.setListener(new SABumperPage.Interface() {
                 @Override
                 public void didEndBumper() {
@@ -124,14 +137,6 @@ public class SAVideoClick implements View.OnClickListener {
 
         Log.d("AwesomeAds-2", "Going to " + destination);
 
-        // get local
-        // call listener
-        if (listener != null) {
-            listener.onClick();
-        } else {
-            Log.w("AwesomeAds", "Video Ad listener not implemented. Should have been adClicked");
-        }
-
         // send vast click tracking events
         events.triggerVASTClickTrackingEvent();
 
@@ -149,13 +154,5 @@ public class SAVideoClick implements View.OnClickListener {
         } catch (Exception e) {
             // do nothing
         }
-    }
-
-    void setListener(Listener listener) {
-        this.listener = listener;
-    }
-
-    interface Listener {
-        void onClick();
     }
 }

@@ -98,9 +98,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     def saUtils = "1.0.3"
-    def saEvents = "1.5.7"
+    def saEvents = "1.5.8"
     def saWebPlayer = "1.1.1"
-    def saAdLoader = "1.5.5"
+    def saAdLoader = "1.5.6"
     def saParentalGate = "1.0.3"
     def saBumperPage = "1.0.6"
     def saIsMinor = "2.1.0"
