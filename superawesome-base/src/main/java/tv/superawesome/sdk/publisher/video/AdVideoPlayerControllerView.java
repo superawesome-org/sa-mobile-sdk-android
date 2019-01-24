@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import tv.superawesome.lib.savideoplayer.ChromeControl;
+import tv.superawesome.lib.savideoplayer.IVideoPlayerControllerView;
 
-public class SAAdChromeControl extends RelativeLayout implements ChromeControl {
+public class AdVideoPlayerControllerView extends RelativeLayout implements IVideoPlayerControllerView {
 
     // constants
     private final static String CRONO_DEF_TXT = "Ad: ";
@@ -34,15 +34,15 @@ public class SAAdChromeControl extends RelativeLayout implements ChromeControl {
     public static final int CLOSE_ID = 0x1115;
     public static final int PADLOCK_ID = 0x1116;
 
-    public SAAdChromeControl(Context context) {
+    public AdVideoPlayerControllerView(Context context) {
         this(context, null, 0);
     }
 
-    public SAAdChromeControl(Context context, AttributeSet attrs) {
+    public AdVideoPlayerControllerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SAAdChromeControl(Context context, AttributeSet attrs, int defStyleAttr) {
+    public AdVideoPlayerControllerView(Context context, AttributeSet attrs, int defStyleAttr) {
         // call to super
         super(context, attrs, defStyleAttr);
 
