@@ -114,6 +114,7 @@ dependencies {
     compile "tv.superawesome.lib.sabumperpage:sabumperpage:$saBumperPage"
     compile "tv.superawesome.sagdprisminorsdk:sagdprisminorsdk:$saIsMinor"
 //    compile "tv.superawesome.lib.savideoplayer:savideoplayer:$saVideoPlayer"
+    // todo: remove this once new build is pushed
     compile fileTree(dir: '../../sa-mobile-lib-android-videoplayer/savideoplayer/build/outputs/aar', include: ['*.aar'])
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

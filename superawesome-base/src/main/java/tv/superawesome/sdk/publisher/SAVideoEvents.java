@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.saevents.SAViewableModule;
-import tv.superawesome.lib.savideoplayer.VideoPlayer;
+import tv.superawesome.lib.savideoplayer.IVideoPlayer;
 
 public class SAVideoEvents {
 
@@ -20,22 +20,22 @@ public class SAVideoEvents {
         this.events = events;
     }
 
-    public void prepare(VideoPlayer videoPlayer, int time, int duration) {
+    public void prepare(IVideoPlayer videoPlayer, int time, int duration) {
         events.startMoatTrackingForVideoPlayer(videoPlayer.getSurface(), duration);
     }
 
-    public void complete(VideoPlayer videoPlayer, int time, int duration) {
+    public void complete(IVideoPlayer videoPlayer, int time, int duration) {
         events.sendMoatCompleteEvent(duration);
         events.triggerVASTCompleteEvent();
         events.stopMoatTrackingForVideoPlayer();
     }
 
-    public void error(VideoPlayer videoPlayer, int time, int duration) {
+    public void error(IVideoPlayer videoPlayer, int time, int duration) {
         events.stopMoatTrackingForVideoPlayer();
         events.triggerVASTErrorEvent();
     }
 
-    public void time(VideoPlayer videoPlayer, int time, int duration) {
+    public void time(IVideoPlayer videoPlayer, int time, int duration) {
         // Start
         if (time >= 1 && !isStartHandled) {
             isStartHandled = true;

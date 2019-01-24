@@ -24,18 +24,18 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.lib.savideoplayer.AwesomeMediaControl;
-import tv.superawesome.lib.savideoplayer.AwesomeVideoPlayer;
-import tv.superawesome.lib.savideoplayer.MediaControl;
+import tv.superawesome.lib.savideoplayer.IVideoPlayer;
+import tv.superawesome.lib.savideoplayer.IVideoPlayerController;
 import tv.superawesome.lib.savideoplayer.VideoPlayer;
-import tv.superawesome.sdk.publisher.video.SAAdChromeControl;
+import tv.superawesome.lib.savideoplayer.VideoPlayerController;
+import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
+public class SAVideoActivity extends Activity implements IVideoPlayer.Listener {
 
     // fed-in data
     private SAAd ad = null;
@@ -43,14 +43,14 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     private SAEvents events = null;
     private SAInterface listenerRef = null;
     // derived objects
-    private MediaControl control = new AwesomeMediaControl();
+    private IVideoPlayerController control = new VideoPlayerController();
     private SAVideoEvents videoEvents = null;
     private SAVideoClick videoClick = null;
 
     private RelativeLayout parent = null;
-    private SAAdChromeControl chrome;
+    private AdVideoPlayerControllerView chrome;
     private ImageButton closeButton = null;
-    private AwesomeVideoPlayer videoPlayer = null;
+    private VideoPlayer videoPlayer = null;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -91,7 +91,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
         parent.setLayoutParams(params);
         setContentView(parent);
 
-        chrome = new SAAdChromeControl(this);
+        chrome = new AdVideoPlayerControllerView(this);
         chrome.shouldShowPadlock(config.shouldShowPadlock);
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
         chrome.setClickListener(new View.OnClickListener() {
@@ -108,10 +108,10 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
             }
         });
 
-        videoPlayer = new AwesomeVideoPlayer(this);
+        videoPlayer = new VideoPlayer(this);
         videoPlayer.setLayoutParams(params);
-        videoPlayer.setControl(control);
-        videoPlayer.setChrome(chrome);
+        videoPlayer.setController(control);
+        videoPlayer.setControllerView(chrome);
         videoPlayer.setBackgroundColor(Color.BLACK);
         parent.addView(videoPlayer);
 
@@ -172,7 +172,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onPrepared(VideoPlayer videoPlayer, int time, int duration) {
+    public void onPrepared(IVideoPlayer videoPlayer, int time, int duration) {
 
         videoEvents.prepare(videoPlayer, time, duration);
 
@@ -182,12 +182,12 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     }
 
     @Override
-    public void onTimeUpdated(VideoPlayer videoPlayer, int time, int duration) {
+    public void onTimeUpdated(IVideoPlayer videoPlayer, int time, int duration) {
         videoEvents.time(videoPlayer, time, duration);
     }
 
     @Override
-    public void onComplete(VideoPlayer videoPlayer, int time, int duration) {
+    public void onComplete(IVideoPlayer videoPlayer, int time, int duration) {
         videoEvents.complete(videoPlayer, time, duration);
         closeButton.setVisibility(View.VISIBLE);
 
@@ -201,7 +201,7 @@ public class SAVideoActivity extends Activity implements VideoPlayer.Listener {
     }
 
     @Override
-    public void onError(VideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
+    public void onError(IVideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
         videoEvents.error(videoPlayer, time, duration);
 
         if (listenerRef != null) {
