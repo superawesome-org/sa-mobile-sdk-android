@@ -59,9 +59,6 @@ public class AdVideoPlayerControllerView extends RelativeLayout implements IVide
         chronograph.setText(CRONO_INIT_TXT);
         addView(chronograph);
 
-        padlock = VideoComponentFactory.getPadlock(PADLOCK_ID, this.getContext());
-        addView(padlock);
-
         // create the show more button
         showMore = VideoComponentFactory.getClick(SHOW_MORE_ID, this.getContext());
         addView(showMore);
@@ -70,6 +67,9 @@ public class AdVideoPlayerControllerView extends RelativeLayout implements IVide
         smallShowMore.setText(FIND_OUT_MORE_TXT);
         smallShowMore.setVisibility(GONE);
         addView(smallShowMore);
+
+        padlock = VideoComponentFactory.getPadlock(PADLOCK_ID, this.getContext());
+        addView(padlock);
     }
 
 

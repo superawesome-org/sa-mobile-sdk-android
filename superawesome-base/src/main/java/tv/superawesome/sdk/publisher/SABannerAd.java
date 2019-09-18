@@ -273,8 +273,14 @@ public class SABannerAd extends FrameLayout {
                             padlock.setOnClickListener(new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
-                                    context.startActivity(browserIntent);
+                                    SABumperPage.setListener(new SABumperPage.Interface() {
+                                        @Override
+                                        public void didEndBumper() {
+                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+                                            context.startActivity(browserIntent);
+                                        }
+                                    });
+                                    SABumperPage.play((Activity)getContext());
                                 }
                             });
                             webPlayer.getHolder().addView(padlock);
