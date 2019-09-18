@@ -35,7 +35,7 @@ public class SAVideoClick {
     }
 
     public void handleSafeAdClick(View view) {
-        Context context = view.getContext();
+        final Context context = view.getContext();
 
         Uri uri = null;
         try {
@@ -43,8 +43,15 @@ public class SAVideoClick {
         } catch (Exception ignored) {}
 
         if (context != null && uri != null) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
-            context.startActivity(browserIntent);
+            final Uri safeUri = uri;
+            SABumperPage.setListener(new SABumperPage.Interface() {
+                @Override
+                public void didEndBumper() {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, safeUri);
+                    context.startActivity(browserIntent);
+                }
+            });
+            SABumperPage.play((Activity)context);
         }
     }
 
