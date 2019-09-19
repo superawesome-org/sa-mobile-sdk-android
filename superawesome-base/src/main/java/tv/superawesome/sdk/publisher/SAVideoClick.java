@@ -37,6 +37,16 @@ public class SAVideoClick {
     public void handleSafeAdClick(View view) {
         final Context context = view.getContext();
 
+        Runnable clickRunner = new Runnable() {
+            @Override
+            public void run() {
+                showSuperAwesomeWebViewInExternalBrowser(context);
+            }
+        };
+        showParentalGateIfNeededWithCompletion(context, clickRunner);
+    }
+
+    private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
         Uri uri = null;
         try {
             uri = Uri.parse(PADLOCK_URL);
@@ -72,34 +82,46 @@ public class SAVideoClick {
 
         if (destinationUrl != null && context != null) {
             // check for parental gate on click
-            if (isParentalGateEnabled) {
-                SAParentalGate.setListener(new SAParentalGate.Interface() {
-                    @Override
-                    public void parentalGateOpen() {
-                        events.triggerPgOpenEvent();
-                    }
+            Runnable clickRunner = new Runnable() {
+                @Override
+                public void run() {
+                    click(context, destinationUrl);
+                }
+            };
+            showParentalGateIfNeededWithCompletion(context, clickRunner);
+        }
+    }
 
-                    @Override
-                    public void parentalGateSuccess() {
-                        events.triggerPgSuccessEvent();
-                        click(context, destinationUrl);
-                    }
+    private void showParentalGateIfNeededWithCompletion(final Context context,
+                                                        final Runnable completion) {
 
-                    @Override
-                    public void parentalGateFailure() {
-                        events.triggerPgFailEvent();
-                    }
+        if (isParentalGateEnabled) {
+            SAParentalGate.setListener(new SAParentalGate.Interface() {
+                @Override
+                public void parentalGateOpen() {
+                    events.triggerPgOpenEvent();
+                }
 
-                    @Override
-                    public void parentalGateCancel() {
-                        events.triggerPgCloseEvent();
-                    }
-                });
+                @Override
+                public void parentalGateSuccess() {
+                    events.triggerPgSuccessEvent();
+                    completion.run();
+                }
 
-                SAParentalGate.show(context);
-            } else {
-                click(context, destinationUrl);
-            }
+                @Override
+                public void parentalGateFailure() {
+                    events.triggerPgFailEvent();
+                }
+
+                @Override
+                public void parentalGateCancel() {
+                    events.triggerPgCloseEvent();
+                }
+            });
+
+            SAParentalGate.show(context);
+        } else {
+            completion.run();
         }
     }
 
