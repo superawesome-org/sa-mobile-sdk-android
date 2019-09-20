@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
         SAInterstitialAd.disableParentalGate();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.disableTestMode();
+        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
         SAVideoAd.setConfigurationProduction();
         SAVideoAd.disableParentalGate();
         SAVideoAd.disableBumperPage();
-        SAVideoAd.disableTestMode();
+        SAVideoAd.enableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
         SAVideoAd.enableCloseButton();
