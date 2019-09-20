@@ -273,8 +273,13 @@ public class SABannerAd extends FrameLayout {
                             padlock.setOnClickListener(new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
-                                    context.startActivity(browserIntent);
+                                Runnable runner = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showSuperAwesomeWebViewInExternalBrowser(context);
+                                    }
+                                };
+                                showParentalGateIfNeededWithCompletion(context, runner);
                                 }
                             });
                             webPlayer.getHolder().addView(padlock);
@@ -316,35 +321,13 @@ public class SABannerAd extends FrameLayout {
 
                             if (destination != null) {
 
-                                // check for PG
-                                if (isParentalGateEnabled) {
-                                    SAParentalGate.setListener(new SAParentalGate.Interface() {
-                                        @Override
-                                        public void parentalGateOpen() {
-                                            events.triggerPgOpenEvent();
-                                        }
-
-                                        @Override
-                                        public void parentalGateSuccess() {
-                                            events.triggerPgSuccessEvent();
-                                            click(destination);
-                                        }
-
-                                        @Override
-                                        public void parentalGateFailure() {
-                                            events.triggerPgFailEvent();
-                                        }
-
-                                        @Override
-                                        public void parentalGateCancel() {
-                                            events.triggerPgCloseEvent();
-                                        }
-                                    });
-                                    SAParentalGate.show(context);
-                                } else {
-                                    click(destination);
-                                }
-
+                                Runnable runner = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        click(destination);
+                                    }
+                                };
+                                showParentalGateIfNeededWithCompletion(context, runner);
                             }
 
                             break;
@@ -489,6 +472,49 @@ public class SABannerAd extends FrameLayout {
         return ad;
     }
 
+    private void showParentalGateIfNeededWithCompletion(final Context context,
+                                                        final Runnable completion) {
+
+        if (isParentalGateEnabled) {
+            SAParentalGate.setListener(new SAParentalGate.Interface() {
+                @Override
+                public void parentalGateOpen() {
+                    events.triggerPgOpenEvent();
+                }
+
+                @Override
+                public void parentalGateSuccess() {
+                    events.triggerPgSuccessEvent();
+                    completion.run();
+                }
+
+                @Override
+                public void parentalGateFailure() {
+                    events.triggerPgFailEvent();
+                }
+
+                @Override
+                public void parentalGateCancel() {
+                    events.triggerPgCloseEvent();
+                }
+            });
+
+            SAParentalGate.show(context);
+        } else {
+            completion.run();
+        }
+    }
+
+    private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
+        SABumperPage.setListener(new SABumperPage.Interface() {
+            @Override
+            public void didEndBumper() {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+                context.startActivity(browserIntent);
+            }
+        });
+        SABumperPage.play((Activity)getContext());
+    }
 
     /**********************************************************************************************
      * Setters & Getters
