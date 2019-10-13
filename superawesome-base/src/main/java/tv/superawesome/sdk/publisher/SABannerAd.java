@@ -37,6 +37,10 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 
 public class SABannerAd extends FrameLayout {
 
+    interface VisibilityListener {
+        void hasBeenVisible();
+    }
+
     // constants
     private final int       BANNER_BACKGROUND = Color.rgb(224, 224, 224);
 
@@ -62,6 +66,8 @@ public class SABannerAd extends FrameLayout {
     private boolean         moatLimiting;
 
     private Long            currentClickThreshold = 0L;
+
+    private VisibilityListener visibilityListener = null;
 
 
     /**
@@ -236,6 +242,9 @@ public class SABannerAd extends FrameLayout {
                                 public void saDidFindViewOnScreen(boolean success) {
                                     if (success) {
                                         events.triggerViewableImpressionEvent();
+                                        if (visibilityListener != null) {
+                                            visibilityListener.hasBeenVisible();
+                                        }
                                     }
                                 }
                             });
@@ -422,7 +431,12 @@ public class SABannerAd extends FrameLayout {
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
     public void close () {
-        // set listener
+        // de-set visibility listener
+        if (visibilityListener != null) {
+            visibilityListener = null;
+        }
+
+        // de-set public listener
         if (listener != null) {
             listener.onEvent(ad != null ? ad.placementId : 0, SAEvent.adClosed);
         } else {
@@ -584,6 +598,10 @@ public class SABannerAd extends FrameLayout {
         session.setConfiguration(value);
     }
 
+    public void setVisibilityListener(VisibilityListener listener) {
+        visibilityListener = listener;
+    }
+
     public void setColor (boolean value) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT);
@@ -591,6 +609,10 @@ public class SABannerAd extends FrameLayout {
             setBackgroundColor(BANNER_BACKGROUND);
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // SABannerAd.VisibilityListener
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void disableMoatLimiting () {
         moatLimiting = false;

@@ -8,7 +8,13 @@ import tv.superawesome.lib.savideoplayer.IVideoPlayer;
 
 public class SAVideoEvents {
 
+    interface  Listener {
+        void hasBeenVisible();
+    }
+
     private SAEvents events;
+
+    public Listener listener;
 
     private boolean isStartHandled = false;
     private boolean is2SHandled = false;
@@ -16,8 +22,9 @@ public class SAVideoEvents {
     private boolean isMidpointHandled = false;
     private boolean isThirdQuartileHandled = false;
 
-    public SAVideoEvents(SAEvents events) {
+    public SAVideoEvents(SAEvents events, Listener listener) {
         this.events = events;
+        this.listener = listener;
     }
 
     public void prepare(IVideoPlayer videoPlayer, int time, int duration) {
@@ -60,6 +67,9 @@ public class SAVideoEvents {
                     public void saDidFindViewOnScreen(boolean isViewable) {
                         if (isViewable) {
                             events.triggerViewableImpressionEvent();
+                            if (listener != null) {
+                                listener.hasBeenVisible();
+                            }
                         }
                     }
                 });

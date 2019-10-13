@@ -41,20 +41,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        AwesomeAds.triggerAgeCheck(this, "2012-02-02", new GetIsMinorInterface() {
-//            @Override
-//            public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
-//                Log.d("SuperAwesome", "Get is minor " + getIsMinorModel.isMinor + " | " + getIsMinorModel.age);
-//            }
-//        });
-
         SABumperPage.overrideName("Test app");
 
         final SABannerAd myBanner = findViewById(R.id.MyBanner);
         myBanner.setConfigurationProduction();
         myBanner.enableBumperPage();
         myBanner.disableParentalGate();
-        myBanner.disableTestMode();
+        myBanner.enableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
             @Override
@@ -111,17 +104,16 @@ public class MainActivity extends Activity {
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("O7 Banner", 36508, Type.BANNER),
-                // new PlacementItem("New Banner", 37217, Type.BANNER),
+                new PlacementItem("Image Banner", 36508, Type.BANNER),
+                new PlacementItem("Rich Media Banner", 36508, Type.BANNER),
+                new PlacementItem("3rd Party Tag Banner", 36508, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("O7 Interstitial", 36510, Type.INTERSTITIAL),
-//                new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 39309, Type.INTERSTITIAL),
-//                new PlacementItem("Image #1", 37218, Type.INTERSTITIAL),
-//                new PlacementItem("Rich Media #2", 37219, Type.INTERSTITIAL),
-//                new PlacementItem("Rich Media #3", 37220, Type.INTERSTITIAL),
-//                new PlacementItem("Rich Media #4", 37221, Type.INTERSTITIAL),
+                new PlacementItem("Image Interstitial", 36510, Type.INTERSTITIAL),
+                new PlacementItem("Rich Media Interstitial", 36510, Type.INTERSTITIAL),
+                new PlacementItem("3rd Party Tag Interstitial", 36510, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Social SDK Video", 39521, Type.VIDEO)
+                new PlacementItem("Direct video", 39521, Type.VIDEO),
+                new PlacementItem("Programmatic video", 39521, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
