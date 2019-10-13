@@ -35,7 +35,7 @@ import tv.superawesome.sdk.publisher.video.VideoUtils;
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAVideoActivity extends Activity implements IVideoPlayer.Listener {
+public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, SAVideoEvents.Listener {
 
     // fed-in data
     private SAAd ad = null;
@@ -72,7 +72,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener {
         events = SAVideoAd.getEvents();
 
         // setup derived objects
-        videoEvents = new SAVideoEvents(events);
+        videoEvents = new SAVideoEvents(events, this);
         videoClick = new SAVideoClick(ad, config.isParentalGateEnabled, config.isBumperPageEnabled, events);
 
         // make sure direction is locked
@@ -122,8 +122,8 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener {
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap());
         closeButton.setPadding(0, 0, 0, 0);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
-        closeButton.setVisibility(config.shouldShowCloseButton ? View.VISIBLE : View.GONE);
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
+        closeButton.setVisibility(View.GONE);
         float fp = SAUtils.getScaleFactor(this);
         RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30* fp));
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -168,7 +168,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // VideoPlayer.Listener
+    // VideoPlayer.VisibilityListener
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -220,6 +220,8 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener {
      */
     private void close() {
 
+        videoEvents.listener = null;
+
         // call listener
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adClosed);
@@ -234,6 +236,11 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener {
         // close
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
+    @Override
+    public void hasBeenVisible() {
+        closeButton.setVisibility(config.shouldShowCloseButton ? View.VISIBLE : View.GONE);
     }
 }
 
