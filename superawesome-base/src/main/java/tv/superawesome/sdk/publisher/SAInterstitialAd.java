@@ -41,7 +41,7 @@ import tv.superawesome.lib.sautils.SAUtils;
  * interstitial / fullscreen type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAInterstitialAd extends Activity {
+public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityListener {
 
     // subviews
     private RelativeLayout          parent = null;
@@ -113,6 +113,7 @@ public class SAInterstitialAd extends Activity {
 
         // create the interstitial banner
         interstitialBanner = new SABannerAd(this);
+        interstitialBanner.setVisibilityListener(this);
         interstitialBanner.setId(SAUtils.randomNumberBetween(1000000, 1500000));
         interstitialBanner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         interstitialBanner.setColor(false);
@@ -129,6 +130,7 @@ public class SAInterstitialAd extends Activity {
         // create the close button
         float fp = SAUtils.getScaleFactor(this);
         closeButton = new ImageButton(this);
+        closeButton.setVisibility(View.GONE);
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap());
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setPadding(0, 0, 0, 0);
@@ -480,4 +482,9 @@ public class SAInterstitialAd extends Activity {
     }
 
     private static boolean getMoatLimitingState () { return isMoatLimitingEnabled; }
+
+    @Override
+    public void hasBeenVisible() {
+        closeButton.setVisibility(View.VISIBLE);
+    }
 }

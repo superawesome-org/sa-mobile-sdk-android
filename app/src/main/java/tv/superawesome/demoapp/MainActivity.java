@@ -22,8 +22,6 @@ import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
-import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
 import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.sdk.publisher.AwesomeAds;
@@ -43,20 +41,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AwesomeAds.triggerAgeCheck(this, "2012-02-02", new GetIsMinorInterface() {
-            @Override
-            public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
-                Log.d("SuperAwesome", "Get is minor " + getIsMinorModel.isMinor + " | " + getIsMinorModel.age);
-            }
-        });
-
         SABumperPage.overrideName("Test app");
 
         final SABannerAd myBanner = findViewById(R.id.MyBanner);
         myBanner.setConfigurationProduction();
+        myBanner.enableParentalGate();
         myBanner.enableBumperPage();
-        myBanner.disableParentalGate();
-        myBanner.disableTestMode();
+        myBanner.enableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
             @Override
@@ -71,10 +62,10 @@ public class MainActivity extends Activity {
         });
 
         SAInterstitialAd.setConfigurationProduction();
-        SAInterstitialAd.disableParentalGate();
+        SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.disableTestMode();
+        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -89,12 +80,12 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationProduction();
-        SAVideoAd.disableParentalGate();
-        SAVideoAd.disableBumperPage();
-        SAVideoAd.disableTestMode();
+        SAVideoAd.enableParentalGate();
+        SAVideoAd.enableBumperPage();
+        SAVideoAd.enableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
-        SAVideoAd.disableCloseButton();
+        SAVideoAd.enableCloseButton();
         SAVideoAd.setPlaybackMode(SARTBStartDelay.POST_ROLL);
         SAVideoAd.enableBackButton();
         SAVideoAd.setListener(new SAInterface() {
@@ -113,17 +104,16 @@ public class MainActivity extends Activity {
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("O7 Banner", 36508, Type.BANNER),
-                // new PlacementItem("New Banner", 37217, Type.BANNER),
+                new PlacementItem("Image Banner", 36508, Type.BANNER),
+                new PlacementItem("Rich Media Banner", 36508, Type.BANNER),
+                new PlacementItem("3rd Party Tag Banner", 36508, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("O7 Interstitial", 36510, Type.INTERSTITIAL),
-//                new PlacementItem("CPM Interstitial 2 (3rd party Tag)", 39309, Type.INTERSTITIAL),
-//                new PlacementItem("Image #1", 37218, Type.INTERSTITIAL),
-//                new PlacementItem("Rich Media #2", 37219, Type.INTERSTITIAL),
-//                new PlacementItem("Rich Media #3", 37220, Type.INTERSTITIAL),
-//                new PlacementItem("Rich Media #4", 37221, Type.INTERSTITIAL),
+                new PlacementItem("Image Interstitial", 36510, Type.INTERSTITIAL),
+                new PlacementItem("Rich Media Interstitial", 36510, Type.INTERSTITIAL),
+                new PlacementItem("3rd Party Tag Interstitial", 36510, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Moat Video", 37187, Type.VIDEO)
+                new PlacementItem("Direct video", 39521, Type.VIDEO),
+                new PlacementItem("Programmatic video", 39521, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);

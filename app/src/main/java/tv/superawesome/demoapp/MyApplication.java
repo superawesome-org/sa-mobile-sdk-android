@@ -2,6 +2,7 @@ package tv.superawesome.demoapp;
 
 import android.app.Application;
 
+import tv.superawesome.lib.samoatevents.SAMoatEvents;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 
 /**
@@ -13,6 +14,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-         AwesomeAds.init(this, true);
+        AwesomeAds.init(this, true);
     }
 }
