@@ -4,8 +4,6 @@
  */
 package tv.superawesome.plugins.publisher.unity;
 
-import android.util.Log;
-
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;

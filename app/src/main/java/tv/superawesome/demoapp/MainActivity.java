@@ -45,8 +45,8 @@ public class MainActivity extends Activity {
 
         final SABannerAd myBanner = findViewById(R.id.MyBanner);
         myBanner.setConfigurationProduction();
+        myBanner.enableParentalGate();
         myBanner.enableBumperPage();
-        myBanner.disableParentalGate();
         myBanner.enableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
         });
 
         SAInterstitialAd.setConfigurationProduction();
-        SAInterstitialAd.disableParentalGate();
+        SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
         SAInterstitialAd.enableTestMode();
@@ -80,8 +80,8 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationProduction();
-        SAVideoAd.disableParentalGate();
-        SAVideoAd.disableBumperPage();
+        SAVideoAd.enableParentalGate();
+        SAVideoAd.enableBumperPage();
         SAVideoAd.enableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
