@@ -26,7 +26,7 @@ import tv.superawesome.sdk.publisher.SAVideoAd;
  */
 public class SAAIRVideoAd {
 
-    private static final String airName = "SAVideoAd";
+    private static final String airName = "SAVideoActivity";
 
     /**
      * Class that creates a new Video Ad (from AIR)
