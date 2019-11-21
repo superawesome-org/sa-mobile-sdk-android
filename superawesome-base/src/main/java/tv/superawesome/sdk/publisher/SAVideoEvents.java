@@ -28,7 +28,9 @@ public class SAVideoEvents {
     }
 
     public void prepare(IVideoPlayer videoPlayer, int time, int duration) {
-        events.startMoatTrackingForVideoPlayer(videoPlayer.getSurface(), duration);
+        if (videoPlayer != null && videoPlayer.getSurface() != null) {
+            events.startMoatTrackingForVideoPlayer(videoPlayer.getSurface(), duration);
+        }
     }
 
     public void complete(IVideoPlayer videoPlayer, int time, int duration) {
