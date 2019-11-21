@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         SAVideoAd.setConfigurationProduction();
         SAVideoAd.enableParentalGate();
         SAVideoAd.enableBumperPage();
-//        SAVideoAd.enableTestMode();
+        SAVideoAd.enableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
         SAVideoAd.enableCloseButton();
