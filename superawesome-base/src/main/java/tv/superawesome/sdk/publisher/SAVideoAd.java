@@ -26,7 +26,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class SAVideoAd {
 
     // private vars w/ a public interface
-    private static SAEvents events = null;
+    private static SAEvents events = new SAEvents();
     public static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
@@ -62,23 +62,7 @@ public class SAVideoAd {
             final SALoader loader = new SALoader(context);
 
             // create a current session
-            final SASession session = new SASession (context);
-            session.setTestMode(isTestingEnabled);
-            session.setConfiguration(configuration);
-            session.setVersion(SAVersion.getSDKVersion());
-            session.setPos(SARTBPosition.FULLSCREEN);
-            session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
-            session.setInstl(SARTBInstl.FULLSCREEN);
-            session.setSkip(shouldShowCloseButton ? SARTBSkip.SKIP : SARTBSkip.NO_SKIP);
-            session.setStartDelay(getPlaybackMode());
-
-            try {
-                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
-                session.setWidth(size.width);
-                session.setHeight(size.height);
-            } catch (Exception e) {
-                // do nothing
-            }
+            final SASession session = getNewSession(context);
 
             session.prepareSession(new SASessionInterface() {
                 @Override
@@ -117,12 +101,6 @@ public class SAVideoAd {
                                     ads.remove(placementId);
                                 }
 
-                                events = new SAEvents();
-                                events.setAd(session, first);
-                                if (!isMoatLimitingEnabled) {
-                                    events.disableMoatLimiting();
-                                }
-
                                 // call listener(s)
                                 if (listener != null) {
                                     listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
@@ -145,6 +123,28 @@ public class SAVideoAd {
                 Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adAlreadyLoaded");
             }
         }
+    }
+
+    private static SASession getNewSession(Context context) {
+        SASession session = new SASession (context);
+        session.setTestMode(isTestingEnabled);
+        session.setConfiguration(configuration);
+        session.setVersion(SAVersion.getSDKVersion());
+        session.setPos(SARTBPosition.FULLSCREEN);
+        session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+        session.setInstl(SARTBInstl.FULLSCREEN);
+        session.setSkip(shouldShowCloseButton ? SARTBSkip.SKIP : SARTBSkip.NO_SKIP);
+        session.setStartDelay(getPlaybackMode());
+
+        try {
+            SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
+            session.setWidth(size.width);
+            session.setHeight(size.height);
+        } catch (Exception e) {
+            // do nothing
+        }
+
+        return session;
     }
 
     public static boolean hasAdAvailable (int placementId) {
@@ -178,6 +178,13 @@ public class SAVideoAd {
 
             // try to start the activity
             if (adL.creative.format == SACreativeFormat.video && context != null) {
+
+                // setup eventing
+                SASession session = getNewSession(context);
+                events.setAd(session, adL);
+                if (!isMoatLimitingEnabled) {
+                    events.disableMoatLimiting();
+                }
 
                 // create intent
                 Intent intent = new Intent(context, SAVideoActivity.class);
