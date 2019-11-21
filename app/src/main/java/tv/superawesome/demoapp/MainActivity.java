@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
         myBanner.setConfigurationProduction();
         myBanner.enableParentalGate();
         myBanner.enableBumperPage();
-        myBanner.enableTestMode();
+        myBanner.disableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
             @Override
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.enableTestMode();
+        SAInterstitialAd.disableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
         SAVideoAd.setConfigurationProduction();
         SAVideoAd.enableParentalGate();
         SAVideoAd.enableBumperPage();
-        SAVideoAd.enableTestMode();
+//        SAVideoAd.enableTestMode();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
         SAVideoAd.enableCloseButton();
@@ -107,13 +107,16 @@ public class MainActivity extends Activity {
                 new PlacementItem("Image Banner", 36508, Type.BANNER),
                 new PlacementItem("Rich Media Banner", 36508, Type.BANNER),
                 new PlacementItem("3rd Party Tag Banner", 36508, Type.BANNER),
+                new PlacementItem("Kellogs", 42928, Type.BANNER),
                 new HeaderItem("Interstitials"),
                 new PlacementItem("Image Interstitial", 36510, Type.INTERSTITIAL),
                 new PlacementItem("Rich Media Interstitial", 36510, Type.INTERSTITIAL),
                 new PlacementItem("3rd Party Tag Interstitial", 36510, Type.INTERSTITIAL),
+                new PlacementItem("Kellogs", 41602, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Direct video", 39521, Type.VIDEO),
-                new PlacementItem("Programmatic video", 39521, Type.VIDEO)
+                new PlacementItem("Direct video", 28000, Type.VIDEO),
+                new PlacementItem("Programmatic video", 39521, Type.VIDEO),
+                new PlacementItem("34394", 34394, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
