@@ -1,10 +1,10 @@
-package tv.superawesome.sagdprisminorsdk.minor;
+package tv.superawesome.lib.sagdprisminorsdk.minor;
 
 import android.content.Context;
 
-import tv.superawesome.sagdprisminorsdk.minor.network.CommunicationCenter;
-import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
-import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorProcess;
+import tv.superawesome.lib.sagdprisminorsdk.minor.network.CommunicationCenter;
+import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
+import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorProcess;
 
 public class SAAgeCheck {
 

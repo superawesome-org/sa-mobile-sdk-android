@@ -1,4 +1,4 @@
-package tv.superawesome.sagdprisminorsdk.minor.network;
+package tv.superawesome.lib.sagdprisminorsdk.minor.network;
 
 import org.json.JSONObject;
 

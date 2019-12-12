@@ -1,15 +1,15 @@
-package tv.superawesome.sagdprisminorsdk.minor.requests;
+package tv.superawesome.lib.sagdprisminorsdk.minor.requests;
 
 import android.content.Context;
 
 import org.json.JSONObject;
 
+import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
+import tv.superawesome.lib.sagdprisminorsdk.minor.network.HTTPMethod;
+import tv.superawesome.lib.sagdprisminorsdk.minor.network.Service;
+import tv.superawesome.lib.sagdprisminorsdk.minor.network.ServiceResponseInterface;
+import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
-import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
-import tv.superawesome.sagdprisminorsdk.minor.network.HTTPMethod;
-import tv.superawesome.sagdprisminorsdk.minor.network.Service;
-import tv.superawesome.sagdprisminorsdk.minor.network.ServiceResponseInterface;
-import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 
 public class GetIsMinorRequest extends Service {
 

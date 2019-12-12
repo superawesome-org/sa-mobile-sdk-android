@@ -1,12 +1,12 @@
-package tv.superawesome.sagdprisminorsdk.minor.network;
+package tv.superawesome.lib.sagdprisminorsdk.minor.network;
 
 import android.content.Context;
 
 import org.json.JSONObject;
 
+import tv.superawesome.lib.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sanetwork.request.SANetworkInterface;
-import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
 
 public class Service implements NetworkInterface {
 

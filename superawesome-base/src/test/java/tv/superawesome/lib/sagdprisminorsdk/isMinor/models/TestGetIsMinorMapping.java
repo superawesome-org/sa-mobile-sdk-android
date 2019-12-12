@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tv.superawesome.lib.ResourceReader;
-import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
+import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
 
 public class TestGetIsMinorMapping {
 

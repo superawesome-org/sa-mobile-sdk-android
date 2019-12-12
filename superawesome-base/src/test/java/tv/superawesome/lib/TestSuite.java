@@ -18,6 +18,8 @@ import tv.superawesome.lib.saevents.events.trigger.TestSAImpressionEventTrigger;
 import tv.superawesome.lib.saevents.events.trigger.TestViewableImpressionEventTrigger;
 import tv.superawesome.lib.saevents.modules.TestMoatModule;
 import tv.superawesome.lib.saevents.modules.TestSAVASTModule;
+import tv.superawesome.lib.sagdprisminorsdk.isMinor.models.TestGetIsMinorMapping;
+import tv.superawesome.lib.sagdprisminorsdk.isMinor.requests.TestGetIsMinorRequest;
 import tv.superawesome.lib.sajsonparser.TestSAJsonParser_ParseArray;
 import tv.superawesome.lib.sajsonparser.TestSAJsonParser_ParseDictionary;
 import tv.superawesome.lib.sajsonparser.TestSAJsonParser_ParseObject;
@@ -71,12 +73,12 @@ import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests7;
 
         ////////////////////////////////
         // is minor
-//        tv.superawesome.sagdprisminorsdk.isMinor.requests.TestGetIsMinorRequest.class,
-//        tv.superawesome.sagdprisminorsdk.isMinor.models.TestGetIsMinorMapping.class,
+        TestGetIsMinorMapping.class,
+        TestGetIsMinorRequest.class,
 
         ////////////////////////////////
         // ad loader
-        TestSAProcessHTML .class,
+        TestSAProcessHTML.class,
         TestSAAdLoader_GetAwesomeAdsQuery.class,
         TestSAAdLoader_GetAwesomeAdsEndpoint.class,
         TestSAAdLoader_GetAwesomeAdsHeader.class,
