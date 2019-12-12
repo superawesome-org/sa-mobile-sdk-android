@@ -21,9 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
+import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
+import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
-import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
-import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
         myBanner.setConfigurationProduction();
         myBanner.enableParentalGate();
         myBanner.enableBumperPage();
-        myBanner.disableTestMode();
+        myBanner.enableTestMode();
         myBanner.disableMoatLimiting();
         myBanner.setListener(new SAInterface() {
             @Override
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.disableTestMode();
+        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -104,6 +104,7 @@ public class MainActivity extends Activity {
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
+                new PlacementItem("Image Banner", 30471, Type.BANNER),
                 new PlacementItem("Image Banner", 36508, Type.BANNER),
                 new PlacementItem("Rich Media Banner", 36508, Type.BANNER),
                 new PlacementItem("3rd Party Tag Banner", 36508, Type.BANNER),

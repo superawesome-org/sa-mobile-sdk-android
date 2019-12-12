@@ -266,8 +266,9 @@ public class SABannerAd extends FrameLayout {
                             padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
                             padlock.setBackgroundColor(Color.TRANSPARENT);
                             padlock.setScaleType(ImageView.ScaleType.FIT_XY);
-                            padlock.setPadding(0, 0, 0, 0);
-                            padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * sf), (int) (31 * sf)));
+                            int topPadding = (int)(2 * sf);
+                            padlock.setPadding(0, topPadding, 0, 0);
+                            padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (77 * sf), (int) (31 * sf)));
 
                             //
                             // weird condition: if banner is closed (and ad is nulled) in the time

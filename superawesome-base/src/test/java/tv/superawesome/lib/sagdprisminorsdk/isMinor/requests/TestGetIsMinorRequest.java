@@ -1,4 +1,4 @@
-package tv.superawesome.sagdprisminorsdk.isMinor.requests;
+package tv.superawesome.lib.sagdprisminorsdk.isMinor.requests;
 
 import junit.framework.Assert;
 
@@ -6,9 +6,9 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Test;
 
+import tv.superawesome.lib.sagdprisminorsdk.minor.network.HTTPMethod;
+import tv.superawesome.lib.sagdprisminorsdk.minor.requests.GetIsMinorRequest;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
-import tv.superawesome.sagdprisminorsdk.minor.network.HTTPMethod;
-import tv.superawesome.sagdprisminorsdk.minor.requests.GetIsMinorRequest;
 
 public class TestGetIsMinorRequest {
 

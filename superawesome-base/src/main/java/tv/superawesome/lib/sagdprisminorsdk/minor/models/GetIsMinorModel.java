@@ -1,4 +1,4 @@
-package tv.superawesome.sagdprisminorsdk.minor.models;
+package tv.superawesome.lib.sagdprisminorsdk.minor.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

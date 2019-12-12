@@ -1,8 +1,8 @@
-package tv.superawesome.sagdprisminorsdk.minor.process;
+package tv.superawesome.lib.sagdprisminorsdk.minor.process;
 
-import tv.superawesome.sagdprisminorsdk.minor.models.GetIsMinorModel;
-import tv.superawesome.sagdprisminorsdk.minor.network.ServiceResponseInterface;
+import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
+import tv.superawesome.lib.sagdprisminorsdk.minor.network.ServiceResponseInterface;
 
-public interface GetIsMinorInterface extends ServiceResponseInterface{
+public interface GetIsMinorInterface extends ServiceResponseInterface {
     void getIsMinorData(GetIsMinorModel isMinorModel);
 }

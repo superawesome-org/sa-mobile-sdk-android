@@ -158,7 +158,7 @@ class VideoComponentFactory {
             view.setPadding(0, 0, 0, 0);
             view.setBackgroundColor(Color.TRANSPARENT);
             view.setScaleType(ImageView.ScaleType.FIT_XY);
-            view.setLayoutParams(new ViewGroup.LayoutParams((int) (83 * scale), (int) (31 * scale)));
+            view.setLayoutParams(new ViewGroup.LayoutParams((int) (77 * scale), (int) (31 * scale)));
 
             return view;
         }

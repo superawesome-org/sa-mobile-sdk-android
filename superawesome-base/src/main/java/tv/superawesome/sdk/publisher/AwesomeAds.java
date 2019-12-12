@@ -5,9 +5,9 @@ import android.content.Context;
 import android.util.Log;
 
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.sagdprisminorsdk.minor.SAAgeCheck;
+import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
-import tv.superawesome.sagdprisminorsdk.minor.SAAgeCheck;
-import tv.superawesome.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 
 /**
  * Created by gabriel.coman on 30/04/2018.
