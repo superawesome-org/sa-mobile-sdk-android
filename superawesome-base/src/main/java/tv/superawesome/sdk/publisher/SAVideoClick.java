@@ -54,14 +54,21 @@ public class SAVideoClick {
 
         if (context != null && uri != null) {
             final Uri safeUri = uri;
-            SABumperPage.setListener(new SABumperPage.Interface() {
+
+            SABumperPage.Interface bumperCallback = new SABumperPage.Interface() {
                 @Override
                 public void didEndBumper() {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, safeUri);
                     context.startActivity(browserIntent);
                 }
-            });
-            SABumperPage.play((Activity)context);
+            };
+
+            if (isBumperPageEnabled) {
+                SABumperPage.setListener(bumperCallback);
+                SABumperPage.play((Activity)context);
+            } else {
+                bumperCallback.didEndBumper();
+            }
         }
     }
 
@@ -88,7 +95,8 @@ public class SAVideoClick {
                     click(context, destinationUrl);
                 }
             };
-            showParentalGateIfNeededWithCompletion(context, clickRunner);
+            clickRunner.run();
+            // showParentalGateIfNeededWithCompletion(context, clickRunner);
         }
     }
 

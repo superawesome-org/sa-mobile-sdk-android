@@ -337,7 +337,8 @@ public class SABannerAd extends FrameLayout {
                                         click(destination);
                                     }
                                 };
-                                showParentalGateIfNeededWithCompletion(context, runner);
+                                runner.run();
+                                // showParentalGateIfNeededWithCompletion(context, runner);
                             }
 
                             break;
@@ -521,14 +522,21 @@ public class SABannerAd extends FrameLayout {
     }
 
     private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
-        SABumperPage.setListener(new SABumperPage.Interface() {
+
+        SABumperPage.Interface bumperCallback = new SABumperPage.Interface() {
             @Override
             public void didEndBumper() {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
                 context.startActivity(browserIntent);
             }
-        });
-        SABumperPage.play((Activity)getContext());
+        };
+
+        if (isBumperPageEnabled) {
+            SABumperPage.setListener(bumperCallback);
+            SABumperPage.play((Activity)getContext());
+        } else {
+            bumperCallback.didEndBumper();
+        }
     }
 
     /**********************************************************************************************
