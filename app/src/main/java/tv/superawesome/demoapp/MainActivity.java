@@ -61,11 +61,11 @@ public class MainActivity extends Activity {
             }
         });
 
-        SAInterstitialAd.setConfigurationProduction();
+        SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.enableTestMode();
+//        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener(new SAInterface() {
             @Override
@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
                 new PlacementItem("Rich Media Interstitial", 36510, Type.INTERSTITIAL),
                 new PlacementItem("3rd Party Tag Interstitial", 36510, Type.INTERSTITIAL),
                 new PlacementItem("Kellogs", 41602, Type.INTERSTITIAL),
-                new PlacementItem("Test", 30473, Type.INTERSTITIAL),
+                new PlacementItem("Test", 5387, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("Direct video", 28000, Type.VIDEO),
                 new PlacementItem("Programmatic video", 39521, Type.VIDEO),
