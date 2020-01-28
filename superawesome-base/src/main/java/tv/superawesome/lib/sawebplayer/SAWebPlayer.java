@@ -63,14 +63,16 @@ public class SAWebPlayer extends RelativeLayout implements
         webView = new SAWebView(context);
         webView.setWebViewClient(new SAWebClient(this));
 
-        this.getViewTreeObserver().addOnGlobalLayoutListener(this);
+//        // todo: ref
+//        this.getViewTreeObserver().addOnGlobalLayoutListener(this);
     }
 
     public void setContentSize (int width, int height) {
-        origContentWidth = width;
-        origContentHeight = height;
-        contentWidth = width;
-        contentHeight = height;
+//        // todo: ref
+//        origContentWidth = width;
+//        origContentHeight = height;
+//        contentWidth = width;
+//        contentHeight = height;
     }
 
     public void setup () {
@@ -124,14 +126,14 @@ public class SAWebPlayer extends RelativeLayout implements
 
     @Override
     public void onGlobalLayout() {
-
-        Rect newValue = mapSourceSizeIntoBoundingSize(contentWidth, contentHeight, holder.getMeasuredWidth(), holder.getMeasuredHeight());
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(newValue.right, newValue.bottom);
-        params.setMargins(newValue.left, newValue.top, 0, 0);
-        webView.setLayoutParams(params);
-
-        // webView.scale(contentWidth, contentHeight, holder.getMeasuredWidth(), holder.getMeasuredHeight());
-        eventListener.saWebPlayerDidReceiveEvent(Event.Web_Layout, null);
+        // todo: ref
+//        Rect newValue = mapSourceSizeIntoBoundingSize(contentWidth, contentHeight, holder.getMeasuredWidth(), holder.getMeasuredHeight());
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(newValue.right, newValue.bottom);
+//        params.setMargins(newValue.left, newValue.top, 0, 0);
+//        webView.setLayoutParams(params);
+//
+//        // webView.scale(contentWidth, contentHeight, holder.getMeasuredWidth(), holder.getMeasuredHeight());
+//        eventListener.saWebPlayerDidReceiveEvent(Event.Web_Layout, null);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

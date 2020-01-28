@@ -20,7 +20,7 @@ public class SAWebView extends WebView {
     public SAWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        setBackgroundColor(Color.RED);
+        setBackgroundColor(Color.TRANSPARENT);
         setVerticalScrollBarEnabled(false);
         setHorizontalScrollBarEnabled(false);
         setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -33,23 +33,6 @@ public class SAWebView extends WebView {
             setWebContentsDebuggingEnabled(true);
         }
         getSettings().setJavaScriptEnabled(true);
-    }
-
-    public void resize (int toWidth, int toHeight) {
-
-//        setPivotX(0);
-//        setPivotY(0);
-//
-//        try {
-//            setScaleX(toWidth / (float) getMeasuredWidth());
-//        } catch (ArithmeticException e) {
-//            //
-//        }
-//        try {
-//            setScaleY(toHeight / (float) getMeasuredHeight());
-//        } catch (ArithmeticException e) {
-//            //
-//        }
     }
 
     public void loadHTML (String base, String html) {
