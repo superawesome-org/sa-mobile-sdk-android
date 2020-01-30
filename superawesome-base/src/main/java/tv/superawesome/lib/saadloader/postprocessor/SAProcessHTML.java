@@ -75,7 +75,7 @@ public class SAProcessHTML {
         } else {
             tagString = tagString
                     .replace("[click]", "")
-                    .replace("[click_enc", "");
+                    .replace("[click_enc]", "");
         }
         tagString = tagString.replace("[keywords]", "");
         tagString = tagString.replace("[timestamp]", "");
