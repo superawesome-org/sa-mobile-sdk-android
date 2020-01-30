@@ -208,7 +208,6 @@ public class SABannerAd extends FrameLayout {
             // create a new web player fragment object
             webPlayer = new SAWebPlayer(context);
             webPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            webPlayer.setContentSize(ad.creative.details.width, ad.creative.details.height);
             // and set it's event listener
             webPlayer.setEventListener(new SAWebPlayer.Listener() {
                 @Override

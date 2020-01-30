@@ -2,17 +2,13 @@ package tv.superawesome.lib.sawebplayer;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-public class SAWebPlayer extends RelativeLayout implements
-        SAWebClient.Listener,
-        ViewTreeObserver.OnGlobalLayoutListener {
+public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener {
 
     public enum Event {
         Web_Prepared,
@@ -30,11 +26,6 @@ public class SAWebPlayer extends RelativeLayout implements
     // private variables for the web player
     protected FrameLayout       holder = null;
     protected SAWebView         webView = null;
-
-    protected int               origContentWidth = 0;
-    protected int               origContentHeight = 0;
-    protected int               contentWidth = 0;
-    protected int               contentHeight = 0;
 
     // interface objects used for the web player callback mechanism
     protected Listener          eventListener;
@@ -62,17 +53,6 @@ public class SAWebPlayer extends RelativeLayout implements
 
         webView = new SAWebView(context);
         webView.setWebViewClient(new SAWebClient(this));
-
-//        // todo: ref
-//        this.getViewTreeObserver().addOnGlobalLayoutListener(this);
-    }
-
-    public void setContentSize (int width, int height) {
-//        // todo: ref
-//        origContentWidth = width;
-//        origContentHeight = height;
-//        contentWidth = width;
-//        contentHeight = height;
     }
 
     public void setup () {
@@ -121,22 +101,6 @@ public class SAWebPlayer extends RelativeLayout implements
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Global Layout of the Container
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public void onGlobalLayout() {
-        // todo: ref
-//        Rect newValue = mapSourceSizeIntoBoundingSize(contentWidth, contentHeight, holder.getMeasuredWidth(), holder.getMeasuredHeight());
-//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(newValue.right, newValue.bottom);
-//        params.setMargins(newValue.left, newValue.top, 0, 0);
-//        webView.setLayoutParams(params);
-//
-//        // webView.scale(contentWidth, contentHeight, holder.getMeasuredWidth(), holder.getMeasuredHeight());
-//        eventListener.saWebPlayerDidReceiveEvent(Event.Web_Layout, null);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Useful Web Player methods
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -165,33 +129,5 @@ public class SAWebPlayer extends RelativeLayout implements
     public interface Listener {
 
         void saWebPlayerDidReceiveEvent (Event event, String destination);
-    }
-
-    /**
-     * Private method that maps a source rect into a bounding rect.
-     *
-     * @param sourceW   source width
-     * @param sourceH   source height
-     * @param boundingW bounding width
-     * @param boundingH bounding height
-     * @return          the resulting correct rect
-     */
-    private Rect mapSourceSizeIntoBoundingSize(float sourceW, float sourceH, float boundingW, float boundingH) {
-        float sourceRatio = sourceW / sourceH;
-        float boundingRatio = boundingW / boundingH;
-        float X, Y, W, H;
-        if(sourceRatio > boundingRatio) {
-            W = boundingW;
-            H = W / sourceRatio;
-            X = 0.0F;
-            Y = (boundingH - H) / 2.0F;
-        } else {
-            H = boundingH;
-            W = sourceRatio * H;
-            Y = 0.0F;
-            X = (boundingW - W) / 2.0F;
-        }
-
-        return new Rect((int)X, (int)Y, (int)W, (int)H);
     }
 }
