@@ -14,7 +14,7 @@ import tv.superawesome.sdk.publisher.common.network.Environment
 fun createNetworkModule(environment: Environment): Module = module {
     single<AdDataSourceType> { RetrofitAdDataSource(get()) }
     single { RetrofitHeaderInterceptor(get()) }
-    single<OkHttpClient> {
+    single {
         val interceptor: RetrofitHeaderInterceptor = get()
         OkHttpClient().newBuilder().addInterceptor(interceptor).build()
     }
@@ -22,14 +22,13 @@ fun createNetworkModule(environment: Environment): Module = module {
     single {
         val contentType: MediaType = MediaType.get("application/json")
         val json: Json = get()
-
         Retrofit.Builder()
                 .baseUrl(environment.baseUrl)
                 .client(get())
                 .addConverterFactory(json.asConverterFactory(contentType))
                 .build()
     }
-    single<RetrofitAwesomeAdsApi> {
+    single {
         val retrofit: Retrofit = get()
         retrofit.create(RetrofitAwesomeAdsApi::class.java)
     }
