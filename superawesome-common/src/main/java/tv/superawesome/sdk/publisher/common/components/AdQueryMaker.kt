@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.common.components
 
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.common.models.*
+import java.util.*
 
 interface AdQueryMakerType {
     suspend fun makeAdQuery(request: AdRequest): AdQuery
@@ -17,7 +18,8 @@ class AdQueryMaker(private val device: DeviceType,
                    private val numberGenerator: NumberGeneratorType,
                    private val idGenerator: IdGeneratorType,
                    private val encoder: EncoderType,
-                   private val json: Json) : AdQueryMakerType {
+                   private val json: Json,
+                   private val locale: Locale) : AdQueryMakerType {
 
     override suspend fun makeAdQuery(request: AdRequest): AdQuery = AdQuery(
             test = request.test,
@@ -27,7 +29,7 @@ class AdQueryMaker(private val device: DeviceType,
             name = sdkInfoType.name,
             dauid = idGenerator.findDauId(),
             ct = connectionProvider.findConnectionType(),
-            lang = sdkInfoType.name,
+            lang = locale.toString(),
             device = device.genericType.name,
             pos = request.pos,
             skip = request.skip,

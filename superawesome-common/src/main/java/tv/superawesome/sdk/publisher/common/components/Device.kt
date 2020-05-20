@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import android.content.res.Resources
+import android.util.DisplayMetrics
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -12,19 +12,24 @@ enum class DeviceCategory {
     phone, tablet;
 }
 
-class Device : DeviceType {
-    override var genericType: DeviceCategory = getSystemSize()
+class Device(private val displayMetrics: DisplayMetrics) : DeviceType {
 
-    private fun getSystemSize(): DeviceCategory {
-        val dm = Resources.getSystem().displayMetrics
-        val width = dm.widthPixels
-        val height = dm.heightPixels
-        val dens = dm.densityDpi
-        val wi = width.toDouble() / dens.toDouble()
-        val hi = height.toDouble() / dens.toDouble()
-        val x = wi.pow(2.0)
-        val y = hi.pow(2.0)
-        val screenInches = sqrt(x + y)
-        return if (screenInches < 6) DeviceCategory.phone else DeviceCategory.tablet
+    override var genericType: DeviceCategory = deviceCategory
+
+    private val systemSize: Double
+        get() {
+            val width = displayMetrics.widthPixels
+            val height = displayMetrics.heightPixels
+            val density = displayMetrics.densityDpi
+            val widthDp = width.toDouble() / density.toDouble()
+            val heightDp = height.toDouble() / density.toDouble()
+            return sqrt(widthDp.pow(2.0) + heightDp.pow(2.0))
+        }
+
+    private val deviceCategory: DeviceCategory
+        get() = if (systemSize <= PHONE_SCREEN_MAX) DeviceCategory.phone else DeviceCategory.tablet
+
+    companion object {
+        const val PHONE_SCREEN_MAX = 6.2
     }
 }

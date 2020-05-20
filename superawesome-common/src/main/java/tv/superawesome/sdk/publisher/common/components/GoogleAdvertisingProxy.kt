@@ -2,13 +2,9 @@ package tv.superawesome.sdk.publisher.common.components
 
 import android.content.Context
 import android.util.Log
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 
 interface GoogleAdvertisingProxyType {
-    fun findAdvertisingId(): String?
-    val advertisingId: Deferred<String?>
+    suspend fun findAdvertisingId(): String?
 }
 
 class GoogleAdvertisingProxy(private val context: Context) : GoogleAdvertisingProxyType {
@@ -20,11 +16,7 @@ class GoogleAdvertisingProxy(private val context: Context) : GoogleAdvertisingPr
         const val GOOGLE_ADVERTISING_ID_METHOD = "getId"
     }
 
-    override val advertisingId = GlobalScope.async {
-        findAdvertisingId()
-    }
-
-    override fun findAdvertisingId(): String? {
+    override suspend fun findAdvertisingId(): String? {
         try {
             val advertisingIdClass = Class.forName(Keys.GOOGLE_ADVERTISING_CLASS)
             val getAdvertisingIdInfoMethod = advertisingIdClass.getMethod(Keys.GOOGLE_ADVERTISING_INFO_METHOD, Context::class.java)

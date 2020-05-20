@@ -11,7 +11,6 @@ interface NumberGeneratorType {
 class NumberGenerator : NumberGeneratorType {
     private val cacheBoundMin: Int = 1000000
     private val cacheBoundMax: Int = 1500000
-    private val alphanumericChars: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
     override fun nextIntForCache(): Int = (cacheBoundMin..cacheBoundMax).random()
 

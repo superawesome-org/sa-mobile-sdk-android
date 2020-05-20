@@ -5,6 +5,7 @@ import org.koin.core.Koin
 import org.koin.core.KoinApplication
 import org.koin.core.KoinComponent
 import org.koin.dsl.koinApplication
+import tv.superawesome.sdk.publisher.common.di.createCommonModule
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.networking.retrofit.createNetworkModule
 
@@ -23,7 +24,7 @@ object AwesomeAdsSdk {
     private fun buildKoinApplication(applicationContext: Context, configuration: Configuration): KoinApplication =
             koinApplication {
                 //androidContext(applicationContext)
-                modules(createSdkModule(configuration.environment, applicationContext),
+                modules(createCommonModule(configuration.environment, applicationContext),
                         createNetworkModule(configuration.environment))
             }
 

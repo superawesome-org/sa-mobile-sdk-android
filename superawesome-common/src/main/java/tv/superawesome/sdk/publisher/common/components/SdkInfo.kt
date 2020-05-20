@@ -1,8 +1,8 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import tv.superawesome.sdk.publisher.common.BuildConfig
+import android.content.Context
+import android.content.pm.PackageManager
 import java.util.*
-
 
 interface SdkInfoType {
     val version: String
@@ -11,12 +11,21 @@ interface SdkInfoType {
     val lang: String
 }
 
-class SdkInfo: SdkInfoType {
-    private val platform = "android"
-    private val versionNumber = BuildConfig.VERSION_NAME
+class SdkInfo(private val context: Context, private val encoder: EncoderType, locale: Locale, versionNumber: String) : SdkInfoType {
+    object Keys {
+        const val unknown = "unknown"
+        const val platform = "android"
+    }
 
-    override val version: String = "${platform}_${versionNumber}"
-    override val bundle: String = ""
-    override val name: String = ""
-    override val lang: String =  Locale.getDefault().toString()
+    override val version: String = "${Keys.platform}_${versionNumber}"
+    override val bundle: String = context.packageName ?: Keys.unknown
+    override val name: String by lazy { findAppName() }
+    override val lang: String = locale.toString()
+
+    private fun findAppName(): String = try {
+        val label = context.packageManager.getApplicationLabel(context.applicationInfo).toString()
+        encoder.encodeUri(label)
+    } catch (exception: PackageManager.NameNotFoundException) {
+        Keys.unknown
+    }
 }

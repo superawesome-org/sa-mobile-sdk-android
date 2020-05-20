@@ -33,15 +33,11 @@ android {
 }
 
 dependencies {
-    def koin_version = '2.1.5'
-
     implementation(project(":superawesome-common"))
     implementation(project(':superawesome-retrofit'))
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
-
-    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-core:2.1.5"
 
     // TESTING
     testImplementation 'junit:junit:4.13'

@@ -18,7 +18,7 @@ class IdGenerator(private val googleAdvertisingProxy: GoogleAdvertisingProxyType
                   private val preferencesRepository: PreferencesRepositoryType,
                   private val sdkInfo: SdkInfoType,
                   private val numberGenerator: NumberGeneratorType) : IdGeneratorType {
-    private object Keys {
+    object Keys {
         const val initial = -1
         const val noTracking = 0
         const val dauLength = 32
@@ -34,7 +34,7 @@ class IdGenerator(private val googleAdvertisingProxy: GoogleAdvertisingProxyType
     }
 
     private suspend fun composeDauId(): Int {
-        val firstPart = googleAdvertisingProxy.advertisingId.await() ?: return Keys.noTracking
+        val firstPart = googleAdvertisingProxy.findAdvertisingId() ?: return Keys.noTracking
         val secondPart = preferencesRepository.dauUniquePart ?: generateAndSavePartOfDau()
         val thirdPart = sdkInfo.bundle
 
