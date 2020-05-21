@@ -12,12 +12,12 @@ def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/
 def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'         // Git repository URL
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
         versionName version
     }
@@ -85,8 +85,7 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':superawesome-base')
+    implementation project(':superawesome-base')
 
     implementation 'com.mopub:mopub-sdk:4.14.0'
 }

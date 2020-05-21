@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.publisher;
 
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 import android.widget.RelativeLayout;
 
 import org.junit.Before;
