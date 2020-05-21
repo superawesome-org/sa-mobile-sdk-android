@@ -13,17 +13,17 @@ def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/mast
 
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
     resourcePrefix "superawesome__"
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
         versionName version
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -95,7 +95,7 @@ repositories {
 }
 
 dependencies {
-    compile "tv.superawesome.lib.savideoplayer:savideoplayer:2.0.0-beta6"
+    implementation "tv.superawesome.lib.savideoplayer:savideoplayer:2.0.0-beta6"
     compile files('libs/moatlib.jar')
     compile files('libs/json.jar')
 
@@ -103,7 +103,7 @@ dependencies {
     // Tests
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation "org.mockito:mockito-core:2.+"
     testImplementation "eu.codearte.catch-exception:catch-exception:1.4.4"
     testImplementation "org.assertj:assertj-core:3.8.0"
@@ -112,18 +112,11 @@ dependencies {
 
     testImplementation files('libs/json.jar')
 
-    def testRunnerVersion = "1.0.2"
-    def testRulesVersion = "1.0.2"
-    def espressoCoreVersion = "3.0.2"
-    def espressoIdlingVersion = "3.0.2"
-    def espressoContribVersion = "2.2.2"
-    def okhttpVersion = "3.9.1"
-
     // A Mockito wrapper enabling more powerful & verbose tests
-    androidTestImplementation "com.android.support.test:runner:$testRunnerVersion"
-    androidTestImplementation "com.android.support.test:rules:$testRulesVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoCoreVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:$espressoIdlingVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espressoContribVersion"
-    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:3.9.1"
 }
