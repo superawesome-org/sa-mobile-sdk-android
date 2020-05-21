@@ -30,6 +30,6 @@ class Device(private val displayMetrics: DisplayMetrics) : DeviceType {
         get() = if (systemSize <= PHONE_SCREEN_MAX) DeviceCategory.phone else DeviceCategory.tablet
 
     companion object {
-        const val PHONE_SCREEN_MAX = 6.2
+        private const val PHONE_SCREEN_MAX = 6.2
     }
 }

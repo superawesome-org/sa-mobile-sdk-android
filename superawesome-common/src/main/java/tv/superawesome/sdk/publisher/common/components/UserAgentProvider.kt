@@ -11,7 +11,7 @@ interface UserAgentProviderType {
 
 class UserAgentProvider(context: Context) : UserAgentProviderType {
     override val name: String by lazy {
-        if (Build.VERSION.SDK_INT >= 17) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             WebSettings.getDefaultUserAgent(context)
         } else {
             WebView(context).settings.userAgentString

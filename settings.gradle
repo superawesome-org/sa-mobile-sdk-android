@@ -1,5 +1,10 @@
 include ':superawesome-common'
 include ':superawesome-retrofit'
 include ':superawesome-core'
-include ':app', ':saunity', ':samopub', ':saair', ':superawesome', ':superawesome-base'
+include ':app'
+include ':saunity'
+include ':samopub'
+include ':saair'
+include ':superawesome'
+include ':superawesome-base'
 project(':superawesome-base').projectDir = new File('superawesome-base')

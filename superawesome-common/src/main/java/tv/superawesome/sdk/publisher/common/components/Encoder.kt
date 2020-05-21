@@ -8,13 +8,15 @@ interface EncoderType {
 }
 
 class Encoder : EncoderType {
-    private object Keys {
+    companion object {
         const val utf8 = "UTF-8"
     }
 
     override fun encodeUri(string: String?): String =
-            if (string.isNullOrEmpty()) "" else try {
-                URLEncoder.encode(string, Keys.utf8)
+            if (string.isNullOrEmpty()) {
+                ""
+            } else try {
+                URLEncoder.encode(string, utf8)
             } catch (e: UnsupportedEncodingException) {
                 ""
             }
