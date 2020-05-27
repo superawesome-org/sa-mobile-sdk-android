@@ -47,4 +47,6 @@
     <string name="gamewall_reward">Total Currency earned:</string>
     <string name="title_activity_activity_banner">activity_banner</string>
     <string name="title_activity_activity_video">activity_video</string>
+    <string name="play_admob_interstitial">Play AdMob interstitial</string>
+    <string name="play_admob_video">Play AdMob video</string>
 </resources>
