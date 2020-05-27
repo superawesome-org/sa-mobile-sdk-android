@@ -5,24 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
-import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
-import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SABannerAd;
@@ -49,15 +47,11 @@ public class MainActivity extends Activity {
         myBanner.enableBumperPage();
         myBanner.disableTestMode();
         myBanner.disableMoatLimiting();
-        myBanner.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
+        myBanner.setListener((SAInterface) (placementId, event) -> {
+            Log.d("SADefaults", "BANNER AD: " + placementId + " -> Event : " + event);
 
-                Log.d("SADefaults", "BANNER AD: " + placementId + " -> Event : " + event);
-
-                if (event == SAEvent.adLoaded) {
-                    myBanner.play(MainActivity.this);
-                }
+            if (event == SAEvent.adLoaded) {
+                myBanner.play(MainActivity.this);
             }
         });
 
@@ -68,15 +62,11 @@ public class MainActivity extends Activity {
         SAInterstitialAd.enableBackButton();
 //        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.disableMoatLimiting();
-        SAInterstitialAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
+        SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
+            Log.d("SADefaults", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);
 
-                Log.d("SADefaults", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);
-
-                if (event == SAEvent.adLoaded) {
-                    SAInterstitialAd.play(placementId, MainActivity.this);
-                }
+            if (event == SAEvent.adLoaded) {
+                SAInterstitialAd.play(placementId, MainActivity.this);
             }
         });
 
@@ -89,16 +79,12 @@ public class MainActivity extends Activity {
         SAVideoAd.enableCloseButton();
         SAVideoAd.setPlaybackMode(SARTBStartDelay.POST_ROLL);
         SAVideoAd.enableBackButton();
-        SAVideoAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
+        SAVideoAd.setListener((SAInterface) (placementId, event) -> {
+            Log.d("SADefaults", "VIDEO AD: " + placementId + " -> Event : " + event);
 
-                Log.d("SADefaults", "VIDEO AD: " + placementId + " -> Event : " + event);
-
-                if (event == SAEvent.adLoaded) {
-                    SAVideoAd.play(placementId, MainActivity.this);
-                    SAVideoAd.play(placementId, MainActivity.this);
-                }
+            if (event == SAEvent.adLoaded) {
+                SAVideoAd.play(placementId, MainActivity.this);
+                SAVideoAd.play(placementId, MainActivity.this);
             }
         });
 
@@ -118,40 +104,32 @@ public class MainActivity extends Activity {
         adapter.updateData(data);
         adapter.reloadList();
 
-        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AdapterItem item = data.get(position);
-                if (item instanceof PlacementItem) {
-                    PlacementItem placement = (PlacementItem) item;
+        myList.setOnItemClickListener((parent, view, position, id) -> {
+            AdapterItem item = data.get(position);
+            if (item instanceof PlacementItem) {
+                PlacementItem placement = (PlacementItem) item;
 
-                    switch (placement.type) {
-                        case BANNER:
-                            myBanner.load(placement.pid);
-                            break;
-                        case INTERSTITIAL:
-                            SAInterstitialAd.load(placement.pid, MainActivity.this);
-                            break;
-                        case VIDEO: {
-                            if (SAVideoAd.hasAdAvailable(placement.pid)) {
-                                Log.e("AwesomeAds", "PLAYING VIDEO");
-                                SAVideoAd.play(placement.pid, MainActivity.this);
-                            } else {
-                                Log.e("AwesomeAds", "LOADING VIDEO");
-                                SAVideoAd.load(placement.pid, MainActivity.this);
-                            }
-                            break;
+                switch (placement.type) {
+                    case BANNER:
+                        myBanner.load(placement.pid);
+                        break;
+                    case INTERSTITIAL:
+                        SAInterstitialAd.load(placement.pid, MainActivity.this);
+                        break;
+                    case VIDEO: {
+                        if (SAVideoAd.hasAdAvailable(placement.pid)) {
+                            Log.e("AwesomeAds", "PLAYING VIDEO");
+                            SAVideoAd.play(placement.pid, MainActivity.this);
+                        } else {
+                            Log.e("AwesomeAds", "LOADING VIDEO");
+                            SAVideoAd.load(placement.pid, MainActivity.this);
                         }
+                        break;
                     }
                 }
             }
         });
 
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     public void gotoAdMob(View view) {
@@ -168,22 +146,19 @@ public class MainActivity extends Activity {
 
         final String dateOfBirth = "2012-02-02";
 
-        AwesomeAds.triggerAgeCheck(this, dateOfBirth, new GetIsMinorInterface() {
-            @Override
-            public void getIsMinorData(GetIsMinorModel isMinorModel) {
+        AwesomeAds.triggerAgeCheck(this, dateOfBirth, isMinorModel -> {
 
-                String message;
-                if (isMinorModel != null) {
-                    message = "Min age for '" + isMinorModel.getCountry() + "' is '"
-                            + isMinorModel.getConsentAgeForCountry() + "' "
-                            + "\nThe age is '" + isMinorModel.getAge() + "' "
-                            + "'.\nIs '" + dateOfBirth + "' a minor? -> '" + String.valueOf(isMinorModel.isMinor()) + "'";
-                } else {
-                    message = "Oops! Something went wrong. No valid model for 'Age Check'...";
-                }
-
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            String message;
+            if (isMinorModel != null) {
+                message = "Min age for '" + isMinorModel.getCountry() + "' is '"
+                        + isMinorModel.getConsentAgeForCountry() + "' "
+                        + "\nThe age is '" + isMinorModel.getAge() + "' "
+                        + "'.\nIs '" + dateOfBirth + "' a minor? -> '" + isMinorModel.isMinor() + "'";
+            } else {
+                message = "Oops! Something went wrong. No valid model for 'Age Check'...";
             }
+
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
         });
     }
 }
@@ -257,13 +232,13 @@ class ListAdapter<T extends AdapterItem> extends ArrayAdapter<T> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_placement, parent, false);
         }
 
-        TextView title = (TextView) convertView.findViewById(R.id.RowTitle);
+        TextView title = convertView.findViewById(R.id.RowTitle);
 
         T item = getItem(position);
 
@@ -273,7 +248,10 @@ class ListAdapter<T extends AdapterItem> extends ArrayAdapter<T> {
             convertView.setBackgroundColor(Color.LTGRAY);
         } else {
             PlacementItem placement = (PlacementItem) item;
-            title.setText(placement.pid + " | " + placement.name);
+            if (placement != null) {
+                String titleText = placement.pid + " | " + placement.name;
+                title.setText(titleText);
+            }
             title.setBackgroundColor(Color.WHITE);
         }
 
