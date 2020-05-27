@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,11 +14,11 @@
 
     <Button
         android:layout_width="match_parent"
-        android:text="Play AdMob interstitial"
+        android:text="@string/play_admob_interstitial"
         android:onClick="playInterstitial"
         android:layout_height="50dp" />
     <Button
-        android:text="Play AdMob video"
+        android:text="@string/play_admob_video"
         android:layout_width="match_parent"
         android:onClick="playVideo"
         android:layout_height="50dp" />
@@ -29,8 +28,6 @@
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
         ads:adUnitId="ca-app-pub-7706302691807937/1989188001"/>
 

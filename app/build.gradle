@@ -21,6 +21,10 @@ android {
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 repositories {
@@ -37,13 +41,12 @@ dependencies {
 
     implementation project(':superawesome')
 
-//    compile project(':saadmob')
+    implementation project(':saadmob')
     implementation 'com.google.android.gms:play-services-ads:19.1.0'
 
     implementation project(':samopub')
     implementation 'com.mopub:mopub-sdk:4.14.0'
 
-    androidTestImplementation 'com.android.support.test:testing-support-lib:0.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'junit:junit:4.13'
 }

@@ -43,7 +43,6 @@ import tv.superawesome.lib.sanetwork.request.TestSANetwork;
 import tv.superawesome.lib.sanetwork.request.TestSANetworkUtils;
 import tv.superawesome.lib.sautils.array.TestSAUtils_RemoveAllButFirstElement;
 import tv.superawesome.lib.sautils.aux.TestSAUtils_GenerateUniqueKey;
-import tv.superawesome.lib.sautils.aux.TestSAUtils_IsTargetRectInFrameRect;
 import tv.superawesome.lib.sautils.aux.TestSAUtils_MapSourceSizeIntoBoundingSize;
 import tv.superawesome.lib.sautils.aux.TestSAUtils_RandomNumberBetween;
 import tv.superawesome.lib.sautils.network.TestSAUtils_EncodeDictAsJsonDict;
@@ -137,7 +136,6 @@ import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests7;
         ////////////////////////////////
         // sautils
         TestSAUtils_RemoveAllButFirstElement.class,
-        TestSAUtils_IsTargetRectInFrameRect.class,
         TestSAUtils_GenerateUniqueKey.class,
         TestSAUtils_MapSourceSizeIntoBoundingSize.class,
         TestSAUtils_RandomNumberBetween.class,

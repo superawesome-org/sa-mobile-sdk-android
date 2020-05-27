@@ -8,8 +8,8 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 version = properties.getProperty("project.version")
 group = properties.getProperty("project.group")
 
-def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'        // Homepage URL of the library
-def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'         // Git repository URL
+def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'
+def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -26,6 +26,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -74,15 +78,10 @@ install {
 }
 
 repositories {
-    maven {
-        url  "http://dl.bintray.com/gabrielcoman/maven"
-    }
-    maven {
-        url "http://dl.bintray.com/superawesome/SuperAwesomeSDK"
-    }
+    maven { url  "http://dl.bintray.com/gabrielcoman/maven" }
+    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':superawesome-base')
+    api project(':superawesome-base')
 }
