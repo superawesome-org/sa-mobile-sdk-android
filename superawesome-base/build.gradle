@@ -100,8 +100,8 @@ repositories {
 
 dependencies {
     implementation "tv.superawesome.lib.savideoplayer:savideoplayer:2.0.0-beta6"
-    compile files('libs/moatlib.jar')
-    compile files('libs/json.jar')
+    implementation files('libs/moatlib.jar')
+    implementation files('libs/json.jar')
 
     // Tests
     testImplementation 'junit:junit:4.13'
