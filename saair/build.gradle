@@ -29,15 +29,11 @@ android {
 }
 
 repositories {
-    maven {
-        url  "http://dl.bintray.com/gabrielcoman/maven"
-    }
-    maven {
-        url "http://dl.bintray.com/superawesome/SuperAwesomeSDK"
-    }
+    maven { url  "http://dl.bintray.com/gabrielcoman/maven" }
+    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 
 dependencies {
-    api project(':superawesome-base')
-    compile files('libs/FlashRuntimeExtensions.jar')
+    implementation project(':superawesome-base')
+    implementation files('libs/FlashRuntimeExtensions.jar')
 }
