@@ -36,16 +36,11 @@ dependencies {
     implementation(project(":superawesome-common"))
     implementation(project(':superawesome-retrofit'))
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
-    implementation "org.koin:koin-core:2.1.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinx_serialization_version"
+    implementation "org.koin:koin-core:$koin_core_version"
 
     // TESTING
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-}
-
-task showVersion2 << {
-    // Use inherited method
-    println 'VersionName: ' + getSdkVersion()
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
 }

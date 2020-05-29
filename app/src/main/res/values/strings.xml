@@ -49,4 +49,9 @@
     <string name="title_activity_activity_video">activity_video</string>
     <string name="play_admob_interstitial">Play AdMob interstitial</string>
     <string name="play_admob_video">Play AdMob video</string>
+
+    <string name="admob_app_id" translatable="false">ca-app-pub-2222631699890286~7883084050</string>
+    <string name="admob_banner_ad_id" translatable="false">ca-app-pub-2222631699890286/5392414677</string>
+    <string name="admob_interstitial_ad_id" translatable="false">ca-app-pub-2222631699890286/3274545465</string>
+    <string name="admob_rewarded_ad_id" translatable="false">ca-app-pub-2222631699890286/4396055445</string>
 </resources>
