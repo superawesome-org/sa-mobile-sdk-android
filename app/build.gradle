@@ -37,18 +37,14 @@ repositories {
 }
 
 dependencies {
-    implementation "androidx.multidex:multidex:2.0.1"
-
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-
     implementation project(':superawesome')
-
     implementation project(':saadmob')
-    implementation 'com.google.android.gms:play-services-ads:19.1.0'
-
     implementation project(':samopub')
-    implementation 'com.mopub:mopub-sdk:4.14.0'
 
+    implementation 'com.google.android.gms:play-services-ads:19.1.0'
+    implementation 'com.mopub:mopub-sdk:4.14.0'
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation "androidx.core:core-ktx:1.3.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
