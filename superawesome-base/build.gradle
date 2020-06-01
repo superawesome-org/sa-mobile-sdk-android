@@ -89,12 +89,8 @@ install {
 }
 
 repositories {
-    maven {
-        url "http://dl.bintray.com/gabrielcoman/maven"
-    }
-    maven {
-        url "http://dl.bintray.com/superawesome/SuperAwesomeSDK"
-    }
+    maven { url "http://dl.bintray.com/gabrielcoman/maven" }
+    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     mavenCentral()
 }
 
@@ -104,7 +100,7 @@ dependencies {
     implementation files('libs/json.jar')
 
     // Tests
-    testImplementation 'junit:junit:4.13'
+    testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:3.3.3"
     testImplementation "eu.codearte.catch-exception:catch-exception:2.0"
     testImplementation "org.assertj:assertj-core:3.16.1"

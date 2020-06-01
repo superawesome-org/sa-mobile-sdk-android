@@ -80,16 +80,11 @@ install {
 }
 
 repositories {
-    maven {
-        url  "http://dl.bintray.com/gabrielcoman/maven"
-    }
-    maven {
-        url "http://dl.bintray.com/superawesome/SuperAwesomeSDK"
-    }
+    maven { url  "http://dl.bintray.com/gabrielcoman/maven" }
+    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 
 dependencies {
-    implementation project(':superawesome-base')
-
+    api project(':superawesome-base')
     implementation 'com.mopub:mopub-sdk:4.14.0'
 }
