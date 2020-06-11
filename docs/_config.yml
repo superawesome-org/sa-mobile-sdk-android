@@ -18,20 +18,20 @@ title: iOS Publisher SDK
 email: awesomeads-support@superawesome.com
 author: SuperAwesome Ltd
 description: > # this means to ignore newlines until "baseurl:"
-  AwesomeAds iOS Publisher SDK
+  AwesomeAds Android Publisher SDK
 
 # DO NOT CHANGE THE LINE OF THIS FILE without editing .circleci/circle_urls.sh
-baseurl: "/sa-mobile-sdk-ios" # the subpath of your site, e.g. /blog
+baseurl: "/sa-mobile-sdk-android" # the subpath of your site, e.g. /blog
 
 # This is mostly for testing
-url: "http://superawesomeltd.github.io/sa-mobile-sdk-ios" # the base hostname & protocol for your site
+url: "http://superawesomeltd.github.io/sa-mobile-sdk-android" # the base hostname & protocol for your site
 
 # Social (First three Required)
-changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-ios/blob/master/CHANGELOG.md
-licence_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-ios/blob/master/LICENSE
-repo: "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-ios"
+changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/CHANGELOG.md
+licence_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/LICENSE
+repo: "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android"
 github_user: "SuperAwesomeLTD"
-github_repo: "sa-mobile-sdk-ios"
+github_repo: "sa-mobile-sdk-android"
 
 # Optional
 # twitter: vsoch
