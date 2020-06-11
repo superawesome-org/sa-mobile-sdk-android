@@ -2,6 +2,8 @@ package tv.superawesome.demoapp;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.mopub.common.MoPub;
+
 import tv.superawesome.sdk.publisher.AwesomeAds;
 
 /**

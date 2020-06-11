@@ -1,11 +1,12 @@
 /**
- * @Copyright:   SADefaults Trading Limited 2017
- * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ * @Copyright: SADefaults Trading Limited 2017
+ * @Author: Gabriel Coman (gabriel.coman@superawesome.tv)
  */
 package com.mopub.sa.mobileads;
 
 import android.app.Activity;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.mopub.common.LifecycleListener;
@@ -55,16 +56,6 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
     private Context context;
 
     /**
-     * Overridden "getVideoListenerForSdk" method of CustomEventRewardedVideo
-     *
-     * @return nulls
-     */
-    @Override
-    protected CustomEventRewardedVideoListener getVideoListenerForSdk() {
-        return null;
-    }
-
-    /**
      * Overridden "LifecycleListener" method of CustomEventRewardedVideo
      *
      * @return nulls
@@ -99,47 +90,47 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
      * a video ad from AA SDK
      *
      * @param activity      current Activity
-     * @param map           values passed down from MoPub
-     * @param map1          values passed down from MoPub
-     * @return              whether the operation was successfull
+     * @param localExtras           values passed down from MoPub
+     * @param serverExtras          values passed down from MoPub
+     * @return whether the operation was successfull
      * @throws Exception    an exception
      */
     @Override
-    protected boolean checkAndInitializeSdk(Activity activity, Map<String, Object> map, Map<String, String> map1) throws Exception {
+    protected boolean checkAndInitializeSdk(Activity activity, Map<String, Object> localExtras, Map<String, String> serverExtras) throws Exception {
 
         try {
-            moPubId = map.get(SAMoPub.kAD_UNIT).toString();
+            moPubId = localExtras.get(SAMoPub.kAD_UNIT).toString();
         } catch (Exception e) {
             // do nothing
         }
 
         try {
-            placementId = Integer.parseInt(map1.get(SAMoPub.kPLACEMENT_ID));
+            placementId = Integer.parseInt(serverExtras.get(SAMoPub.kPLACEMENT_ID));
         } catch (Exception e) {
             placementId = SADefaults.defaultPlacementId();
         }
 
         try {
-            isTestEnabled = Boolean.valueOf(map1.get(SAMoPub.kTEST_ENABLED));
+            isTestEnabled = Boolean.valueOf(serverExtras.get(SAMoPub.kTEST_ENABLED));
         } catch (Exception e) {
             isTestEnabled = SADefaults.defaultTestMode();
         }
 
         try {
-            isParentalGateEnabled = Boolean.valueOf(map1.get(SAMoPub.kPARENTAL_GATE));
+            isParentalGateEnabled = Boolean.valueOf(serverExtras.get(SAMoPub.kPARENTAL_GATE));
         } catch (Exception e) {
             isParentalGateEnabled = SADefaults.defaultParentalGate();
         }
 
         try {
-            isBumperPageEnabled = Boolean.valueOf(map1.get(SAMoPub.kBUMPER_PAGE));
+            isBumperPageEnabled = Boolean.valueOf(serverExtras.get(SAMoPub.kBUMPER_PAGE));
         } catch (Exception e) {
             isBumperPageEnabled = SADefaults.defaultBumperPage();
         }
 
         configuration = SADefaults.defaultConfiguration();
         try {
-            String config = map1.get(SAMoPub.kCONFIGURATION);
+            String config = serverExtras.get(SAMoPub.kCONFIGURATION);
             if (config != null && config.equals("STAGING")) {
                 configuration = SAConfiguration.STAGING;
             }
@@ -149,7 +140,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
 
         orientation = SADefaults.defaultOrientation();
         try {
-            String orient = map1.get(SAMoPub.kORIENTATION);
+            String orient = serverExtras.get(SAMoPub.kORIENTATION);
             if (orient != null && orient.equals("PORTRAIT")) {
                 orientation = SAOrientation.PORTRAIT;
             }
@@ -162,7 +153,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
 
         playback = SADefaults.defaultPlaybackMode();
         try {
-            String play = map1.get(SAMoPub.kPLAYBACK_MODE);
+            String play = serverExtras.get(SAMoPub.kPLAYBACK_MODE);
             if (play != null) {
                 switch (play) {
                     case "POST_ROLL": {
@@ -184,25 +175,25 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
         }
 
         try {
-            shouldShowCloseButton = Boolean.valueOf(map1.get(SAMoPub.kSHOULD_SHOW_CLOSE));
+            shouldShowCloseButton = Boolean.valueOf(serverExtras.get(SAMoPub.kSHOULD_SHOW_CLOSE));
         } catch (Exception e) {
             shouldShowCloseButton = SADefaults.defaultCloseButton();
         }
 
         try {
-            shouldAutomaticallyCloseAtEnd = Boolean.valueOf(map1.get(SAMoPub.kSHOULD_AUTO_CLOSE));
+            shouldAutomaticallyCloseAtEnd = Boolean.valueOf(serverExtras.get(SAMoPub.kSHOULD_AUTO_CLOSE));
         } catch (Exception e) {
             shouldAutomaticallyCloseAtEnd = SADefaults.defaultCloseAtEnd();
         }
 
         try {
-            shouldShowSmallClickButton = Boolean.valueOf(map1.get(SAMoPub.kVIDEO_BUTTON_STYLE));
+            shouldShowSmallClickButton = Boolean.valueOf(serverExtras.get(SAMoPub.kVIDEO_BUTTON_STYLE));
         } catch (Exception e) {
             shouldShowSmallClickButton = SADefaults.defaultCloseAtEnd();
         }
 
         try {
-            enableBackButton = Boolean.valueOf(map1.get(SAMoPub.kBACK_BUTTON));
+            enableBackButton = Boolean.valueOf(serverExtras.get(SAMoPub.kBACK_BUTTON));
         } catch (Exception e) {
             enableBackButton = SADefaults.defaultBackButton();
         }
@@ -215,12 +206,12 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
      * a video ad from AA SDK
      *
      * @param activity      current Activity
-     * @param map           values passed down from MoPub
-     * @param map1          values passed down from MoPub
+     * @param localExtras           values passed down from MoPub
+     * @param serverExtras          values passed down from MoPub
      * @throws Exception    an exception
      */
     @Override
-    protected void loadWithSdkInitialized(final Activity activity, Map<String, Object> map, Map<String, String> map1) throws Exception {
+    protected void loadWithSdkInitialized(@NonNull final Activity activity, @NonNull Map<String, Object> localExtras, @NonNull Map<String, String> serverExtras) throws Exception {
 
         // get context
         this.context = activity;
@@ -245,7 +236,7 @@ public class SAMoPubVideoCustomEvent extends CustomEventRewardedVideo {
                         break;
                     }
                     case adEmpty:
-                    case adFailedToLoad:{
+                    case adFailedToLoad: {
                         onRewardedVideoLoadFailure(SAMoPubVideoCustomEvent.class, moPubId, MoPubErrorCode.NETWORK_NO_FILL);
                         break;
                     }

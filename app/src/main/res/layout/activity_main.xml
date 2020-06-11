@@ -34,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:enabled="false"
+            android:enabled="true"
             android:onClick="gotoMoPub"
             android:text="MoPub" />
     </LinearLayout>

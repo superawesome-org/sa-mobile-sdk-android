@@ -36,45 +36,45 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
      *
      * @param context   current context (activity & fragment)
      * @param listener  an instance of a MoPub listener
-     * @param map       values passed down from MoPub
-     * @param map1      values passed down from MoPub
+     * @param localExtras       values passed down from MoPub
+     * @param serverExtras      values passed down from MoPub
      */
     @Override
-    protected void loadInterstitial(final Context context, final CustomEventInterstitialListener listener, Map<String, Object> map, Map<String, String> map1) {
+    protected void loadInterstitial(final Context context, final CustomEventInterstitialListener listener, Map<String, Object> localExtras, Map<String, String> serverExtras) {
 
         // get the context
         this.context = context;
 
         try {
-            placementId = Integer.parseInt(map1.get(SAMoPub.kPLACEMENT_ID));
+            placementId = Integer.parseInt(serverExtras.get(SAMoPub.kPLACEMENT_ID));
         } catch (Exception e) {
             placementId = SADefaults.defaultPlacementId();
         }
 
         boolean isTestEnabled;
         try {
-            isTestEnabled = Boolean.valueOf(map1.get(SAMoPub.kTEST_ENABLED));
+            isTestEnabled = Boolean.valueOf(serverExtras.get(SAMoPub.kTEST_ENABLED));
         } catch (Exception e) {
             isTestEnabled = SADefaults.defaultTestMode();
         }
 
         boolean isParentalGateEnabled;
         try {
-            isParentalGateEnabled = Boolean.valueOf(map1.get(SAMoPub.kPARENTAL_GATE));
+            isParentalGateEnabled = Boolean.valueOf(serverExtras.get(SAMoPub.kPARENTAL_GATE));
         } catch (Exception e) {
             isParentalGateEnabled = SADefaults.defaultParentalGate();
         }
 
         boolean isBumperPageEnabled;
         try {
-            isBumperPageEnabled = Boolean.valueOf(map1.get(SAMoPub.kBUMPER_PAGE));
+            isBumperPageEnabled = Boolean.valueOf(serverExtras.get(SAMoPub.kBUMPER_PAGE));
         } catch (Exception e) {
             isBumperPageEnabled = SADefaults.defaultBumperPage();
         }
 
         SAConfiguration configuration = SADefaults.defaultConfiguration();
         try {
-            String config = map1.get(SAMoPub.kCONFIGURATION);
+            String config = serverExtras.get(SAMoPub.kCONFIGURATION);
             if (config != null && config.equals("STAGING")) {
                 configuration = SAConfiguration.STAGING;
             }
@@ -84,7 +84,7 @@ public class SAMoPubInterstitialCustomEvent extends CustomEventInterstitial {
 
         SAOrientation orientation = SADefaults.defaultOrientation();
         try {
-            String orient = map1.get(SAMoPub.kORIENTATION);
+            String orient = serverExtras.get(SAMoPub.kORIENTATION);
             if (orient != null && orient.equals("PORTRAIT")) {
                 orientation = SAOrientation.PORTRAIT;
             }
