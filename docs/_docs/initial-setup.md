@@ -5,23 +5,17 @@ description: Initialise the SDK
 
 # Initialise the SDK
 
-The first thing you’ll need to do after adding the SDK is to initialise it in the AppDelegate class of your iOS app.
+The first thing you’ll need to do after adding the SDK is to initialise it in a custom <strong>Application</strong> subclass in your Android app.
 
-{% highlight objective_c %}
-#import "AwesomeAds.h"
+{% highlight java %}
+public class MyApplication extends Application {
 
-@interface AppDelegate ()
-@end
-
-@implementation AppDelegate
-
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-  [AwesomeAds initSDK:false];
-
-  return YES;
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    AwesomeAds.init(this, true);
+  }
 }
 {% endhighlight %}
 
-Where the initSDK method takes a boolean parameter indicating whether logging is enabled or not. For production environments logging should be off.
+Where the <strong>initSDK</strong> method takes a boolean parameter indicating whether logging is enabled or not. For production environments logging should be <strong>off</strong>.

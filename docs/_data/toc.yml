@@ -36,7 +36,7 @@
         - title: Add the Plugin
           url: "docs/mopub-integration#add-the-mopub-plugin"
         - title: Setup Custom Networks
-          url: "docs/mopub-integration#setup-custom-networks"
+          url: "docs/mopub-integration#setup-mopub-custom-networks"
         - title: Implement Ads
           url: "docs/mopub-integration#implement-ads"
     - title: Integrate with AdMob

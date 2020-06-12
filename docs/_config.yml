@@ -1,32 +1,18 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing these this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
+# To run locally use:
+# bundle exec jekyll serve
 
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-
-title: iOS Publisher SDK
+title: Android Publisher SDK
 email: awesomeads-support@superawesome.com
 author: SuperAwesome Ltd
-description: > # this means to ignore newlines until "baseurl:"
+description: >
   AwesomeAds Android Publisher SDK
 
-# DO NOT CHANGE THE LINE OF THIS FILE without editing .circleci/circle_urls.sh
-baseurl: "/sa-mobile-sdk-android" # the subpath of your site, e.g. /blog
+baseurl: "/sa-mobile-sdk-android"
 
 # This is mostly for testing
-url: "http://superawesomeltd.github.io/sa-mobile-sdk-android" # the base hostname & protocol for your site
+url: "http://superawesomeltd.github.io/sa-mobile-sdk-android"
 
-# Social (First three Required)
+latest_version: 7.2.7
 changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/CHANGELOG.md
 licence_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/LICENSE
 repo: "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android"

@@ -7,45 +7,51 @@ description: Video Ads
 
 The following code block sets up a video ad and loads it:
 
-{% highlight objective_c %}
-@implementation ViewController
+{% highlight java %}
+public class MainActivity extends Activity {
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_main);
 
-    // set whole video surface clickable
-    [SAVideoAd disableSmallClick];
+        // to display test ads
+        SAVideoAd.enableTestMode ();
 
-    // set config to production
-    [SAVideoAd setConfigurationProduction];
+        // set configuration to production
+        SAVideoAd.setConfigurationProduction ();
 
-    // to display test ads
-    [SAVideo enableTestMode];
+        // lock orientation to portrait or landscape
+        SAVideoAd.setOrientationLandscape ();
 
-    // lock orientation to portrait or landscape
-    [SAVideo setOrientationPortrait];
+        // enable or disable the android back button
+        SAVideoAd.enableBackButton ();
 
-    // enable or disable a close button
-    [SAVideoAd enableCloseButton];
+        // enable or disable a close button
+        SAVideoAd.enableCloseButton ();
 
-    // enable or disable auto-closing at the end
-    [SAVideoAd disableCloseAtEnd];
+        // enable or disable auto-closing at the end
+        SAVideoAd.disableCloseAtEnd ();
 
-    // start loading ad data for a placement
-    [SAVideo load: 30479];
+        // make the whole video surface area clickable
+        SAVideoAd.disableSmallClick ();
+
+        // start loading ad data for a placement
+        SAVideoAd.load (30479, MainActivity.this);
+    }
 }
 {% endhighlight %}
 
 Once you’ve loaded an ad, you can also display it:
 
 {% highlight objective_c %}
-@IBAction void onClick:(id) sender {
+public void onClick (View view) {
 
     // check if ad is loaded
-    if ([SAVideoAd hasAdAvailable: 30479]) {
+    if (SAVideoAd.hasAdAvailable (30479)) {
 
         // display the ad
-        [SAVideoAd play: 30479 fromVC: self];
+        SAVideoAd.play (30479, MainActivity.this);
     }
 }
 {% endhighlight %}
@@ -60,5 +66,4 @@ These are the default values:
 | Closes at end | True |
 | Close button | Disabled |
 | Small click button | Disabled | 
-
-{% include alert.html type="info" title="Note" content="When locking orientation with either the <strong>setOrientationPortrait</strong> or <strong>setOrientationLandscape</strong> methods, the SDK will first look at the list of orientations supported by your app and conform to that. If, for example, you set an interstitial ad to display in landscape mode but your app only supports portrait orientations, the ad will show in portrait mode." %}
+| Back button | Enabled |
