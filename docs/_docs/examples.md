@@ -7,100 +7,121 @@ description: Examples
 
 The first example shows how you can add a banner ad in your app with just a few lines of code.
 
-{% highlight objective_c %}
-#import "SuperAwesome.h"
+`activity_main.xml`
 
-@interface MyViewController()
-@property (weak, nonatomic) IBOutlet SABannerAd *bannerAd;
-@end
+{% highlight xml %}
+<tv.superawesome.sdk.publisher.SABannerAd
+    android:id="@+id/mybanner"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"/>
+{% endhighlight %}
 
-@implementation MyViewController
+`MainActivity.java`
 
-- (void) viewDidLoad {
-    [super viewDidLoad];
+{% highlight java %}
+// imports ...
+import tv.superawesome.sdk.publisher.*;
 
-    // setup the banner
-    [_bannerAd disableParentalGate];
-    [_bannerAd enableBumperPage];
+public class MainActivity extends Activity {
 
-    // add a callback
-    [_bannerAd setCallback:^(NSInteger placementId, SAEvent event) {
-        // when the ad loads, play it directly
-        if (event == adLoaded) {
-            [_bannerAd play];
-        }
-    }];
+    private SABannerAd banner = null;
 
-    // start the loading process
-    [_bannerAd load:30471];
+    @Override
+    protected void onCreate (Bundle savedInstanceState) {
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_main);
+
+        // get the banner
+        bannerAd = (SABannerAd) findViewById (R.id.mybanner);
+
+        // setup the banner
+        bannerAd.disableParentalGate ();
+        bannerAd.enableBumperPage ();
+
+        // add a callback
+        SAVideoAd.setListener(new SAInterface () {
+            @Override
+            public void onEvent(int placementId, SAEvent event) {
+                if (event == SAEvent.adLoaded) {
+                    bannerAd.play (MainActivity.this);
+                }
+            }
+        });
+
+        // start the loading process
+        bannerAd.load (30471);
+    }
 }
-
-@end
 {% endhighlight %}
 
 ## Complex example
 
 This example shows how you can add different types of ads and make them respond to multiple callbacks.
 
-{% highlight objective_c %}
-#import "SuperAwesome.h"
+{% highlight java %}
+// imports ...
+import tv.superawesome.sdk.publisher.*;
 
-@interface MyViewController()
-@property (weak, nonatomic) IBOutlet SABannerAd *bannerAd;
-@end
+public class MainActivity extends Activity {
 
-@implementation MyViewController
+    // private SALoader class member
+    private SALoader loader = null;
 
-- (void) viewDidLoad {
-    [super viewDidLoad];
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_main);
 
-    // setup the banner
-    [_bannerAd enableParentalGate];
-    [_bannerAd disableBumperPage];
+        // set app context
+        SuperAwesome.getInstance ().setApplicationContext( getApplicationContext ());
 
-    // and load it
-    [_bannerAd load:30471];
+        // get the banner
+        bannerAd = (SABannerAd) findViewById (R.id.mybanner);
 
-    // setup the video
-    [SAVideoAd disableParentalGate];
-    [SAVideoAd enableBumperPage];
-    [SAVideoAd disableCloseButton];
+        // setup the banner
+        bannerAd.enableParentalGate ();
+        bannerAd.disableBumperPage();
 
-    // load
-    [SAVideoAd load:30479];
-    [SAVideoAd load:30480];
-}
+        // and load it
+        bannerAd.load (30471);
 
-@IBAction void playBanner {
+        // setup the video
+        SAVideoAd.disableParentalGate ();
+        SAVideoAd.enableBumperPage ();
+        SAVideoAd.disableCloseButton ();
 
-    if ([_banner hasAdAvailable]) {
-        [_banner play];
+        // load
+        SAVideoAd.load (30479, MainActivity.this);
+        SAVideoAd.load (30480, MainActivity.this);
+    }
+
+    public void playBanner (View view) {
+        if (banner.hasAdAvailable ()) {
+            banner.play (MainActivity.this);
+        }
+    }
+
+    public void playVideo1 (View view) {
+        if (SAVideoAd.hasAdAvailable (30479)) {
+
+            // do some last minute setup
+            SAVideoAd.setOrientationLandscape ();
+
+            // and play
+            SAVideoAd.play (30479, MainActivity.this);
+        }
+    }
+
+    public void playVideo2 (View view) {
+
+        if (SAVideoAd.hasAdAvailable (30480)) {
+
+            // do some last minute setup
+            SAVideoAd.setOrientationAny ();
+
+            // and play
+            SAVideoAd.play (30480, MainActivity.this);
+        }
     }
 }
-
-@IBAction void playVideo1 {
-
-    if ([SAVideoAd hasAdAvailable: 30479]) {
-
-        // do some last minute setup
-        [SAVideoAd setOrientationLandscape];
-
-        // and play
-        [SAVideoAd play: 30479 fromVC: self];
-    }
-}
-
-@IBAction void playVideo2 {
-
-    if ([SAVideoAd hasAdAvailable: 30480]) {
-
-        // do some last minute setup
-        [SAVideoAd setOrientationAny];
-
-        // and play
-        [SAVideoAd play: 30480 fromVC: self];
-    }
-}
-
-@end
 {% endhighlight %}

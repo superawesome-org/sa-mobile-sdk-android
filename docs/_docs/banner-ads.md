@@ -7,41 +7,56 @@ description: Banner Ads
 
 The following block of code creates and loads a banner ad:
 
-{% highlight objective_c %}
-@interface ViewController ()
-@property (weak, nonatomic) IBOutlet SABannerAd *bannerAd;
-@end
+In your layout:
 
-@implementation ViewController
+{% highlight xml %}
+<tv.superawesome.sdk.publisher.SABannerAd
+    android:id="@+id/mybanner"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"/>
+{% endhighlight %}
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+In your activity or fragment:
 
-    // to display test ads
-    [_bannerAd enableTestMode];
+{% highlight java %}
+public class MainActivity extends Activity {
 
-    // set configuration production
-    [_bannerAd setConfigurationProduction];
+    // define a SABannerAd
+    private SABannerAd bannerAd = null;
 
-    // set background color transparent
-    [_bannerAd setColorTransparent];
+    @Override
+    protected void onCreate (Bundle savedInstanceState) {
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_main);
 
-    // start loading ad data for a placement
-    [_bannerAd load:30471];
+        // get the banner from the layout
+        bannerAd = (SABannerAd) findViewById (R.id.mybanner);
 
+        // to display test ads
+        bannerAd.enableTestMode ();
+
+        // set configuration to production
+        bannerAd.setConfigurationProduction ();
+
+        // set background color as transparent
+        bannerAd.setColorTransparent ();
+
+        // start loading ad data for a placement
+        bannerAd.load (30471);
+    }
 }
 {% endhighlight %}
 
 Once you’ve loaded an ad, you can also display it:
 
-{% highlight objective_c %}
-@IBAction void onClick:(id) sender {
+{% highlight java %}
+public void onClick (View view) {
 
     // check if ad is loaded
-    if ([banner hasAdAvailable]) {
+    if (bannerAd.hasAdAvailable ()) {
 
         // display the ad
-        [_bannerAd play];
+        bannerAd.play (MainActivity.this);
     }
 }
 {% endhighlight %}
@@ -53,3 +68,5 @@ These are the default values:
 | Configuration | Production |
 | Test mode | Disabled |
 | Background | Gray | 
+
+{% include alert.html type="warning" title="Warning" content="All instances of SABannerAd <strong>must</strong> have an Android ID assigned. Avoiding to correctly set one either in your XML layout or in code will cause the banner to crash with an exception." %}

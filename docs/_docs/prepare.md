@@ -4,7 +4,7 @@ description: Preparing SDK
 ---
 # Preparing
 
-The first step in integrating the iOS Publisher SDK is to register on the [SuperAwesome Dashboard](http://dashboard.superawesome.tv/).
+The first step in integrating the {{ site.title }} is to register on the [SuperAwesome Dashboard](http://dashboard.superawesome.tv/).
 
 ![image-title-here]({{ site.baseurl }}/assets/img/IMG_01_Dashboard_1.png){:class="img-responsive"}
 

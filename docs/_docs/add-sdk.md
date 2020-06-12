@@ -1,47 +1,40 @@
 ---
-title: Add the SDK through CocoaPods
-description: Add the SDK through CocoaPods
+title: Add the SDK through Gradle
+description: Add the SDK through Gradle
 ---
 
-# Add the SDK through CocoaPods
+# Add the SDK through Gradle
 
-We use [CocoaPods](http://cocoapods.org/) in order to make installing and updating our SDK super easy. CocoaPods is a dependency manager for Swift and Objective-C Cocoa projects.
+The simplest way of adding the Android Publisher SDK to your Android Studio project is to download the AAR library through Gradle.
 
-If you don’t have CocoaPods installed on your machine you can install it by issuing the following command in your terminal:
+The first step is to include the following Maven repository in your module’s <strong>build.gradle</strong> file (usually the file under MyApplication/app/):
 
-{% highlight shell %}
-sudo gem install cocoapods
+{% highlight gradle %}
+repositories {
+    maven { url  'http://dl.bintray.com/gabrielcoman/maven' }
+    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
+}
 {% endhighlight %}
 
-After that you need to go to the project’s directory and initialize CocoaPods
+Next you can to add the SDK as a dependency. This will contain everything you need in order to load and display banner, interstitial and video ads.
 
-{% highlight shell %}
-cd /path_to/my_project/
-pod init
+{% highlight gradle %}
+dependencies {
+    implementation 'tv.superawesome.sdk.publisher:superawesome: {{ site.latest_version }}'
+}
 {% endhighlight %}
 
-This will also create a special file called a <strong>Podfile</strong>, where you can specify what dependencies to add to your new project. Usually it will look similar to this:
+{% include alert.html type="warning" title="Warning" content="Please remember to also add <strong>Google Play Services</strong> and an <strong>App Compat</strong> library. These are needed for correct viewability metrics." %}
 
-You can add the SDK to your project by declaring the following Pod:
-
-{% highlight shell %}
-target 'MyProject' do
-    pod 'SuperAwesome', '7.2.6'
-end
+{% highlight gradle %}
+dependencies {
+    implementation 'com.android.support:appcompat-v7:+'
+    implementation 'com.google.android.gms:play-services-ads:+'
+}
 {% endhighlight %}
 
-This will tell CocoaPods to fetch the latest version of the iOS Publisher SDK. This will contain everything you need in order to load and display banner, interstitial and video ads.
+Once you’ve added the Android Publisher SDK, you can access all functionality by including:
 
-After the pod source has been added, update your project’s dependencies by running the following command in the terminal:
-
-{% highlight shell %}
-pod update
-{% endhighlight %}
-
-Don’t forget to use the <strong>.xcworkspace</strong> file to open your project in Xcode, instead of the .xcproj file, from here on out.
-
-You can import the main SDK header file like so:
-
-{% highlight objective_c %}
-#import "SuperAwesome.h"
+{% highlight java %}
+import tv.superawesome.sdk.publisher.*;
 {% endhighlight %}

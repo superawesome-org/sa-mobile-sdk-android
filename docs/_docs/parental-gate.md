@@ -9,19 +9,17 @@ The Parental gate is an optional UI element you can add to your ad placements so
 
 Its role is to prevent very young users from simply clicking on an ad and instead ask their parents for guidance.
 
-A parental gate is mandatory on all external click throughs on apps in the kids category on iOS. This should be applied if your app is in this category and you do not have your own in use, to prevent your app being blocked by Apple.
-
 You can enable it like so:
 
-{% highlight objective_c %}
+{% highlight java %}
 // enable Parental gate on one banner placement
-[mybanner enableParentalGate];
+mybanner.enableParentalGate();
 
 // enable Parental gate on all interstitial ads
-[SAInterstitialAd enableParentalGate];
+SAInterstitialAd.enableParentalGate();
 
 // enable Parental gate on all video ads
-[SAVideoAd enableParentalGate];
+SAVideoAd.enableParentalGate();
 {% endhighlight %}
 
 The final result will look something similar to this:
