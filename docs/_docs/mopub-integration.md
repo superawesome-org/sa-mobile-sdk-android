@@ -18,10 +18,10 @@ repositories {
 
 dependencies {
     # add the Android Publisher SDK
-    compile 'tv.superawesome.sdk.publisher:superawesome:{{ latest_version }}'
+    compile 'tv.superawesome.sdk.publisher:superawesome:{{ site.latest_version }}'
 
     # add MoPub plugin
-    compile 'tv.superawesome.sdk.publisher:samopub:{{ latest_version }}'
+    compile 'tv.superawesome.sdk.publisher:samopub:{{ site.latest_version }}'
 }
 {% endhighlight %}
 
