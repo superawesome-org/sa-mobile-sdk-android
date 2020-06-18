@@ -16,9 +16,9 @@ class MoPubActivity : Activity() {
     private var interstitial: MoPubInterstitial? = null
 
     companion object {
-        private const val BannerId = "06bd0a18718e45cead8216427916b11e"
-        private const val InterstitialId = "5a1ed1a3355d40f6ba549d83efc8c0f4"
-        private const val VideoId = "10f827049a714613bf605bd58fa90624"
+        private const val BannerId = "57e4e6e7cf784086b733bb4a427b8020"
+        private const val InterstitialId = "947fe751ce2a4a56802e882e1d902972"
+        private const val VideoId = "89c0bc90a4a545d99f59429a67f838b9"
 
         // MoPub Test Ids
 //        private const val BannerId = "b195f8dd8ded45fe847ad89ed1d016da"
@@ -30,7 +30,9 @@ class MoPubActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mopub)
 
-        MoPub.initializeSdk(this, SdkConfiguration.Builder(BannerId).build()) {
+        MoPub.initializeSdk(this, SdkConfiguration.Builder(BannerId)
+                .withAdditionalNetwork("tv.superawesome.mopub.AwesomeAdsMoPubAdapterConfiguration")
+                .build()) {
             Log.d("SADefaults/MoPub", "MoPub.initializeSdk completed")
 
             configureBannerAd()
@@ -100,7 +102,7 @@ class MoPubActivity : Activity() {
 
     private fun configureBannerAd() {
         banner = findViewById<View>(R.id.adview) as MoPubView
-        banner?.adUnitId = BannerId
+        banner?.setAdUnitId(BannerId)
         banner?.bannerAdListener = object : BannerAdListener {
             override fun onBannerLoaded(banner: MoPubView) {
                 Log.d("SADefaults/MoPub", "Banner ad loaded")
