@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
         SABumperPage.overrideName("Test app");
 
         final SABannerAd myBanner = findViewById(R.id.MyBanner);
-        //myBanner.setConfigurationStaging();
+        myBanner.setConfigurationStaging();
         myBanner.enableParentalGate();
         myBanner.enableBumperPage();
         myBanner.disableTestMode();
@@ -55,12 +55,12 @@ public class MainActivity extends Activity {
             }
         });
 
-        //SAInterstitialAd.setConfigurationStaging();
+        SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.disableTestMode();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-//        SAInterstitialAd.enableTestMode();
+        SAInterstitialAd.disableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
             Log.d("SADefaults", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);
@@ -91,13 +91,13 @@ public class MainActivity extends Activity {
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("Banner image", 44258, Type.BANNER),
+                new PlacementItem("Banner image", 5391, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("Rich Media Interstitial", 43367, Type.INTERSTITIAL),
+                new PlacementItem("Rich Media Interstitial", 5392, Type.INTERSTITIAL),
                 new PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
                 new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Video", 44262, Type.VIDEO)
+                new PlacementItem("Video", 34394, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);

@@ -9,12 +9,9 @@ import com.mopub.common.logging.MoPubLog.AdapterLogEvent.SHOW_FAILED
 import com.mopub.mobileads.AdData
 import com.mopub.mobileads.BaseAd
 import com.mopub.mobileads.MoPubErrorCode
-import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.lib.sautils.SAUtils
-import tv.superawesome.sdk.publisher.SADefaults
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
-import tv.superawesome.sdk.publisher.SAOrientation
 
 class AwesomeAdsMoPubInterstitial : BaseAd() {
     private val adapterName: String = AwesomeAdsMoPubInterstitial::class.java.simpleName
@@ -33,56 +30,15 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
     override fun checkAndInitializeSdk(launcherActivity: Activity, adData: AdData): Boolean = false
 
     override fun load(context: Context, adData: AdData) {
+        val extractor = AwesomeAdsMoPubAdDataExtractor(adData)
         this.context = context
+        this.placementId = extractor.placementId
 
-        placementId = try {
-            adData.extras[AwesomeAdsMoPub.placementId]?.toInt() ?: SADefaults.defaultPlacementId()
-        } catch (e: Exception) {
-            SADefaults.defaultPlacementId()
-        }
-        val isTestEnabled: Boolean = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.testEnabled])
-        } catch (e: Exception) {
-            SADefaults.defaultTestMode()
-        }
-        val isParentalGateEnabled: Boolean = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.parentalGate])
-        } catch (e: Exception) {
-            SADefaults.defaultParentalGate()
-        }
-        val isBumperPageEnabled: Boolean = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.bumperPage])
-        } catch (e: Exception) {
-            SADefaults.defaultBumperPage()
-        }
-        var configuration = SADefaults.defaultConfiguration()
-        try {
-            val config = adData.extras[AwesomeAdsMoPub.configuration]
-            if (config != null && config == "STAGING") {
-                configuration = SAConfiguration.STAGING
-            }
-        } catch (e: Exception) {
-            // do nothing
-        }
-
-        var orientation = SADefaults.defaultOrientation()
-        try {
-            val orient: String = adData.extras[AwesomeAdsMoPub.orientation] ?: ""
-            if (orient == "PORTRAIT") {
-                orientation = SAOrientation.PORTRAIT
-            } else if (orient == "LANDSCAPE") {
-                orientation = SAOrientation.LANDSCAPE
-            }
-        } catch (e: Exception) {
-            // do nothing
-        }
-
-        // configure the interstitial
-        SAInterstitialAd.setConfiguration(configuration)
-        SAInterstitialAd.setTestMode(isTestEnabled)
-        SAInterstitialAd.setParentalGate(isParentalGateEnabled)
-        SAInterstitialAd.setBumperPage(isBumperPageEnabled)
-        SAInterstitialAd.setOrientation(orientation)
+        SAInterstitialAd.setConfiguration(extractor.configuration)
+        SAInterstitialAd.setTestMode(extractor.isTestEnabled)
+        SAInterstitialAd.setParentalGate(extractor.isParentalGateEnabled)
+        SAInterstitialAd.setBumperPage(extractor.isBumperPageEnabled)
+        SAInterstitialAd.setOrientation(extractor.orientation)
         SAInterstitialAd.setListener { _, event ->
             when (event) {
                 SAEvent.adLoaded -> {
@@ -101,31 +57,11 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
                         }
                     }
                 }
-                SAEvent.adEmpty, SAEvent.adFailedToLoad -> {
-                    if (mInteractionListener != null) {
-                        mInteractionListener.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
-                    }
-                }
-                SAEvent.adShown -> {
-                    if (mInteractionListener != null) {
-                        mInteractionListener.onAdShown()
-                    }
-                }
-                SAEvent.adFailedToShow -> {
-                    if (mInteractionListener != null) {
-                        mInteractionListener.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
-                    }
-                }
-                SAEvent.adClicked -> {
-                    if (mInteractionListener != null) {
-                        mInteractionListener.onAdClicked()
-                    }
-                }
-                SAEvent.adClosed -> {
-                    if (mInteractionListener != null) {
-                        mInteractionListener.onAdDismissed()
-                    }
-                }
+                SAEvent.adEmpty, SAEvent.adFailedToLoad -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                SAEvent.adShown -> mInteractionListener?.onAdShown()
+                SAEvent.adFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
+                SAEvent.adClicked -> mInteractionListener?.onAdClicked()
+                SAEvent.adClosed -> mInteractionListener?.onAdDismissed()
                 SAEvent.adAlreadyLoaded, SAEvent.adEnded -> {
                 }
                 else -> {

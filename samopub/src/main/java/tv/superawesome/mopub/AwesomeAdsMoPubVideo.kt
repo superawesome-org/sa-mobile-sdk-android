@@ -17,7 +17,6 @@ import tv.superawesome.sdk.publisher.SAVideoAd
 
 class AwesomeAdsMoPubVideo : BaseAd() {
     private val adapterName: String = AwesomeAdsMoPubVideo::class.java.simpleName
-
     private var adUnitId: String? = null
     private var placementId: Int = 0
     private var context: Context? = null
@@ -40,56 +39,18 @@ class AwesomeAdsMoPubVideo : BaseAd() {
     override fun getAdNetworkId(): String = adUnitId.toString()
 
     override fun checkAndInitializeSdk(activity: Activity, adData: AdData): Boolean {
-        try {
-            adUnitId = adData.extras[AwesomeAdsMoPub.adUnit].toString()
-        } catch (e: java.lang.Exception) {
-            // do nothing
-        }
-        placementId = try {
-            adData.extras[AwesomeAdsMoPub.placementId]?.toInt()
-                    ?: SADefaults.defaultPlacementId()
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultPlacementId()
-        }
-        isTestEnabled = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.testEnabled])
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultTestMode()
-        }
-        isParentalGateEnabled = try {
-            java.lang.Boolean.valueOf(adData.extras.get(AwesomeAdsMoPub.parentalGate))
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultParentalGate()
-        }
-        isBumperPageEnabled = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.bumperPage])
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultBumperPage()
-        }
-        configuration = SADefaults.defaultConfiguration()
-        try {
-            val config: String? = adData.extras[AwesomeAdsMoPub.configuration]
-            if (config != null && (config == "STAGING")) {
-                configuration = SAConfiguration.STAGING
-            }
-        } catch (e: java.lang.Exception) {
-            // do nothing
-        }
-        orientation = SADefaults.defaultOrientation()
-        try {
-            val orient: String? = adData.extras[AwesomeAdsMoPub.orientation]
-            if (orient != null && (orient == "PORTRAIT")) {
-                orientation = SAOrientation.PORTRAIT
-            }
-            if (orient != null && (orient == "LANDSCAPE")) {
-                orientation = SAOrientation.LANDSCAPE
-            }
-        } catch (e: java.lang.Exception) {
-            // do nothing
-        }
+        val extractor = AwesomeAdsMoPubAdDataExtractor(adData)
+
+        adUnitId = extractor.adUnitId
+        placementId = extractor.placementId
+        isTestEnabled = extractor.isTestEnabled
+        isParentalGateEnabled = extractor.isParentalGateEnabled
+        isBumperPageEnabled = extractor.isBumperPageEnabled
+        configuration = extractor.configuration
+        orientation = extractor.orientation
         playback = SADefaults.defaultPlaybackMode()
         try {
-            val play: String? = adData.extras[AwesomeAdsMoPub.playbackMode]
+            val play: String? = extractor.play
             if (play != null) {
                 when (play) {
                     "POST_ROLL" -> {
@@ -115,26 +76,11 @@ class AwesomeAdsMoPubVideo : BaseAd() {
         } catch (e: java.lang.Exception) {
             // do nothing
         }
-        shouldShowCloseButton = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.shouldShowClose])
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultCloseButton()
-        }
-        shouldAutomaticallyCloseAtEnd = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.shouldAutoClose])
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultCloseAtEnd()
-        }
-        shouldShowSmallClickButton = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.videoButtonStyle])
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultCloseAtEnd()
-        }
-        enableBackButton = try {
-            java.lang.Boolean.valueOf(adData.extras[AwesomeAdsMoPub.backButton])
-        } catch (e: java.lang.Exception) {
-            SADefaults.defaultBackButton()
-        }
+        shouldShowCloseButton = extractor.shouldShowCloseButton
+        shouldAutomaticallyCloseAtEnd = extractor.shouldAutomaticallyCloseAtEnd
+        shouldShowSmallClickButton = extractor.shouldShowSmallClickButton
+        enableBackButton = extractor.enableBackButton
+
         return true
     }
 
