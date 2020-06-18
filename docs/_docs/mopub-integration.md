@@ -13,17 +13,15 @@ You can either change your module’s `build.gradle` file (usually the file unde
 
 {% highlight gradle %}
 repositories {
-    maven {
-        url  "http://dl.bintray.com/gabrielcoman/maven"
-    }
+    maven { url "http://dl.bintray.com/gabrielcoman/maven" }
 }
 
 dependencies {
     # add the Android Publisher SDK
-    compile 'tv.superawesome.sdk.publisher:superawesome:7.2.7'
+    compile 'tv.superawesome.sdk.publisher:superawesome:{{ latest_version }}'
 
     # add MoPub plugin
-    compile 'tv.superawesome.sdk.publisher:samopub:7.2.7'
+    compile 'tv.superawesome.sdk.publisher:samopub:{{ latest_version }}'
 }
 {% endhighlight %}
 
@@ -35,30 +33,28 @@ From here forward the tutorial assumes you have an Android app with three ad uni
 
 ![image-title-here]({{ site.baseurl }}/assets/img/IMG_07_MoPub_0.png){:class="img-responsive"}
 
-From your MoPub admin interface you should create a `New Network`
+From your MoPub admin interface you should create a `New Order`
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_07_MoPub_1.png){:class="img-responsive"}
+![image-title-here]({{ site.baseurl }}/assets/img/mopub-create-order.png){:class="img-responsive"}
 
-From the next menu, select `Custom Native Network`
+From the next menu, select `New line item`
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_07_MoPub_2.png){:class="img-responsive"}
+![image-title-here]({{ site.baseurl }}/assets/img/mopub-line-item.png){:class="img-responsive"}
 
-You’ll be taken to a new page. Here select the title of the new network
+Notice that the custom event class names required by MoPub are:
+ - <strong>for Banner Ads:</strong>
+ 
+ `tv.superawesome.plugins.publisher.mopub.AwesomeAdsMoPubBanner`
+ - <strong>for Interstitial Ads:</strong> 
+ 
+ `tv.superawesome.plugins.publisher.mopub.AwesomeAdsMoPubInterstitial`
+ - <strong>for Rewarded Video Ads:</strong> 
+ 
+ `tv.superawesome.plugins.publisher.mopub.AwesomeAdsMoPubVideo`
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_07_MoPub_3.png){:class="img-responsive"}
+And, you can tell MoPub what AwesomeAds ads to load and how to display them by filling out the custom event class data field with a JSON similar to this:
 
-And assign custom inventory details for Banner, Interstitial and Video ads:
-
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_07_MoPub_4.png){:class="img-responsive"}
-
-Notice that the custom event classes required by MoPub are:
- - for Banner Ads: com.mobub.sa.mobileads.SAMoPubBannerCustomEvent
- - for Interstitial Ads: com.mobub.sa.mobileads.SAMoPubInterstitialCustomEvent
- - for Rewarded Video Ads: com.mobub.sa.mobileads.SAMoPubVideoCustomEvent
-
-Finally, you can tell MoPub what AwesomeAds ads to load and how to display them by filling out the custom event class data field with a JSON similar to this:
-
-{% highlight json %}
+```json
 {
     "placementId": 30473,
     "isTestEnabled": true or false,
@@ -68,25 +64,37 @@ Finally, you can tell MoPub what AwesomeAds ads to load and how to display them 
     "shouldAutomaticallyCloseAtEnd": true or false,
     "shouldShowSmallClickButton": true or false
 }
-{% endhighlight %}
+```
+
+- In the second tab `Ad unit targeting`, <strong>Select</strong> your App&ad unit e.g. Banner
+
+- In the third tab `Audience targetting`, <strong>Select</strong> your target audience
+
+*Create multiple line items for banner, interstitial, and video(rewarded) ads.
+
+{% include alert.html type="warning" title="Note" content="To test your adapter integration, you can disable other networks and only enable `AwesomeAds` line items to see if they are being served in your app." %}
+
 
 ## Implement Ads
 
+Initialise the `MoPub` sdk with <strong>AwesomeAds</strong> adapter configuration
+
+```kotlin
+MoPub.initializeSdk(this, SdkConfiguration.Builder("_any_ad_unit_id_")
+                .withAdditionalNetwork("tv.superawesome.plugins.publisher.mopub.AwesomeAdsMoPubAdapterConfiguration")
+                .build()) {
+        }
+```
+
 Once the previous steps are done, you can add MoPub banners, interstitials and rewarded video ads just as you normally would:
 
-{% highlight java %}
-// create banner ad
-MoPubView banner = (MoPubView) findViewById(R.id.BannerID);
-banner.setAdUnitId("_AD_UNIT_ID_");
-banner.loadAd();
+ - <strong>for Banner Ads:</strong>
+ [Banners](https://developers.mopub.com/publishers/android/banner/)
+ 
+ - <strong>for Interstitial Ads:</strong> 
+ [Interstitials](https://developers.mopub.com/publishers/android/interstitial/)
 
-// create interstitial
-MoPubInterstitial interstitial = new MoPubInterstitial(this, "_AD_UNIT_ID_");
-interstitial.load();
-
-// create video
-MoPubRewardedVideos.initializeRewardedVideo(this);
-MoPubRewardedVideos.loadRewardedVideo("_AD_UNIT_ID_");
-{% endhighlight %}
+ - <strong>for Rewarded Video Ads:</strong> 
+ [Rewarded Video](https://developers.mopub.com/publishers/android/rewarded-video/)
 
 Since the previously created custom events will run on these ads, and the Android Publisher SDK is integrated alongside the MoPub plugin, you should start seeing ads playing.
