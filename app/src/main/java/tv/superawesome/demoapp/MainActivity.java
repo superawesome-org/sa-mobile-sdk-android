@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         SAInterstitialAd.disableTestMode();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
-//        SAInterstitialAd.enableTestMode();
+        SAInterstitialAd.disableTestMode();
         SAInterstitialAd.disableMoatLimiting();
         SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
             Log.d("SADefaults", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);

@@ -17,7 +17,7 @@ public class AwesomeAds {
 
     private static boolean isInitialised = false;
 
-    public static void init (Application application, boolean loggingEnabled) {
+    public static void init(Application application, boolean loggingEnabled) {
         if (!isInitialised) {
             Log.d("SuperAwesome", "Initialising AwesomeAds!");
             SAEvents.initMoat(application, loggingEnabled);
@@ -28,7 +28,18 @@ public class AwesomeAds {
         }
     }
 
-    public static void triggerAgeCheck (Context context, String dateOfBirth, GetIsMinorInterface listener) {
+    public static void init(Context context, boolean loggingEnabled) {
+        if (!isInitialised) {
+            Log.d("SuperAwesome", "Initialising AwesomeAds!");
+            //SAEvents.initMoat(application, loggingEnabled);
+            SAFileDownloader.cleanup(context);
+            isInitialised = true;
+        } else {
+            Log.d("SuperAwesome", "Already initialised AwesomeAds!");
+        }
+    }
+
+    public static void triggerAgeCheck(Context context, String dateOfBirth, GetIsMinorInterface listener) {
         SAAgeCheck.sdk.getIsMinor(context, dateOfBirth, listener);
     }
 }
