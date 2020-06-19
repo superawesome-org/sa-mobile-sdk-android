@@ -16,14 +16,9 @@ class MoPubActivity : Activity() {
     private var interstitial: MoPubInterstitial? = null
 
     companion object {
-        private const val BannerId = "57e4e6e7cf784086b733bb4a427b8020"
-        private const val InterstitialId = "947fe751ce2a4a56802e882e1d902972"
-        private const val VideoId = "89c0bc90a4a545d99f59429a67f838b9"
-
-        // MoPub Test Ids
-//        private const val BannerId = "b195f8dd8ded45fe847ad89ed1d016da"
-//        private const val InterstitialId = "24534e1901884e398f1253216226017e"
-//        private const val VideoId = "920b6145fb1546cf8b5cf2ac34638bb7"
+        private const val BannerId = "b195f8dd8ded45fe847ad89ed1d016da"
+        private const val InterstitialId = "24534e1901884e398f1253216226017e"
+        private const val VideoId = "920b6145fb1546cf8b5cf2ac34638bb7"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
