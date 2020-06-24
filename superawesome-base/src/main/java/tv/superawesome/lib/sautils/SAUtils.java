@@ -13,11 +13,8 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Parcel;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Patterns;
 import android.view.Display;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -340,6 +337,19 @@ public class SAUtils {
             }
         } else {
             return defaultAppLabel;
+        }
+    }
+
+    public static String getPluginName(Context context) {
+        if (context == null) return null;
+
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA);
+            return applicationInfo.metaData.getString("tv.superawesome.plugins.publisher.NAME");
+        } catch (Exception e) {
+            return null;
         }
     }
 
