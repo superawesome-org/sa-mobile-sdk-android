@@ -340,6 +340,11 @@ public class SAUtils {
         }
     }
 
+    /**
+     * Function that returns loaded plugin name or null if no plugin is used
+     * @param context Android Context
+     * @return the name of the plugin e.g. admob, mopub
+     */
     public static String getPluginName(Context context) {
         if (context == null) return null;
 
