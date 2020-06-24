@@ -129,7 +129,6 @@ public class SAVideoAd {
         SASession session = new SASession (context);
         session.setTestMode(isTestingEnabled);
         session.setConfiguration(configuration);
-        session.setVersion(SAVersion.getSDKVersion());
         session.setPos(SARTBPosition.FULLSCREEN);
         session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
         session.setInstl(SARTBInstl.FULLSCREEN);

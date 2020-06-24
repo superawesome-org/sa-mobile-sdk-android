@@ -21,6 +21,7 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.SAVersion;
 
 /**
  * Class that manages an AwesomeAds session, containing all variables needed to setup loading for
@@ -80,7 +81,7 @@ public class SASession implements ISASession {
         setConfigurationProduction();
         disableTestMode();
         setDauId(0);
-        setVersion("0.0.0");
+        setVersion(SAVersion.getSDKVersion(SAUtils.getPluginName(context)));
         packageName = context != null ? context.getPackageName() : "unknown";
         appName = context != null ? SAUtils.getAppLabel(context) : "unknown";
         connectionType = context != null ? SAUtils.getNetworkConnectivity(context) : SAUtils.SAConnectionType.unknown;
