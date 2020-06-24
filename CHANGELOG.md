@@ -1,5 +1,17 @@
 CHANGELOG
 =========
+7.2.8
+ - MoPub adapter is fixed and updated to the latest version
+ - Added SDK metric information for active adapters
+
+7.2.7
+ - AdMob adapter is fixed and updated to the latest version
+ 
+7.2.6
+ - Update Moat library to v4.0.0
+ 
+7.2.5
+ - Fix KSF campaigns
 
 7.0.3
  - Fix click handling with a null ad bug
