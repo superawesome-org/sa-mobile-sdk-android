@@ -142,7 +142,6 @@ public class SABannerAd extends FrameLayout {
         isClosed = false;
 
         // next init a new session & prepare it
-        session.setVersion(SAVersion.getSDKVersion());
         session.setPos(SARTBPosition.ABOVE_THE_FOLD);
         session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
         session.setInstl(SARTBInstl.NOT_FULLSCREEN);
