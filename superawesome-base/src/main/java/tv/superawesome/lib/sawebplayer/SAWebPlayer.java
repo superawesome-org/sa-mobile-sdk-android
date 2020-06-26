@@ -67,6 +67,12 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
         eventListener.saWebPlayerDidReceiveEvent(Event.Web_Prepared, null);
     }
 
+    public void destroy() {
+        if (webView != null) {
+            webView.destroy();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SAWebClient implementation
     ////////////////////////////////////////////////////////////////////////////////////////////////
