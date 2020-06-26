@@ -452,6 +452,8 @@ public class SABannerAd extends FrameLayout {
         // remove the web player
         if (webPlayer != null) {
             this.removeView(webPlayer);
+            webPlayer.destroy();
+            webPlayer = null;
         }
 
         // make padlock invisible
