@@ -21,17 +21,17 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     }
 
     // boolean holding whether the web view has finished loading or not
-    private boolean             finishedLoading = false;
+    private boolean finishedLoading = false;
 
     // private variables for the web player
-    protected FrameLayout       holder = null;
-    protected SAWebView         webView = null;
+    protected FrameLayout holder = null;
+    protected SAWebView webView = null;
 
     // interface objects used for the web player callback mechanism
-    protected Listener          eventListener;
+    protected Listener eventListener;
 
     // mraid instance
-    protected int               holderBgColor = Color.TRANSPARENT;
+    protected int holderBgColor = Color.TRANSPARENT;
 
     public SAWebPlayer(Context context) {
         this(context, null, 0);
@@ -44,7 +44,11 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     public SAWebPlayer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        eventListener = new Listener() {@Override public void saWebPlayerDidReceiveEvent(Event event, String destination) {}};
+        eventListener = new Listener() {
+            @Override
+            public void saWebPlayerDidReceiveEvent(Event event, String destination) {
+            }
+        };
 
         holder = new FrameLayout(context);
         holder.setClipChildren(false);
@@ -55,7 +59,7 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
         webView.setWebViewClient(new SAWebClient(this));
     }
 
-    public void setup () {
+    public void setup() {
         webView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         holder.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -64,7 +68,9 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
         holder.addView(webView);
         this.addView(holder);
 
-        eventListener.saWebPlayerDidReceiveEvent(Event.Web_Prepared, null);
+        if (eventListener != null) {
+            eventListener.saWebPlayerDidReceiveEvent(Event.Web_Prepared, null);
+        }
     }
 
     public void destroy() {
@@ -88,7 +94,9 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     @Override
     public void onPageFinished(WebView view) {
         finishedLoading = true;
-        eventListener.saWebPlayerDidReceiveEvent(Event.Web_Started, null);
+        if (eventListener != null) {
+            eventListener.saWebPlayerDidReceiveEvent(Event.Web_Started, null);
+        }
     }
 
     @Override
@@ -99,10 +107,11 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
                 return false;
             }
 
-            eventListener.saWebPlayerDidReceiveEvent(Event.Web_Click, url);
+            if (eventListener != null) {
+                eventListener.saWebPlayerDidReceiveEvent(Event.Web_Click, url);
+            }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -111,30 +120,31 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     // Useful Web Player methods
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void loadHTML (String base, String html) {
+    public void loadHTML(String base, String html) {
         if (webView != null) {
             // load data directly, not from file as before
             webView.loadHTML(base, html);
 
             // call success listener
-            eventListener.saWebPlayerDidReceiveEvent(Event.Web_Loaded, null);
+            if (eventListener != null) {
+                eventListener.saWebPlayerDidReceiveEvent(Event.Web_Loaded, null);
+            }
         }
     }
 
-    public FrameLayout getHolder () {
+    public FrameLayout getHolder() {
         return holder;
     }
 
-    public WebView getWebView () {
+    public WebView getWebView() {
         return webView;
     }
 
-    public void setEventListener(Listener l) {
-        eventListener = l != null ? l : eventListener;
+    public void setEventListener(Listener listener) {
+        eventListener = listener;
     }
 
     public interface Listener {
-
-        void saWebPlayerDidReceiveEvent (Event event, String destination);
+        void saWebPlayerDidReceiveEvent(Event event, String destination);
     }
 }
