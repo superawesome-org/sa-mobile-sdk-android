@@ -39,7 +39,7 @@ Then, in the `Mediation` menu, create a new Mediation Group:
 
 ![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_2.png){:class="img-responsive"}
 
-Next, fill in the necessary details:
+Next, `Add Custom Event` as an Ad Source:
 
 ![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_3.png){:class="img-responsive"}
 
@@ -55,11 +55,20 @@ and, as well, customise it:
 
 ![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_6.png){:class="img-responsive"}
 
-and finally set the AwesomeAds custom event class name as Class Name `tv.superawesome.plugins.publisher.admob.SAAdMobBannerCustomEvent` and the parameter as your Placement ID:
+Notice that the custom event class names required by AdMob are:
+ - <strong>for Banner Ads:</strong>
+ 
+ `tv.superawesome.plugins.publisher.admob.SAAdMobBannerCustomEvent`
+ - <strong>for Interstitial Ads:</strong> 
+ 
+ `tv.superawesome.plugins.publisher.admob.SAAdMobInterstitialCustomEvent`
+ - <strong>for Rewarded Video Ads:</strong> 
+ 
+ `tv.superawesome.plugins.publisher.admob.SAAdMobVideoMediationAdapter`
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_7.png){:class="img-responsive"}
+You should now have at least two different `Ad Sources`.
 
-Finally, save your changes. This will register `BannerCustomEvent` as a custom event running on your ad units from now on. You’ll have to repeat the same process for interstitial and rewarded video ads.
+Finally, save your changes. This will register `BannerCustomEvent` as a custom event running on your ad units from now on. You’ll have to repeat the same process for interstitial(`SAAdMobInterstitialCustomEvent`) and rewarded video ads(`SAAdMobVideoMediationAdapter`).
 
 ## Implement Ads
 
@@ -67,7 +76,7 @@ Once the previous steps are done, you can add AdMob banners, interstitials and r
 
 {% highlight java %}
 // init app
-MobileAds.initialize(this, "__YOUR_APP_ID__");
+MobileAds.initialize(this) { Log.d("SADefaults/Admob", "onInitializationComplete") }
 
 // add a new banner
 AdView adView = (AdView) findViewById(R.id.AdViewID);
