@@ -1,3 +1,4 @@
+include ':samoat'
 include ':superawesome-common'
 include ':superawesome-retrofit'
 include ':superawesome-core'

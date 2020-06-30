@@ -1,4 +1,4 @@
-package tv.superawesome.lib.samoatevents;
+package tv.superawesome.plugins.publisher.moat;
 
 import android.app.Application;
 import android.util.Log;
