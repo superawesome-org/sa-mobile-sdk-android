@@ -8,8 +8,8 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 version = properties.getProperty("project.version")
 group = properties.getProperty("project.group")
 
-def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'        // Homepage URL of the library
-def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'         // Git repository URL
+def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'
+def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -86,5 +86,5 @@ repositories {
 
 dependencies {
     api project(':superawesome-base')
-    implementation 'com.google.android.gms:play-services-ads:19.1.0'
+    implementation 'com.google.android.gms:play-services-ads:19.2.0'
 }
