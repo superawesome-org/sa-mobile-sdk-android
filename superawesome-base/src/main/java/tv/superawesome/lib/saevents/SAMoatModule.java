@@ -15,7 +15,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class SAMoatModule {
 
     private static String TAG = "SuperAwesome-Moat-Module";
-    private static final String kMoatClass = "tv.superawesome.lib.samoatevents.SAMoatEvents";
+    private static final String kMoatClass = "tv.superawesome.plugins.publisher.moat.SAMoatEvents";
 
     // boolean mostly used for tests, in order to not limit moat at all
     private boolean   moatLimiting = true;
