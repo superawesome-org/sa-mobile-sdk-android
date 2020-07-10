@@ -1,5 +1,9 @@
 CHANGELOG
 =========
+7.2.9
+ - Moved Moat library to it's own module
+ - Fixed events firing even after the WebView is closed
+
 7.2.8
  - MoPub adapter is fixed and updated to the latest version
  - Added SDK metric information for active adapters

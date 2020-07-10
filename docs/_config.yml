@@ -12,7 +12,7 @@ baseurl: "/sa-mobile-sdk-android"
 # This is mostly for testing
 url: "http://superawesomeltd.github.io/sa-mobile-sdk-android"
 
-latest_version: 7.2.8
+latest_version: 7.2.9
 changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/CHANGELOG.md
 licence_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/LICENSE
 repo: "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android"
