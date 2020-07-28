@@ -24,9 +24,12 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -579,5 +582,17 @@ public class SAUtils {
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 
         return target != null && !target.toString().isEmpty() && pattern.matcher(target).matches();
+    }
+
+    final static SimpleDateFormat MONTH_YEAR_DATE_FORMAT = new SimpleDateFormat("MMyyyy", Locale.UK);
+
+    /**
+     * Method that returns string representation of a given date
+     *
+     * @param date to be used
+     * @return String representation of given date formatted as MMyyyy
+     */
+    public static String getMonthYearStringFromDate(Date date) {
+        return MONTH_YEAR_DATE_FORMAT.format(date);
     }
 }

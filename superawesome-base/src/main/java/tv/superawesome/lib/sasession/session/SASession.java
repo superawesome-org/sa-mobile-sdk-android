@@ -58,24 +58,15 @@ public class SASession implements ISASession {
     private int                      width;
     private int                      height;
 
-    /**
-     * Main constructor for the Session
-     *
-     * @param context current context (activity or fragment)
-     */
-    public SASession (Context context) {
-        this(context, Executors.newSingleThreadExecutor());
-    }
 
     /**
      * Main constructor for the Session
      *
      * @param context current context (activity or fragment)
-     * @param executor the executor to run the operations on
      */
-    public SASession(Context context, Executor executor) {
+    public SASession(Context context) {
         // create the capper
-        capper = new SACapper(context, executor);
+        capper = new SACapper(context);
 
         // set default configuration
         setConfigurationProduction();
