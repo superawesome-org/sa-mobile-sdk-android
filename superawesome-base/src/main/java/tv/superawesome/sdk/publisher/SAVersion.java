@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher;
 public class SAVersion {
 
     // version & sdk private vars
-    private static String version = "7.2.9";
+    private static String version = "7.2.10";
     private static String sdk = "android";
 
     /**
