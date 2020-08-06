@@ -10,11 +10,12 @@ import com.google.android.gms.ads.rewarded.RewardItem
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay
 import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
 import tv.superawesome.sdk.publisher.SAOrientation
 import tv.superawesome.sdk.publisher.SAVideoAd
 
 class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfiguration,
-                        private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>) : MediationRewardedAd {
+                        private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>) : MediationRewardedAd, SAInterface {
 
     private var rewardedAdCallback: MediationRewardedAdCallback? = null
     private var loadedPlacementId = 0
@@ -50,21 +51,7 @@ class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfigur
             return
         }
 
-
-        SAVideoAd.setListener { _: Int, event: SAEvent? ->
-            when (event) {
-                SAEvent.adLoaded -> adLoaded()
-                SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
-                SAEvent.adAlreadyLoaded -> {
-                    // do nothing
-                }
-                SAEvent.adShown -> rewardedAdCallback?.onAdOpened()
-                SAEvent.adFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
-                SAEvent.adClicked -> rewardedAdCallback?.reportAdClicked()
-                SAEvent.adEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
-                SAEvent.adClosed -> rewardedAdCallback?.onAdClosed()
-            }
-        }
+        SAVideoAd.setListener(this)
         SAVideoAd.load(loadedPlacementId, context)
     }
 
@@ -76,6 +63,22 @@ class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfigur
         } else {
             mediationAdLoadCallback.onFailure("Ad is not ready")
             rewardedAdCallback?.onAdFailedToShow("Ad is not ready")
+        }
+    }
+
+    // SAVideoAd Listener Event
+    override fun onEvent(placementId: Int, event: SAEvent?) {
+        when (event) {
+            SAEvent.adLoaded -> adLoaded()
+            SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
+            SAEvent.adAlreadyLoaded -> {
+                // do nothing
+            }
+            SAEvent.adShown -> rewardedAdCallback?.onAdOpened()
+            SAEvent.adFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
+            SAEvent.adClicked -> rewardedAdCallback?.reportAdClicked()
+            SAEvent.adEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
+            SAEvent.adClosed -> rewardedAdCallback?.onAdClosed()
         }
     }
 
