@@ -8,7 +8,8 @@ class SAAdMobVideoMediationAdapter : Adapter() {
 
     private var rewardedAd: SAAdMobRewardedAd? = null
 
-    override fun initialize(context: Context?, initializationCompleteCallback: InitializationCompleteCallback?, mediationConfigurations: MutableList<MediationConfiguration>?) {
+    override fun initialize(context: Context?, initializationCompleteCallback: InitializationCompleteCallback?,
+                            mediationConfigurations: MutableList<MediationConfiguration>?) {
         if (context == null) {
             initializationCompleteCallback?.onInitializationFailed("Initialization Failed: Context is null.")
             return
