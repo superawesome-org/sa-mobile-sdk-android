@@ -20,7 +20,7 @@ Next you can to add the SDK as a dependency. This will contain everything you ne
 
 {% highlight gradle %}
 dependencies {
-    implementation 'tv.superawesome.sdk.publisher:superawesome: {{ site.latest_version }}'
+    implementation 'tv.superawesome.sdk.publisher:superawesome:{{ site.latest_version }}'
 }
 {% endhighlight %}
 
