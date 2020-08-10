@@ -1,0 +1,46 @@
+apply plugin: 'com.github.dcendents.android-maven'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+version = properties.getProperty("project.version")
+group = properties.getProperty("project.group")
+
+def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'
+def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'SADefaults Full Mobile SDK for Android'
+                groupId 'com.example.androidlibrary'
+                artifactId 'androidlibrary'
+                description 'SADefaults Full Mobile SDK for Android'
+                url siteUrl
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'gabrielcoman'
+                        name 'Gabriel Coman'
+                        email 'gabriel.coman@superawesome.tv'
+                    }
+                }
+
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
