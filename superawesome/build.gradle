@@ -1,11 +1,15 @@
 apply plugin: 'com.android.library'
-apply from: '../install.gradle'
-apply from: '../bintray.gradle'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 version = properties.getProperty("project.version")
+group = properties.getProperty("project.group")
+
+def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'
+def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -29,12 +33,56 @@ android {
     }
 }
 
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = "SuperAwesome"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'SADefaults Full Mobile SDK for Android'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'gabrielcoman'
+                        name 'Gabriel Coman'
+                        email 'gabriel.coman@superawesome.tv'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
 repositories {
     maven { url  "http://dl.bintray.com/gabrielcoman/maven" }
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 
 dependencies {
-    api project(':superawesome-base')
-    implementation project(':samoat')
+    compile project(':superawesome-base')
+    compile project(':samoat')
 }
