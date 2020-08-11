@@ -26,9 +26,10 @@ android {
 }
 
 ext {
-    publishName = 'SuperAwesome-AdMob'
     publishDescription = 'SuperAwesome Mobile SDK for Android with AdMob extension'
 }
+
+bintray { pkg { name = 'SuperAwesome-AdMob' }}
 
 repositories {
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
