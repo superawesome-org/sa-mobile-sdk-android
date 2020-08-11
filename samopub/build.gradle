@@ -22,12 +22,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 ext {
-    publishName = 'SuperAwesome-MoPub'
     publishDescription = 'SuperAwesome Mobile SDK for Android with MoPub extension'
 }
+
+bintray { pkg { name = 'SuperAwesome-MoPub' }}
 
 repositories {
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
@@ -38,6 +42,7 @@ repositories {
 dependencies {
     api project(':superawesome-base')
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation('com.mopub:mopub-sdk-banner:5.13.0') { transitive = true }
     implementation('com.mopub:mopub-sdk-fullscreen:5.13.0') { transitive = true }
     implementation('com.mopub:mopub-sdk-native-static:5.13.0') { transitive = true }

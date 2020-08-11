@@ -24,9 +24,10 @@ android {
 }
 
 ext {
-    publishName = 'SuperAwesome'
     publishDescription = 'SuperAwesome Full SDK'
 }
+
+bintray { pkg { name = 'SuperAwesome' }}
 
 repositories {
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }

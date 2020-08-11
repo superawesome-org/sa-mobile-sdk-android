@@ -28,9 +28,10 @@ android {
 }
 
 ext {
-    publishName = 'SuperAwesome-Moat'
     publishDescription = 'SuperAwesome Mobile SDK for Android with Moat extension'
 }
+
+bintray { pkg { name = 'SuperAwesome-Moat' }}
 
 dependencies {
     implementation files('libs/moatlib.jar')
