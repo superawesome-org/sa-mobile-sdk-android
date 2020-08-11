@@ -29,7 +29,6 @@ android {
 }
 
 repositories {
-    maven { url  "http://dl.bintray.com/gabrielcoman/maven" }
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 

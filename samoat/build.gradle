@@ -1,11 +1,5 @@
-plugins {
-    id 'com.android.library'
-}
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-version = properties.getProperty("project.version")
+apply plugin: 'com.android.library'
+apply from: '../bintray.gradle'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -15,7 +9,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName version
+        versionName PROJECT_VERSION
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -31,6 +25,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+ext {
+    publishName = 'SuperAwesome-Moat'
+    publishDescription = 'SuperAwesome Mobile SDK for Android with Moat extension'
 }
 
 dependencies {
