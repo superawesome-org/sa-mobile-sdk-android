@@ -73,8 +73,9 @@ bintray {
     publications = ['MyPublication']
 
     pkg {
-        repo = "maven"
+        repo = "SuperAwesomeSDK"
         name = this.publishName
+        userOrg = 'superawesome'
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

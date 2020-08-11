@@ -30,7 +30,6 @@ ext {
 }
 
 repositories {
-    maven { url "http://dl.bintray.com/gabrielcoman/maven" }
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     jcenter()
     maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
