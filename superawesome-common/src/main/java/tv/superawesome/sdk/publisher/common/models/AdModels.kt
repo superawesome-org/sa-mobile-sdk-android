@@ -51,3 +51,9 @@ data class AdRequest(
         val w: Int,
         val h: Int
 )
+
+data class AdResponse(
+        val ad: Ad,
+        var html: String? = null,
+        var vast: VastAd? = null
+)

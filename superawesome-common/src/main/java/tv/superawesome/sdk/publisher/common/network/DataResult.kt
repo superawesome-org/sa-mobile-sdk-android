@@ -4,8 +4,14 @@ class DataResult<T>(val value: Any?) {
     val isSuccess: Boolean = value !is Failure
     val isFailure: Boolean = value is Failure
 
+    public fun getOrNull(): T? =
+            when {
+                isFailure -> null
+                else -> value as T
+            }
+
     companion object {
-        fun <T> success(value: Any): DataResult<T> = DataResult(value)
+        fun <T> success(value: T): DataResult<T> = DataResult(value)
         fun <T> failure(exception: Throwable): DataResult<T> = DataResult(Failure(exception))
     }
 

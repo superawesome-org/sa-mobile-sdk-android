@@ -7,14 +7,14 @@ data class Creative(
         val id: Int,
         val name: String?,
         val format: CreativeFormatType,
-        val click_url: String,
+        val click_url: String?,
         val details: CreativeDetail
 )
 
 @Serializable
 data class CreativeDetail(
         val url: String,
-        val image: String,
+        val image: String?,
         val video: String,
         val placement_format: String,
         val tag: String?,
