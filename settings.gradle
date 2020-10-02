@@ -1,3 +1,4 @@
+include ':superawesome-ui'
 include ':samoat'
 include ':superawesome-common'
 include ':superawesome-retrofit'
@@ -10,3 +11,4 @@ include ':saair'
 include ':superawesome'
 include ':superawesome-base'
 project(':superawesome-base').projectDir = new File('superawesome-base')
+include ':superawesome-sdk'

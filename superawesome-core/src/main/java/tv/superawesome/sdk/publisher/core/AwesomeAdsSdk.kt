@@ -1,14 +1,13 @@
-package tv.superawesome.sdk.publisher.core.sdk
+package tv.superawesome.sdk.publisher.core
 
 import android.content.Context
-import org.koin.core.Koin
 import org.koin.core.KoinApplication
-import org.koin.core.KoinComponent
 import org.koin.dsl.koinApplication
+import tv.superawesome.sdk.publisher.common.di.KoinInstanceProvider
 import tv.superawesome.sdk.publisher.common.di.createCommonModule
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.networking.retrofit.createNetworkModule
-
+import tv.superawesome.sdk.publisher.ui.di.createUiModule
 
 object AwesomeAdsSdk {
     private var app: KoinApplication? = null
@@ -16,6 +15,7 @@ object AwesomeAdsSdk {
     @JvmStatic
     fun initSdk(applicationContext: Context, configuration: Configuration) {
         app = buildKoinApplication(applicationContext, configuration)
+        KoinInstanceProvider.register(get().koin)
     }
 
     @JvmStatic
@@ -25,13 +25,10 @@ object AwesomeAdsSdk {
             koinApplication {
                 //androidContext(applicationContext)
                 modules(createCommonModule(configuration.environment, applicationContext),
-                        createNetworkModule(configuration.environment))
+                        createNetworkModule(configuration.environment),
+                        createUiModule())
             }
 
     data class Configuration(val environment: Environment = Environment.production,
                              val logging: Boolean = false)
-}
-
-interface AwesomeAdsKoinComponent : KoinComponent {
-    override fun getKoin(): Koin = AwesomeAdsSdk.get().koin
 }

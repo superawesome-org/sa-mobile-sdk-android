@@ -626,4 +626,6 @@ public class SABannerAd extends FrameLayout {
     public void disableMoatLimiting () {
         moatLimiting = false;
     }
+
+
 }

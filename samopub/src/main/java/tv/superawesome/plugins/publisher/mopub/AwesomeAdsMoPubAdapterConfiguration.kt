@@ -34,12 +34,12 @@ class AwesomeAdsMoPubAdapterConfiguration : BaseAdapterConfiguration() {
         }
     }
 
-    override fun getAdapterVersion(): String = "${BuildConfig.VERSION_NAME}.0"
+    override fun getAdapterVersion(): String = "${networkSdkVersion}.0"
 
     override fun getMoPubNetworkName(): String = "awesomeads"
 
     override fun getBiddingToken(context: Context): String? = null
 
-    override fun getNetworkSdkVersion(): String = BuildConfig.VERSION_NAME
+    override fun getNetworkSdkVersion(): String = BuildConfig.SDK_VERSION
 
 }

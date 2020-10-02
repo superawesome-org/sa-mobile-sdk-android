@@ -40,6 +40,15 @@ data class AdQuery(
         val h: Int
 )
 
+data class AdResponse(
+        val placementId: Int,
+        val ad: Ad,
+        var html: String? = null,
+        var vast: VastAd? = null,
+        var baseUrl: String? = null,
+        var filePath: String? = null
+)
+
 @Serializable
 data class AdRequest(
         val test: Boolean,
@@ -50,4 +59,35 @@ data class AdRequest(
         val instl: Int,
         val w: Int,
         val h: Int
-)
+) {
+    companion object {
+        /// The playback method
+        val PlaybackSoundOnScreen = 5
+    }
+
+    /// Specify if the ad is in full screen or not
+    enum class FullScreen(val value: Int) {
+        On(1), Off(0)
+    }
+
+    /// Start delay cases
+    enum class StartDelay(val value: Int) {
+        PostRoll(-2),
+        GenericMidRoll(-1),
+        PreRoll(0),
+        MidRoll(1),
+    }
+
+    /// Specify the position of the ad
+    enum class Position(val value: Int) {
+        AboveTheFold(1),
+        BelowTheFold(3),
+        FullScreen(7),
+    }
+
+    /// Specify if the ad can be skipped
+    enum class Skip(val value: Int) {
+        No(0),
+        Yes(1),
+    }
+}

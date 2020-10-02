@@ -14,6 +14,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-core/sa-mobile-sdk-android.superawesome-core.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-core/sa-mobile-sdk-android.superawesome-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-retrofit/sa-mobile-sdk-android.superawesome-retrofit.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-retrofit/sa-mobile-sdk-android.superawesome-retrofit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-sdk/sa-mobile-sdk-android.superawesome-sdk.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-sdk/sa-mobile-sdk-android.superawesome-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-ui/sa-mobile-sdk-android.superawesome-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-ui/sa-mobile-sdk-android.superawesome-ui.iml" />
     </modules>
   </component>
 </project>

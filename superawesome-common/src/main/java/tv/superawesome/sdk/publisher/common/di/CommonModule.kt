@@ -18,7 +18,7 @@ fun createCommonModule(environment: Environment, applicationContext: Context) = 
     single { Locale.getDefault() }
     single { Resources.getSystem().displayMetrics }
     factory<GoogleAdvertisingProxyType> { GoogleAdvertisingProxy(get()) }
-    single { SdkInfo(get(), get(), get(), BuildConfig.VERSION_NAME) }
+    single { SdkInfo(get(), get(), get(), BuildConfig.SDK_VERSION) }
     single { NumberGenerator() }
     single { Device(get()) }
     single { Encoder() }

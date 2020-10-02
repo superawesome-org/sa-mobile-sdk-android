@@ -93,7 +93,7 @@ class AdQueryMaker(private val device: DeviceType,
     )
 
     private fun encodeData(request: EventRequest): String? = if (request.data != null) {
-        val dataAsJson = json.stringify(EventData.serializer(), request.data)
+        val dataAsJson = json.encodeToString(EventData.serializer(), request.data)
         encoder.encodeUri(dataAsJson)
     } else {
         null

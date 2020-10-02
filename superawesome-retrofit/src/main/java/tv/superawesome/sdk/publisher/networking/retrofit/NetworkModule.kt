@@ -18,7 +18,7 @@ fun createNetworkModule(environment: Environment): Module = module {
         val interceptor: RetrofitHeaderInterceptor = get()
         OkHttpClient().newBuilder().addInterceptor(interceptor).build()
     }
-    single { Json(configuration = JsonConfiguration.Stable.copy(allowStructuredMapKeys = true)) }
+    single { Json { allowStructuredMapKeys = true } }
     single {
         val contentType: MediaType = MediaType.get("application/json")
         val json: Json = get()
