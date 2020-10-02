@@ -11,7 +11,6 @@ The first step is to include the following Maven repository in your module’s <
 
 {% highlight gradle %}
 repositories {
-    maven { url  'http://dl.bintray.com/gabrielcoman/maven' }
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 {% endhighlight %}
@@ -20,7 +19,7 @@ Next you can to add the SDK as a dependency. This will contain everything you ne
 
 {% highlight gradle %}
 dependencies {
-    implementation 'tv.superawesome.sdk.publisher:superawesome: {{ site.latest_version }}'
+    implementation 'tv.superawesome.sdk.publisher:superawesome:{{ site.latest_version }}'
 }
 {% endhighlight %}
 

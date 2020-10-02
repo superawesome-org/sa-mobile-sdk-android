@@ -7,5 +7,17 @@ enum class ConnectionType(val value: Int) {
     cellularUnknown(3),
     cellular2g(4),
     cellular3g(5),
-    cellular4g(6)
+    cellular4g(6);
+
+    fun findQuality(): ConnectionQuality {
+        return when (this) {
+            cellularUnknown, cellular2g -> ConnectionQuality.Minimum
+            ethernet, cellular4g, wifi, unknown -> ConnectionQuality.Maximum
+            else -> ConnectionQuality.Medium
+        }
+    }
+}
+
+enum class ConnectionQuality {
+    Minimum, Medium, Maximum
 }

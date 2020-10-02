@@ -1,5 +1,8 @@
 CHANGELOG
 =========
+7.2.10
+ - Removed Google Advertiser Id from the codebase
+ 
 7.2.9
  - Moved Moat library to it's own module
  - Fixed events firing even after the WebView is closed
