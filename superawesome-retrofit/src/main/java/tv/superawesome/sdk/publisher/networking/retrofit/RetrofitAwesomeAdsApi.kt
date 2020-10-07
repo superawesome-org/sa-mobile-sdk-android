@@ -6,18 +6,19 @@ import retrofit2.http.QueryMap
 import tv.superawesome.sdk.publisher.common.models.Ad
 
 interface RetrofitAwesomeAdsApi {
-    @GET("/ad/{placementId}")
+    @GET("ad/{placementId}")
+    @JvmSuppressWildcards
     suspend fun ad(@Path("placementId") placementId: Int, @QueryMap query: Map<String, Any>): Ad
 
-    @GET("/impression")
+    @GET("impression")
     suspend fun impression(@QueryMap query: Map<String, Any>): Void
 
-    @GET("/click")
+    @GET("click")
     suspend fun click(@QueryMap query: Map<String, Any>): Void
 
-    @GET("/video/click")
+    @GET("video/click")
     suspend fun videoClick(@QueryMap query: Map<String, Any>): Void
 
-    @GET("/event")
+    @GET("event")
     suspend fun event(@QueryMap query: Map<String, Any>): Void
 }

@@ -4,6 +4,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Test
@@ -78,7 +79,7 @@ class AdQueryMakerTest : BaseTest()  {
     @Test
     fun test_clickQuery() {
         // Given
-        val request = EventRequest(10, 20, 30, EventType.impressionDownloaded)
+        val request = mockk<AdResponse> {}
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
@@ -103,7 +104,7 @@ class AdQueryMakerTest : BaseTest()  {
     @Test
     fun test_videoClickQuery() {
         // Given
-        val request = EventRequest(10, 20, 30, EventType.impressionDownloaded)
+        val request = mockk<AdResponse> {}
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
@@ -129,16 +130,16 @@ class AdQueryMakerTest : BaseTest()  {
     fun test_eventQuery() {
         // Given
         val data = EventData(10, 30, 20, EventType.parentalGateClose)
-        val request = EventRequest(10, 20, 30, EventType.impressionDownloaded, data)
+        val request = mockk<AdResponse> {}
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
-        every { json.stringify<EventData>(any(), any()) } returns ""
+//        every { json.stringify<EventData>(any(), any()) } returns ""
         every { encoderType.encodeUri(any()) } returns "encoded_uri"
 
         // When
-        val query = queryMaker.makeEventQuery(request)
+        val query = queryMaker.makeEventQuery(request, data)
 
         // Then
         assertEquals(10, query.placement)
@@ -148,7 +149,6 @@ class AdQueryMakerTest : BaseTest()  {
         assertEquals(ConnectionType.cellular4g, query.ct)
         assertEquals("sdk_version", query.sdkVersion)
         assertEquals(33, query.rnd)
-        assertEquals(request.type, query.type)
         assertEquals(null, query.no_image)
         assertEquals("encoded_uri", query.data)
     }

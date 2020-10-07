@@ -11,11 +11,11 @@ import android.widget.RelativeLayout;
 public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener {
 
     public enum Event {
-        Web_Prepared,
-        Web_Loaded,
+        Web_Prepared, //
+        Web_Loaded, //
         Web_Error,
-        Web_Click,
-        Web_Started,
+        Web_Click, //
+        Web_Started, //
         Web_Layout,
         Web_Empty
     }

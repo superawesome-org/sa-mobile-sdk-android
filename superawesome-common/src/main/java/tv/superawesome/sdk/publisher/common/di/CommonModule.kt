@@ -6,10 +6,7 @@ import org.koin.dsl.module
 import tv.superawesome.sdk.publisher.common.BuildConfig
 import tv.superawesome.sdk.publisher.common.components.*
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.repositories.AdRepository
-import tv.superawesome.sdk.publisher.common.repositories.EventRepository
-import tv.superawesome.sdk.publisher.common.repositories.PreferencesRepository
-import tv.superawesome.sdk.publisher.common.repositories.PreferencesRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.*
 import java.util.*
 
 fun createCommonModule(environment: Environment, applicationContext: Context) = module {
@@ -18,15 +15,24 @@ fun createCommonModule(environment: Environment, applicationContext: Context) = 
     single { Locale.getDefault() }
     single { Resources.getSystem().displayMetrics }
     factory<GoogleAdvertisingProxyType> { GoogleAdvertisingProxy(get()) }
-    single { SdkInfo(get(), get(), get(), BuildConfig.SDK_VERSION) }
-    single { NumberGenerator() }
-    single { Device(get()) }
-    single { Encoder() }
-    single { IdGenerator(get(), get(), get(), get()) }
-    single { UserAgentProvider(get()) }
+    single<SdkInfoType> { SdkInfo(get(), get(), get(), BuildConfig.SDK_VERSION) }
+    single<NumberGeneratorType> { NumberGenerator() }
+    single<DeviceType> { Device(get()) }
+    single<EncoderType> { Encoder() }
+    single<IdGeneratorType> { IdGenerator(get(), get(), get(), get()) }
+    single<UserAgentProviderType> { UserAgentProvider(get()) }
     single<ConnectionProviderType> { ConnectionProvider(get()) }
     single<AdQueryMakerType> { AdQueryMaker(get(), get(), get(), get(), get(), get(), get(), get()) }
-    single { AdRepository(get(), get()) }
-    single { EventRepository(get(), get()) }
+    single<AdRepositoryType> { AdRepository(get(), get(), get(), get()) }
+    single<EventRepositoryType> { EventRepository(get(), get(),get()) }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
+    single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
+    single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
+    single<ImageProviderType> { ImageProvider() }
+    single<DispatcherProviderType> { DispatcherProvider() }
+    single<StringProviderType> { StringProvider() }
+
+    // Vast
+    single<VastParserType> { VastParser(get(), get()) }
+    single<XmlParserType> { XmlParser() }
 }

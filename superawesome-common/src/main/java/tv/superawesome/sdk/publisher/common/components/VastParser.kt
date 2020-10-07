@@ -7,7 +7,8 @@ interface VastParserType {
     fun parse(data: String): VastAd
 }
 
-class VastParser(private val parser: XmlParserType, private val connectionProvider: ConnectionProviderType) : VastParserType {
+class VastParser(private val parser: XmlParserType,
+                 private val connectionProvider: ConnectionProviderType) : VastParserType {
     override fun parse(data: String): VastAd {
         val vastAd = VastAd()
         val document = parser.parse(data)

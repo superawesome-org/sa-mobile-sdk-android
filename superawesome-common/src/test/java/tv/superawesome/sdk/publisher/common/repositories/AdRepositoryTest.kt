@@ -8,13 +8,13 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.common.datasources.AdDataSourceType
+import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import kotlin.test.assertEquals
 
 class AdRepositoryTest : BaseTest() {
     @MockK
-    lateinit var adDataSourceType: AdDataSourceType
+    lateinit var adDataSourceType: AwesomeAdsApiDataSourceType
 
     @MockK
     lateinit var adQueryMakerType: AdQueryMakerType
@@ -25,7 +25,7 @@ class AdRepositoryTest : BaseTest() {
     @Test
     fun test_getAdCalled_validResponse_success() {
         // Given
-        coEvery { adDataSourceType.getAd(any(), any()) } returns DataResult.success(mockk())
+        coEvery { adDataSourceType.getAd(any(), any()) } returns DataResult.Success(mockk())
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
 
         // When
@@ -38,7 +38,7 @@ class AdRepositoryTest : BaseTest() {
     @Test
     fun test_getAdCalled_invalidResponse_failure() {
         // Given
-        coEvery { adDataSourceType.getAd(any(), any()) } returns DataResult.failure(mockk())
+        coEvery { adDataSourceType.getAd(any(), any()) } returns DataResult.Failure(mockk())
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
 
         // When

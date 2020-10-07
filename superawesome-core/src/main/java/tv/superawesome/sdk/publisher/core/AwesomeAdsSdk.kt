@@ -6,7 +6,7 @@ import org.koin.dsl.koinApplication
 import tv.superawesome.sdk.publisher.common.di.KoinInstanceProvider
 import tv.superawesome.sdk.publisher.common.di.createCommonModule
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.networking.retrofit.createNetworkModule
+import tv.superawesome.sdk.publisher.networking.retrofit.di.createNetworkModule
 import tv.superawesome.sdk.publisher.ui.di.createUiModule
 
 object AwesomeAdsSdk {

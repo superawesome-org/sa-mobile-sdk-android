@@ -12,6 +12,7 @@ android {
         targetSdkVersion target_sdk_version
         versionCode 1
         versionName PROJECT_VERSION
+        buildConfigField "String", "SDK_VERSION", "\"${getSdkVersion()}\""
     }
     buildTypes {
         release {

@@ -1,4 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tv.superawesome.sdk.publisher.ui">
 
+    <application>
+        <activity
+            android:name=".common.BumperPageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:label="SABumperPage"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+    </application>
 </manifest>

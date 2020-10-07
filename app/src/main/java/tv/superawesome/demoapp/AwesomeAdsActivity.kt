@@ -11,6 +11,8 @@ import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVideoAd
+import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.core.AwesomeAdsSdk
 
@@ -88,8 +90,15 @@ class AwesomeAdsActivity : Activity() {
     }
 
     private fun configureBannerAd() {
+        bannerView.setListener(object : SAInterface {
+            override fun onEvent(placementId: Int, event: SAEvent) {
+                Log.i("gunhan", "bannerView event ${event.name} thread:${Thread.currentThread()}")
 
-//        val bannerView = Ba
+                if (event == SAEvent.adLoaded) {
+                    bannerView.play()
+                }
+            }
+        })
     }
 
     private fun requestBannerAd() {

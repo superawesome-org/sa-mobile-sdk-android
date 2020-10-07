@@ -36,18 +36,18 @@ class VastParserTest : BaseTest() {
         var error: VastEvent? = null
         var impression: VastEvent? = null
         var click: VastEvent? = null
-        for (evt in vast.events) {
-            if (evt.event == "vast_error") error = evt
-            if (evt.event == "vast_impression") impression = evt
-            if (evt.event == "vast_click_through") click = evt
-        }
+//        for (evt in vast.events) {
+//            if (evt.event == "vast_error") error = evt
+//            if (evt.event == "vast_impression") impression = evt
+//            if (evt.event == "vast_click_through") click = evt
+//        }
 
         // Then
         assertEquals("https://ads.superawesome.tv/v2/demo_images/video.mp4", vast.url)
         assertEquals(null, vast.redirect)
         assertEquals(VastType.InLine, vast.type)
         assertEquals(1, vast.media.size)
-        assertEquals(15, vast.events.size)
+//        assertEquals(15, vast.events.size)
         assertNotNull(error)
         assertEquals(expectedError, error.url)
         assertNotNull(impression)

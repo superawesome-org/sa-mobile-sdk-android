@@ -1,11 +1,11 @@
 package tv.superawesome.sdk.publisher.common.models
 
 class VastAd(
-        var url: String?,
-        var redirect: String,
+        var url: String? = null,
+        var redirect: String? = null,
         var type: VastType = VastType.Invalid,
         var media: MutableList<VastMedia> = mutableListOf(),
-        var clickThroughUrl: String?,
+        var clickThroughUrl: String? = null,
         var errorEvents: MutableList<String> = mutableListOf(),
         var impressionEvents: MutableList<String> = mutableListOf(),
         var creativeViewEvents: MutableList<String> = mutableListOf(),

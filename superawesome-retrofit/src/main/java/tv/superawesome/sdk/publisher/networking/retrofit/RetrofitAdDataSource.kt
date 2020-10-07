@@ -3,13 +3,13 @@ package tv.superawesome.sdk.publisher.networking.retrofit
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.properties.Properties
 import kotlinx.serialization.properties.encodeToMap
-import tv.superawesome.sdk.publisher.common.datasources.AdDataSourceType
+import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.Ad
 import tv.superawesome.sdk.publisher.common.models.AdQuery
 import tv.superawesome.sdk.publisher.common.models.EventQuery
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
-class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) : AdDataSourceType {
+class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) : AwesomeAdsApiDataSourceType {
 
     @ExperimentalSerializationApi
     override suspend fun getAd(placementId: Int, query: AdQuery): DataResult<Ad> = try {
