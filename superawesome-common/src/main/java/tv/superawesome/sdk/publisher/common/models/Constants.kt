@@ -3,7 +3,9 @@ package tv.superawesome.sdk.publisher.common.models
 import tv.superawesome.sdk.publisher.common.network.Environment
 
 object Constants {
-    const val defaultClickThresholdInMs: Long = 5
+    const val defaultClickThresholdInMs: Long = 5000
+    const val defaultBumperPageShowTimeInSec: Int = 5
+
     const val defaultTestMode = false
     const val defaultParentalGate = false
     const val defaultBumperPage = false

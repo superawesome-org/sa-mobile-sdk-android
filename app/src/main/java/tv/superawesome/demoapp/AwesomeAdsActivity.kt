@@ -90,6 +90,8 @@ class AwesomeAdsActivity : Activity() {
     }
 
     private fun configureBannerAd() {
+        bannerView.enableBumperPage()
+        bannerView.enableParentalGate()
         bannerView.setListener(object : SAInterface {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 Log.i("gunhan", "bannerView event ${event.name} thread:${Thread.currentThread()}")

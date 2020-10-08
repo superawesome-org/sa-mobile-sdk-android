@@ -78,12 +78,12 @@ class AdController(
     }
 
     override fun handleAdTap(url: String, context: Context) {
-        showParentalGateIfNeeded {
+        showParentalGateIfNeeded(context) {
             onAdClicked(url, context)
         }
     }
 
-    private fun showParentalGateIfNeeded(completion: () -> Unit) = if (parentalGateEnabled) {
+    private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) = if (parentalGateEnabled) {
         parentalGate?.stop()
         parentalGate = get()
         parentalGate?.listener = object : ParentalGate.Listener {
@@ -104,12 +104,28 @@ class AdController(
                 scope.launch { adResponse?.let { eventRepository.parentalGateFail(it) } }
             }
         }
+        parentalGate?.show(context)
     } else {
         completion()
     }
 
+    private fun isClickTooFast(): Boolean {
+        val currentTime = System.currentTimeMillis()
+        val diff = abs(currentTime - lastClickTime)
+
+        if (diff < Constants.defaultClickThresholdInMs) {
+            Log.d("gunhan", "Current diff is $diff")
+            return true
+        }
+
+        lastClickTime = currentTime
+        return false
+    }
+
     private fun onAdClicked(url: String, context: Context) {
         Log.i("gunhan", "onAdClicked $url")
+
+        if (isClickTooFast()) return
 
         if (bumperPageEnabled || adResponse?.ad?.creative?.bumper == true) {
             if (context is Activity) {
@@ -132,16 +148,6 @@ class AdController(
             Log.i("gunhan", "adResponse is null")
             return
         }
-
-        val currentTime = System.currentTimeMillis()
-        val diff = abs(currentTime - lastClickTime)
-
-        if (diff < Constants.defaultClickThresholdInMs) {
-            Log.d("AwesomeAds-2", "Current diff is $diff")
-            return
-        }
-
-        lastClickTime = currentTime
 
         delegate?.onEvent(placementId, SAEvent.adClicked)
 

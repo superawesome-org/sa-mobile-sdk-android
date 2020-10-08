@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -20,7 +21,7 @@ import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.StringProviderType
 import tv.superawesome.sdk.publisher.common.di.Injectable
 import tv.superawesome.sdk.publisher.common.extensions.toPx
-
+import tv.superawesome.sdk.publisher.common.models.Constants
 
 class BumperPageActivity : Activity(), Injectable {
     private var handler = Handler(Looper.getMainLooper())
@@ -33,25 +34,13 @@ class BumperPageActivity : Activity(), Injectable {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL)
         window.setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH)
+
         // panel
-        val panel = RelativeLayout(this).apply {
+        val panel = SquareLayout(this).apply {
             layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-//            background = BitmapDrawable(resources, imageProvider.bumperBackgroundImage())
+            background = BitmapDrawable(resources, imageProvider.bumperBackgroundImage())
         }
 
-        //
-        // background
-        val backgroundImageView = ImageView(this).apply {
-            layoutParams = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            scaleType = ImageView.ScaleType.FIT_CENTER
-            setImageBitmap(imageProvider.bumperBackgroundImage())
-        }
-//
-//        val background = SABumperPageBackground(this)
-//        background.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-//        background.setBackground(BitmapDrawable(resources, imageProvider.bumperBackgroundImage()))
-
-        //
         // big logo
         val fullDrawable = appIcon
         val bigLogo = ImageView(this)
@@ -63,7 +52,6 @@ class BumperPageActivity : Activity(), Injectable {
         bigLogoLayout.setMargins(12.toPx, 12.toPx, 12.toPx, 12.toPx)
         bigLogo.layoutParams = bigLogoLayout
 
-        //
         // small logo
         val smallLogo = ImageView(this)
         smallLogo.id = SMALL_LOGO_ID
@@ -76,11 +64,10 @@ class BumperPageActivity : Activity(), Injectable {
         smallLogoLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         smallLogo.layoutParams = smallLogoLayout
 
-        //
         // small text
         val smallText = TextView(this)
         smallText.id = SMALL_TEXT_ID
-        smallText.text = stringProvider.bumperPageTimeLeft(CounterMaxInSeconds)
+        smallText.text = stringProvider.bumperPageTimeLeft(Constants.defaultBumperPageShowTimeInSec)
         smallText.setTextColor(-0x1)
         smallText.textSize = 12f
         smallText.gravity = Gravity.CENTER
@@ -91,7 +78,6 @@ class BumperPageActivity : Activity(), Injectable {
         smallTextLayout.addRule(RelativeLayout.ABOVE, SMALL_LOGO_ID)
         smallText.layoutParams = smallTextLayout
 
-        //
         // big text
         val fullText = stringProvider.bumperPageLeaving(appName)
         val bigText = TextView(this)
@@ -108,9 +94,7 @@ class BumperPageActivity : Activity(), Injectable {
         bigTextLayout.addRule(RelativeLayout.ABOVE, SMALL_TEXT_ID)
         bigText.layoutParams = bigTextLayout
 
-        //
         // assemble them all together
-        panel.addView(backgroundImageView)
         panel.addView(bigLogo)
         panel.addView(smallLogo)
         panel.addView(smallText)
@@ -118,9 +102,8 @@ class BumperPageActivity : Activity(), Injectable {
 
         setContentView(panel)
 
-        //
         // create the timer
-        val countdown = intArrayOf(CounterMaxInSeconds)
+        val countdown = intArrayOf(Constants.defaultBumperPageShowTimeInSec)
         handler = Handler(Looper.getMainLooper())
         runnable = Runnable {
             if (countdown[0] <= 0) {
@@ -133,6 +116,14 @@ class BumperPageActivity : Activity(), Injectable {
             }
         }
         runnable?.let { handler.postDelayed(it, 1000) }
+    }
+
+    override fun onDestroy() {
+        Log.i("gunhan", "Bumperpage ondestroy")
+        listener = null
+        runnable?.let { handler.removeCallbacks(it) }
+        runnable = null
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -149,15 +140,11 @@ class BumperPageActivity : Activity(), Injectable {
         private const val SMALL_LOGO_ID = 0x212121
         private const val SMALL_TEXT_ID = 0x212151
         private const val BIG_TEXT_ID = 0x212751
-        private const val CounterMaxInSeconds = 3
 
-        //
         // Private vars that need to be set
         private var appName: String? = null
         private var appIcon: Drawable? = null
-        private var listener: Interface? = object : Interface {
-            override fun didEndBumper() {}
-        }
+        private var listener: Interface? = null
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
         // Public methods
