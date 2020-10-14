@@ -3,32 +3,34 @@ package tv.superawesome.sdk.publisher.ui.banner
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import org.koin.core.get
 import org.koin.core.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
+import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.di.Injectable
 import tv.superawesome.sdk.publisher.common.extensions.toPx
-import tv.superawesome.sdk.publisher.common.models.AdRequest
-import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.ui.common.AdControllerType
-
-private val BANNER_BACKGROUND = Color.rgb(224, 224, 224)
+import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 
 class BannerView : FrameLayout, Injectable {
     private val controller: AdControllerType by inject()
     private val imageProvider: ImageProviderType by inject()
+    private val logger: Logger by inject()
 
     private var webView: WebView? = null
     private var padlockButton: ImageButton? = null
+    private var viewableDetector: ViewableDetectorType? = null
+    private var hasBeenVisible: VoidBlock? = null
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        Log.i("gunhan", "BannerView.constructor()")
+        setColor(Constants.defaultBackgroundColorEnabled)
     }
 
     /**
@@ -38,7 +40,7 @@ class BannerView : FrameLayout, Injectable {
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
     fun load(placementId: Int) {
-        Log.i("gunhan", "BannerView.load(${placementId})")
+        logger.info("load(${placementId})")
         controller.load(placementId, makeAdRequest())
     }
 
@@ -49,7 +51,7 @@ class BannerView : FrameLayout, Injectable {
      * @param context current context (activity or fragment)
      */
     fun play() {
-        Log.i("gunhan", "BannerView.play() thread:${Thread.currentThread()}")
+        logger.info("play()")
         val dataPair = controller.getDataPair()
 
         if (dataPair == null) {
@@ -57,16 +59,12 @@ class BannerView : FrameLayout, Injectable {
             return
         }
 
-        controller.triggerImpressionEvent()
-
         addWebView()
         showPadlockIfNeeded()
         webView?.loadHTML(dataPair.first, dataPair.second)
-
     }
 
     fun setListener(delegate: SAInterface) {
-        Log.i("gunhan", "setListener")
         controller.delegate = delegate
     }
 
@@ -74,6 +72,9 @@ class BannerView : FrameLayout, Injectable {
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
     fun close() {
+        hasBeenVisible = null
+        viewableDetector?.cancel()
+        viewableDetector = null
         removeWebView()
         controller.close()
     }
@@ -135,7 +136,7 @@ class BannerView : FrameLayout, Injectable {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
         } else {
-            setBackgroundColor(BANNER_BACKGROUND)
+            setBackgroundColor(Constants.backgroundColorGray)
         }
     }
 
@@ -167,7 +168,16 @@ class BannerView : FrameLayout, Injectable {
         webView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT)
         webView.listener = object : WebView.Listener {
-            override fun webViewOnStart() = controller.adShown()
+            override fun webViewOnStart() {
+                controller.adShown()
+                viewableDetector?.cancel()
+                viewableDetector = get()
+                viewableDetector?.start(this@BannerView) {
+                    controller.triggerImpressionEvent()
+                    hasBeenVisible?.let { it() }
+                }
+            }
+
             override fun webViewOnError() = controller.adFailedToShow()
             override fun webViewOnClick(url: String) = controller.handleAdTap(url, context)
         }
@@ -185,6 +195,11 @@ class BannerView : FrameLayout, Injectable {
         }
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        logger.info("BannerView.onDetachedFromWindow")
+    }
+
     private fun makeAdRequest(): AdRequest = AdRequest(test = controller.testEnabled,
             pos = AdRequest.Position.AboveTheFold.value,
             skip = AdRequest.Skip.No.value,
@@ -193,4 +208,10 @@ class BannerView : FrameLayout, Injectable {
             instl = AdRequest.FullScreen.Off.value,
             w = width,
             h = height)
+
+    internal fun configure(adResponse: AdResponse, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
+        controller.adResponse = adResponse
+        delegate?.let { setListener(it) }
+        this.hasBeenVisible = hasBeenVisible
+    }
 }

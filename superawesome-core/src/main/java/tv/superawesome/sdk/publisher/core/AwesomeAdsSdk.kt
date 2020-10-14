@@ -24,7 +24,7 @@ object AwesomeAdsSdk {
     private fun buildKoinApplication(applicationContext: Context, configuration: Configuration): KoinApplication =
             koinApplication {
                 //androidContext(applicationContext)
-                modules(createCommonModule(configuration.environment, applicationContext),
+                modules(createCommonModule(configuration.environment, configuration.logging, applicationContext),
                         createNetworkModule(configuration.environment),
                         createUiModule())
             }

@@ -8,17 +8,25 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_awesomeads.*
 import tv.superawesome.demoapp.adapter.*
-import tv.superawesome.lib.sasession.defines.SAConfiguration
-import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVideoAd
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.core.AwesomeAdsSdk
+import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
 
 
 class AwesomeAdsActivity : Activity() {
-    private val configuration = SAConfiguration.PRODUCTION
+    private val data = listOf(
+            HeaderItem("Banners"),
+            PlacementItem("Banner image", 44258, Type.BANNER),
+            HeaderItem("Interstitials"),
+            PlacementItem("Rich Media Interstitial", 44259, Type.INTERSTITIAL),
+            PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
+            PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
+            HeaderItem("Videos"),
+            PlacementItem("Video", 44262, Type.VIDEO)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,25 +52,14 @@ class AwesomeAdsActivity : Activity() {
     }
 
     private fun configureListView() {
-        val data = listOf(
-                HeaderItem("Banners"),
-                PlacementItem("Banner image", 44258, Type.BANNER),
-                HeaderItem("Interstitials"),
-                PlacementItem("Rich Media Interstitial", 5392, Type.INTERSTITIAL),
-                PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
-                PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
-                HeaderItem("Videos"),
-                PlacementItem("Video", 44262, Type.VIDEO)
-        )
         val adapter = CustomListAdapter<AdapterItem>(this)
         listView.adapter = adapter
         adapter.updateData(data)
         adapter.reloadList()
 
-        listView.onItemClickListener = OnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+        listView.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
             val item = data[position]
             if (item is PlacementItem) {
-
                 when (item.type) {
                     Type.BANNER -> bannerView.load(item.pid)
                     Type.INTERSTITIAL -> SAInterstitialAd.load(item.pid, this@AwesomeAdsActivity)
@@ -75,8 +72,6 @@ class AwesomeAdsActivity : Activity() {
                             SAVideoAd.load(item.pid, this@AwesomeAdsActivity)
                         }
                     }
-                    else -> {
-                    }
                 }
             }
         }
@@ -86,7 +81,15 @@ class AwesomeAdsActivity : Activity() {
     }
 
     private fun configureInterstitialAd() {
+        SAInterstitialAd.setListener(object : SAInterface {
+            override fun onEvent(placementId: Int, event: SAEvent) {
+                Log.i("gunhan", "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
+                if (event == SAEvent.adLoaded) {
+                    SAInterstitialAd.play(placementId, this@AwesomeAdsActivity)
+                }
+            }
+        })
     }
 
     private fun configureBannerAd() {

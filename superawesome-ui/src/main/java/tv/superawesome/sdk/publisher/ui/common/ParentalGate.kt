@@ -65,7 +65,7 @@ class ParentalGate(
                 errorDialog.setMessage(stringProvider.parentalGateErrorMessage)
 
                 // set button action
-                errorDialog.setPositiveButton(stringProvider.cancelTitle) { innerDialog, _ ->
+                errorDialog.setPositiveButton(stringProvider.okTitle) { innerDialog, _ ->
                     listener?.parentalGateFail()
                     innerDialog.dismiss()
                 }

@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.get
 import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
+import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.di.Injectable
 import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
@@ -29,6 +29,7 @@ interface AdControllerType {
     var delegate: SAInterface?
 
     fun triggerImpressionEvent()
+    fun triggerViewableImpression()
 
     /**
      * Returns `baseUrl` and `html` data to show in the `WebView`
@@ -46,20 +47,22 @@ interface AdControllerType {
 class AdController(
         private val adRepository: AdRepositoryType,
         private val eventRepository: EventRepositoryType,
-        private val dispatcherProvider: DispatcherProviderType,
+        private val logger: Logger,
+        dispatcherProvider: DispatcherProviderType,
 ) : AdControllerType, Injectable {
-    override var testEnabled: Boolean = false
+    override var testEnabled: Boolean = Constants.defaultTestMode
     override var showPadlock: Boolean = false
-    override var bumperPageEnabled: Boolean = false
-    override var parentalGateEnabled: Boolean = false
+    override var bumperPageEnabled: Boolean = Constants.defaultBumperPage
+    override var parentalGateEnabled: Boolean = Constants.defaultParentalGate
     override var closed: Boolean = false
-    override var moatLimiting: Boolean = true
+    override var moatLimiting: Boolean = Constants.defaultMoatLimitingState
 
     override val adAvailable: Boolean
         get() = adResponse != null
 
     override var adResponse: AdResponse? = null
     override var delegate: SAInterface? = null
+
     private val scope = CoroutineScope(dispatcherProvider.main)
     private var parentalGate: ParentalGate? = null
     private var lastClickTime = 0L
@@ -114,7 +117,7 @@ class AdController(
         val diff = abs(currentTime - lastClickTime)
 
         if (diff < Constants.defaultClickThresholdInMs) {
-            Log.d("gunhan", "Current diff is $diff")
+            logger.info("Click is too fast/Ignore")
             return true
         }
 
@@ -123,7 +126,7 @@ class AdController(
     }
 
     private fun onAdClicked(url: String, context: Context) {
-        Log.i("gunhan", "onAdClicked $url")
+        logger.info("onAdClicked $url")
 
         if (isClickTooFast()) return
 
@@ -142,10 +145,10 @@ class AdController(
     }
 
     private fun navigateToUrl(url: String, context: Context) {
-        Log.i("gunhan", "navigateToUrl $url")
+        logger.info("navigateToUrl $url")
 
         if (adResponse == null) {
-            Log.i("gunhan", "adResponse is null")
+            logger.info("adResponse is null")
             return
         }
 
@@ -164,8 +167,8 @@ class AdController(
         // start browser
         try {
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(destination)))
-        } catch (e: Exception) {
-            // do nothing
+        } catch (exception: Exception) {
+            logger.error("Exception while navigating to url", exception)
         }
     }
 
@@ -173,7 +176,7 @@ class AdController(
         closed = true
         scope.cancel()
     } catch (exception: IllegalStateException) {
-        //ignore
+        logger.error("Exception while closing the ad", exception)
     }
 
     override fun adFailedToShow() {
@@ -185,7 +188,7 @@ class AdController(
     }
 
     override fun load(placementId: Int, request: AdRequest) {
-        Log.i("gunhan", "AdController.load(${placementId}) thread:${Thread.currentThread()}")
+        logger.info("load(${placementId}) thread:${Thread.currentThread()}")
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -195,17 +198,21 @@ class AdController(
     }
 
     override fun triggerImpressionEvent() {
+        scope.launch { adResponse?.let { eventRepository.impression(it) } }
+    }
 
+    override fun triggerViewableImpression() {
+        scope.launch { adResponse?.let { eventRepository.viewableImpression(it) } }
     }
 
     private fun onSuccess(response: AdResponse) {
-        Log.i("gunhan", "AdController.result: thread:${Thread.currentThread()} ${response}")
+        logger.success("onSuccess thread:${Thread.currentThread()}")
         this.adResponse = response
         delegate?.onEvent(placementId, SAEvent.adLoaded)
     }
 
     private fun onFailure(error: Throwable) {
-        Log.i("gunhan", "AdController.error: ${error}")
+        logger.error("onFailure", error)
         delegate?.onEvent(placementId, SAEvent.adFailedToLoad)
     }
 }

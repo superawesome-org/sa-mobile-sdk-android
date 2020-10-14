@@ -26,13 +26,20 @@ class EventRepository(
         private val dispatcherProvider: DispatcherProviderType,
 ) : EventRepositoryType {
     override suspend fun impression(adResponse: AdResponse): DataResult<Void> =
-            dataSource.impression(adQueryMaker.makeImpressionQuery(adResponse))
+            withContext(dispatcherProvider.io) {
+                dataSource.impression(adQueryMaker.makeImpressionQuery(adResponse))
+            }
+
 
     override suspend fun click(adResponse: AdResponse): DataResult<Void> =
-            dataSource.click(adQueryMaker.makeClickQuery(adResponse))
+            withContext(dispatcherProvider.io) {
+                dataSource.click(adQueryMaker.makeClickQuery(adResponse))
+            }
 
     override suspend fun videoClick(adResponse: AdResponse): DataResult<Void> =
-            dataSource.videoClick(adQueryMaker.makeVideoClickQuery(adResponse))
+            withContext(dispatcherProvider.io) {
+                dataSource.videoClick(adQueryMaker.makeVideoClickQuery(adResponse))
+            }
 
     private suspend fun customEvent(type: EventType, adResponse: AdResponse): DataResult<Void> =
             withContext(dispatcherProvider.io) {

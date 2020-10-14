@@ -8,5 +8,10 @@
             android:excludeFromRecents="true"
             android:label="SABumperPage"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+        <activity
+            android:name=".interstitial.InterstitialActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="SAInterstitialAd"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
     </application>
 </manifest>

@@ -3,10 +3,7 @@ package tv.superawesome.sdk.publisher.common.components
 import kotlinx.serialization.ExperimentalSerializationApi
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.extensions.baseUrl
-import tv.superawesome.sdk.publisher.common.models.Ad
-import tv.superawesome.sdk.publisher.common.models.AdResponse
-import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
-import tv.superawesome.sdk.publisher.common.models.VastAd
+import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 interface AdProcessorType {
@@ -34,7 +31,7 @@ class AdProcessor(
             }
             CreativeFormatType.tag -> {
                 response.html = htmlFormatter.formatTagIntoHtml(ad)
-                response.baseUrl = "https://ads.superawesome.tv"
+                response.baseUrl = Constants.defaultSuperAwesomeUrl
             }
             CreativeFormatType.video -> {
                 ad.creative.details.vast?.let { url ->

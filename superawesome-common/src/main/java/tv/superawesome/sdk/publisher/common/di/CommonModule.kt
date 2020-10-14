@@ -9,7 +9,7 @@ import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.repositories.*
 import java.util.*
 
-fun createCommonModule(environment: Environment, applicationContext: Context) = module {
+fun createCommonModule(environment: Environment, loggingEnabled: Boolean, applicationContext: Context) = module {
     single { applicationContext }
     single { environment }
     single { Locale.getDefault() }
@@ -24,13 +24,14 @@ fun createCommonModule(environment: Environment, applicationContext: Context) = 
     single<ConnectionProviderType> { ConnectionProvider(get()) }
     single<AdQueryMakerType> { AdQueryMaker(get(), get(), get(), get(), get(), get(), get(), get()) }
     single<AdRepositoryType> { AdRepository(get(), get(), get(), get()) }
-    single<EventRepositoryType> { EventRepository(get(), get(),get()) }
+    single<EventRepositoryType> { EventRepository(get(), get(), get()) }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
     single<ImageProviderType> { ImageProvider() }
     single<DispatcherProviderType> { DispatcherProvider() }
     single<StringProviderType> { StringProvider() }
+    single<Logger> { DefaultLogger(loggingEnabled) }
 
     // Vast
     single<VastParserType> { VastParser(get(), get()) }
