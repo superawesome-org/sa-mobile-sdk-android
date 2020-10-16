@@ -1,19 +1,25 @@
-package tv.superawesome.sdk.publisher.ui.interstitial
+package tv.superawesome.sdk.publisher.ui.video
 
 import android.app.Activity
 import android.content.Context
 import android.view.View
 import org.koin.core.get
+import org.koin.core.inject
+import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.di.Injectable
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.Orientation
+import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.common.AdControllerType
 
-
-object SAInterstitialAd : Injectable {
+object SAVideoAd : Injectable {
     private var orientation: Orientation = Constants.defaultOrientation
     private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
+    private var shouldShowCloseButton: Boolean = Constants.defaultCloseButton
 
     private val controller: AdControllerType by lazy { get() }
+    private val logger: Logger by inject()
 
     /**
      * Static method that loads an ad into the interstitial queue.
@@ -23,6 +29,7 @@ object SAInterstitialAd : Injectable {
      * @param context       the current context
      */
     fun load(placementId: Int, context: Context) {
+        logger.info("load($placementId)")
         controller.load(placementId, makeAdRequest(context))
     }
 
@@ -33,7 +40,8 @@ object SAInterstitialAd : Injectable {
      * @param context       the current context (activity or fragment)
      */
     fun play(placementId: Int, context: Context) {
-        InterstitialActivity.start(placementId, context)
+        logger.info("play($placementId)")
+        VideoActivity.start(placementId, controller.config, context)
     }
 
     fun setListener(value: SAInterface) {
@@ -70,6 +78,18 @@ object SAInterstitialAd : Injectable {
 
     fun disableBackButton() {
         setBackButton(false)
+    }
+
+    fun setCloseButton(value: Boolean) {
+        shouldShowCloseButton = value
+    }
+
+    fun enableCloseButton() {
+        setCloseButton(true)
+    }
+
+    fun disableCloseButton() {
+        setCloseButton(false)
     }
 
     fun setConfigurationProduction() {
@@ -139,7 +159,7 @@ object SAInterstitialAd : Injectable {
 
         return AdRequest(test = isTestEnabled(),
                 pos = AdRequest.Position.FullScreen.value,
-                skip = AdRequest.Skip.Yes.value,
+                skip = if (shouldShowCloseButton) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
                 playbackmethod = AdRequest.PlaybackSoundOnScreen,
                 startdelay = AdRequest.StartDelay.PreRoll.value,
                 instl = AdRequest.FullScreen.On.value,

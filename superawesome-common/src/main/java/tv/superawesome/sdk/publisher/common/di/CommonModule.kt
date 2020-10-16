@@ -5,6 +5,7 @@ import android.content.res.Resources
 import org.koin.dsl.module
 import tv.superawesome.sdk.publisher.common.BuildConfig
 import tv.superawesome.sdk.publisher.common.components.*
+import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.repositories.*
 import java.util.*
@@ -23,15 +24,19 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean, applic
     single<UserAgentProviderType> { UserAgentProvider(get()) }
     single<ConnectionProviderType> { ConnectionProvider(get()) }
     single<AdQueryMakerType> { AdQueryMaker(get(), get(), get(), get(), get(), get(), get(), get()) }
+
     single<AdRepositoryType> { AdRepository(get(), get(), get(), get()) }
     single<EventRepositoryType> { EventRepository(get(), get(), get()) }
+    factory<VastEventRepositoryType> { (adResponse: AdResponse) -> VastEventRepository(adResponse, get(), get()) }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
+
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
     single<ImageProviderType> { ImageProvider() }
     single<DispatcherProviderType> { DispatcherProvider() }
     single<StringProviderType> { StringProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
+    single<AdStoreType> { AdStore() }
 
     // Vast
     single<VastParserType> { VastParser(get(), get()) }

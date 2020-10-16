@@ -22,10 +22,7 @@ class AdRepository(
     override suspend fun getAd(placementId: Int, request: AdRequest): DataResult<AdResponse> =
             withContext(dispatcherProvider.io) {
                 when (val result = dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request))) {
-                    is DataResult.Success -> {
-                        val response = adProcessor.process(placementId, result.value)
-                        DataResult.Success(response)
-                    }
+                    is DataResult.Success -> adProcessor.process(placementId, result.value)
                     is DataResult.Failure -> result
                 }
             }

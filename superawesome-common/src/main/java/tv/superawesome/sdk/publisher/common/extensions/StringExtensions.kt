@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.common.extensions
 
 import java.net.URL
+import java.security.MessageDigest
 
 val String.baseUrl: String?
     get() {
@@ -11,3 +12,7 @@ val String.baseUrl: String?
             null
         }
     }
+
+fun String.toMD5(): String = MessageDigest.getInstance("MD5").digest(toByteArray()).toHex()
+
+fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it) }

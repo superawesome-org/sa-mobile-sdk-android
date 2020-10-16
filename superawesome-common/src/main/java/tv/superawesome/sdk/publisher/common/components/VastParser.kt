@@ -54,7 +54,7 @@ class VastParser(private val parser: XmlParserType,
 
             parser.findAll(creative, "Tracking").forEach {
                 val url = "vast_${it.getAttribute("event")}"
-                vastAd.addEvent(VastEvent("vast_click_tracking", url))
+                vastAd.addEvent(VastEvent(url, it.textContent))
             }
 
             parser.findAll(creative, "MediaFile").forEach {

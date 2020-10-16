@@ -54,6 +54,15 @@ data class AdResponse(
         var referral: String? = null,
 ) {
     fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.video
+
+    /**
+     * Returns `baseUrl` and `html` data to show in the `WebView`
+     */
+    fun getDataPair(): Pair<String, String>? {
+        val base = baseUrl ?: return null
+        val html = html ?: return null
+        return Pair(base, html)
+    }
 }
 
 @Serializable

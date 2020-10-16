@@ -46,9 +46,7 @@ class BumperPageActivity : Activity(), Injectable {
         val bigLogo = ImageView(this)
         bigLogo.id = BIG_LOGO_ID
         bigLogo.setImageDrawable(fullDrawable)
-        val bigLogoLayout = RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                40.toPx)
+        val bigLogoLayout = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 40.toPx)
         bigLogoLayout.setMargins(12.toPx, 12.toPx, 12.toPx, 12.toPx)
         bigLogo.layoutParams = bigLogoLayout
 

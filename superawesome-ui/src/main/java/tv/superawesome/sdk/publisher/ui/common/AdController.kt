@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.core.get
+import tv.superawesome.sdk.publisher.common.components.AdStoreType
 import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.di.Injectable
@@ -18,49 +19,44 @@ import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import kotlin.math.abs
 
 interface AdControllerType {
-    var testEnabled: Boolean
-    var showPadlock: Boolean
-    var parentalGateEnabled: Boolean
-    var bumperPageEnabled: Boolean
+    var config: Config
     var closed: Boolean
     var moatLimiting: Boolean
-    val adAvailable: Boolean
-    var adResponse: AdResponse?
+
+    var currentAdResponse: AdResponse?
     var delegate: SAInterface?
 
-    fun triggerImpressionEvent()
-    fun triggerViewableImpression()
+    fun triggerImpressionEvent(placementId: Int)
+    fun triggerViewableImpression(placementId: Int)
 
-    /**
-     * Returns `baseUrl` and `html` data to show in the `WebView`
-     */
-    fun getDataPair(): Pair<String, String>?
     fun load(placementId: Int, request: AdRequest)
-    fun handleSafeAdTap()
+    fun play(placementId: Int): AdResponse?
+
     fun handleAdTap(url: String, context: Context)
+    fun handleSafeAdTap(context: Context)
+    fun handleAdTapForVast(context: Context)
     fun close()
+    fun hasAdAvailable(placementId: Int): Boolean
 
     fun adFailedToShow()
     fun adShown()
+    fun adClicked()
+    fun adEnded()
+    fun adClosed()
 }
 
 class AdController(
         private val adRepository: AdRepositoryType,
         private val eventRepository: EventRepositoryType,
         private val logger: Logger,
+        private val adStore: AdStoreType,
         dispatcherProvider: DispatcherProviderType,
 ) : AdControllerType, Injectable {
-    override var testEnabled: Boolean = Constants.defaultTestMode
-    override var showPadlock: Boolean = false
-    override var bumperPageEnabled: Boolean = Constants.defaultBumperPage
-    override var parentalGateEnabled: Boolean = Constants.defaultParentalGate
+    override var config: Config = Config.default
     override var closed: Boolean = false
     override var moatLimiting: Boolean = Constants.defaultMoatLimitingState
 
-    override val adAvailable: Boolean
-        get() = adResponse != null
-
-    override var adResponse: AdResponse? = null
+    override var currentAdResponse: AdResponse? = null
     override var delegate: SAInterface? = null
 
     private val scope = CoroutineScope(dispatcherProvider.main)
@@ -68,17 +64,7 @@ class AdController(
     private var lastClickTime = 0L
 
     private val placementId: Int
-        get() = adResponse?.placementId ?: 0
-
-    override fun getDataPair(): Pair<String, String>? {
-        val base = adResponse?.baseUrl ?: return null
-        val html = adResponse?.html ?: return null
-        return Pair(base, html)
-    }
-
-    override fun handleSafeAdTap() {
-
-    }
+        get() = currentAdResponse?.placementId ?: 0
 
     override fun handleAdTap(url: String, context: Context) {
         showParentalGateIfNeeded(context) {
@@ -86,25 +72,42 @@ class AdController(
         }
     }
 
-    private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) = if (parentalGateEnabled) {
+    override fun handleSafeAdTap(context: Context) {
+        showParentalGateIfNeeded(context) {
+            onAdClicked(Constants.defaultSafeAdUrl, context)
+        }
+    }
+
+    override fun handleAdTapForVast(context: Context) {
+        val clickThroughUrl = currentAdResponse?.vast?.clickThroughUrl
+
+        if (clickThroughUrl == null) {
+            logger.info("Click through URL is not found")
+            return
+        }
+
+        handleAdTap(clickThroughUrl, context)
+    }
+
+    private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) = if (config.isParentalGateEnabled) {
         parentalGate?.stop()
         parentalGate = get()
         parentalGate?.listener = object : ParentalGate.Listener {
             override fun parentalGateOpen() {
-                scope.launch { adResponse?.let { eventRepository.parentalGateOpen(it) } }
+                scope.launch { currentAdResponse?.let { eventRepository.parentalGateOpen(it) } }
             }
 
             override fun parentalGateCancel() {
-                scope.launch { adResponse?.let { eventRepository.parentalGateClose(it) } }
+                scope.launch { currentAdResponse?.let { eventRepository.parentalGateClose(it) } }
             }
 
             override fun parentalGateSuccess() {
-                scope.launch { adResponse?.let { eventRepository.parentalGateSuccess(it) } }
+                scope.launch { currentAdResponse?.let { eventRepository.parentalGateSuccess(it) } }
                 completion()
             }
 
             override fun parentalGateFail() {
-                scope.launch { adResponse?.let { eventRepository.parentalGateFail(it) } }
+                scope.launch { currentAdResponse?.let { eventRepository.parentalGateFail(it) } }
             }
         }
         parentalGate?.show(context)
@@ -130,38 +133,42 @@ class AdController(
 
         if (isClickTooFast()) return
 
-        if (bumperPageEnabled || adResponse?.ad?.creative?.bumper == true) {
-            if (context is Activity) {
-                BumperPageActivity.setListener(object : BumperPageActivity.Interface {
-                    override fun didEndBumper() {
-                        navigateToUrl(url, context)
-                    }
-                })
-                BumperPageActivity.play(context)
-            }
+        if (config.isBumperPageEnabled || currentAdResponse?.ad?.creative?.bumper == true) {
+            playBumperPage(url, context)
         } else {
             navigateToUrl(url, context)
+        }
+    }
+
+    private fun playBumperPage(url: String, context: Context) {
+        if (context is Activity) {
+            BumperPageActivity.setListener(object : BumperPageActivity.Interface {
+                override fun didEndBumper() {
+                    navigateToUrl(url, context)
+                }
+            })
+            BumperPageActivity.play(context)
         }
     }
 
     private fun navigateToUrl(url: String, context: Context) {
         logger.info("navigateToUrl $url")
 
-        if (adResponse == null) {
+        if (currentAdResponse == null) {
             logger.info("adResponse is null")
             return
         }
 
         delegate?.onEvent(placementId, SAEvent.adClicked)
 
-        if (adResponse?.isVideo() == true) {
-            scope.launch { adResponse?.let { eventRepository.videoClick(it) } }
+        if (currentAdResponse?.isVideo() == true) {
+            scope.launch { currentAdResponse?.let { eventRepository.videoClick(it) } }
         } else {
-            scope.launch { adResponse?.let { eventRepository.click(it) } }
+            scope.launch { currentAdResponse?.let { eventRepository.click(it) } }
         }
 
         // append CPI data to it
-        val referrer = if (adResponse?.ad?.isCPICampaign() == true) "&referrer=" + adResponse?.referral else ""
+        val referrer = if (currentAdResponse?.ad?.isCPICampaign() == true) "&referrer=" + currentAdResponse?.referral else ""
         val destination = "$url${referrer}"
 
         // start browser
@@ -174,9 +181,15 @@ class AdController(
 
     override fun close() = try {
         closed = true
+        parentalGate?.stop()
+        parentalGate = null
         scope.cancel()
     } catch (exception: IllegalStateException) {
         logger.error("Exception while closing the ad", exception)
+    }
+
+    override fun hasAdAvailable(placementId: Int): Boolean {
+        return false
     }
 
     override fun adFailedToShow() {
@@ -187,32 +200,55 @@ class AdController(
         delegate?.onEvent(placementId, SAEvent.adShown)
     }
 
+    override fun adClicked() {
+        delegate?.onEvent(placementId, SAEvent.adClicked)
+    }
+
+    override fun adEnded() {
+        delegate?.onEvent(placementId, SAEvent.adEnded)
+    }
+
+    override fun adClosed() {
+        delegate?.onEvent(placementId, SAEvent.adClosed)
+    }
+
     override fun load(placementId: Int, request: AdRequest) {
         logger.info("load(${placementId}) thread:${Thread.currentThread()}")
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
-                is DataResult.Failure -> onFailure(result.error)
+                is DataResult.Failure -> onFailure(placementId, result.error)
             }
         }
     }
 
-    override fun triggerImpressionEvent() {
-        scope.launch { adResponse?.let { eventRepository.impression(it) } }
+    override fun play(placementId: Int): AdResponse? {
+        currentAdResponse = adStore.consume(placementId)
+
+        if (currentAdResponse == null) {
+            adFailedToShow()
+            return null
+        }
+
+        return currentAdResponse
     }
 
-    override fun triggerViewableImpression() {
-        scope.launch { adResponse?.let { eventRepository.viewableImpression(it) } }
+    override fun triggerImpressionEvent(placementId: Int) {
+        scope.launch { currentAdResponse?.let { eventRepository.impression(it) } }
+    }
+
+    override fun triggerViewableImpression(placementId: Int) {
+        scope.launch { currentAdResponse?.let { eventRepository.viewableImpression(it) } }
     }
 
     private fun onSuccess(response: AdResponse) {
-        logger.success("onSuccess thread:${Thread.currentThread()}")
-        this.adResponse = response
-        delegate?.onEvent(placementId, SAEvent.adLoaded)
+        logger.success("onSuccess thread:${Thread.currentThread()} adResponse:$response")
+        adStore.put(response)
+        delegate?.onEvent(response.placementId, SAEvent.adLoaded)
     }
 
-    private fun onFailure(error: Throwable) {
-        logger.error("onFailure", error)
+    private fun onFailure(placementId: Int, error: Throwable) {
+        logger.error("onFailure for $placementId", error)
         delegate?.onEvent(placementId, SAEvent.adFailedToLoad)
     }
 }

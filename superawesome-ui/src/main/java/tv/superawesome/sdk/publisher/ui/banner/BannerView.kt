@@ -2,6 +2,8 @@ package tv.superawesome.sdk.publisher.ui.banner
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -13,15 +15,20 @@ import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.di.Injectable
 import tv.superawesome.sdk.publisher.common.extensions.toPx
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+
 
 class BannerView : FrameLayout, Injectable {
     private val controller: AdControllerType by inject()
     private val imageProvider: ImageProviderType by inject()
     private val logger: Logger by inject()
 
+    private var placementId: Int = 0
     private var webView: WebView? = null
     private var padlockButton: ImageButton? = null
     private var viewableDetector: ViewableDetectorType? = null
@@ -31,6 +38,22 @@ class BannerView : FrameLayout, Injectable {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         setColor(Constants.defaultBackgroundColorEnabled)
+        isSaveEnabled = true
+    }
+
+    override fun onSaveInstanceState(): Parcelable? = Bundle().apply {
+        putParcelable("superState", super.onSaveInstanceState())
+        putInt("placementId", placementId)
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        var restoreState = state
+        if (restoreState is Bundle) {
+            val bundle = restoreState
+            this.placementId = bundle.getInt("placementId")
+            restoreState = bundle.getParcelable("superState")
+        }
+        super.onRestoreInstanceState(restoreState)
     }
 
     /**
@@ -41,6 +64,7 @@ class BannerView : FrameLayout, Injectable {
      */
     fun load(placementId: Int) {
         logger.info("load(${placementId})")
+        this.placementId = placementId
         controller.load(placementId, makeAdRequest())
     }
 
@@ -51,17 +75,18 @@ class BannerView : FrameLayout, Injectable {
      * @param context current context (activity or fragment)
      */
     fun play() {
-        logger.info("play()")
-        val dataPair = controller.getDataPair()
+        logger.info("play($placementId)")
+        val adResponse = controller.play(placementId)
+        val data = adResponse?.getDataPair()
 
-        if (dataPair == null) {
+        if (data == null) {
             controller.adFailedToShow()
             return
         }
 
         addWebView()
         showPadlockIfNeeded()
-        webView?.loadHTML(dataPair.first, dataPair.second)
+        webView?.loadHTML(data.first, data.second)
     }
 
     fun setListener(delegate: SAInterface) {
@@ -84,7 +109,7 @@ class BannerView : FrameLayout, Injectable {
      *
      * @return true or false
      */
-    fun hasAdAvailable(): Boolean = controller.adAvailable
+    fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
 
     fun isClosed(): Boolean = controller.closed
 
@@ -121,15 +146,15 @@ class BannerView : FrameLayout, Injectable {
     }
 
     fun setParentalGate(value: Boolean) {
-        controller.parentalGateEnabled = value
+        controller.config.isParentalGateEnabled = value
     }
 
     fun setBumperPage(value: Boolean) {
-        controller.bumperPageEnabled = value
+        controller.config.isBumperPageEnabled = value
     }
 
     fun setTestMode(value: Boolean) {
-        controller.testEnabled = value
+        controller.config.testEnabled = value
     }
 
     fun setColor(value: Boolean) {
@@ -145,7 +170,7 @@ class BannerView : FrameLayout, Injectable {
     }
 
     private fun showPadlockIfNeeded() {
-        if (!controller.showPadlock || webView == null) return
+        if (!controller.config.shouldShowPadlock || webView == null) return
 
         val padlockButton = ImageButton(context)
         padlockButton.setImageBitmap(imageProvider.padlockImage())
@@ -154,7 +179,7 @@ class BannerView : FrameLayout, Injectable {
         padlockButton.setPadding(0, 2.toPx, 0, 0)
         padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
 
-        padlockButton.setOnClickListener { controller.handleSafeAdTap() }
+        padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
 
         webView?.addView(padlockButton)
 
@@ -172,8 +197,9 @@ class BannerView : FrameLayout, Injectable {
                 controller.adShown()
                 viewableDetector?.cancel()
                 viewableDetector = get()
+                controller.triggerImpressionEvent(placementId)
                 viewableDetector?.start(this@BannerView) {
-                    controller.triggerImpressionEvent()
+                    controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
                 }
             }
@@ -200,7 +226,7 @@ class BannerView : FrameLayout, Injectable {
         logger.info("BannerView.onDetachedFromWindow")
     }
 
-    private fun makeAdRequest(): AdRequest = AdRequest(test = controller.testEnabled,
+    private fun makeAdRequest(): AdRequest = AdRequest(test = controller.config.testEnabled,
             pos = AdRequest.Position.AboveTheFold.value,
             skip = AdRequest.Skip.No.value,
             playbackmethod = AdRequest.PlaybackSoundOnScreen,
@@ -209,8 +235,8 @@ class BannerView : FrameLayout, Injectable {
             w = width,
             h = height)
 
-    internal fun configure(adResponse: AdResponse, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
-        controller.adResponse = adResponse
+    internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
+        this.placementId = placementId
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible
     }

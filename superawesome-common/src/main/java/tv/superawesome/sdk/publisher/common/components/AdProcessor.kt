@@ -7,7 +7,7 @@ import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 interface AdProcessorType {
-    suspend fun process(placementId: Int, ad: Ad): AdResponse
+    suspend fun process(placementId: Int, ad: Ad): DataResult<AdResponse>
 }
 
 class AdProcessor(
@@ -17,7 +17,7 @@ class AdProcessor(
         private val encoder: EncoderType,
 ) : AdProcessorType {
     @ExperimentalSerializationApi
-    override suspend fun process(placementId: Int, ad: Ad): AdResponse {
+    override suspend fun process(placementId: Int, ad: Ad): DataResult<AdResponse> {
         val response = AdResponse(placementId, ad)
 
         when (ad.creative.format) {
@@ -36,7 +36,14 @@ class AdProcessor(
             CreativeFormatType.video -> {
                 ad.creative.details.vast?.let { url ->
                     response.vast = handleVast(url, null)
-                    response.baseUrl = ad.creative.details.video.baseUrl
+                    response.baseUrl = response.vast?.url?.baseUrl
+
+                    val downloadFileResult = networkDataSource.downloadFile(response.vast?.url
+                            ?: "")
+                    when (downloadFileResult) {
+                        is DataResult.Success -> response.filePath = downloadFileResult.value
+                        is DataResult.Failure -> return downloadFileResult
+                    }
                 }
             }
         }
@@ -45,7 +52,7 @@ class AdProcessor(
             response.referral = encoder.encodeUrlParamsFromObject(it.toMap())
         }
 
-        return response
+        return DataResult.Success(response)
     }
 
     private suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? {

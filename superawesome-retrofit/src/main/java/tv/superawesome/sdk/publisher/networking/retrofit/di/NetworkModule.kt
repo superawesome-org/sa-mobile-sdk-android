@@ -41,5 +41,5 @@ fun createNetworkModule(environment: Environment): Module = module {
         val retrofit: Retrofit = get()
         retrofit.create(RetrofitAwesomeAdsApi::class.java)
     }
-    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get()) }
+    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get(), get()) }
 }
