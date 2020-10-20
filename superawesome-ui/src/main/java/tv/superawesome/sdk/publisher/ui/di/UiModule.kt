@@ -12,7 +12,7 @@ import tv.superawesome.sdk.publisher.ui.video.VideoEvents
 fun createUiModule(): Module = module {
     factory<AdControllerType> { AdController(get(), get(), get(), get(), get()) }
     factory { ParentalGate(get(), get()) }
-    factory<ViewableDetectorType> { ViewableDetector() }
+    factory<ViewableDetectorType> { ViewableDetector(get()) }
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
     factory { (adResponse: AdResponse, moatLimiting: Boolean) -> VideoEvents(adResponse, moatLimiting, get(), get()) }

@@ -234,7 +234,15 @@ class AdController(
     }
 
     override fun triggerImpressionEvent(placementId: Int) {
-        scope.launch { currentAdResponse?.let { eventRepository.impression(it) } }
+        scope.launch {
+            currentAdResponse?.let {
+                val result = eventRepository.impression(it)
+                when (result) {
+                    is DataResult.Success -> logger.success("triggerImpressionEvent.Success")
+                    is DataResult.Failure -> logger.error("triggerImpressionEvent.Success", result.error)
+                }
+            }
+        }
     }
 
     override fun triggerViewableImpression(placementId: Int) {

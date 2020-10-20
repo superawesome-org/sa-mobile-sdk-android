@@ -40,10 +40,6 @@ class AwesomeAdsActivity : Activity() {
         configureBannerAd()
         configureInterstitialAd()
         configureVideoAd()
-
-        requestBannerAd()
-        requestInterstitialAd()
-        requestVideoAd()
     }
 
     private fun initUI() {
@@ -115,23 +111,5 @@ class AwesomeAdsActivity : Activity() {
                 }
             }
         })
-    }
-
-    private fun requestBannerAd() {
-    }
-
-    private fun requestInterstitialAd() {
-    }
-
-    private fun requestVideoAd() {
-
-    }
-
-    fun playInterstitial(view: View?) {
-
-    }
-
-    fun playVideo(view: View?) {
-
     }
 }

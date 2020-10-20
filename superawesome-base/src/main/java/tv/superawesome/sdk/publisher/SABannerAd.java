@@ -99,8 +99,6 @@ public class SABannerAd extends FrameLayout {
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        Log.i("gunhan", "SABannerAd");
-
         if (isInEditMode()) return;
 
         // create the loader
@@ -628,6 +626,4 @@ public class SABannerAd extends FrameLayout {
     public void disableMoatLimiting () {
         moatLimiting = false;
     }
-
-
 }

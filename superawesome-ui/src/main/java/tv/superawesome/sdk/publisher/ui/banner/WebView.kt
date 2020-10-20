@@ -81,7 +81,7 @@ class WebView @JvmOverloads constructor(context: Context?, attrs: AttributeSet? 
     override fun destroy() {
         super.destroy()
         listener = null
-        Log.i("gunhan", "WebView destroy()")
+        Log.i("WebView", "WebView destroy()")
     }
 
     fun loadHTML(base: String, html: String) {

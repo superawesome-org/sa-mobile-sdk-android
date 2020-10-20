@@ -4,8 +4,8 @@ import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
+import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import java.lang.ref.WeakReference
 
@@ -14,7 +14,7 @@ interface ViewableDetectorType {
     fun cancel()
 }
 
-class ViewableDetector : ViewableDetectorType {
+class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
     private var viewableCounter = 0
     private val targetTickCount = 3
     private val delayMillis: Long = 1000
@@ -22,31 +22,27 @@ class ViewableDetector : ViewableDetectorType {
     private var handler = Handler(Looper.getMainLooper())
 
     override fun start(view: View, hasBeenVisible: VoidBlock) {
-        Log.i("gunhan", "ViewableDetector.start")
+        logger.info("start")
         val weak = WeakReference(view)
         runnable = Runnable {
             val weakView = weak.get() ?: return@Runnable
             if (isViewVisible(weakView)) {
-                Log.i("gunhan", "ViewableDetector.isViewVisible")
-
+                logger.info("isViewVisible true")
                 viewableCounter += 1
             } else {
-                Log.i("gunhan", "ViewableDetector.not visible")
-
+                logger.info("isViewVisible false")
             }
 
-
             if (viewableCounter >= targetTickCount) {
-                Log.i("gunhan", "ViewableDetector.completed")
-
+                logger.info("completed")
                 hasBeenVisible()
                 cancel()
             } else {
-                Log.i("gunhan", "ViewableDetector.tick: $viewableCounter")
-
+                logger.info("Tick: $viewableCounter")
                 schedule()
             }
         }
+
         schedule()
     }
 

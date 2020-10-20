@@ -9,7 +9,7 @@ class AdControllerTest {
     lateinit var controller: AdController
 
     @Test
-    fun sometest() {
+    fun test() {
         val placementId = 5
         val request = AdRequest(false, 10, 20, 30, 40, 50, 60, 70)
         controller.load(placementId, request)

@@ -6,7 +6,7 @@ const val CPI_CAMPAIGN_ID = 1
 
 @Serializable
 data class Ad(
-        val advertiserId: Int?,
+        val advertiserId: Int? = null,
         val publisherId: Int,
         val moat: Float,
         val is_fill: Boolean,
