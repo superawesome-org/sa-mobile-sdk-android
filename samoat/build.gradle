@@ -34,5 +34,5 @@ ext {
 bintray { pkg { name = 'SuperAwesome-Moat' }}
 
 dependencies {
-    implementation files('libs/moatlib.jar')
+    implementation files('libs/moatlib-2.6.6.jar')
 }
