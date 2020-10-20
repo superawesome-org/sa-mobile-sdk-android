@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(':superawesome-core')
+    implementation project(':superawesome-full')
 
     implementation project(':superawesome')
     implementation project(':saadmob')

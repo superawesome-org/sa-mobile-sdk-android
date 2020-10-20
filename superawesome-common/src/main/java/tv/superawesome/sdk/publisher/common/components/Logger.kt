@@ -5,7 +5,7 @@ import android.util.Log
 interface Logger {
     fun info(message: String)
     fun success(message: String)
-    fun error(message: String, error: Throwable)
+    fun error(message: String, error: Throwable? = null)
 }
 
 class DefaultLogger(private val loggingEnabled: Boolean) : Logger {
@@ -20,7 +20,7 @@ class DefaultLogger(private val loggingEnabled: Boolean) : Logger {
         Log.i(callerInformation, "🟩 $message")
     }
 
-    override fun error(message: String, error: Throwable) {
+    override fun error(message: String, error: Throwable?) {
         if (!loggingEnabled) return
         Log.i(callerInformation, "🟥 $message \n $error")
     }

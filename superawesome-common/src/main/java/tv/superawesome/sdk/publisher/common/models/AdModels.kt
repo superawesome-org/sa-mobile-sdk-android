@@ -12,6 +12,7 @@ data class Ad(
         val is_fill: Boolean,
         val is_fallback: Boolean,
         val campaign_type: Int,
+        val campaign_id: Int,
         val is_house: Boolean,
         val safe_ad_approved: Boolean,
         val show_padlock: Boolean,

@@ -26,7 +26,7 @@ open class FullScreenActivity : Activity(), Injectable {
     internal lateinit var parentLayout: RelativeLayout
     internal lateinit var closeButton: ImageButton
 
-    internal var config: Config? = null
+    internal var config: Config = Config.default
     internal var placementId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ open class FullScreenActivity : Activity(), Injectable {
 
     open fun processExtras() {
         this.placementId = intent?.getIntExtra(Constants.Keys.placementId, 0) ?: 0
-        this.config = intent?.getParcelableExtra(Constants.Keys.config)
+        this.config = intent?.getParcelableExtra(Constants.Keys.config) ?: Config.default
     }
 
     open fun initChildUI() {

@@ -77,6 +77,9 @@ class AwesomeAdsActivity : Activity() {
     }
 
     private fun configureVideoAd() {
+        SAVideoAd.enableCloseButton()
+        SAVideoAd.enableParentalGate()
+        SAVideoAd.enableBumperPage()
         SAVideoAd.setListener(object : SAInterface {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 Log.i("gunhan", "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")

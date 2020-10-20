@@ -8,16 +8,11 @@ import org.koin.core.inject
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.di.Injectable
 import tv.superawesome.sdk.publisher.common.models.AdRequest
-import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.common.AdControllerType
 
 object SAVideoAd : Injectable {
-    private var orientation: Orientation = Constants.defaultOrientation
-    private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
-    private var shouldShowCloseButton: Boolean = Constants.defaultCloseButton
-
     private val controller: AdControllerType by lazy { get() }
     private val logger: Logger by inject()
 
@@ -81,7 +76,7 @@ object SAVideoAd : Injectable {
     }
 
     fun setCloseButton(value: Boolean) {
-        shouldShowCloseButton = value
+        controller.config.shouldShowCloseButton = value
     }
 
     fun enableCloseButton() {
@@ -125,11 +120,11 @@ object SAVideoAd : Injectable {
     }
 
     fun setBackButton(value: Boolean) {
-        backButtonEnabled = value
+        controller.config.isBackButtonEnabled = value
     }
 
     fun setOrientation(value: Orientation) {
-        orientation = value
+        controller.config.orientation = value
     }
 
     fun disableMoatLimiting() {
@@ -159,7 +154,7 @@ object SAVideoAd : Injectable {
 
         return AdRequest(test = isTestEnabled(),
                 pos = AdRequest.Position.FullScreen.value,
-                skip = if (shouldShowCloseButton) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
+                skip = if (controller.config.shouldShowCloseButton) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
                 playbackmethod = AdRequest.PlaybackSoundOnScreen,
                 startdelay = AdRequest.StartDelay.PreRoll.value,
                 instl = AdRequest.FullScreen.On.value,

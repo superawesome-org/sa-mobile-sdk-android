@@ -25,6 +25,7 @@ class InterstitialActivity : FullScreenActivity() {
         interstitialBanner.setTestMode(SAInterstitialAd.isTestEnabled())
         interstitialBanner.setBumperPage(SAInterstitialAd.isBumperPageEnabled())
         interstitialBanner.setParentalGate(SAInterstitialAd.isParentalGateEnabled())
+
         if (!SAInterstitialAd.isMoatLimiting()) {
             interstitialBanner.disableMoatLimiting()
         }

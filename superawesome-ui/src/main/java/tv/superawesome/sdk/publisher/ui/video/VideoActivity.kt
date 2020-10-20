@@ -44,7 +44,7 @@ class VideoActivity : FullScreenActivity() {
     override fun initChildUI() {
         listener = SAVideoAd.getDelegate()
         // make sure direction is locked
-        requestedOrientation = when (config?.orientation ?: Orientation.Any) {
+        requestedOrientation = when (config.orientation) {
             Orientation.Any -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             Orientation.Portrait -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             Orientation.Landscape -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -55,8 +55,8 @@ class VideoActivity : FullScreenActivity() {
 
         // Chrome
         val chrome = AdVideoPlayerControllerView(this)
-        chrome.shouldShowPadlock(config!!.shouldShowPadlock)
-        chrome.setShouldShowSmallClickButton(config!!.shouldShowSmallClick)
+        chrome.shouldShowPadlock(config.shouldShowPadlock)
+        chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick)
         chrome.setClickListener {
             controller.adClicked()
             controller.handleAdTapForVast(this)
@@ -87,7 +87,7 @@ class VideoActivity : FullScreenActivity() {
 
                 controller.adEnded()
 
-                if (config?.shouldCloseAtEnd == true) {
+                if (config.shouldCloseAtEnd) {
                     close()
                 }
             }
@@ -102,7 +102,7 @@ class VideoActivity : FullScreenActivity() {
 
     override fun playContent() {
         controller.play(placementId)?.let {
-            videoEvents = get(parameters = { parametersOf(it) })
+            videoEvents = get(parameters = { parametersOf(it, config.moatLimiting) })
             val filePath = it.filePath ?: ""
             try {
                 val fileUri = Uri.fromFile(File(filePath))

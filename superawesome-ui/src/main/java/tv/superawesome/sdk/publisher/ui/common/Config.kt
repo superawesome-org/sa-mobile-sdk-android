@@ -6,6 +6,7 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 
 open class Config : Parcelable {
+    var moatLimiting: Boolean
     var testEnabled: Boolean
     var shouldShowPadlock: Boolean
     var isParentalGateEnabled: Boolean
@@ -17,6 +18,7 @@ open class Config : Parcelable {
     var orientation: Orientation
 
     constructor(
+            moatLimiting: Boolean,
             testEnabled: Boolean,
             shouldShowPadlock: Boolean,
             isParentalGateEnabled: Boolean,
@@ -27,6 +29,7 @@ open class Config : Parcelable {
             shouldShowCloseButton: Boolean,
             orientation: Orientation,
     ) {
+        this.moatLimiting = moatLimiting
         this.testEnabled = testEnabled
         this.shouldShowPadlock = shouldShowPadlock
         this.isParentalGateEnabled = isParentalGateEnabled
@@ -39,6 +42,7 @@ open class Config : Parcelable {
     }
 
     protected constructor(parcel: Parcel) {
+        moatLimiting = parcel.readByte().toInt() != 0
         testEnabled = parcel.readByte().toInt() != 0
         shouldShowPadlock = parcel.readByte().toInt() != 0
         isParentalGateEnabled = parcel.readByte().toInt() != 0
@@ -53,6 +57,7 @@ open class Config : Parcelable {
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(parcel: Parcel, i: Int) {
+        parcel.writeByte((if (moatLimiting) 1 else 0).toByte())
         parcel.writeByte((if (testEnabled) 1 else 0).toByte())
         parcel.writeByte((if (shouldShowPadlock) 1 else 0).toByte())
         parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
@@ -70,6 +75,7 @@ open class Config : Parcelable {
         override fun newArray(size: Int): Array<Config?> = arrayOfNulls(size)
 
         val default = Config(
+                moatLimiting = Constants.defaultMoatLimitingState,
                 testEnabled = Constants.defaultTestMode,
                 shouldShowPadlock = Constants.defaultPadlock,
                 isParentalGateEnabled = Constants.defaultParentalGate,

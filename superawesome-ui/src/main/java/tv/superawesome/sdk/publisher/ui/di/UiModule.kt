@@ -15,5 +15,5 @@ fun createUiModule(): Module = module {
     factory<ViewableDetectorType> { ViewableDetector() }
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
-    factory { (adResponse: AdResponse) -> VideoEvents(adResponse, get(), get()) }
+    factory { (adResponse: AdResponse, moatLimiting: Boolean) -> VideoEvents(adResponse, moatLimiting, get(), get()) }
 }
