@@ -224,7 +224,6 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
             SACloseWarning.setListener(new SACloseWarning.Interface() {
                 @Override
                 public void onResumeSelected() {
-                    // do nothing
                     control.start();
                 }
 
