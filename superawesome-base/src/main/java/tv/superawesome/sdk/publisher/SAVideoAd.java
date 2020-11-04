@@ -30,6 +30,7 @@ public class SAVideoAd {
     public static HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
+    private static boolean shouldShowCloseWarning           = SADefaults.defaultCloseWarning();
     private static boolean isParentalGateEnabled            = SADefaults.defaultParentalGate();
     private static boolean isBumperPageEnabled              = SADefaults.defaultBumperPage();
     private static boolean shouldShowCloseButton            = SADefaults.defaultCloseButton();
@@ -196,6 +197,7 @@ public class SAVideoAd {
                         isBackButtonEnabled,
                         shouldAutomaticallyCloseAtEnd,
                         shouldShowCloseButton,
+                        shouldShowCloseWarning,
                         orientation);
 
                 intent.putExtra("ad", adL);
@@ -306,6 +308,11 @@ public class SAVideoAd {
         setCloseButton(false);
     }
 
+    public static void enableCloseButtonWithWarning() {
+        setCloseButton(true);
+        setCloseButtonWarning(true);
+    }
+
     public static void enableCloseAtEnd () {
         setCloseAtEnd(true);
     }
@@ -394,6 +401,10 @@ public class SAVideoAd {
 
     public static void setCloseButton (boolean value) {
         shouldShowCloseButton = value;
+    }
+
+    public static void setCloseButtonWarning(boolean value) {
+        shouldShowCloseWarning = value;
     }
 
     public static void setCloseAtEnd (boolean value) {
