@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
@@ -51,6 +52,8 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     private AdVideoPlayerControllerView chrome;
     private ImageButton closeButton = null;
     private VideoPlayer videoPlayer = null;
+
+    private Boolean completed = false;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -132,7 +135,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                close();
+                onCloseAction();
             }
         });
         parent.addView(closeButton);
@@ -162,8 +165,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     @Override
     public void onBackPressed() {
        if (config.isBackButtonEnabled) {
-            close();
-            super.onBackPressed();
+            onCloseAction();
         }
     }
 
@@ -188,6 +190,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
     @Override
     public void onComplete(IVideoPlayer videoPlayer, int time, int duration) {
+        completed = true;
         videoEvents.complete(videoPlayer, time, duration);
         closeButton.setVisibility(View.VISIBLE);
 
@@ -215,8 +218,28 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     // Custom private methods
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private void onCloseAction() {
+        if(config.shouldShowCloseWarning && !completed){
+            control.pause();
+            SACloseWarning.setListener(new SACloseWarning.Interface() {
+                @Override
+                public void onResumeSelected() {
+                    control.start();
+                }
+
+                @Override
+                public void onCloseSelected() {
+                    close();
+                }
+            });
+            SACloseWarning.show(this);
+        } else {
+            close();
+        }
+    }
+
     /**
-     * Method that closes the interstitial ad
+     * Method that closes the Video ad
      */
     private void close() {
 
@@ -228,6 +251,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         }
 
         // close
+        SACloseWarning.close();
         SAParentalGate.close();
 
         // close the video player
@@ -253,6 +277,7 @@ class Config implements Parcelable {
     boolean isBackButtonEnabled;
     boolean shouldCloseAtEnd;
     boolean shouldShowCloseButton;
+    boolean shouldShowCloseWarning;
     SAOrientation orientation;
 
     Config(boolean shouldShowPadlock,
@@ -262,6 +287,7 @@ class Config implements Parcelable {
            boolean isBackButtonEnabled,
            boolean shouldCloseAtEnd,
            boolean shouldShowCloseButton,
+           boolean shouldShowCloseWarning,
            SAOrientation orientation) {
         this.shouldShowPadlock = shouldShowPadlock;
         this.isParentalGateEnabled = isParentalGateEnabled;
@@ -270,6 +296,7 @@ class Config implements Parcelable {
         this.isBackButtonEnabled = isBackButtonEnabled;
         this.shouldCloseAtEnd = shouldCloseAtEnd;
         this.shouldShowCloseButton = shouldShowCloseButton;
+        this.shouldShowCloseWarning = shouldShowCloseWarning;
         this.orientation = orientation;
     }
 
@@ -281,6 +308,7 @@ class Config implements Parcelable {
         isBackButtonEnabled = in.readByte() != 0;
         shouldCloseAtEnd = in.readByte() != 0;
         shouldShowCloseButton = in.readByte() != 0;
+        shouldShowCloseWarning = in.readByte() != 0;
         orientation = SAOrientation.fromValue(in.readInt());
     }
 
@@ -310,6 +338,7 @@ class Config implements Parcelable {
         parcel.writeByte((byte) (isBackButtonEnabled ? 1 : 0));
         parcel.writeByte((byte) (shouldCloseAtEnd ? 1 : 0));
         parcel.writeByte((byte) (shouldShowCloseButton ? 1 : 0));
+        parcel.writeByte((byte) (shouldShowCloseWarning ? 1 : 0));
         parcel.writeInt(orientation.ordinal());
     }
 }
