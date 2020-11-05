@@ -75,7 +75,8 @@ public class SAUnityVideoAd {
                                                        boolean shouldShowSmallClickButton,
                                                        boolean shouldAutomaticallyCloseAtEnd,
                                                        int orientation,
-                                                       boolean isBackButtonEnabled) {
+                                                       boolean isBackButtonEnabled,
+                                                       boolean shouldShowCloseWarning) {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
@@ -83,6 +84,7 @@ public class SAUnityVideoAd {
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
+        SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         SAVideoAd.play(placementId, context);
     }
 
