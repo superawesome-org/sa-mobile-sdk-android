@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        SAInterstitialAd.setConfigurationStaging();
+        //SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.disableTestMode();
         SAInterstitialAd.enableBumperPage();
@@ -73,6 +73,7 @@ public class MainActivity extends Activity {
         SAVideoAd.setConfigurationProduction();
         SAVideoAd.disableTestMode();
         SAVideoAd.enableParentalGate();
+        SAVideoAd.enableCloseButtonWithWarning();
         SAVideoAd.enableBumperPage();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
@@ -93,7 +94,7 @@ public class MainActivity extends Activity {
                 new HeaderItem("Banners"),
                 new PlacementItem("Banner image", 44258, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("Rich Media Interstitial", 5392, Type.INTERSTITIAL),
+                new PlacementItem("Rich Media Interstitial", 44259, Type.INTERSTITIAL),
                 new PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
                 new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),

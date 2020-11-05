@@ -43,6 +43,9 @@ public class SADefaults {
     public static boolean defaultSmallClick () {
         return false;
     }
+    public static boolean defaultCloseWarning () {
+        return false;
+    }
     public static boolean defaultCloseAtEnd () {
         return true;
     }
