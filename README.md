@@ -7,4 +7,4 @@ SuperAwesome Mobile SDK for Android
 [![Language](https://img.shields.io/badge/language-java-f48041.svg?style=flat)]() 
 [![Platform](https://img.shields.io/badge/platform-android-lightgrey.svg)]()
 
-For more information check out the [SuperAwesome Developer Portal](http://doc.superawesome.tv/sa-mobile-sdk-android/latest/).
+For more information check out the [SuperAwesome Developer Portal](https://superawesomeltd.github.io/sa-mobile-sdk-android/).
