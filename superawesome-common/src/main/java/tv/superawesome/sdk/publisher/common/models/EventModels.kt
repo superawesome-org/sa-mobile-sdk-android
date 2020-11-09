@@ -17,15 +17,6 @@ data class EventQuery(
 )
 
 @Serializable
-data class EventRequest(
-        val placementId: Int,
-        val creativeId: Int,
-        val lineItemId: Int,
-        val type: EventType,
-        val data: EventData? = null
-)
-
-@Serializable
 data class EventData(
         val placement: Int,
         val line_item: Int,

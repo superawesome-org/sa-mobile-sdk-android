@@ -6,7 +6,7 @@ enum class Environment {
 
     val baseUrl: String
         get() = when (this) {
-            production -> "https://ads.superawesome.tv/v2"
-            staging -> "https://ads.staging.superawesome.tv/v2"
+            production -> "https://ads.superawesome.tv/v2/"
+            staging -> "https://ads.staging.superawesome.tv/v2/"
         }
 }

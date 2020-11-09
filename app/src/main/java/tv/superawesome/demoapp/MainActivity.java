@@ -1,25 +1,21 @@
 package tv.superawesome.demoapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
+import tv.superawesome.demoapp.adapter.AdapterItem;
+import tv.superawesome.demoapp.adapter.CustomListAdapter;
+import tv.superawesome.demoapp.adapter.HeaderItem;
+import tv.superawesome.demoapp.adapter.PlacementItem;
+import tv.superawesome.demoapp.adapter.Type;
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
@@ -55,7 +51,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        //SAInterstitialAd.setConfigurationStaging();
+//        SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.enableParentalGate();
         SAInterstitialAd.disableTestMode();
         SAInterstitialAd.enableBumperPage();
@@ -73,7 +69,6 @@ public class MainActivity extends Activity {
         SAVideoAd.setConfigurationProduction();
         SAVideoAd.disableTestMode();
         SAVideoAd.enableParentalGate();
-        SAVideoAd.enableCloseButtonWithWarning();
         SAVideoAd.enableBumperPage();
         SAVideoAd.disableMoatLimiting();
         SAVideoAd.enableCloseAtEnd();
@@ -100,7 +95,7 @@ public class MainActivity extends Activity {
                 new HeaderItem("Videos"),
                 new PlacementItem("Video", 44262, Type.VIDEO)
         );
-        ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
+        CustomListAdapter<AdapterItem> adapter = new CustomListAdapter<>(this);
         myList.setAdapter(adapter);
         adapter.updateData(data);
         adapter.reloadList();
@@ -110,20 +105,20 @@ public class MainActivity extends Activity {
             if (item instanceof PlacementItem) {
                 PlacementItem placement = (PlacementItem) item;
 
-                switch (placement.type) {
+                switch (placement.getType()) {
                     case BANNER:
-                        myBanner.load(placement.pid);
+                        myBanner.load(placement.getPid());
                         break;
                     case INTERSTITIAL:
-                        SAInterstitialAd.load(placement.pid, MainActivity.this);
+                        SAInterstitialAd.load(placement.getPid(), MainActivity.this);
                         break;
                     case VIDEO: {
-                        if (SAVideoAd.hasAdAvailable(placement.pid)) {
+                        if (SAVideoAd.hasAdAvailable(placement.getPid())) {
                             Log.e("AwesomeAds", "PLAYING VIDEO");
-                            SAVideoAd.play(placement.pid, MainActivity.this);
+                            SAVideoAd.play(placement.getPid(), MainActivity.this);
                         } else {
                             Log.e("AwesomeAds", "LOADING VIDEO");
-                            SAVideoAd.load(placement.pid, MainActivity.this);
+                            SAVideoAd.load(placement.getPid(), MainActivity.this);
                         }
                         break;
                     }
@@ -161,102 +156,5 @@ public class MainActivity extends Activity {
 
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
         });
-    }
-}
-
-enum Type {
-    BANNER,
-    INTERSTITIAL,
-    VIDEO
-}
-
-class AdapterItem {
-    // do nothing
-}
-
-class HeaderItem extends AdapterItem {
-    public String title;
-
-    public HeaderItem(String title) {
-        this.title = title;
-    }
-}
-
-class PlacementItem extends AdapterItem {
-    public String name;
-    public int pid;
-    public Type type;
-
-    public PlacementItem(String name, int pid, Type type) {
-        this.name = name;
-        this.pid = pid;
-        this.type = type;
-    }
-}
-
-class ListAdapter<T extends AdapterItem> extends ArrayAdapter<T> {
-
-    private List<T> data;
-
-    public ListAdapter(Context context) {
-        super(context, 0);
-    }
-
-    public void updateData(List<T> newData) {
-        data = newData;
-    }
-
-    public void reloadList() {
-        notifyDataSetChanged();
-    }
-
-    @Nullable
-    @Override
-    public T getItem(int i) {
-        return data.get(i);
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    @Override
-    public int getItemViewType(int i) {
-        return getItem(i) instanceof HeaderItem ? 0 : 1;
-    }
-
-    @Override
-    public int getCount() {
-        return data != null ? data.size() : 0;
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_placement, parent, false);
-        }
-
-        TextView title = convertView.findViewById(R.id.RowTitle);
-
-        T item = getItem(position);
-
-        if (item instanceof HeaderItem) {
-            HeaderItem header = (HeaderItem) item;
-            title.setText(header.title);
-            convertView.setBackgroundColor(Color.LTGRAY);
-        } else {
-            PlacementItem placement = (PlacementItem) item;
-            if (placement != null) {
-                String titleText = placement.pid + " | " + placement.name;
-                title.setText(titleText);
-            }
-            title.setBackgroundColor(Color.WHITE);
-        }
-
-
-        return convertView;
     }
 }

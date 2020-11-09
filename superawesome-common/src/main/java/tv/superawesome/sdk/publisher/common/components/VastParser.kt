@@ -7,7 +7,8 @@ interface VastParserType {
     fun parse(data: String): VastAd
 }
 
-class VastParser(private val parser: XmlParserType, private val connectionProvider: ConnectionProviderType) : VastParserType {
+class VastParser(private val parser: XmlParserType,
+                 private val connectionProvider: ConnectionProviderType) : VastParserType {
     override fun parse(data: String): VastAd {
         val vastAd = VastAd()
         val document = parser.parse(data)
@@ -53,7 +54,7 @@ class VastParser(private val parser: XmlParserType, private val connectionProvid
 
             parser.findAll(creative, "Tracking").forEach {
                 val url = "vast_${it.getAttribute("event")}"
-                vastAd.addEvent(VastEvent("vast_click_tracking", url))
+                vastAd.addEvent(VastEvent(url, it.textContent))
             }
 
             parser.findAll(creative, "MediaFile").forEach {

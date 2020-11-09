@@ -20,7 +20,7 @@ class SAAdMobVideoMediationAdapter : Adapter() {
     }
 
     override fun getSDKVersionInfo(): VersionInfo {
-        val splits = BuildConfig.VERSION_NAME.split(".")
+        val splits = BuildConfig.SDK_VERSION.split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt())
         } else {
@@ -29,7 +29,7 @@ class SAAdMobVideoMediationAdapter : Adapter() {
     }
 
     override fun getVersionInfo(): VersionInfo {
-        val splits = BuildConfig.VERSION_NAME.split(".")
+        val splits = BuildConfig.SDK_VERSION.split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt() * 100)
         } else {

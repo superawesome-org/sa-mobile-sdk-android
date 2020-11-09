@@ -1,11 +1,12 @@
 package tv.superawesome.sdk.publisher.common.components
 
 import org.junit.Test
+import tv.superawesome.sdk.publisher.common.models.CreativeReferral
 import kotlin.test.assertEquals
 
 
 class EncoderTest {
-    private val encoder = Encoder()
+    private val encoder: EncoderType = Encoder()
 
     @Test
     fun test() {
@@ -26,5 +27,17 @@ class EncoderTest {
         assertEquals("", result2)
         assertEquals("", result3)
         assertEquals("Gunhan+Sancar", result4)
+    }
+
+    @Test
+    fun testEncodeUrlParamsFromObject() {
+        // Given
+        val referral = CreativeReferral(1, 33, -1, -1,28000)
+
+        // When
+        val result = encoder.encodeUrlParamsFromObject(referral.toMap())
+
+        // Then
+        assertEquals("utm_source%3D1%26utm_campaign%3D33%26utm_term%3D-1%26utm_content%3D-1%26utm_medium%3D28000", result)
     }
 }

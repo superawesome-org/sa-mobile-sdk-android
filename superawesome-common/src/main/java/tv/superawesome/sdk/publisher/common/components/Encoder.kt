@@ -1,10 +1,12 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 interface EncoderType {
     fun encodeUri(string: String?): String
+    fun encodeUrlParamsFromObject(map: Map<String, Any?>): String
 }
 
 class Encoder : EncoderType {
@@ -20,4 +22,12 @@ class Encoder : EncoderType {
             } catch (e: UnsupportedEncodingException) {
                 ""
             }
+
+    @ExperimentalSerializationApi
+    override fun encodeUrlParamsFromObject(map: Map<String, Any?>): String {
+        val params = map.entries
+                .map { entry -> "${entry.key}=${entry.value}" }
+                .joinToString(separator = "&") { element -> element }
+        return encodeUri(params)
+    }
 }

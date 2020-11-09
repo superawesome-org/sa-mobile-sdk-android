@@ -1,6 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'kotlin-android'
-apply from: '../bintray.gradle'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+version = properties.getProperty("project.version")
+
+def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'        // Homepage URL of the library
+def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'         // Git repository URL
 
 android {
     compileSdkVersion compile_sdk_version
@@ -10,7 +19,8 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName PROJECT_VERSION
+        versionName version
+        buildConfigField "String", "SDK_VERSION", "\"${getSdkVersion()}\""
     }
     buildTypes {
         release {
@@ -22,18 +32,56 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = "SuperAwesomeSDK-MoPub"
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
     }
 }
 
-ext {
-    publishDescription = 'SuperAwesome Mobile SDK for Android with MoPub extension'
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'SADefaults Mobile SDK for Android with MoPub extension'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'gabrielcoman'
+                        name 'Gabriel Coman'
+                        email 'gabriel.coman@superawesome.tv'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
 }
 
-bintray { pkg { name = 'SuperAwesome-MoPub' }}
-
 repositories {
+    maven { url  "http://dl.bintray.com/gabrielcoman/maven" }
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     jcenter()
     maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
@@ -42,7 +90,6 @@ repositories {
 dependencies {
     api project(':superawesome-base')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation('com.mopub:mopub-sdk-banner:5.13.0') { transitive = true }
     implementation('com.mopub:mopub-sdk-fullscreen:5.13.0') { transitive = true }
     implementation('com.mopub:mopub-sdk-native-static:5.13.0') { transitive = true }
