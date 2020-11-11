@@ -40,6 +40,33 @@ class AwesomeAdsActivity : Activity() {
         configureBannerAd()
         configureInterstitialAd()
         configureVideoAd()
+
+        initButtons()
+    }
+
+    private fun initButtons() {
+        config1Button.setOnClickListener {
+            Log.i("SuperAwesome", "Config 1 selected")
+            bannerView.enableParentalGate()
+            bannerView.enableBumperPage()
+
+            SAInterstitialAd.enableParentalGate()
+            SAInterstitialAd.enableBumperPage()
+
+            SAVideoAd.enableParentalGate()
+            SAVideoAd.enableBumperPage()
+        }
+        config2Button.setOnClickListener {
+            Log.i("SuperAwesome", "Config 2 selected")
+            bannerView.disableParentalGate()
+            bannerView.disableBumperPage()
+
+            SAInterstitialAd.disableParentalGate()
+            SAInterstitialAd.disableBumperPage()
+
+            SAVideoAd.disableParentalGate()
+            SAVideoAd.disableBumperPage()
+        }
     }
 
     private fun initUI() {
@@ -107,6 +134,7 @@ class AwesomeAdsActivity : Activity() {
                 Log.i("gunhan", "bannerView event ${event.name} thread:${Thread.currentThread()}")
 
                 if (event == SAEvent.adLoaded) {
+                    bannerView.visibility = View.VISIBLE
                     bannerView.play()
                 }
             }

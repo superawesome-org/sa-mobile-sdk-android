@@ -7,6 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".AwesomeAdsActivity">
 
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+
+        <Button
+            android:id="@+id/config1Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Config 1" />
+
+        <Button
+            android:id="@+id/config2Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Config 2" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
@@ -25,10 +45,11 @@
         app:layout_constraintBottom_toTopOf="@+id/bannerView"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/buttons" />
 
     <tv.superawesome.sdk.publisher.ui.banner.BannerView
         android:id="@+id/bannerView"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/color_primary"

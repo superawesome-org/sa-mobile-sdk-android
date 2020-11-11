@@ -50,6 +50,7 @@ class ParentalGate(
 
         // Set an EditText view to get user input
         val input = EditText(context)
+        input.tag = 998877
         input.inputType = InputType.TYPE_CLASS_NUMBER
         alertDialog.setView(input)
 
