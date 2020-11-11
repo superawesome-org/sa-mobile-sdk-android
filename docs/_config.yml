@@ -10,7 +10,7 @@ description: >
 baseurl: "/sa-mobile-sdk-android"
 
 # This is mostly for testing
-url: "http://superawesomeltd.github.io/sa-mobile-sdk-android"
+url: "http://superawesomeltd.github.io"
 
 latest_version: 7.2.15
 changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/CHANGELOG.md
