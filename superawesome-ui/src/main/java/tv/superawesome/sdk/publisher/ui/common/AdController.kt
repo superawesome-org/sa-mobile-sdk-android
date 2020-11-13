@@ -67,9 +67,7 @@ class AdController(
         get() = currentAdResponse?.placementId ?: 0
 
     override fun handleAdTap(url: String, context: Context) {
-        showParentalGateIfNeeded(context) {
-            onAdClicked(url, context)
-        }
+        onAdClicked(url, context)
     }
 
     override fun handleSafeAdTap(context: Context) {
