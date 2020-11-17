@@ -107,7 +107,7 @@ public class SAUnityVideoAd {
     }
 
     /**
-     * Method that plays a new video ad (from Unity)
+     * Method that apply settings (from Unity)
      */
     public static void SuperAwesomeUnitySAVideoAdApplySettings(
             boolean isParentalGateEnabled,
