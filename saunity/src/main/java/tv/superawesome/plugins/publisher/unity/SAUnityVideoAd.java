@@ -1,6 +1,6 @@
 /**
- * @Copyright:   SADefaults Trading Limited 2017
- * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
+ * @Copyright: SADefaults Trading Limited 2017
+ * @Author: Gabriel Coman (gabriel.coman@superawesome.tv)
  */
 package tv.superawesome.plugins.publisher.unity;
 
@@ -23,20 +23,38 @@ public class SAUnityVideoAd {
     /**
      * Method that creates a new Video Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAVideoAdCreate (Context context) {
+    public static void SuperAwesomeUnitySAVideoAdCreate(Context context) {
         SAVideoAd.setListener(new SAInterface() {
             @Override
             public void onEvent(int placementId, SAEvent event) {
                 switch (event) {
-                    case adLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString()); break;
-                    case adEmpty: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString()); break;
-                    case adFailedToLoad: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString()); break;
-                    case adAlreadyLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString()); break;
-                    case adShown: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString()); break;
-                    case adFailedToShow: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString()); break;
-                    case adClicked: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString()); break;
-                    case adEnded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString()); break;
-                    case adClosed: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString()); break;
+                    case adLoaded:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString());
+                        break;
+                    case adEmpty:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString());
+                        break;
+                    case adFailedToLoad:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString());
+                        break;
+                    case adAlreadyLoaded:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString());
+                        break;
+                    case adShown:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString());
+                        break;
+                    case adFailedToShow:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString());
+                        break;
+                    case adClicked:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString());
+                        break;
+                    case adEnded:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString());
+                        break;
+                    case adClosed:
+                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
+                        break;
                 }
             }
         });
@@ -59,24 +77,24 @@ public class SAUnityVideoAd {
     /**
      * Method that checks to see if an ad is available for a video ad (from Unity)
      */
-    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable (Context context,
-                                                                    int placementId) {
+    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable(Context context,
+                                                                   int placementId) {
         return SAVideoAd.hasAdAvailable(placementId);
     }
 
     /**
      * Method that plays a new video ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAVideoAdPlay (Context context,
-                                                       int placementId,
-                                                       boolean isParentalGateEnabled,
-                                                       boolean isBumperPageEnabled,
-                                                       boolean shouldShowCloseButton,
-                                                       boolean shouldShowSmallClickButton,
-                                                       boolean shouldAutomaticallyCloseAtEnd,
-                                                       int orientation,
-                                                       boolean isBackButtonEnabled,
-                                                       boolean shouldShowCloseWarning) {
+    public static void SuperAwesomeUnitySAVideoAdPlay(Context context,
+                                                      int placementId,
+                                                      boolean isParentalGateEnabled,
+                                                      boolean isBumperPageEnabled,
+                                                      boolean shouldShowCloseButton,
+                                                      boolean shouldShowSmallClickButton,
+                                                      boolean shouldAutomaticallyCloseAtEnd,
+                                                      int orientation,
+                                                      boolean isBackButtonEnabled,
+                                                      boolean shouldShowCloseWarning) {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
@@ -88,4 +106,27 @@ public class SAUnityVideoAd {
         SAVideoAd.play(placementId, context);
     }
 
+    /**
+     * Method that plays a new video ad (from Unity)
+     */
+    public static void SuperAwesomeUnitySAVideoAdApplySettings(
+            boolean isParentalGateEnabled,
+            boolean isBumperPageEnabled,
+            boolean shouldShowCloseButton,
+            boolean shouldShowSmallClickButton,
+            boolean shouldAutomaticallyCloseAtEnd,
+            int orientation,
+            boolean isBackButtonEnabled,
+            boolean shouldShowCloseWarning,
+            boolean testModeEnabled) {
+        SAVideoAd.setParentalGate(isParentalGateEnabled);
+        SAVideoAd.setBumperPage(isBumperPageEnabled);
+        SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+        SAVideoAd.setCloseButton(shouldShowCloseButton);
+        SAVideoAd.setSmallClick(shouldShowSmallClickButton);
+        SAVideoAd.setBackButton(isBackButtonEnabled);
+        SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
+        SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
+        SAVideoAd.setTestMode(testModeEnabled);
+    }
 }
