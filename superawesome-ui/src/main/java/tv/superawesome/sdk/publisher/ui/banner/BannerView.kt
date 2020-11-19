@@ -24,7 +24,7 @@ import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 
 
 class BannerView : FrameLayout, Injectable {
-    private val controller: AdControllerType by inject()
+    val controller: AdControllerType by inject()
     private val imageProvider: ImageProviderType by inject()
     private val logger: Logger by inject()
 

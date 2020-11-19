@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.ui.common
 
 import android.os.Parcel
 import android.os.Parcelable
+import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 
@@ -16,6 +17,7 @@ open class Config : Parcelable {
     var shouldCloseAtEnd: Boolean
     var shouldShowCloseButton: Boolean
     var orientation: Orientation
+    var startDelay: AdRequest.StartDelay
 
     constructor(
             moatLimiting: Boolean,
@@ -28,6 +30,7 @@ open class Config : Parcelable {
             shouldCloseAtEnd: Boolean,
             shouldShowCloseButton: Boolean,
             orientation: Orientation,
+            startDelay: AdRequest.StartDelay,
     ) {
         this.moatLimiting = moatLimiting
         this.testEnabled = testEnabled
@@ -39,6 +42,7 @@ open class Config : Parcelable {
         this.shouldCloseAtEnd = shouldCloseAtEnd
         this.shouldShowCloseButton = shouldShowCloseButton
         this.orientation = orientation
+        this.startDelay = startDelay
     }
 
     protected constructor(parcel: Parcel) {
@@ -52,6 +56,7 @@ open class Config : Parcelable {
         shouldCloseAtEnd = parcel.readByte().toInt() != 0
         shouldShowCloseButton = parcel.readByte().toInt() != 0
         orientation = Orientation.fromValue(parcel.readInt()) ?: Orientation.Any
+        startDelay = AdRequest.StartDelay.fromValue(parcel.readInt()) ?: Constants.defaultStartDelay
     }
 
     override fun describeContents(): Int = 0
@@ -67,6 +72,7 @@ open class Config : Parcelable {
         parcel.writeByte((if (shouldCloseAtEnd) 1 else 0).toByte())
         parcel.writeByte((if (shouldShowCloseButton) 1 else 0).toByte())
         parcel.writeInt(orientation.value)
+        parcel.writeInt(startDelay.value)
     }
 
     companion object CREATOR : Parcelable.Creator<Config> {
@@ -85,6 +91,7 @@ open class Config : Parcelable {
                 shouldCloseAtEnd = Constants.defaultCloseAtEnd,
                 shouldShowCloseButton = Constants.defaultCloseButton,
                 orientation = Constants.defaultOrientation,
+                startDelay = Constants.defaultStartDelay,
         )
     }
 }

@@ -13,7 +13,7 @@ object SAInterstitialAd : Injectable {
     private var orientation: Orientation = Constants.defaultOrientation
     private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
 
-    private val controller: AdControllerType by lazy { get() }
+    val controller: AdControllerType by lazy { get() }
 
     /**
      * Static method that loads an ad into the interstitial queue.

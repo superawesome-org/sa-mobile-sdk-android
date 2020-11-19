@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply from: '../bintray.gradle'
 
 android {
@@ -10,6 +12,7 @@ android {
         targetSdkVersion target_sdk_version
         versionCode 1
         versionName PROJECT_VERSION
+        buildConfigField "String", "SDK_VERSION", "\"${getSdkVersion()}\""
     }
     buildTypes {
         release {
@@ -24,16 +27,19 @@ android {
 }
 
 ext {
-    publishDescription = 'SuperAwesome Full SDK'
+    publishDescription = 'SuperAwesome Mobile SDK for Android with AdMob extension'
 }
 
-bintray { pkg { name = 'SuperAwesome' }}
+bintray { pkg { name = 'SuperAwesome-AdMob' }}
 
 repositories {
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
+    mavenCentral()
 }
 
 dependencies {
     api project(':superawesome-base')
-    implementation project(':superawesome-moat')
+    implementation 'com.google.android.gms:play-services-ads:19.5.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

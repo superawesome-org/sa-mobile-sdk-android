@@ -41,11 +41,9 @@ repositories {
 }
 
 dependencies {
-    implementation project(':superawesome-full')
-
     implementation project(':superawesome')
-    implementation project(':saadmob')
-    api project(':samopub')
+    implementation project(':superawesome-admob')
+    api project(':superawesome-mopub')
 
     implementation('com.mopub:mopub-sdk-banner:5.13.0') { transitive = true }
     implementation('com.mopub:mopub-sdk-fullscreen:5.13.0') { transitive = true }

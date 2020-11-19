@@ -43,6 +43,10 @@ object SAVideoAd : Injectable {
         controller.delegate = value
     }
 
+    fun setPlaybackMode(mode: AdRequest.StartDelay) {
+        controller.config.moatLimiting
+    }
+
     fun enableParentalGate() {
         setParentalGate(true)
     }
@@ -77,6 +81,14 @@ object SAVideoAd : Injectable {
 
     fun setCloseButton(value: Boolean) {
         controller.config.shouldShowCloseButton = value
+    }
+
+    fun setSmallClick(value: Boolean) {
+        controller.config.shouldShowSmallClick = value
+    }
+
+    fun setCloseAtEnd(value: Boolean) {
+        controller.config.shouldCloseAtEnd = value
     }
 
     fun enableCloseButton() {

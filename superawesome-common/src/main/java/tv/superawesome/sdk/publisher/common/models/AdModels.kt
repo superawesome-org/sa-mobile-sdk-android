@@ -92,7 +92,12 @@ data class AdRequest(
         PostRoll(-2),
         GenericMidRoll(-1),
         PreRoll(0),
-        MidRoll(1),
+        MidRoll(1);
+
+        companion object {
+            private val values = values()
+            fun fromValue(value: Int) = values.firstOrNull { it.value == value }
+        }
     }
 
     /// Specify the position of the ad
