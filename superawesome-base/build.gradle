@@ -44,7 +44,7 @@ repositories {
 
 dependencies {
     api(project(":superawesome-common"))
-    implementation(project(':superawesome-retrofit'))
+    implementation(project(':superawesome-network'))
     api(project(':superawesome-ui'))
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

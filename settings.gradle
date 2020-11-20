@@ -1,16 +1,19 @@
-include ':superawesome-ui'
-include ':samoat'
-include ':superawesome-common'
-include ':superawesome-retrofit'
-include ':superawesome-base'
+// Tester App
 include ':app'
-include ':superawesome-unity'
+
+// Main
+include ':superawesome'
+include ':superawesome-full'
+
+// Modules
+include ':superawesome-ui'
+include ':superawesome-common'
+include ':superawesome-network'
+include ':superawesome-base'
+
+// Plugins
+include ':superawesome-moat'
 include ':superawesome-mopub'
 include ':superawesome-admob'
-include ':saair'
-include ':superawesome'
-include ':superawesome-baseold'
-//project(':superawesome-base').projectDir = new File('superawesome-base')
-include ':superawesome-sdk'
-include ':superawesome-moat'
-include ':superawesome-full'
+include ':superawesome-unity'
+
