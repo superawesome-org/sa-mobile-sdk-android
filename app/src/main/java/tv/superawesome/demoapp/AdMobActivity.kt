@@ -8,18 +8,17 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
-import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.plugins.publisher.admob.SAAdMobBannerCustomEvent
 import tv.superawesome.plugins.publisher.admob.SAAdMobExtras
 import tv.superawesome.plugins.publisher.admob.SAAdMobInterstitialCustomEvent
 import tv.superawesome.plugins.publisher.admob.SAAdMobVideoMediationAdapter
-import tv.superawesome.sdk.publisher.SAOrientation
+import tv.superawesome.sdk.publisher.common.models.Orientation
+import tv.superawesome.sdk.publisher.common.network.Environment
 
 class AdMobActivity : Activity() {
     private lateinit var adView: AdView
     private lateinit var interstitialAd: InterstitialAd
     private lateinit var rewardedVideoAd: RewardedVideoAd
-    private val configuration = SAConfiguration.PRODUCTION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,7 +128,6 @@ class AdMobActivity : Activity() {
     private fun requestBannerAd() {
         val bundle = SAAdMobExtras.extras()
                 .setTestMode(false)
-                .setConfiguration(configuration)
                 .setParentalGate(false)
                 .setTransparent(true)
                 .build()
@@ -139,8 +137,7 @@ class AdMobActivity : Activity() {
     private fun requestInterstitialAd() {
         val bundle = SAAdMobExtras.extras()
                 .setTestMode(false)
-                .setConfiguration(configuration)
-                .setOrientation(SAOrientation.PORTRAIT)
+                .setOrientation(Orientation.Portrait)
                 .setParentalGate(true)
                 .build()
         interstitialAd.loadAd(AdRequest.Builder().addCustomEventExtrasBundle(SAAdMobInterstitialCustomEvent::class.java, bundle).build())
@@ -149,9 +146,8 @@ class AdMobActivity : Activity() {
     private fun requestVideoAd() {
         val bundle = SAAdMobExtras.extras()
                 .setTestMode(false)
-                .setConfiguration(configuration)
                 .setParentalGate(false)
-                .setOrientation(SAOrientation.LANDSCAPE)
+                .setOrientation(Orientation.Landscape)
                 .setSmallClick(true)
                 .setCloseAtEnd(true)
                 .setCloseButton(true)

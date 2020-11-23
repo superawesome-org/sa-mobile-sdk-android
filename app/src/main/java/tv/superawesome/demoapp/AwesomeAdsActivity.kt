@@ -8,10 +8,11 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_awesomeads.*
 import tv.superawesome.demoapp.adapter.*
+import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.common.models.Configuration
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.core.AwesomeAdsSdk
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
 
@@ -31,7 +32,7 @@ class AwesomeAdsActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_awesomeads)
 
-        AwesomeAdsSdk.initSdk(applicationContext, AwesomeAdsSdk.Configuration(
+        AwesomeAds.init(applicationContext, Configuration(
                 environment = Environment.production,
                 logging = true))
 
