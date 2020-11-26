@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
+apply from: '../bintray.gradle'
+
 android {
     compileSdkVersion compile_sdk_version
 
@@ -30,6 +32,12 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+ext {
+    publishDescription = 'SuperAwesome Mobile SDK for Android with Moat extension'
+}
+
+bintray { pkg { name = 'SuperAwesome-Moat' }}
 
 dependencies {
     implementation files('libs/moatlib-2.6.6.jar')
