@@ -20,7 +20,7 @@ object SAUnityVideoAd {
     /**
      * Method that creates a new Video Ad (from Unity)
      */
-    fun create(context: Context?) {
+    fun SuperAwesomeUnitySAVideoAdCreate(context: Context?) {
         SAVideoAd.setListener(object : SAInterface {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 when (event) {
@@ -41,7 +41,7 @@ object SAUnityVideoAd {
     /**
      * Method that loads a new Video Ad (from Unity)
      */
-    fun load(
+    fun SuperAwesomeUnitySAVideoAdLoad(
             context: Context,
             placementId: Int,
             configuration: Int,
@@ -56,13 +56,13 @@ object SAUnityVideoAd {
     /**
      * Method that checks to see if an ad is available for a video ad (from Unity)
      */
-    fun hasAdAvailable(context: Context?, placementId: Int): Boolean =
+    fun SuperAwesomeUnitySAVideoAdHasAdAvailable(context: Context?, placementId: Int): Boolean =
             SAVideoAd.hasAdAvailable(placementId)
 
     /**
      * Method that plays a new video ad (from Unity)
      */
-    fun play(
+    fun SuperAwesomeUnitySAVideoAdPlay(
             context: Context,
             placementId: Int,
             isParentalGateEnabled: Boolean,

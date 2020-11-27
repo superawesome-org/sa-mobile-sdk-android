@@ -12,7 +12,7 @@ public class SAUnityBumperPage {
      * @param context current context
      * @param name    new bumper page name
      */
-    public static void overrideName(Context context, String name) {
+    public static void SuperAwesomeUnityBumperOverrideName(Context context, String name) {
         BumperPageActivity.Companion.overrideName(name);
     }
 }

@@ -28,7 +28,7 @@ object SAUnityInterstitialAd {
     /**
      * Method that creates a new Interstitial Ad (from Unity)
      */
-    fun create(context: Context?) {
+    fun SuperAwesomeUnitySAInterstitialAdCreate(context: Context?) {
         setListener(object : SAInterface {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 when (event) {
@@ -49,7 +49,7 @@ object SAUnityInterstitialAd {
     /**
      * Method that loads a new Interstitial AD (from Unity)
      */
-    fun load(context: Context?, placementId: Int, configuration: Int, test: Boolean) {
+    fun SuperAwesomeUnitySAInterstitialAdLoad(context: Context?, placementId: Int, configuration: Int, test: Boolean) {
         setTestMode(test)
         load(placementId, context!!)
     }
@@ -57,14 +57,14 @@ object SAUnityInterstitialAd {
     /**
      * Method that checks to see if an ad is available for an interstitial ad (from Unity)
      */
-    fun hasAdAvailable(context: Context?, placementId: Int): Boolean {
+    fun SuperAwesomeUnitySAInterstitialAdHasAdAvailable(context: Context?, placementId: Int): Boolean {
         return hasAdAvailable(placementId)
     }
 
     /**
      * Method that plays a new Interstitial Ad (from Unity)
      */
-    fun play(context: Context?, placementId: Int, isParentalGateEnabled: Boolean, isBumperPageEnabled: Boolean, orientation: Int, isBackButtonEnabled: Boolean) {
+    fun SuperAwesomeUnitySAInterstitialAdPlay(context: Context?, placementId: Int, isParentalGateEnabled: Boolean, isBumperPageEnabled: Boolean, orientation: Int, isBackButtonEnabled: Boolean) {
         setParentalGate(isParentalGateEnabled)
         setBumperPage(isBumperPageEnabled)
         Orientation.fromValue(orientation)?.let { setOrientation(it) }

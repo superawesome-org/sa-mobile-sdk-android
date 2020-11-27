@@ -17,7 +17,7 @@ object SAUnityVersion {
      * @param version current version string
      * @param sdk     current sdk string
      */
-    fun setVersion(version: String?, sdk: String?) {
+    fun SuperAwesomeUnityVersionSetVersion(version: String?, sdk: String?) {
         SdkInfo.overrideVersion = version
         SdkInfo.overridePlatform = sdk
     }

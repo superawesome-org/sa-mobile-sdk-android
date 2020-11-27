@@ -30,7 +30,7 @@ public class SAUnityBannerAd {
     /**
      * Method that creates a new banner ad (from Unity)
      */
-    public static void create(Context context, final String unityName) {
+    public static void SuperAwesomeUnitySABannerAdCreate(Context context, final String unityName) {
 
         // create the banner
         BannerView bannerAd = new BannerView(context);
@@ -74,7 +74,7 @@ public class SAUnityBannerAd {
     /**
      * Method that loads a new Banner Ad (from Unity)
      */
-    public static void load(Context context, String unityName, int placementId, int configuration, boolean test) {
+    public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
         if (bannerAdHashMap.containsKey(unityName)) {
             BannerView bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setTestMode(test);
@@ -85,7 +85,7 @@ public class SAUnityBannerAd {
     /**
      * Method that checks to see if an ad is available for a banner ad (from Unity)
      */
-    public static boolean hasAdAvailable(Context context, String unityName) {
+    public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable(Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
             BannerView bannerAd = bannerAdHashMap.get(unityName);
             return bannerAd != null && bannerAd.hasAdAvailable();
@@ -146,7 +146,7 @@ public class SAUnityBannerAd {
     /**
      * Method that plays a new Banner ad (from Unity)
      */
-    public static void play(Context context, String unityName, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int position, int width, int height, boolean color) {
+    public static void SuperAwesomeUnitySABannerAdPlay(Context context, String unityName, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int position, int width, int height, boolean color) {
 
         if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
 
@@ -198,7 +198,7 @@ public class SAUnityBannerAd {
     /**
      * Method that closes a banner ad (from Unity)
      */
-    public static void close(Context context, String unityName) {
+    public static void SuperAwesomeUnitySABannerAdClose(Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
             // close the banner
             BannerView bannerAd = bannerAdHashMap.get(unityName);

@@ -40,7 +40,8 @@ ext {
 bintray { pkg { name = 'SuperAwesome-Moat' }}
 
 dependencies {
-    implementation files('libs/moatlib-2.6.6.jar')
+    // Moat version 2.6.6
+    implementation files('libs/moatlib.jar')
     implementation project(path: ':superawesome-common')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
