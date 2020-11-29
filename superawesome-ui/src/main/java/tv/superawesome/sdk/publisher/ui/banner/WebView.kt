@@ -50,12 +50,12 @@ class WebView @JvmOverloads constructor(context: Context?, attrs: AttributeSet? 
             @Suppress("DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 if (finishedLoading) {
-                    val url = url ?: return false
-                    if (url.contains("sa-beta-ads-uploads-superawesome.netdna-ssl.com") &&
-                            url.contains("/iframes")) {
+                    val fullUrl = url ?: return false
+                    if (fullUrl.contains("sa-beta-ads-uploads-superawesome.netdna-ssl.com") &&
+                            fullUrl.contains("/iframes")) {
                         return false
                     }
-                    listener?.webViewOnClick(url)
+                    listener?.webViewOnClick(fullUrl)
                     return true
                 } else {
                     return false
