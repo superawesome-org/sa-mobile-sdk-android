@@ -11,7 +11,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName PROJECT_VERSION
+        versionName getSdkVersion()
         buildConfigField "String", "SDK_VERSION", "\"${getSdkVersion()}\""
     }
     buildTypes {

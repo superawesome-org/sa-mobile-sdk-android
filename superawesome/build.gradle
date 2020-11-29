@@ -9,7 +9,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName PROJECT_VERSION
+        versionName getSdkVersion()
     }
     buildTypes {
         release {
@@ -37,3 +37,22 @@ dependencies {
     api project(':superawesome-base')
     implementation project(':superawesome-moat')
 }
+
+//task aacount {
+//
+//    doLast {
+//
+//        configurations.implementation.allDependencies.each {
+//            if (it.name != 'unspecified') {
+//                println "group: " + it.group + " || " + " artifactId: " + it.name + " || version: " + it.version
+////                def dependencyNode = dependenciesNode.appendNode('dependency')
+////                dependencyNode.appendNode('groupId', it.group)
+////                dependencyNode.appendNode('artifactId', it.name)
+////                dependencyNode.appendNode('version', it.version)
+////                dependencyNode.appendNode('scope', 'compile')
+//            }
+//        }
+//
+//        4.times { print "$it " }
+//    }
+//}
