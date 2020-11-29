@@ -5,6 +5,8 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
 }
 
+apply from: '../bintray.gradle'
+
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
@@ -35,6 +37,12 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+ext {
+    publishDescription = 'SuperAwesome Common Module'
+}
+
+bintray { pkg { name = 'SuperAwesome-Common' }}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

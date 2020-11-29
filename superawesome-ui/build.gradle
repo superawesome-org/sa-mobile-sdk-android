@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
+apply from: '../bintray.gradle'
+
 android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
@@ -36,6 +38,12 @@ android {
         maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     }
 }
+
+ext {
+    publishDescription = 'SuperAwesome UI Module'
+}
+
+bintray { pkg { name = 'SuperAwesome-UI' }}
 
 dependencies {
     implementation project(path: ':superawesome-common')

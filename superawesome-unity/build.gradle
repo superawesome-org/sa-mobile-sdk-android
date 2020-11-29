@@ -1,10 +1,5 @@
 apply plugin: 'com.android.library'
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-version = properties.getProperty("project.version")
-group = properties.getProperty("project.group")
+apply from: '../bintray.gradle'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -14,7 +9,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName version
+        versionName getSdkVersion()
     }
     buildTypes {
         release {
@@ -31,6 +26,12 @@ android {
 repositories {
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
+
+ext {
+    publishDescription = 'SuperAwesome Unity Module'
+}
+
+bintray { pkg { name = 'SuperAwesome-Unity' }}
 
 dependencies {
     implementation project(':superawesome-base')
