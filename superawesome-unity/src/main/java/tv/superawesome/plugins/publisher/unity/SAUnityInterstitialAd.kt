@@ -8,7 +8,6 @@ import android.content.Context
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd.hasAdAvailable
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd.load
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd.play
