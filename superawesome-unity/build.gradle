@@ -35,5 +35,5 @@ bintray { pkg { name = 'SuperAwesome-Unity' }}
 
 dependencies {
     implementation project(':superawesome-base')
-    api files('libs/unity-classes.jar')
+    implementation files('libs/unity-classes.jar')
 }
