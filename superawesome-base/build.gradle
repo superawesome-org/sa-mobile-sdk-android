@@ -46,7 +46,6 @@ repositories {
 
 dependencies {
     implementation "tv.superawesome.lib.savideoplayer:savideoplayer:2.0.1"
-    implementation files('libs/json.jar')
 
     // Tests
     testImplementation "junit:junit:$junit_version"
