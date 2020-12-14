@@ -1,6 +1,5 @@
 package tv.superawesome.lib.saevents.events;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONObject;

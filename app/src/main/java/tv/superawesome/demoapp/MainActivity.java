@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
         });
 
         SAVideoAd.setConfigurationProduction();
-        SAVideoAd.disableTestMode();
+        SAVideoAd.enableTestMode();
         SAVideoAd.enableParentalGate();
         SAVideoAd.enableCloseButtonWithWarning();
         SAVideoAd.enableBumperPage();
@@ -98,7 +98,8 @@ public class MainActivity extends Activity {
                 new PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
                 new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Video", 44262, Type.VIDEO)
+                new PlacementItem("Video", 44262, Type.VIDEO),
+                new PlacementItem("Video", 40971, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
