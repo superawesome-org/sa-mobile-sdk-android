@@ -2,25 +2,25 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="sa-mobile-sdk-android/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" filepath="$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" group="sa-mobile-sdk-android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-core/Workspace.sa-mobile-sdk-android.superawesome-core.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-core/Workspace.sa-mobile-sdk-android.superawesome-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-retrofit/Workspace.sa-mobile-sdk-android.superawesome-retrofit.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-retrofit/Workspace.sa-mobile-sdk-android.superawesome-retrofit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" filepath="$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/sa-mobile-sdk-android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/sa-mobile-sdk-android.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/saadmob/sa-mobile-sdk-android.saadmob.iml" filepath="$PROJECT_DIR$/.idea/modules/saadmob/sa-mobile-sdk-android.saadmob.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/saair/sa-mobile-sdk-android.saair.iml" filepath="$PROJECT_DIR$/.idea/modules/saair/sa-mobile-sdk-android.saair.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/samoat/sa-mobile-sdk-android.samoat.iml" filepath="$PROJECT_DIR$/.idea/modules/samoat/sa-mobile-sdk-android.samoat.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/samopub/sa-mobile-sdk-android.samopub.iml" filepath="$PROJECT_DIR$/.idea/modules/samopub/sa-mobile-sdk-android.samopub.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/saunity/sa-mobile-sdk-android.saunity.iml" filepath="$PROJECT_DIR$/.idea/modules/saunity/sa-mobile-sdk-android.saunity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome/sa-mobile-sdk-android.superawesome.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome/sa-mobile-sdk-android.superawesome.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-base/sa-mobile-sdk-android.superawesome-base.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-base/sa-mobile-sdk-android.superawesome-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-core/sa-mobile-sdk-android.superawesome-core.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-core/sa-mobile-sdk-android.superawesome-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-retrofit/sa-mobile-sdk-android.superawesome-retrofit.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-retrofit/sa-mobile-sdk-android.superawesome-retrofit.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saadmob/saadmob.iml" filepath="$PROJECT_DIR$/.idea/modules/saadmob/saadmob.iml" group="sa-mobile-sdk-android/saadmob" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saair/saair.iml" filepath="$PROJECT_DIR$/.idea/modules/saair/saair.iml" group="sa-mobile-sdk-android/saair" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/samoat/samoat.iml" filepath="$PROJECT_DIR$/.idea/modules/samoat/samoat.iml" group="sa-mobile-sdk-android/samoat" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/samopub/samopub.iml" filepath="$PROJECT_DIR$/.idea/modules/samopub/samopub.iml" group="sa-mobile-sdk-android/samopub" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saunity/saunity.iml" filepath="$PROJECT_DIR$/.idea/modules/saunity/saunity.iml" group="sa-mobile-sdk-android/saunity" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome/superawesome.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome/superawesome.iml" group="sa-mobile-sdk-android/superawesome" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-base/superawesome-base.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-base/superawesome-base.iml" group="sa-mobile-sdk-android/superawesome-base" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-common/superawesome-common.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-common/superawesome-common.iml" group="sa-mobile-sdk-android/superawesome-common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-core/superawesome-core.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-core/superawesome-core.iml" group="sa-mobile-sdk-android/superawesome-core" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-retrofit/superawesome-retrofit.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-retrofit/superawesome-retrofit.iml" group="sa-mobile-sdk-android/superawesome-retrofit" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saadmob/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.saadmob.iml" filepath="$PROJECT_DIR$/.idea/modules/saadmob/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.saadmob.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saair/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.saair.iml" filepath="$PROJECT_DIR$/.idea/modules/saair/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.saair.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/samoat/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.samoat.iml" filepath="$PROJECT_DIR$/.idea/modules/samoat/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.samoat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/samopub/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.samopub.iml" filepath="$PROJECT_DIR$/.idea/modules/samopub/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.samopub.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saunity/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.saunity.iml" filepath="$PROJECT_DIR$/.idea/modules/saunity/tv.superawesome.sdk.publisher.sa-mobile-sdk-android.saunity.iml" />
     </modules>
   </component>
 </project>

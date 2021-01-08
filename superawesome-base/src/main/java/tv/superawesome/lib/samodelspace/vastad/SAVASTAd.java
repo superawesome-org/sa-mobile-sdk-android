@@ -6,6 +6,7 @@ package tv.superawesome.lib.samodelspace.vastad;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -68,7 +69,11 @@ public class SAVASTAd extends SABaseObject implements Parcelable {
         redirect = in.readString();
         url = in.readString();
         media = in.createTypedArrayList(SAVASTMedia.CREATOR);
-        events = in.createTypedArrayList(SAVASTEvent.CREATOR);
+        try {
+            events = in.createTypedArrayList(SAVASTEvent.CREATOR);
+        } catch (Exception e) {
+            Log.w("AwesomeAds", "Could not parse VAST events. This could be because the VAST is invalid");
+        }
         type = in.readParcelable(SAVASTAdType.class.getClassLoader());
     }
 

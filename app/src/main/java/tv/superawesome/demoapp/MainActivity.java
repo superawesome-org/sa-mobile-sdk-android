@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
+import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SABannerAd;
@@ -84,8 +85,7 @@ public class MainActivity extends Activity {
             Log.d("SADefaults", "VIDEO AD: " + placementId + " -> Event : " + event);
 
             if (event == SAEvent.adLoaded) {
-                SAVideoAd.play(placementId, MainActivity.this);
-                SAVideoAd.play(placementId, MainActivity.this);
+//                SAVideoAd.play(placementId, MainActivity.this);
             }
         });
 
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
                 new PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
                 new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
-                new PlacementItem("Video", 44262, Type.VIDEO),
+                new PlacementItem("Video", 41372, Type.VIDEO),
                 new PlacementItem("Video", 40971, Type.VIDEO)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
@@ -131,7 +131,6 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
     }
 
     public void gotoAdMob(View view) {
