@@ -68,8 +68,8 @@ public class SAResponse extends SABaseObject implements Parcelable {
      */
     protected SAResponse(Parcel in) {
         status = in.readInt();
-        ads = in.createTypedArrayList(SAAd.CREATOR);
         placementId = in.readInt();
+        ads = in.createTypedArrayList(SAAd.CREATOR);
         format = in.readParcelable(SACreativeFormat.class.getClassLoader());
     }
 

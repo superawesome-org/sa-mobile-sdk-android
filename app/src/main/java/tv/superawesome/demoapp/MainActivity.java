@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 
         //SAInterstitialAd.setConfigurationStaging();
         SAInterstitialAd.enableParentalGate();
-        SAInterstitialAd.disableTestMode();
+        SAInterstitialAd.enableTestMode();
         SAInterstitialAd.enableBumperPage();
         SAInterstitialAd.enableBackButton();
         SAInterstitialAd.disableTestMode();
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
                 new PlacementItem("Banner image", 44258, Type.BANNER),
                 new HeaderItem("Interstitials"),
                 new PlacementItem("Rich Media Interstitial", 44259, Type.INTERSTITIAL),
-                new PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
+                new PlacementItem("3rd party Tag", 30473, Type.INTERSTITIAL),
                 new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("Video", 41372, Type.VIDEO),

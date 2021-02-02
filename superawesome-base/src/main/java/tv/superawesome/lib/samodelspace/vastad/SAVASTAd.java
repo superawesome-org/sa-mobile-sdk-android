@@ -67,14 +67,10 @@ public class SAVASTAd extends SABaseObject implements Parcelable {
      */
     protected SAVASTAd(Parcel in) {
         redirect = in.readString();
+        type = in.readParcelable(SAVASTAdType.class.getClassLoader());
         url = in.readString();
         media = in.createTypedArrayList(SAVASTMedia.CREATOR);
-        try {
-            events = in.createTypedArrayList(SAVASTEvent.CREATOR);
-        } catch (Exception e) {
-            Log.w("AwesomeAds", "Could not parse VAST events. This could be because the VAST is invalid");
-        }
-        type = in.readParcelable(SAVASTAdType.class.getClassLoader());
+        events = in.createTypedArrayList(SAVASTEvent.CREATOR);
     }
 
     /**
@@ -183,9 +179,9 @@ public class SAVASTAd extends SABaseObject implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(redirect);
-        dest.writeString(url);
-        dest.writeTypedList(events);
-        dest.writeTypedList(media);
         dest.writeParcelable(type, flags);
+        dest.writeString(url);
+        dest.writeTypedList(media);
+        dest.writeTypedList(events);
     }
 }
