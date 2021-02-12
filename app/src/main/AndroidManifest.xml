@@ -29,6 +29,9 @@
         <activity
             android:name=".MoPubActivity"
             android:label="MoPub Activity" />
+        <activity
+            android:name=".NewTestActivity"
+            android:label="New Test Activity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
