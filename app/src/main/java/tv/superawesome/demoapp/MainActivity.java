@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
                 new HeaderItem("Banners"),
                 new PlacementItem("Banner image", 44258, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("Rich Media Interstitial", 44259, Type.INTERSTITIAL),
+                new PlacementItem("Rich Media Interstitial", 58509, Type.INTERSTITIAL),
                 new PlacementItem("3rd party Tag", 30473, Type.INTERSTITIAL),
                 new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
@@ -139,7 +139,7 @@ public class MainActivity extends Activity {
     }
 
     public void gotoMoPub(View view) {
-        Intent intent = new Intent(this, MoPubActivity.class);
+        Intent intent = new Intent(this, NewTestActivity.class);
         this.startActivity(intent);
     }
 
