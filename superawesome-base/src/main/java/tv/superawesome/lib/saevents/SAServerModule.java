@@ -7,6 +7,9 @@ import java.util.concurrent.Executors;
 
 import tv.superawesome.lib.saevents.events.SAClickEvent;
 import tv.superawesome.lib.saevents.events.SAImpressionEvent;
+import tv.superawesome.lib.saevents.events.SAMoatAttemptEvent;
+import tv.superawesome.lib.saevents.events.SAMoatErrorEvent;
+import tv.superawesome.lib.saevents.events.SAMoatSuccessEvent;
 import tv.superawesome.lib.saevents.events.SAPGCloseEvent;
 import tv.superawesome.lib.saevents.events.SAPGFailEvent;
 import tv.superawesome.lib.saevents.events.SAPGOpenEvent;
@@ -25,6 +28,9 @@ public class SAServerModule {
     private SAPGCloseEvent              sapgCloseEvent = null;
     private SAPGFailEvent               sapgFailEvent = null;
     private SAPGSuccessEvent            sapgSuccessEvent = null;
+    private SAMoatAttemptEvent          saMoatAttemptEvent = null;
+    private SAMoatSuccessEvent          saMoatSuccessEvent = null;
+    private SAMoatErrorEvent            saMoatErrorEvent = null;
 
     public SAServerModule (SAAd ad, ISASession session) {
         this(ad, session, Executors.newSingleThreadExecutor(), 15000, false);
@@ -38,6 +44,9 @@ public class SAServerModule {
         sapgCloseEvent = new SAPGCloseEvent(ad, session, executor, timeout, isDebug);
         sapgFailEvent = new SAPGFailEvent(ad, session, executor, timeout, isDebug);
         sapgSuccessEvent = new SAPGSuccessEvent(ad, session, executor, timeout, isDebug);
+        saMoatAttemptEvent = new SAMoatAttemptEvent(ad, session, executor, timeout, isDebug);
+        saMoatSuccessEvent = new SAMoatSuccessEvent(ad, session, executor, timeout, isDebug);
+        saMoatErrorEvent = new SAMoatErrorEvent(ad, session, executor, timeout, isDebug);
     }
 
     public void triggerClickEvent (SAURLEvent.Listener listener) {
@@ -79,6 +88,24 @@ public class SAServerModule {
     public void triggerPgSuccessEvent (SAURLEvent.Listener listener) {
         if (sapgSuccessEvent != null) {
             sapgSuccessEvent.triggerEvent(listener);
+        }
+    }
+
+    public void triggerMoatAttemptEvent (SAURLEvent.Listener listener) {
+        if (saMoatAttemptEvent != null) {
+            saMoatAttemptEvent.triggerEvent(listener);
+        }
+    }
+
+    public void triggerMoatSuccessEvent (SAURLEvent.Listener listener) {
+        if (saMoatSuccessEvent != null) {
+            saMoatSuccessEvent.triggerEvent(listener);
+        }
+    }
+
+    public void triggerMoatErrorEvent (SAURLEvent.Listener listener) {
+        if (saMoatErrorEvent != null) {
+            saMoatErrorEvent.triggerEvent(listener);
         }
     }
 
