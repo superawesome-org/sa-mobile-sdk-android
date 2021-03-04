@@ -84,6 +84,24 @@ public class SAEvents {
         }
     }
 
+    public void triggerMoatAttemptEvent () {
+        if (serverModule != null) {
+            serverModule.triggerMoatAttemptEvent(null);
+        }
+    }
+
+    public void triggerMoatSuccessEvent () {
+        if (serverModule != null) {
+            serverModule.triggerMoatSuccessEvent(null);
+        }
+    }
+
+    public void triggerMoatErrorEvent () {
+        if (serverModule != null) {
+            serverModule.triggerMoatErrorEvent(null);
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // VAST Events
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +208,21 @@ public class SAEvents {
     }
 
     public boolean startMoatTrackingForVideoPlayer(VideoView videoView, int duration){
-        return moatModule == null || moatModule.startMoatTrackingForVideoPlayer(videoView, duration);
+        if(moatModule != null) {
+            final boolean isAllowed = moatModule != null && moatModule.isMoatAllowed();
+            if (isAllowed) {
+                triggerMoatAttemptEvent();
+            }
+            final boolean result =
+                    moatModule.startMoatTrackingForVideoPlayer(videoView, duration, isAllowed, moatModule.hasMoatInstance());
+            if (result) {
+                triggerMoatSuccessEvent();
+            } else {
+                triggerMoatErrorEvent();
+            }
+            return result;
+        }
+        return true;
     }
 
     public boolean sendMoatPlayingEvent (int position) {

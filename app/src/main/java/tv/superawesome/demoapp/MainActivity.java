@@ -92,11 +92,11 @@ public class MainActivity extends Activity {
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("Banner image", 44258, Type.BANNER),
+                new PlacementItem("Banner image", 19546, Type.BANNER),
                 new HeaderItem("Interstitials"),
                 new PlacementItem("Rich Media Interstitial", 44259, Type.INTERSTITIAL),
                 new PlacementItem("3rd party Tag", 30473, Type.INTERSTITIAL),
-                new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
+                new PlacementItem("KSF Tag", 60030, Type.INTERSTITIAL),
                 new HeaderItem("Videos"),
                 new PlacementItem("Video", 41372, Type.VIDEO),
                 new PlacementItem("Video", 40971, Type.VIDEO)

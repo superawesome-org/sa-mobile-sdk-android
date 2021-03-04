@@ -22,6 +22,7 @@ public class SAMoatModule {
 
     // a moat object
     private Class<?>  moatClass = null;
+
     private Object    moatInstance = null;
 
     // the ad object
@@ -150,12 +151,9 @@ public class SAMoatModule {
         }
     }
 
-    public boolean startMoatTrackingForVideoPlayer(VideoView videoView, int duration){
+    public boolean startMoatTrackingForVideoPlayer(VideoView videoView, int duration, boolean isAllowed, boolean nullInstance){
 
-        boolean nullInstance = moatInstance != null;
-        boolean isAllowed = isMoatAllowed();
-
-        if (nullInstance && isAllowed) try {
+        if (isAllowed && nullInstance) try {
 
             HashMap<String, String> adData = new HashMap<>();
             adData.put("advertiserId", "" + ad.advertiserId);
@@ -331,5 +329,9 @@ public class SAMoatModule {
                 Log.e(tag, message);
             }
         }
+    }
+
+    public boolean hasMoatInstance() {
+        return moatInstance != null;
     }
 }

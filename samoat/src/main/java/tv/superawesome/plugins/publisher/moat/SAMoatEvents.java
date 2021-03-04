@@ -73,7 +73,11 @@ public class SAMoatEvents implements TrackerListener, VideoTrackerListener {
         Log.d(TAG, "Trying to start tracking web with query " + moatQuery);
 
         // and return the special moat javascript tag to be loaded in a web view
-        return "<script src=\""+MOAT_SERVER+"/"+MOAT_DISPLAY_PARTNER_CODE+"/"+MOAT_URL+"?"+moatQuery+"\" type=\"text/javascript\"></script>";
+        return "<script defer" +
+                " onerror=\"Android.moatError()\"" +
+                " onload=\"Android.moatSuccess()\"" +
+                " src=\""+MOAT_SERVER+"/"+MOAT_DISPLAY_PARTNER_CODE+"/"+MOAT_URL+"?"+moatQuery+"\">" +
+                "</script>";
     }
 
     public boolean stopMoatTrackingForDisplay() {
