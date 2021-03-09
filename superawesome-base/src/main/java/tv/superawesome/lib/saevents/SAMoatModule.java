@@ -22,7 +22,6 @@ public class SAMoatModule {
 
     // a moat object
     private Class<?>  moatClass = null;
-
     private Object    moatInstance = null;
 
     // the ad object
