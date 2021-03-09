@@ -19,10 +19,8 @@ import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
-import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SABannerAd;
@@ -93,11 +91,11 @@ public class MainActivity extends Activity {
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("Banner image", 44258, Type.BANNER),
+                new PlacementItem("Banner image", 19546, Type.BANNER), // 44258
                 new HeaderItem("Interstitials"),
                 new PlacementItem("Rich Media Interstitial", 44259, Type.INTERSTITIAL),
                 new PlacementItem("3rd party Tag", 30473, Type.INTERSTITIAL),
-                new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
+                new PlacementItem("KSF Tag", 60030, Type.INTERSTITIAL), //5387
                 new HeaderItem("Videos"),
                 new PlacementItem("Video", 39419, Type.VIDEO),
                 new PlacementItem("Video", 40971, Type.VIDEO)
@@ -106,7 +104,6 @@ public class MainActivity extends Activity {
         myList.setAdapter(adapter);
         adapter.updateData(data);
         adapter.reloadList();
-        final AtomicBoolean c = new AtomicBoolean(false);
 
         myList.setOnItemClickListener((parent, view, position, id) -> {
 
@@ -128,7 +125,6 @@ public class MainActivity extends Activity {
                         } else {
                             Log.e("AwesomeAds", "LOADING VIDEO");
                             SAVideoAd.load(placement.pid, MainActivity.this);
-                            c.set(true);
                         }
                         break;
                     }
