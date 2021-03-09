@@ -343,17 +343,16 @@ public class SABannerAd extends FrameLayout {
 
                             break;
                         }
-
+                        // this in case the script tag in moat loaded correctly
                         case Moat_Success: {
                             events.triggerMoatSuccessEvent();
                             break;
                         }
-
+                        // this in case the script tag in moat did not load correctly
                         case Moat_Error: {
                             events.triggerMoatErrorEvent();
                             break;
                         }
-
                     }
                 }
             });
