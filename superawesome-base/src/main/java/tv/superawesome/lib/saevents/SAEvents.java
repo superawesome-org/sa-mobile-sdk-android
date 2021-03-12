@@ -84,24 +84,6 @@ public class SAEvents {
         }
     }
 
-    public void triggerMoatAttemptEvent () {
-        if (serverModule != null) {
-            serverModule.triggerMoatAttemptEvent(null);
-        }
-    }
-
-    public void triggerMoatSuccessEvent () {
-        if (serverModule != null) {
-            serverModule.triggerMoatSuccessEvent(null);
-        }
-    }
-
-    public void triggerMoatErrorEvent () {
-        if (serverModule != null) {
-            serverModule.triggerMoatErrorEvent(null);
-        }
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // VAST Events
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,7 +170,6 @@ public class SAEvents {
         if (viewableModule != null) {
             viewableModule.checkViewableStatusForVideo (layout, listener);
         }
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,6 +181,9 @@ public class SAEvents {
     }
 
     public String startMoatTrackingForDisplay(WebView view) {
+        if(moatModule == null) {
+            triggerMoatAttemptNoClassEvent();
+        }
         return moatModule != null ? moatModule.startMoatTrackingForDisplay(view) : "";
     }
 
@@ -221,8 +205,34 @@ public class SAEvents {
                 triggerMoatErrorEvent();
             }
             return result;
+        } else {
+            triggerMoatAttemptNoClassEvent();
         }
         return true;
+    }
+
+    public void triggerMoatAttemptEvent () {
+        if (serverModule != null) {
+            serverModule.triggerMoatAttemptEvent(null);
+        }
+    }
+
+    public void triggerMoatAttemptNoClassEvent () {
+        if (serverModule != null) {
+            serverModule.triggerMoatAttemptNoClassEvent(null);
+        }
+    }
+
+    public void triggerMoatSuccessEvent () {
+        if (serverModule != null) {
+            serverModule.triggerMoatSuccessEvent(null);
+        }
+    }
+
+    public void triggerMoatErrorEvent () {
+        if (serverModule != null) {
+            serverModule.triggerMoatErrorEvent(null);
+        }
     }
 
     public boolean sendMoatPlayingEvent (int position) {
