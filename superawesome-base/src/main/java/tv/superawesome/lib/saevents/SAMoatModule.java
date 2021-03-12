@@ -333,4 +333,8 @@ public class SAMoatModule {
     public boolean hasMoatInstance() {
         return moatInstance != null;
     }
+
+    public boolean hasMoatClass() {
+        return moatClass != null;
+    }
 }

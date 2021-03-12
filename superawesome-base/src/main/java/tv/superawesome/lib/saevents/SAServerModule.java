@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import tv.superawesome.lib.saevents.events.SAClickEvent;
 import tv.superawesome.lib.saevents.events.SAImpressionEvent;
 import tv.superawesome.lib.saevents.events.SAMoatAttemptEvent;
+import tv.superawesome.lib.saevents.events.SAMoatAttemptNoClassEvent;
 import tv.superawesome.lib.saevents.events.SAMoatErrorEvent;
 import tv.superawesome.lib.saevents.events.SAMoatSuccessEvent;
 import tv.superawesome.lib.saevents.events.SAPGCloseEvent;
@@ -29,6 +30,7 @@ public class SAServerModule {
     private SAPGFailEvent               sapgFailEvent = null;
     private SAPGSuccessEvent            sapgSuccessEvent = null;
     private SAMoatAttemptEvent          saMoatAttemptEvent = null;
+    private SAMoatAttemptNoClassEvent   saMoatAttemptNoClassEvent = null;
     private SAMoatSuccessEvent          saMoatSuccessEvent = null;
     private SAMoatErrorEvent            saMoatErrorEvent = null;
 
@@ -96,6 +98,14 @@ public class SAServerModule {
             saMoatAttemptEvent.triggerEvent(listener);
         }
     }
+
+
+    public void triggerMoatAttemptNoClassEvent (SAURLEvent.Listener listener) {
+        if (saMoatAttemptEvent != null) {
+            saMoatAttemptNoClassEvent.triggerEvent(listener);
+        }
+    }
+
 
     public void triggerMoatSuccessEvent (SAURLEvent.Listener listener) {
         if (saMoatSuccessEvent != null) {
