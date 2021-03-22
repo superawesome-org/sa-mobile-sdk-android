@@ -416,6 +416,10 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         setConfiguration(SAConfiguration.PRODUCTION);
     }
 
+    public static void setConfigurationDev () {
+        setConfiguration(SAConfiguration.DEV);
+    }
+
     public static void setConfigurationStaging () {
         setConfiguration(SAConfiguration.STAGING);
     }

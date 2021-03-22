@@ -30,6 +30,7 @@ import tv.superawesome.sdk.publisher.SAVersion;
 public class SASession implements ISASession {
 
     // constants
+    private final static String      DEV_URL = "https://ads.dev.superawesome.tv/v2";
     private final static String      PRODUCTION_URL = "https://ads.superawesome.tv/v2";
     private final static String      STAGING_URL = "https://ads.staging.superawesome.tv/v2";
     private final static String      DEVICE_PHONE = "phone";
@@ -123,18 +124,25 @@ public class SASession implements ISASession {
         if (configuration == SAConfiguration.PRODUCTION) {
             this.configuration = SAConfiguration.PRODUCTION;
             baseUrl = PRODUCTION_URL;
-        } else {
+        } else if (configuration == SAConfiguration.STAGING) {
             this.configuration = SAConfiguration.STAGING;
             baseUrl = STAGING_URL;
+        } else {
+            this.configuration = SAConfiguration.DEV;
+            baseUrl = DEV_URL;
         }
     }
 
-    public void setConfigurationProduction () {
+    public void setConfigurationProduction() {
         setConfiguration(SAConfiguration.PRODUCTION);
     }
 
-    public void setConfigurationStaging () {
+    public void setConfigurationStaging() {
         setConfiguration(SAConfiguration.STAGING);
+    }
+
+    public void setConfigurationDev() {
+        setConfiguration(SAConfiguration.DEV);
     }
 
     public void setTestMode(boolean testEnabled) {

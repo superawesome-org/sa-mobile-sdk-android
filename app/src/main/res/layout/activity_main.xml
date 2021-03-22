@@ -5,40 +5,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:onClick="ageCheck"
-            android:text="Age Check" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:enabled="true"
-            android:onClick="gotoAdMob"
-            android:text="AdMob" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:enabled="true"
-            android:onClick="gotoMoPub"
-            android:text="MoPub" />
-    </LinearLayout>
-
     <ListView
         android:id="@+id/MyList"
         android:layout_width="match_parent"
@@ -46,10 +12,11 @@
         android:layout_marginBottom="80dp"
         android:scrollbars="none" />
 
-    <tv.superawesome.sdk.publisher.SABannerAd
-        android:id="@+id/MyBanner"
+    <tv.superawesome.sdk.publisher.managed.SAManagedBannerAd
+        android:id="@+id/preview"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="-80dp" />
+        android:layout_height="300dp"
+        android:background="#2196F3"
+        android:layout_marginTop="-300dp" />
 
 </LinearLayout>
