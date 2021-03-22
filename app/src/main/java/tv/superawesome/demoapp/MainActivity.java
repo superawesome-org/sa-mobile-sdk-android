@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
-import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SABannerAd;
@@ -85,7 +84,7 @@ public class MainActivity extends Activity {
             Log.d("SADefaults", "VIDEO AD: " + placementId + " -> Event : " + event);
 
             if (event == SAEvent.adLoaded) {
-//                SAVideoAd.play(placementId, MainActivity.this);
+                SAVideoAd.play(placementId, MainActivity.this);
             }
         });
 
@@ -107,6 +106,7 @@ public class MainActivity extends Activity {
         adapter.reloadList();
 
         myList.setOnItemClickListener((parent, view, position, id) -> {
+
             AdapterItem item = data.get(position);
             if (item instanceof PlacementItem) {
                 PlacementItem placement = (PlacementItem) item;
