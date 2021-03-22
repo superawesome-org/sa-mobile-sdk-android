@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
@@ -41,6 +42,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): FrameLayout(ctx, attrs),
 
     fun load(placementId: Int) {
         this.placementId = placementId
+        Log.d("AwesomeAds", "Loading banner placement: ${this.placementId}");
         val html = formHTML(placementId = placementId)
         webView.loadDataWithBaseURL("https://ads.superawesome.tv", html, MIME_TYPE, ENCODING, HISTORY)
     }

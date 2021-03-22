@@ -29,6 +29,8 @@ import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
 import tv.superawesome.sdk.publisher.SAVideoAd;
+import tv.superawesome.sdk.publisher.managed.SAManagedBannerAd;
+import tv.superawesome.sdk.publisher.managed.SAManagedInterstitialAd;
 
 public class MainActivity extends Activity {
 
@@ -39,67 +41,25 @@ public class MainActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         SABumperPage.overrideName("Test app");
 
-        final SABannerAd myBanner = findViewById(R.id.MyBanner);
-        //myBanner.setConfigurationStaging();
-        myBanner.enableParentalGate();
-        myBanner.enableBumperPage();
-        myBanner.disableTestMode();
-        myBanner.disableMoatLimiting();
-        myBanner.setListener((SAInterface) (placementId, event) -> {
-            Log.d("SADefaults", "BANNER AD: " + placementId + " -> Event : " + event);
-
-            if (event == SAEvent.adLoaded) {
-                myBanner.play(MainActivity.this);
-            }
-        });
-
-        //SAInterstitialAd.setConfigurationStaging();
-        SAInterstitialAd.enableParentalGate();
-        SAInterstitialAd.enableTestMode();
-        SAInterstitialAd.enableBumperPage();
-        SAInterstitialAd.enableBackButton();
-        SAInterstitialAd.disableTestMode();
-        SAInterstitialAd.disableMoatLimiting();
-        SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
-            Log.d("SADefaults", "INTERSTITIAL AD: " + placementId + " -> Event : " + event);
-
-            if (event == SAEvent.adLoaded) {
-                SAInterstitialAd.play(placementId, MainActivity.this);
-            }
-        });
-
-        SAVideoAd.setConfigurationProduction();
-        SAVideoAd.enableTestMode();
-        SAVideoAd.enableParentalGate();
-        SAVideoAd.enableCloseButtonWithWarning();
-        SAVideoAd.enableBumperPage();
-        SAVideoAd.disableMoatLimiting();
-        SAVideoAd.enableCloseAtEnd();
-        SAVideoAd.enableCloseButton();
-        SAVideoAd.setPlaybackMode(SARTBStartDelay.POST_ROLL);
-        SAVideoAd.enableBackButton();
-        SAVideoAd.setListener((SAInterface) (placementId, event) -> {
-            Log.d("SADefaults", "VIDEO AD: " + placementId + " -> Event : " + event);
-
-            if (event == SAEvent.adLoaded) {
-//                SAVideoAd.play(placementId, MainActivity.this);
-            }
+        final SAManagedBannerAd managedBannerAd = findViewById(R.id.preview);
+        managedBannerAd.setListener((SAInterface) (placementId, event) -> {
+            managedBannerAd.load(placementId);
         });
 
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(
                 new HeaderItem("Banners"),
-                new PlacementItem("Banner image", 44258, Type.BANNER),
+                new PlacementItem("Banner 300x250 (Tablet MPU)", 61296, Type.BANNER),
+                new PlacementItem("Banner 300x50 (Mobile Small Leaderboard)", 61294, Type.BANNER),
+                new PlacementItem("Banner 320x50 (Mobile Leaderboard)", 61297, Type.BANNER),
                 new HeaderItem("Interstitials"),
-                new PlacementItem("Rich Media Interstitial", 58509, Type.INTERSTITIAL),
-                new PlacementItem("3rd party Tag", 30473, Type.INTERSTITIAL),
-                new PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
-                new HeaderItem("Videos"),
-                new PlacementItem("Video", 41372, Type.VIDEO),
-                new PlacementItem("Video", 40971, Type.VIDEO)
+                new PlacementItem("Insterstitial - Rich Media", 61295, Type.INTERSTITIAL),
+                new PlacementItem("Insterstitial - Static", 61298, Type.INTERSTITIAL),
+                new HeaderItem("KSF"),
+                new PlacementItem("Insterstitial - Static", 61321, Type.INTERSTITIAL),
+                new PlacementItem("Insterstitial - Rich Media", 61320, Type.INTERSTITIAL)
         );
         ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
         myList.setAdapter(adapter);
@@ -113,21 +73,11 @@ public class MainActivity extends Activity {
 
                 switch (placement.type) {
                     case BANNER:
-                        myBanner.load(placement.pid);
+                        managedBannerAd.load(placement.pid);
                         break;
                     case INTERSTITIAL:
-                        SAInterstitialAd.load(placement.pid, MainActivity.this);
+                        SAManagedInterstitialAd.load(MainActivity.this, placement.pid);
                         break;
-                    case VIDEO: {
-                        if (SAVideoAd.hasAdAvailable(placement.pid)) {
-                            Log.e("AwesomeAds", "PLAYING VIDEO");
-                            SAVideoAd.play(placement.pid, MainActivity.this);
-                        } else {
-                            Log.e("AwesomeAds", "LOADING VIDEO");
-                            SAVideoAd.load(placement.pid, MainActivity.this);
-                        }
-                        break;
-                    }
                 }
             }
         });

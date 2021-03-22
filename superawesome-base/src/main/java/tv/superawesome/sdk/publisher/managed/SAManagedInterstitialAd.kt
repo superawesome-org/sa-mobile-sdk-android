@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 
 class SAManagedInterstitialAd: Activity() {
 
@@ -28,6 +29,7 @@ class SAManagedInterstitialAd: Activity() {
         @JvmStatic
         fun load(context: Context, placementId: Int) {
             val intent = Intent(context, SAManagedInterstitialAd::class.java)
+            Log.d("AwesomeAds", "Loading interstitial placement: $placementId");
             intent.putExtra(PLACEMENT_ID_KEY, placementId)
             context.startActivity(intent)
         }
