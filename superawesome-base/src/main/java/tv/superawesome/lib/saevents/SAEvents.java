@@ -183,8 +183,9 @@ public class SAEvents {
     public String startMoatTrackingForDisplay(WebView view) {
         if(moatModule == null) {
             triggerMoatAttemptNoClassEvent();
+            return "";
         }
-        return moatModule != null ? moatModule.startMoatTrackingForDisplay(view) : "";
+        return moatModule.startMoatTrackingForDisplay(view);
     }
 
     public boolean stopMoatTrackingForDisplay() {
