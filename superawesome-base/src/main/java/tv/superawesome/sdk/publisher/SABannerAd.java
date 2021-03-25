@@ -595,6 +595,10 @@ public class SABannerAd extends FrameLayout {
         setConfiguration(SAConfiguration.STAGING);
     }
 
+    public void setConfigurationDev () {
+        setConfiguration(SAConfiguration.DEV);
+    }
+
     public void setColorTransparent () {
         setColor(true);
     }
