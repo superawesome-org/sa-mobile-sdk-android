@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.managed.SAManagedBannerAd;
@@ -60,6 +61,7 @@ public class MainActivity extends Activity {
         adapter.reloadList();
 
         myList.setOnItemClickListener((parent, view, position, id) -> {
+
             AdapterItem item = data.get(position);
             if (item instanceof PlacementItem) {
                 PlacementItem placement = (PlacementItem) item;
