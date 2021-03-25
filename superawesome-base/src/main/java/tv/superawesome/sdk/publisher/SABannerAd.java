@@ -223,7 +223,9 @@ public class SABannerAd extends FrameLayout {
                             // prepare moat tracking
                             String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
                             String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
-
+                            if(moatString != null && !moatString.isEmpty()) {
+                                events.triggerMoatAttemptEvent();
+                            }
                             // load the HTML
                             Log.d("SADefaults", "Full HTML is " + fullHTML);
                             webPlayer.loadHTML(ad.creative.details.base, fullHTML);
@@ -339,6 +341,16 @@ public class SABannerAd extends FrameLayout {
                                 // showParentalGateIfNeededWithCompletion(context, runner);
                             }
 
+                            break;
+                        }
+                        // this in case the script tag in moat loaded correctly
+                        case Moat_Success: {
+                            events.triggerMoatSuccessEvent();
+                            break;
+                        }
+                        // this in case the script tag in moat did not load correctly
+                        case Moat_Error: {
+                            events.triggerMoatErrorEvent();
                             break;
                         }
                     }
