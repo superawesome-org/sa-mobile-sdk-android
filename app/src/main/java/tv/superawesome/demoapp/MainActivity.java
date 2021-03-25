@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
-import tv.superawesome.lib.samodelspace.saad.SAAd;
-import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
-import tv.superawesome.sdk.publisher.SABannerAd;
-import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
-import tv.superawesome.sdk.publisher.SAInterstitialAd;
-import tv.superawesome.sdk.publisher.SAVideoAd;
 import tv.superawesome.sdk.publisher.managed.SAManagedBannerAd;
 import tv.superawesome.sdk.publisher.managed.SAManagedInterstitialAd;
 

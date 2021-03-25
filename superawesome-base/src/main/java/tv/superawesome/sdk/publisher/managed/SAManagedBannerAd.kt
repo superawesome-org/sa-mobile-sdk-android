@@ -11,8 +11,7 @@ import android.util.Log
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import android.widget.FrameLayout
-import org.json.JSONArray
+import android.widget.RelativeLayout
 import org.json.JSONObject
 import tv.superawesome.lib.saadloader.SALoader
 import tv.superawesome.lib.sasession.defines.SAConfiguration
@@ -20,15 +19,13 @@ import tv.superawesome.lib.sasession.session.SASession
 import tv.superawesome.sdk.publisher.SADefaults
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterface
-import java.net.URL
 import java.net.URLEncoder
-import java.util.*
 
 
 @SuppressLint("AddJavascriptInterface")
 class SAManagedBannerAd
 @JvmOverloads
-constructor(ctx: Context, attrs: AttributeSet? = null): FrameLayout(ctx, attrs), WebViewJavaScriptInterface.Listener {
+constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attrs), WebViewJavaScriptInterface.Listener {
 
     companion object {
         private const val MIME_TYPE = ""
