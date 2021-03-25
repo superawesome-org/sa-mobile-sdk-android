@@ -276,6 +276,10 @@ public class SAVideoAd {
         setConfiguration(SAConfiguration.STAGING);
     }
 
+    public static void setConfigurationDev () {
+        setConfiguration(SAConfiguration.DEV);
+    }
+
     public static void setOrientationAny () {
         setOrientation(SAOrientation.ANY);
     }

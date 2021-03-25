@@ -93,7 +93,7 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     @Override
     public void onPageStarted(WebView view, String url) {
         if (shouldOverrideUrlLoading(view, url)) {
-            view.stopLoading();
+                view.stopLoading();
         }
     }
 

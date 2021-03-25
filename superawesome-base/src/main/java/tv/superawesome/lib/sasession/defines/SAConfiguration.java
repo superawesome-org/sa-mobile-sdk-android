@@ -10,6 +10,7 @@ package tv.superawesome.lib.sasession.defines;
  * - STAGING
  */
 public enum SAConfiguration {
+    DEV(-1),
     PRODUCTION(0),
     STAGING(1);
 
@@ -31,7 +32,14 @@ public enum SAConfiguration {
      * @return              a new SAConfiguration enum
      */
     public static SAConfiguration fromValue (int configuration) {
-        return configuration == 0 ? PRODUCTION : STAGING;
+        switch (configuration) {
+            case 0:
+                return PRODUCTION;
+            case 1:
+                return STAGING;
+            default:
+                return DEV;
+        }
     }
 
     /**
