@@ -29,7 +29,6 @@ class SAManagedInterstitialAd: Activity() {
         @JvmStatic
         fun load(context: Context, placementId: Int) {
             val intent = Intent(context, SAManagedInterstitialAd::class.java)
-            Log.d("AwesomeAds", "Loading interstitial placement: $placementId");
             intent.putExtra(PLACEMENT_ID_KEY, placementId)
             context.startActivity(intent)
         }

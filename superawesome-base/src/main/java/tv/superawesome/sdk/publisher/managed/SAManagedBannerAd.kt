@@ -12,8 +12,17 @@ import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.FrameLayout
+import org.json.JSONArray
+import org.json.JSONObject
+import tv.superawesome.lib.saadloader.SALoader
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.lib.sasession.session.SASession
+import tv.superawesome.sdk.publisher.SADefaults
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterface
+import java.net.URL
+import java.net.URLEncoder
+import java.util.*
 
 
 @SuppressLint("AddJavascriptInterface")
@@ -25,12 +34,17 @@ constructor(ctx: Context, attrs: AttributeSet? = null): FrameLayout(ctx, attrs),
         private const val MIME_TYPE = ""
         private const val ENCODING = ""
         private val HISTORY: String? = null
-
         private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
     }
 
+    private val BANNER_BACKGROUND: Int = android.graphics.Color.rgb(224, 224, 224)
+
+    private var session: SASession = SASession(ctx)
+    private var loader: SALoader = SALoader(ctx)
     private var placementId: Int = 0
     private var listener: SAInterface? = null
+    private var isParentalGateEnabled: Boolean = false
+    private var isBumperPageEnabled: Boolean = false
 
     private val webView: WebView by lazy {
         WebView(ctx).apply {
@@ -40,16 +54,43 @@ constructor(ctx: Context, attrs: AttributeSet? = null): FrameLayout(ctx, attrs),
         }
     }
 
-    fun load(placementId: Int) {
-        this.placementId = placementId
-        Log.d("AwesomeAds", "Loading banner placement: ${this.placementId}");
-        val html = formHTML(placementId = placementId)
-        webView.loadDataWithBaseURL("https://ads.superawesome.tv", html, MIME_TYPE, ENCODING, HISTORY)
+    init {
+        setColor(SADefaults.defaultBgColor())
+        setParentalGate(SADefaults.defaultParentalGate())
+        setBumperPage(SADefaults.defaultBumperPage())
+        setConfiguration(SADefaults.defaultConfiguration())
+        setTestMode(SADefaults.defaultTestMode())
     }
 
-    private fun formHTML(placementId: Int): String {
-        val scriptHtml = "<script type=\"text/javascript\" src=\"https://ads.superawesome.tv/v2/ad.js?placement=${placementId}\"></script>"
+    fun load(placementId: Int) {
+        val baseUrl = session.baseUrl
+
+        this.placementId = placementId
+        val html = formHTML(placementId = placementId, baseUrl = baseUrl)
+        webView.loadDataWithBaseURL(baseUrl, html, MIME_TYPE, ENCODING, HISTORY)
+    }
+
+    private fun formHTML(placementId: Int, baseUrl: String): String {
+        val queryObject: JSONObject = loader.getAwesomeAdsQuery(session)
+        val queryParams = queryObject.toQueryParams()
+        Log.d("AwesomeAds", "Test: $queryParams")
+        val scriptHtml = "<script type=\"text/javascript\" src=\"${baseUrl}/ad.js?placement=${placementId}${queryParams}\"></script>"
         return "<html><header><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></header><body>${scriptHtml}</body></html>"
+    }
+
+    fun JSONObject.toQueryParams(): String {
+        var queryParams = ""
+
+        var looper = this.keys()
+        while(looper.hasNext()) {
+            val key = looper.next()
+            if (key.equals("test") && this.get(key).toString().equals("false")) {
+                continue
+            }
+            queryParams += "&${key}=${URLEncoder.encode(this.get(key).toString())}"
+        }
+
+        return queryParams;
     }
 
     fun setListener(value: SAInterface? = null) {
@@ -61,12 +102,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): FrameLayout(ctx, attrs),
     override fun onClick(url: String) {
         listener?.onEvent(this.placementId, SAEvent.adClicked)
 
-        // check parental gate
-        // check bumper
-
-        // make sure click is ok
         val destination = parseUrl(url = url) ?: return
-        // start new browser
         context.startActivity(Intent(Intent.ACTION_VIEW, destination))
     }
 
@@ -82,6 +118,68 @@ constructor(ctx: Context, attrs: AttributeSet? = null): FrameLayout(ctx, attrs),
         Uri.parse(url)
     } catch (e: Throwable) {
         null
+    }
+
+    // Setters and Getters
+
+    fun setColor(value: Boolean) {
+        if (value) {
+            setBackgroundColor(Color.TRANSPARENT)
+        } else {
+            setBackgroundColor(BANNER_BACKGROUND)
+        }
+    }
+
+    fun setConfigurationProduction() {
+        setConfiguration(SAConfiguration.PRODUCTION)
+    }
+
+    fun setConfigurationStaging() {
+        setConfiguration(SAConfiguration.STAGING)
+    }
+
+    fun setConfigurationDev() {
+        setConfiguration(SAConfiguration.DEV)
+    }
+
+    fun setConfiguration(value: SAConfiguration?) {
+        session.setConfiguration(value)
+    }
+
+    fun setTestMode(value: Boolean) {
+        session.testMode = value
+    }
+
+    fun enableParentalGate() {
+        setParentalGate(true)
+    }
+
+    fun disableParentalGate() {
+        setParentalGate(false)
+    }
+
+    fun enableBumperPage() {
+        setBumperPage(true)
+    }
+
+    fun disableBumperPage() {
+        setBumperPage(false)
+    }
+
+    fun enableTestMode() {
+        session.testMode = true
+    }
+
+    fun disableTestMode() {
+        session.testMode = false
+    }
+
+    fun setParentalGate(value: Boolean) {
+        isParentalGateEnabled = value
+    }
+
+    fun setBumperPage(value: Boolean) {
+        isBumperPageEnabled = value
     }
 }
 
