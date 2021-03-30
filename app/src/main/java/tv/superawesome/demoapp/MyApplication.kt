@@ -11,6 +11,6 @@ import tv.superawesome.sdk.publisher.common.network.Environment
 class MyApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
-        init(this, Configuration(Environment.production, true))
+        init(this, Configuration(Environment.Production, true))
     }
 }

@@ -13,7 +13,6 @@ object SAUnityVersion {
     /**
      * Method that sets the version
      *
-     * @param context current context
      * @param version current version string
      * @param sdk     current sdk string
      */

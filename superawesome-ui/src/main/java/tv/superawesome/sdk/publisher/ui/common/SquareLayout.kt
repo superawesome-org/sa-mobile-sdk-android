@@ -14,8 +14,7 @@ class SquareLayout : RelativeLayout {
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
-        val size: Int
-        size = if (widthMode == MeasureSpec.EXACTLY && widthSize > 0) {
+        val size: Int = if (widthMode == MeasureSpec.EXACTLY && widthSize > 0) {
             widthSize
         } else if (heightMode == MeasureSpec.EXACTLY && heightSize > 0) {
             heightSize
