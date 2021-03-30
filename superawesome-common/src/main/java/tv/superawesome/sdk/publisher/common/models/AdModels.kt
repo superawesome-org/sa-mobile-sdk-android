@@ -128,15 +128,21 @@ data class AdRequest(
  */
 
 enum class SAEvent {
-    adLoaded,
-    adEmpty,
-    adFailedToLoad,
-    adAlreadyLoaded,
-    adShown,
-    adFailedToShow,
-    adClicked,
-    adEnded,
-    adClosed
+    /** ad was loaded successfully and is ready to be displayed */
+    AdLoaded,
+    AdEmpty,
+    /** ad was not loaded successfully and will not be able to play */
+    AdFailedToLoad,
+    /** ad was previously loaded in an interstitial, video or app wall queue */
+    AdAlreadyLoaded,
+    /** triggered once when the ad first displays */
+    AdShown,
+    AdFailedToShow,
+    /**  triggered every time the ad gets clicked */
+    AdClicked,
+    AdEnded,
+    /** triggered once when the ad is closed */
+    AdClosed
 }
 
 interface SAInterface {

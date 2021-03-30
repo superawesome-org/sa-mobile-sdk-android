@@ -19,7 +19,7 @@ class SAAdMobVideoMediationAdapter : Adapter() {
             return
         }
 
-        AwesomeAds.init(context, Configuration(Environment.production, false))
+        AwesomeAds.init(context, Configuration(Environment.Production, false))
         initializationCompleteCallback?.onInitializationSucceeded()
     }
 

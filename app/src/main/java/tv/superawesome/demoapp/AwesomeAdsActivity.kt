@@ -33,7 +33,7 @@ class AwesomeAdsActivity : Activity() {
         setContentView(R.layout.activity_awesomeads)
 
         AwesomeAds.init(applicationContext, Configuration(
-                environment = Environment.production,
+                environment = Environment.Production,
                 logging = true))
 
         initUI()
@@ -108,7 +108,7 @@ class AwesomeAdsActivity : Activity() {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 Log.i("gunhan", "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
 
-                if (event == SAEvent.adLoaded) {
+                if (event == SAEvent.AdLoaded) {
                     SAVideoAd.play(placementId, this@AwesomeAdsActivity)
                 }
             }
@@ -120,7 +120,7 @@ class AwesomeAdsActivity : Activity() {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 Log.i("gunhan", "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
-                if (event == SAEvent.adLoaded) {
+                if (event == SAEvent.AdLoaded) {
                     SAInterstitialAd.play(placementId, this@AwesomeAdsActivity)
                 }
             }
@@ -134,7 +134,7 @@ class AwesomeAdsActivity : Activity() {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 Log.i("gunhan", "bannerView event ${event.name} thread:${Thread.currentThread()}")
 
-                if (event == SAEvent.adLoaded) {
+                if (event == SAEvent.AdLoaded) {
                     bannerView.visibility = View.VISIBLE
                     bannerView.play()
                 }

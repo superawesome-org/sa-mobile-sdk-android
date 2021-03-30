@@ -38,32 +38,32 @@ public class SAUnityBannerAd {
 
         bannerAd.setListener((placementId, event) -> {
             switch (event) {
-                case adLoaded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString());
+                case AdLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdLoaded.toString());
                     break;
-                case adEmpty:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString());
+                case AdEmpty:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEmpty.toString());
                     break;
-                case adFailedToLoad:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString());
+                case AdFailedToLoad:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToLoad.toString());
                     break;
-                case adAlreadyLoaded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString());
+                case AdAlreadyLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdAlreadyLoaded.toString());
                     break;
-                case adShown:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString());
+                case AdShown:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdShown.toString());
                     break;
-                case adFailedToShow:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString());
+                case AdFailedToShow:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToShow.toString());
                     break;
-                case adClicked:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString());
+                case AdClicked:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClicked.toString());
                     break;
-                case adEnded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString());
+                case AdEnded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEnded.toString());
                     break;
-                case adClosed:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
+                case AdClosed:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClosed.toString());
                     break;
             }
         });

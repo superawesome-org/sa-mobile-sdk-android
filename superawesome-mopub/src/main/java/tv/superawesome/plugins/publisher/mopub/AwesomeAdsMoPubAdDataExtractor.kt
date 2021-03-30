@@ -36,7 +36,7 @@ class AwesomeAdsMoPubAdDataExtractor(private val adData: AdData) {
     val configuration: Environment
         get() {
             val config = adData.extras[Keys.configuration] ?: ""
-            return if (config == "STAGING") Environment.staging else Environment.production
+            return if (config == "STAGING") Environment.Staging else Environment.Production
         }
 
     val orientation: Orientation

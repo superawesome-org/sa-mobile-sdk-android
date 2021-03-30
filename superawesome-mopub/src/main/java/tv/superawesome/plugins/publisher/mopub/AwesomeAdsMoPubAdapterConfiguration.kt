@@ -20,7 +20,7 @@ class AwesomeAdsMoPubAdapterConfiguration : BaseAdapterConfiguration() {
 
         synchronized(AwesomeAdsMoPubAdapterConfiguration::class.java) {
             try {
-                AwesomeAds.init(context, Configuration(environment = Environment.production, logging = true))
+                AwesomeAds.init(context, Configuration(environment = Environment.Production, logging = true))
                 networkInitializationSucceeded = true
             } catch (e: Exception) {
                 MoPubLog.log(CUSTOM_WITH_THROWABLE, "Initializing AwesomeAds has encountered an exception.", e)
