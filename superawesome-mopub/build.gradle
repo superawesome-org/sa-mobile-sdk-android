@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'kotlin-android'
 
@@ -49,40 +48,8 @@ bintray {
     }
 }
 
-install {
-    repositories.mavenInstaller {
-        pom {
-            project {
-                packaging 'aar'
-                name 'SADefaults Mobile SDK for Android with MoPub extension'
-                url siteUrl
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'gabrielcoman'
-                        name 'Gabriel Coman'
-                        email 'gabriel.coman@superawesome.tv'
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-
-                }
-            }
-        }
-    }
-}
-
 repositories {
     maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
-    jcenter()
     maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
 
