@@ -19,13 +19,13 @@ import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
 class AwesomeAdsActivity : Activity() {
     private val data = listOf(
             HeaderItem("Banners"),
-            PlacementItem("Banner image", 44258, Type.BANNER),
+            PlacementItem("Banner image", 61884, Type.BANNER),
             HeaderItem("Interstitials"),
-            PlacementItem("Rich Media Interstitial", 44259, Type.INTERSTITIAL),
-            PlacementItem("3rd party Tag", 5393, Type.INTERSTITIAL),
-            PlacementItem("KSF Tag", 5387, Type.INTERSTITIAL),
+            PlacementItem("Rich Media Interstitial", 61886, Type.INTERSTITIAL),
+            PlacementItem("3rd party Tag", 61320, Type.INTERSTITIAL),
+            PlacementItem("KSF Tag", 61321, Type.INTERSTITIAL),
             HeaderItem("Videos"),
-            PlacementItem("Video", 39318, Type.VIDEO)
+            PlacementItem("Video", 61885, Type.VIDEO)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
