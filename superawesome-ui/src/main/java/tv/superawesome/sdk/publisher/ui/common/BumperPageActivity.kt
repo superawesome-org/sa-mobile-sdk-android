@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -117,7 +116,6 @@ class BumperPageActivity : Activity(), Injectable {
     }
 
     override fun onDestroy() {
-        Log.i("gunhan", "Bumperpage ondestroy")
         listener = null
         runnable?.let { handler.removeCallbacks(it) }
         runnable = null
