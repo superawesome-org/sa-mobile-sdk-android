@@ -1,4 +1,4 @@
-package tv.superawesome.sdk.publisher.moat.repositories
+
 
 import android.webkit.WebView
 import android.widget.VideoView
@@ -15,10 +15,10 @@ private const val MOAT_DISPLAY_PARTNER_CODE = "superawesomeinappdisplay731223424
 private const val MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573"
 
 class MoatRepository(
-        private val adResponse: AdResponse,
-        private val moatLimiting: Boolean,
-        private val logger: Logger,
-        private val numberGenerator: NumberGeneratorType,
+    private val adResponse: AdResponse,
+    private val moatLimiting: Boolean,
+    private val logger: Logger,
+    private val numberGenerator: NumberGeneratorType,
 ) : MoatRepositoryType, TrackerListener, VideoTrackerListener {
     private val factory: MoatFactory by lazy { MoatFactory.create() }
     private var webTracker: WebAdTracker? = null
@@ -73,7 +73,8 @@ class MoatRepository(
             return false
         }
 
-        videoTracker = factory.createCustomTracker(ReactiveVideoTrackerPlugin(MOAT_VIDEO_PARTNER_CODE))
+        videoTracker =
+            factory.createCustomTracker(ReactiveVideoTrackerPlugin(MOAT_VIDEO_PARTNER_CODE))
         videoTracker?.setListener(this)
         videoTracker?.setVideoListener(this)
 

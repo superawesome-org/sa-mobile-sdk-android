@@ -35,5 +35,4 @@ repositories {
 
 dependencies {
     api project(':superawesome-base')
-    implementation project(':superawesome-moat')
 }

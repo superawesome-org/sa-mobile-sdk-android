@@ -45,6 +45,8 @@ ext {
 bintray { pkg { name = 'SuperAwesome-Common' }}
 
 dependencies {
+    // Moat version 2.6.6
+    implementation files('libs/moatlib.jar')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-properties:$kotlinx_serialization_version"

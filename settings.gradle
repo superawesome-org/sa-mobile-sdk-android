@@ -12,7 +12,6 @@ include ':superawesome-network'
 include ':superawesome-base'
 
 // Plugins
-include ':superawesome-moat'
 include ':superawesome-mopub'
 include ':superawesome-admob'
 include ':superawesome-unity'
