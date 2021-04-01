@@ -20,7 +20,7 @@ class MoatRepository(
         private val logger: Logger,
         private val numberGenerator: NumberGeneratorType,
 ) : MoatRepositoryType, TrackerListener, VideoTrackerListener {
-    private var factory: MoatFactory? = null
+    private val factory: MoatFactory by lazy { MoatFactory.create() }
     private var webTracker: WebAdTracker? = null
     private var videoTracker: ReactiveVideoTracker? = null
 
@@ -30,11 +30,7 @@ class MoatRepository(
             return ""
         }
 
-        if (factory == null) {
-            factory = MoatFactory.create()
-        }
-
-        webTracker = factory?.createWebAdTracker(webView)
+        webTracker = factory.createWebAdTracker(webView)
         webTracker?.setListener(this)
 
         if (webTracker == null) {
@@ -77,11 +73,7 @@ class MoatRepository(
             return false
         }
 
-        if (factory == null) {
-            factory = MoatFactory.create()
-        }
-
-        videoTracker = factory?.createCustomTracker(ReactiveVideoTrackerPlugin(MOAT_VIDEO_PARTNER_CODE))
+        videoTracker = factory.createCustomTracker(ReactiveVideoTrackerPlugin(MOAT_VIDEO_PARTNER_CODE))
         videoTracker?.setListener(this)
         videoTracker?.setVideoListener(this)
 
