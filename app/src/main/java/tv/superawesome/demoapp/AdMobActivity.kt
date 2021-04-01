@@ -19,12 +19,13 @@ class AdMobActivity : Activity() {
     private lateinit var adView: AdView
     private lateinit var interstitialAd: InterstitialAd
     private lateinit var rewardedVideoAd: RewardedVideoAd
+    private val logTag = "SADefaults/AdMob"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admob)
 
-        MobileAds.initialize(this) { Log.d("SADefaults/Admob", "onInitializationComplete") }
+        MobileAds.initialize(this) { Log.d(logTag, "onInitializationComplete") }
 
         configureBannerAd()
         configureInterstitialAd()
@@ -39,36 +40,36 @@ class AdMobActivity : Activity() {
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
         rewardedVideoAd.rewardedVideoAdListener = object : RewardedVideoAdListener {
             override fun onRewardedVideoAdLoaded() {
-                Log.d("SADefaults/AdMob", "Video Ad Loaded")
+                Log.d(logTag, "Video Ad Loaded")
             }
 
             override fun onRewardedVideoAdOpened() {
-                Log.d("SADefaults/AdMob", "Video Ad opened")
+                Log.d(logTag, "Video Ad opened")
             }
 
             override fun onRewardedVideoStarted() {
-                Log.d("SADefaults/AdMob", "Video Ad Started")
+                Log.d(logTag, "Video Ad Started")
             }
 
             override fun onRewardedVideoAdClosed() {
-                Log.d("SADefaults/AdMob", "Video AD Closed")
+                Log.d(logTag, "Video AD Closed")
                 requestVideoAd()
             }
 
             override fun onRewarded(rewardItem: RewardItem) {
-                Log.d("SADefaults/AdMob", "Video Ad Rewarded")
+                Log.d(logTag, "Video Ad Rewarded")
             }
 
             override fun onRewardedVideoAdLeftApplication() {
-                Log.d("SADefaults/AdMob", "Video Ad Left app")
+                Log.d(logTag, "Video Ad Left app")
             }
 
             override fun onRewardedVideoAdFailedToLoad(i: Int) {
-                Log.d("SADefaults/AdMob", "Video Ad Failed to load")
+                Log.d(logTag, "Video Ad Failed to load")
             }
 
             override fun onRewardedVideoCompleted() {
-                Log.d("SADefaults/AdMob", "Video Ad Completed")
+                Log.d(logTag, "Video Ad Completed")
             }
         }
     }
@@ -78,24 +79,24 @@ class AdMobActivity : Activity() {
         interstitialAd.adUnitId = getString(R.string.admob_interstitial_ad_id)
         interstitialAd.adListener = object : AdListener() {
             override fun onAdClosed() {
-                Log.d("SADefaults/AdMob", "Interstitial ad closed")
+                Log.d(logTag, "Interstitial ad closed")
                 requestInterstitialAd()
             }
 
             override fun onAdFailedToLoad(i: Int) {
-                Log.d("SADefaults/AdMob", "Interstitial ad failed to load")
+                Log.d(logTag, "Interstitial ad failed to load")
             }
 
             override fun onAdLeftApplication() {
-                Log.d("SADefaults/AdMob", "Interstitial ad left application")
+                Log.d(logTag, "Interstitial ad left application")
             }
 
             override fun onAdOpened() {
-                Log.d("SADefaults/AdMob", "Interstitial ad opened")
+                Log.d(logTag, "Interstitial ad opened")
             }
 
             override fun onAdLoaded() {
-                Log.d("SADefaults/AdMob", "Interstitial ad loaded")
+                Log.d(logTag, "Interstitial ad loaded")
             }
         }
     }
@@ -104,23 +105,23 @@ class AdMobActivity : Activity() {
         adView = findViewById(R.id.adView)
         adView.adListener = object : AdListener() {
             override fun onAdClosed() {
-                Log.d("SADefaults/AdMob", "Banner ad closed")
+                Log.d(logTag, "Banner ad closed")
             }
 
             override fun onAdFailedToLoad(i: Int) {
-                Log.d("SADefaults/AdMob", "Banner ad failed to load")
+                Log.d(logTag, "Banner ad failed to load")
             }
 
             override fun onAdLeftApplication() {
-                Log.d("SADefaults/AdMob", "Banner ad left application")
+                Log.d(logTag, "Banner ad left application")
             }
 
             override fun onAdOpened() {
-                Log.d("SADefaults/AdMob", "Banner ad opened")
+                Log.d(logTag, "Banner ad opened")
             }
 
             override fun onAdLoaded() {
-                Log.d("SADefaults/AdMob", "Banner ad loaded")
+                Log.d(logTag, "Banner ad loaded")
             }
         }
     }
@@ -160,7 +161,7 @@ class AdMobActivity : Activity() {
         if (interstitialAd.isLoaded) {
             interstitialAd.show()
         } else {
-            Log.d("SADefaults/Admob", "Interstitial not loaded yet")
+            Log.d(logTag, "Interstitial not loaded yet")
         }
     }
 
@@ -168,7 +169,7 @@ class AdMobActivity : Activity() {
         if (rewardedVideoAd.isLoaded) {
             rewardedVideoAd.show()
         } else {
-            Log.d("SADefaults/Admob", "Video Ad not loaded yet")
+            Log.d(logTag, "Video Ad not loaded yet")
         }
     }
 
