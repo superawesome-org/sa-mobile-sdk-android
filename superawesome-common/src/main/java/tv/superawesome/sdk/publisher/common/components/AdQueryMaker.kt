@@ -96,7 +96,7 @@ class AdQueryMaker(
         )
     }
 
-    private fun encodeData(eventData: EventData): String? {
+    private fun encodeData(eventData: EventData): String {
         val dataAsJson = json.encodeToString(EventData.serializer(), eventData)
         return encoder.encodeUri(dataAsJson)
     }

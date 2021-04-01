@@ -33,9 +33,9 @@ class VastParserTest : BaseTest() {
         // When
         val vast = vastParser.parse(file)
 
-        var error: VastEvent? = null
-        var impression: VastEvent? = null
-        var click: VastEvent? = null
+        val error: VastEvent? = null
+        val impression: VastEvent? = null
+        val click: VastEvent? = null
 //        for (evt in vast.events) {
 //            if (evt.event == "vast_error") error = evt
 //            if (evt.event == "vast_impression") impression = evt

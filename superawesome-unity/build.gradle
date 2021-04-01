@@ -39,6 +39,6 @@ ext {
 bintray { pkg { name = 'SuperAwesome-Unity' }}
 
 dependencies {
-    provided files('libs/unity-classes.jar')
+    compileOnly files('libs/unity-classes.jar')
     implementation project(':superawesome-base')
 }

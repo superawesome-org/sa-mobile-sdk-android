@@ -74,7 +74,7 @@ class AwesomeAdsMoPubVideo : BaseAd() {
         SAInterstitialAd.setListener(object : SAInterface {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 when (event) {
-                    SAEvent.adLoaded -> {
+                    SAEvent.AdLoaded -> {
                         if (mLoadListener != null) {
                             val hasAdAvailable = SAVideoAd.hasAdAvailable(placementId)
 
@@ -85,12 +85,12 @@ class AwesomeAdsMoPubVideo : BaseAd() {
                             }
                         }
                     }
-                    SAEvent.adEmpty, SAEvent.adFailedToLoad -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
-                    SAEvent.adShown -> mInteractionListener?.onAdShown()
-                    SAEvent.adFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
-                    SAEvent.adClicked -> mInteractionListener?.onAdClicked()
-                    SAEvent.adClosed -> mInteractionListener?.onAdDismissed()
-                    SAEvent.adEnded -> mInteractionListener?.onAdComplete(MoPubReward.success(MoPubReward.NO_REWARD_LABEL, 0))
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                    SAEvent.AdShown -> mInteractionListener?.onAdShown()
+                    SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
+                    SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
+                    SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
+                    SAEvent.AdEnded -> mInteractionListener?.onAdComplete(MoPubReward.success(MoPubReward.NO_REWARD_LABEL, 0))
                     else -> {
                     }
                 }

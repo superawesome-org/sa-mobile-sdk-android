@@ -10,6 +10,6 @@ import tv.superawesome.sdk.publisher.common.network.Environment
  */
 object SAUnityAwesomeAds {
     fun SuperAwesomeUnityAwesomeAdsInit(activity: Activity, loggingEnabled: Boolean) {
-        AwesomeAds.init(activity.application, Configuration(Environment.production, loggingEnabled))
+        AwesomeAds.init(activity.application, Configuration(Environment.Production, loggingEnabled))
     }
 }

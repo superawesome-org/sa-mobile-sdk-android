@@ -43,7 +43,7 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
         SAInterstitialAd.setListener(object : SAInterface {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 when (event) {
-                    SAEvent.adLoaded -> {
+                    SAEvent.AdLoaded -> {
                         if (mLoadListener != null) {
                             val hasAd = SAInterstitialAd.hasAdAvailable(placementId)
 
@@ -54,12 +54,12 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
                             }
                         }
                     }
-                    SAEvent.adEmpty, SAEvent.adFailedToLoad -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
-                    SAEvent.adShown -> mInteractionListener?.onAdShown()
-                    SAEvent.adFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
-                    SAEvent.adClicked -> mInteractionListener?.onAdClicked()
-                    SAEvent.adClosed -> mInteractionListener?.onAdDismissed()
-                    SAEvent.adAlreadyLoaded, SAEvent.adEnded -> {
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                    SAEvent.AdShown -> mInteractionListener?.onAdShown()
+                    SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
+                    SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
+                    SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
+                    SAEvent.AdAlreadyLoaded, SAEvent.AdEnded -> {
                     }
                     else -> {
                     }
@@ -81,7 +81,7 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
         } else {
             MoPubLog.log(adNetworkId, SHOW_FAILED, adapterName,
                     MoPubErrorCode.NETWORK_NO_FILL.intCode,
-                    MoPubErrorCode.NETWORK_NO_FILL);
+                    MoPubErrorCode.NETWORK_NO_FILL)
 
             if (mInteractionListener != null) {
                 mInteractionListener.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)

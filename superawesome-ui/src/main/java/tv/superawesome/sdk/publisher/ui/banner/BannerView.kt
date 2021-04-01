@@ -41,7 +41,7 @@ class BannerView : FrameLayout, Injectable {
         isSaveEnabled = true
     }
 
-    override fun onSaveInstanceState(): Parcelable? = Bundle().apply {
+    override fun onSaveInstanceState(): Parcelable = Bundle().apply {
         putParcelable("superState", super.onSaveInstanceState())
         putInt("placementId", placementId)
     }
@@ -71,8 +71,6 @@ class BannerView : FrameLayout, Injectable {
     /**
      * One of the main public methods of the SABannerAd class. This will play an already existing
      * loaded ad, or fail.
-     *
-     * @param context current context (activity or fragment)
      */
     fun play() {
         logger.info("play($placementId)")

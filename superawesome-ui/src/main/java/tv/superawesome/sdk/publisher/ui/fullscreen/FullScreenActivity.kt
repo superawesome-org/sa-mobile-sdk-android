@@ -78,7 +78,7 @@ open class FullScreenActivity : Activity(), Injectable {
     }
 
     override fun onBackPressed() {
-        if (config?.isBackButtonEnabled == true) {
+        if (config.isBackButtonEnabled) {
             close()
             super.onBackPressed()
         }

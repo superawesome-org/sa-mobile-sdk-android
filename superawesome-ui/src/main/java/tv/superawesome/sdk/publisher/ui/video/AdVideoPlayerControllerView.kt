@@ -14,7 +14,7 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     private val videoComponentFactory: VideoComponentFactory by inject()
 
     // mask, chronograph & the "show more" button
-    private val mask: ImageView
+    private val mask: ImageView = videoComponentFactory.getMask(MASK_ID, context)
     var chronoBg: ImageView
     var chronograph: TextView?
     var showMore: Button
@@ -105,7 +105,6 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         // call to super
 
         // create the background image
-        mask = videoComponentFactory.getMask(MASK_ID, context)
         addView(mask)
 
         // create the chronograph Bg

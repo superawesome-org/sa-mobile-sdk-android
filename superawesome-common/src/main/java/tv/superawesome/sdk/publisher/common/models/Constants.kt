@@ -23,7 +23,7 @@ object Constants {
     const val defaultBackButtonEnabled = true
 
     val defaultOrientation = Orientation.Any
-    val defaultEnvironment = Environment.production
+    val defaultEnvironment = Environment.Production
     const val defaultMoatLimitingState = true
     val defaultStartDelay = AdRequest.StartDelay.PreRoll
 

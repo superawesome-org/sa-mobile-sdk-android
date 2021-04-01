@@ -50,7 +50,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
 
         bannerAd.setListener((i, saEvent) -> {
             switch (saEvent) {
-                case adLoaded: {
+                case AdLoaded: {
                     // send load event
                     if (listener != null) {
                         listener.onAdLoaded(bannerAd);
@@ -64,37 +64,37 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                     }
                     break;
                 }
-                case adEmpty:
-                case adFailedToLoad: {
+                case AdEmpty:
+                case AdFailedToLoad: {
                     if (listener != null) {
                         listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
                     }
                     break;
                 }
-                case adAlreadyLoaded:
+                case AdAlreadyLoaded:
                     break;
-                case adShown: {
+                case AdShown: {
                     if (listener != null) {
                         listener.onAdOpened();
                     }
                     break;
                 }
-                case adFailedToShow: {
+                case AdFailedToShow: {
                     if (listener != null) {
                         listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
                     }
                     break;
                 }
-                case adClicked: {
+                case AdClicked: {
                     if (listener != null) {
                         listener.onAdClicked();
                         listener.onAdLeftApplication();
                     }
                     break;
                 }
-                case adEnded:
+                case AdEnded:
                     break;
-                case adClosed: {
+                case AdClosed: {
                     if (listener != null) {
                         listener.onAdClosed();
                     }

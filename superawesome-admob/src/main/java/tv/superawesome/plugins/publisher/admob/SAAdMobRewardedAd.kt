@@ -69,16 +69,16 @@ class SAAdMobRewardedAd(
     // SAVideoAd Listener Event
     override fun onEvent(placementId: Int, event: SAEvent) {
         when (event) {
-            SAEvent.adLoaded -> adLoaded()
-            SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
-            SAEvent.adAlreadyLoaded -> {
+            SAEvent.AdLoaded -> adLoaded()
+            SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> adFailedToLoad()
+            SAEvent.AdAlreadyLoaded -> {
                 // do nothing
             }
-            SAEvent.adShown -> rewardedAdCallback?.onAdOpened()
-            SAEvent.adFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
-            SAEvent.adClicked -> rewardedAdCallback?.reportAdClicked()
-            SAEvent.adEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
-            SAEvent.adClosed -> rewardedAdCallback?.onAdClosed()
+            SAEvent.AdShown -> rewardedAdCallback?.onAdOpened()
+            SAEvent.AdFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
+            SAEvent.AdClicked -> rewardedAdCallback?.reportAdClicked()
+            SAEvent.AdEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
+            SAEvent.AdClosed -> rewardedAdCallback?.onAdClosed()
         }
     }
 

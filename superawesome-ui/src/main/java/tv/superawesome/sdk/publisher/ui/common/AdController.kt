@@ -157,7 +157,7 @@ class AdController(
             return
         }
 
-        delegate?.onEvent(placementId, SAEvent.adClicked)
+        delegate?.onEvent(placementId, SAEvent.AdClicked)
 
         if (currentAdResponse?.isVideo() == true) {
             scope.launch { currentAdResponse?.let { eventRepository.videoClick(it) } }
@@ -191,23 +191,23 @@ class AdController(
     }
 
     override fun adFailedToShow() {
-        delegate?.onEvent(placementId, SAEvent.adFailedToShow)
+        delegate?.onEvent(placementId, SAEvent.AdFailedToShow)
     }
 
     override fun adShown() {
-        delegate?.onEvent(placementId, SAEvent.adShown)
+        delegate?.onEvent(placementId, SAEvent.AdShown)
     }
 
     override fun adClicked() {
-        delegate?.onEvent(placementId, SAEvent.adClicked)
+        delegate?.onEvent(placementId, SAEvent.AdClicked)
     }
 
     override fun adEnded() {
-        delegate?.onEvent(placementId, SAEvent.adEnded)
+        delegate?.onEvent(placementId, SAEvent.AdEnded)
     }
 
     override fun adClosed() {
-        delegate?.onEvent(placementId, SAEvent.adClosed)
+        delegate?.onEvent(placementId, SAEvent.AdClosed)
     }
 
     override fun load(placementId: Int, request: AdRequest) {
@@ -234,8 +234,7 @@ class AdController(
     override fun triggerImpressionEvent(placementId: Int) {
         scope.launch {
             currentAdResponse?.let {
-                val result = eventRepository.impression(it)
-                when (result) {
+                when (val result = eventRepository.impression(it)) {
                     is DataResult.Success -> logger.success("triggerImpressionEvent.Success")
                     is DataResult.Failure -> logger.error("triggerImpressionEvent.Success", result.error)
                 }
@@ -250,11 +249,11 @@ class AdController(
     private fun onSuccess(response: AdResponse) {
         logger.success("onSuccess thread:${Thread.currentThread()} adResponse:$response")
         adStore.put(response)
-        delegate?.onEvent(response.placementId, SAEvent.adLoaded)
+        delegate?.onEvent(response.placementId, SAEvent.AdLoaded)
     }
 
     private fun onFailure(placementId: Int, error: Throwable) {
         logger.error("onFailure for $placementId", error)
-        delegate?.onEvent(placementId, SAEvent.adFailedToLoad)
+        delegate?.onEvent(placementId, SAEvent.AdFailedToLoad)
     }
 }

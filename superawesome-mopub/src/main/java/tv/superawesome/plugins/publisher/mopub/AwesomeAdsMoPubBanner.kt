@@ -45,7 +45,7 @@ class AwesomeAdsMoPubBanner : BaseAd() {
             setListener(object : SAInterface {
                 override fun onEvent(placementId: Int, event: SAEvent) {
                     when (event) {
-                        SAEvent.adLoaded -> {
+                        SAEvent.AdLoaded -> {
                             if (mLoadListener != null) {
                                 val ad = controller.currentAdResponse?.ad
                                 var html: String? = null
@@ -62,11 +62,11 @@ class AwesomeAdsMoPubBanner : BaseAd() {
                                 }
                             }
                         }
-                        SAEvent.adEmpty, SAEvent.adFailedToLoad -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
-                        SAEvent.adShown -> mInteractionListener?.onAdShown()
-                        SAEvent.adFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
-                        SAEvent.adClicked -> mInteractionListener?.onAdClicked()
-                        SAEvent.adClosed -> mInteractionListener?.onAdDismissed()
+                        SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                        SAEvent.AdShown -> mInteractionListener?.onAdShown()
+                        SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
+                        SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
+                        SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
                         else -> {
                         }
                     }

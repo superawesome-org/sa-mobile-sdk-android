@@ -37,30 +37,30 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
         setListener(object : SAInterface {
             override fun onEvent(placementId: Int, event: SAEvent) {
                 when (event) {
-                    SAEvent.adLoaded -> {
+                    SAEvent.AdLoaded -> {
                         loadedPlacementId = placementId
                         listener?.onAdLoaded()
                     }
-                    SAEvent.adEmpty, SAEvent.adFailedToLoad -> {
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> {
                         listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL)
                     }
-                    SAEvent.adAlreadyLoaded -> {
+                    SAEvent.AdAlreadyLoaded -> {
                     }
-                    SAEvent.adShown -> {
+                    SAEvent.AdShown -> {
                         listener?.onAdOpened()
                     }
-                    SAEvent.adFailedToShow -> {
+                    SAEvent.AdFailedToShow -> {
                         listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR)
                     }
-                    SAEvent.adClicked -> {
+                    SAEvent.AdClicked -> {
                         if (listener != null) {
                             listener.onAdClicked()
                             listener.onAdLeftApplication()
                         }
                     }
-                    SAEvent.adEnded -> {
+                    SAEvent.AdEnded -> {
                     }
-                    SAEvent.adClosed -> {
+                    SAEvent.AdClosed -> {
                         listener?.onAdClosed()
                     }
                 }
