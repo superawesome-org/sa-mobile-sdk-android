@@ -11,19 +11,21 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import org.koin.core.get
 import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.di.Injectable
 import tv.superawesome.sdk.publisher.common.extensions.toPx
-import tv.superawesome.sdk.publisher.common.models.AdRequest
-import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.models.VoidBlock
+import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 
-
-class BannerView : FrameLayout, Injectable {
+class BannerView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr), Injectable {
     val controller: AdControllerType by inject()
     private val imageProvider: ImageProviderType by inject()
     private val logger: Logger by inject()
@@ -34,9 +36,7 @@ class BannerView : FrameLayout, Injectable {
     private var viewableDetector: ViewableDetectorType? = null
     private var hasBeenVisible: VoidBlock? = null
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    init {
         setColor(Constants.defaultBackgroundColorEnabled)
         isSaveEnabled = true
     }

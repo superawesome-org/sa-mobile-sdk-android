@@ -81,8 +81,7 @@ class AwesomeAdsActivity : Activity() {
         adapter.reloadList()
 
         listView.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
-            val item = data[position]
-            if (item is PlacementItem) {
+            (data[position] as? PlacementItem)?.let { item ->
                 when (item.type) {
                     Type.BANNER -> bannerView.load(item.pid)
                     Type.INTERSTITIAL -> SAInterstitialAd.load(item.pid, this@AwesomeAdsActivity)
