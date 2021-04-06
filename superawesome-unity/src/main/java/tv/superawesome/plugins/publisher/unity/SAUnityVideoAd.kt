@@ -9,7 +9,7 @@ import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
+import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -81,7 +81,7 @@ object SAUnityVideoAd {
         SAVideoAd.setSmallClick(shouldShowSmallClickButton)
         SAVideoAd.setBackButton(isBackButtonEnabled)
         Orientation.fromValue(orientation)?.let { SAVideoAd.setOrientation(it) }
-        // TODO: update cloase warning after merge with master branch
+        // TODO: update close warning after merge with master branch
         //SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning)
         SAVideoAd.play(placementId, context)
     }

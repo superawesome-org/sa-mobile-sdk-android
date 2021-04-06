@@ -79,7 +79,7 @@ data class AdRequest(
 ) {
     companion object {
         /// The playback method
-        val PlaybackSoundOnScreen = 5
+        const val PlaybackSoundOnScreen = 5
     }
 
     /// Specify if the ad is in full screen or not
@@ -145,7 +145,7 @@ enum class SAEvent {
     AdClosed
 }
 
-interface SAInterface {
+fun interface SAInterface {
     /**
      * Only method that needs to be implemented to be able to receive events back from the SDK
      *

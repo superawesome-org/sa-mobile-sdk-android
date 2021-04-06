@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
@@ -23,7 +22,6 @@ class Encoder : EncoderType {
                 ""
             }
 
-    @ExperimentalSerializationApi
     override fun encodeUrlParamsFromObject(map: Map<String, Any?>): String {
         val params = map.entries
                 .map { entry -> "${entry.key}=${entry.value}" }

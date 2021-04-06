@@ -2,23 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-admob/Desktop.sa-mobile-sdk-android.superawesome-admob.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-admob/Desktop.sa-mobile-sdk-android.superawesome-admob.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-base/Desktop.sa-mobile-sdk-android.superawesome-base.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-base/Desktop.sa-mobile-sdk-android.superawesome-base.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-mopub/Desktop.sa-mobile-sdk-android.superawesome-mopub.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-mopub/Desktop.sa-mobile-sdk-android.superawesome-mopub.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-network/Desktop.sa-mobile-sdk-android.superawesome-network.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-network/Desktop.sa-mobile-sdk-android.superawesome-network.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-unity/Desktop.sa-mobile-sdk-android.superawesome-unity.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-unity/Desktop.sa-mobile-sdk-android.superawesome-unity.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" filepath="$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/sa-mobile-sdk-android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/sa-mobile-sdk-android.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome/sa-mobile-sdk-android.superawesome.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome/sa-mobile-sdk-android.superawesome.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saadmob/sa-mobile-sdk-android.superawesome-admob.iml" filepath="$PROJECT_DIR$/.idea/modules/saadmob/sa-mobile-sdk-android.superawesome-admob.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-core/sa-mobile-sdk-android.superawesome-base.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-core/sa-mobile-sdk-android.superawesome-base.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-full/sa-mobile-sdk-android.superawesome-full.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-full/sa-mobile-sdk-android.superawesome-full.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-moat/sa-mobile-sdk-android.superawesome-moat.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-moat/sa-mobile-sdk-android.superawesome-moat.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/samopub/sa-mobile-sdk-android.superawesome-mopub.iml" filepath="$PROJECT_DIR$/.idea/modules/samopub/sa-mobile-sdk-android.superawesome-mopub.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-retrofit/sa-mobile-sdk-android.superawesome-network.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-retrofit/sa-mobile-sdk-android.superawesome-network.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-ui/sa-mobile-sdk-android.superawesome-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-ui/sa-mobile-sdk-android.superawesome-ui.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/saunity/sa-mobile-sdk-android.superawesome-unity.iml" filepath="$PROJECT_DIR$/.idea/modules/saunity/sa-mobile-sdk-android.superawesome-unity.iml" />
     </modules>
   </component>
 </project>

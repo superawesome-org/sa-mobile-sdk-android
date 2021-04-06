@@ -15,7 +15,6 @@ private const val MOAT_DISPLAY_PARTNER_CODE = "superawesomeinappdisplay731223424
 private const val MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573"
 
 class MoatRepository(
-    private val adResponse: AdResponse,
     private val moatLimiting: Boolean,
     private val logger: Logger,
     private val numberGenerator: NumberGeneratorType,
@@ -24,8 +23,8 @@ class MoatRepository(
     private var webTracker: WebAdTracker? = null
     private var videoTracker: ReactiveVideoTracker? = null
 
-    override fun startMoatTrackingForDisplay(webView: WebView): String {
-        if (!isMoatAllowed()) {
+    override fun startMoatTrackingForDisplay(webView: WebView, adResponse: AdResponse): String {
+        if (!isMoatAllowed(adResponse)) {
             logger.error("Moat is not allowed")
             return ""
         }
@@ -67,8 +66,12 @@ class MoatRepository(
         }
     }
 
-    override fun startMoatTrackingForVideoPlayer(videoView: VideoView?, duration: Int): Boolean {
-        if (!isMoatAllowed()) {
+    override fun startMoatTrackingForVideoPlayer(
+        videoView: VideoView?,
+        duration: Int,
+        adResponse: AdResponse
+    ): Boolean {
+        if (!isMoatAllowed(adResponse)) {
             logger.error("Moat is not allowed")
             return false
         }
@@ -177,7 +180,7 @@ class MoatRepository(
         logger.info("Video event $moatAdEventType")
     }
 
-    private fun isMoatAllowed(): Boolean {
+    private fun isMoatAllowed(adResponse: AdResponse): Boolean {
         val moatRand = numberGenerator.nextDoubleForMoat()
         val ad = adResponse.ad
         val response = moatRand < ad.moat && moatLimiting || !moatLimiting

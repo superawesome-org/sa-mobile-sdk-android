@@ -19,6 +19,7 @@ class MoPubActivity : Activity() {
         private const val BannerId = "b195f8dd8ded45fe847ad89ed1d016da"
         private const val InterstitialId = "24534e1901884e398f1253216226017e"
         private const val VideoId = "920b6145fb1546cf8b5cf2ac34638bb7"
+        private const val tag = "SADefaults/MoPub"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +29,7 @@ class MoPubActivity : Activity() {
         MoPub.initializeSdk(this, SdkConfiguration.Builder(BannerId)
                 .withAdditionalNetwork("tv.superawesome.mopub.AwesomeAdsMoPubAdapterConfiguration")
                 .build()) {
-            Log.d("SADefaults/MoPub", "MoPub.initializeSdk completed")
-
+            Log.d(tag, "MoPub.initializeSdk completed")
             configureBannerAd()
             configureInterstitialAd()
             configureRewardedVideoAd()
@@ -37,59 +37,59 @@ class MoPubActivity : Activity() {
     }
 
     private fun configureRewardedVideoAd() {
-        MoPubRewardedVideos.setRewardedVideoListener(object : MoPubRewardedVideoListener {
-            override fun onRewardedVideoLoadSuccess(adUnitId: String) {
-                Log.d("SADefaults/MoPub", "Video loaded")
+        MoPubRewardedAds.setRewardedAdListener(object :MoPubRewardedAdListener{
+            override fun onRewardedAdClicked(adUnitId: String) {
+                Log.d(tag, "clicked")
             }
 
-            override fun onRewardedVideoLoadFailure(adUnitId: String, errorCode: MoPubErrorCode) {
-                Log.d("SADefaults/MoPub", "Video failure: $errorCode")
+            override fun onRewardedAdClosed(adUnitId: String) {
+                Log.d(tag, "closed")
             }
 
-            override fun onRewardedVideoStarted(adUnitId: String) {
-                Log.d("SADefaults/MoPub", "Video started")
+            override fun onRewardedAdCompleted(adUnitIds: Set<String?>, reward: MoPubReward) {
+                Log.d(tag, "completed")
             }
 
-            override fun onRewardedVideoPlaybackError(adUnitId: String, errorCode: MoPubErrorCode) {
-                Log.d("SADefaults/MoPub", "Video error: $errorCode")
+            override fun onRewardedAdLoadFailure(adUnitId: String, errorCode: MoPubErrorCode) {
+                Log.d(tag, "failed")
             }
 
-            override fun onRewardedVideoClicked(adUnitId: String) {
-                Log.d("SADefaults/MoPub", "Video clicked")
+            override fun onRewardedAdLoadSuccess(adUnitId: String) {
+                Log.d(tag, "success")
             }
 
-            override fun onRewardedVideoClosed(adUnitId: String) {
-                Log.d("SADefaults/MoPub", "Video closed")
+            override fun onRewardedAdShowError(adUnitId: String, errorCode: MoPubErrorCode) {
+                Log.d(tag, "error")
             }
 
-            override fun onRewardedVideoCompleted(adUnitIds: Set<String>, reward: MoPubReward) {
-                Log.d("SADefaults/MoPub", "Video completed")
+            override fun onRewardedAdStarted(adUnitId: String) {
+                Log.d(tag, "started")
             }
         })
-        MoPubRewardedVideos.loadRewardedVideo(VideoId)
+        MoPubRewardedAds.loadRewardedAd(VideoId)
     }
 
     private fun configureInterstitialAd() {
         interstitial = MoPubInterstitial(this, InterstitialId)
         interstitial?.interstitialAdListener = object : InterstitialAdListener {
             override fun onInterstitialLoaded(interstitial: MoPubInterstitial) {
-                Log.d("SADefaults/MoPub", "Interstitial loaded")
+                Log.d(tag, "Interstitial loaded")
             }
 
             override fun onInterstitialFailed(interstitial: MoPubInterstitial, errorCode: MoPubErrorCode) {
-                Log.d("SADefaults/MoPub", "Interstitial failed: $errorCode")
+                Log.d(tag, "Interstitial failed: $errorCode")
             }
 
             override fun onInterstitialShown(interstitial: MoPubInterstitial) {
-                Log.d("SADefaults/MoPub", "Interstitial shown")
+                Log.d(tag, "Interstitial shown")
             }
 
             override fun onInterstitialClicked(interstitial: MoPubInterstitial) {
-                Log.d("SADefaults/MoPub", "Interstitial clicked")
+                Log.d(tag, "Interstitial clicked")
             }
 
             override fun onInterstitialDismissed(interstitial: MoPubInterstitial) {
-                Log.d("SADefaults/MoPub", "Interstitial dimissed")
+                Log.d(tag, "Interstitial dimissed")
             }
         }
         interstitial?.load()
@@ -100,23 +100,23 @@ class MoPubActivity : Activity() {
         banner?.setAdUnitId(BannerId)
         banner?.bannerAdListener = object : BannerAdListener {
             override fun onBannerLoaded(banner: MoPubView) {
-                Log.d("SADefaults/MoPub", "Banner ad loaded")
+                Log.d(tag, "Banner ad loaded")
             }
 
             override fun onBannerFailed(banner: MoPubView, errorCode: MoPubErrorCode) {
-                Log.d("SADefaults/MoPub", "Banner ad failed: $errorCode")
+                Log.d(tag, "Banner ad failed: $errorCode")
             }
 
             override fun onBannerClicked(banner: MoPubView) {
-                Log.d("SADefaults/MoPub", "Banner ad clicked")
+                Log.d(tag, "Banner ad clicked")
             }
 
             override fun onBannerExpanded(banner: MoPubView) {
-                Log.d("SADefaults/MoPub", "Banner ad expanded")
+                Log.d(tag, "Banner ad expanded")
             }
 
             override fun onBannerCollapsed(banner: MoPubView) {
-                Log.d("SADefaults/MoPub", "Banner ad collapsed")
+                Log.d(tag, "Banner ad collapsed")
             }
         }
         banner?.loadAd()
@@ -126,15 +126,15 @@ class MoPubActivity : Activity() {
         if (interstitial?.isReady == true) {
             interstitial?.show()
         } else {
-            Log.d("SADefaults/MoPub", "Interstitial not ready yet")
+            Log.d(tag, "Interstitial not ready yet")
         }
     }
 
     fun playVideo(view: View?) {
-        if (MoPubRewardedVideos.hasRewardedVideo(VideoId)) {
-            MoPubRewardedVideos.showRewardedVideo(VideoId)
+        if (MoPubRewardedAds.hasRewardedAd(VideoId)) {
+            MoPubRewardedAds.showRewardedAd(VideoId)
         } else {
-            Log.d("SADefaults/MoPub", "Video not ready yet")
+            Log.d(tag, "Video not ready yet")
         }
     }
 

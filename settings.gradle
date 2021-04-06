@@ -8,11 +8,7 @@ include ':superawesome-full'
 // Modules
 include ':superawesome-ui'
 include ':superawesome-common'
-include ':superawesome-network'
-include ':superawesome-base'
 
 // Plugins
-include ':superawesome-mopub'
-include ':superawesome-admob'
 include ':superawesome-unity'
 
