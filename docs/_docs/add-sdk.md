@@ -11,7 +11,7 @@ The first step is to include the following Maven repository in your module’s <
 
 {% highlight gradle %}
 repositories {
-    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
+    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 {% endhighlight %}
 
