@@ -14,6 +14,7 @@ import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
 import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import kotlin.test.assertEquals
 
@@ -43,12 +44,13 @@ class AdRepositoryTest {
     @Test
     fun test_getAdCalled_validResponse_success() = runBlocking {
         // Given
-        val dataResult: DataResult.Success<Ad> = mockk()
-        every { dataResult.isSuccess } returns true
-        coEvery { dataResult.value } returns mockk()
+        val ad = mockk<Ad>()
+        val dataResult = DataResult.Success(ad)
+        val response = DataResult.Success(mockk<AdResponse>())
+
         coEvery { adDataSourceType.getAd(any(), any()) } returns dataResult
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
-        coEvery { adProcessor.process(any(), any()) } returns mockk()
+        coEvery { adProcessor.process(any(), any()) } returns response
 
         // When
         val result = adRepository.getAd(1, mockk())
