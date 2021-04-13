@@ -10,6 +10,10 @@ android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
