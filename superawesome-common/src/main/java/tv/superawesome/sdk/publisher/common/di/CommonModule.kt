@@ -3,6 +3,8 @@ package tv.superawesome.sdk.publisher.common.di
 import MoatRepository
 import android.content.res.Resources
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.util.Locale
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -72,8 +74,8 @@ import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
-import java.util.Locale
 
+@OptIn(ExperimentalSerializationApi::class)
 fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
     single { environment }
     single { Locale.getDefault() }
