@@ -7,6 +7,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.models.*
@@ -79,14 +80,22 @@ class AdQueryMakerTest : BaseTest()  {
     @Test
     fun test_clickQuery() {
         // Given
-        val request = mockk<AdResponse> {}
+        val adResponse = mockk<AdResponse> {}
+        val ad = mockk<Ad> {}
+        val creative = mockk<Creative> {}
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
 
+        every { adResponse.placementId } returns 10
+        every { adResponse.ad } returns ad
+        every { ad.creative } returns creative
+        every { ad.line_item_id } returns 30
+        every { creative.id } returns 20
+
         // When
-        val query = queryMaker.makeClickQuery(request)
+        val query = queryMaker.makeClickQuery(adResponse)
 
         // Then
         assertEquals(10, query.placement)

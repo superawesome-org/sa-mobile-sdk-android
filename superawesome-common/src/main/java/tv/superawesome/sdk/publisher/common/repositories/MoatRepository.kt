@@ -2,13 +2,18 @@ package tv.superawesome.sdk.publisher.common.repositories
 
 import android.webkit.WebView
 import android.widget.VideoView
+import tv.superawesome.sdk.publisher.common.models.AdResponse
 
 interface MoatRepositoryType {
-    fun startMoatTrackingForDisplay(webView: WebView): String = ""
+    fun startMoatTrackingForDisplay(webView: WebView, adResponse: AdResponse): String = ""
 
     fun stopMoatTrackingForDisplay(): Boolean = false
 
-    fun startMoatTrackingForVideoPlayer(videoView: VideoView?, duration: Int): Boolean = false
+    fun startMoatTrackingForVideoPlayer(
+        videoView: VideoView?,
+        duration: Int,
+        adResponse: AdResponse
+    ): Boolean = false
 
     fun sendPlayingEvent(position: Int): Boolean = false
 

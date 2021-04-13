@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.extensions.baseUrl
 import tv.superawesome.sdk.publisher.common.models.*
@@ -16,7 +15,6 @@ class AdProcessor(
         private val networkDataSource: NetworkDataSourceType,
         private val encoder: EncoderType,
 ) : AdProcessorType {
-    @ExperimentalSerializationApi
     override suspend fun process(placementId: Int, ad: Ad): DataResult<AdResponse> {
         val response = AdResponse(placementId, ad)
 
@@ -37,13 +35,12 @@ class AdProcessor(
                 ad.creative.details.vast?.let { url ->
                     response.vast = handleVast(url, null)
                     response.baseUrl = response.vast?.url?.baseUrl
-
-                    val downloadFileResult = networkDataSource.downloadFile(response.vast?.url
-                            ?: "")
-                    when (downloadFileResult) {
-                        is DataResult.Success -> response.filePath = downloadFileResult.value
-                        is DataResult.Failure -> return downloadFileResult
-                    }
+                    response.vast?.url?.let {
+                        when (val downloadFileResult = networkDataSource.downloadFile(it)) {
+                            is DataResult.Success -> response.filePath = downloadFileResult.value
+                            is DataResult.Failure -> return downloadFileResult
+                        }
+                    } ?: DataResult.Failure(Exception("empty url"))
                 }
             }
         }
@@ -59,11 +56,9 @@ class AdProcessor(
         val result = networkDataSource.getData(url)
         if (result is DataResult.Success) {
             val vast = vastParser.parse(result.value)
-            vast.redirect?.let {
+            vast.redirect?.also {
                 val mergedVast = vast.merge(initialVast)
                 handleVast(it, mergedVast)
-            }.run {
-                return vast
             }
         }
         return initialVast

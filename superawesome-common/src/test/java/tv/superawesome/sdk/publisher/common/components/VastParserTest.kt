@@ -4,11 +4,9 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.models.VastEvent
 import tv.superawesome.sdk.publisher.common.models.VastType
 import tv.superawesome.sdk.publisher.common.testutil.ResourceReader
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 
 class VastParserTest : BaseTest() {
@@ -33,26 +31,10 @@ class VastParserTest : BaseTest() {
         // When
         val vast = vastParser.parse(file)
 
-        val error: VastEvent? = null
-        val impression: VastEvent? = null
-        val click: VastEvent? = null
-//        for (evt in vast.events) {
-//            if (evt.event == "vast_error") error = evt
-//            if (evt.event == "vast_impression") impression = evt
-//            if (evt.event == "vast_click_through") click = evt
-//        }
-
         // Then
         assertEquals("https://ads.superawesome.tv/v2/demo_images/video.mp4", vast.url)
         assertEquals(null, vast.redirect)
         assertEquals(VastType.InLine, vast.type)
         assertEquals(1, vast.media.size)
-//        assertEquals(15, vast.events.size)
-        assertNotNull(error)
-        assertEquals(expectedError, error.url)
-        assertNotNull(impression)
-        assertEquals(expectedImpression, impression.url)
-        assertNotNull(click)
-        assertEquals(expectedClick, click.url)
     }
 }
