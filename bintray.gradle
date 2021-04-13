@@ -60,8 +60,8 @@ publishing {
 }
 
 bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
+    user = "testUser"
+    key = "secret"
 
     configurations = ['archives']
     publications = ['MyPublication']
