@@ -42,12 +42,10 @@ repositories {
 
 dependencies {
     implementation project(':superawesome')
-    implementation project(':superawesome-admob')
-    api project(':superawesome-mopub')
 
-    implementation('com.mopub:mopub-sdk-banner:5.13.0') { transitive = true }
-    implementation('com.mopub:mopub-sdk-fullscreen:5.13.0') { transitive = true }
-    implementation('com.mopub:mopub-sdk-native-static:5.13.0') { transitive = true }
+    implementation('com.mopub:mopub-sdk-banner:5.16.4') { transitive = true }
+    implementation('com.mopub:mopub-sdk-fullscreen:5.16.4') { transitive = true }
+    implementation('com.mopub:mopub-sdk-native-static:5.16.4') { transitive = true }
 
     implementation 'com.google.android.gms:play-services-ads:19.8.0'
     implementation "androidx.multidex:multidex:2.0.1"

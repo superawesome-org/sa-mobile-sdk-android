@@ -1,7 +1,7 @@
 package tv.superawesome.plugins.publisher.unity
 
 import android.app.Activity
-import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.common.awesomeAds.AwesomeAds
 import tv.superawesome.sdk.publisher.common.models.Configuration
 import tv.superawesome.sdk.publisher.common.network.Environment
 

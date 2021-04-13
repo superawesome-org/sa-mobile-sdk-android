@@ -34,6 +34,5 @@ repositories {
 }
 
 dependencies {
-    api project(':superawesome-base')
-    implementation project(':superawesome-moat')
+    api project(':superawesome-common')
 }

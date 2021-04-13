@@ -8,13 +8,12 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_awesomeads.*
 import tv.superawesome.demoapp.adapter.*
-import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.common.awesomeAds.AwesomeAds
 import tv.superawesome.sdk.publisher.common.models.Configuration
 import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.Environment
+import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
-import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
 
 class AwesomeAdsActivity : Activity() {
     private val data = listOf(
@@ -81,8 +80,7 @@ class AwesomeAdsActivity : Activity() {
         adapter.reloadList()
 
         listView.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
-            val item = data[position]
-            if (item is PlacementItem) {
+            (data[position] as? PlacementItem)?.let { item ->
                 when (item.type) {
                     Type.BANNER -> bannerView.load(item.pid)
                     Type.INTERSTITIAL -> SAInterstitialAd.load(item.pid, this@AwesomeAdsActivity)
@@ -104,41 +102,35 @@ class AwesomeAdsActivity : Activity() {
         SAVideoAd.enableCloseButton()
         SAVideoAd.enableParentalGate()
         SAVideoAd.enableBumperPage()
-        SAVideoAd.setListener(object : SAInterface {
-            override fun onEvent(placementId: Int, event: SAEvent) {
-                Log.i("gunhan", "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
+        SAVideoAd.setListener { placementId, event ->
+            Log.i("gunhan", "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
 
-                if (event == SAEvent.AdLoaded) {
-                    SAVideoAd.play(placementId, this@AwesomeAdsActivity)
-                }
+            if (event == SAEvent.AdLoaded) {
+                SAVideoAd.play(placementId, this@AwesomeAdsActivity)
             }
-        })
+        }
     }
 
     private fun configureInterstitialAd() {
-        SAInterstitialAd.setListener(object : SAInterface {
-            override fun onEvent(placementId: Int, event: SAEvent) {
-                Log.i("gunhan", "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
+        SAInterstitialAd.setListener { placementId, event ->
+            Log.i("gunhan", "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
-                if (event == SAEvent.AdLoaded) {
-                    SAInterstitialAd.play(placementId, this@AwesomeAdsActivity)
-                }
+            if (event == SAEvent.AdLoaded) {
+                SAInterstitialAd.play(placementId, this@AwesomeAdsActivity)
             }
-        })
+        }
     }
 
     private fun configureBannerAd() {
         bannerView.enableBumperPage()
         bannerView.enableParentalGate()
-        bannerView.setListener(object : SAInterface {
-            override fun onEvent(placementId: Int, event: SAEvent) {
-                Log.i("gunhan", "bannerView event ${event.name} thread:${Thread.currentThread()}")
+        bannerView.setListener { _, event ->
+            Log.i("gunhan", "bannerView event ${event.name} thread:${Thread.currentThread()}")
 
-                if (event == SAEvent.AdLoaded) {
-                    bannerView.visibility = View.VISIBLE
-                    bannerView.play()
-                }
+            if (event == SAEvent.AdLoaded) {
+                bannerView.visibility = View.VISIBLE
+                bannerView.play()
             }
-        })
+        }
     }
 }
