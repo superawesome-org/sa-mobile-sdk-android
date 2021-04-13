@@ -21,7 +21,7 @@ interface VastEventRepositoryType {
 class VastEventRepository(
     private val vastAd: VastAd,
     private val dataSource: NetworkDataSourceType,
-    private val dispatcherProvider: DispatcherProviderType,
+    private val dispatcherProvider: DispatcherProviderType
 ) : VastEventRepositoryType {
 
     private suspend fun triggerEvent(url: String) {

@@ -16,7 +16,7 @@ import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 
 class SAAdMobRewardedAd(
     private val adConfiguration: MediationRewardedAdConfiguration,
-    private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>,
+    private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>
 ) : MediationRewardedAd, SAInterface {
 
     private var rewardedAdCallback: MediationRewardedAdCallback? = null

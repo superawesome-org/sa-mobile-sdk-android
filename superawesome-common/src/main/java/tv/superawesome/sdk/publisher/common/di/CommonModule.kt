@@ -109,7 +109,6 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     }
     single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get(), get()) }
 
-
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
     single<ImageProviderType> { ImageProvider() }

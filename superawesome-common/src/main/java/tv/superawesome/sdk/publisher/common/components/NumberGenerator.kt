@@ -2,7 +2,6 @@ package tv.superawesome.sdk.publisher.common.components
 
 import java.util.*
 
-
 interface NumberGeneratorType {
     /**
      * @return Random percentage between 0.0 and 1.0

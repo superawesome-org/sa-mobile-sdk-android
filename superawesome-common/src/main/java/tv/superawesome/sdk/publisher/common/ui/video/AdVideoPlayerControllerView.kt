@@ -83,7 +83,6 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     }
 
     override fun setListener(p0: IVideoPlayerControllerView.Listener?) {
-
     }
 
     companion object {

@@ -10,10 +10,10 @@ interface AdProcessorType {
 }
 
 class AdProcessor(
-        private val htmlFormatter: HtmlFormatterType,
-        private val vastParser: VastParserType,
-        private val networkDataSource: NetworkDataSourceType,
-        private val encoder: EncoderType,
+    private val htmlFormatter: HtmlFormatterType,
+    private val vastParser: VastParserType,
+    private val networkDataSource: NetworkDataSourceType,
+    private val encoder: EncoderType,
 ) : AdProcessorType {
     override suspend fun process(placementId: Int, ad: Ad): DataResult<AdResponse> {
         val response = AdResponse(placementId, ad)

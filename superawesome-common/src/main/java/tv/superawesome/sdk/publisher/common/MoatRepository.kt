@@ -17,7 +17,7 @@ private const val MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573"
 class MoatRepository(
     private val moatLimiting: Boolean,
     private val logger: Logger,
-    private val numberGenerator: NumberGeneratorType,
+    private val numberGenerator: NumberGeneratorType
 ) : MoatRepositoryType, TrackerListener, VideoTrackerListener {
     private val factory: MoatFactory by lazy { MoatFactory.create() }
     private var webTracker: WebAdTracker? = null

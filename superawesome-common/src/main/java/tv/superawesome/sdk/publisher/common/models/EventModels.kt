@@ -4,24 +4,24 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EventQuery(
-        val placement: Int,
-        val bundle: String,
-        val creative: Int,
-        val line_item: Int,
-        val ct: ConnectionType,
-        val sdkVersion: String,
-        val rnd: Int,
-        val type: EventType?,
-        val no_image: Boolean?,
-        val data: String?
+    val placement: Int,
+    val bundle: String,
+    val creative: Int,
+    val line_item: Int,
+    val ct: ConnectionType,
+    val sdkVersion: String,
+    val rnd: Int,
+    val type: EventType?,
+    val no_image: Boolean?,
+    val data: String?
 )
 
 @Serializable
 data class EventData(
-        val placement: Int,
-        val line_item: Int,
-        val creative: Int,
-        val type: EventType
+    val placement: Int,
+    val line_item: Int,
+    val creative: Int,
+    val type: EventType
 )
 
 @Serializable

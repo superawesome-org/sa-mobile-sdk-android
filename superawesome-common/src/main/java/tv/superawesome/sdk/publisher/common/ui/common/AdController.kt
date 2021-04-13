@@ -179,7 +179,7 @@ class AdController(
         // append CPI data to it
         val referrer =
             if (currentAdResponse?.ad?.isCPICampaign() == true) "&referrer=" + currentAdResponse?.referral else ""
-        val destination = "$url${referrer}"
+        val destination = "$url$referrer"
 
         // start browser
         try {
@@ -222,7 +222,7 @@ class AdController(
     }
 
     override fun load(placementId: Int, request: AdRequest) {
-        logger.info("load(${placementId}) thread:${Thread.currentThread()}")
+        logger.info("load($placementId) thread:${Thread.currentThread()}")
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)

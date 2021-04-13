@@ -10,8 +10,14 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Before
 import org.junit.Test
-import tv.superawesome.sdk.publisher.common.models.*
-import java.util.*
+import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.ConnectionType
+import tv.superawesome.sdk.publisher.common.models.Creative
+import tv.superawesome.sdk.publisher.common.models.EventData
+import tv.superawesome.sdk.publisher.common.models.EventType
+import java.util.Locale
 import kotlin.test.assertEquals
 
 class AdQueryMakerTest {

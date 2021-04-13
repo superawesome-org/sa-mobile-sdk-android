@@ -22,7 +22,6 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
     private var context: Context? = null
     private var loadedPlacementId = 0
 
-
     override fun requestInterstitialAd(
         context: Context,
         listener: CustomEventInterstitialListener?,
@@ -43,27 +42,29 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
             Orientation.fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION))
                 ?.let { setOrientation(it) }
         }
-        setListener(SAInterface { placementId, event ->
-            when (event) {
-                SAEvent.AdLoaded -> {
-                    loadedPlacementId = placementId
-                    listener?.onAdLoaded()
-                }
-                SAEvent.AdClicked -> {
-                    if (listener != null) {
-                        listener.onAdClicked()
-                        listener.onAdLeftApplication()
+        setListener(
+            SAInterface { placementId, event ->
+                when (event) {
+                    SAEvent.AdLoaded -> {
+                        loadedPlacementId = placementId
+                        listener?.onAdLoaded()
+                    }
+                    SAEvent.AdClicked -> {
+                        if (listener != null) {
+                            listener.onAdClicked()
+                            listener.onAdLeftApplication()
+                        }
+                    }
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL)
+                    SAEvent.AdShown -> listener?.onAdOpened()
+                    SAEvent.AdFailedToShow -> listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR)
+                    SAEvent.AdClosed -> listener?.onAdClosed()
+                    else -> {
+                        // do nothing
                     }
                 }
-                SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL)
-                SAEvent.AdShown -> listener?.onAdOpened()
-                SAEvent.AdFailedToShow -> listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR)
-                SAEvent.AdClosed -> listener?.onAdClosed()
-                else -> {
-                    // do nothing
-                }
             }
-        })
+        )
         try {
             val placementId = s.toInt()
             load(placementId, context)

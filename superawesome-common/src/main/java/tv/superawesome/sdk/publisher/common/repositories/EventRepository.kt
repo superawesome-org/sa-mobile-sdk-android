@@ -21,49 +21,48 @@ interface EventRepositoryType {
 }
 
 class EventRepository(
-        private val dataSource: AwesomeAdsApiDataSourceType,
-        private val adQueryMaker: AdQueryMakerType,
-        private val dispatcherProvider: DispatcherProviderType,
+    private val dataSource: AwesomeAdsApiDataSourceType,
+    private val adQueryMaker: AdQueryMakerType,
+    private val dispatcherProvider: DispatcherProviderType,
 ) : EventRepositoryType {
     override suspend fun impression(adResponse: AdResponse): DataResult<Void> =
-            withContext(dispatcherProvider.io) {
-                dataSource.impression(adQueryMaker.makeImpressionQuery(adResponse))
-            }
-
+        withContext(dispatcherProvider.io) {
+            dataSource.impression(adQueryMaker.makeImpressionQuery(adResponse))
+        }
 
     override suspend fun click(adResponse: AdResponse): DataResult<Void> =
-            withContext(dispatcherProvider.io) {
-                dataSource.click(adQueryMaker.makeClickQuery(adResponse))
-            }
+        withContext(dispatcherProvider.io) {
+            dataSource.click(adQueryMaker.makeClickQuery(adResponse))
+        }
 
     override suspend fun videoClick(adResponse: AdResponse): DataResult<Void> =
-            withContext(dispatcherProvider.io) {
-                dataSource.videoClick(adQueryMaker.makeVideoClickQuery(adResponse))
-            }
+        withContext(dispatcherProvider.io) {
+            dataSource.videoClick(adQueryMaker.makeVideoClickQuery(adResponse))
+        }
 
     private suspend fun customEvent(type: EventType, adResponse: AdResponse): DataResult<Void> =
-            withContext(dispatcherProvider.io) {
-                val data = EventData(
-                        adResponse.placementId,
-                        adResponse.ad.line_item_id,
-                        adResponse.ad.creative.id,
-                        type
-                )
-                dataSource.event(adQueryMaker.makeEventQuery(adResponse, data))
-            }
+        withContext(dispatcherProvider.io) {
+            val data = EventData(
+                adResponse.placementId,
+                adResponse.ad.line_item_id,
+                adResponse.ad.creative.id,
+                type
+            )
+            dataSource.event(adQueryMaker.makeEventQuery(adResponse, data))
+        }
 
     override suspend fun parentalGateOpen(adResponse: AdResponse): DataResult<Void> =
-            customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.parentalGateOpen, adResponse)
 
     override suspend fun parentalGateClose(adResponse: AdResponse): DataResult<Void> =
-            customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.parentalGateOpen, adResponse)
 
     override suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Void> =
-            customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.parentalGateOpen, adResponse)
 
     override suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Void> =
-            customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.parentalGateOpen, adResponse)
 
     override suspend fun viewableImpression(adResponse: AdResponse): DataResult<Void> =
-            customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.parentalGateOpen, adResponse)
 }

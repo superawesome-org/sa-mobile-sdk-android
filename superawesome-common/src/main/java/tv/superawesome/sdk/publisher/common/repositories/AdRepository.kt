@@ -14,16 +14,16 @@ interface AdRepositoryType {
 }
 
 class AdRepository(
-        private val dataSource: AwesomeAdsApiDataSourceType,
-        private val adQueryMaker: AdQueryMakerType,
-        private val adProcessor: AdProcessorType,
-        private val dispatcherProvider: DispatcherProviderType,
+    private val dataSource: AwesomeAdsApiDataSourceType,
+    private val adQueryMaker: AdQueryMakerType,
+    private val adProcessor: AdProcessorType,
+    private val dispatcherProvider: DispatcherProviderType,
 ) : AdRepositoryType {
     override suspend fun getAd(placementId: Int, request: AdRequest): DataResult<AdResponse> =
-            withContext(dispatcherProvider.io) {
-                when (val result = dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request))) {
-                    is DataResult.Success -> adProcessor.process(placementId, result.value)
-                    is DataResult.Failure -> result
-                }
+        withContext(dispatcherProvider.io) {
+            when (val result = dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request))) {
+                is DataResult.Success -> adProcessor.process(placementId, result.value)
+                is DataResult.Failure -> result
             }
+        }
 }

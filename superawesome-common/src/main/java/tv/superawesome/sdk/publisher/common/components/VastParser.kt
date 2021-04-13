@@ -7,8 +7,10 @@ interface VastParserType {
     fun parse(data: String): VastAd
 }
 
-class VastParser(private val parser: XmlParserType,
-                 private val connectionProvider: ConnectionProviderType) : VastParserType {
+class VastParser(
+    private val parser: XmlParserType,
+    private val connectionProvider: ConnectionProviderType
+) : VastParserType {
     override fun parse(data: String): VastAd {
         val vastAd = VastAd()
         val document = parser.parse(data)
@@ -42,9 +44,9 @@ class VastParser(private val parser: XmlParserType,
         if (creative != null) {
             parser.findAll(creative, "ClickThrough").forEach {
                 val url = it.textContent
-                        .replace("&amp;", "&")
-                        .replace("%3A", ":")
-                        .replace("%2F", "/")
+                    .replace("&amp;", "&")
+                    .replace("%3A", ":")
+                    .replace("%2F", "/")
                 vastAd.addEvent(VastEvent("vast_click_through", url))
             }
 
@@ -65,11 +67,11 @@ class VastParser(private val parser: XmlParserType,
                 val width = it.getAttribute("width")?.toIntOrNull() ?: 0
                 val height = it.getAttribute("height")?.toIntOrNull() ?: 0
                 val media = VastMedia(
-                        it.getAttribute("type"),
-                        it.textContent.replace(" ", ""),
-                        bitrate,
-                        width,
-                        height
+                    it.getAttribute("type"),
+                    it.textContent.replace(" ", ""),
+                    bitrate,
+                    width,
+                    height
                 )
                 vastAd.addMedia(media)
             }
@@ -91,5 +93,4 @@ class VastParser(private val parser: XmlParserType,
             vastAd.url = vastAd.media.lastOrNull()?.url
         }
     }
-
 }

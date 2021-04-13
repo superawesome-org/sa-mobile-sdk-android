@@ -5,18 +5,16 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.telephony.TelephonyManager
-import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.models.ConnectionType
 import tv.superawesome.sdk.publisher.common.testutil.BuildUtil
 import kotlin.test.assertEquals
 
-class ConnectionProviderTest : BaseTest()  {
+class ConnectionProviderTest : BaseTest() {
     @MockK
     lateinit var context: Context
 

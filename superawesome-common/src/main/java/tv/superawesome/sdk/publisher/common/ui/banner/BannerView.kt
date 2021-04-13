@@ -62,7 +62,7 @@ class BannerView @JvmOverloads constructor(
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
     fun load(placementId: Int) {
-        logger.info("load(${placementId})")
+        logger.info("load($placementId)")
         this.placementId = placementId
         controller.load(placementId, makeAdRequest())
     }
