@@ -1,7 +1,11 @@
 package tv.superawesome.sdk.publisher.common.components
 
 import org.w3c.dom.Element
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.ConnectionQuality
+import tv.superawesome.sdk.publisher.common.models.VastAd
+import tv.superawesome.sdk.publisher.common.models.VastEvent
+import tv.superawesome.sdk.publisher.common.models.VastMedia
+import tv.superawesome.sdk.publisher.common.models.VastType
 
 interface VastParserType {
     fun parse(data: String): VastAd

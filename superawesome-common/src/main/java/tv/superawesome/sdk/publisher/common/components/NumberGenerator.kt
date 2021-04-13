@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import java.util.*
+import java.util.UUID
 
 interface NumberGeneratorType {
     /**

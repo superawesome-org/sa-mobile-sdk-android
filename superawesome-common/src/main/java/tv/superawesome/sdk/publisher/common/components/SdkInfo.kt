@@ -2,7 +2,7 @@ package tv.superawesome.sdk.publisher.common.components
 
 import android.content.Context
 import android.content.pm.PackageManager
-import java.util.*
+import java.util.Locale
 
 interface SdkInfoType {
     val version: String

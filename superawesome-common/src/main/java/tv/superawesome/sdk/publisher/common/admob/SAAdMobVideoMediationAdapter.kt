@@ -1,7 +1,14 @@
 package tv.superawesome.sdk.publisher.common.admob
 
 import android.content.Context
-import com.google.android.gms.ads.mediation.*
+import com.google.android.gms.ads.mediation.Adapter
+import com.google.android.gms.ads.mediation.InitializationCompleteCallback
+import com.google.android.gms.ads.mediation.MediationAdLoadCallback
+import com.google.android.gms.ads.mediation.MediationConfiguration
+import com.google.android.gms.ads.mediation.MediationRewardedAd
+import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
+import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
+import com.google.android.gms.ads.mediation.VersionInfo
 import tv.superawesome.sdk.publisher.common.BuildConfig
 import tv.superawesome.sdk.publisher.common.awesomeAds.AwesomeAds
 import tv.superawesome.sdk.publisher.common.models.Configuration

@@ -8,7 +8,7 @@ import org.xml.sax.InputSource
 import org.xml.sax.SAXException
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import java.util.*
+import java.util.ArrayList
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
