@@ -20,7 +20,7 @@ jobs:
          command: sudo chmod +x ./gradlew
       - run:
           name: Download Dependencies
-          command: ./gradlew superawesome dependencies
+          command: ./gradlew superawesome-common dependencies
       - save_cache:
           paths:
             - ~/.gradle
