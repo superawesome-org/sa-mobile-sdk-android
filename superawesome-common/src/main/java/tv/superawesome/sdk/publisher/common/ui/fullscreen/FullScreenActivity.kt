@@ -15,7 +15,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.ui.common.Config
+import tv.superawesome.sdk.publisher.common.ui.common.Config
 
 open class FullScreenActivity : Activity() {
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)

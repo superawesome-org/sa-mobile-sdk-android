@@ -21,7 +21,7 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
-import tv.superawesome.sdk.publisher.ui.common.Config
+import tv.superawesome.sdk.publisher.common.ui.common.Config
 import java.io.File
 
 /**

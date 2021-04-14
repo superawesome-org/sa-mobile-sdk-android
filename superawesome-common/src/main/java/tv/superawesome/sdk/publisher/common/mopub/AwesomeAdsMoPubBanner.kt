@@ -42,38 +42,36 @@ class AwesomeAdsMoPubBanner : BaseAd() {
             setParentalGate(extractor.isParentalGateEnabled)
             setBumperPage(extractor.isBumperPageEnabled)
 
-            setListener(object : SAInterface {
-                override fun onEvent(placementId: Int, event: SAEvent) {
-                    when (event) {
-                        SAEvent.AdLoaded -> {
-                            if (mLoadListener != null) {
-                                val ad = controller.currentAdResponse?.ad
-                                var html: String? = null
-                                if (ad != null) {
-                                    html = controller.currentAdResponse?.html
-                                }
-                                val isEmpty = html != null && html.contains("mopub://failLoad")
+            setListener { placementId, event ->
+                when (event) {
+                    SAEvent.AdLoaded -> {
+                        if (mLoadListener != null) {
+                            val ad = controller.currentAdResponse?.ad
+                            var html: String? = null
+                            if (ad != null) {
+                                html = controller.currentAdResponse?.html
+                            }
+                            val isEmpty = html != null && html.contains("mopub://failLoad")
 
-                                if (isEmpty) {
-                                    mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
-                                } else {
-                                    mLoadListener.onAdLoaded()
-                                    play()
-                                }
+                            if (isEmpty) {
+                                mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                            } else {
+                                mLoadListener.onAdLoaded()
+                                play()
                             }
                         }
-                        SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> mInteractionListener?.onAdFailed(
-                            MoPubErrorCode.NETWORK_NO_FILL
-                        )
-                        SAEvent.AdShown -> mInteractionListener?.onAdShown()
-                        SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
-                        SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
-                        SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
-                        else -> {
-                        }
+                    }
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> mInteractionListener?.onAdFailed(
+                        MoPubErrorCode.NETWORK_NO_FILL
+                    )
+                    SAEvent.AdShown -> mInteractionListener?.onAdShown()
+                    SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
+                    SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
+                    SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
+                    else -> {
                     }
                 }
-            })
+            }
 
             load(extractor.placementId)
         }

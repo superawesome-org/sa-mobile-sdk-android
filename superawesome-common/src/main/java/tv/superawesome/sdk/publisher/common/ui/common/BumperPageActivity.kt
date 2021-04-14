@@ -20,7 +20,6 @@ import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.StringProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.ui.common.SquareLayout
 
 class BumperPageActivity : Activity() {
     private var handler = Handler(Looper.getMainLooper())

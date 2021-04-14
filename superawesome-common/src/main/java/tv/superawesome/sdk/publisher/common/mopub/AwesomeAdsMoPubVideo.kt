@@ -75,38 +75,36 @@ class AwesomeAdsMoPubVideo : BaseAd() {
         SAVideoAd.setBumperPage(isBumperPageEnabled)
         orientation?.let { SAVideoAd.setOrientation(it) }
 
-        SAInterstitialAd.setListener(object : SAInterface {
-            override fun onEvent(placementId: Int, event: SAEvent) {
-                when (event) {
-                    SAEvent.AdLoaded -> {
-                        if (mLoadListener != null) {
-                            val hasAdAvailable = SAVideoAd.hasAdAvailable(placementId)
+        SAInterstitialAd.setListener { placementId, event ->
+            when (event) {
+                SAEvent.AdLoaded -> {
+                    if (mLoadListener != null) {
+                        val hasAdAvailable = SAVideoAd.hasAdAvailable(placementId)
 
-                            if (hasAdAvailable) {
-                                mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
-                            } else {
-                                mLoadListener.onAdLoaded()
-                            }
+                        if (hasAdAvailable) {
+                            mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                        } else {
+                            mLoadListener.onAdLoaded()
                         }
                     }
-                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> mInteractionListener?.onAdFailed(
-                        MoPubErrorCode.NETWORK_NO_FILL
+                }
+                SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> mInteractionListener?.onAdFailed(
+                    MoPubErrorCode.NETWORK_NO_FILL
+                )
+                SAEvent.AdShown -> mInteractionListener?.onAdShown()
+                SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
+                SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
+                SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
+                SAEvent.AdEnded -> mInteractionListener?.onAdComplete(
+                    MoPubReward.success(
+                        MoPubReward.NO_REWARD_LABEL,
+                        0
                     )
-                    SAEvent.AdShown -> mInteractionListener?.onAdShown()
-                    SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
-                    SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
-                    SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
-                    SAEvent.AdEnded -> mInteractionListener?.onAdComplete(
-                        MoPubReward.success(
-                            MoPubReward.NO_REWARD_LABEL,
-                            0
-                        )
-                    )
-                    else -> {
-                    }
+                )
+                else -> {
                 }
             }
-        })
+        }
 
         // load the interstitial ad
         SAVideoAd.load(placementId, context)

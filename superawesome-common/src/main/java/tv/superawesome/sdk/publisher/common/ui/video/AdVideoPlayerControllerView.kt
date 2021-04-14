@@ -20,8 +20,8 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     private val mask: ImageView = videoComponentFactory.getMask(MASK_ID, context)
     private var chronoBg: ImageView
     private var chronograph: TextView?
-    var showMore: Button
-    var smallShowMore: Button
+    private var showMore: Button
+    private var smallShowMore: Button
     var padlock: ImageButton
 
     fun setShouldShowSmallClickButton(value: Boolean) {

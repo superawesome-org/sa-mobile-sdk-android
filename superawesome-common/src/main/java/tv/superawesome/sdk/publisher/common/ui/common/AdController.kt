@@ -19,7 +19,6 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
-import tv.superawesome.sdk.publisher.ui.common.Config
 import kotlin.math.abs
 
 interface AdControllerType {
