@@ -12,7 +12,7 @@ import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 
 class VideoEvents(
     private val adResponse: AdResponse,

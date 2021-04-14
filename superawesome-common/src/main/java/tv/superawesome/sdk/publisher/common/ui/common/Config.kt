@@ -1,4 +1,4 @@
-package tv.superawesome.sdk.publisher.ui.common
+package tv.superawesome.sdk.publisher.common.ui.common
 
 import android.os.Parcel
 import android.os.Parcelable

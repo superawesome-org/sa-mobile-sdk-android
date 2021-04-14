@@ -19,7 +19,7 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 
 class BannerView @JvmOverloads constructor(
     context: Context,

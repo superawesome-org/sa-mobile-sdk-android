@@ -1,4 +1,4 @@
-package tv.superawesome.sdk.publisher.ui.common
+package tv.superawesome.sdk.publisher.common.ui.common
 
 import android.content.Context
 import android.util.AttributeSet

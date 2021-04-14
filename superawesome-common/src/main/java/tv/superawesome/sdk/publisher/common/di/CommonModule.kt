@@ -72,8 +72,8 @@ import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 
 @OptIn(ExperimentalSerializationApi::class)
 fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
