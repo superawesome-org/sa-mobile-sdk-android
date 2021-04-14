@@ -2,7 +2,11 @@ package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.lib.savideoplayer.IVideoPlayerControllerView
 
@@ -83,7 +87,6 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     }
 
     override fun setListener(p0: IVideoPlayerControllerView.Listener?) {
-
     }
 
     companion object {

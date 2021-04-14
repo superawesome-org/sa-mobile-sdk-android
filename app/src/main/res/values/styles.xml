@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">#555555</item>
-        <item name="android:statusBarColor">#555555</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">#555555</item>
     </style>
 
 </resources>

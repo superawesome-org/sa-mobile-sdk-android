@@ -111,7 +111,8 @@ class VideoActivity : FullScreenActivity() {
             it.vast?.let { _ ->
                 videoEvents = get(
                     clazz = VideoEvents::class.java,
-                    parameters = { parametersOf(it, config.moatLimiting) })
+                    parameters = { parametersOf(it, config.moatLimiting) }
+                )
                 val filePath = it.filePath ?: ""
                 try {
                     val fileUri = Uri.fromFile(File(filePath))

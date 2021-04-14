@@ -1,9 +1,9 @@
 buildscript {
     ext {
-        kotlin_version = '1.4.31'
+        kotlin_version = '1.4.32'
         compile_sdk_version = 30
         build_tools_version = "30.0.0"
-        min_sdk_version = 16
+        min_sdk_version = 19
         target_sdk_version = 30
 
         junit_version = '4.13.2'
@@ -18,12 +18,14 @@ buildscript {
         maven { url "https://maven.google.com" }
         google()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
         jcenter() // remove when jfrog is removed
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha12'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha14'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
     }
 }
 
@@ -37,7 +39,5 @@ allprojects {
 }
 
 ext.getSdkVersion = { ->
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    return properties.getProperty("project.version")
+    "1.2.3"
 }

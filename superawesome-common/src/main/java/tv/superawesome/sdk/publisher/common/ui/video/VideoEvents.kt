@@ -18,14 +18,14 @@ class VideoEvents(
     private val adResponse: AdResponse,
     private val moatLimiting: Boolean,
     private val eventRepository: EventRepositoryType,
-    dispatcherProvider: DispatcherProviderType,
+    dispatcherProvider: DispatcherProviderType
 ) {
     interface Listener {
         fun hasBeenVisible()
     }
 
     private val vastEventRepository: VastEventRepositoryType by inject(VastEventRepositoryType::class.java) {
-          parametersOf(adResponse.vast)
+        parametersOf(adResponse.vast)
     }
     private val moatRepository: MoatRepositoryType by inject(MoatRepositoryType::class.java) {
         parametersOf(

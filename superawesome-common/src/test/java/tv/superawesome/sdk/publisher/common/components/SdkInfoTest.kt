@@ -7,7 +7,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
-import java.util.*
+import java.util.Locale
 import kotlin.test.assertEquals
 
 class SdkInfoTest : BaseTest() {

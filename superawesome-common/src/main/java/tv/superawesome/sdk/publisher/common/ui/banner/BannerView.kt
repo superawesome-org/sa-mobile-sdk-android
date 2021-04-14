@@ -13,7 +13,10 @@ import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.extensions.toPx
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
@@ -62,7 +65,7 @@ class BannerView @JvmOverloads constructor(
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
     fun load(placementId: Int) {
-        logger.info("load(${placementId})")
+        logger.info("load($placementId)")
         this.placementId = placementId
         controller.load(placementId, makeAdRequest())
     }

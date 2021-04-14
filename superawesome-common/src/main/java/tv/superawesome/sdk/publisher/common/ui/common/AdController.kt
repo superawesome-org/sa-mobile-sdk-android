@@ -11,7 +11,11 @@ import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
 import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
@@ -179,7 +183,7 @@ class AdController(
         // append CPI data to it
         val referrer =
             if (currentAdResponse?.ad?.isCPICampaign() == true) "&referrer=" + currentAdResponse?.referral else ""
-        val destination = "$url${referrer}"
+        val destination = "$url$referrer"
 
         // start browser
         try {
@@ -222,7 +226,7 @@ class AdController(
     }
 
     override fun load(placementId: Int, request: AdRequest) {
-        logger.info("load(${placementId}) thread:${Thread.currentThread()}")
+        logger.info("load($placementId) thread:${Thread.currentThread()}")
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)

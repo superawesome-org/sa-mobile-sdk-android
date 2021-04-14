@@ -11,7 +11,6 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.interstitial.InterstitialActivity
 
-
 object SAInterstitialAd {
     private var orientation: Orientation = Constants.defaultOrientation
     private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
@@ -22,8 +21,8 @@ object SAInterstitialAd {
      * Static method that loads an ad into the interstitial queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
-     * @param placementId   the Ad placement id to load data for
-     * @param context       the current context
+     * @param placementId the Ad placement id to load data for
+     * @param context the current context
      */
     fun load(placementId: Int, context: Context) {
         controller.load(placementId, makeAdRequest(context))
@@ -32,8 +31,8 @@ object SAInterstitialAd {
     /**
      * Static method that, if an ad data is loaded, will play the content for the user
      *
-     * @param placementId   the Ad placement id to play an ad for
-     * @param context       the current context (activity or fragment)
+     * @param placementId the Ad placement id to play an ad for
+     * @param context the current context (activity or fragment)
      */
     fun play(placementId: Int, context: Context) {
         InterstitialActivity.start(placementId, context)
@@ -122,8 +121,8 @@ object SAInterstitialAd {
     /**
      * Static method that returns whether ad data for a certain placement has already been loaded
      *
-     * @param placementId   the Ad placement id to check for
-     * @return              true or false
+     * @param placementId the Ad placement id to check for
+     * @return true or false
      */
     fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
 

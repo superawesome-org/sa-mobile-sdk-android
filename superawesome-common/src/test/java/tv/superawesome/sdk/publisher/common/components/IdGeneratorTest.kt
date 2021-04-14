@@ -1,18 +1,16 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.repositories.PreferencesRepositoryType
 import kotlin.test.assertEquals
 
-class IdGeneratorTest : BaseTest()  {
+class IdGeneratorTest : BaseTest() {
     @MockK
     lateinit var googleAdvertisingProxyType: GoogleAdvertisingProxyType
 

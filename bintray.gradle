@@ -1,12 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-version = properties.getProperty("project.version")
-group = properties.getProperty("project.group")
-
 def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'
 def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/tree/master'
 
@@ -15,8 +9,8 @@ ext {
     publishName = ''
     publishDescription = ''
 
-    PROJECT_VERSION = version
-    PROJECT_GROUP = group
+    PROJECT_VERSION = '1'
+    PROJECT_GROUP = '2'
 }
 
 publishing {
@@ -66,8 +60,8 @@ publishing {
 }
 
 bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
+    user = "testUser"
+    key = "secret"
 
     configurations = ['archives']
     publications = ['MyPublication']

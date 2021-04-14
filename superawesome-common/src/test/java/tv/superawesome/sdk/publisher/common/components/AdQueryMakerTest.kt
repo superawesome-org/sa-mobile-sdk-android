@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -9,12 +10,17 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Before
 import org.junit.Test
-import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.models.*
-import java.util.*
+import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.ConnectionType
+import tv.superawesome.sdk.publisher.common.models.Creative
+import tv.superawesome.sdk.publisher.common.models.EventData
+import tv.superawesome.sdk.publisher.common.models.EventType
+import java.util.Locale
 import kotlin.test.assertEquals
 
-class AdQueryMakerTest : BaseTest()  {
+class AdQueryMakerTest {
     @MockK
     lateinit var deviceType: DeviceType
 
@@ -41,6 +47,21 @@ class AdQueryMakerTest : BaseTest()  {
 
     @InjectMockKs
     lateinit var queryMaker: AdQueryMaker
+
+    private val adResponse = mockk<AdResponse> {}
+    private val ad = mockk<Ad> {}
+    private val creative = mockk<Creative> {}
+
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this, relaxed = true)
+
+        every { adResponse.placementId } returns 10
+        every { adResponse.ad } returns ad
+        every { ad.creative } returns creative
+        every { ad.line_item_id } returns 30
+        every { creative.id } returns 20
+    }
 
     @Test
     fun test_adQuery() {
@@ -80,19 +101,10 @@ class AdQueryMakerTest : BaseTest()  {
     @Test
     fun test_clickQuery() {
         // Given
-        val adResponse = mockk<AdResponse> {}
-        val ad = mockk<Ad> {}
-        val creative = mockk<Creative> {}
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
-
-        every { adResponse.placementId } returns 10
-        every { adResponse.ad } returns ad
-        every { ad.creative } returns creative
-        every { ad.line_item_id } returns 30
-        every { creative.id } returns 20
 
         // When
         val query = queryMaker.makeClickQuery(adResponse)
@@ -113,14 +125,14 @@ class AdQueryMakerTest : BaseTest()  {
     @Test
     fun test_videoClickQuery() {
         // Given
-        val request = mockk<AdResponse> {}
+
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
 
         // When
-        val query = queryMaker.makeVideoClickQuery(request)
+        val query = queryMaker.makeVideoClickQuery(adResponse)
 
         // Then
         assertEquals(10, query.placement)
@@ -139,16 +151,14 @@ class AdQueryMakerTest : BaseTest()  {
     fun test_eventQuery() {
         // Given
         val data = EventData(10, 30, 20, EventType.parentalGateClose)
-        val request = mockk<AdResponse> {}
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
-//        every { json.stringify<EventData>(any(), any()) } returns ""
         every { encoderType.encodeUri(any()) } returns "encoded_uri"
 
         // When
-        val query = queryMaker.makeEventQuery(request, data)
+        val query = queryMaker.makeEventQuery(adResponse, data)
 
         // Then
         assertEquals(10, query.placement)

@@ -9,7 +9,7 @@ import tv.superawesome.sdk.publisher.common.components.StringProviderType
 
 class ParentalGate(
     private val numberGenerator: NumberGeneratorType,
-    private val stringProvider: StringProviderType,
+    private val stringProvider: StringProviderType
 ) {
     interface Listener {
         fun parentalGateOpen()

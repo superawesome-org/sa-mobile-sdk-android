@@ -28,19 +28,17 @@ object SAUnityInterstitialAd {
      * Method that creates a new Interstitial Ad (from Unity)
      */
     fun SuperAwesomeUnitySAInterstitialAdCreate(context: Context?) {
-        setListener(object : SAInterface {
-            override fun onEvent(placementId: Int, event: SAEvent) {
-                when (event) {
-                    SAEvent.AdLoaded -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdLoaded.toString())
-                    SAEvent.AdEmpty -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEmpty.toString())
-                    SAEvent.AdFailedToLoad -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToLoad.toString())
-                    SAEvent.AdAlreadyLoaded -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdAlreadyLoaded.toString())
-                    SAEvent.AdShown -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdShown.toString())
-                    SAEvent.AdFailedToShow -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToShow.toString())
-                    SAEvent.AdClicked -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClicked.toString())
-                    SAEvent.AdEnded -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEnded.toString())
-                    SAEvent.AdClosed -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClosed.toString())
-                }
+        setListener(SAInterface { placementId, event ->
+            when (event) {
+                SAEvent.AdLoaded -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdLoaded.toString())
+                SAEvent.AdEmpty -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEmpty.toString())
+                SAEvent.AdFailedToLoad -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToLoad.toString())
+                SAEvent.AdAlreadyLoaded -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdAlreadyLoaded.toString())
+                SAEvent.AdShown -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdShown.toString())
+                SAEvent.AdFailedToShow -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToShow.toString())
+                SAEvent.AdClicked -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClicked.toString())
+                SAEvent.AdEnded -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEnded.toString())
+                SAEvent.AdClosed -> SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClosed.toString())
             }
         })
     }

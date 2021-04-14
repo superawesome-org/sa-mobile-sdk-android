@@ -6,6 +6,7 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 
 import tv.superawesome.sdk.publisher.common.components.NumberGenerator;
 import tv.superawesome.sdk.publisher.common.models.SAEvent;
-import tv.superawesome.sdk.publisher.ui.banner.BannerView;
+import tv.superawesome.sdk.publisher.common.ui.banner.BannerView;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -140,7 +141,11 @@ public class SAUnityBannerAd {
         DisplayMetrics metrics = new DisplayMetrics();
         Display display = activity.getWindowManager().getDefaultDisplay();
         display.getMetrics(metrics);
-        return (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+            return (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
+        } else {
+            return 0.0f;
+        }
     }
 
     /**

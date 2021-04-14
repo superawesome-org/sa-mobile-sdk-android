@@ -1,20 +1,20 @@
 package tv.superawesome.sdk.publisher.common.models
 
 class VastAd(
-        var url: String? = null,
-        var redirect: String? = null,
-        var type: VastType = VastType.Invalid,
-        var media: MutableList<VastMedia> = mutableListOf(),
-        var clickThroughUrl: String? = null,
-        var errorEvents: MutableList<String> = mutableListOf(),
-        var impressionEvents: MutableList<String> = mutableListOf(),
-        var creativeViewEvents: MutableList<String> = mutableListOf(),
-        var startEvents: MutableList<String> = mutableListOf(),
-        var firstQuartileEvents: MutableList<String> = mutableListOf(),
-        var midPointEvents: MutableList<String> = mutableListOf(),
-        var thirdQuartileEvents: MutableList<String> = mutableListOf(),
-        var completeEvents: MutableList<String> = mutableListOf(),
-        var clickTrackingEvents: MutableList<String> = mutableListOf(),
+    var url: String? = null,
+    var redirect: String? = null,
+    var type: VastType = VastType.Invalid,
+    var media: MutableList<VastMedia> = mutableListOf(),
+    var clickThroughUrl: String? = null,
+    var errorEvents: MutableList<String> = mutableListOf(),
+    var impressionEvents: MutableList<String> = mutableListOf(),
+    var creativeViewEvents: MutableList<String> = mutableListOf(),
+    var startEvents: MutableList<String> = mutableListOf(),
+    var firstQuartileEvents: MutableList<String> = mutableListOf(),
+    var midPointEvents: MutableList<String> = mutableListOf(),
+    var thirdQuartileEvents: MutableList<String> = mutableListOf(),
+    var completeEvents: MutableList<String> = mutableListOf(),
+    var clickTrackingEvents: MutableList<String> = mutableListOf(),
 ) {
     fun merge(from: VastAd?): VastAd {
         if (from == null) return this
@@ -62,11 +62,11 @@ enum class VastType {
 }
 
 data class VastMedia(
-        val type: String?,
-        val url: String?,
-        val bitrate: Int?,
-        val width: Int?,
-        val height: Int?,
+    val type: String?,
+    val url: String?,
+    val bitrate: Int?,
+    val width: Int?,
+    val height: Int?,
 )
 
 data class VastEvent(val event: String, val url: String)

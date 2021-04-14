@@ -18,8 +18,8 @@ object SAVideoAd {
      * Static method that loads an ad into the interstitial queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
-     * @param placementId   the Ad placement id to load data for
-     * @param context       the current context
+     * @param placementId the Ad placement id to load data for
+     * @param context the current context
      */
     fun load(placementId: Int, context: Context) {
         logger.info("load($placementId)")
@@ -29,8 +29,8 @@ object SAVideoAd {
     /**
      * Static method that, if an ad data is loaded, will play the content for the user
      *
-     * @param placementId   the Ad placement id to play an ad for
-     * @param context       the current context (activity or fragment)
+     * @param placementId the Ad placement id to play an ad for
+     * @param context the current context (activity or fragment)
      */
     fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
@@ -144,8 +144,8 @@ object SAVideoAd {
     /**
      * Static method that returns whether ad data for a certain placement has already been loaded
      *
-     * @param placementId   the Ad placement id to check for
-     * @return              true or false
+     * @param placementId the Ad placement id to check for
+     * @return true or false
      */
     fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
 

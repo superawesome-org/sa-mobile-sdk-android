@@ -2,7 +2,7 @@ package tv.superawesome.sdk.publisher.common.components
 
 import android.content.Context
 import android.content.pm.PackageManager
-import java.util.*
+import java.util.Locale
 
 interface SdkInfoType {
     val version: String
@@ -12,8 +12,10 @@ interface SdkInfoType {
 }
 
 class SdkInfo(
-        private val context: Context, private val encoder: EncoderType, locale: Locale,
-        private val versionNumber: String,
+    private val context: Context,
+    private val encoder: EncoderType,
+    locale: Locale,
+    private val versionNumber: String
 ) : SdkInfoType {
     object Keys {
         const val unknown = "unknown"
@@ -21,7 +23,7 @@ class SdkInfo(
     }
 
     override val version: String
-        get() = overrideVersion ?: "${Keys.platform}_${versionNumber}"
+        get() = overrideVersion ?: "${Keys.platform}_$versionNumber"
     override val bundle: String = context.packageName ?: Keys.unknown
     override val name: String by lazy { findAppName() }
     override val lang: String = locale.toString()

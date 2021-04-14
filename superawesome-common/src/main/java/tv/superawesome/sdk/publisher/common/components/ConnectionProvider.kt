@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.net.ConnectivityManager
@@ -8,7 +9,6 @@ import android.os.Build
 import android.telephony.TelephonyManager
 import tv.superawesome.sdk.publisher.common.models.ConnectionType
 
-
 interface ConnectionProviderType {
     fun findConnectionType(): ConnectionType
 }
@@ -16,19 +16,13 @@ interface ConnectionProviderType {
 class ConnectionProvider(private val context: Context) : ConnectionProviderType {
     override fun findConnectionType(): ConnectionType {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-                ?: return ConnectionType.unknown
+            ?: return ConnectionType.unknown
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             findConnectionType(connectivityManager)
         } else {
             findConnectionTypeLegacy(connectivityManager)
         }
-    }
-
-    private fun findCellularType(): ConnectionType {
-        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
-                ?: return ConnectionType.unknown
-        return findCellularType(telephonyManager.networkType)
     }
 
     private fun findCellularType(type: Int): ConnectionType = when (type) {
@@ -54,14 +48,19 @@ class ConnectionProvider(private val context: Context) : ConnectionProviderType 
         else -> ConnectionType.unknown
     }
 
+    @SuppressLint("MissingPermission")
     @TargetApi(Build.VERSION_CODES.M)
     private fun findConnectionType(connectivityManager: ConnectivityManager): ConnectionType {
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-                ?: return ConnectionType.unknown
+            ?: return ConnectionType.unknown
         capabilities.run {
             return@findConnectionType when {
                 hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> ConnectionType.wifi
-                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> findCellularType()
+                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                    val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+                        ?: return ConnectionType.unknown
+                    return findCellularType(telephonyManager.networkType)
+                }
                 hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> ConnectionType.ethernet
                 else -> ConnectionType.unknown
             }

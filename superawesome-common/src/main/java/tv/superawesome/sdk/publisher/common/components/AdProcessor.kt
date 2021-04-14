@@ -2,7 +2,11 @@ package tv.superawesome.sdk.publisher.common.components
 
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.extensions.baseUrl
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
+import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 interface AdProcessorType {
@@ -10,10 +14,10 @@ interface AdProcessorType {
 }
 
 class AdProcessor(
-        private val htmlFormatter: HtmlFormatterType,
-        private val vastParser: VastParserType,
-        private val networkDataSource: NetworkDataSourceType,
-        private val encoder: EncoderType,
+    private val htmlFormatter: HtmlFormatterType,
+    private val vastParser: VastParserType,
+    private val networkDataSource: NetworkDataSourceType,
+    private val encoder: EncoderType,
 ) : AdProcessorType {
     override suspend fun process(placementId: Int, ad: Ad): DataResult<AdResponse> {
         val response = AdResponse(placementId, ad)

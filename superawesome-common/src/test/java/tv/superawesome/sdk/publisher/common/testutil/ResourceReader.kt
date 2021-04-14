@@ -1,7 +1,7 @@
 package tv.superawesome.sdk.publisher.common.testutil
 
 import java.io.InputStream
-import java.util.*
+import java.util.Scanner
 
 object ResourceReader {
     fun readResource(name: String?): String {

@@ -3,10 +3,8 @@ include ':app'
 
 // Main
 include ':superawesome'
-include ':superawesome-full'
 
 // Modules
-include ':superawesome-ui'
 include ':superawesome-common'
 
 // Plugins

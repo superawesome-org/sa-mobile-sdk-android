@@ -14,10 +14,12 @@ interface IdGeneratorType {
     suspend fun findDauId(): Int
 }
 
-class IdGenerator(private val googleAdvertisingProxy: GoogleAdvertisingProxyType,
-                  private val preferencesRepository: PreferencesRepositoryType,
-                  private val sdkInfo: SdkInfoType,
-                  private val numberGenerator: NumberGeneratorType) : IdGeneratorType {
+class IdGenerator(
+    private val googleAdvertisingProxy: GoogleAdvertisingProxyType,
+    private val preferencesRepository: PreferencesRepositoryType,
+    private val sdkInfo: SdkInfoType,
+    private val numberGenerator: NumberGeneratorType
+) : IdGeneratorType {
     object Keys {
         const val initial = -1
         const val noTracking = 0

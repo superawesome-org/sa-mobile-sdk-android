@@ -2,12 +2,19 @@
 
 import android.webkit.WebView
 import android.widget.VideoView
-import com.moat.analytics.mobile.sup.*
+import com.moat.analytics.mobile.sup.MoatAdEvent
+import com.moat.analytics.mobile.sup.MoatAdEventType
+import com.moat.analytics.mobile.sup.MoatFactory
+import com.moat.analytics.mobile.sup.ReactiveVideoTracker
+import com.moat.analytics.mobile.sup.ReactiveVideoTrackerPlugin
+import com.moat.analytics.mobile.sup.TrackerListener
+import com.moat.analytics.mobile.sup.VideoTrackerListener
+import com.moat.analytics.mobile.sup.WebAdTracker
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
-import java.util.*
+import java.util.HashMap
 
 private const val MOAT_SERVER = "https://z.moatads.com"
 private const val MOAT_URL = "moatad.js"
@@ -17,7 +24,7 @@ private const val MOAT_VIDEO_PARTNER_CODE = "superawesomeinappvideo467548716573"
 class MoatRepository(
     private val moatLimiting: Boolean,
     private val logger: Logger,
-    private val numberGenerator: NumberGeneratorType,
+    private val numberGenerator: NumberGeneratorType
 ) : MoatRepositoryType, TrackerListener, VideoTrackerListener {
     private val factory: MoatFactory by lazy { MoatFactory.create() }
     private var webTracker: WebAdTracker? = null

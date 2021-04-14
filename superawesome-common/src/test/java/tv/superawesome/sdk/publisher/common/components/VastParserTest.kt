@@ -8,7 +8,6 @@ import tv.superawesome.sdk.publisher.common.models.VastType
 import tv.superawesome.sdk.publisher.common.testutil.ResourceReader
 import kotlin.test.assertEquals
 
-
 class VastParserTest : BaseTest() {
 
     val xmlParse = XmlParser()

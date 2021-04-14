@@ -10,7 +10,6 @@ import tv.superawesome.sdk.publisher.common.models.UrlFileItem
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import java.io.File
 
-
 class OkHttpNetworkDataSource(
     private val client: OkHttpClient,
     private val applicationContext: Context,
@@ -50,5 +49,4 @@ class OkHttpNetworkDataSource(
             DataResult.Failure(Error(e.localizedMessage))
         }
     }
-
 }
