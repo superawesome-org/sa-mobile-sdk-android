@@ -1,5 +1,7 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.library'
-apply from: '../bintray.gradle'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -27,12 +29,54 @@ ext {
     publishDescription = 'SuperAwesome Full SDK'
 }
 
-bintray { pkg { name = 'SuperAwesome' }}
-
 repositories {
     maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 
 dependencies {
     api project(':superawesome-common')
+}
+def parsedJson = new JsonSlurper().parseText(file("credentials.json") .text)
+
+afterEvaluate {
+    publishing {
+        publications {
+            SuperAwesome(MavenPublication) { // MODULE NAME HERE
+                groupId = group
+                artifactId = it.name
+                version = it.version
+
+                from components.release
+
+                // UPDATE THE META DATA HERE
+                pom {
+                    name = 'SuperAwesome'
+                    description = 'The android library for the AwesomeAds.'
+                    url = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git'
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'gabrielcoman'
+                            name = 'Gabriel Coman'
+                            email = 'gabriel.coman@superawesome.com'
+                        }
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                url "s3://prod-rukkaz-cms/android_repo/"
+                credentials(AwsCredentials) {
+                    accessKey parsedJson.get("SA_ANDROID_APPS_S3_REPO_KEY")
+                    secretKey parsedJson.get("SA_ANDROID_APPS_S3_REPO_SECRET")
+                }
+            }
+        }
+    }
 }
