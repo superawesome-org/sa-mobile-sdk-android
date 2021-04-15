@@ -1,5 +1,9 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
+
+def parsedJson = new JsonSlurper().parseText(new File(System.getProperty("user.home") + '/.superawesome/credentials.json').text)
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
@@ -69,8 +73,8 @@ afterEvaluate {
             maven {
                 url "s3://prod-rukkaz-cms/android_repo/"
                 credentials(AwsCredentials) {
-                    accessKey "SA_ANDROID_APPS_S3_REPO_KEY"
-                    secretKey "SA_ANDROID_APPS_S3_REPO_SECRET"
+                    accessKey parsedJson.get("SA_ANDROID_APPS_S3_REPO_KEY")
+                    secretKey parsedJson.get("SA_ANDROID_APPS_S3_REPO_SECRET")
                 }
             }
         }
