@@ -76,21 +76,3 @@ afterEvaluate {
         }
     }
 }
-
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-
-    configurations = ['archives']
-    publications = ['MyPublication']
-
-    pkg {
-        repo = "SuperAwesomeSDK"
-        name = this.publishName
-        userOrg = 'superawesome'
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-    }
-}
