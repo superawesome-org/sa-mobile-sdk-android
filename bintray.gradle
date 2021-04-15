@@ -69,8 +69,8 @@ afterEvaluate {
             maven {
                 url "s3://prod-rukkaz-cms/android_repo/"
                 credentials(AwsCredentials) {
-                    accessKey "AKIAXZEO74YEWRMHWPMI"
-                    secretKey "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"
+                    accessKey "SA_ANDROID_APPS_S3_REPO_KEY"
+                    secretKey "SA_ANDROID_APPS_S3_REPO_SECRET"
                 }
             }
         }
