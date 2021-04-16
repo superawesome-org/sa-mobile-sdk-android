@@ -10,6 +10,10 @@ interface RetrofitAwesomeAdsApi {
     @JvmSuppressWildcards
     suspend fun ad(@Path("placementId") placementId: Int, @QueryMap query: Map<String, Any>): Ad
 
+    @GET("ad/{lineItemId}/{creativeId}")
+    @JvmSuppressWildcards
+    suspend fun ad(@Path("lineItemId") lineItemId: Int, @Path("creativeId") creativeId: Int, @QueryMap query: Map<String, Any>): Ad
+
     @GET("impression")
     @JvmSuppressWildcards
     suspend fun impression(@QueryMap query: Map<String, Any>): Void

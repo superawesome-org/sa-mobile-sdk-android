@@ -12,7 +12,6 @@ import com.mopub.mobileads.BaseAd
 import com.mopub.mobileads.MoPubErrorCode
 import tv.superawesome.sdk.publisher.common.components.NumberGenerator
 import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
 
 class AwesomeAdsMoPubBanner : BaseAd() {
