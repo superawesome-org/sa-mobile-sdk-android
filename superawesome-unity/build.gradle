@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
-apply from: '../bintray.gradle'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -39,8 +38,6 @@ repositories {
 ext {
     publishDescription = 'SuperAwesome Unity Module'
 }
-
-bintray { pkg { name = 'SuperAwesome-Unity' }}
 
 dependencies {
     implementation project(path: ':superawesome-common')

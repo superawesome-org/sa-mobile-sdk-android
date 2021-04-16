@@ -7,8 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/sa-mobile-sdk-android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/sa-mobile-sdk-android.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome/sa-mobile-sdk-android.superawesome.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome/sa-mobile-sdk-android.superawesome.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-common/sa-mobile-sdk-android.superawesome-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-full/sa-mobile-sdk-android.superawesome-full.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-full/sa-mobile-sdk-android.superawesome-full.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-ui/sa-mobile-sdk-android.superawesome-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-ui/sa-mobile-sdk-android.superawesome-ui.iml" />
     </modules>
   </component>
 </project>
