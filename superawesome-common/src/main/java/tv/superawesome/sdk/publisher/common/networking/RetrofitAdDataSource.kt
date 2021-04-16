@@ -20,6 +20,20 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
     }
 
     @ExperimentalSerializationApi
+    override suspend fun getAd(lineItemId: Int, creativeId: Int, query: AdQuery): DataResult<Ad> =
+        try {
+            DataResult.Success(
+                awesomeAdsApi.ad(
+                    lineItemId,
+                    creativeId,
+                    Properties.encodeToMap(query)
+                )
+            )
+        } catch (exception: Exception) {
+            DataResult.Failure(exception)
+        }
+
+    @ExperimentalSerializationApi
     override suspend fun impression(query: EventQuery): DataResult<Void> = try {
         DataResult.Success(awesomeAdsApi.impression(Properties.encodeToMap(query)))
     } catch (exception: Exception) {

@@ -69,6 +69,18 @@ class BannerView @JvmOverloads constructor(
         this.placementId = placementId
         controller.load(placementId, makeAdRequest())
     }
+    /**
+     * Static method that loads an ad into the interstitial queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId the Ad placement id to load data for
+     * @param lineItemId
+     * @param creativeId id of the Creative
+     */
+    fun load(placementId: Int, lineItemId: Int, creativeId: Int) {
+        this.placementId = placementId
+        controller.load(placementId, lineItemId, creativeId, makeAdRequest())
+    }
 
     /**
      * One of the main public methods of the SABannerAd class. This will play an already existing

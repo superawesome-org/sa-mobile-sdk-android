@@ -33,6 +33,7 @@ interface AdControllerType {
     fun triggerViewableImpression(placementId: Int)
 
     fun load(placementId: Int, request: AdRequest)
+    fun load(placementId: Int, lineItemId: Int, creativeId: Int, request: AdRequest)
     fun play(placementId: Int): AdResponse?
 
     fun handleAdTap(url: String, context: Context)
@@ -228,6 +229,15 @@ class AdController(
         logger.info("load($placementId) thread:${Thread.currentThread()}")
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
+                is DataResult.Success -> onSuccess(result.value)
+                is DataResult.Failure -> onFailure(placementId, result.error)
+            }
+        }
+    }
+
+    override fun load(placementId: Int, lineItemId: Int, creativeId: Int, request: AdRequest) {
+        scope.launch {
+            when (val result = adRepository.getAd(placementId, lineItemId, creativeId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
                 is DataResult.Failure -> onFailure(placementId, result.error)
             }

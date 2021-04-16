@@ -29,6 +29,19 @@ object SAInterstitialAd {
     }
 
     /**
+     * Static method that loads an ad into the interstitial queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId the Ad placement id to load data for
+     * @param lineItemId
+     * @param creativeId id of the Creative
+     * @param context the current context
+     */
+    fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context) {
+        controller.load(placementId, lineItemId, creativeId, makeAdRequest(context))
+    }
+
+    /**
      * Static method that, if an ad data is loaded, will play the content for the user
      *
      * @param placementId the Ad placement id to play an ad for
