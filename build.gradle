@@ -35,7 +35,6 @@ allprojects {
         mavenCentral()
         maven { url "https://maven.google.com" }
         google()
-        jcenter( ) // remove in may
     }
 }
 
