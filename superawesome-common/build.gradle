@@ -68,6 +68,11 @@ dependencies {
     implementation('com.mopub:mopub-sdk-native-static:5.16.4') { transitive = true }
     implementation "tv.superawesome.lib.savideoplayer:savideoplayer:2.0.1"
 
+    implementation('com.mopub:mopub-sdk:5.16.4@aar') {
+        transitive = true
+    }
+    implementation('com.mopub:omsdk-android:1.3.16@aar') { transitive = true }
+
     // Unit Testing
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mockk_version"
