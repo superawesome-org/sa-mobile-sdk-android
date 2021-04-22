@@ -12,9 +12,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 
-
-
-
 @SuppressLint("SetJavaScriptEnabled")
 class WebView @JvmOverloads constructor(
     context: Context,
