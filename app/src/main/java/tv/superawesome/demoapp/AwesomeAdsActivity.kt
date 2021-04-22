@@ -124,5 +124,6 @@ class AwesomeAdsActivity : Activity() {
     private fun configureBannerAd() {
         bannerView.enableBumperPage()
         bannerView.enableParentalGate()
+        bannerView.visibility = View.VISIBLE
     }
 }
