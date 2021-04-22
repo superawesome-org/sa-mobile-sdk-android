@@ -82,7 +82,7 @@ class AwesomeAdsActivity : Activity() {
         listView.onItemClickListener = OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
             (data[position] as? PlacementItem)?.let { item ->
                 when (item.type) {
-                    Type.BANNER -> bannerView.load(item.pid)
+                    Type.BANNER -> bannerView.play(item.pid)
                     Type.INTERSTITIAL -> SAInterstitialAd.load(item.pid, this@AwesomeAdsActivity)
                     Type.VIDEO -> {
                         if (SAVideoAd.hasAdAvailable(item.pid)) {
@@ -124,13 +124,6 @@ class AwesomeAdsActivity : Activity() {
     private fun configureBannerAd() {
         bannerView.enableBumperPage()
         bannerView.enableParentalGate()
-        bannerView.setListener { _, event ->
-            Log.i("gunhan", "bannerView event ${event.name} thread:${Thread.currentThread()}")
-
-            if (event == SAEvent.AdLoaded) {
-                bannerView.visibility = View.VISIBLE
-                bannerView.play()
-            }
-        }
+        bannerView.visibility = View.VISIBLE
     }
 }

@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.common.models
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 const val CPI_CAMPAIGN_ID = 1
 
@@ -77,10 +78,23 @@ data class AdRequest(
     val w: Int,
     val h: Int,
 ) {
+
+    @Transient
+    val propertyString = mapOf(
+        "pos" to pos,
+        "skip" to skip,
+        "playbackmethod" to playbackmethod,
+        "startdelay" to startdelay,
+        "instl" to instl,
+        "w" to w,
+        "h" to h
+    )
+
     companion object {
         // / The playback method
         const val PlaybackSoundOnScreen = 5
     }
+
 
     // / Specify if the ad is in full screen or not
     enum class FullScreen(val value: Int) {
@@ -131,16 +145,21 @@ enum class SAEvent {
     /** ad was loaded successfully and is ready to be displayed */
     AdLoaded,
     AdEmpty,
+
     /** ad was not loaded successfully and will not be able to play */
     AdFailedToLoad,
+
     /** ad was previously loaded in an interstitial, video or app wall queue */
     AdAlreadyLoaded,
+
     /** triggered once when the ad first displays */
     AdShown,
     AdFailedToShow,
+
     /**  triggered every time the ad gets clicked */
     AdClicked,
     AdEnded,
+
     /** triggered once when the ad is closed */
     AdClosed
 }
