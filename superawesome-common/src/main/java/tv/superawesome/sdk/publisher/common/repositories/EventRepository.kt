@@ -68,5 +68,5 @@ class EventRepository(
         customEvent(EventType.parentalGateOpen, adResponse)
 
     override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void>  =
-        customEvent(EventType.dwell_time, adResponse)
+        customEvent(EventType.DwellTime, adResponse)
 }
