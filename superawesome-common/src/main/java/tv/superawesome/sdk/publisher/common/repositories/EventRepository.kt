@@ -18,6 +18,7 @@ interface EventRepositoryType {
     suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Void>
     suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Void>
     suspend fun viewableImpression(adResponse: AdResponse): DataResult<Void>
+    suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void>
 }
 
 class EventRepository(
@@ -65,4 +66,7 @@ class EventRepository(
 
     override suspend fun viewableImpression(adResponse: AdResponse): DataResult<Void> =
         customEvent(EventType.parentalGateOpen, adResponse)
+
+    override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void>  =
+        customEvent(EventType.DwellTime, adResponse)
 }

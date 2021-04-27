@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -31,5 +32,6 @@ enum class EventType {
     parentalGateOpen,
     parentalGateClose,
     parentalGateFail,
-    parentalGateSuccess
+    parentalGateSuccess,
+    @SerialName("custom.analytics.DWELL_TIME")DwellTime,
 }

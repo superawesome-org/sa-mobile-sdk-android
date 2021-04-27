@@ -10,11 +10,13 @@ import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import java.lang.ref.WeakReference
 
 interface ViewableDetectorType {
+    var isVisible:VoidBlock?
     fun start(view: View, hasBeenVisible: VoidBlock)
     fun cancel()
 }
 
 class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
+    override var isVisible: VoidBlock? = null
     private var viewableCounter = 0
     private val targetTickCount = 3
     private val delayMillis: Long = 1000
@@ -29,6 +31,7 @@ class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
             if (isViewVisible(weakView)) {
                 logger.info("isViewVisible true")
                 viewableCounter += 1
+                isVisible?.invoke()
             } else {
                 logger.info("isViewVisible false")
             }
