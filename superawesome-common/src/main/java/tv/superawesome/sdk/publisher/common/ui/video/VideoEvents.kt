@@ -65,6 +65,13 @@ class VideoEvents(
     }
 
     fun time(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
+        if (viewableDetector?.isVisible == null) {
+            viewableDetector?.isVisible = {
+                scope.launch {
+                    eventRepository.oneSecondDwellTime(adResponse)
+                }
+            }
+        }
         // Start
         if (time >= 1 && !isStartHandled) {
             isStartHandled = true

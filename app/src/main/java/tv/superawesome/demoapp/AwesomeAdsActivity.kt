@@ -24,7 +24,7 @@ class AwesomeAdsActivity : Activity() {
             PlacementItem("3rd party Tag", 61320, Type.INTERSTITIAL),
             PlacementItem("KSF Tag", 61321, Type.INTERSTITIAL),
             HeaderItem("Videos"),
-            PlacementItem("Video", 61885, Type.VIDEO)
+            PlacementItem("Video", 44262, Type.VIDEO)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

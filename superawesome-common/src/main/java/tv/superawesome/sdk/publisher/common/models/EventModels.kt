@@ -31,5 +31,6 @@ enum class EventType {
     parentalGateOpen,
     parentalGateClose,
     parentalGateFail,
-    parentalGateSuccess
+    parentalGateSuccess,
+    dwell_time
 }
