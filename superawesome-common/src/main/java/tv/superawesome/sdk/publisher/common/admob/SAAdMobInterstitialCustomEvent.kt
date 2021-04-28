@@ -22,10 +22,11 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
     private var context: Context? = null
     private var loadedPlacementId = 0
 
+
     override fun requestInterstitialAd(
         context: Context,
-        listener: CustomEventInterstitialListener?,
-        s: String,
+        listener: CustomEventInterstitialListener,
+        s: String?,
         mediationAdRequest: MediationAdRequest,
         bundle: Bundle?
     ) {
@@ -47,18 +48,16 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
                 when (event) {
                     SAEvent.AdLoaded -> {
                         loadedPlacementId = placementId
-                        listener?.onAdLoaded()
+                        listener.onAdLoaded()
                     }
                     SAEvent.AdClicked -> {
-                        if (listener != null) {
-                            listener.onAdClicked()
-                            listener.onAdLeftApplication()
-                        }
+                        listener.onAdClicked()
+                        listener.onAdLeftApplication()
                     }
-                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL)
-                    SAEvent.AdShown -> listener?.onAdOpened()
-                    SAEvent.AdFailedToShow -> listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR)
-                    SAEvent.AdClosed -> listener?.onAdClosed()
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL)
+                    SAEvent.AdShown -> listener.onAdOpened()
+                    SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR)
+                    SAEvent.AdClosed -> listener.onAdClosed()
                     else -> {
                         // do nothing
                     }
@@ -66,10 +65,10 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
             }
         )
         try {
-            val placementId = s.toInt()
+            val placementId = s?.toInt() ?: throw java.lang.NumberFormatException("string is null or not a number")
             load(placementId, context)
         } catch (e: NumberFormatException) {
-            listener?.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST)
+            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST)
         }
     }
 

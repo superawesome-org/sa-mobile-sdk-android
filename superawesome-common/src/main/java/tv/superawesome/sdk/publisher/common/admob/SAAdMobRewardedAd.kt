@@ -6,7 +6,6 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback
 import com.google.android.gms.ads.mediation.MediationRewardedAd
 import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
 import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
-import com.google.android.gms.ads.reward.mediation.MediationRewardedVideoAdAdapter
 import com.google.android.gms.ads.rewarded.RewardItem
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Orientation
@@ -18,6 +17,7 @@ class SAAdMobRewardedAd(
     private val adConfiguration: MediationRewardedAdConfiguration,
     private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>
 ) : MediationRewardedAd, SAInterface {
+    private val paramKey = "parameter"
 
     private var rewardedAdCallback: MediationRewardedAdCallback? = null
     private var loadedPlacementId = 0
@@ -25,29 +25,20 @@ class SAAdMobRewardedAd(
     fun load() {
         val context = adConfiguration.context
 
-        if (context == null) {
-            mediationAdLoadCallback.onFailure("Context is null")
-            return
-        }
-
         val mediationExtras = adConfiguration.mediationExtras
-        if (mediationExtras != null) {
-            SAVideoAd.setTestMode(mediationExtras.getBoolean(SAAdMobExtras.kKEY_TEST))
-            Orientation.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_ORIENTATION))
-                ?.let { SAVideoAd.setOrientation(it) }
-            SAVideoAd.setParentalGate(mediationExtras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
-            SAVideoAd.setBumperPage(mediationExtras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
-            SAVideoAd.setSmallClick(mediationExtras.getBoolean(SAAdMobExtras.kKEY_SMALL_CLICK))
-            SAVideoAd.setCloseButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_BUTTON))
-            SAVideoAd.setCloseAtEnd(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_AT_END))
-            SAVideoAd.setBackButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
-            AdRequest.StartDelay.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE))
-                ?.let { SAVideoAd.setPlaybackMode(it) }
-        }
+        SAVideoAd.setTestMode(mediationExtras.getBoolean(SAAdMobExtras.kKEY_TEST))
+        Orientation.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_ORIENTATION))
+            ?.let { SAVideoAd.setOrientation(it) }
+        SAVideoAd.setParentalGate(mediationExtras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
+        SAVideoAd.setBumperPage(mediationExtras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
+        SAVideoAd.setSmallClick(mediationExtras.getBoolean(SAAdMobExtras.kKEY_SMALL_CLICK))
+        SAVideoAd.setCloseButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_BUTTON))
+        SAVideoAd.setCloseAtEnd(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_AT_END))
+        SAVideoAd.setBackButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
+        AdRequest.StartDelay.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE))
+            ?.let { SAVideoAd.setPlaybackMode(it) }
 
-        loadedPlacementId = adConfiguration.serverParameters
-            .getString(MediationRewardedVideoAdAdapter.CUSTOM_EVENT_SERVER_PARAMETER_FIELD)
-            ?.toIntOrNull() ?: 0
+        loadedPlacementId = adConfiguration.serverParameters.getString(paramKey)?.toIntOrNull() ?: 0
 
         if (loadedPlacementId == 0) {
             mediationAdLoadCallback.onFailure(

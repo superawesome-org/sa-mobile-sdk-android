@@ -24,10 +24,10 @@ class SAAdMobBannerCustomEvent : CustomEventBanner {
     override fun requestBannerAd(
         context: Context,
         listener: CustomEventBannerListener,
-        s: String,
+        s: String?,
         adSize: AdSize,
         mediationAdRequest: MediationAdRequest,
-        bundle: Bundle
+        bundle: Bundle?
     ) {
         bannerView = BannerView(context)
         bannerView?.apply {
@@ -44,15 +44,18 @@ class SAAdMobBannerCustomEvent : CustomEventBanner {
             val widthInDp = (widthInPixels / displayMetrics.density).roundToInt()
             val heightInDp = (heightInPixels / displayMetrics.density).roundToInt()
             layoutParams = ViewGroup.LayoutParams(widthInDp, heightInDp)
-            setTestMode(bundle.getBoolean(SAAdMobExtras.kKEY_TEST))
-            setColor(bundle.getBoolean(SAAdMobExtras.kKEY_TRANSPARENT))
-            setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
-            setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
+            bundle?.let {
+                setTestMode(it.getBoolean(SAAdMobExtras.kKEY_TEST))
+                setColor(it.getBoolean(SAAdMobExtras.kKEY_TRANSPARENT))
+                setParentalGate(it.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
+                setBumperPage(it.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
+            }
+
             setListener { _: Int, saEvent: SAEvent? ->
                 when (saEvent) {
                     SAEvent.AdLoaded -> {
                         // send load event
-                        listener.onAdLoaded(bannerView)
+                        listener.onAdLoaded(bannerView as View)
                         loaded = true
                         if (laidOut && !setup) {
                             bannerView?.play()
@@ -78,7 +81,7 @@ class SAAdMobBannerCustomEvent : CustomEventBanner {
                         bannerView?.play()
                     }
                 }
-                val placementId = s.toInt()
+                val placementId = s?.toInt() ?: 0
                 load(placementId)
             } catch (e: NumberFormatException) {
                 listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST)

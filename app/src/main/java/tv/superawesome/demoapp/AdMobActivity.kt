@@ -6,8 +6,9 @@ import android.util.Log
 import android.view.View
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.admanager.AdManagerAdRequest
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd
+import com.google.android.gms.ads.admanager.AdManagerInterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import tv.superawesome.sdk.publisher.common.admob.SAAdMobBannerCustomEvent
@@ -19,7 +20,6 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 class AdMobActivity : Activity() {
     private val tag = "SADefaults/AdMob"
     private lateinit var adView: AdView
-    private lateinit var publisherInterstitialAd: PublisherInterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,41 +33,18 @@ class AdMobActivity : Activity() {
 
         adView = findViewById(R.id.adView)
         requestBannerAd()
-        publisherInterstitialAd = PublisherInterstitialAd(this)
-        publisherInterstitialAd.adUnitId = getString(R.string.admob_interstitial_ad_id)
-    }
-
-    private fun addAddViewListener() {
-        adView.adListener = object : AdListener() {
-            override fun onAdClosed() {
-                Log.d(tag, "Banner ad closed")
-            }
-
-            override fun onAdFailedToLoad(i: Int) {
-                Log.d(tag, "Banner ad failed to load")
-            }
-
-            override fun onAdLeftApplication() {
-                Log.d(tag, "Banner ad left application")
-            }
-
-            override fun onAdOpened() {
-                Log.d(tag, "Banner ad opened")
-            }
-
-            override fun onAdLoaded() {
-                Log.d(tag, "Banner ad loaded")
-            }
-        }
     }
 
     private fun requestBannerAd() {
         val bundle = SAAdMobExtras.extras()
-                .setTestMode(false)
-                .setParentalGate(false)
-                .setTransparent(true)
-                .build()
-        adView.loadAd(AdRequest.Builder().addCustomEventExtrasBundle(SAAdMobBannerCustomEvent::class.java, bundle).build())
+            .setTestMode(false)
+            .setParentalGate(false)
+            .setTransparent(true)
+            .build()
+        adView.loadAd(
+            AdRequest.Builder()
+                .addCustomEventExtrasBundle(SAAdMobBannerCustomEvent::class.java, bundle).build()
+        )
     }
 
     private fun requestInterstitialAd() {
@@ -77,11 +54,21 @@ class AdMobActivity : Activity() {
             .setParentalGate(true)
             .build()
 
-        publisherInterstitialAd.loadAd(
-            PublisherAdRequest.Builder().addCustomEventExtrasBundle(
+        AdManagerInterstitialAd.load(
+            this,
+            getString(R.string.admob_interstitial_ad_id),
+            AdManagerAdRequest.Builder().addCustomEventExtrasBundle(
                 SAAdMobInterstitialCustomEvent::class.java, bundle
-            ).build()
-        )
+            ).build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(p0: InterstitialAd) {
+                    super.onAdLoaded(p0)
+                }
+
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    super.onAdFailedToLoad(p0)
+                }
+            })
     }
 
     private fun requestVideoAd() {
