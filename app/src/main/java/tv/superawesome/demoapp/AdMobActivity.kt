@@ -20,6 +20,8 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 class AdMobActivity : Activity() {
     private val tag = "SADefaults/AdMob"
     private lateinit var adView: AdView
+    private var interstitialAd: InterstitialAd? = null
+    private var rewardedAd:RewardedAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,8 @@ class AdMobActivity : Activity() {
             object : InterstitialAdLoadCallback() {
                 override fun onAdLoaded(p0: InterstitialAd) {
                     super.onAdLoaded(p0)
+                    interstitialAd = p0
+                    interstitialAd?.show(this@AdMobActivity)
                 }
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
@@ -90,6 +94,14 @@ class AdMobActivity : Activity() {
                 override fun onAdFailedToLoad(error: LoadAdError) {
                     super.onAdFailedToLoad(error)
                     Log.e(tag, error.message)
+                }
+
+                override fun onAdLoaded(p0: RewardedAd) {
+                    super.onAdLoaded(p0)
+                    rewardedAd = p0
+                    rewardedAd?.show(this@AdMobActivity){
+                        Log.e(tag, it.amount.toString())
+                    }
                 }
             })
     }
