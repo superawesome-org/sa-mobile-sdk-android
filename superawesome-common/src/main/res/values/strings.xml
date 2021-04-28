@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parental_gate_title">Parental Gate</string>
+    <string name="parental_gate_message">Please solve the following problem to continue: $1%d + $2%d = ?</string>
+    <string name="parental_gate_error_title">Oops! That was the wrong answer.</string>
+    <string name="parental_gate_error_message">Please seek guidance from a responsible adult to help you continue.</string>
+    <string name="cancel">Cancel</string>
+    <string name="proceed">Continue</string>
+    <string name="bumper_page_time_left">A new site will open in $1%d seconds. Remember to stay safe online and don’t share your username or password with anyone!</string>
+    <string name="bumper_page_leaving"> Bye! You’re now leaving $1%s.</string>
+</resources>

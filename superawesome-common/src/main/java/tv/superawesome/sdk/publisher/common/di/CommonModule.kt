@@ -58,7 +58,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     }
 
     factory<AdControllerType> { AdController(get(), get(), get(), get(), get()) }
-    factory { ParentalGate(get(), get()) }
+    factory { ParentalGate(get()) }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
@@ -125,7 +125,6 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
     single<ImageProviderType> { ImageProvider() }
     single<DispatcherProviderType> { DispatcherProvider() }
-    single<StringProviderType> { StringProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
     single<AdStoreType> { AdStore() }
 
