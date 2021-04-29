@@ -4,12 +4,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.text.InputType
 import android.widget.EditText
+import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
-import tv.superawesome.sdk.publisher.common.components.StringProviderType
 
 class ParentalGate(
-    private val numberGenerator: NumberGeneratorType,
-    private val stringProvider: StringProviderType
+    private val numberGenerator: NumberGeneratorType
 ) {
     interface Listener {
         fun parentalGateOpen()
@@ -40,13 +39,13 @@ class ParentalGate(
     /**
      * Method that shows the parental gate popup and fires the necessary events
      */
-    fun show(context: Context?) {
+    fun show(context: Context) {
         listener?.parentalGateOpen()
 
         val alertDialog = AlertDialog.Builder(context)
-        alertDialog.setTitle(stringProvider.parentalGateTitle)
+        alertDialog.setTitle(R.string.parental_gate_title)
         alertDialog.setCancelable(false)
-        alertDialog.setMessage(stringProvider.parentalGateMessage(firstNumber, secondNumber))
+        alertDialog.setMessage(context?.getString(R.string.parental_gate_message, firstNumber, secondNumber))
 
         // Set an EditText view to get user input
         val input = EditText(context)
@@ -55,18 +54,18 @@ class ParentalGate(
         alertDialog.setView(input)
 
         // create positive button
-        alertDialog.setPositiveButton(stringProvider.continueTitle) { dialog, _ ->
+        alertDialog.setPositiveButton(context.getString(R.string.proceed)) { dialog, _ ->
             val userValue: Int = input.text.toString().toIntOrNull() ?: 0
             if (userValue == solution) {
                 listener?.parentalGateSuccess()
             } else {
                 // go on error way
                 val errorDialog = AlertDialog.Builder(context)
-                errorDialog.setTitle(stringProvider.parentalGateErrorTitle)
-                errorDialog.setMessage(stringProvider.parentalGateErrorMessage)
+                errorDialog.setTitle(R.string.parental_gate_error_title)
+                errorDialog.setMessage(R.string.parental_gate_message)
 
                 // set button action
-                errorDialog.setPositiveButton(stringProvider.okTitle) { innerDialog, _ ->
+                errorDialog.setPositiveButton(context.getString(android.R.string.ok)) { innerDialog, _ ->
                     listener?.parentalGateFail()
                     innerDialog.dismiss()
                 }
@@ -79,7 +78,7 @@ class ParentalGate(
         }
 
         // create negative button
-        alertDialog.setNegativeButton(stringProvider.cancelTitle) { dialog, _ -> // dismiss
+        alertDialog.setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> // dismiss
             dialog.dismiss()
             listener?.parentalGateCancel()
         }

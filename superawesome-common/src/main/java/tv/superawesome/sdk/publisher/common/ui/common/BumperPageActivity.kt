@@ -16,8 +16,8 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import org.koin.java.KoinJavaComponent.inject
+import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
-import tv.superawesome.sdk.publisher.common.components.StringProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
 
@@ -26,7 +26,6 @@ class BumperPageActivity : Activity() {
     private var runnable: Runnable? = null
 
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
-    private val stringProvider: StringProviderType by inject(StringProviderType::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +73,8 @@ class BumperPageActivity : Activity() {
         // small text
         val smallText = TextView(this)
         smallText.id = SMALL_TEXT_ID
-        smallText.text = stringProvider.bumperPageTimeLeft(Constants.defaultBumperPageShowTimeInSec)
+        smallText.text =
+            getString(R.string.bumper_page_time_left, Constants.defaultBumperPageShowTimeInSec)
         smallText.setTextColor(-0x1)
         smallText.textSize = 12f
         smallText.gravity = Gravity.CENTER
@@ -87,7 +87,7 @@ class BumperPageActivity : Activity() {
         smallText.layoutParams = smallTextLayout
 
         // big text
-        val fullText = stringProvider.bumperPageLeaving(appName)
+        val fullText = getString(R.string.bumper_page_leaving, appName ?: "this app")
         val bigText = TextView(this)
         bigText.id = BIG_TEXT_ID
         bigText.text = fullText
@@ -120,7 +120,7 @@ class BumperPageActivity : Activity() {
                 finish()
             } else {
                 countdown[0]--
-                smallText.text = stringProvider.bumperPageTimeLeft(countdown[0])
+                smallText.text = getString(R.string.bumper_page_time_left, countdown[0])
                 runnable?.let { handler.postDelayed(it, 1000) }
             }
         }
