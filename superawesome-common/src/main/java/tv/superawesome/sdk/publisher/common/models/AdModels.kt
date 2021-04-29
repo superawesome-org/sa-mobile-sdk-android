@@ -95,7 +95,6 @@ data class AdRequest(
         const val PlaybackSoundOnScreen = 5
     }
 
-
     // / Specify if the ad is in full screen or not
     enum class FullScreen(val value: Int) {
         On(1), Off(0)

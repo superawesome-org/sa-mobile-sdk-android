@@ -67,6 +67,6 @@ class EventRepository(
     override suspend fun viewableImpression(adResponse: AdResponse): DataResult<Void> =
         customEvent(EventType.parentalGateOpen, adResponse)
 
-    override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void>  =
+    override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void> =
         customEvent(EventType.DwellTime, adResponse)
 }

@@ -10,7 +10,7 @@ import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import java.lang.ref.WeakReference
 
 interface ViewableDetectorType {
-    var isVisible:VoidBlock?
+    var isVisible: VoidBlock?
     fun start(view: View, hasBeenVisible: VoidBlock)
     fun cancel()
 }
