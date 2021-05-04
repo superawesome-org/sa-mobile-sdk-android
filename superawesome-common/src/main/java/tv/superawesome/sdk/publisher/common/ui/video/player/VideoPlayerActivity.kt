@@ -27,13 +27,15 @@ class VideoPlayerActivity : Activity() {
                 val epsilon = 10
                 val leftLandscape = 90
                 val rightLandscape = 270
-                if ((epsilonCheck(orientation, leftLandscape, epsilon) ||
-                            epsilonCheck(orientation, rightLandscape, epsilon)) &&
+                if ((
+                    epsilonCheck(orientation, leftLandscape, epsilon) ||
+                        epsilonCheck(orientation, rightLandscape, epsilon)
+                    ) &&
                     Settings.System.getInt(
-                        contentResolver,
-                        Settings.System.ACCELEROMETER_ROTATION,
-                        0
-                    ) == 1
+                            contentResolver,
+                            Settings.System.ACCELEROMETER_ROTATION,
+                            0
+                        ) == 1
                 ) {
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
                 }
@@ -76,10 +78,12 @@ class VideoPlayerActivity : Activity() {
         val modeInt = intent.getIntExtra(VideoPlayer.FULLSCREEN_KEY, FullscreenMode.ANY.value)
         val mode = fromValue(modeInt)
         when (mode) {
-            FullscreenMode.PORTRAIT -> requestedOrientation =
-                ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-            FullscreenMode.LANDSCAPE -> requestedOrientation =
-                ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            FullscreenMode.PORTRAIT ->
+                requestedOrientation =
+                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            FullscreenMode.LANDSCAPE ->
+                requestedOrientation =
+                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         }
     }
 

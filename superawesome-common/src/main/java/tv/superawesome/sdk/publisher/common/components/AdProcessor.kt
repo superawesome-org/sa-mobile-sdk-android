@@ -44,7 +44,7 @@ class AdProcessor(
                             is DataResult.Success -> response.filePath = downloadFileResult.value
                             is DataResult.Failure -> return downloadFileResult
                         }
-                    } ?: DataResult.Failure(Exception("empty url"))
+                    } ?: return DataResult.Failure(Exception("empty url"))
                 }
             }
         }
@@ -56,7 +56,7 @@ class AdProcessor(
         return DataResult.Success(response)
     }
 
-    private suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? {
+    suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? {
         val result = networkDataSource.getData(url)
         if (result is DataResult.Success) {
             val vast = vastParser.parse(result.value)

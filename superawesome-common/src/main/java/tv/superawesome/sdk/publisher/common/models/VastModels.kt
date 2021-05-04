@@ -31,6 +31,7 @@ class VastAd(
         this.completeEvents.addAll(from.completeEvents)
         this.clickTrackingEvents.addAll(from.clickTrackingEvents)
         this.media.addAll(from.media)
+        this.redirect = null
 
         return this
     }
