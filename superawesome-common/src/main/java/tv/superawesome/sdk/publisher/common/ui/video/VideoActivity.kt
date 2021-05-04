@@ -10,19 +10,19 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.RelativeLayout
+import java.io.File
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
-import tv.superawesome.lib.savideoplayer.IVideoPlayer
-import tv.superawesome.lib.savideoplayer.IVideoPlayerController
-import tv.superawesome.lib.savideoplayer.VideoPlayer
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
-import java.io.File
+import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
+import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
+import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayer
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
@@ -72,17 +72,17 @@ class VideoActivity : FullScreenActivity() {
         parentLayout.addView(videoPlayer)
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
-            override fun onPrepared(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-                videoEvents?.prepare(videoPlayer, time, duration)
+            override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
+                videoEvents?.prepare(player, time, duration)
                 controller.adShown()
             }
 
-            override fun onTimeUpdated(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-                videoEvents?.time(videoPlayer, time, duration)
+            override fun onTimeUpdated(player: IVideoPlayer, time: Int, duration: Int) {
+                videoEvents?.time(player, time, duration)
             }
 
-            override fun onComplete(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-                videoEvents?.complete(videoPlayer, time, duration)
+            override fun onComplete(player: IVideoPlayer, time: Int, duration: Int) {
+                videoEvents?.complete(player, time, duration)
                 closeButton.visibility = View.VISIBLE
 
                 controller.adEnded()
@@ -93,17 +93,16 @@ class VideoActivity : FullScreenActivity() {
             }
 
             override fun onError(
-                videoPlayer: IVideoPlayer?,
-                throwable: Throwable?,
+                player: IVideoPlayer,
+                error: Throwable,
                 time: Int,
                 duration: Int
             ) {
-                videoEvents?.error(videoPlayer, time, duration)
+                videoEvents?.error(player, time, duration)
                 controller.adFailedToShow()
                 close()
             }
         })
-        videoPlayer
     }
 
     override fun playContent() {

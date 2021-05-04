@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import org.koin.java.KoinJavaComponent.inject
-import tv.superawesome.lib.savideoplayer.IVideoPlayerControllerView
+import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerControllerView
 
 class AdVideoPlayerControllerView
 @JvmOverloads
@@ -67,8 +67,6 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         }
     }
 
-    override fun isPlaying(): Boolean = true
-
     override fun show() { /* N/A */
     }
 
@@ -81,13 +79,16 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     override fun setMaximised() { /* N/A */
     }
 
-    override fun isMaximised(): Boolean = false
-
     override fun close() { /* N/A */
     }
 
-    override fun setListener(p0: IVideoPlayerControllerView.Listener?) {
+    override fun setListener(listener: IVideoPlayerControllerView.Listener?) {
     }
+
+    override val isPlaying: Boolean
+        get() = true
+    override val isMaximised: Boolean
+        get() = false
 
     companion object {
         // constants

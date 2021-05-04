@@ -29,9 +29,7 @@ ext {
     publishDescription = 'SuperAwesome Full SDK'
 }
 
-repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
-}
+
 
 dependencies {
     api project(':superawesome-common')
