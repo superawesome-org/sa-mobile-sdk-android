@@ -22,7 +22,6 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
     private var context: Context? = null
     private var loadedPlacementId = 0
 
-
     override fun requestInterstitialAd(
         context: Context,
         listener: CustomEventInterstitialListener,

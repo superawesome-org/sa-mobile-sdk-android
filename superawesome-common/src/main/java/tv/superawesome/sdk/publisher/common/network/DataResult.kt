@@ -6,4 +6,7 @@ sealed class DataResult<out T : Any> {
 
     val isSuccess: Boolean by lazy { this is Success }
     val isFailure: Boolean by lazy { this is Failure }
+
+    val optValue: T?
+        get() = (this as? Success)?.value
 }
