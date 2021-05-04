@@ -64,6 +64,7 @@ class AdProcessor(
                 val mergedVast = vast.merge(initialVast)
                 handleVast(it, mergedVast)
             }
+            return vast
         }
         return initialVast
     }

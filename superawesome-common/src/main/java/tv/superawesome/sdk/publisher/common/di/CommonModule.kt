@@ -5,15 +5,15 @@ import android.content.res.Resources
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.util.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import tv.superawesome.lib.savideoplayer.IVideoPlayerController
-import tv.superawesome.lib.savideoplayer.VideoPlayerController
 import tv.superawesome.sdk.publisher.common.BuildConfig
 import tv.superawesome.sdk.publisher.common.components.AdProcessor
 import tv.superawesome.sdk.publisher.common.components.AdProcessorType
@@ -74,7 +74,8 @@ import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
-import java.util.Locale
+import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
+import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerController
 
 @OptIn(ExperimentalSerializationApi::class)
 fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
@@ -132,7 +133,10 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single { RetrofitHeaderInterceptor(get()) }
     single {
         val interceptor: RetrofitHeaderInterceptor = get()
-
+        val readerInterceptor = HttpLoggingInterceptor()
+        readerInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        OkHttpClient.Builder()
+            .addInterceptor(interceptor).build()
         OkHttpClient().newBuilder()
             .addInterceptor(interceptor)
             .addInterceptor(
@@ -143,6 +147,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
                     .alwaysReadResponseBody(false)
                     .build()
             )
+            .addInterceptor(readerInterceptor)
             .build()
     }
     single {

@@ -34,7 +34,6 @@ androidExtensions {
 }
 
 repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     mavenCentral()
 }
 

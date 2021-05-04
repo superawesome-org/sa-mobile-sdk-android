@@ -6,13 +6,13 @@ import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
-import tv.superawesome.lib.savideoplayer.IVideoPlayer
 import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 
 class VideoEvents(
     private val adResponse: AdResponse,
