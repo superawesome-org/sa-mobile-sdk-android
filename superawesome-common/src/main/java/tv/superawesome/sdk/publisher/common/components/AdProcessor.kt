@@ -56,13 +56,13 @@ class AdProcessor(
         return DataResult.Success(response)
     }
 
-    suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? {
+    suspend fun handleVast(url: String, initialVast: VastAd? , isRedirect: Boolean = false): VastAd? {
         val result = networkDataSource.getData(url)
         if (result is DataResult.Success) {
             val vast = vastParser.parse(result.value)
-            vast.redirect?.also {
-                val mergedVast = vast.merge(initialVast)
-                handleVast(it, mergedVast)
+            vast?.redirect?.takeIf { initialVast != null && !isRedirect }?.also {
+                val mergedVast = vast.merge(initialVast!!)
+                handleVast(it, mergedVast, true)
             }
             return vast
         }
