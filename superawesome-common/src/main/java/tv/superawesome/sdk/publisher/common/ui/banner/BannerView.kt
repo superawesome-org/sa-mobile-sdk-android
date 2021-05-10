@@ -21,7 +21,7 @@ import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 
-class BannerView @JvmOverloads constructor(
+public class BannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -64,11 +64,12 @@ class BannerView @JvmOverloads constructor(
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
-    fun load(placementId: Int) {
+    public fun load(placementId: Int) {
         logger.info("load($placementId)")
         this.placementId = placementId
         controller.load(placementId, makeAdRequest())
     }
+
     /**
      * Static method that loads an ad into the interstitial queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
@@ -77,7 +78,7 @@ class BannerView @JvmOverloads constructor(
      * @param lineItemId
      * @param creativeId id of the Creative
      */
-    fun load(placementId: Int, lineItemId: Int, creativeId: Int) {
+    public fun load(placementId: Int, lineItemId: Int, creativeId: Int) {
         this.placementId = placementId
         controller.load(placementId, lineItemId, creativeId, makeAdRequest())
     }
@@ -86,7 +87,7 @@ class BannerView @JvmOverloads constructor(
      * One of the main public methods of the SABannerAd class. This will play an already existing
      * loaded ad, or fail.
      */
-    fun play() {
+    public fun play() {
         logger.info("play($placementId)")
         val adResponse = controller.play(placementId)
         val data = adResponse?.getDataPair()
@@ -105,14 +106,14 @@ class BannerView @JvmOverloads constructor(
         webView?.loadHTML(data.first, data.second.replace("_MOAT_", html))
     }
 
-    fun setListener(delegate: SAInterface) {
+    public fun setListener(delegate: SAInterface) {
         controller.delegate = delegate
     }
 
     /**
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
-    fun close() {
+    public fun close() {
         hasBeenVisible = null
         viewableDetector.cancel()
         removeWebView()
@@ -124,55 +125,55 @@ class BannerView @JvmOverloads constructor(
      *
      * @return true or false
      */
-    fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
+    public fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
 
-    fun isClosed(): Boolean = controller.closed
+    public fun isClosed(): Boolean = controller.closed
 
-    fun enableParentalGate() {
+    public fun enableParentalGate() {
         setParentalGate(true)
     }
 
-    fun disableParentalGate() {
+    public fun disableParentalGate() {
         setParentalGate(false)
     }
 
-    fun enableBumperPage() {
+    public fun enableBumperPage() {
         setBumperPage(true)
     }
 
-    fun disableBumperPage() {
+    public fun disableBumperPage() {
         setBumperPage(false)
     }
 
-    fun enableTestMode() {
+    public fun enableTestMode() {
         setTestMode(true)
     }
 
-    fun disableTestMode() {
+    public fun disableTestMode() {
         setTestMode(false)
     }
 
-    fun setColorTransparent() {
+    public fun setColorTransparent() {
         setColor(true)
     }
 
-    fun setColorGray() {
+    public fun setColorGray() {
         setColor(false)
     }
 
-    fun setParentalGate(value: Boolean) {
+    public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
-    fun setBumperPage(value: Boolean) {
+    public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
-    fun setTestMode(value: Boolean) {
+    public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
-    fun setColor(value: Boolean) {
+    public fun setColor(value: Boolean) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
         } else {
@@ -180,7 +181,7 @@ class BannerView @JvmOverloads constructor(
         }
     }
 
-    fun disableMoatLimiting() {
+    public fun disableMoatLimiting() {
         controller.moatLimiting = false
     }
 
