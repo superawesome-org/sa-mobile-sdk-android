@@ -1,100 +1,98 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import org.w3c.dom.Element
 import tv.superawesome.sdk.publisher.common.models.ConnectionQuality
 import tv.superawesome.sdk.publisher.common.models.VastAd
-import tv.superawesome.sdk.publisher.common.models.VastEvent
 import tv.superawesome.sdk.publisher.common.models.VastMedia
 import tv.superawesome.sdk.publisher.common.models.VastType
 
 interface VastParserType {
-    fun parse(data: String): VastAd
+    fun parse(data: String): VastAd?
 }
 
 class VastParser(
     private val parser: XmlParserType,
     private val connectionProvider: ConnectionProviderType
 ) : VastParserType {
-    override fun parse(data: String): VastAd {
-        val vastAd = VastAd()
+    override fun parse(data: String): VastAd? {
         val document = parser.parse(data)
-        val ad = parser.findFirst(document, "Ad") ?: return vastAd
-
-        if (parser.exists(ad, "InLine")) vastAd.type = VastType.InLine
-        if (parser.exists(ad, "Wrapper")) vastAd.type = VastType.Wrapper
-
-        parser.findFirst(ad, "VASTAdTagURI")?.let {
-            vastAd.redirect = it.textContent
+        val ad = parser.findFirst(document, "Ad") ?: return null
+        val vastType = when {
+            parser.exists(ad, "InLine") -> VastType.InLine
+            parser.exists(ad, "Wrapper") -> VastType.Wrapper
+            else -> VastType.Invalid
         }
 
-        parser.findAll(ad, "Error").forEach {
-            vastAd.addEvent(VastEvent("vast_error", it.textContent))
-        }
+        val redirectUrl = parser.findFirst(ad, "VASTAdTagURI")?.textContent
+        val errors = parser.findAll(ad, "Error").mapNotNull { it.textContent }
+        val impressions = parser.findAll(ad, "Impression").mapNotNull { it.textContent }
 
-        parser.findAll(ad, "Impression").forEach {
-            vastAd.addEvent(VastEvent("vast_impression", it.textContent))
-        }
+        parser.findFirst(ad, "Creative")?.let { creative ->
+            val clickThrough = parser.findAll(creative, "ClickThrough")
+                .firstOrNull()?.textContent?.replace("&amp;", "&")
+                ?.replace("%3A", ":")?.replace("%2F", "/")
 
-        parseCreative(ad, vastAd)
-
-        findBestUrlForConnection(vastAd)
-
-        return vastAd
-    }
-
-    private fun parseCreative(ad: Element, vastAd: VastAd) {
-        val creative = parser.findFirst(ad, "Creative")
-
-        if (creative != null) {
-            parser.findAll(creative, "ClickThrough").forEach {
-                val url = it.textContent
-                    .replace("&amp;", "&")
-                    .replace("%3A", ":")
-                    .replace("%2F", "/")
-                vastAd.addEvent(VastEvent("vast_click_through", url))
+            val clickTracking = parser.findAll(creative, "ClickTracking").mapNotNull {
+                it.textContent
             }
+            val trackingElements = parser.findAll(creative, "Tracking")
+            val creativeViews =
+                trackingElements.filter { it.getAttribute("event") == "creativeView" }
+                    .mapNotNull { it.textContent }
+            val start = trackingElements.filter { it.getAttribute("event") == "start" }
+                .mapNotNull { it.textContent }
+            val firstQuartile =
+                trackingElements.filter { it.getAttribute("event") == "firstQuartile" }
+                    .mapNotNull { it.textContent }
+            val midPoint = trackingElements.filter { it.getAttribute("event") == "midpoint" }
+                .mapNotNull { it.textContent }
+            val thirdQuartile =
+                trackingElements.filter { it.getAttribute("event") == "thirdQuartile" }
+                    .mapNotNull { it.textContent }
+            val complete = trackingElements.filter { it.getAttribute("event") == "complete" }
+                .mapNotNull { it.textContent }
 
-            parser.findAll(creative, "ClickTracking").forEach {
-                vastAd.addEvent(VastEvent("vast_click_tracking", it.textContent))
-            }
-
-            parser.findAll(creative, "Tracking").forEach {
-                val url = "vast_${it.getAttribute("event")}"
-                vastAd.addEvent(VastEvent(url, it.textContent))
-            }
-
-            parser.findAll(creative, "MediaFile").forEach {
-                if (it.getAttribute("type")?.contains("mp4") != true) {
-                    return@forEach
-                }
+            val media = parser.findAll(creative, "MediaFile").filter {
+                it.getAttribute("type")?.contains("mp4") == true
+            }.map {
                 val bitrate = it.getAttribute("bitrate")?.toIntOrNull() ?: 0
                 val width = it.getAttribute("width")?.toIntOrNull() ?: 0
                 val height = it.getAttribute("height")?.toIntOrNull() ?: 0
-                val media = VastMedia(
+                VastMedia(
                     it.getAttribute("type"),
                     it.textContent.replace(" ", ""),
                     bitrate,
                     width,
                     height
                 )
-                vastAd.addMedia(media)
             }
-        }
-    }
 
-    private fun findBestUrlForConnection(vastAd: VastAd) {
-        val sortedMedia = vastAd.sortedMedia()
-        when (connectionProvider.findConnectionType().findQuality()) {
-            ConnectionQuality.Minimum -> vastAd.url = sortedMedia.firstOrNull()?.url
-            ConnectionQuality.Medium -> {
-                if (sortedMedia.size > 2) {
-                    vastAd.url = sortedMedia[sortedMedia.size / 2].url
-                }
+            val sortedMedia = media.sortedBy { it.bitrate }
+
+            val url = when (connectionProvider.findConnectionType().findQuality()) {
+                ConnectionQuality.Minimum -> sortedMedia.firstOrNull()?.url
+                ConnectionQuality.Medium -> if (sortedMedia.size > 2) {
+                    sortedMedia[sortedMedia.size / 2].url
+                } else sortedMedia.lastOrNull()?.url
+                ConnectionQuality.Maximum -> sortedMedia.lastOrNull()?.url
             }
-            ConnectionQuality.Maximum -> vastAd.url = sortedMedia.lastOrNull()?.url
+
+            return VastAd(
+                url = url,
+                type = vastType,
+                redirect = redirectUrl,
+                errorEvents = errors,
+                impressionEvents = impressions,
+                clickThroughUrl = clickThrough,
+                clickTrackingEvents = clickTracking,
+                media = media,
+                creativeViewEvents = creativeViews,
+                startEvents = start,
+                firstQuartileEvents = firstQuartile,
+                midPointEvents = midPoint,
+                thirdQuartileEvents = thirdQuartile,
+                completeEvents = complete
+            )
         }
-        if (vastAd.url == null) {
-            vastAd.url = vastAd.media.lastOrNull()?.url
-        }
+        return null
     }
 }

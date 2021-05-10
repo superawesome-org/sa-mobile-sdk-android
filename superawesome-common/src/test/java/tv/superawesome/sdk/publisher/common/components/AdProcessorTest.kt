@@ -15,6 +15,7 @@ import tv.superawesome.sdk.publisher.common.models.CreativeDetail
 import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.common.models.CreativeReferral
 import tv.superawesome.sdk.publisher.common.models.VastAd
+import tv.superawesome.sdk.publisher.common.models.VastType
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import kotlin.test.assertTrue
 
@@ -91,7 +92,8 @@ class AdProcessorTest {
         // arrange
         coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(exampleVastUrl)
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success("")
-        coEvery { vastParser.parse(any()) } returns VastAd(url = exampleUrl)
+        coEvery { vastParser.parse(any()) } returns makeVastAd(exampleUrl)
+
 
         // act
         val response = subject.process(99, makeFakeAd(CreativeFormatType.video))
@@ -105,7 +107,7 @@ class AdProcessorTest {
     @Test
     fun `get data is fail initial is returned`() = runBlocking {
         // arrange
-        val initialVastAd = VastAd("www.here.com")
+        val initialVastAd = makeVastAd()
         coEvery { networkDataSource.getData(any()) } returns DataResult.Failure(Exception())
 
         // act
@@ -119,8 +121,8 @@ class AdProcessorTest {
     fun `get data is success is passed by passer, redirect null`() = runBlocking {
         // arrange
         val vastString = "pass string"
-        val initialVastAd = VastAd("www.here.com")
-        val passedVastAd = VastAd()
+        val initialVastAd = makeVastAd()
+        val passedVastAd = makeVastAd()
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success(vastString)
         coEvery { vastParser.parse(any()) } returns passedVastAd
 
@@ -135,8 +137,10 @@ class AdProcessorTest {
     fun `get data is success is passed by passer with redirect `() = runBlocking {
         // arrange
         val vastString = "pass string"
-        val initialVastAd = VastAd("www.here.com")
-        val passedVastAd = VastAd(redirect = "www.amp.co.uk")
+        val initialVastAd = makeVastAd()
+        val passedVastAd = makeVastAd("www.amp.co.uk")
+
+
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success(vastString)
         coEvery { vastParser.parse(any()) } returns passedVastAd
 
@@ -179,9 +183,25 @@ class AdProcessorTest {
         )
     )
 
+    private fun makeVastAd(url:String = "www.here.com", redDirect: String? = null) = VastAd(
+        url,
+        type = VastType.Invalid,
+        errorEvents = emptyList(),
+        impressionEvents = emptyList(),
+        redirect = redDirect,
+        media = listOf(),
+        clickThroughUrl = "",
+        creativeViewEvents = listOf(),
+        startEvents = listOf(),
+        completeEvents = listOf(),
+        firstQuartileEvents = listOf(),
+        midPointEvents = listOf(),
+        thirdQuartileEvents = listOf(),
+        clickTrackingEvents = listOf(),
+    )
+
     private val exampleUrl = "https://www.superAwesome.com"
     private val exampleHtml = "<test></test>"
     private val exampleParamString = "id=12&name=tester"
     private val exampleVastUrl = "https://www.superAwesome.com"
-    private val fakeValidVast = "fakeValidVast"
 }
