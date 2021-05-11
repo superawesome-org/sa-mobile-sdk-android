@@ -29,7 +29,6 @@ class VastParserTest {
         every { connectionProvider.findConnectionType() } returns ConnectionType.Cellular2g
     }
 
-
     @Test
     fun test_parse_response() {
         // arrange
@@ -71,14 +70,12 @@ class VastParserTest {
             vast?.completeEvents
         )
         assertEquals(emptyList(), vast?.clickTrackingEvents)
-
     }
 
     @Test
     fun test_parse_response1() {
         // arrange
         val file = ResourceReader.readResource("mock_vast_response_1.0.xml")
-
 
         // act
         val vast = vastParser.parse(file)
@@ -176,10 +173,10 @@ class VastParserTest {
             listOf(
                 "https://video-ad-stats.googlesyndication.com/video/client_events?event=6&amp;web_property=ca-pub-3279133228669082&amp;cpn=[CPN]&amp;break_type=[BREAK_TYPE]&amp;slot_pos=[SLOT_POS]&amp;ad_id=[AD_ID]&amp;ad_sys=[AD_SYS]&amp;ad_len=[AD_LEN]&amp;p_w=[P_W]&amp;p_h=[P_H]&amp;mt=[MT]&amp;rwt=[RWT]&amp;wt=[WT]&amp;sdkv=[SDKV]&amp;vol=[VOL]&amp;content_v=[CONTENT_V]&amp;conn=[CONN]&amp;format=[FORMAT_NAMESPACE]_[FORMAT_TYPE]_[FORMAT_SUBTYPE]",
                 "https://pubads.g.doubleclick.net/pcs/click?xai=AKAOjsuyjdNJZ1zHVE5WfaJrEvrP7eK0VqSdNyGBRoMjMXd90VYE3xZVr3l5Kn0h166VefqEYqeNX_z_zObIjytcV-YGYRDvmnzU93x3Kplly4YHIdlHtXRrAE3AbaZAjN9HEjoTs4g6GZM7lc4KX_5OdCRwaEq-DuVxs0QZNkyJ5b8nCA3nkya8WzKLmAf_4sjx3e3aAanzjuaYc1__5LMi7hXLuYk_Bubh7HNPofn4y8PKVmnaOZGfaycMkFIr4pTd1DdQJ6Ma&amp;sig=Cg0ArKJSzOdaV5VR9GxbEAE&amp;urlfix=1"
-            ), vast?.clickTrackingEvents
+            ),
+            vast?.clickTrackingEvents
         )
     }
-
 
     private val expectedError =
         "https://ads.superawesome.tv/v2/video/error?placement=30479&amp;creative=-1&amp;line_item=-1&amp;sdkVersion=unknown&amp;rnd=3232269&amp;device=web&amp;country=GB&amp;code=[ERRORCODE]"
@@ -187,5 +184,4 @@ class VastParserTest {
         "https://ads.superawesome.tv/v2/video/impression?placement=30479&amp;creative=-1&amp;line_item=-1&amp;sdkVersion=unknown&amp;rnd=4538730&amp;device=web&amp;country=GB"
     private val expectedClickThroughUrl =
         "https://ads.superawesome.tv/v2/video/click?placement=30479&creative=-1&line_item=-1&sdkVersion=unknown&rnd=1809240&device=web&country=GB"
-
 }

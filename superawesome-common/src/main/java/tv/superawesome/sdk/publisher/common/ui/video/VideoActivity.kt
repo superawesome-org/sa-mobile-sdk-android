@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.RelativeLayout
-import java.io.File
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
@@ -25,6 +24,7 @@ import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayer
+import java.io.File
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
@@ -125,7 +125,7 @@ class VideoActivity : FullScreenActivity() {
         }
     }
 
-    public  override fun close() {
+    public override fun close() {
         controller.adClosed()
         controller.close()
         videoPlayer.destroy()

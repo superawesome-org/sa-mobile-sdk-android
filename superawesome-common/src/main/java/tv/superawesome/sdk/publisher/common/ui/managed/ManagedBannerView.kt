@@ -68,21 +68,21 @@ public class ManagedBannerView @JvmOverloads constructor(
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
-    public  fun play(placementId: Int) {
+    public fun play(placementId: Int) {
         logger.info("load($placementId)")
         this.placementId = placementId
         showPadlockIfNeeded()
         webView?.loadAdViaJs(placementId, makeAdRequest())
     }
 
-    public  fun setListener(delegate: SAInterface) {
+    public fun setListener(delegate: SAInterface) {
         controller.delegate = delegate
     }
 
     /**
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
-    public  fun close() {
+    public fun close() {
         hasBeenVisible = null
         viewableDetector.cancel()
         removeWebView()
@@ -94,9 +94,9 @@ public class ManagedBannerView @JvmOverloads constructor(
      *
      * @return true or false
      */
-    public  fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
+    public fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
 
-    public  fun isClosed(): Boolean = controller.closed
+    public fun isClosed(): Boolean = controller.closed
 
     public fun enableParentalGate() {
         setParentalGate(true)
@@ -114,15 +114,15 @@ public class ManagedBannerView @JvmOverloads constructor(
         setBumperPage(false)
     }
 
-    public  fun enableTestMode() {
+    public fun enableTestMode() {
         setTestMode(true)
     }
 
-    public  fun disableTestMode() {
+    public fun disableTestMode() {
         setTestMode(false)
     }
 
-    public  fun setColorTransparent() {
+    public fun setColorTransparent() {
         setColor(true)
     }
 
@@ -130,7 +130,7 @@ public class ManagedBannerView @JvmOverloads constructor(
         setColor(false)
     }
 
-    public  fun setParentalGate(value: Boolean) {
+    public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
@@ -142,7 +142,7 @@ public class ManagedBannerView @JvmOverloads constructor(
         controller.config.testEnabled = value
     }
 
-    public  fun setColor(value: Boolean) {
+    public fun setColor(value: Boolean) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
         } else {

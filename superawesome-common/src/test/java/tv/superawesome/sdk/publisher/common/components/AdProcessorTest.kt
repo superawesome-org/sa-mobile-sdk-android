@@ -94,7 +94,6 @@ class AdProcessorTest {
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success("")
         coEvery { vastParser.parse(any()) } returns makeVastAd(exampleUrl)
 
-
         // act
         val response = subject.process(99, makeFakeAd(CreativeFormatType.Video))
 
@@ -140,7 +139,6 @@ class AdProcessorTest {
         val initialVastAd = makeVastAd()
         val passedVastAd = makeVastAd("www.amp.co.uk")
 
-
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success(vastString)
         coEvery { vastParser.parse(any()) } returns passedVastAd
 
@@ -183,7 +181,7 @@ class AdProcessorTest {
         )
     )
 
-    private fun makeVastAd(url:String = "www.here.com", redDirect: String? = null) = VastAd(
+    private fun makeVastAd(url: String = "www.here.com", redDirect: String? = null) = VastAd(
         url,
         type = VastType.Invalid,
         errorEvents = emptyList(),

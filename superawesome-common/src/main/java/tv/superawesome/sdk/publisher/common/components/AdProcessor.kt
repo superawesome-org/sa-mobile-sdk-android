@@ -56,7 +56,7 @@ class AdProcessor(
         return DataResult.Success(response)
     }
 
-    suspend fun handleVast(url: String, initialVast: VastAd? , isRedirect: Boolean = false): VastAd? {
+    suspend fun handleVast(url: String, initialVast: VastAd?, isRedirect: Boolean = false): VastAd? {
         val result = networkDataSource.getData(url)
         if (result is DataResult.Success) {
             val vast = vastParser.parse(result.value)

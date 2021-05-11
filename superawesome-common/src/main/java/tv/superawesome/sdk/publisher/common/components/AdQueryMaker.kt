@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import java.util.*
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.common.models.AdQuery
 import tv.superawesome.sdk.publisher.common.models.AdRequest
@@ -8,6 +7,7 @@ import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.EventData
 import tv.superawesome.sdk.publisher.common.models.EventQuery
 import tv.superawesome.sdk.publisher.common.models.EventType
+import java.util.Locale
 
 interface AdQueryMakerType {
     suspend fun makeAdQuery(request: AdRequest): AdQuery
