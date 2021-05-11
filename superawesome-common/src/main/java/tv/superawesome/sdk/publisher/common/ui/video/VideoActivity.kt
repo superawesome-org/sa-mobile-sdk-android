@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.content.Context
@@ -105,7 +107,7 @@ class VideoActivity : FullScreenActivity() {
         })
     }
 
-    override fun playContent() {
+    public override fun playContent() {
         controller.play(placementId)?.let {
             it.vast?.let { _ ->
                 videoEvents = get(
@@ -123,7 +125,7 @@ class VideoActivity : FullScreenActivity() {
         }
     }
 
-    override fun close() {
+    public override fun close() {
         controller.adClosed()
         controller.close()
         videoPlayer.destroy()

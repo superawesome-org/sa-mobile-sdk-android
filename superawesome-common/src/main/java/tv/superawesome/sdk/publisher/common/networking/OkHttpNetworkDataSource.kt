@@ -1,7 +1,6 @@
 package tv.superawesome.sdk.publisher.common.networking
 
 import android.content.Context
-import java.io.File
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.buffer
@@ -10,6 +9,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.UrlFileItem
 import tv.superawesome.sdk.publisher.common.network.DataResult
+import java.io.File
 
 class OkHttpNetworkDataSource(
     private val client: OkHttpClient,

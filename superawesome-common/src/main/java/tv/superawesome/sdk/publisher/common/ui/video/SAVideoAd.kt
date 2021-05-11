@@ -166,9 +166,9 @@ object SAVideoAd {
             test = isTestEnabled(),
             pos = AdRequest.Position.FullScreen.value,
             skip = if (controller.config.shouldShowCloseButton) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
-            playbackmethod = AdRequest.PlaybackSoundOnScreen,
-            startdelay = AdRequest.StartDelay.PreRoll.value,
-            instl = AdRequest.FullScreen.On.value,
+            playbackMethod = AdRequest.PlaybackSoundOnScreen,
+            startDelay = AdRequest.StartDelay.PreRoll.value,
+            install = AdRequest.FullScreen.On.value,
             w = width,
             h = height
         )

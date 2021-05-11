@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.ui.interstitial
 
 import android.app.Activity
@@ -101,7 +103,7 @@ public object SAInterstitialAd {
         setOrientation(Orientation.Portrait)
     }
 
-    public  fun setOrientationLandscape() {
+    public fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
     }
 
@@ -156,9 +158,9 @@ public object SAInterstitialAd {
             test = isTestEnabled(),
             pos = AdRequest.Position.FullScreen.value,
             skip = AdRequest.Skip.Yes.value,
-            playbackmethod = AdRequest.PlaybackSoundOnScreen,
-            startdelay = AdRequest.StartDelay.PreRoll.value,
-            instl = AdRequest.FullScreen.On.value,
+            playbackMethod = AdRequest.PlaybackSoundOnScreen,
+            startDelay = AdRequest.StartDelay.PreRoll.value,
+            install = AdRequest.FullScreen.On.value,
             w = width,
             h = height
         )

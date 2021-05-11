@@ -37,7 +37,6 @@ data class VastAd(
             media = this.media.toMutableList().also { it.addAll(from.media) },
             redirect = null
         )
-
 }
 
 enum class VastType {

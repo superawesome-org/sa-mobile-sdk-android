@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
@@ -10,20 +11,20 @@ data class Ad(
     val advertiserId: Int? = null,
     val publisherId: Int,
     val moat: Float,
-    val is_fill: Boolean,
-    val is_fallback: Boolean,
-    val campaign_type: Int,
-    val campaign_id: Int,
-    val is_house: Boolean,
-    val safe_ad_approved: Boolean,
-    val show_padlock: Boolean,
-    val line_item_id: Int,
+    @SerialName("is_fill") val isFill: Boolean,
+    @SerialName("is_fallback") val isFallback: Boolean,
+    @SerialName("campaign_type") val campaignType: Int,
+    @SerialName("campaign_id") val campaignId: Int,
+    @SerialName("is_house") val isHouse: Boolean,
+    @SerialName("safe_ad_approved") val safeAdApproved: Boolean,
+    @SerialName("show_padlock") val showPadlock: Boolean,
+    @SerialName("line_item_id") val lineItemId: Int,
     val test: Boolean,
     val app: Int,
     val device: String,
     val creative: Creative
 ) {
-    fun isCPICampaign(): Boolean = campaign_type == CPI_CAMPAIGN_ID
+    fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
 }
 
 @Serializable
@@ -33,15 +34,15 @@ data class AdQuery(
     val rnd: Int,
     val bundle: String,
     val name: String,
-    val dauid: Int,
+    @SerialName("dauid") val dauId: Int,
     val ct: ConnectionType,
     val lang: String,
     val device: String,
     val pos: Int,
     val skip: Int,
-    val playbackmethod: Int,
-    val startdelay: Int,
-    val instl: Int,
+    @SerialName("playbackmethod") val playbackMethod: Int,
+    @SerialName("startdelay") val startDelay: Int,
+    @SerialName("instl") val install: Int,
     val w: Int,
     val h: Int,
 )
@@ -55,7 +56,7 @@ data class AdResponse(
     var filePath: String? = null,
     var referral: String? = null,
 ) {
-    fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.video
+    fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.Video
 
     /**
      * Returns `baseUrl` and `html` data to show in the `WebView`
@@ -72,9 +73,9 @@ data class AdRequest(
     val test: Boolean,
     val pos: Int,
     val skip: Int,
-    val playbackmethod: Int,
-    val startdelay: Int,
-    val instl: Int,
+    @SerialName("playbackmethod") val playbackMethod: Int,
+    @SerialName("startdelay") val startDelay: Int,
+    @SerialName("instl") val install: Int,
     val w: Int,
     val h: Int,
 ) {
@@ -83,9 +84,9 @@ data class AdRequest(
     val propertyString = mapOf(
         "pos" to pos,
         "skip" to skip,
-        "playbackmethod" to playbackmethod,
-        "startdelay" to startdelay,
-        "instl" to instl,
+        "playbackmethod" to playbackMethod,
+        "startdelay" to startDelay,
+        "instl" to install,
         "w" to w,
         "h" to h
     )
@@ -163,7 +164,7 @@ enum class SAEvent {
     AdClosed
 }
 
-fun interface SAInterface {
+public fun interface SAInterface {
     /**
      * Only method that needs to be implemented to be able to receive events back from the SDK
      *

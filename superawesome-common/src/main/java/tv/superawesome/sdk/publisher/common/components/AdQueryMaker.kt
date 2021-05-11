@@ -34,15 +34,15 @@ class AdQueryMaker(
         rnd = numberGenerator.nextIntForCache(),
         bundle = sdkInfoType.bundle,
         name = sdkInfoType.name,
-        dauid = idGenerator.findDauId(),
+        dauId = idGenerator.findDauId(),
         ct = connectionProvider.findConnectionType(),
         lang = locale.toString(),
         device = device.genericType.name,
         pos = request.pos,
         skip = request.skip,
-        playbackmethod = request.playbackmethod,
-        startdelay = request.startdelay,
-        instl = request.instl,
+        playbackMethod = request.playbackMethod,
+        startDelay = request.startDelay,
+        install = request.install,
         w = request.w,
         h = request.h
     )
@@ -51,12 +51,12 @@ class AdQueryMaker(
         placement = adResponse.placementId,
         bundle = sdkInfoType.bundle,
         creative = adResponse.ad.creative.id,
-        line_item = adResponse.ad.line_item_id,
+        lineItem = adResponse.ad.lineItemId,
         ct = connectionProvider.findConnectionType(),
         sdkVersion = sdkInfoType.version,
         rnd = numberGenerator.nextIntForCache(),
         type = null,
-        no_image = null,
+        noImage = null,
         data = null
     )
 
@@ -64,12 +64,12 @@ class AdQueryMaker(
         placement = adResponse.placementId,
         bundle = sdkInfoType.bundle,
         creative = adResponse.ad.creative.id,
-        line_item = adResponse.ad.line_item_id,
+        lineItem = adResponse.ad.lineItemId,
         ct = connectionProvider.findConnectionType(),
         sdkVersion = sdkInfoType.version,
         rnd = numberGenerator.nextIntForCache(),
-        type = EventType.impressionDownloaded,
-        no_image = true,
+        type = EventType.ImpressionDownloaded,
+        noImage = true,
         data = null
     )
 
@@ -77,12 +77,12 @@ class AdQueryMaker(
         placement = adResponse.placementId,
         bundle = sdkInfoType.bundle,
         creative = adResponse.ad.creative.id,
-        line_item = adResponse.ad.line_item_id,
+        lineItem = adResponse.ad.lineItemId,
         ct = connectionProvider.findConnectionType(),
         sdkVersion = sdkInfoType.version,
         rnd = numberGenerator.nextIntForCache(),
         type = null,
-        no_image = null,
+        noImage = null,
         data = null
     )
 
@@ -91,12 +91,12 @@ class AdQueryMaker(
             placement = adResponse.placementId,
             bundle = sdkInfoType.bundle,
             creative = adResponse.ad.creative.id,
-            line_item = adResponse.ad.line_item_id,
+            lineItem = adResponse.ad.lineItemId,
             ct = connectionProvider.findConnectionType(),
             sdkVersion = sdkInfoType.version,
             rnd = numberGenerator.nextIntForCache(),
             type = eventData.type,
-            no_image = null,
+            noImage = null,
             data = encodeData(eventData)
         )
     }

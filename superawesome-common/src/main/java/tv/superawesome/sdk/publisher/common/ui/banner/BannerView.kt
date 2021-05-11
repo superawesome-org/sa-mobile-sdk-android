@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.banner
 
 import android.content.Context
@@ -247,9 +249,9 @@ public class BannerView @JvmOverloads constructor(
         test = controller.config.testEnabled,
         pos = AdRequest.Position.AboveTheFold.value,
         skip = AdRequest.Skip.No.value,
-        playbackmethod = AdRequest.PlaybackSoundOnScreen,
-        startdelay = AdRequest.StartDelay.PreRoll.value,
-        instl = AdRequest.FullScreen.Off.value,
+        playbackMethod = AdRequest.PlaybackSoundOnScreen,
+        startDelay = AdRequest.StartDelay.PreRoll.value,
+        install = AdRequest.FullScreen.Off.value,
         w = width,
         h = height
     )

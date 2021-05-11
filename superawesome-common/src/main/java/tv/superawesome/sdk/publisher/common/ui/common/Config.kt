@@ -71,7 +71,7 @@ open class Config : Parcelable {
         parcel.writeByte((if (isBackButtonEnabled) 1 else 0).toByte())
         parcel.writeByte((if (shouldCloseAtEnd) 1 else 0).toByte())
         parcel.writeByte((if (shouldShowCloseButton) 1 else 0).toByte())
-        parcel.writeInt(orientation.value)
+        parcel.writeInt(orientation.ordinal)
         parcel.writeInt(startDelay.value)
     }
 

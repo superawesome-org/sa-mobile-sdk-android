@@ -16,7 +16,7 @@ interface ConnectionProviderType {
 class ConnectionProvider(private val context: Context) : ConnectionProviderType {
     override fun findConnectionType(): ConnectionType {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-            ?: return ConnectionType.unknown
+            ?: return ConnectionType.Unknown
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             findConnectionType(connectivityManager)
@@ -26,13 +26,13 @@ class ConnectionProvider(private val context: Context) : ConnectionProviderType 
     }
 
     private fun findCellularType(type: Int): ConnectionType = when (type) {
-        TelephonyManager.NETWORK_TYPE_UNKNOWN -> ConnectionType.unknown
+        TelephonyManager.NETWORK_TYPE_UNKNOWN -> ConnectionType.Unknown
         TelephonyManager.NETWORK_TYPE_GSM,
         TelephonyManager.NETWORK_TYPE_CDMA,
         TelephonyManager.NETWORK_TYPE_1xRTT,
         TelephonyManager.NETWORK_TYPE_IDEN,
         TelephonyManager.NETWORK_TYPE_GPRS,
-        TelephonyManager.NETWORK_TYPE_EDGE -> ConnectionType.cellular2g
+        TelephonyManager.NETWORK_TYPE_EDGE -> ConnectionType.Cellular2g
         TelephonyManager.NETWORK_TYPE_UMTS,
         TelephonyManager.NETWORK_TYPE_EVDO_0,
         TelephonyManager.NETWORK_TYPE_EVDO_A,
@@ -42,27 +42,27 @@ class ConnectionProvider(private val context: Context) : ConnectionProviderType 
         TelephonyManager.NETWORK_TYPE_HSUPA,
         TelephonyManager.NETWORK_TYPE_EHRPD,
         TelephonyManager.NETWORK_TYPE_HSPAP,
-        TelephonyManager.NETWORK_TYPE_TD_SCDMA -> ConnectionType.cellular3g
+        TelephonyManager.NETWORK_TYPE_TD_SCDMA -> ConnectionType.Cellular3g
         TelephonyManager.NETWORK_TYPE_LTE,
-        TelephonyManager.NETWORK_TYPE_IWLAN -> ConnectionType.cellular4g
-        else -> ConnectionType.unknown
+        TelephonyManager.NETWORK_TYPE_IWLAN -> ConnectionType.Cellular4g
+        else -> ConnectionType.Unknown
     }
 
     @SuppressLint("MissingPermission")
     @TargetApi(Build.VERSION_CODES.M)
     private fun findConnectionType(connectivityManager: ConnectivityManager): ConnectionType {
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            ?: return ConnectionType.unknown
+            ?: return ConnectionType.Unknown
         capabilities.run {
             return@findConnectionType when {
-                hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> ConnectionType.wifi
+                hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> ConnectionType.Wifi
                 hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
                     val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
-                        ?: return ConnectionType.unknown
+                        ?: return ConnectionType.Unknown
                     return findCellularType(telephonyManager.networkType)
                 }
-                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> ConnectionType.ethernet
-                else -> ConnectionType.unknown
+                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> ConnectionType.Ethernet
+                else -> ConnectionType.Unknown
             }
         }
     }
@@ -71,10 +71,10 @@ class ConnectionProvider(private val context: Context) : ConnectionProviderType 
     private fun findConnectionTypeLegacy(connectivityManager: ConnectivityManager): ConnectionType {
         val info = connectivityManager.activeNetworkInfo
 
-        if (info == null || !info.isConnected) return ConnectionType.unknown
-        if (info.type == ConnectivityManager.TYPE_WIFI) return ConnectionType.wifi
+        if (info == null || !info.isConnected) return ConnectionType.Unknown
+        if (info.type == ConnectivityManager.TYPE_WIFI) return ConnectionType.Wifi
         if (info.type == ConnectivityManager.TYPE_MOBILE) return findCellularType(info.subtype)
 
-        return ConnectionType.unknown
+        return ConnectionType.Unknown
     }
 }
