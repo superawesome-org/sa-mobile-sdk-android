@@ -5,9 +5,11 @@ import android.content.res.Resources
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.util.Locale
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -75,7 +77,6 @@ import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerController
-import java.util.Locale
 
 @OptIn(ExperimentalSerializationApi::class)
 fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
@@ -157,7 +158,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
         }
     }
     single {
-        val contentType: MediaType = MediaType.get("application/json")
+        val contentType: MediaType = "application/json".toMediaType()
         val json: Json = get()
         Retrofit.Builder()
             .baseUrl(environment.baseUrl)
