@@ -1,14 +1,15 @@
 package tv.superawesome.sdk.publisher.common.networking
 
 import android.content.Context
+import java.io.File
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okio.Okio
+import okio.buffer
+import okio.sink
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.UrlFileItem
 import tv.superawesome.sdk.publisher.common.network.DataResult
-import java.io.File
 
 class OkHttpNetworkDataSource(
     private val client: OkHttpClient,
@@ -17,12 +18,10 @@ class OkHttpNetworkDataSource(
 ) : NetworkDataSourceType {
     override suspend fun getData(url: String): DataResult<String> {
         logger.info("getData:url: $url")
-
         val request = Request.Builder().url(url).build()
         val response = client.newCall(request).execute()
-
         return if (response.isSuccessful) {
-            DataResult.Success(response.body()?.string() ?: "")
+            DataResult.Success(response.body?.string() ?: "")
         } else {
             DataResult.Failure(Error("Could not GET data from $url"))
         }
@@ -30,7 +29,6 @@ class OkHttpNetworkDataSource(
 
     override suspend fun downloadFile(url: String): DataResult<String> {
         logger.info("downloadFile")
-
         val request = Request.Builder().url(url).build()
         val response = client.newCall(request).execute()
 
@@ -38,8 +36,8 @@ class OkHttpNetworkDataSource(
         val downloadedFile = File(applicationContext.cacheDir, urlFileItem.fileName)
 
         return try {
-            val sink = Okio.buffer(Okio.sink(downloadedFile))
-            sink.writeAll(response.body()!!.source())
+            val sink = downloadedFile.sink().buffer()
+            sink.writeAll(response.body!!.source())
             sink.close()
 
             logger.success("File download successful with path: ${downloadedFile.absolutePath}")

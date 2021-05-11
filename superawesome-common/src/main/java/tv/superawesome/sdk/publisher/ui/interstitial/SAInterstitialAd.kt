@@ -11,7 +11,7 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.interstitial.InterstitialActivity
 
-object SAInterstitialAd {
+public object SAInterstitialAd {
     private var orientation: Orientation = Constants.defaultOrientation
     private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
 
@@ -24,7 +24,7 @@ object SAInterstitialAd {
      * @param placementId the Ad placement id to load data for
      * @param context the current context
      */
-    fun load(placementId: Int, context: Context) {
+    public fun load(placementId: Int, context: Context) {
         controller.load(placementId, makeAdRequest(context))
     }
 
@@ -37,7 +37,7 @@ object SAInterstitialAd {
      * @param creativeId id of the Creative
      * @param context the current context
      */
-    fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context) {
+    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context) {
         controller.load(placementId, lineItemId, creativeId, makeAdRequest(context))
     }
 
@@ -47,43 +47,43 @@ object SAInterstitialAd {
      * @param placementId the Ad placement id to play an ad for
      * @param context the current context (activity or fragment)
      */
-    fun play(placementId: Int, context: Context) {
+    public fun play(placementId: Int, context: Context) {
         InterstitialActivity.start(placementId, context)
     }
 
-    fun setListener(value: SAInterface) {
+    public fun setListener(value: SAInterface) {
         controller.delegate = value
     }
 
-    fun enableParentalGate() {
+    public fun enableParentalGate() {
         setParentalGate(true)
     }
 
-    fun disableParentalGate() {
+    public fun disableParentalGate() {
         setParentalGate(false)
     }
 
-    fun enableBumperPage() {
+    public fun enableBumperPage() {
         setBumperPage(true)
     }
 
-    fun disableBumperPage() {
+    public fun disableBumperPage() {
         setBumperPage(false)
     }
 
-    fun enableTestMode() {
+    public fun enableTestMode() {
         setTestMode(true)
     }
 
-    fun disableTestMode() {
+    public fun disableTestMode() {
         setTestMode(false)
     }
 
-    fun enableBackButton() {
+    public fun enableBackButton() {
         setBackButton(true)
     }
 
-    fun disableBackButton() {
+    public fun disableBackButton() {
         setBackButton(false)
     }
 
@@ -93,41 +93,41 @@ object SAInterstitialAd {
     fun setConfigurationStaging() {
     }
 
-    fun setOrientationAny() {
+    public fun setOrientationAny() {
         setOrientation(Orientation.Any)
     }
 
-    fun setOrientationPortrait() {
+    public fun setOrientationPortrait() {
         setOrientation(Orientation.Portrait)
     }
 
-    fun setOrientationLandscape() {
+    public  fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
     }
 
-    fun getIsBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
+    public fun getIsBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
 
-    fun setParentalGate(value: Boolean) {
+    public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
-    fun setBumperPage(value: Boolean) {
+    public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
-    fun setTestMode(value: Boolean) {
+    public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
-    fun setBackButton(value: Boolean) {
+    public fun setBackButton(value: Boolean) {
         backButtonEnabled = value
     }
 
-    fun setOrientation(value: Orientation) {
+    public fun setOrientation(value: Orientation) {
         orientation = value
     }
 
-    fun disableMoatLimiting() {
+    public fun disableMoatLimiting() {
         controller.moatLimiting = false
     }
 
@@ -137,7 +137,7 @@ object SAInterstitialAd {
      * @param placementId the Ad placement id to check for
      * @return true or false
      */
-    fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
+    public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
 
     private fun makeAdRequest(context: Context): AdRequest {
         val width: Int
