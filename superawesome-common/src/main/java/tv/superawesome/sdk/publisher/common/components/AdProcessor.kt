@@ -23,19 +23,19 @@ class AdProcessor(
         val response = AdResponse(placementId, ad)
 
         when (ad.creative.format) {
-            CreativeFormatType.image_with_link -> {
+            CreativeFormatType.ImageWithLink -> {
                 response.html = htmlFormatter.formatImageIntoHtml(ad)
                 response.baseUrl = ad.creative.details.image?.baseUrl
             }
-            CreativeFormatType.rich_media -> {
+            CreativeFormatType.RichMedia -> {
                 response.html = htmlFormatter.formatRichMediaIntoHtml(placementId, ad)
                 response.baseUrl = ad.creative.details.url.baseUrl
             }
-            CreativeFormatType.tag -> {
+            CreativeFormatType.Tag -> {
                 response.html = htmlFormatter.formatTagIntoHtml(ad)
                 response.baseUrl = Constants.defaultSuperAwesomeUrl
             }
-            CreativeFormatType.video -> {
+            CreativeFormatType.Video -> {
                 ad.creative.details.vast?.let { url ->
                     response.vast = handleVast(url, null)
                     response.baseUrl = response.vast?.url?.baseUrl

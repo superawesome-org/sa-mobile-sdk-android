@@ -59,7 +59,7 @@ class AdQueryMakerTest {
         every { adResponse.placementId } returns 10
         every { adResponse.ad } returns ad
         every { ad.creative } returns creative
-        every { ad.line_item_id } returns 30
+        every { ad.lineItemId } returns 30
         every { creative.id } returns 20
     }
 
@@ -72,7 +72,7 @@ class AdQueryMakerTest {
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { sdkInfoType.name } returns "sdk_name"
         every { numberGeneratorType.nextIntForCache() } returns 33
-        every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
         every { deviceType.genericType } returns DeviceCategory.tablet
         every { locale.toString() } returns "en_en"
 
@@ -85,15 +85,15 @@ class AdQueryMakerTest {
         assertEquals(33, query.rnd)
         assertEquals("sdk_bundle", query.bundle)
         assertEquals("sdk_name", query.name)
-        assertEquals(99, query.dauid)
-        assertEquals(ConnectionType.cellular4g, query.ct)
+        assertEquals(99, query.dauId)
+        assertEquals(ConnectionType.Cellular4g, query.ct)
         assertEquals("en_en", query.lang)
         assertEquals(DeviceCategory.tablet.name, query.device)
         assertEquals(10, query.pos)
         assertEquals(20, query.skip)
-        assertEquals(30, query.playbackmethod)
-        assertEquals(40, query.startdelay)
-        assertEquals(50, query.instl)
+        assertEquals(30, query.playbackMethod)
+        assertEquals(40, query.startDelay)
+        assertEquals(50, query.install)
         assertEquals(60, query.w)
         assertEquals(70, query.h)
     }
@@ -104,7 +104,7 @@ class AdQueryMakerTest {
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
-        every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
         val query = queryMaker.makeClickQuery(adResponse)
@@ -113,12 +113,12 @@ class AdQueryMakerTest {
         assertEquals(10, query.placement)
         assertEquals("sdk_bundle", query.bundle)
         assertEquals(20, query.creative)
-        assertEquals(30, query.line_item)
-        assertEquals(ConnectionType.cellular4g, query.ct)
+        assertEquals(30, query.lineItem)
+        assertEquals(ConnectionType.Cellular4g, query.ct)
         assertEquals("sdk_version", query.sdkVersion)
         assertEquals(33, query.rnd)
-        assertEquals(EventType.impressionDownloaded, query.type)
-        assertEquals(true, query.no_image)
+        assertEquals(EventType.ImpressionDownloaded, query.type)
+        assertEquals(true, query.noImage)
         assertEquals(null, query.data)
     }
 
@@ -129,7 +129,7 @@ class AdQueryMakerTest {
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
-        every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
         val query = queryMaker.makeVideoClickQuery(adResponse)
@@ -138,23 +138,23 @@ class AdQueryMakerTest {
         assertEquals(10, query.placement)
         assertEquals("sdk_bundle", query.bundle)
         assertEquals(20, query.creative)
-        assertEquals(30, query.line_item)
-        assertEquals(ConnectionType.cellular4g, query.ct)
+        assertEquals(30, query.lineItem)
+        assertEquals(ConnectionType.Cellular4g, query.ct)
         assertEquals("sdk_version", query.sdkVersion)
         assertEquals(33, query.rnd)
         assertEquals(null, query.type)
-        assertEquals(null, query.no_image)
+        assertEquals(null, query.noImage)
         assertEquals(null, query.data)
     }
 
     @Test
     fun test_eventQuery() {
         // Given
-        val data = EventData(10, 30, 20, EventType.parentalGateClose)
+        val data = EventData(10, 30, 20, EventType.ParentalGateClose)
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
-        every { connectionProviderType.findConnectionType() } returns ConnectionType.cellular4g
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
         every { encoderType.encodeUri(any()) } returns "encoded_uri"
 
         // When
@@ -164,11 +164,11 @@ class AdQueryMakerTest {
         assertEquals(10, query.placement)
         assertEquals("sdk_bundle", query.bundle)
         assertEquals(20, query.creative)
-        assertEquals(30, query.line_item)
-        assertEquals(ConnectionType.cellular4g, query.ct)
+        assertEquals(30, query.lineItem)
+        assertEquals(ConnectionType.Cellular4g, query.ct)
         assertEquals("sdk_version", query.sdkVersion)
         assertEquals(33, query.rnd)
-        assertEquals(null, query.no_image)
+        assertEquals(null, query.noImage)
         assertEquals("encoded_uri", query.data)
     }
 }

@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import java.util.*
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.common.models.AdQuery
 import tv.superawesome.sdk.publisher.common.models.AdRequest
@@ -7,7 +8,6 @@ import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.EventData
 import tv.superawesome.sdk.publisher.common.models.EventQuery
 import tv.superawesome.sdk.publisher.common.models.EventType
-import java.util.Locale
 
 interface AdQueryMakerType {
     suspend fun makeAdQuery(request: AdRequest): AdQuery
@@ -34,15 +34,15 @@ class AdQueryMaker(
         rnd = numberGenerator.nextIntForCache(),
         bundle = sdkInfoType.bundle,
         name = sdkInfoType.name,
-        dauid = idGenerator.findDauId(),
+        dauId = idGenerator.findDauId(),
         ct = connectionProvider.findConnectionType(),
         lang = locale.toString(),
         device = device.genericType.name,
         pos = request.pos,
         skip = request.skip,
-        playbackmethod = request.playbackmethod,
-        startdelay = request.startdelay,
-        instl = request.instl,
+        playbackMethod = request.playbackMethod,
+        startDelay = request.startDelay,
+        install = request.install,
         w = request.w,
         h = request.h
     )
@@ -51,12 +51,12 @@ class AdQueryMaker(
         placement = adResponse.placementId,
         bundle = sdkInfoType.bundle,
         creative = adResponse.ad.creative.id,
-        line_item = adResponse.ad.line_item_id,
+        lineItem = adResponse.ad.lineItemId,
         ct = connectionProvider.findConnectionType(),
         sdkVersion = sdkInfoType.version,
         rnd = numberGenerator.nextIntForCache(),
         type = null,
-        no_image = null,
+        noImage = null,
         data = null
     )
 
@@ -64,12 +64,12 @@ class AdQueryMaker(
         placement = adResponse.placementId,
         bundle = sdkInfoType.bundle,
         creative = adResponse.ad.creative.id,
-        line_item = adResponse.ad.line_item_id,
+        lineItem = adResponse.ad.lineItemId,
         ct = connectionProvider.findConnectionType(),
         sdkVersion = sdkInfoType.version,
         rnd = numberGenerator.nextIntForCache(),
-        type = EventType.impressionDownloaded,
-        no_image = true,
+        type = EventType.ImpressionDownloaded,
+        noImage = true,
         data = null
     )
 
@@ -77,12 +77,12 @@ class AdQueryMaker(
         placement = adResponse.placementId,
         bundle = sdkInfoType.bundle,
         creative = adResponse.ad.creative.id,
-        line_item = adResponse.ad.line_item_id,
+        lineItem = adResponse.ad.lineItemId,
         ct = connectionProvider.findConnectionType(),
         sdkVersion = sdkInfoType.version,
         rnd = numberGenerator.nextIntForCache(),
         type = null,
-        no_image = null,
+        noImage = null,
         data = null
     )
 
@@ -91,12 +91,12 @@ class AdQueryMaker(
             placement = adResponse.placementId,
             bundle = sdkInfoType.bundle,
             creative = adResponse.ad.creative.id,
-            line_item = adResponse.ad.line_item_id,
+            lineItem = adResponse.ad.lineItemId,
             ct = connectionProvider.findConnectionType(),
             sdkVersion = sdkInfoType.version,
             rnd = numberGenerator.nextIntForCache(),
             type = eventData.type,
-            no_image = null,
+            noImage = null,
             data = encodeData(eventData)
         )
     }

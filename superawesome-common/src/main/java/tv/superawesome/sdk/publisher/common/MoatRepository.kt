@@ -48,8 +48,8 @@ class MoatRepository(
         val ad = adResponse.ad
         var moatQuery = ""
         moatQuery += "moatClientLevel1=${ad.advertiserId}"
-        moatQuery += "&moatClientLevel2=${ad.campaign_id}"
-        moatQuery += "&moatClientLevel3=${ad.line_item_id}"
+        moatQuery += "&moatClientLevel2=${ad.campaignId}"
+        moatQuery += "&moatClientLevel3=${ad.lineItemId}"
         moatQuery += "&moatClientLevel4=${ad.creative.id}"
         moatQuery += "&moatClientSlicer1=${ad.app}"
         moatQuery += "&moatClientSlicer2=${adResponse.placementId}"
@@ -96,8 +96,8 @@ class MoatRepository(
         val ad = adResponse.ad
         val adIds = HashMap<String, String>()
         adIds["level1"] = "${ad.advertiserId}"
-        adIds["level2"] = "${ad.campaign_id}"
-        adIds["level3"] = "${ad.line_item_id}"
+        adIds["level2"] = "${ad.campaignId}"
+        adIds["level3"] = "${ad.lineItemId}"
         adIds["level4"] = "${ad.creative.id}"
         adIds["slicer1"] = "${ad.app}"
         adIds["slicer2"] = "${adResponse.placementId}"

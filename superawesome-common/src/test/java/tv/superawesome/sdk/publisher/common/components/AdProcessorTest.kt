@@ -48,7 +48,7 @@ class AdProcessorTest {
         coEvery { htmlFormatter.formatImageIntoHtml(any()) } returns exampleHtml
 
         // act
-        val response = subject.process(99, makeFakeAd(CreativeFormatType.image_with_link))
+        val response = subject.process(99, makeFakeAd(CreativeFormatType.ImageWithLink))
 
         // assert
         assertEquals(response.isSuccess, true)
@@ -63,7 +63,7 @@ class AdProcessorTest {
         coEvery { htmlFormatter.formatRichMediaIntoHtml(99, any()) } returns exampleHtml
 
         // act
-        val response = subject.process(99, makeFakeAd(CreativeFormatType.rich_media))
+        val response = subject.process(99, makeFakeAd(CreativeFormatType.RichMedia))
 
         // assert
         assertEquals(response.isSuccess, true)
@@ -78,7 +78,7 @@ class AdProcessorTest {
         coEvery { htmlFormatter.formatTagIntoHtml(any()) } returns exampleHtml
 
         // act
-        val response = subject.process(99, makeFakeAd(CreativeFormatType.tag))
+        val response = subject.process(99, makeFakeAd(CreativeFormatType.Tag))
 
         // assert
         assertEquals(response.isSuccess, true)
@@ -96,7 +96,7 @@ class AdProcessorTest {
 
 
         // act
-        val response = subject.process(99, makeFakeAd(CreativeFormatType.video))
+        val response = subject.process(99, makeFakeAd(CreativeFormatType.Video))
 
         // assert
         assertTrue(response.isSuccess)
@@ -155,14 +155,14 @@ class AdProcessorTest {
         advertiserId = null,
         publisherId = 123,
         moat = 10.0f,
-        is_fill = false,
-        is_fallback = false,
-        campaign_type = 123,
-        campaign_id = 123,
-        is_house = false,
-        safe_ad_approved = false,
-        show_padlock = false,
-        line_item_id = 123,
+        isFill = false,
+        isFallback = false,
+        campaignType = 123,
+        campaignId = 123,
+        isHouse = false,
+        safeAdApproved = false,
+        showPadlock = false,
+        lineItemId = 123,
         test = false,
         app = 123,
         device = "android",
@@ -173,7 +173,7 @@ class AdProcessorTest {
             details = CreativeDetail(
                 url = exampleUrl,
                 video = "",
-                placement_format = "",
+                placementFormat = "",
                 width = 1,
                 height = 1,
                 duration = 1,

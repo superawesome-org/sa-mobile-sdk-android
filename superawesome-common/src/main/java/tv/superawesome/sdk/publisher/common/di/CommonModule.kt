@@ -5,10 +5,9 @@ import android.content.res.Resources
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import java.util.Locale
+import java.util.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -158,12 +157,11 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
         }
     }
     single {
-        val contentType: MediaType = "application/json".toMediaType()
         val json: Json = get()
         Retrofit.Builder()
             .baseUrl(environment.baseUrl)
             .client(get())
-            .addConverterFactory(json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
     single {

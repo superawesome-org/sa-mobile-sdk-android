@@ -45,7 +45,7 @@ class EventRepository(
         withContext(dispatcherProvider.io) {
             val data = EventData(
                 adResponse.placementId,
-                adResponse.ad.line_item_id,
+                adResponse.ad.lineItemId,
                 adResponse.ad.creative.id,
                 type
             )
@@ -53,19 +53,19 @@ class EventRepository(
         }
 
     override suspend fun parentalGateOpen(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.ParentalGateOpen, adResponse)
 
     override suspend fun parentalGateClose(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.ParentalGateOpen, adResponse)
 
     override suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.ParentalGateOpen, adResponse)
 
     override suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.ParentalGateOpen, adResponse)
 
     override suspend fun viewableImpression(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.parentalGateOpen, adResponse)
+        customEvent(EventType.ParentalGateOpen, adResponse)
 
     override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void> =
         customEvent(EventType.DwellTime, adResponse)

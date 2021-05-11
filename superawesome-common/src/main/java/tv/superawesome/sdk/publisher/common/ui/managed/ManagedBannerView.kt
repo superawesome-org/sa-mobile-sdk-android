@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.managed
 
 import android.content.Context
@@ -21,7 +23,7 @@ import tv.superawesome.sdk.publisher.common.ui.banner.WebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 
-class ManagedBannerView @JvmOverloads constructor(
+public class ManagedBannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -66,21 +68,21 @@ class ManagedBannerView @JvmOverloads constructor(
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
-    fun play(placementId: Int) {
+    public  fun play(placementId: Int) {
         logger.info("load($placementId)")
         this.placementId = placementId
         showPadlockIfNeeded()
         webView?.loadAdViaJs(placementId, makeAdRequest())
     }
 
-    fun setListener(delegate: SAInterface) {
+    public  fun setListener(delegate: SAInterface) {
         controller.delegate = delegate
     }
 
     /**
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
-    fun close() {
+    public  fun close() {
         hasBeenVisible = null
         viewableDetector.cancel()
         removeWebView()
@@ -92,55 +94,55 @@ class ManagedBannerView @JvmOverloads constructor(
      *
      * @return true or false
      */
-    fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
+    public  fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
 
-    fun isClosed(): Boolean = controller.closed
+    public  fun isClosed(): Boolean = controller.closed
 
-    fun enableParentalGate() {
+    public fun enableParentalGate() {
         setParentalGate(true)
     }
 
-    fun disableParentalGate() {
+    public fun disableParentalGate() {
         setParentalGate(false)
     }
 
-    fun enableBumperPage() {
+    public fun enableBumperPage() {
         setBumperPage(true)
     }
 
-    fun disableBumperPage() {
+    public fun disableBumperPage() {
         setBumperPage(false)
     }
 
-    fun enableTestMode() {
+    public  fun enableTestMode() {
         setTestMode(true)
     }
 
-    fun disableTestMode() {
+    public  fun disableTestMode() {
         setTestMode(false)
     }
 
-    fun setColorTransparent() {
+    public  fun setColorTransparent() {
         setColor(true)
     }
 
-    fun setColorGray() {
+    public fun setColorGray() {
         setColor(false)
     }
 
-    fun setParentalGate(value: Boolean) {
+    public  fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
-    fun setBumperPage(value: Boolean) {
+    public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
-    fun setTestMode(value: Boolean) {
+    public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
-    fun setColor(value: Boolean) {
+    public  fun setColor(value: Boolean) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
         } else {
@@ -148,7 +150,7 @@ class ManagedBannerView @JvmOverloads constructor(
         }
     }
 
-    fun disableMoatLimiting() {
+    public fun disableMoatLimiting() {
         controller.moatLimiting = false
     }
 
@@ -214,9 +216,9 @@ class ManagedBannerView @JvmOverloads constructor(
         test = controller.config.testEnabled,
         pos = AdRequest.Position.AboveTheFold.value,
         skip = AdRequest.Skip.No.value,
-        playbackmethod = AdRequest.PlaybackSoundOnScreen,
-        startdelay = AdRequest.StartDelay.PreRoll.value,
-        instl = AdRequest.FullScreen.Off.value,
+        playbackMethod = AdRequest.PlaybackSoundOnScreen,
+        startDelay = AdRequest.StartDelay.PreRoll.value,
+        install = AdRequest.FullScreen.Off.value,
         w = width,
         h = height
     )
