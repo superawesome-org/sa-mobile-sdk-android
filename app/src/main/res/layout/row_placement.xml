@@ -5,7 +5,6 @@
 
     <TextView
         android:id="@+id/RowTitle"
-        android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
         android:layout_centerVertical="true"
         android:layout_width="match_parent"

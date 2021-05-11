@@ -44,7 +44,7 @@ class VideoEvents(
     private var viewableDetector: ViewableDetectorType? = null
 
     fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-        if (videoPlayer != null && videoPlayer.surface != null) {
+        if (videoPlayer?.surface != null) {
             moatRepository.startMoatTrackingForVideoPlayer(
                 videoPlayer.surface,
                 duration,

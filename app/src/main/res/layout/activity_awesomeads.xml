@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AwesomeAdsActivity">
@@ -18,13 +17,13 @@
             android:id="@+id/config1Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Config 1" />
+            android:text="@string/config_1" />
 
         <Button
             android:id="@+id/config2Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Config 2" />
+            android:text="@string/config_2" />
     </LinearLayout>
 
     <TextView

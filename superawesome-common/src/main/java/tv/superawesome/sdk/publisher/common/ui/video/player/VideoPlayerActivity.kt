@@ -76,14 +76,14 @@ class VideoPlayerActivity : Activity() {
 
     private fun setScreenOrientation() {
         val modeInt = intent.getIntExtra(VideoPlayer.FULLSCREEN_KEY, FullscreenMode.ANY.value)
-        val mode = fromValue(modeInt)
-        when (mode) {
+        when (fromValue(modeInt)) {
             FullscreenMode.PORTRAIT ->
                 requestedOrientation =
                     ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
             FullscreenMode.LANDSCAPE ->
                 requestedOrientation =
                     ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            else -> { /* do nothing */ }
         }
     }
 

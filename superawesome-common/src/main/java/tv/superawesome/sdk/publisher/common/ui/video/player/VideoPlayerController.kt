@@ -26,7 +26,7 @@ class VideoPlayerController :
             setDataSource(context, uri)
             prepare()
         } catch (e: Exception) {
-            listener!!.onError(this, e, 0, 0)
+            listener?.onError(this, e, 0, 0)
         }
     }
 
@@ -35,7 +35,7 @@ class VideoPlayerController :
             setDataSource(context, uri)
             prepareAsync()
         } catch (e: Exception) {
-            listener!!.onError(this, e, 0, 0)
+            listener?.onError(this, e, 0, 0)
         }
     }
 
@@ -88,32 +88,24 @@ class VideoPlayerController :
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun onPrepared(mediaPlayer: MediaPlayer) {
         createTimer()
-        if (listener != null) {
-            listener!!.onPrepared(this)
-        }
+        listener?.onPrepared(this)
     }
 
     override fun onSeekComplete(mediaPlayer: MediaPlayer) {
-        if (listener != null) {
-            listener!!.onSeekComplete(this)
-        }
+        listener?.onSeekComplete(this)
     }
 
     override fun onCompletion(mediaPlayer: MediaPlayer) {
         removeTimer()
         // todo: add a "reset" here and see how it goes
-        if (listener != null) {
-            listener!!.onMediaComplete(this, getCurrentPosition(), getDuration())
-        }
+        listener?.onMediaComplete(this, currentPosition, duration)
     }
 
     // todo: why doesn't the video player stop at the error?
     override fun onError(mediaPlayer: MediaPlayer, error: Int, payload: Int): Boolean {
         removeTimer()
         reset()
-        if (listener != null) {
-            listener!!.onError(this, Throwable(), 0, 0)
-        }
+        listener?.onError(this, Throwable(), 0, 0)
         return false
     }
 
@@ -140,10 +132,8 @@ class VideoPlayerController :
     }
 
     override fun removeTimer() {
-        if (countDownTimer != null) {
-            countDownTimer!!.cancel()
-            countDownTimer = null
-        }
+        countDownTimer?.cancel()
+        countDownTimer = null
     }
 
     init {

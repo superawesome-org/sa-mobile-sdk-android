@@ -1,4 +1,4 @@
-
+package tv.superawesome.sdk.publisher.common
 
 import android.webkit.WebView
 import android.widget.VideoView

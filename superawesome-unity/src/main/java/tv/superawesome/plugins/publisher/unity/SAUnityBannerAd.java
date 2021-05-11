@@ -78,9 +78,11 @@ public class SAUnityBannerAd {
     public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
         if (bannerAdHashMap.containsKey(unityName)) {
             BannerView bannerAd = bannerAdHashMap.get(unityName);
+          if (bannerAd != null) {
             bannerAd.setTestMode(test);
             bannerAd.load(placementId);
-        }
+                }
+            }
     }
 
     /**
@@ -97,8 +99,8 @@ public class SAUnityBannerAd {
     public static class SASize {
 
         // member vars
-        public int width = 0;
-        public int height = 0;
+        public int width;
+        public int height;
 
         /**
          * SASize basic constructor
@@ -141,19 +143,17 @@ public class SAUnityBannerAd {
         DisplayMetrics metrics = new DisplayMetrics();
         Display display = activity.getWindowManager().getDefaultDisplay();
         display.getMetrics(metrics);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
-            return (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
-        } else {
-            return 0.0f;
-        }
+        return (float) metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
     }
 
     /**
      * Method that plays a new Banner ad (from Unity)
      */
     public static void SuperAwesomeUnitySABannerAdPlay(Context context, String unityName, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int position, int width, int height, boolean color) {
-
-        if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
+        BannerView bannerView = bannerAdHashMap.get(unityName);
+        if (bannerAdHashMap.containsKey(unityName)
+                && bannerView != null
+                && !bannerView.isClosed()) {
 
             // get activity
             Activity activity = (Activity) context;
