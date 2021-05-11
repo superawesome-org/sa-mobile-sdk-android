@@ -45,7 +45,7 @@ class ParentalGate(
         val alertDialog = AlertDialog.Builder(context)
         alertDialog.setTitle(R.string.parental_gate_title)
         alertDialog.setCancelable(false)
-        alertDialog.setMessage(context?.getString(R.string.parental_gate_message, firstNumber, secondNumber))
+        alertDialog.setMessage(context.getString(R.string.parental_gate_message, firstNumber, secondNumber))
 
         // Set an EditText view to get user input
         val input = EditText(context)

@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.publisher.common.di
 
-import MoatRepository
+import tv.superawesome.sdk.publisher.common.MoatRepository
 import android.content.res.Resources
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
