@@ -36,7 +36,7 @@ public class VideoEvents(
 
     private val scope = CoroutineScope(dispatcherProvider.main)
 
-    var listener: Listener? = null
+    public var listener: Listener? = null
     private var isStartHandled = false
     private var is2SHandled = false
     private var isFirstQuartileHandled = false
