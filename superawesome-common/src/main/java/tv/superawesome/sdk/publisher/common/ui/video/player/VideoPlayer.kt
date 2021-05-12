@@ -61,9 +61,9 @@ class VideoPlayer @JvmOverloads constructor(
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun setController(control: IVideoPlayerController) {
         this.control = control
-        this.control!!.setListener(this)
+        this.control?.setListener(this)
         try {
-            this.control!!.setDisplay(surface!!.holder)
+            this.control?.setDisplay(surface!!.holder)
         } catch (ignored: Exception) { /* N/A */
         }
     }
@@ -86,7 +86,7 @@ class VideoPlayer @JvmOverloads constructor(
         this.chrome = chrome.also { it.setListener(this) }
         val size = LayoutParams.MATCH_PARENT
         val params = LayoutParams(size, size)
-        addView(this.chrome as ViewGroup?, params)
+        addView(this.chrome as? ViewGroup, params)
     }
 
     override fun setFullscreenMode(mode: FullscreenMode?) {
@@ -98,15 +98,12 @@ class VideoPlayer @JvmOverloads constructor(
     }
 
     override fun setMaximised() {
-        if (chrome != null) {
-            chrome!!.setMaximised()
-        }
+            chrome?.setMaximised()
+
     }
 
     override fun setMinimised() {
-        if (chrome != null) {
-            chrome!!.setMinimised()
-        }
+            chrome?.setMinimised()
     }
 
     /**
@@ -122,14 +119,12 @@ class VideoPlayer @JvmOverloads constructor(
     // Ending the video player
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun destroy() {
-        if (control != null) {
-            control!!.setDisplay(null)
-            control!!.reset()
+        control?.apply {
+            setDisplay(null)
+            reset()
         }
-        if (weakParent != null) {
-            weakParent!!.clear()
-            weakParent = null
-        }
+        weakParent?.clear()
+        weakParent = null
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,10 +132,8 @@ class VideoPlayer @JvmOverloads constructor(
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
         try {
-            control!!.setDisplay(surfaceHolder)
-            if (chrome != null && chrome!!.isPlaying && control != null) {
-                control!!.start()
-            }
+            control?.setDisplay(surfaceHolder)
+            control?.takeIf { chrome?.isPlaying == true }?.start()
         } catch (ignored: Exception) { /* N/A */
         }
     }
@@ -150,9 +143,7 @@ class VideoPlayer @JvmOverloads constructor(
 
     override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
         try {
-            if (control != null && control!!.isIVideoPlaying) {
-                control!!.pause()
-            }
+            control?.takeIf { it.isIVideoPlaying }?.pause()
         } catch (ignored: Exception) { /* N/A */
         }
     }
@@ -168,30 +159,25 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * Put the chrome in it's playing state
          */
-        if (chrome != null) {
-            chrome!!.setPlaying()
-        }
+        chrome?.setPlaying()
+
         /**
          * Send back message
          */
-        if (listener != null) {
-            listener!!.onPrepared(this, control.currentIVideoPosition, control.iVideoDuration)
-        }
+        listener?.onPrepared(this, control.currentIVideoPosition, control.iVideoDuration)
     }
 
     override fun onTimeUpdated(control: IVideoPlayerController, time: Int, duration: Int) {
         /**
          * Update the current chrome's time
          */
-        if (chrome != null) {
-            chrome!!.setTime(time, duration)
-        }
+
+        chrome?.setTime(time, duration)
         /**
          * Send back message
          */
-        if (listener != null) {
-            listener!!.onTimeUpdated(this, time, duration)
-        }
+        listener?.onTimeUpdated(this, time, duration)
+
     }
 
     override fun onSeekComplete(control: IVideoPlayerController) {
@@ -202,24 +188,21 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * Then set the chrome state in it's playing state
          */
-        if (chrome != null) {
-            chrome!!.setPlaying()
-        }
+        chrome?.setPlaying()
+
     }
 
     override fun onMediaComplete(control: IVideoPlayerController, time: Int, duration: Int) {
         /**
          * When the media has finished, put the chrome in its completed state
          */
-        if (chrome != null) {
-            chrome!!.setCompleted()
-        }
+        chrome?.setCompleted()
+
         /**
          * Send back message
          */
-        if (listener != null) {
-            listener!!.onComplete(this, time, duration)
-        }
+        listener?.onComplete(this, time, duration)
+
     }
 
     override fun onError(
@@ -231,15 +214,12 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * When the media encounters an error, put the chrome in an error state
          */
-        if (chrome != null) {
-            chrome!!.setError(error)
-        }
+        chrome?.setError(error)
+
         /**
          * Send back message
          */
-        if (listener != null) {
-            listener!!.onError(this, error, time, duration)
-        }
+        listener?.onError(this, error, time, duration)
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,45 +229,36 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * When the seek bar starts, pause the media control
          */
-        if (control != null) {
-            control!!.pause()
-        }
+        control?.pause()
     }
 
     override fun onEndProgressBarSeek(time: Int) {
         /**
          * When the seek bar ends, instruct the control to seek to the current time
          */
-        if (control != null) {
-            control!!.seekTo(time)
-        }
+        control?.seekTo(time)
     }
 
     override fun onClickPlay() {
         /**
          * When the play button is pressed, instruct the media control to start playing
          */
-        if (control != null) {
-            control!!.start()
-        }
+        control?.start()
     }
 
     override fun onClickPause() {
         /**
          * When the pause button is pressed, instruct the media control to pause playing
          */
-        if (control != null) {
-            control!!.pause()
-        }
+        control?.pause()
+
     }
 
     override fun onClickReplay() {
         /**
          * When the replay button is pressed, seek to 0 and play
          */
-        if (control != null) {
-            control!!.seekTo(0)
-        }
+        control?.seekTo(0)
     }
 
     override fun onClickMaximise() {
@@ -305,9 +276,8 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * Pause the media control
          */
-        if (control != null) {
-            control!!.pause()
-        }
+        control?.pause()
+
         /**
          * Create weak reference to self (this)
          */
@@ -317,9 +287,8 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * Remove this view from it's parent (visually)
          */
-        if (this.parent is ViewGroup) {
-            (this.parent as ViewGroup).removeView(this)
-        }
+        (this.parent as? ViewGroup)?.removeView(this)
+
         /**
          * Start the new intent
          */
@@ -346,16 +315,13 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * Get the previous parent as a relative layout
          */
-        var previousParent: ViewGroup? = null
-        if (previousViewParent is ViewGroup) {
-            previousParent = previousViewParent
-        }
+        val previousParent: ViewGroup? = (previousViewParent as? ViewGroup)
+
         /**
          * Pause the control, first
          */
-        if (control != null) {
-            control!!.pause()
-        }
+        control?.pause()
+
         /**
          * If we do have a previous parent
          */
@@ -367,9 +333,7 @@ class VideoPlayer @JvmOverloads constructor(
             /**
              * Set the minimised by button flag to true
              */
-            if (previousParent.context is VideoPlayerActivity) {
-                (previousParent.context as VideoPlayerActivity).minimisedByButton = true
-            }
+            (previousParent.context as? VideoPlayerActivity)?.minimisedByButton = true
         }
         /**
          * Add the same layout params to the video player
@@ -378,25 +342,16 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * Re-add this video player to the previous parent
          */
-        if (weakParent != null) {
-            val prevParent = weakParent!!.get()
-            if (prevParent is ViewGroup) {
-                prevParent.addView(this)
-            }
-        }
+        (weakParent?.get() as? ViewGroup)?.addView(this)
         /**
          * Clear weak reference to self
          */
-        if (videoPlayerWeakReference != null) {
-            videoPlayerWeakReference!!.clear()
-            videoPlayerWeakReference = null
-        }
+        videoPlayerWeakReference?.clear()
+        videoPlayerWeakReference = null
         /**
          * At the very end - just press back
          */
-        if (previousParent != null && previousParent.context is VideoPlayerActivity) {
-            (previousParent.context as VideoPlayerActivity).onBackPressed()
-        }
+        (previousParent?.context as? VideoPlayerActivity)?.onBackPressed()
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -406,9 +361,7 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * show the chrome on touch
          */
-        if (chrome != null) {
-            chrome!!.show()
-        }
+        chrome?.show()
         return false
     }
 
@@ -416,22 +369,16 @@ class VideoPlayer @JvmOverloads constructor(
     // Update the layout
     // //////////////////////////////////////////////////////////////////////////////////////////////
     private val videoWidth: Int
-        private get() = if (control != null && control!!.videoIVideoWidth > 0) {
-            control!!.videoIVideoWidth
-        } else {
-            0
-        }
+        get() = control?.takeIf { it.videoIVideoWidth > 0 }?.videoIVideoWidth ?: 0
+
+
     private val videoHeight: Int
-        private get() = if (control != null && control!!.videoIVideoHeight > 0) {
-            control!!.videoIVideoHeight
-        } else {
-            0
-        }
+        get() = control?.takeIf { it.videoIVideoHeight > 0 }?.videoIVideoHeight ?: 0
 
     fun updateLayout(overriddenWidth: Int, overriddenHeight: Int) {
         val videoWidth = videoWidth
         val videoHeight = videoHeight
-        surface!!.layoutParams = mapBounds(
+        surface?.layoutParams = mapBounds(
             videoWidth.toFloat(),
             videoHeight.toFloat(),
             overriddenWidth.toFloat(),
@@ -447,23 +394,23 @@ class VideoPlayer @JvmOverloads constructor(
     ): LayoutParams {
         val sourceRatio = sourceWidth / sourceHeight
         val boundingRatio = boundingWidth / boundingHeight
-        val X: Float
-        val Y: Float
-        val W: Float
-        val H: Float
+        val x: Float
+        val y: Float
+        val width: Float
+        val height: Float
         if (sourceRatio > boundingRatio) {
-            W = boundingWidth
-            H = W / sourceRatio
-            X = 0.0f
-            Y = (boundingHeight - H) / 2.0f
+            width = boundingWidth
+            height = width / sourceRatio
+            x = 0.0f
+            y = (boundingHeight - height) / 2.0f
         } else {
-            H = boundingHeight
-            W = sourceRatio * H
-            Y = 0.0f
-            X = (boundingWidth - W) / 2.0f
+            height = boundingHeight
+            width = sourceRatio * height
+            y = 0.0f
+            x = (boundingWidth - width) / 2.0f
         }
-        val params = LayoutParams(W.toInt(), H.toInt())
-        params.setMargins(X.toInt(), Y.toInt(), 0, 0)
+        val params = LayoutParams(width.toInt(), height.toInt())
+        params.setMargins(x.toInt(), y.toInt(), 0, 0)
         return params
     }
 
