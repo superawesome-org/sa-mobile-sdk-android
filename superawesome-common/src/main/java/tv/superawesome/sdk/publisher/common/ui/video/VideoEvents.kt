@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 
-class VideoEvents(
+public class VideoEvents(
     private val adResponse: AdResponse,
     private val moatLimiting: Boolean,
     private val eventRepository: EventRepositoryType
@@ -34,7 +35,7 @@ class VideoEvents(
 
     private val scope = CoroutineScope(Dispatchers.Main)
 
-    var listener: Listener? = null
+    public var listener: Listener? = null
     private var isStartHandled = false
     private var is2SHandled = false
     private var isFirstQuartileHandled = false
@@ -42,7 +43,7 @@ class VideoEvents(
     private var isThirdQuartileHandled = false
     private var viewableDetector: ViewableDetectorType? = null
 
-    fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
+    public fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
         if (videoPlayer?.surface != null) {
             moatRepository.startMoatTrackingForVideoPlayer(
                 videoPlayer.surface,
@@ -52,18 +53,18 @@ class VideoEvents(
         }
     }
 
-    fun complete(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
+    public fun complete(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
         moatRepository.sendCompleteEvent(duration)
         scope.launch { vastEventRepository.complete() }
         moatRepository.stopMoatTrackingForVideoPlayer()
     }
 
-    fun error(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
+    public fun error(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
         moatRepository.stopMoatTrackingForVideoPlayer()
         scope.launch { vastEventRepository.error() }
     }
 
-    fun time(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
+    public fun time(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
         if (viewableDetector?.isVisible == null) {
             viewableDetector?.isVisible = {
                 scope.launch {
