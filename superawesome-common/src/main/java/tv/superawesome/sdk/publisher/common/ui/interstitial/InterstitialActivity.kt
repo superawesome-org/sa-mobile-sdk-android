@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.interstitial
 
 import android.content.Context
@@ -14,7 +16,7 @@ import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
  * interstitial / fullscreen type Ad.
  * A subclass of the Android "Activity" class.
  */
-class InterstitialActivity : FullScreenActivity() {
+public class InterstitialActivity : FullScreenActivity() {
     private lateinit var interstitialBanner: BannerView
 
     override fun initChildUI() {
@@ -36,20 +38,20 @@ class InterstitialActivity : FullScreenActivity() {
         parentLayout.addView(interstitialBanner)
     }
 
-    override fun playContent() {
+    public override fun playContent() {
         interstitialBanner.configure(placementId, SAInterstitialAd.getDelegate()) {
             closeButton.visibility = View.VISIBLE
         }
         interstitialBanner.play()
     }
 
-    override fun close() {
+    public override fun close() {
         interstitialBanner.close()
         super.close()
     }
 
     companion object {
-        fun start(placementId: Int, context: Context) {
+        public fun start(placementId: Int, context: Context) {
             val intent = Intent(context, InterstitialActivity::class.java)
             intent.putExtra(Constants.Keys.placementId, placementId)
             context.startActivity(intent)

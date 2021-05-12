@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package tv.superawesome.sdk.publisher.common.ui.banner
 
 import android.annotation.SuppressLint
@@ -13,7 +14,7 @@ import android.webkit.WebViewClient
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 
 @SuppressLint("SetJavaScriptEnabled")
-class WebView @JvmOverloads constructor(
+public class WebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -87,7 +88,7 @@ class WebView @JvmOverloads constructor(
         Log.i("WebView", "WebView destroy()")
     }
 
-    fun loadHTML(base: String, html: String) {
+    public fun loadHTML(base: String, html: String) {
         val baseHtml =
             "<html><header><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></header><body>$html</body></html>"
         loadDataWithBaseURL(base, baseHtml, "text/html", "UTF-8", null)

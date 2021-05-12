@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.app.Activity
@@ -10,7 +11,7 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 
-object SAVideoAd {
+public object SAVideoAd {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val logger: Logger by inject(Logger::class.java)
 
@@ -21,7 +22,7 @@ object SAVideoAd {
      * @param placementId the Ad placement id to load data for
      * @param context the current context
      */
-    fun load(placementId: Int, context: Context) {
+    public fun load(placementId: Int, context: Context) {
         logger.info("load($placementId)")
         controller.load(placementId, makeAdRequest(context))
     }
@@ -32,68 +33,68 @@ object SAVideoAd {
      * @param placementId the Ad placement id to play an ad for
      * @param context the current context (activity or fragment)
      */
-    fun play(placementId: Int, context: Context) {
+    public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
         VideoActivity.start(placementId, controller.config, context)
     }
 
-    fun setListener(value: SAInterface) {
+    public fun setListener(value: SAInterface) {
         controller.delegate = value
     }
 
-    fun setPlaybackMode(mode: AdRequest.StartDelay) {
+    public fun setPlaybackMode(mode: AdRequest.StartDelay) {
         controller.config.moatLimiting
     }
 
-    fun enableParentalGate() {
+    public fun enableParentalGate() {
         setParentalGate(true)
     }
 
-    fun disableParentalGate() {
+    public fun disableParentalGate() {
         setParentalGate(false)
     }
 
-    fun enableBumperPage() {
+    public fun enableBumperPage() {
         setBumperPage(true)
     }
 
-    fun disableBumperPage() {
+    public fun disableBumperPage() {
         setBumperPage(false)
     }
 
-    fun enableTestMode() {
+    public  fun enableTestMode() {
         setTestMode(true)
     }
 
-    fun disableTestMode() {
+    public fun disableTestMode() {
         setTestMode(false)
     }
 
-    fun enableBackButton() {
+    public fun enableBackButton() {
         setBackButton(true)
     }
 
-    fun disableBackButton() {
+    public fun disableBackButton() {
         setBackButton(false)
     }
 
-    fun setCloseButton(value: Boolean) {
+    public fun setCloseButton(value: Boolean) {
         controller.config.shouldShowCloseButton = value
     }
 
-    fun setSmallClick(value: Boolean) {
+    public fun setSmallClick(value: Boolean) {
         controller.config.shouldShowSmallClick = value
     }
 
-    fun setCloseAtEnd(value: Boolean) {
+    public fun setCloseAtEnd(value: Boolean) {
         controller.config.shouldCloseAtEnd = value
     }
 
-    fun enableCloseButton() {
+    public fun enableCloseButton() {
         setCloseButton(true)
     }
 
-    fun disableCloseButton() {
+    public fun disableCloseButton() {
         setCloseButton(false)
     }
 
@@ -103,41 +104,41 @@ object SAVideoAd {
     fun setConfigurationStaging() {
     }
 
-    fun setOrientationAny() {
+    public fun setOrientationAny() {
         setOrientation(Orientation.Any)
     }
 
-    fun setOrientationPortrait() {
+    public fun setOrientationPortrait() {
         setOrientation(Orientation.Portrait)
     }
 
-    fun setOrientationLandscape() {
+    public fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
     }
 
-    fun getIsBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
+    public fun getIsBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
 
-    fun setParentalGate(value: Boolean) {
+    public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
-    fun setBumperPage(value: Boolean) {
+    public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
-    fun setTestMode(value: Boolean) {
+    public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
-    fun setBackButton(value: Boolean) {
+    public fun setBackButton(value: Boolean) {
         controller.config.isBackButtonEnabled = value
     }
 
-    fun setOrientation(value: Orientation) {
+    public fun setOrientation(value: Orientation) {
         controller.config.orientation = value
     }
 
-    fun disableMoatLimiting() {
+    public fun disableMoatLimiting() {
         controller.moatLimiting = false
     }
 
@@ -147,7 +148,7 @@ object SAVideoAd {
      * @param placementId the Ad placement id to check for
      * @return true or false
      */
-    fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
+    public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
 
     private fun makeAdRequest(context: Context): AdRequest {
         val width: Int
