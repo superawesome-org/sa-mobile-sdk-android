@@ -2,7 +2,6 @@ package tv.superawesome.sdk.publisher.common.components
 
 import io.mockk.MockKAnnotations
 import io.mockk.every
-import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import org.junit.Before
 import org.junit.Test
@@ -15,16 +14,14 @@ import kotlin.test.assertTrue
 
 class VastParserTest {
 
-    val xmlParse = XmlParser()
-
     @MockK
     lateinit var connectionProvider: ConnectionProvider
 
-    @InjectMockKs
     lateinit var vastParser: VastParser
 
     @Before
     fun setUp() {
+        vastParser = VastParser(XmlParser(), connectionProvider)
         MockKAnnotations.init(this)
         every { connectionProvider.findConnectionType() } returns ConnectionType.Cellular2g
     }

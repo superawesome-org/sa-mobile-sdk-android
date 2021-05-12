@@ -8,11 +8,11 @@
 
     <Button
         android:layout_width="match_parent"
-        android:text="Play MoPub interstitial"
+        android:text="@string/play_mopub_interstitial"
         android:onClick="playInterstitial"
         android:layout_height="50dp" />
     <Button
-        android:text="Play MoPub video"
+        android:text="@string/play_mopub_video"
         android:layout_width="match_parent"
         android:onClick="playVideo"
         android:layout_height="50dp" />
