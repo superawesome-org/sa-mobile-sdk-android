@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.mediation.MediationAdRequest
@@ -62,9 +63,9 @@ class SAAdMobBannerCustomEvent : CustomEventBanner {
                             setup = true
                         }
                     }
-                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL)
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_NO_FILL, "", ""))
                     SAEvent.AdShown -> listener.onAdOpened()
-                    SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR)
+                    SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""))
                     SAEvent.AdClicked -> {
                         listener.onAdClicked()
                         listener.onAdLeftApplication()
@@ -84,7 +85,7 @@ class SAAdMobBannerCustomEvent : CustomEventBanner {
                 val placementId = s?.toInt() ?: 0
                 load(placementId)
             } catch (e: NumberFormatException) {
-                listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST)
+                listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""))
             }
         }
     }

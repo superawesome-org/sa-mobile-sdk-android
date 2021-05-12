@@ -9,4 +9,6 @@
     <string name="admob_interstitial_ad_id" translatable="false">ca-app-pub-2222631699890286/3274545465</string>
     <string name="config_1">Config 1</string>
     <string name="config_2">Config 2</string>
+    <string name="play_mopub_interstitial">Play MoPub interstitial</string>
+    <string name="play_mopub_video">Play MoPub video</string>
 </resources>

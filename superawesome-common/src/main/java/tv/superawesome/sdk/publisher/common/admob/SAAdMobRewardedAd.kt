@@ -61,8 +61,9 @@ class SAAdMobRewardedAd(
 
             rewardedAdCallback?.onVideoStart()
         } else {
-            mediationAdLoadCallback.onFailure("Ad is not ready")
-            rewardedAdCallback?.onAdFailedToShow("Ad is not ready")
+            val error = AdError(-1, "Ad is not ready", "Ad is not ready")
+            mediationAdLoadCallback.onFailure(error)
+            rewardedAdCallback?.onAdFailedToShow(error)
         }
     }
 
@@ -72,7 +73,7 @@ class SAAdMobRewardedAd(
             SAEvent.AdLoaded -> adLoaded()
             SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> adFailedToLoad()
             SAEvent.AdShown -> rewardedAdCallback?.onAdOpened()
-            SAEvent.AdFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
+            SAEvent.AdFailedToShow -> rewardedAdCallback?.onAdFailedToShow(AdError(-1, "Ad failed to load for $loadedPlacementId", "Ad failed to load for $loadedPlacementId"))
             SAEvent.AdClicked -> rewardedAdCallback?.reportAdClicked()
             SAEvent.AdEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
             SAEvent.AdClosed -> rewardedAdCallback?.onAdClosed()
@@ -87,6 +88,6 @@ class SAAdMobRewardedAd(
     }
 
     private fun adFailedToLoad() {
-        mediationAdLoadCallback.onFailure("Ad failed to load for $loadedPlacementId")
+        mediationAdLoadCallback.onFailure(AdError(-1, "Ad failed to load for $loadedPlacementId", "Ad failed to load for $loadedPlacementId"))
     }
 }

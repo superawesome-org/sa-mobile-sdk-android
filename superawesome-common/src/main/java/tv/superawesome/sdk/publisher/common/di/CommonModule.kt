@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.common.di
 
-import tv.superawesome.sdk.publisher.common.MoatRepository
 import android.content.res.Resources
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -14,6 +13,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import tv.superawesome.sdk.publisher.common.BuildConfig
+import tv.superawesome.sdk.publisher.common.MoatRepository
 import tv.superawesome.sdk.publisher.common.components.AdProcessor
 import tv.superawesome.sdk.publisher.common.components.AdProcessorType
 import tv.superawesome.sdk.publisher.common.components.AdQueryMaker

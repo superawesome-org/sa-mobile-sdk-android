@@ -11,7 +11,6 @@ class SquareLayout @JvmOverloads constructor(
 ) :
     RelativeLayout(context, attrs, defStyleAttr) {
 
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)

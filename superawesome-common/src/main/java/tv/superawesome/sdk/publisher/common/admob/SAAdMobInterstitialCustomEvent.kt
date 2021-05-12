@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.common.admob
 
 import android.content.Context
 import android.os.Bundle
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.mediation.MediationAdRequest
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitial
@@ -53,9 +54,21 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
                         listener.onAdClicked()
                         listener.onAdLeftApplication()
                     }
-                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL)
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener.onAdFailedToLoad(
+                        AdError(
+                            AdRequest.ERROR_CODE_NO_FILL,
+                            "",
+                            ""
+                        )
+                    )
                     SAEvent.AdShown -> listener.onAdOpened()
-                    SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR)
+                    SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(
+                        AdError(
+                            AdRequest.ERROR_CODE_INVALID_REQUEST,
+                            "",
+                            ""
+                        )
+                    )
                     SAEvent.AdClosed -> listener.onAdClosed()
                     else -> {
                         // do nothing
@@ -64,10 +77,11 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
             }
         )
         try {
-            val placementId = s?.toInt() ?: throw java.lang.NumberFormatException("string is null or not a number")
+            val placementId = s?.toInt()
+                ?: throw java.lang.NumberFormatException("string is null or not a number")
             load(placementId, context)
         } catch (e: NumberFormatException) {
-            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST)
+            listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""))
         }
     }
 
