@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.models
 
 import kotlinx.serialization.SerialName

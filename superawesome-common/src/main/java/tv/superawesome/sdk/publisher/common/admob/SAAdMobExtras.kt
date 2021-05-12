@@ -64,7 +64,7 @@ class SAAdMobExtras private constructor() {
         return this
     }
 
-    fun setPlayabckMode(mode: StartDelay): SAAdMobExtras {
+    fun setPlaybackMode(mode: StartDelay): SAAdMobExtras {
         playback = mode
         return this
     }
@@ -88,7 +88,6 @@ class SAAdMobExtras private constructor() {
         const val kKEY_TEST = "SA_TEST_MODE"
         const val kKEY_TRANSPARENT = "SA_TRANSPARENT"
         const val kKEY_ORIENTATION = "SA_ORIENTATION"
-        const val kKEY_CONFIGURATION = "SA_CONFIGURATION"
         const val kKEY_PARENTAL_GATE = "SA_PG"
         const val kKEY_BUMPER_PAGE = "SA_BUMPER"
         const val kKEY_BACK_BUTTON = "SA_BACK_BUTTON"
