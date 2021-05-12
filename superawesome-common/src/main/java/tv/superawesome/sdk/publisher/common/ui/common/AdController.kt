@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
-import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
@@ -53,8 +53,7 @@ class AdController(
     private val adRepository: AdRepositoryType,
     private val eventRepository: EventRepositoryType,
     private val logger: Logger,
-    private val adStore: AdStoreType,
-    dispatcherProvider: DispatcherProviderType,
+    private val adStore: AdStoreType
 ) : AdControllerType {
     override var config: Config = Config.default
     override var closed: Boolean = false
@@ -63,7 +62,7 @@ class AdController(
     override var currentAdResponse: AdResponse? = null
     override var delegate: SAInterface? = null
 
-    private val scope = CoroutineScope(dispatcherProvider.main)
+    private val scope = CoroutineScope(Dispatchers.Main)
     private var parentalGate: ParentalGate? = null
     private var lastClickTime = 0L
 

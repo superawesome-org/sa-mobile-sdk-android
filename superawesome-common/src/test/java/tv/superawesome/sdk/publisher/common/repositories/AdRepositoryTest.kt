@@ -2,16 +2,13 @@ package tv.superawesome.sdk.publisher.common.repositories
 
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.components.AdProcessorType
 import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.Ad
 import tv.superawesome.sdk.publisher.common.models.AdResponse
@@ -28,17 +25,13 @@ class AdRepositoryTest {
     @MockK
     private lateinit var adProcessor: AdProcessorType
 
-    @MockK
-    private lateinit var dispatcherProvider: DispatcherProviderType
-
     private lateinit var adRepository: AdRepository
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxed = true)
-        every { dispatcherProvider.io } returns Dispatchers.Unconfined
         adRepository =
-            AdRepository(adDataSourceType, adQueryMakerType, adProcessor, dispatcherProvider)
+            AdRepository(adDataSourceType, adQueryMakerType, adProcessor)
     }
 
     @Test

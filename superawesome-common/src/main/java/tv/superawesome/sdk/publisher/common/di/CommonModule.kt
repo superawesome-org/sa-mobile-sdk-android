@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.common.di
 
-import tv.superawesome.sdk.publisher.common.MoatRepository
 import android.content.res.Resources
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -14,6 +13,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import tv.superawesome.sdk.publisher.common.BuildConfig
+import tv.superawesome.sdk.publisher.common.MoatRepository
 import tv.superawesome.sdk.publisher.common.components.AdProcessor
 import tv.superawesome.sdk.publisher.common.components.AdProcessorType
 import tv.superawesome.sdk.publisher.common.components.AdQueryMaker
@@ -25,8 +25,6 @@ import tv.superawesome.sdk.publisher.common.components.ConnectionProviderType
 import tv.superawesome.sdk.publisher.common.components.DefaultLogger
 import tv.superawesome.sdk.publisher.common.components.Device
 import tv.superawesome.sdk.publisher.common.components.DeviceType
-import tv.superawesome.sdk.publisher.common.components.DispatcherProvider
-import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.components.Encoder
 import tv.superawesome.sdk.publisher.common.components.EncoderType
 import tv.superawesome.sdk.publisher.common.components.GoogleAdvertisingProxy
@@ -103,7 +101,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
         )
     }
 
-    factory<AdControllerType> { AdController(get(), get(), get(), get(), get()) }
+    factory<AdControllerType> { AdController(get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
     factory<IVideoPlayerController> { VideoPlayerController() }
@@ -112,18 +110,16 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
         VideoEvents(
             adResponse,
             moatLimiting,
-            get(),
             get()
         )
     }
 
     single<MoatRepositoryType> { MoatRepository(true, get(), get()) }
-    single<AdRepositoryType> { AdRepository(get(), get(), get(), get()) }
-    single<EventRepositoryType> { EventRepository(get(), get(), get()) }
+    single<AdRepositoryType> { AdRepository(get(), get(), get()) }
+    single<EventRepositoryType> { EventRepository(get(), get()) }
     factory<VastEventRepositoryType> { (vastAd: VastAd) ->
         VastEventRepository(
             vastAd,
-            get(),
             get()
         )
     }
@@ -173,7 +169,6 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
     single<ImageProviderType> { ImageProvider() }
-    single<DispatcherProviderType> { DispatcherProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
     single<AdStoreType> { AdStore() }
 

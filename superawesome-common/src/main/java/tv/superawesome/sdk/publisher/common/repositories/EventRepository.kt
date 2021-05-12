@@ -1,8 +1,8 @@
 package tv.superawesome.sdk.publisher.common.repositories
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.EventData
@@ -23,26 +23,25 @@ interface EventRepositoryType {
 
 class EventRepository(
     private val dataSource: AwesomeAdsApiDataSourceType,
-    private val adQueryMaker: AdQueryMakerType,
-    private val dispatcherProvider: DispatcherProviderType,
+    private val adQueryMaker: AdQueryMakerType
 ) : EventRepositoryType {
     override suspend fun impression(adResponse: AdResponse): DataResult<Void> =
-        withContext(dispatcherProvider.io) {
+        withContext(Dispatchers.IO) {
             dataSource.impression(adQueryMaker.makeImpressionQuery(adResponse))
         }
 
     override suspend fun click(adResponse: AdResponse): DataResult<Void> =
-        withContext(dispatcherProvider.io) {
+        withContext(Dispatchers.IO) {
             dataSource.click(adQueryMaker.makeClickQuery(adResponse))
         }
 
     override suspend fun videoClick(adResponse: AdResponse): DataResult<Void> =
-        withContext(dispatcherProvider.io) {
+        withContext(Dispatchers.IO) {
             dataSource.videoClick(adQueryMaker.makeVideoClickQuery(adResponse))
         }
 
     private suspend fun customEvent(type: EventType, adResponse: AdResponse): DataResult<Void> =
-        withContext(dispatcherProvider.io) {
+        withContext(Dispatchers.IO) {
             val data = EventData(
                 adResponse.placementId,
                 adResponse.ad.lineItemId,

@@ -2,11 +2,11 @@ package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.view.ViewGroup
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
-import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
@@ -17,8 +17,7 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 class VideoEvents(
     private val adResponse: AdResponse,
     private val moatLimiting: Boolean,
-    private val eventRepository: EventRepositoryType,
-    dispatcherProvider: DispatcherProviderType
+    private val eventRepository: EventRepositoryType
 ) {
     interface Listener {
         fun hasBeenVisible()
@@ -33,7 +32,7 @@ class VideoEvents(
         )
     }
 
-    private val scope = CoroutineScope(dispatcherProvider.main)
+    private val scope = CoroutineScope(Dispatchers.Main)
 
     var listener: Listener? = null
     private var isStartHandled = false
@@ -87,7 +86,7 @@ class VideoEvents(
             moatRepository.sendPlayingEvent(time)
             moatRepository.sendStartEvent(time)
         }
-        // 2 second (viewability)
+        // 2 second (of viewing)
         if (time >= 2000 && !is2SHandled) {
             is2SHandled = true
             viewableDetector?.cancel()
