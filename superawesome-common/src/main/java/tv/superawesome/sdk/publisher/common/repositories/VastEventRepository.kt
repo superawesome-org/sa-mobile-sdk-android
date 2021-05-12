@@ -1,7 +1,7 @@
 package tv.superawesome.sdk.publisher.common.repositories
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import tv.superawesome.sdk.publisher.common.components.DispatcherProviderType
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.VastAd
 
@@ -20,12 +20,11 @@ interface VastEventRepositoryType {
 
 class VastEventRepository(
     private val vastAd: VastAd,
-    private val dataSource: NetworkDataSourceType,
-    private val dispatcherProvider: DispatcherProviderType
+    private val dataSource: NetworkDataSourceType
 ) : VastEventRepositoryType {
 
     private suspend fun triggerEvent(url: String) {
-        withContext(dispatcherProvider.io) {
+        withContext(Dispatchers.IO) {
             dataSource.getData(url)
         }
     }
