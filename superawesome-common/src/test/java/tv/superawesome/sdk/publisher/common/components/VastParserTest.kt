@@ -21,6 +21,7 @@ class VastParserTest {
 
     @Before
     fun setUp() {
+        MockKAnnotations.init(this)
         vastParser = VastParser(XmlParser(), connectionProvider)
         MockKAnnotations.init(this)
         every { connectionProvider.findConnectionType() } returns ConnectionType.Cellular2g
