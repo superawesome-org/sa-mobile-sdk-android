@@ -63,9 +63,9 @@ class SAAdMobBannerCustomEvent : CustomEventBanner {
                             setup = true
                         }
                     }
-                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad ->  listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_NO_FILL,"",""))
+                    SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_NO_FILL, "", ""))
                     SAEvent.AdShown -> listener.onAdOpened()
-                    SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST,"",""))
+                    SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""))
                     SAEvent.AdClicked -> {
                         listener.onAdClicked()
                         listener.onAdLeftApplication()
@@ -85,7 +85,7 @@ class SAAdMobBannerCustomEvent : CustomEventBanner {
                 val placementId = s?.toInt() ?: 0
                 load(placementId)
             } catch (e: NumberFormatException) {
-                listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST,"",""))
+                listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""))
             }
         }
     }

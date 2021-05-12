@@ -98,12 +98,11 @@ class VideoPlayer @JvmOverloads constructor(
     }
 
     override fun setMaximised() {
-            chrome?.setMaximised()
-
+        chrome?.setMaximised()
     }
 
     override fun setMinimised() {
-            chrome?.setMinimised()
+        chrome?.setMinimised()
     }
 
     /**
@@ -177,7 +176,6 @@ class VideoPlayer @JvmOverloads constructor(
          * Send back message
          */
         listener?.onTimeUpdated(this, time, duration)
-
     }
 
     override fun onSeekComplete(control: IVideoPlayerController) {
@@ -189,7 +187,6 @@ class VideoPlayer @JvmOverloads constructor(
          * Then set the chrome state in it's playing state
          */
         chrome?.setPlaying()
-
     }
 
     override fun onMediaComplete(control: IVideoPlayerController, time: Int, duration: Int) {
@@ -202,7 +199,6 @@ class VideoPlayer @JvmOverloads constructor(
          * Send back message
          */
         listener?.onComplete(this, time, duration)
-
     }
 
     override fun onError(
@@ -251,7 +247,6 @@ class VideoPlayer @JvmOverloads constructor(
          * When the pause button is pressed, instruct the media control to pause playing
          */
         control?.pause()
-
     }
 
     override fun onClickReplay() {
@@ -370,7 +365,6 @@ class VideoPlayer @JvmOverloads constructor(
     // //////////////////////////////////////////////////////////////////////////////////////////////
     private val videoWidth: Int
         get() = control?.takeIf { it.videoIVideoWidth > 0 }?.videoIVideoWidth ?: 0
-
 
     private val videoHeight: Int
         get() = control?.takeIf { it.videoIVideoHeight > 0 }?.videoIVideoHeight ?: 0

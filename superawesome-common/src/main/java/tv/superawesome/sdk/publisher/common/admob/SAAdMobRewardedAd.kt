@@ -73,7 +73,7 @@ class SAAdMobRewardedAd(
             SAEvent.AdLoaded -> adLoaded()
             SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> adFailedToLoad()
             SAEvent.AdShown -> rewardedAdCallback?.onAdOpened()
-            SAEvent.AdFailedToShow -> rewardedAdCallback?.onAdFailedToShow(AdError(-1,"Ad failed to load for $loadedPlacementId","Ad failed to load for $loadedPlacementId"))
+            SAEvent.AdFailedToShow -> rewardedAdCallback?.onAdFailedToShow(AdError(-1, "Ad failed to load for $loadedPlacementId", "Ad failed to load for $loadedPlacementId"))
             SAEvent.AdClicked -> rewardedAdCallback?.reportAdClicked()
             SAEvent.AdEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
             SAEvent.AdClosed -> rewardedAdCallback?.onAdClosed()
@@ -88,6 +88,6 @@ class SAAdMobRewardedAd(
     }
 
     private fun adFailedToLoad() {
-        mediationAdLoadCallback.onFailure(AdError(-1,"Ad failed to load for $loadedPlacementId","Ad failed to load for $loadedPlacementId"))
+        mediationAdLoadCallback.onFailure(AdError(-1, "Ad failed to load for $loadedPlacementId", "Ad failed to load for $loadedPlacementId"))
     }
 }
