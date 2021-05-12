@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.content.Context
@@ -10,7 +11,7 @@ import android.widget.TextView
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerControllerView
 
-class AdVideoPlayerControllerView
+public class AdVideoPlayerControllerView
 @JvmOverloads
 constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     RelativeLayout(context, attrs, defStyleAttr), IVideoPlayerControllerView {
@@ -24,7 +25,7 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     private var smallShowMore: Button
     var padlock: ImageButton
 
-    fun setShouldShowSmallClickButton(value: Boolean) {
+    public fun setShouldShowSmallClickButton(value: Boolean) {
         if (value) {
             smallShowMore.visibility = VISIBLE
             showMore.visibility = GONE
@@ -34,7 +35,7 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         }
     }
 
-    fun shouldShowPadlock(value: Boolean) {
+    public fun shouldShowPadlock(value: Boolean) {
         if (value) {
             padlock.visibility = VISIBLE
         } else {
@@ -42,7 +43,7 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         }
     }
 
-    fun setClickListener(listener: OnClickListener?) {
+    public fun setClickListener(listener: OnClickListener?) {
         showMore.setOnClickListener(listener)
         smallShowMore.setOnClickListener(listener)
     }
@@ -59,7 +60,7 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     override fun setError(error: Throwable?) { /* N/A */
     }
 
-    override fun setTime(time: Int, duration: Int) {
+    public override fun setTime(time: Int, duration: Int) {
         val remaining = (duration - time) / 1000
         if (chronograph != null) {
             val text = CRONO_DEF_TXT + remaining

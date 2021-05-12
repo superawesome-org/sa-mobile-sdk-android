@@ -1,5 +1,4 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
-
 package tv.superawesome.sdk.publisher.common.ui.banner
 
 import android.content.Context

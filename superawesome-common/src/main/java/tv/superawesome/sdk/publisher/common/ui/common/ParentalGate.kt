@@ -1,3 +1,4 @@
+@file:Suppress("RedundantVisibilityModifier", "unused")
 package tv.superawesome.sdk.publisher.common.ui.common
 
 import android.app.AlertDialog
@@ -7,7 +8,7 @@ import android.widget.EditText
 import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
 
-class ParentalGate(
+public class ParentalGate(
     private val numberGenerator: NumberGeneratorType
 ) {
     interface Listener {
@@ -21,7 +22,7 @@ class ParentalGate(
         newQuestion()
     }
 
-    var listener: Listener? = null
+    public var listener: Listener? = null
 
     private var firstNumber: Int = 0
     private var secondNumber: Int = 0
@@ -30,7 +31,7 @@ class ParentalGate(
     private var alertDialog: AlertDialog? = null
     private var errorDialog: AlertDialog? = null
 
-    fun newQuestion() {
+    public fun newQuestion() {
         firstNumber = numberGenerator.nextIntForParentalGate()
         secondNumber = numberGenerator.nextIntForParentalGate()
         solution = firstNumber + secondNumber
@@ -39,7 +40,7 @@ class ParentalGate(
     /**
      * Method that shows the parental gate popup and fires the necessary events
      */
-    fun show(context: Context) {
+    public fun show(context: Context) {
         listener?.parentalGateOpen()
 
         val alertDialog = AlertDialog.Builder(context)
@@ -86,7 +87,7 @@ class ParentalGate(
         this.alertDialog?.show()
     }
 
-    fun stop() {
+    public fun stop() {
         listener = null
         alertDialog?.dismiss()
         alertDialog = null
