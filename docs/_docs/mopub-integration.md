@@ -13,7 +13,7 @@ You can either change your module’s `build.gradle` file (usually the file unde
 
 {% highlight gradle %}
 repositories {
-    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
+    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
 }
 
 dependencies {
