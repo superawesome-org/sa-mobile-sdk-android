@@ -34,7 +34,7 @@ ext {
 bintray { pkg { name = 'SuperAwesome-MoPub' }}
 
 repositories {
-    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
+    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     jcenter()
     maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
@@ -43,7 +43,7 @@ dependencies {
     api project(':superawesome-base')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation('com.mopub:mopub-sdk-banner:5.13.0') { transitive = true }
-    implementation('com.mopub:mopub-sdk-fullscreen:5.13.0') { transitive = true }
-    implementation('com.mopub:mopub-sdk-native-static:5.13.0') { transitive = true }
+    implementation('com.mopub:mopub-sdk-banner:5.17.0') { transitive = true }
+    implementation('com.mopub:mopub-sdk-fullscreen:5.17.0') { transitive = true }
+    implementation('com.mopub:mopub-sdk-native-static:5.17.0') { transitive = true }
 }

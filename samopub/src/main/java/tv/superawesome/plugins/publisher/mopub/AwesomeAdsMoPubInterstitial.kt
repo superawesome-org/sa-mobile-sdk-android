@@ -51,9 +51,9 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
                         val isEmpty = html != null && html.contains("mopub://failLoad")
 
                         if (isEmpty) {
-                            mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                            mLoadListener?.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
                         } else {
-                            mLoadListener.onAdLoaded()
+                            mLoadListener?.onAdLoaded()
                         }
                     }
                 }
@@ -82,11 +82,8 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
         } else {
             MoPubLog.log(adNetworkId, SHOW_FAILED, adapterName,
                     MoPubErrorCode.NETWORK_NO_FILL.intCode,
-                    MoPubErrorCode.NETWORK_NO_FILL);
-
-            if (mInteractionListener != null) {
-                mInteractionListener.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
-            }
+                    MoPubErrorCode.NETWORK_NO_FILL)
+            mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
         }
     }
 }

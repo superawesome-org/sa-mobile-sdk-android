@@ -1,7 +1,14 @@
 package tv.superawesome.plugins.publisher.admob
 
 import android.content.Context
-import com.google.android.gms.ads.mediation.*
+import com.google.android.gms.ads.mediation.Adapter
+import com.google.android.gms.ads.mediation.InitializationCompleteCallback
+import com.google.android.gms.ads.mediation.MediationAdLoadCallback
+import com.google.android.gms.ads.mediation.MediationConfiguration
+import com.google.android.gms.ads.mediation.MediationRewardedAd
+import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
+import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
+import com.google.android.gms.ads.mediation.VersionInfo
 import tv.superawesome.sdk.publisher.AwesomeAds
 
 class SAAdMobVideoMediationAdapter : Adapter() {
@@ -20,7 +27,7 @@ class SAAdMobVideoMediationAdapter : Adapter() {
     }
 
     override fun getSDKVersionInfo(): VersionInfo {
-        val splits = BuildConfig.VERSION_NAME.split(".")
+        val splits = "8.0.4".split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt())
         } else {
@@ -29,7 +36,7 @@ class SAAdMobVideoMediationAdapter : Adapter() {
     }
 
     override fun getVersionInfo(): VersionInfo {
-        val splits = BuildConfig.VERSION_NAME.split(".")
+        val splits = "8.0.4".split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt() * 100)
         } else {
