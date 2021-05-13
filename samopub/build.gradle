@@ -34,7 +34,7 @@ ext {
 bintray { pkg { name = 'SuperAwesome-MoPub' }}
 
 repositories {
-    maven { url "http://dl.bintray.com/superawesome/SuperAwesomeSDK" }
+    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     jcenter()
     maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
