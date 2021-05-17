@@ -32,7 +32,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinx_serialization_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0-native-mt"
-    implementation "org.koin:koin-core:$koin_core_version"
+    implementation "io.insert-koin:koin-android:$koin_core_version"
 
     // Unit Testing
     testImplementation "junit:junit:$junit_version"
