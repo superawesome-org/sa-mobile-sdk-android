@@ -38,7 +38,6 @@ repositories {
 }
 
 dependencies {
-    implementation "tv.superawesome.lib.savideoplayer:savideoplayer:2.0.1"
 
     // Tests
     testImplementation "junit:junit:4.13.2"
