@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply from: '../bintray.gradle'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -9,7 +8,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName PROJECT_VERSION
+        versionName "8.0.4"
     }
     buildTypes {
         release {
@@ -17,21 +16,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 ext {
     publishDescription = 'SuperAwesome Full SDK'
 }
-
-bintray { pkg { name = 'SuperAwesome' }}
-
 repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
+    mavenCentral()
 }
+
 
 dependencies {
     api project(':superawesome-base')

@@ -9,11 +9,7 @@ The simplest way of adding the Android Publisher SDK to your Android Studio proj
 
 The first step is to include the following Maven repository in your module’s <strong>build.gradle</strong> file (usually the file under MyApplication/app/):
 
-{% highlight gradle %}
-repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
-}
-{% endhighlight %}
+
 
 Next you can to add the SDK as a dependency. This will contain everything you need in order to load and display banner, interstitial and video ads.
 

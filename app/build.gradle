@@ -24,19 +24,13 @@ android {
     lintOptions {
         abortOnError false
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 androidExtensions {
     experimental = true
 }
 
 repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     mavenCentral()
-    jcenter()
     maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
 
@@ -45,9 +39,9 @@ dependencies {
     implementation project(':saadmob')
     api project(':samopub')
 
-    implementation('com.mopub:mopub-sdk-banner:5.16.4') { transitive = true }
-    implementation('com.mopub:mopub-sdk-fullscreen:5.16.4') { transitive = true }
-    implementation('com.mopub:mopub-sdk-native-static:5.16.4') { transitive = true }
+    implementation('com.mopub:mopub-sdk-banner:5.17.0') { transitive = true }
+    implementation('com.mopub:mopub-sdk-fullscreen:5.17.0') { transitive = true }
+    implementation('com.mopub:mopub-sdk-native-static:5.17.0') { transitive = true }
 
     implementation 'com.google.android.gms:play-services-ads:20.1.0'
     implementation "androidx.multidex:multidex:2.0.1"

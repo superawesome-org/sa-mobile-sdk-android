@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: '../bintray.gradle'
+
 
 android {
     compileSdkVersion compile_sdk_version
@@ -10,7 +10,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName PROJECT_VERSION
+        versionName "8.0.4"
     }
     buildTypes {
         release {
@@ -31,11 +31,8 @@ ext {
     publishDescription = 'SuperAwesome Mobile SDK for Android with MoPub extension'
 }
 
-bintray { pkg { name = 'SuperAwesome-MoPub' }}
 
 repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
-    jcenter()
     maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
 
