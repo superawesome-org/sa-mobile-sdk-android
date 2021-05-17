@@ -3,8 +3,8 @@ apply plugin: 'com.android.library'
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-version = properties.getProperty("project.version")
-group = properties.getProperty("project.group")
+version = "8.0.4"
+group = "8"
 
 android {
     compileSdkVersion compile_sdk_version
