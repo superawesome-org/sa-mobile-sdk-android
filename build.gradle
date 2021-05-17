@@ -16,6 +16,7 @@ buildscript {
     }
     repositories {
         maven { url "https://maven.google.com" }
+        maven { url "https://plugins.gradle.org/m2/" }
         google()
         mavenCentral()
     }
@@ -23,11 +24,13 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.0.0-alpha15'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
     }
 }
 
 allprojects {
     repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://maven.google.com" }
         google()
         mavenCentral()
