@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import tv.superawesome.lib.savideoplayer.IVideoPlayerControllerView;
+import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayerControllerView;
+
 
 public class AdVideoPlayerControllerView extends RelativeLayout implements IVideoPlayerControllerView {
 

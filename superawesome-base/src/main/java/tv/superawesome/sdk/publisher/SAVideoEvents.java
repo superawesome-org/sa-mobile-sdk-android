@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.saevents.SAViewableModule;
-import tv.superawesome.lib.savideoplayer.IVideoPlayer;
+import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayer;
 
 public class SAVideoEvents {
 
