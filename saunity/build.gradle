@@ -1,8 +1,5 @@
 apply plugin: 'com.android.library'
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 version = "8.0.4"
 group = "8"
 
