@@ -186,6 +186,72 @@ public class SABannerAd extends FrameLayout {
     }
 
     /**
+     * One of the main public methods of the SABannerAd class. This will load a new SAAd object
+     * corresponding to a given placement Id.
+     *
+     * @param placementId Awesome Ads ID for ad data to be loaded
+     * @param lineItemId The id of the lineItem
+     * @param creativeId The id of the creative
+     */
+    public void load (final int placementId, final int lineItemId, final int creativeId) {
+
+        // very late init of the AwesomeAds SDK
+        try {
+            AwesomeAds.init(((Activity)this.getContext()).getApplication(), false);
+        } catch (Exception e) {
+            Log.d("SuperAwesome", "Error initing AwesomeAds in SABannerAd " + e.getMessage());
+        }
+
+        // from this moment on the ad can't be played, to avoid wierd things
+        canPlay = false;
+
+        // close
+        if (!firstPlay) {
+            close();
+        }
+
+        // set this to false
+        isClosed = false;
+
+        // next init a new session & prepare it
+        session.setPos(SARTBPosition.ABOVE_THE_FOLD);
+        session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+        session.setInstl(SARTBInstl.NOT_FULLSCREEN);
+        session.setSkip(SARTBSkip.NO_SKIP);
+        session.setStartDelay(SARTBStartDelay.PRE_ROLL);
+        try {
+            session.setWidth(getWidth());
+            session.setHeight(getHeight());
+        } catch (Exception e) {
+            // do nothing
+        }
+
+        session.prepareSession(() -> {
+
+            // after session is OK, prepare
+            loader.loadAdForLineItem( placementId, lineItemId, creativeId, session, response -> {
+
+                if (response.status != 200) {
+                    if (listener != null) {
+                        listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                    } else {
+                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
+                    }
+                }
+                else {
+                    canPlay = response.isValid();
+                    setAd(response.isValid() ? response.ads.get(0) : null);
+                    if (listener != null) {
+                        listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                    } else {
+                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                    }
+                }
+            });
+        });
+    }
+
+    /**
      * One of the main public methods of the SABannerAd class. This will play an already existing
      * loaded ad, or fail.
      *
