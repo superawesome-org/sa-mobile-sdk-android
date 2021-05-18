@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply from: '../bintray.gradle'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -12,7 +11,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName PROJECT_VERSION
+        versionName "8.0.4"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -28,25 +27,17 @@ android {
     testOptions {
         animationsDisabled true
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 ext {
     publishDescription = 'SuperAwesome Base Mobile SDK for Android'
 }
 
-bintray { pkg { name = 'SuperAwesome-Base' }}
-
 repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
     mavenCentral()
 }
 
 dependencies {
-    implementation "tv.superawesome.lib.savideoplayer:savideoplayer:2.0.1"
 
     // Tests
     testImplementation "junit:junit:4.13.2"
