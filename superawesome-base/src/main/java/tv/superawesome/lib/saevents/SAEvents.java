@@ -50,6 +50,12 @@ public class SAEvents {
         }
     }
 
+    public void triggerDwellTime(){
+        if (serverModule != null) {
+            serverModule.triggerDwellEvent(null);
+        }
+    }
+
     public void triggerViewableImpressionEvent () {
         if (serverModule != null) {
             serverModule.triggerViewableImpressionEvent(null);
