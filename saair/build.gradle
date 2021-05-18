@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: '../publish.gradle'
 
-ext.libraryName = 'SuperAwesome AwsomeAds Publisher Air SDK'
 ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with Air extension'
 
 android {

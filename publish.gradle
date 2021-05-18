@@ -4,9 +4,9 @@ version = System.properties.getProperty("versionName")
 group = System.properties.getProperty("groupProj")
 def artifactProj = System.properties.getProperty("artifactProj")
 def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git'
+def libraryName = System.properties.getProperty("uploadName")
 
-// Each project build.gradle provides these
-var libraryName = ''
+// Each project build.gradle provides this
 var libraryDescription = ''
 
 afterEvaluate {
