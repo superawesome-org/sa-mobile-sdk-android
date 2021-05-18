@@ -1,7 +1,4 @@
 include ':samoat'
-include ':superawesome-common'
-include ':superawesome-retrofit'
-include ':superawesome-core'
 include ':app'
 include ':saunity'
 include ':samopub'
