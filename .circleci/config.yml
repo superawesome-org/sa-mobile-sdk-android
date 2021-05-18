@@ -1,0 +1,66 @@
+version: 2.1
+references:
+  android_config: &android_config
+    docker:
+      - image: circleci/android:api-30
+    resource_class: medium
+    environment:
+      FL_OUTPUT_DIR: output
+      TERM: dumb
+      JAVA_TOOL_OPTIONS: "-Xmx2048m"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+
+  bootstrap: &bootstrap
+    run:
+      name: Bootstrap
+      command: |
+        git clone "${SA_CONTINUOUS_INTEGRATION_GIT_REPO_URL}" "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+        ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
+
+jobs:
+
+  ## Run unit tests
+  test_superawesome_base:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Run unit tests for superawesome_base
+          command: fastlane run_all_tests module:superawesome-base
+      - run:
+          name: Copy test results to temp folder
+          command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+      - store_test_results:
+          path: temp_files/test-results
+
+  semantic_release:
+    <<: *android_config
+    steps:
+      - checkout
+      - run:
+          name: Run semantic release
+          command: |
+            git clone "${SA_CONTINUOUS_INTEGRATION_GIT_REPO_URL}" "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh
+
+  ## Run sdk push
+  sdk_push_superawesome_base:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Push Superawesome-base to the S3 Repo
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
+
+workflows:
+  version: 2.1
+  android_sdk_workflow:
+    jobs:
+      - test_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+      - sdk_push_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
