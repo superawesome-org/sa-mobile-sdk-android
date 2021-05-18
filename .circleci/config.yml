@@ -20,6 +20,20 @@ references:
 jobs:
 
   ## Run unit tests
+  test_superawesome_common:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Run unit tests for superawesome_common
+          command: fastlane run_all_tests module:superawesome-common
+      - run:
+          name: Copy test results to temp folder
+          command: find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+      - store_test_results:
+          path: temp_files/test-results
+
   test_superawesome_base:
     <<: *android_config
     steps:
@@ -58,9 +72,7 @@ workflows:
   version: 2.1
   android_sdk_workflow:
     jobs:
+      - test_superawesome_common:
+          context: MOBILE_ANDROID_SDKS
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
-      - sdk_push_superawesome_base:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - test_superawesome_base
