@@ -55,10 +55,10 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
     private static SASession session = null;
 
     // fully private variables
-    private static HashMap<Integer, Object> ads = new HashMap<>();
+    private static final HashMap<Integer, Object> ads = new HashMap<>();
 
     // private vars w/ exposed setters & getters (state vars)
-    private static SAInterface      listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
+    private static SAInterface      listener = (placementId, event) -> {};
 
     private static boolean          isParentalGateEnabled = SADefaults.defaultParentalGate();
     private static boolean          isBumperPageEnabled = SADefaults.defaultBumperPage();
@@ -139,12 +139,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         closeButton.setLayoutParams(buttonLayout);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                close();
-            }
-        });
+        closeButton.setOnClickListener(v -> close());
 
         // set the view hierarchy
         parent.addView(interstitialBanner);
@@ -233,49 +228,138 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
                 // do nothing
             }
 
-            session.prepareSession(new SASessionInterface() {
-                @Override
-                public void didFindSessionReady() {
+            session.prepareSession(() -> {
 
-                    // after session is prepared, start loading
-                    loader.loadAd(placementId, session, new SALoaderInterface() {
-                        @Override
-                        public void saDidLoadAd(SAResponse response) {
+                // after session is prepared, start loading
+                loader.loadAd(placementId, session, response -> {
 
-                            if (response.status != 200) {
-                                //
-                                // remove from here
-                                ads.remove(placementId);
+                    if (response.status != 200) {
+                        //
+                        // remove from here
+                        ads.remove(placementId);
 
-                                //
-                                // send callback
-                                if (listener != null) {
-                                    listener.onEvent(placementId, SAEvent.adFailedToLoad);
-                                } else {
-                                    Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adFailedToLoad");
-                                }
-                            }
-                            else {
-                                // put the correct value
-                                if (response.isValid()) {
-                                    ads.put(placementId, response.ads.get(0));
-                                }
-                                // remove existing
-                                else {
-                                    ads.remove(placementId);
-                                }
-
-
-                                // call listener
-                                if (listener != null) {
-                                    listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
-                                } else {
-                                    Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
-                                }
-                            }
+                        //
+                        // send callback
+                        if (listener != null) {
+                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                        } else {
+                            Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adFailedToLoad");
                         }
-                    });
-                }
+                    }
+                    else {
+                        // put the correct value
+                        if (response.isValid()) {
+                            ads.put(placementId, response.ads.get(0));
+                        }
+                        // remove existing
+                        else {
+                            ads.remove(placementId);
+                        }
+
+
+                        // call listener
+                        if (listener != null) {
+                            listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                        } else {
+                            Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                        }
+                    }
+                });
+            });
+
+        }
+        // else if the ad data for the placement exists in the "ads" hash map, then notify the
+        // user that it already exists and he should just play it
+        else {
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            } else {
+                Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adAlreadyLoaded");
+            }
+        }
+    }
+
+    /**
+     * Static method that loads an ad into the interstitial queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     */
+    public static void load(final int placementId, final int lineItemId, final int creativeId, Context context) {
+
+        // very late init of the AwesomeAds SDK
+        try {
+            AwesomeAds.init(((Activity)context).getApplication(), false);
+        } catch (Exception e) {
+            Log.d("SuperAwesome", "Error initing AwesomeAds in SAInterstitialAd " + e.getMessage());
+        }
+
+        // if the ad data for the placement id doesn't existing in the "ads" hash map, then
+        // proceed with loading it
+        if (!ads.containsKey(placementId)) {
+
+            // set a placeholder
+            ads.put(placementId, new Object());
+
+            // create the loader
+            final SALoader loader = new SALoader(context);
+
+            // create a current session
+            session = new SASession (context);
+            session.setTestMode(isTestingEnabled);
+            session.setConfiguration(configuration);
+            session.setPos(SARTBPosition.FULLSCREEN);
+            session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+            session.setInstl(SARTBInstl.FULLSCREEN);
+            session.setSkip(SARTBSkip.SKIP);
+            session.setStartDelay(SARTBStartDelay.PRE_ROLL);
+
+            try {
+                SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);
+                session.setWidth(size.width);
+                session.setHeight(size.height);
+            } catch (Exception e) {
+                // do nothing
+            }
+
+            session.prepareSession(() -> {
+
+                // after session is prepared, start loading
+                loader.loadAdForLineItem(placementId, lineItemId, creativeId,session, response -> {
+
+                    if (response.status != 200) {
+                        //
+                        // remove from here
+                        ads.remove(placementId);
+
+                        //
+                        // send callback
+                        if (listener != null) {
+                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                        } else {
+                            Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been adFailedToLoad");
+                        }
+                    }
+                    else {
+                        // put the correct value
+                        if (response.isValid()) {
+                            ads.put(placementId, response.ads.get(0));
+                        }
+                        // remove existing
+                        else {
+                            ads.remove(placementId);
+                        }
+
+
+                        // call listener
+                        if (listener != null) {
+                            listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                        } else {
+                            Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                        }
+                    }
+                });
             });
 
         }
