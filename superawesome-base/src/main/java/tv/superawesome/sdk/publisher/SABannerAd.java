@@ -208,151 +208,137 @@ public class SABannerAd extends FrameLayout {
             webPlayer = new SAWebPlayer(context);
             webPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             // and set it's event listener
-            webPlayer.setEventListener(new SAWebPlayer.Listener() {
-                @Override
-                public void saWebPlayerDidReceiveEvent(final SAWebPlayer.Event event, final String destination) {
+            webPlayer.setEventListener((event, destination) -> {
 
-                    switch (event) {
-                        // this is called when the web player is on screen and prepared to load
-                        // HTML data
-                        case Web_Prepared: {
+                switch (event) {
+                    // this is called when the web player is on screen and prepared to load
+                    // HTML data
+                    case Web_Prepared: {
 
-                            // trigger impression
-                            events.triggerImpressionEvent();
+                        // trigger impression
+                        events.triggerImpressionEvent();
 
-                            // prepare moat tracking
-                            String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
-                            String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
-                            if(moatString != null && !moatString.isEmpty()) {
-                                events.triggerMoatAttemptEvent();
-                            }
-                            // load the HTML
-                            Log.d("SADefaults", "Full HTML is " + fullHTML);
-                            webPlayer.loadHTML(ad.creative.details.base, fullHTML);
-
-                            break;
+                        // prepare moat tracking
+                        String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
+                        String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
+                        if(moatString != null && !moatString.isEmpty()) {
+                            events.triggerMoatAttemptEvent();
                         }
-                        // this is called after the HTML data is loaded and is where all
-                        // events are fired
-                        case Web_Loaded: {
+                        // load the HTML
+                        Log.d("SADefaults", "Full HTML is " + fullHTML);
+                        webPlayer.loadHTML(ad.creative.details.base, fullHTML);
 
-                            // send viewable impression
-                            events.checkViewableStatusForDisplay(SABannerAd.this, new SAViewableModule.Listener() {
-                                @Override
-                                public void saDidFindViewOnScreen(boolean success) {
-                                    if (success) {
-                                        events.triggerViewableImpressionEvent();
-                                        if (visibilityListener != null) {
-                                            visibilityListener.hasBeenVisible();
-                                        }
-                                    }
+                        break;
+                    }
+                    // this is called after the HTML data is loaded and is where all
+                    // events are fired
+                    case Web_Loaded: {
+
+                        // send viewable impression
+                        events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
+                            if (success) {
+                                events.triggerViewableImpressionEvent();
+                                if (visibilityListener != null) {
+                                    visibilityListener.hasBeenVisible();
                                 }
-                            });
-                            // call listener
-                            if (listener != null) {
-                                listener.onEvent(ad.placementId, SAEvent.adShown);
-                            } else {
-                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
                             }
-
-                            break;
+                        });
+                        // call listener
+                        if (listener != null) {
+                            listener.onEvent(ad.placementId, SAEvent.adShown);
+                        } else {
+                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
                         }
-                        // this is actually a fragment event notifying the banner class that
-                        // the fragment has started
-                        case Web_Started:{
 
-                            float sf = SAUtils.getScaleFactor((Activity)context);
-                            padlock = new ImageButton(context);
-                            padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
-                            padlock.setBackgroundColor(Color.TRANSPARENT);
-                            padlock.setScaleType(ImageView.ScaleType.FIT_XY);
-                            int topPadding = (int)(2 * sf);
-                            padlock.setPadding(0, topPadding, 0, 0);
-                            padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (77 * sf), (int) (31 * sf)));
+                        break;
+                    }
+                    // this is actually a fragment event notifying the banner class that
+                    // the fragment has started
+                    case Web_Started:{
 
-                            //
-                            // weird condition: if banner is closed (and ad is nulled) in the time
-                            // it was "play()-ed" and the time "Web_Started" gets called,
-                            // then ad is null-ed and we get an exception.
-                            try {
-                                padlock.setVisibility(ad.isPadlockVisible ? VISIBLE : GONE);
-                            } catch (Exception e) {
-                                padlock.setVisibility(GONE);
-                            }
+                        float sf = SAUtils.getScaleFactor((Activity)context);
+                        padlock = new ImageButton(context);
+                        padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
+                        padlock.setBackgroundColor(Color.TRANSPARENT);
+                        padlock.setScaleType(ImageView.ScaleType.FIT_XY);
+                        int topPadding = (int)(2 * sf);
+                        padlock.setPadding(0, topPadding, 0, 0);
+                        padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (77 * sf), (int) (31 * sf)));
 
-                            padlock.setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                Runnable runner = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showSuperAwesomeWebViewInExternalBrowser(context);
-                                    }
-                                };
-                                showParentalGateIfNeededWithCompletion(context, runner);
-                                }
-                            });
-                            webPlayer.getHolder().addView(padlock);
+                        //
+                        // weird condition: if banner is closed (and ad is nulled) in the time
+                        // it was "play()-ed" and the time "Web_Started" gets called,
+                        // then ad is null-ed and we get an exception.
+                        try {
+                            padlock.setVisibility(ad.isPadlockVisible ? VISIBLE : GONE);
+                        } catch (Exception e) {
+                            padlock.setVisibility(GONE);
+                        }
+
+                        padlock.setOnClickListener(v -> {
+                        Runnable runner = () -> showSuperAwesomeWebViewInExternalBrowser(context);
+                        showParentalGateIfNeededWithCompletion(context, runner);
+                        });
+                        webPlayer.getHolder().addView(padlock);
+                        padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
+                        padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+
+                        break;
+                    }
+                    // this is called when the fragment & web view have all been laid out
+                    case Web_Layout:{
+
+                        if (webPlayer.getWebView() != null && padlock != null) {
                             padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
                             padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+                        }
+                        break;
+                    }
+                    // this is in case of error
+                    case Web_Error: {
+                        if (listener != null) {
+                            listener.onEvent(ad.placementId, SAEvent.adFailedToShow);
+                        } else {
+                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToShow");
+                        }
+                        break;
+                    }
+                    // this is most likely from MoPub and other types of fallbacks indicating
+                    // a failure in loading a proper ad (through mopub://failLoad)
+                    case Web_Empty:{
+                        if (listener != null) {
+                            listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
+                        } else {
+                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToLoad");
+                        }
+                        break;
+                    }
+                    // and this is in case of click
+                    case Web_Click: {
 
-                            break;
-                        }
-                        // this is called when the fragment & web view have all been laid out
-                        case Web_Layout:{
+                        if (destination != null) {
 
-                            if (webPlayer.getWebView() != null && padlock != null) {
-                                padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
-                                padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
-                            }
-                            break;
+                            Runnable runner = new Runnable() {
+                                @Override
+                                public void run() {
+                                    click(destination);
+                                }
+                            };
+                            runner.run();
+                            // showParentalGateIfNeededWithCompletion(context, runner);
                         }
-                        // this is in case of error
-                        case Web_Error: {
-                            if (listener != null) {
-                                listener.onEvent(ad.placementId, SAEvent.adFailedToShow);
-                            } else {
-                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToShow");
-                            }
-                            break;
-                        }
-                        // this is most likely from MoPub and other types of fallbacks indicating
-                        // a failure in loading a proper ad (through mopub://failLoad)
-                        case Web_Empty:{
-                            if (listener != null) {
-                                listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
-                            } else {
-                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToLoad");
-                            }
-                            break;
-                        }
-                        // and this is in case of click
-                        case Web_Click: {
 
-                            if (destination != null) {
-
-                                Runnable runner = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        click(destination);
-                                    }
-                                };
-                                runner.run();
-                                // showParentalGateIfNeededWithCompletion(context, runner);
-                            }
-
-                            break;
-                        }
-                        // this in case the script tag in moat loaded correctly
-                        case Moat_Success: {
-                            events.triggerMoatSuccessEvent();
-                            break;
-                        }
-                        // this in case the script tag in moat did not load correctly
-                        case Moat_Error: {
-                            events.triggerMoatErrorEvent();
-                            break;
-                        }
+                        break;
+                    }
+                    // this in case the script tag in moat loaded correctly
+                    case Moat_Success: {
+                        events.triggerMoatSuccessEvent();
+                        break;
+                    }
+                    // this in case the script tag in moat did not load correctly
+                    case Moat_Error: {
+                        events.triggerMoatErrorEvent();
+                        break;
                     }
                 }
             });

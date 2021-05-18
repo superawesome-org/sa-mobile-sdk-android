@@ -87,7 +87,7 @@ public class SAJsonParser {
             }
 
             // if all's well, then try to put it
-            if (key != null && key instanceof String && val != null) {
+            if (key instanceof String && val != null) {
                 put(jsonObject, (String) key, val);
             }
 
