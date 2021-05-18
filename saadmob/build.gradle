@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: '../publish.gradle'
 
-ext.libraryName = 'SuperAwesome AwsomeAds Publisher AdMob SDK'
 ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with AdMob extension'
 
 android {

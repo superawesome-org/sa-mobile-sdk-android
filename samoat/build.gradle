@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: '../publish.gradle'
 
-ext.libraryName = 'SuperAwesome AwsomeAds Publisher Moat SDK'
 ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with Moat extension'
 
 android {

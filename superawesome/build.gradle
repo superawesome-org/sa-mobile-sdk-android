@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: '../publish.gradle'
 
-ext.libraryName = 'Full SuperAwesome AwsomeAds Publisher SDK'
 ext.libraryDescription = 'SuperAwesome Full SDK'
 
 android {
