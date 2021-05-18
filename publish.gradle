@@ -1,0 +1,56 @@
+apply plugin: 'maven-publish'
+
+version = System.properties.getProperty("versionName")
+group = System.properties.getProperty("groupProj")
+def artifactProj = System.properties.getProperty("artifactProj")
+def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git'
+
+// Each project build.gradle provides these
+var libraryName = ''
+var libraryDescription = ''
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+
+                print 'Publishing $libraryName with description $libraryDescription'
+
+                groupId = group
+                artifactId = artifactProj
+                version = version
+                from components.release
+
+                pom {
+                    name = libraryName
+                    description = libraryDescription
+                    url = gitUrl
+                    licenses {
+                        license {
+                            name = 'The Apache Software License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'gabrielcoman'
+                            name = 'Gabriel Coman'
+                            email = 'gabriel.coman@superawesome.com'
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                url System.properties.getProperty("uploadRepoUrl", "")
+                credentials(AwsCredentials) {
+                    accessKey System.properties.getProperty("s3Key", "")
+                    secretKey System.properties.getProperty("s3Secret", "")
+                }
+            }
+        }
+    }
+}

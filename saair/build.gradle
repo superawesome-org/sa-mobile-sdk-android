@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
+apply from: '../publish.gradle'
 
-version = "8.0.4"
-group = "8"
+ext.libraryName = 'SuperAwesome AwsomeAds Publisher Air SDK'
+ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with Air extension'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -20,8 +21,6 @@ android {
         }
     }
 }
-
-
 
 dependencies {
     implementation project(':superawesome-base')
