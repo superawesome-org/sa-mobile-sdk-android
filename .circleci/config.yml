@@ -55,7 +55,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-All to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:testtv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
 
   sdk_push_superawesome_base:
     <<: *android_config
@@ -64,7 +64,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Base to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:testtv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
 
   sdk_push_superawesome_air:
     <<: *android_config
@@ -73,7 +73,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Air to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saair modulePkgName:SuperAwesome-Air
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:testtv.superawesome.sdk.publisher moduleRelease:saair modulePkgName:SuperAwesome-Air
 
   sdk_push_superawesome_admob:
     <<: *android_config
@@ -82,7 +82,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:testtv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
 
   sdk_push_superawesome_moat:
     <<: *android_config
@@ -91,7 +91,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Moat to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samoat modulePkgName:SuperAwesome-Moat
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:testtv.superawesome.sdk.publisher moduleRelease:samoat modulePkgName:SuperAwesome-Moat
 
   sdk_push_superawesome_mopub:
     <<: *android_config
@@ -100,7 +100,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-MoPub to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samopub modulePkgName:SuperAwesome-MoPub
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:testtv.superawesome.sdk.publisher moduleRelease:samopub modulePkgName:SuperAwesome-MoPub
 
   sdk_push_superawesome_unity:
     <<: *android_config
@@ -109,7 +109,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Unity to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
+          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:testtv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
 
 workflows:
   version: 2.1
@@ -128,62 +128,27 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - sdk_push_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - sdk_push_superawesome_air:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - sdk_push_superawesome_moat:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - sdk_push_superawesome_mopub:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - sdk_push_superawesome_unity:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
