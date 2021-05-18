@@ -7,7 +7,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd
 import tv.superawesome.lib.sasession.session.ISASession
 
 class DwellTimeEvent(
-    ad: SAAd,
+    ad: SAAd? = null,
     session: ISASession,
     executor: Executor,
     timeout: Int,
