@@ -1,12 +1,40 @@
-dependencies:
-  pre:
-    - echo y | android update sdk --no-ui --all --filter build-tools-26.0.0,android-26,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository
+version: 2
+jobs:
+  build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-30
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout:
+          post:
+            - touch local.properties
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+          command: sudo chmod +x ./gradlew
+      - run:
+          name: Download Dependencies
+          command: ./gradlew dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run Tests
+          command: ./gradlew lint test
 
-checkout:
-  post:
-    - cp local.properties.ci local.properties
-
-test:
-  override:
-    - ./gradlew clean
-    - ./gradlew build
+      - run:
+          name: Save test results
+          command: mkdir -p ~/test-results/junit/ && find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: app/build/reports
+          destination: reports

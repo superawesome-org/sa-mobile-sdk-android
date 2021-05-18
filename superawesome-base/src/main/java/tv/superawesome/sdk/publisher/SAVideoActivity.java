@@ -25,12 +25,12 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.lib.savideoplayer.IVideoPlayer;
-import tv.superawesome.lib.savideoplayer.IVideoPlayerController;
-import tv.superawesome.lib.savideoplayer.VideoPlayer;
-import tv.superawesome.lib.savideoplayer.VideoPlayerController;
 import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
+import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayer;
+import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayerController;
+import tv.superawesome.sdk.publisher.videoPlayer.VideoPlayer;
+import tv.superawesome.sdk.publisher.videoPlayer.VideoPlayerController;
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.

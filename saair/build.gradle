@@ -1,10 +1,7 @@
 apply plugin: 'com.android.library'
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-version = properties.getProperty("project.version")
-group = properties.getProperty("project.group")
+version = "8.0.4"
+group = "8"
 
 android {
     compileSdkVersion compile_sdk_version
@@ -22,15 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
-repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
-}
+
 
 dependencies {
     implementation project(':superawesome-base')

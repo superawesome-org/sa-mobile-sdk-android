@@ -12,9 +12,7 @@ If you already have AdMob ads serving in your app, but want to integrate Awesome
 You can either change your module’s `build.gradle` file (usually the file under MyApplication/app/) to the following format:
 
 {% highlight gradle %}
-repositories {
-    maven { url "https://dl.bintray.com/superawesome/SuperAwesomeSDK" }
-}
+
 
 dependencies {
     # add the Android Publisher SDK

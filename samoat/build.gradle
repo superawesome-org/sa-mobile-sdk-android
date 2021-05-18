@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply from: '../bintray.gradle'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -9,7 +8,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName PROJECT_VERSION
+        versionName "8.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -21,17 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 ext {
     publishDescription = 'SuperAwesome Mobile SDK for Android with Moat extension'
 }
-
-bintray { pkg { name = 'SuperAwesome-Moat' }}
 
 dependencies {
     implementation files('libs/moatlib-2.6.6.jar')
