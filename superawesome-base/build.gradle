@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply from: '../publish.gradle'
+
+ext.libraryDescription = 'SuperAwesome Base Mobile SDK for Android'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -11,7 +14,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName "8.0.4"
+        versionName version
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -29,10 +32,6 @@ android {
     }
 }
 
-ext {
-    publishDescription = 'SuperAwesome Base Mobile SDK for Android'
-}
-
 repositories {
     mavenCentral()
 }
@@ -40,7 +39,7 @@ repositories {
 dependencies {
 
     // Tests
-    testImplementation "junit:junit:4.13.2"
+    testImplementation "junit:junit:$junit_version"
     testImplementation 'org.mockito:mockito-core:3.10.0'
     testImplementation "eu.codearte.catch-exception:catch-exception:2.0"
     testImplementation 'org.assertj:assertj-core:3.19.0'

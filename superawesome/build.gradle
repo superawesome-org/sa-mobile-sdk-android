@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply from: '../publish.gradle'
+
+ext.libraryDescription = 'SuperAwesome Full SDK'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -8,7 +11,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName "8.0.4"
+        versionName version
     }
     buildTypes {
         release {
@@ -18,9 +21,6 @@ android {
     }
 }
 
-ext {
-    publishDescription = 'SuperAwesome Full SDK'
-}
 repositories {
     mavenCentral()
 }
