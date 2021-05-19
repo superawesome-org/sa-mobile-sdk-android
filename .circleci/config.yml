@@ -114,7 +114,7 @@ jobs:
   publish_docs:
     docker:
       - image: circleci/ruby:2.4.1
-    working_directory: ~/repo/docs
+    working_directory: ~/repo
     environment:
       - JEKYLL_ENV: production
       - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
