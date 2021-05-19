@@ -11,8 +11,7 @@ if ENV['SA_USE_DEV_FASTFILE'] then
 else
   import_from_git(
     url: "git@github.com:SuperAwesomeLTD/sa-continuous-integration.git",
-    #branch: "master",
-    branch: "fix/android_s3_maven",
+    branch: "master",
     path: "mobile/sdks/android/Fastfile",
   )
 end
