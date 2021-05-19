@@ -150,5 +150,84 @@ workflows:
   version: 2.1
   android_sdk_workflow:
     jobs:
+      - test_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+      - semantic_release:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              only: master
+      - sdk_push_superawesome:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - sdk_push_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - sdk_push_superawesome_air:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - sdk_push_superawesome_admob:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - sdk_push_superawesome_moat:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - sdk_push_superawesome_mopub:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - sdk_push_superawesome_unity:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
       - publish_docs:
           context: MOBILE_ANDROID_SDKS
+          requires:
+            - sdk_push_superawesome
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
