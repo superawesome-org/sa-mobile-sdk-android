@@ -12,7 +12,7 @@ baseurl: "/"
 # This is mostly for testing
 url: "https://sa-mobile-sdk-android.superawesome.tv"
 
-latest_version: 7.2.18
+latest_version: RELEASE-VERSION-NAME
 changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/CHANGELOG.md
 licence_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/master/LICENSE
 repo: "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android"
@@ -52,7 +52,7 @@ fixedNav: 'true' # true or false
 
 permalink: /:year/:title/
 markdown: kramdown
-exclude: [_site, CHANGELOG.md, LICENSE, README.md, vendor]
+exclude: [_site, CHANGELOG.md, LICENSE, README.md, vendor, VERSION, Gemfile, Gemfile.lock, CNAME, _config.yml, circle_urls.sh, docker-compose.yml]
 
 # Collections
 collections:
