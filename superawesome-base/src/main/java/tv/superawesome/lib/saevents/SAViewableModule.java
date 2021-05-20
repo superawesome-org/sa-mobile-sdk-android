@@ -157,7 +157,7 @@ public class SAViewableModule {
             // do one check to see if the parent is null - also useful if the
             // view's parent disappears from the screen (and thus the view as well)
             // if that's the case, just kill it all and don't send a viewable impression
-            if (vgparent != null && vgparent instanceof View) {
+            if (vgparent instanceof View) {
                 View parent = (View) vgparent;
 
                 // now get the child position

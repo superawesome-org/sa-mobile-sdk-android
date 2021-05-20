@@ -18,14 +18,11 @@ public class SAAlert {
     public static final int OK_BUTTON = 0;
     public static final int CANCEL_BUTTON = 1;
 
-    // private instance of an alert dialog
-    private AlertDialog dialog;
-
     // private instance of an input box
     private EditText input;
 
     // singleton instance for the SAAlert class
-    private static SAAlert instance = new SAAlert();
+    private static final SAAlert instance = new SAAlert();
 
     /**
      * Private constructor
@@ -102,7 +99,8 @@ public class SAAlert {
         }
 
         // create and show
-        dialog = alert.create();
+        // private instance of an alert dialog
+        AlertDialog dialog = alert.create();
         dialog.show();
     }
 }

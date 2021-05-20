@@ -32,10 +32,10 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class SAVASTParser {
 
     // private context
-    private Context context = null;
+    private Context context;
     // the header & query
-    private JSONObject header = null;
-    private JSONObject query = null;
+    private JSONObject header;
+    private JSONObject query;
 
     private Executor executor;
     private int timeout;

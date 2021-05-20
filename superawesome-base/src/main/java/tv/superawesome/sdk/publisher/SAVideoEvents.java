@@ -11,7 +11,7 @@ public class SAVideoEvents {
     void hasBeenVisible();
   }
 
-  private SAEvents events;
+  private final SAEvents events;
 
   public Listener listener;
 

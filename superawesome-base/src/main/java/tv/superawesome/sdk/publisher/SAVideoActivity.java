@@ -19,6 +19,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
@@ -41,15 +43,12 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     // fed-in data
     private SAAd ad = null;
     private Config config = null;
-    private SAEvents events = null;
     private SAInterface listenerRef = null;
     // derived objects
-    private IVideoPlayerController control = new VideoPlayerController();
+    private final IVideoPlayerController control = new VideoPlayerController();
     private SAVideoEvents videoEvents = null;
     private SAVideoClick videoClick = null;
 
-    private RelativeLayout parent = null;
-    private AdVideoPlayerControllerView chrome;
     private ImageButton closeButton = null;
     private VideoPlayer videoPlayer = null;
 
@@ -72,7 +71,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         // get listener & events from static ad context
         listenerRef = SAVideoAd.getListener();
-        events = SAVideoAd.getEvents();
+        SAEvents events = SAVideoAd.getEvents();
 
         // setup derived objects
         videoEvents = new SAVideoEvents(events, this);
@@ -89,12 +88,12 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
 
         // create main content for activity
-        parent = new RelativeLayout(this);
+        RelativeLayout parent = new RelativeLayout(this);
         parent.setId(SAUtils.randomNumberBetween(1000000, 1500000));
         parent.setLayoutParams(params);
         setContentView(parent);
 
-        chrome = new AdVideoPlayerControllerView(this);
+        AdVideoPlayerControllerView chrome = new AdVideoPlayerControllerView(this);
         chrome.shouldShowPadlock(config.shouldShowPadlock);
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
         chrome.setClickListener(new View.OnClickListener() {
@@ -147,7 +146,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -174,7 +173,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onPrepared(IVideoPlayer videoPlayer, int time, int duration) {
+    public void onPrepared(@NonNull IVideoPlayer videoPlayer, int time, int duration) {
 
         videoEvents.prepare(videoPlayer, time, duration);
 
@@ -184,12 +183,12 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     }
 
     @Override
-    public void onTimeUpdated(IVideoPlayer videoPlayer, int time, int duration) {
+    public void onTimeUpdated(@NonNull IVideoPlayer videoPlayer, int time, int duration) {
         videoEvents.time(videoPlayer, time, duration);
     }
 
     @Override
-    public void onComplete(IVideoPlayer videoPlayer, int time, int duration) {
+    public void onComplete(@NonNull IVideoPlayer videoPlayer, int time, int duration) {
         completed = true;
         videoEvents.complete(videoPlayer, time, duration);
         closeButton.setVisibility(View.VISIBLE);
@@ -204,7 +203,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     }
 
     @Override
-    public void onError(IVideoPlayer videoPlayer, Throwable throwable, int time, int duration) {
+    public void onError(@NonNull IVideoPlayer videoPlayer, @NonNull Throwable throwable, int time, int duration) {
         videoEvents.error(videoPlayer, time, duration);
 
         if (listenerRef != null) {
@@ -270,15 +269,15 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
 class Config implements Parcelable {
 
-    boolean shouldShowPadlock;
-    boolean isParentalGateEnabled;
-    boolean isBumperPageEnabled;
-    boolean shouldShowSmallClick;
-    boolean isBackButtonEnabled;
-    boolean shouldCloseAtEnd;
-    boolean shouldShowCloseButton;
-    boolean shouldShowCloseWarning;
-    SAOrientation orientation;
+    final boolean shouldShowPadlock;
+    final boolean isParentalGateEnabled;
+    final boolean isBumperPageEnabled;
+    final boolean shouldShowSmallClick;
+    final boolean isBackButtonEnabled;
+    final boolean shouldCloseAtEnd;
+    final boolean shouldShowCloseButton;
+    final boolean shouldShowCloseWarning;
+    final SAOrientation orientation;
 
     Config(boolean shouldShowPadlock,
            boolean isParentalGateEnabled,

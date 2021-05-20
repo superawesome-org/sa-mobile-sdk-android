@@ -1,7 +1,6 @@
 package tv.superawesome.lib.saevents;
 
 import android.app.Application;
-import android.content.Context;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.VideoView;
@@ -200,7 +199,7 @@ public class SAEvents {
 
     public boolean startMoatTrackingForVideoPlayer(VideoView videoView, int duration){
         if(moatModule != null) {
-            final boolean isAllowed = moatModule != null && moatModule.isMoatAllowed();
+            final boolean isAllowed = moatModule.isMoatAllowed();
             if (isAllowed) {
                 triggerMoatAttemptEvent();
             }

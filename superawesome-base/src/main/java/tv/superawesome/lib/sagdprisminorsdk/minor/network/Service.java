@@ -15,9 +15,7 @@ public class Service implements NetworkInterface {
     protected String bundleId;
     protected String dateOfBirth;
 
-    // private data
-    private Context context = null;
-    private SANetwork network;
+    private final SANetwork network;
 
     public Service() {
         network = new SANetwork();
@@ -55,7 +53,7 @@ public class Service implements NetworkInterface {
     }
 
     public void execute(Context context, String dateOfBirth, String bundleId, ServiceResponseInterface listener) {
-        this.context = context;
+        // private data
 
         url = SAAgeCheck.sdk.getURL();
         this.bundleId = bundleId;
