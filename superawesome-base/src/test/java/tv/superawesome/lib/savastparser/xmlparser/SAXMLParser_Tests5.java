@@ -36,12 +36,9 @@ public class SAXMLParser_Tests5 {
         assertNotNull(document);
 
         final List<Element> errors = new ArrayList<>();
-        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                assertNotNull(e);
-                errors.add(e);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, e -> {
+            assertNotNull(e);
+            errors.add(e);
         });
 
         assertNotNull(errors);
@@ -59,12 +56,9 @@ public class SAXMLParser_Tests5 {
         assertNotNull(document);
 
         final List<Element> impressions = new ArrayList<>();
-        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                assertNotNull(e);
-                impressions.add(e);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, e -> {
+            assertNotNull(e);
+            impressions.add(e);
         });
 
         assertNotNull(impressions);
@@ -82,12 +76,9 @@ public class SAXMLParser_Tests5 {
         assertNotNull(document);
 
         final List<Element> clicks = new ArrayList<>();
-        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                assertNotNull(e);
-                clicks.add(e);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, e -> {
+            assertNotNull(e);
+            clicks.add(e);
         });
 
         assertNotNull(clicks);
@@ -102,12 +93,9 @@ public class SAXMLParser_Tests5 {
         String tag = "Impression";
 
         final List<Element> impressions = new ArrayList<>();
-        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                assertNotNull(e);
-                impressions.add(e);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, e -> {
+            assertNotNull(e);
+            impressions.add(e);
         });
 
         assertNotNull(impressions);
@@ -124,12 +112,9 @@ public class SAXMLParser_Tests5 {
         String tag = null;
 
         final List<Element> impressions = new ArrayList<>();
-        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                assertNotNull(e);
-                impressions.add(e);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(document, tag, e -> {
+            assertNotNull(e);
+            impressions.add(e);
         });
 
         assertNotNull(impressions);

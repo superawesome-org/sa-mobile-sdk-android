@@ -55,16 +55,13 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(200, status);
-                assertTrue(success);
-                assertNotNull(payload);
-                assertEquals(responseBody, payload);
-            }
+            // then
+            assertEquals(200, status);
+            assertTrue(success);
+            assertNotNull(payload);
+            assertEquals(responseBody, payload);
         });
 
         //then
@@ -84,16 +81,13 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, query, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, query, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(200, status);
-                assertTrue(success);
-                assertNotNull(payload);
-                assertEquals(responseBody, payload);
-            }
+            // then
+            assertEquals(200, status);
+            assertTrue(success);
+            assertNotNull(payload);
+            assertEquals(responseBody, payload);
         });
 
         //then
@@ -113,16 +107,13 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, header, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, header, (status, payload, success) -> {
 
-                // then
-                assertEquals(200, status);
-                assertTrue(success);
-                assertNotNull(payload);
-                assertEquals(responseBody, payload);
-            }
+            // then
+            assertEquals(200, status);
+            assertTrue(success);
+            assertNotNull(payload);
+            assertEquals(responseBody, payload);
         });
 
         //then
@@ -148,16 +139,13 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendPOST(url, null, header, body, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendPOST(url, null, header, body, (status, payload, success) -> {
 
-                // then
-                assertEquals(200, status);
-                assertTrue(success);
-                assertNotNull(payload);
-                assertEquals(responseBody, payload);
-            }
+            // then
+            assertEquals(200, status);
+            assertTrue(success);
+            assertNotNull(payload);
+            assertEquals(responseBody, payload);
         });
 
         //then
@@ -177,16 +165,13 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(204, status);
-                assertTrue(success);
-                assertNotNull(payload);
-                assertEquals("", payload);
-            }
+            // then
+            assertEquals(204, status);
+            assertTrue(success);
+            assertNotNull(payload);
+            assertEquals("", payload);
         });
 
         //then
@@ -206,16 +191,13 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(200, status);
-                assertTrue(success);
-                assertNotNull(payload);
-                assertEquals(responseBody, payload);
-            }
+            // then
+            assertEquals(200, status);
+            assertTrue(success);
+            assertNotNull(payload);
+            assertEquals(responseBody, payload);
         });
 
         //then
@@ -234,15 +216,12 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(404, status);
-                assertFalse(success);
-                assertNull(payload);
-            }
+            // then
+            assertEquals(404, status);
+            assertFalse(success);
+            assertNull(payload);
         });
 
         //then
@@ -262,15 +241,12 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(401, status);
-                assertFalse(success);
-                assertNull(payload);
-            }
+            // then
+            assertEquals(401, status);
+            assertFalse(success);
+            assertNull(payload);
         });
 
         //then
@@ -281,15 +257,12 @@ public class TestSANetwork {
     @Test
     public void test_SANetwork_SendGET_WithMalformedUrl () throws Exception {
         // given
-        network.sendGET("jsaksa\\\\s\\\\asasaasa", null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET("jsaksa\\\\s\\\\asasaasa", null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(0, status);
-                assertFalse(success);
-                assertNull(payload);
-            }
+            // then
+            assertEquals(0, status);
+            assertFalse(success);
+            assertNull(payload);
         });
     }
 
@@ -304,15 +277,12 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(0, status);
-                assertFalse(success);
-                assertNull(payload);
-            }
+            // then
+            assertEquals(0, status);
+            assertFalse(success);
+            assertNull(payload);
         });
     }
 
@@ -327,15 +297,12 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(0, status);
-                assertFalse(success);
-                assertNull(payload);
-            }
+            // then
+            assertEquals(0, status);
+            assertFalse(success);
+            assertNull(payload);
         });
     }
 
@@ -355,15 +322,12 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendPOST(url, null, null, body, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendPOST(url, null, null, body, (status, payload, success) -> {
 
-                // then
-                assertEquals(0, status);
-                assertFalse(success);
-                assertNull(payload);
-            }
+            // then
+            assertEquals(0, status);
+            assertFalse(success);
+            assertNull(payload);
         });
     }
 
@@ -378,15 +342,12 @@ public class TestSANetwork {
         // when
         server.enqueue(mockResponse);
 
-        network.sendGET(url, null, null, new SANetworkInterface() {
-            @Override
-            public void saDidGetResponse(int status, String payload, boolean success) {
+        network.sendGET(url, null, null, (status, payload, success) -> {
 
-                // then
-                assertEquals(0, status);
-                assertFalse(success);
-                assertNull(payload);
-            }
+            // then
+            assertEquals(0, status);
+            assertFalse(success);
+            assertNull(payload);
         });
     }
 }

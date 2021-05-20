@@ -103,14 +103,11 @@ public class SASession implements ISASession {
      */
     @Override
     public void prepareSession (final SASessionInterface listener) {
-        capper.getDauID(new SACapperInterface() {
-            @Override
-            public void didFindDAUID(int dauID) {
-                setDauId(dauID);
+        capper.getDauID(dauID -> {
+            setDauId(dauID);
 
-                if (listener != null) {
-                    listener.didFindSessionReady();
-                }
+            if (listener != null) {
+                listener.didFindSessionReady();
             }
         });
     }

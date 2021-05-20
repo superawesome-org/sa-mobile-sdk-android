@@ -17,7 +17,6 @@ import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import okio.Buffer;
 import tv.superawesome.lib.BufferedResourceReader;
-import tv.superawesome.lib.ResourceReader;
 import tv.superawesome.lib.sanetwork.mocks.MockExecutor;
 
 import static junit.framework.Assert.assertEquals;
@@ -73,16 +72,13 @@ public class TestSAFileDownloader {
 
         server.enqueue(mockResponse);
 
-        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom(url, new SAFileDownloaderInterface() {
-            @Override
-            public void saDidDownloadFile(boolean success, String key, String filePath) {
+        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom(url, (success, key, filePath) -> {
 
-                Assert.assertTrue(success);
-                Assert.assertNotNull(filePath);
-                Assert.assertEquals("sasdkkey__pngresource.png", key);
-                Assert.assertEquals("pngresource.png", filePath);
-                Assert.assertNotNull(outputStream);
-            }
+            Assert.assertTrue(success);
+            Assert.assertNotNull(filePath);
+            Assert.assertEquals("sasdkkey__pngresource.png", key);
+            Assert.assertEquals("pngresource.png", filePath);
+            Assert.assertNotNull(outputStream);
         });
 
         // then
@@ -115,16 +111,13 @@ public class TestSAFileDownloader {
 
         server.enqueue(mockResponse);
 
-        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom(url, new SAFileDownloaderInterface() {
-            @Override
-            public void saDidDownloadFile(boolean success, String key, String filePath) {
+        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom(url, (success, key, filePath) -> {
 
-                Assert.assertTrue(success);
-                Assert.assertNotNull(filePath);
-                Assert.assertEquals("sasdkkey__videoresource.mp4", key);
-                Assert.assertEquals("videoresource.mp4", filePath);
-                Assert.assertNotNull(outputStream);
-            }
+            Assert.assertTrue(success);
+            Assert.assertNotNull(filePath);
+            Assert.assertEquals("sasdkkey__videoresource.mp4", key);
+            Assert.assertEquals("videoresource.mp4", filePath);
+            Assert.assertNotNull(outputStream);
         });
 
         // then
@@ -157,15 +150,12 @@ public class TestSAFileDownloader {
 
         server.enqueue(badResponse);
 
-        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom(url, new SAFileDownloaderInterface() {
-            @Override
-            public void saDidDownloadFile(boolean success, String key, String filePath) {
+        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom(url, (success, key, filePath) -> {
 
-                Assert.assertFalse(success);
-                Assert.assertNull(key);
-                Assert.assertNull(filePath);
-                Assert.assertNotNull(outputStream);
-            }
+            Assert.assertFalse(success);
+            Assert.assertNull(key);
+            Assert.assertNull(filePath);
+            Assert.assertNotNull(outputStream);
         });
     }
 
@@ -175,14 +165,11 @@ public class TestSAFileDownloader {
         String url = server.url("/some/resource/url/videoresource.mp4").toString();
 
         // when
-        new SAFileDownloader(null, executor, true, 1000).downloadFileFrom(url, new SAFileDownloaderInterface() {
-            @Override
-            public void saDidDownloadFile(boolean success, String key, String filePath) {
+        new SAFileDownloader(null, executor, true, 1000).downloadFileFrom(url, (success, key, filePath) -> {
 
-                Assert.assertFalse(success);
-                Assert.assertNull(key);
-                Assert.assertNull(filePath);
-            }
+            Assert.assertFalse(success);
+            Assert.assertNull(key);
+            Assert.assertNull(filePath);
         });
     }
 
@@ -203,14 +190,11 @@ public class TestSAFileDownloader {
         when(context.openFileOutput(anyString(), anyInt())).thenReturn(outputStream);
 
         // when
-        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom("jsaksa\\\\\\\\s\\\\\\\\asasaasa", new SAFileDownloaderInterface() {
-            @Override
-            public void saDidDownloadFile(boolean success, String key, String filePath) {
+        new SAFileDownloader(context, executor, true, 1000).downloadFileFrom("jsaksa\\\\\\\\s\\\\\\\\asasaasa", (success, key, filePath) -> {
 
-                Assert.assertFalse(success);
-                Assert.assertNull(key);
-                Assert.assertNull(filePath);
-            }
+            Assert.assertFalse(success);
+            Assert.assertNull(key);
+            Assert.assertNull(filePath);
         });
     }
 }

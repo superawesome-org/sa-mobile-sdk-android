@@ -28,7 +28,7 @@ public class SAVideoAd {
     // private vars w/ a public interface
     private static final SAEvents events = new SAEvents();
     public static final HashMap<Integer, Object> ads = new HashMap<>();
-    private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
+    private static SAInterface listener = (placementId, event) -> {};
 
     private static boolean shouldShowCloseWarning           = SADefaults.defaultCloseWarning();
     private static boolean isParentalGateEnabled            = SADefaults.defaultParentalGate();
@@ -65,53 +65,46 @@ public class SAVideoAd {
             // create a current session
             final SASession session = getNewSession(context);
 
-            session.prepareSession(new SASessionInterface() {
-                @Override
-                public void didFindSessionReady() {
+            session.prepareSession(() -> {
 
-                    // after session is OK - start loading
-                    loader.loadAd(placementId, session, new SALoaderInterface() {
-                        @Override
-                        public void saDidLoadAd(SAResponse response) {
+                // after session is OK - start loading
+                loader.loadAd(placementId, session, response -> {
 
-                            if (response.status != 200) {
-                                //
-                                // remove from here
-                                ads.remove(placementId);
+                    if (response.status != 200) {
+                        //
+                        // remove from here
+                        ads.remove(placementId);
 
-                                //
-                                // send callback
-                                if (listener != null) {
-                                    listener.onEvent(placementId, SAEvent.adFailedToLoad);
-                                } else {
-                                    Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToLoad");
-                                }
-                            }
-                            else {
-                                // find out the real valid
-                                boolean isValid = response.isValid();
-                                SAAd first = isValid ? response.ads.get(0) : null;
-                                isValid = first != null && first.creative.details.media.isDownloaded;
-
-                                // put the correct value
-                                if (isValid) {
-                                    ads.put(placementId, first);
-                                }
-                                // remove existing
-                                else {
-                                    ads.remove(placementId);
-                                }
-
-                                // call listener(s)
-                                if (listener != null) {
-                                    listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
-                                } else {
-                                    Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
-                                }
-                            }
+                        //
+                        // send callback
+                        if (listener != null) {
+                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                        } else {
+                            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToLoad");
                         }
-                    });
-                }
+                    } else {
+                        // find out the real valid
+                        boolean isValid = response.isValid();
+                        SAAd first = isValid ? response.ads.get(0) : null;
+                        isValid = first != null && first.creative.details.media.isDownloaded;
+
+                        // put the correct value
+                        if (isValid) {
+                            ads.put(placementId, first);
+                        }
+                        // remove existing
+                        else {
+                            ads.remove(placementId);
+                        }
+
+                        // call listener(s)
+                        if (listener != null) {
+                            listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                        } else {
+                            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                        }
+                    }
+                });
             });
 
         }

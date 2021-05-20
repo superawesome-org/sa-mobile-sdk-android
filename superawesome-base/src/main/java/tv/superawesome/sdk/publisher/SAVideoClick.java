@@ -35,12 +35,7 @@ public class SAVideoClick {
     public void handleSafeAdClick(View view) {
         final Context context = view.getContext();
 
-        Runnable clickRunner = new Runnable() {
-            @Override
-            public void run() {
-                showSuperAwesomeWebViewInExternalBrowser(context);
-            }
-        };
+        Runnable clickRunner = () -> showSuperAwesomeWebViewInExternalBrowser(context);
         showParentalGateIfNeededWithCompletion(context, clickRunner);
     }
 
@@ -54,12 +49,9 @@ public class SAVideoClick {
         if (context != null && uri != null) {
             final Uri safeUri = uri;
 
-            SABumperPage.Interface bumperCallback = new SABumperPage.Interface() {
-                @Override
-                public void didEndBumper() {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, safeUri);
-                    context.startActivity(browserIntent);
-                }
+            SABumperPage.Interface bumperCallback = () -> {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, safeUri);
+                context.startActivity(browserIntent);
             };
 
             if (isBumperPageEnabled) {
@@ -88,12 +80,7 @@ public class SAVideoClick {
 
         if (destinationUrl != null && context != null) {
             // check for parental gate on click
-            Runnable clickRunner = new Runnable() {
-                @Override
-                public void run() {
-                    click(context, destinationUrl);
-                }
-            };
+            Runnable clickRunner = () -> click(context, destinationUrl);
             clickRunner.run();
             // showParentalGateIfNeededWithCompletion(context, clickRunner);
         }
@@ -138,12 +125,7 @@ public class SAVideoClick {
     private void click(final Context context, final String destination) {
 
         if (isBumperPageEnabled) {
-            SABumperPage.setListener(new SABumperPage.Interface() {
-                @Override
-                public void didEndBumper() {
-                    handleUrl(context, destination);
-                }
-            });
+            SABumperPage.setListener(() -> handleUrl(context, destination));
 
             if (context instanceof Activity) {
                 SABumperPage.play((Activity)context);

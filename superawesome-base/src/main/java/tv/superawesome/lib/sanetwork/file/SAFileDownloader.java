@@ -68,7 +68,7 @@ public class SAFileDownloader {
     public void downloadFileFrom(final String url, SAFileDownloaderInterface listener1) {
 
         // get a local copy of the listener
-        final SAFileDownloaderInterface listener = listener1 != null ? listener1 : new SAFileDownloaderInterface() {@Override public void saDidDownloadFile(boolean success, String key, String filePath) {}};
+        final SAFileDownloaderInterface listener = listener1 != null ? listener1 : (success, key, filePath) -> {};
 
         // check for null context
         if (context == null) {
@@ -89,79 +89,76 @@ public class SAFileDownloader {
             // do nothing
         }
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
+        executor.execute(() -> {
 
-                // current success var (that's to be returned)
-                boolean success = true;
+            // current success var (that's to be returned)
+            boolean success = true;
 
-                // create streams
-                InputStream input = null;
-                OutputStream output = null;
-                HttpURLConnection connection = null;
+            // create streams
+            InputStream input = null;
+            OutputStream output = null;
+            HttpURLConnection connection = null;
 
-                try {
-                    // start a new Http connection)
-                    connection = (HttpURLConnection) currentItem.getUrl().openConnection();
-                    connection.setReadTimeout(timeout);
-                    connection.setConnectTimeout(timeout);
-                    connection.connect();
+            try {
+                // start a new Http connection)
+                connection = (HttpURLConnection) currentItem.getUrl().openConnection();
+                connection.setReadTimeout(timeout);
+                connection.setConnectTimeout(timeout);
+                connection.connect();
 
-                    int statusCode = connection.getResponseCode();
+                int statusCode = connection.getResponseCode();
 
-                    // exception code != 200
-                    if (statusCode != HttpURLConnection.HTTP_OK) return;
+                // exception code != 200
+                if (statusCode != HttpURLConnection.HTTP_OK) return;
 
-                    // get input stream and start writing to disk
-                    input = connection.getInputStream();
-                    output = context.openFileOutput(currentItem.getFilePath(), Context.MODE_PRIVATE);
+                // get input stream and start writing to disk
+                input = connection.getInputStream();
+                output = context.openFileOutput(currentItem.getFilePath(), Context.MODE_PRIVATE);
 
-                    int file_size = connection.getContentLength();
+                int file_size = connection.getContentLength();
 
-                    // start the file download operation
-                    byte data[] = new byte[4096];
-                    long total = 0;
-                    int count;
-                    while ((count = input.read(data)) != -1) {
-                        total += count;
-                        int percent = (int) ((total / (float) file_size) * 100);
+                // start the file download operation
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    int percent = (int) ((total / (float) file_size) * 100);
 
-                        if (!isDebug && (percent % 25 == 0)) {
-                            Log.d("SuperAwesome", "Have written " +  percent + "% of file");
-                        }
-
-                        // actually write the data to the disk
-                        output.write(data, 0, count);
+                    if (!isDebug && (percent % 25 == 0)) {
+                        Log.d("SuperAwesome", "Have written " +  percent + "% of file");
                     }
 
-                } catch (Exception e) {
-                    success = false;
+                    // actually write the data to the disk
+                    output.write(data, 0, count);
                 }
 
-                // try to close the whole connection
-                try {
-                    if (output != null) output.close();
-                    if (input != null) input.close();
-                } catch (IOException ignored) {
-                    // ignore
-                }
+            } catch (Exception e) {
+                success = false;
+            }
 
-                // disconnect
-                if (connection != null) connection.disconnect();
+            // try to close the whole connection
+            try {
+                if (output != null) output.close();
+                if (input != null) input.close();
+            } catch (IOException ignored) {
+                // ignore
+            }
 
-                if (success) {
+            // disconnect
+            if (connection != null) connection.disconnect();
 
-                    // put data in the editor
-                    SharedPreferences preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-                    preferences.edit().putString(currentItem.getKey(), currentItem.getFilePath()).commit();
+            if (success) {
 
-                    // send back
-                    sendBack(listener, true, currentItem.getKey(), currentItem.getFilePath());
-                }
-                else {
-                    sendBack(listener, false, null, null);
-                }
+                // put data in the editor
+                SharedPreferences preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+                preferences.edit().putString(currentItem.getKey(), currentItem.getFilePath()).commit();
+
+                // send back
+                sendBack(listener, true, currentItem.getKey(), currentItem.getFilePath());
+            }
+            else {
+                sendBack(listener, false, null, null);
             }
         });
     }
@@ -171,12 +168,9 @@ public class SAFileDownloader {
           And try to return it on the main thread
          */
         try {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    if (listener != null) {
-                        listener.saDidDownloadFile(success, key, diskUrl);
-                    }
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (listener != null) {
+                    listener.saDidDownloadFile(success, key, diskUrl);
                 }
             });
         }

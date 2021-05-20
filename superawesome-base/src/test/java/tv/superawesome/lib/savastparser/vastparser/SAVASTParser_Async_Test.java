@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import tv.superawesome.lib.samodelspace.vastad.SAVASTAd;
 import tv.superawesome.lib.samodelspace.vastad.SAVASTEvent;
 import tv.superawesome.lib.savastparser.SAVASTParser;
-import tv.superawesome.lib.savastparser.SAVASTParserInterface;
 import tv.superawesome.lib.savastparser.mocks.executors.MockExecutor;
 import tv.superawesome.lib.savastparser.mocks.servers.MockAbstractWebServer;
 import tv.superawesome.lib.savastparser.mocks.servers.vast.MockVASTServer;

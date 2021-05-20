@@ -28,23 +28,13 @@ public class SAMockCompanyModel extends SABaseObject {
     @Override
     public void readFromJson(JSONObject json) {
         name = SAJsonParser.getString(json, "name");
-        employees = SAJsonParser.getListFromJsonArray(json, "employees", new SAJsonToList<SAMockEmployeeModel, JSONObject>() {
-            @Override
-            public SAMockEmployeeModel traverseItem(JSONObject param) {
-                return new SAMockEmployeeModel(param);
-            }
-        });
+        employees = SAJsonParser.getListFromJsonArray(json, "employees", (SAJsonToList<SAMockEmployeeModel, JSONObject>) param -> new SAMockEmployeeModel(param));
     }
 
     @Override
     public JSONObject writeToJson() {
         return SAJsonParser.newObject("name", name,
-                "employees", SAJsonParser.getJsonArrayFromList(employees, new SAListToJson<JSONObject, SAMockEmployeeModel>() {
-                                @Override
-                                public JSONObject traverseItem(SAMockEmployeeModel param) {
-                                    return param.writeToJson();
-                                }
-                            }));
+                "employees", SAJsonParser.getJsonArrayFromList(employees, param -> param.writeToJson()));
     }
 
     @Override

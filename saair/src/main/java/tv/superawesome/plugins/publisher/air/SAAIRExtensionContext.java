@@ -26,7 +26,7 @@ public class SAAIRExtensionContext extends FREContext{
     public Map<String, FREFunction> getFunctions() {
 
         // create a new map of FREFunction objects
-        Map<String, FREFunction> functions = new HashMap<String, FREFunction>();
+        Map<String, FREFunction> functions = new HashMap<>();
 
         // add all functions
         functions.put("SuperAwesomeAIRSAInterstitialAdCreate", new SAAIRInterstitialAd.SuperAwesomeAIRSAInterstitialAdCreate());
