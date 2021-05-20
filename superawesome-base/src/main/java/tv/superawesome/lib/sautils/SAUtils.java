@@ -20,6 +20,9 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.Contract;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -37,7 +40,7 @@ import java.util.regex.Pattern;
  * Class that contains a lot of static aux functions used across the SDK to simplify code
  */
 public class SAUtils {
-
+    private static final Random rand  = new Random();
     /**
      * SAUtils enum defining possible SDK system sizes
      *  - undefined: means the SDK could not determine the correct system size
@@ -148,6 +151,8 @@ public class SAUtils {
      * @param boundingH source Height
      * @return          a rect with X, Y, W, H
      */
+    @NonNull
+    @Contract("_, _, _, _ -> new")
     public static Rect mapSourceSizeIntoBoundingSize(float sourceW, float sourceH, float boundingW, float boundingH) {
         if (boundingW == 1 || boundingW == 0) { boundingW = sourceW; }
         if (boundingH == 1 || boundingH == 0) { boundingH = sourceH; }
@@ -172,7 +177,7 @@ public class SAUtils {
      * @param frame  the parent frame
      * @return       true or false
      */
-    public static boolean isTargetRectInFrameRect(Rect target, Rect frame) {
+    public static boolean isTargetRectInFrameRect(@NonNull Rect target, @NonNull Rect frame) {
         // parent
         float x11 = frame.left;
         float y11 = frame.top;
@@ -207,7 +212,7 @@ public class SAUtils {
      * @return    a random integer
      */
     public static int randomNumberBetween(int min, int max){
-        Random rand  = new Random();
+
         return rand.nextInt(max - min + 1) + min;
     }
 
@@ -237,9 +242,9 @@ public class SAUtils {
      * @param original the original list
      * @return         a list with just one element, the first one of the original
      */
-    public static List removeAllButFirstElement(List original) {
-        if (original != null && original.size() >= 1) {
-            List finalList = new ArrayList<>();
+    public static <T> List<T> removeAllButFirstElement(List<T> original) {
+        if (original != null && !original.isEmpty()) {
+            List<T> finalList = new ArrayList<>();
             finalList.add(original.get(0));
             return finalList;
         } else  {
@@ -253,7 +258,7 @@ public class SAUtils {
      * @param activity  the activity to pass along as context
      * @return          a float meaning the scale
      */
-    public static float getScaleFactor(Activity activity){
+    public static float getScaleFactor(@NonNull Activity activity){
         DisplayMetrics metrics = new DisplayMetrics();
         Display display = activity.getWindowManager().getDefaultDisplay();
         display.getMetrics(metrics);
@@ -266,12 +271,9 @@ public class SAUtils {
      * @param activity  the activity to pass along as context
      * @return          a SASize object with width & height members
      */
-    public static SASize getRealScreenSize(Activity activity, boolean rotate) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        Display display = activity.getWindowManager().getDefaultDisplay();
-
+    @NonNull
+    public static SASize getRealScreenSize(@NonNull Activity activity, boolean rotate) {
         View decorView = activity.getWindow().getDecorView();
-
         if (!rotate){
             return new SASize(decorView.getWidth(), decorView.getHeight());
         } else {
@@ -308,6 +310,7 @@ public class SAUtils {
      *
      * @return a string
      */
+    @NonNull
     public static String getVerboseSystemDetails() {
         return "android" + "_" + getSystemSize().toString();
     }
@@ -329,7 +332,7 @@ public class SAUtils {
 
                 try {
                     ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getApplicationInfo().packageName, 0);
-                    String name = (String) (applicationInfo != null ? packageManager.getApplicationLabel(applicationInfo) : "Unknown");
+                    String name = (String) packageManager.getApplicationLabel(applicationInfo);
                     name = URLEncoder.encode(name, "UTF-8");
                     return name;
                 } catch (PackageManager.NameNotFoundException | UnsupportedEncodingException  ignored) {
@@ -440,21 +443,22 @@ public class SAUtils {
      * @return        a user agent string
      */
     public static String getUserAgent(Context context) {
+        String agent = "http.agent";
         if (Build.VERSION.SDK_INT >= 17) {
             if (context != null) {
                 try {
                     return WebSettings.getDefaultUserAgent(context);
                 } catch (Exception e) {
-                    return System.getProperty("http.agent");
+                    return System.getProperty(agent);
                 }
             } else {
-                return System.getProperty("http.agent");
+                return System.getProperty(agent);
             }
         } else {
             if (context != null) {
                 return new WebView(context).getSettings().getUserAgentString();
             } else {
-                return System.getProperty("http.agent");
+                return System.getProperty(agent);
             }
         }
     }
@@ -584,7 +588,7 @@ public class SAUtils {
         return target != null && !target.toString().isEmpty() && pattern.matcher(target).matches();
     }
 
-    final static SimpleDateFormat MONTH_YEAR_DATE_FORMAT = new SimpleDateFormat("MMyyyy", Locale.UK);
+    static final SimpleDateFormat MONTH_YEAR_DATE_FORMAT = new SimpleDateFormat("MMyyyy", Locale.UK);
 
     /**
      * Method that returns string representation of a given date
@@ -592,6 +596,7 @@ public class SAUtils {
      * @param date to be used
      * @return String representation of given date formatted as MMyyyy
      */
+    @NonNull
     public static String getMonthYearStringFromDate(Date date) {
         return MONTH_YEAR_DATE_FORMAT.format(date);
     }
