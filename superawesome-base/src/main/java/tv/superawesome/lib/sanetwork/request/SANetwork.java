@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright:   SuperAwesome Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -266,8 +266,8 @@ public class SANetwork {
     }
 
     private void sendBack (final SANetworkInterface listener, final int status, final String response, final boolean success) {
-        /**
-         * And try to return it on the main thread
+        /*
+          And try to return it on the main thread
          */
         try {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -279,9 +279,9 @@ public class SANetwork {
                 }
             });
         }
-        /**
-         * If the Main Looper is not present, as in a testing environment, still
-         * return the callback, but on the same thread.
+        /*
+          If the Main Looper is not present, as in a testing environment, still
+          return the callback, but on the same thread.
          */
         catch (Exception e) {
             if (listener != null) {
