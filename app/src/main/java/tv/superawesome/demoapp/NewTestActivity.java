@@ -30,8 +30,6 @@ public class NewTestActivity extends AppCompatActivity {
         mpu.load(58524);
 
         AppCompatButton button = findViewById(R.id.managed_interstitial);
-        button.setOnClickListener(view -> {
-            SAManagedInterstitialAd.load(this, 58509);
-        });
+        button.setOnClickListener(view -> SAManagedInterstitialAd.load(this, 58509));
     }
 }

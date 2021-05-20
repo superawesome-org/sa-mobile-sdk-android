@@ -35,56 +35,53 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
             SAInterstitialAd.setOrientation(SAOrientation.fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION)));
         }
 
-        SAInterstitialAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                switch (event) {
+        SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
+            switch (event) {
 
-                    case adLoaded: {
+                case adLoaded: {
 
-                        loadedPlacementId = placementId;
+                    loadedPlacementId = placementId;
 
-                        if (listener != null) {
-                            listener.onAdLoaded();
-                        }
-                        break;
+                    if (listener != null) {
+                        listener.onAdLoaded();
                     }
-                    case adEmpty:
-                    case adFailedToLoad: {
-                        if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
-                        }
-                        break;
+                    break;
+                }
+                case adEmpty:
+                case adFailedToLoad: {
+                    if (listener != null) {
+                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
                     }
-                    case adAlreadyLoaded:
-                        break;
-                    case adShown: {
-                        if (listener != null) {
-                            listener.onAdOpened();
-                        }
-                        break;
+                    break;
+                }
+                case adAlreadyLoaded:
+                    break;
+                case adShown: {
+                    if (listener != null) {
+                        listener.onAdOpened();
                     }
-                    case adFailedToShow: {
-                        if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
-                        }
-                        break;
+                    break;
+                }
+                case adFailedToShow: {
+                    if (listener != null) {
+                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
                     }
-                    case adClicked: {
-                        if (listener != null) {
-                            listener.onAdClicked();
-                            listener.onAdLeftApplication();
-                        }
-                        break;
+                    break;
+                }
+                case adClicked: {
+                    if (listener != null) {
+                        listener.onAdClicked();
+                        listener.onAdLeftApplication();
                     }
-                    case adEnded:
-                        break;
-                    case adClosed: {
-                        if (listener != null) {
-                            listener.onAdClosed();
-                        }
-                        break;
+                    break;
+                }
+                case adEnded:
+                    break;
+                case adClosed: {
+                    if (listener != null) {
+                        listener.onAdClosed();
                     }
+                    break;
                 }
             }
         });

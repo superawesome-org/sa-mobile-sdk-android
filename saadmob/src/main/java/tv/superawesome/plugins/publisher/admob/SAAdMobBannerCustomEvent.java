@@ -53,72 +53,66 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
             bannerAd.setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE));
         }
 
-        bannerAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int i, SAEvent saEvent) {
-                switch (saEvent) {
-                    case adLoaded: {
-                        // send load event
-                        if (listener != null) {
-                            listener.onAdLoaded(bannerAd);
-                        }
+        bannerAd.setListener((SAInterface) (i, saEvent) -> {
+            switch (saEvent) {
+                case adLoaded: {
+                    // send load event
+                    if (listener != null) {
+                        listener.onAdLoaded(bannerAd);
+                    }
 
-                        loaded = true;
+                    loaded = true;
 
-                        if (layouted && bannerAd != null && !setup) {
-                            bannerAd.play(context);
-                            setup = true;
-                        }
-                        break;
+                    if (layouted && bannerAd != null && !setup) {
+                        bannerAd.play(context);
+                        setup = true;
                     }
-                    case adEmpty:
-                    case adFailedToLoad: {
-                        if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
-                        }
-                        break;
+                    break;
+                }
+                case adEmpty:
+                case adFailedToLoad: {
+                    if (listener != null) {
+                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
                     }
-                    case adAlreadyLoaded:
-                        break;
-                    case adShown: {
-                        if (listener != null) {
-                            listener.onAdOpened();
-                        }
-                        break;
+                    break;
+                }
+                case adAlreadyLoaded:
+                    break;
+                case adShown: {
+                    if (listener != null) {
+                        listener.onAdOpened();
                     }
-                    case adFailedToShow: {
-                        if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
-                        }
-                        break;
+                    break;
+                }
+                case adFailedToShow: {
+                    if (listener != null) {
+                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
                     }
-                    case adClicked: {
-                        if (listener != null) {
-                            listener.onAdClicked();
-                            listener.onAdLeftApplication();
-                        }
-                        break;
+                    break;
+                }
+                case adClicked: {
+                    if (listener != null) {
+                        listener.onAdClicked();
+                        listener.onAdLeftApplication();
                     }
-                    case adEnded:
-                        break;
-                    case adClosed: {
-                        if (listener != null) {
-                            listener.onAdClosed();
-                        }
-                        break;
+                    break;
+                }
+                case adEnded:
+                    break;
+                case adClosed: {
+                    if (listener != null) {
+                        listener.onAdClosed();
                     }
+                    break;
                 }
             }
         });
 
         try {
-            bannerAd.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    layouted = true;
-                    if (loaded && !setup) {
-                        bannerAd.play(context);
-                    }
+            bannerAd.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                layouted = true;
+                if (loaded && !setup) {
+                    bannerAd.play(context);
                 }
             });
             int placementId = Integer.valueOf(s);

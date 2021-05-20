@@ -56,7 +56,7 @@ public class SAAlert {
     public void show(Context c, String title, String message, String okTitle, String nokTitle, boolean hasInput, int inputType, final SAAlertInterface listener1) {
 
         // create a new listener, that is never null
-        final SAAlertInterface listener = listener1 != null ? listener1 : new SAAlertInterface() {@Override public void saDidClickOnAlertButton(int button, String message) {}};
+        final SAAlertInterface listener = listener1 != null ? listener1 : (button, message1) -> {};
 
         // create a new alert builder
         final AlertDialog.Builder alert = new AlertDialog.Builder(c);

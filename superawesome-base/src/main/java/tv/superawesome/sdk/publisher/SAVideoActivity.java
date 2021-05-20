@@ -96,19 +96,11 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         AdVideoPlayerControllerView chrome = new AdVideoPlayerControllerView(this);
         chrome.shouldShowPadlock(config.shouldShowPadlock);
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
-        chrome.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                videoClick.handleAdClick(view);
-                listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
-            }
+        chrome.setClickListener(view -> {
+            videoClick.handleAdClick(view);
+            listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
         });
-        chrome.padlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                videoClick.handleSafeAdClick(view);
-            }
-        });
+        chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
 
         videoPlayer = new VideoPlayer(this);
         videoPlayer.setLayoutParams(params);
@@ -131,12 +123,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         closeButton.setLayoutParams(buttonLayout);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCloseAction();
-            }
-        });
+        closeButton.setOnClickListener(v -> onCloseAction());
         parent.addView(closeButton);
 
         try {

@@ -48,10 +48,7 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     public SAWebPlayer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        eventListener = new Listener() {
-            @Override
-            public void saWebPlayerDidReceiveEvent(Event event, String destination) {
-            }
+        eventListener = (event, destination) -> {
         };
 
         holder = new FrameLayout(context);

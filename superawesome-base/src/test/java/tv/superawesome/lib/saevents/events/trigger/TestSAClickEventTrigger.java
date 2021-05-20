@@ -22,13 +22,10 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
     }
 
@@ -40,13 +37,10 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
     }
 
@@ -58,13 +52,10 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
     }
 
@@ -76,13 +67,10 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
     }
 }

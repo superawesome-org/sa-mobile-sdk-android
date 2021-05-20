@@ -156,12 +156,7 @@ public class SACreative extends SABaseObject implements Parcelable {
 
         bundle = SAJsonParser.getString(jsonObject, "bundleId", bundle);
 
-        osTarget = SAJsonParser.getListFromJsonArray(jsonObject, "osTarget", new SAJsonToList<String, String>() {
-            @Override
-            public String traverseItem(String target) {
-                return target;
-            }
-        });
+        osTarget = SAJsonParser.getListFromJsonArray(jsonObject, "osTarget", (SAJsonToList<String, String>) target -> target);
 
         JSONObject detailsJson = SAJsonParser.getJsonObject(jsonObject, "details", new JSONObject());
         details = new SADetails(detailsJson);
@@ -232,12 +227,7 @@ public class SACreative extends SABaseObject implements Parcelable {
                 "clickCounterUrl", clickCounterUrl,
                 "impression_url", impressionUrl,
                 "installUrl", installUrl,
-                "osTarget", SAJsonParser.getJsonArrayFromList(osTarget, new SAListToJson<String, String>() {
-                    @Override
-                    public String traverseItem(String s) {
-                        return s;
-                    }
-                }),
+                "osTarget", SAJsonParser.getJsonArrayFromList(osTarget, s -> s),
                 "bundleId", bundle,
                 "details", details.writeToJson(),
                 "referral", referral.writeToJson());

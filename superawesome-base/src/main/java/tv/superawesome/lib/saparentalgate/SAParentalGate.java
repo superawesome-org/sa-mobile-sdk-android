@@ -62,64 +62,57 @@ public class SAParentalGate {
         alert.setView(input);
 
         // create positive dialog
-        alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
+        alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, (dialog, whichButton) -> {
 
-                int userValue;
+            int userValue;
 
-                // try parsing the result and check for mathematical correctness
-                try {
-                    userValue = Integer.parseInt(input.getText().toString());
+            // try parsing the result and check for mathematical correctness
+            try {
+                userValue = Integer.parseInt(input.getText().toString());
 
-                    if (userValue == (startNum + endNum)) {
+                if (userValue == (startNum + endNum)) {
 
-                        listener.parentalGateSuccess();
+                    listener.parentalGateSuccess();
 
-                    } else {
+                } else {
 
-                        // go on error way
-                        AlertDialog.Builder erroralert = new android.app.AlertDialog.Builder(c);
-                        erroralert.setTitle(SA_ERROR_ALERTVIEW_TITLE);
-                        erroralert.setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
+                    // go on error way
+                    AlertDialog.Builder erroralert = new AlertDialog.Builder(c);
+                    erroralert.setTitle(SA_ERROR_ALERTVIEW_TITLE);
+                    erroralert.setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
 
-                        // set button action
-                        erroralert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
+                    // set button action
+                    erroralert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, (dialog1, whichButton1) -> {
 
-                                listener.parentalGateFailure();
+                        listener.parentalGateFailure();
 
-                                // dismiss this
-                                dialog.dismiss();
+                        // dismiss this
+                        dialog1.dismiss();
 
-                            }
-                        });
-                        erroralert.show();
-                    }
-
-                }
-                // catch the number format error and calce the parental gate
-                catch (Exception e) {
-
-                    listener.parentalGateCancel();
-
+                    });
+                    erroralert.show();
                 }
 
-                // dismiss
-                dialog.dismiss();
             }
-        });
-
-        // create negative dialog
-        alert.setNegativeButton(SA_CHALLANGE_ALERTVIEW_CANCELBUTTON_TITLE, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-
-                // dismiss
-                dialog.dismiss();
+            // catch the number format error and calce the parental gate
+            catch (Exception e) {
 
                 listener.parentalGateCancel();
 
             }
+
+            // dismiss
+            dialog.dismiss();
+        });
+
+        // create negative dialog
+        alert.setNegativeButton(SA_CHALLANGE_ALERTVIEW_CANCELBUTTON_TITLE, (dialog, which) -> {
+
+            // dismiss
+            dialog.dismiss();
+
+            listener.parentalGateCancel();
+
         });
 
         dialog = alert.create();

@@ -24,10 +24,7 @@ public class GetIsMinorRequest extends Service {
 
     public GetIsMinorRequest() {
 
-        listener = new GetIsMinorInterface() {
-            @Override
-            public void getIsMinorData(GetIsMinorModel isMinorModel) {
-            }
+        listener = isMinorModel -> {
         };
     }
 

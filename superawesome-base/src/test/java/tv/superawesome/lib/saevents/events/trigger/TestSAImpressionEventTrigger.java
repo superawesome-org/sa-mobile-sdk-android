@@ -23,13 +23,10 @@ public class TestSAImpressionEventTrigger extends TestEventTrigger {
         SAImpressionEvent event = new SAImpressionEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
     }
 
@@ -41,13 +38,10 @@ public class TestSAImpressionEventTrigger extends TestEventTrigger {
         SAImpressionEvent event = new SAImpressionEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
     }
 }
