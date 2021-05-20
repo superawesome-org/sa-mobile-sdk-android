@@ -21,18 +21,18 @@ import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAServerModule {
 
-  private SAClickEvent clickEvent = null;
-  private SAImpressionEvent impressionEvent = null;
-  private SAViewableImpressionEvent viewableImpressionEvent = null;
-  private SAPGOpenEvent sapgOpenEvent = null;
-  private SAPGCloseEvent sapgCloseEvent = null;
-  private SAPGFailEvent sapgFailEvent = null;
-  private SAPGSuccessEvent sapgSuccessEvent = null;
-  private SAMoatAttemptEvent saMoatAttemptEvent = null;
-  private SAMoatAttemptNoClassEvent saMoatAttemptNoClassEvent = null;
-  private SAMoatSuccessEvent saMoatSuccessEvent = null;
-  private SAMoatErrorEvent saMoatErrorEvent = null;
-  private DwellTimeEvent dwellTimeEvent;
+  private SAClickEvent clickEvent;
+  private SAImpressionEvent impressionEvent;
+  private SAViewableImpressionEvent viewableImpressionEvent;
+  private SAPGOpenEvent sapgOpenEvent;
+  private SAPGCloseEvent sapgCloseEvent;
+  private SAPGFailEvent sapgFailEvent;
+  private SAPGSuccessEvent sapgSuccessEvent;
+  private SAMoatAttemptEvent saMoatAttemptEvent;
+  private final SAMoatAttemptNoClassEvent saMoatAttemptNoClassEvent = null;
+  private SAMoatSuccessEvent saMoatSuccessEvent;
+  private SAMoatErrorEvent saMoatErrorEvent;
+  private final DwellTimeEvent dwellTimeEvent;
 
   public SAServerModule(SAAd ad, ISASession session) {
     this(ad, session, Executors.newSingleThreadExecutor(), 15000, false);

@@ -6,7 +6,6 @@ package tv.superawesome.lib.samodelspace.saad;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.StatFs;
 
 import org.json.JSONObject;
 

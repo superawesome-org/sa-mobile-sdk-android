@@ -1,7 +1,5 @@
 package tv.superawesome.lib.saevents.events;
 
-import android.content.Context;
-
 import org.json.JSONObject;
 
 import java.util.concurrent.Executor;

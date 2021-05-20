@@ -7,7 +7,7 @@ import tv.superawesome.lib.sagdprisminorsdk.minor.requests.GetIsMinorRequest;
 
 public class GetIsMinorProcess {
 
-    private GetIsMinorRequest isMinor;
+    private final GetIsMinorRequest isMinor;
 
     public GetIsMinorProcess() {
 

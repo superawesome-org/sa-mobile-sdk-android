@@ -8,8 +8,6 @@ import android.content.Context;
 import android.os.Looper;
 
 import java.util.Locale;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import tv.superawesome.lib.sasession.capper.ISACapper;
 import tv.superawesome.lib.sasession.capper.SACapper;
@@ -37,19 +35,19 @@ public class SASession implements ISASession {
     private final static String      DEVICE_TABLET = "tablet";
 
     // the current frequency capper
-    private ISACapper                capper = null;
+    private ISACapper                capper;
 
     // private state members
     private String                   baseUrl;
     private boolean                  testEnabled;
     private int                      dauId;
     private String                   version;
-    private String                   packageName;
-    private String                   appName;
-    private SAUtils.SAConnectionType connectionType;
+    private final String                   packageName;
+    private final String                   appName;
+    private final SAUtils.SAConnectionType connectionType;
     private String                   lang;
-    private String                   device;
-    private String                   userAgent;
+    private final String                   device;
+    private final String                   userAgent;
     private SAConfiguration          configuration;
     private SARTBInstl               instl;
     private SARTBPosition            pos;

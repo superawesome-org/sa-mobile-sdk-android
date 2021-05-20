@@ -15,14 +15,12 @@ import tv.superawesome.lib.saparentalgate.SAParentalGate;
 
 public class SAVideoClick {
 
-    private SAAd ad;
-    private boolean isParentalGateEnabled;
-    private boolean isBumperPageEnabled;
-    private SAEvents events;
+    private final SAAd ad;
+    private final boolean isParentalGateEnabled;
+    private final boolean isBumperPageEnabled;
+    private final SAEvents events;
 
     private Long currentClickThreshold = 0L;
-
-    private static String PADLOCK_URL = "https://ads.superawesome.tv/v2/safead";
 
     SAVideoClick(SAAd ad,
                  boolean isParentalGateEnabled,
@@ -49,6 +47,7 @@ public class SAVideoClick {
     private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
         Uri uri = null;
         try {
+            String PADLOCK_URL = "https://ads.superawesome.tv/v2/safead";
             uri = Uri.parse(PADLOCK_URL);
         } catch (Exception ignored) {}
 

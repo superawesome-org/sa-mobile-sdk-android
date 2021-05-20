@@ -9,7 +9,7 @@ import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorProcess;
 public class SAAgeCheck {
 
     //static
-    public static SAAgeCheck sdk = new SAAgeCheck();
+    public static final SAAgeCheck sdk = new SAAgeCheck();
 
     //internal services and processes
     private GetIsMinorProcess isMinorProcess;

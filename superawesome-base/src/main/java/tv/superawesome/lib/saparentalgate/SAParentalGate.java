@@ -65,7 +65,7 @@ public class SAParentalGate {
         alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                int userValue = -1;
+                int userValue;
 
                 // try parsing the result and check for mathematical correctness
                 try {

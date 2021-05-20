@@ -23,7 +23,6 @@ import tv.superawesome.lib.samodelspace.vastad.SAVASTAd;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloaderInterface;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
-import tv.superawesome.lib.sanetwork.request.SANetworkInterface;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -43,10 +42,10 @@ import tv.superawesome.lib.savastparser.SAVASTParserInterface;
 public class SALoader {
 
   // private context
-  private Executor executor = null;
-  private int timeout = 15000;
-  private Context context = null;
-  private boolean isDebug = false;
+  private Executor executor;
+  private int timeout;
+  private Context context;
+  private boolean isDebug;
 
   public SALoader(Context context) {
     this(context, Executors.newSingleThreadExecutor(), false, 15000);

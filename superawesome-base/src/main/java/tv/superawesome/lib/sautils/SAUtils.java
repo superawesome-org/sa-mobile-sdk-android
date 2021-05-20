@@ -123,8 +123,8 @@ public class SAUtils {
     public static class SASize {
 
         // member vars
-        public int width = 0;
-        public int height = 0;
+        public int width;
+        public int height;
 
         /**
          * SASize basic constructor
@@ -153,7 +153,7 @@ public class SAUtils {
         if (boundingH == 1 || boundingH == 0) { boundingH = sourceH; }
         float oldR = boundingW / boundingH;
         float newR = sourceW / sourceH;
-        float X = 0, Y = 0, W = 0, H = 0;
+        float X, Y, W, H;
 
         if (oldR > newR) {
             W = sourceW; H = W / oldR; X = 0; Y = (sourceH - H) / 2.0f;
@@ -223,12 +223,12 @@ public class SAUtils {
         final int dauLength = 32;
 
         // generate the string
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < dauLength; i++){
             int index = SAUtils.randomNumberBetween(0, length - 1);
-            s += alphabet.charAt(index);
+            s.append(alphabet.charAt(index));
         }
-        return s;
+        return s.toString();
     }
 
     /**
@@ -472,10 +472,10 @@ public class SAUtils {
      * @param dict a json dictionary
      */
     public static String formGetQueryFromDict(JSONObject dict) {
-        String queryString = "";
+        StringBuilder queryString = new StringBuilder();
 
         // null check
-        if (dict == null) return queryString;
+        if (dict == null) return queryString.toString();
 
         ArrayList<String> queryArray = new ArrayList<>();
 
@@ -491,13 +491,13 @@ public class SAUtils {
         }
 
         for (String queryObj : queryArray) {
-            queryString += queryObj;
+            queryString.append(queryObj);
         }
 
         if (queryString.length() > 1) {
             return queryString.substring(0, queryString.length() - 1);
         } else {
-            return queryString;
+            return queryString.toString();
         }
     }
 
@@ -543,11 +543,11 @@ public class SAUtils {
         if (!isValidURL(resourceURL)) return null;
         String workString = resourceURL.replace("\\", "");
         String[] components = workString.split("/");
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < components.length - 1; i++){
-            result += components[i] + "/";
+            result.append(components[i]).append("/");
         }
-        return isValidURL(result) ? result : null;
+        return isValidURL(result.toString()) ? result.toString() : null;
     }
 
     /**
