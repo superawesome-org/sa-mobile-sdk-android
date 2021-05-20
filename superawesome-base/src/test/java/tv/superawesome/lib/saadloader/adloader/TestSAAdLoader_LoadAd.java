@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.util.concurrent.Executor;
 
 import tv.superawesome.lib.saadloader.SALoader;
-import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saadloader.mocks.executors.MockExecutor;
 import tv.superawesome.lib.saadloader.mocks.servers.ads.MockAdsServer;
 import tv.superawesome.lib.saadloader.mocks.session.MockSession;
@@ -21,7 +20,6 @@ import tv.superawesome.lib.samodelspace.saad.SACreative;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SADetails;
 import tv.superawesome.lib.samodelspace.saad.SAMedia;
-import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 import static junit.framework.Assert.assertEquals;

@@ -2,7 +2,6 @@ package tv.superawesome.lib.sagdprisminorsdk.minor.process;
 
 import android.content.Context;
 
-import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
 import tv.superawesome.lib.sagdprisminorsdk.minor.requests.GetIsMinorRequest;
 
 public class GetIsMinorProcess {

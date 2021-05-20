@@ -7,7 +7,6 @@ import java.util.List;
 import tv.superawesome.lib.sajsonparser.SABaseObject;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sajsonparser.SAJsonToList;
-import tv.superawesome.lib.sajsonparser.SAListToJson;
 
 /**
  * Created by gabriel.coman on 18/10/16.

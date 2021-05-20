@@ -78,10 +78,10 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
     fun JSONObject.toQueryParams(): String {
         var queryParams = ""
 
-        var looper = this.keys()
+        val looper = this.keys()
         while(looper.hasNext()) {
             val key = looper.next()
-            if (key.equals("test") && this.get(key).toString().equals("false")) {
+            if (key.equals("test") && this.get(key).toString() == "false") {
                 continue
             }
             queryParams += "&${key}=${URLEncoder.encode(this.get(key).toString())}"
@@ -140,7 +140,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
     }
 
     fun setConfiguration(value: SAConfiguration?) {
-        session.setConfiguration(value)
+        session.configuration = value
     }
 
     fun setTestMode(value: Boolean) {

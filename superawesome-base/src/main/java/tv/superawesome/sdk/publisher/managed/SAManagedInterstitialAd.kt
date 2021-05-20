@@ -22,7 +22,7 @@ class SAManagedInterstitialAd: Activity() {
         // create the close button
         val fp = SAUtils.getScaleFactor(this)
         val closeButton = ImageButton(this)
-        closeButton.setVisibility(View.VISIBLE)
+        closeButton.visibility = View.VISIBLE
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap())
         closeButton.setBackgroundColor(Color.TRANSPARENT)
         closeButton.setPadding(0, 0, 0, 0)

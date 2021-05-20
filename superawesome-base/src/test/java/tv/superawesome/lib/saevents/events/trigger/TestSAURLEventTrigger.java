@@ -3,7 +3,6 @@ package tv.superawesome.lib.saevents.events.trigger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tv.superawesome.lib.saevents.events.SAServerEvent;
 import tv.superawesome.lib.saevents.events.SAURLEvent;
 
 /**

@@ -8,11 +8,9 @@ import android.util.Log;
 import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
-import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
-import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
 import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
@@ -20,7 +18,6 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 
 public class SAVideoAd {

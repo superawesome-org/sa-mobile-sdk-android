@@ -11,7 +11,6 @@ import java.util.Locale;
 
 import tv.superawesome.lib.sasession.capper.ISACapper;
 import tv.superawesome.lib.sasession.capper.SACapper;
-import tv.superawesome.lib.sasession.capper.SACapperInterface;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
 import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;

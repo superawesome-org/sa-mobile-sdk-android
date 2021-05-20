@@ -19,15 +19,12 @@ import tv.superawesome.lib.saadloader.postprocessor.SAProcessHTML;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
-import tv.superawesome.lib.samodelspace.vastad.SAVASTAd;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
-import tv.superawesome.lib.sanetwork.file.SAFileDownloaderInterface;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTParser;
-import tv.superawesome.lib.savastparser.SAVASTParserInterface;
 
 /**
  * This class abstracts away the loading of a SuperAwesome ad server by the server. It tries to
