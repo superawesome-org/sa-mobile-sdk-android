@@ -74,22 +74,19 @@ public class SAAIRAwesomeAds {
             }
 
             try {
-                AwesomeAds.triggerAgeCheck(freContext.getActivity(), dateOfBirth, new GetIsMinorInterface() {
-                    @Override
-                    public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
+                AwesomeAds.triggerAgeCheck(freContext.getActivity(), dateOfBirth, getIsMinorModel -> {
 
-                        GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
+                    GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
 
-                        JSONObject payload = SAJsonParser.newObject(
-                                "name", airName,
-                                "isMinor", model.isMinor(),
-                                "age", model.getAge(),
-                                "consentAgeForCountry", model.getConsentAgeForCountry(),
-                                "country", model.getCountry()
-                        );
+                    JSONObject payload = SAJsonParser.newObject(
+                            "name", airName,
+                            "isMinor", model.isMinor(),
+                            "age", model.getAge(),
+                            "consentAgeForCountry", model.getConsentAgeForCountry(),
+                            "country", model.getCountry()
+                    );
 
-                        SAAIRCallback.sendToAIR(freContext, payload);
-                    }
+                    SAAIRCallback.sendToAIR(freContext, payload);
                 });
 
             } catch (Exception e) {

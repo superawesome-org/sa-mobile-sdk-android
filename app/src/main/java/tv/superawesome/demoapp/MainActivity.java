@@ -37,9 +37,7 @@ public class MainActivity extends Activity {
         SABumperPage.overrideName("Test app");
 
         final SAManagedBannerAd managedBannerAd = findViewById(R.id.preview);
-        managedBannerAd.setListener((SAInterface) (placementId, event) -> {
-            managedBannerAd.load(placementId);
-        });
+        managedBannerAd.setListener((SAInterface) (placementId, event) -> managedBannerAd.load(placementId));
 
         ListView myList = findViewById(R.id.MyList);
         final List<AdapterItem> data = Arrays.asList(

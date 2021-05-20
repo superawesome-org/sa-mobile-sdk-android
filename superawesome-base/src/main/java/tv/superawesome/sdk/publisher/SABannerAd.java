@@ -46,7 +46,7 @@ public class SABannerAd extends FrameLayout {
     private boolean         isParentalGateEnabled = false;
     private boolean         isBumperPageEnabled = false;
     private SAAd            ad;
-    private SAInterface     listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
+    private SAInterface     listener = (placementId, event) -> {};
 
     // the internal loader
     private SASession       session;
@@ -152,34 +152,27 @@ public class SABannerAd extends FrameLayout {
             // do nothing
         }
 
-        session.prepareSession(new SASessionInterface() {
-            @Override
-            public void didFindSessionReady() {
+        session.prepareSession(() -> {
 
-                // after session is OK, prepare
-                loader.loadAd(placementId, session, new SALoaderInterface() {
-                    @Override
-                    public void saDidLoadAd(SAResponse response) {
+            // after session is OK, prepare
+            loader.loadAd(placementId, session, response -> {
 
-                        if (response.status != 200) {
-                            if (listener != null) {
-                                listener.onEvent(placementId, SAEvent.adFailedToLoad);
-                            } else {
-                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
-                            }
-                        }
-                        else {
-                            canPlay = response.isValid();
-                            setAd(response.isValid() ? response.ads.get(0) : null);
-                            if (listener != null) {
-                                listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
-                            } else {
-                                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
-                            }
-                        }
+                if (response.status != 200) {
+                    if (listener != null) {
+                        listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                    } else {
+                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
                     }
-                });
-            }
+                } else {
+                    canPlay = response.isValid();
+                    setAd(response.isValid() ? response.ads.get(0) : null);
+                    if (listener != null) {
+                        listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                    } else {
+                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                    }
+                }
+            });
         });
     }
 
@@ -382,12 +375,7 @@ public class SABannerAd extends FrameLayout {
 
                         if (destination != null) {
 
-                            Runnable runner = new Runnable() {
-                                @Override
-                                public void run() {
-                                    click(destination);
-                                }
-                            };
+                            Runnable runner = () -> click(destination);
                             runner.run();
                             // showParentalGateIfNeededWithCompletion(context, runner);
                         }
@@ -429,12 +417,7 @@ public class SABannerAd extends FrameLayout {
     public void click (final String destination) {
 
         if ((ad != null && ad.creative != null && ad.creative.bumper) || isBumperPageEnabled) {
-            SABumperPage.setListener(new SABumperPage.Interface() {
-                @Override
-                public void didEndBumper() {
-                    handleUrl(destination);
-                }
-            });
+            SABumperPage.setListener(() -> handleUrl(destination));
             SABumperPage.play((Activity)getContext());
         } else {
             handleUrl(destination);
@@ -585,12 +568,9 @@ public class SABannerAd extends FrameLayout {
 
     private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
 
-        SABumperPage.Interface bumperCallback = new SABumperPage.Interface() {
-            @Override
-            public void didEndBumper() {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
-                context.startActivity(browserIntent);
-            }
+        SABumperPage.Interface bumperCallback = () -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
+            context.startActivity(browserIntent);
         };
 
         if (isBumperPageEnabled) {

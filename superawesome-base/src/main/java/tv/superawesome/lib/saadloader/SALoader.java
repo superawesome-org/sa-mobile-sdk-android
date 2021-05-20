@@ -245,10 +245,7 @@ public class SALoader {
     final SALoaderInterface localListener =
         listener != null
             ? listener
-            : new SALoaderInterface() {
-              @Override
-              public void saDidLoadAd(SAResponse response) {}
-            };
+            : response -> {};
 
     // create a new object of type SAResponse
     final SAResponse response = new SAResponse();
@@ -311,33 +308,26 @@ public class SALoader {
             SAVASTParser parser = new SAVASTParser(con, executor, timeout);
             parser.parseVAST(
                 ad.creative.details.vast,
-                new SAVASTParserInterface() {
-                  @Override
-                  public void saDidParseVAST(SAVASTAd savastAd) {
+                    savastAd -> {
 
-                    // copy the vast data
-                    ad.creative.details.media.vastAd = savastAd;
-                    // and the exact url to download
-                    ad.creative.details.media.url = savastAd.url;
-                    // download file
-                    SAFileDownloader downloader =
-                        new SAFileDownloader(context, executor, isDebug, timeout);
-                    downloader.downloadFileFrom(
-                        ad.creative.details.media.url,
-                        new SAFileDownloaderInterface() {
-                          @Override
-                          public void saDidDownloadFile(
-                              boolean success, String key, String playableDiskUrl) {
+                      // copy the vast data
+                      ad.creative.details.media.vastAd = savastAd;
+                      // and the exact url to download
+                      ad.creative.details.media.url = savastAd.url;
+                      // download file
+                      SAFileDownloader downloader =
+                          new SAFileDownloader(context, executor, isDebug, timeout);
+                      downloader.downloadFileFrom(
+                          ad.creative.details.media.url,
+                              (success, key, playableDiskUrl) -> {
 
-                            ad.creative.details.media.path = playableDiskUrl;
-                            ad.creative.details.media.isDownloaded = playableDiskUrl != null;
+                                ad.creative.details.media.path = playableDiskUrl;
+                                ad.creative.details.media.isDownloaded = playableDiskUrl != null;
 
-                            // finally respond with a response
-                            localListener.saDidLoadAd(response);
-                          }
-                        });
-                  }
-                });
+                                // finally respond with a response
+                                localListener.saDidLoadAd(response);
+                              });
+                    });
             break;
           }
       }

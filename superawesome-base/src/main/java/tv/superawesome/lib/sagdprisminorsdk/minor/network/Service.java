@@ -65,12 +65,7 @@ public class Service implements NetworkInterface {
 
         switch (getMethod()) {
             case GET: {
-                network.sendGET(url + getEndpoint(), getQuery(), getHeader(), new SANetworkInterface() {
-                    @Override
-                    public void saDidGetResponse(int status, String payload, boolean success) {
-                        instance.success(status, payload, success);
-                    }
-                });
+                network.sendGET(url + getEndpoint(), getQuery(), getHeader(), (status, payload, success) -> instance.success(status, payload, success));
                 break;
             }
         }

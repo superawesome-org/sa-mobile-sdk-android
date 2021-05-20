@@ -1,7 +1,6 @@
 package tv.superawesome.lib.sajsonparser;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;

@@ -45,20 +45,17 @@ public class SAAIRVideoAd {
         @Override
         public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-            SAVideoAd.setListener(new SAInterface() {
-                @Override
-                public void onEvent(int placementId, SAEvent event) {
-                    switch (event) {
-                        case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adLoaded.toString()); break;
-                        case adEmpty: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adEmpty.toString()); break;
-                        case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adFailedToLoad.toString()); break;
-                        case adAlreadyLoaded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adAlreadyLoaded.toString()); break;
-                        case adShown: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adShown.toString()); break;
-                        case adFailedToShow: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adFailedToShow.toString()); break;
-                        case adClicked: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adClicked.toString()); break;
-                        case adEnded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adEnded.toString()); break;
-                        case adClosed: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adClosed.toString()); break;
-                    }
+            SAVideoAd.setListener((SAInterface) (placementId, event) -> {
+                switch (event) {
+                    case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adLoaded.toString()); break;
+                    case adEmpty: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adEmpty.toString()); break;
+                    case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adFailedToLoad.toString()); break;
+                    case adAlreadyLoaded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adAlreadyLoaded.toString()); break;
+                    case adShown: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adShown.toString()); break;
+                    case adFailedToShow: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adFailedToShow.toString()); break;
+                    case adClicked: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adClicked.toString()); break;
+                    case adEnded: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adEnded.toString()); break;
+                    case adClosed: SAAIRCallback.sendAdCallback(freContext, airName, placementId, SAEvent.adClosed.toString()); break;
                 }
             });
 

@@ -21,76 +21,26 @@ public class TestSAVASTModule extends TestModule {
         SAVASTModule module = new SAVASTModule(ad, super.executor, 1000, true);
 
         // when
-        module.triggerVASTImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTImpressionEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVASTStartEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTStartEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVASTCreativeViewEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTCreativeViewEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVASTErrorEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTErrorEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVASTFirstQuartileEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTFirstQuartileEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVASTMidpointEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTMidpointEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVASTThirdQuartileEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTThirdQuartileEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVASTCompleteEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTCompleteEvent(success -> Assert.assertTrue(success));
 
-        module.triggerVastClickThroughEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVastClickThroughEvent(success -> Assert.assertTrue(success));
 
 
-        module.triggerVASTClickTrackingEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertTrue(success);
-            }
-        });
+        module.triggerVASTClickTrackingEvent(success -> Assert.assertTrue(success));
     }
 
     @Test
@@ -100,75 +50,25 @@ public class TestSAVASTModule extends TestModule {
         SAVASTModule module = new SAVASTModule(ad, super.executor, 1000, true);
 
         // when
-        module.triggerVASTImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTImpressionEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVASTStartEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTStartEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVASTCreativeViewEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTCreativeViewEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVASTErrorEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTErrorEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVASTFirstQuartileEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTFirstQuartileEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVASTMidpointEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTMidpointEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVASTThirdQuartileEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTThirdQuartileEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVASTCompleteEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTCompleteEvent(success -> Assert.assertFalse(success));
 
-        module.triggerVastClickThroughEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVastClickThroughEvent(success -> Assert.assertFalse(success));
 
 
-        module.triggerVASTClickTrackingEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
-                Assert.assertFalse(success);
-            }
-        });
+        module.triggerVASTClickTrackingEvent(success -> Assert.assertFalse(success));
     }
 }

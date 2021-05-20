@@ -104,19 +104,9 @@ public class SAVASTAd extends SABaseObject implements Parcelable {
         url = SAJsonParser.getString(jsonObject, "url", null);
         type = SAVASTAdType.fromValue(SAJsonParser.getInt(jsonObject, "type", 0));
 
-        media = SAJsonParser.getListFromJsonArray(jsonObject, "media", new SAJsonToList<SAVASTMedia, JSONObject>() {
-            @Override
-            public SAVASTMedia traverseItem(JSONObject jsonObject) {
-                return new SAVASTMedia(jsonObject);
-            }
-        });
+        media = SAJsonParser.getListFromJsonArray(jsonObject, "media", (SAJsonToList<SAVASTMedia, JSONObject>) jsonObject12 -> new SAVASTMedia(jsonObject12));
 
-        events = SAJsonParser.getListFromJsonArray(jsonObject, "events", new SAJsonToList<SAVASTEvent, JSONObject>() {
-            @Override
-            public SAVASTEvent traverseItem(JSONObject jsonObject) {
-                return new SAVASTEvent(jsonObject);
-            }
-        });
+        events = SAJsonParser.getListFromJsonArray(jsonObject, "events", (SAJsonToList<SAVASTEvent, JSONObject>) jsonObject1 -> new SAVASTEvent(jsonObject1));
     }
 
     /**
@@ -130,18 +120,8 @@ public class SAVASTAd extends SABaseObject implements Parcelable {
                 "redirect", redirect,
                 "url", url,
                 "type", type.ordinal(),
-                "media", SAJsonParser.getJsonArrayFromList(media, new SAListToJson<JSONObject, SAVASTMedia>() {
-                    @Override
-                    public JSONObject traverseItem(SAVASTMedia savastMedia) {
-                        return savastMedia.writeToJson();
-                    }
-                }),
-                "events", SAJsonParser.getJsonArrayFromList(events, new SAListToJson<JSONObject, SAVASTEvent>() {
-                    @Override
-                    public JSONObject traverseItem(SAVASTEvent saTracking) {
-                        return saTracking.writeToJson();
-                    }
-                }));
+                "media", SAJsonParser.getJsonArrayFromList(media, savastMedia -> savastMedia.writeToJson()),
+                "events", SAJsonParser.getJsonArrayFromList(events, saTracking -> saTracking.writeToJson()));
     }
 
     /**

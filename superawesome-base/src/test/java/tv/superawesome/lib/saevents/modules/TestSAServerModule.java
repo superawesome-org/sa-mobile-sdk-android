@@ -21,31 +21,22 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerClickEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
 
-        module.triggerImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerImpressionEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
 
-        module.triggerViewableImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerViewableImpressionEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
     }
 
@@ -57,31 +48,22 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerClickEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
 
-        module.triggerImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerImpressionEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
 
-        module.triggerViewableImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerViewableImpressionEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
     }
 
@@ -93,31 +75,22 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerClickEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
 
-        module.triggerImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerImpressionEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
 
-        module.triggerViewableImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerViewableImpressionEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
     }
 
@@ -129,31 +102,22 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerClickEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
 
-        module.triggerImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerImpressionEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
 
-        module.triggerViewableImpressionEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        module.triggerViewableImpressionEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
     }
 }

@@ -43,12 +43,9 @@ public class AdVideoPlayerControllerViewTests extends BaseInstrumentationTest {
         /*
          * Setup view hierarchy
          */
-        rule().getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                rule().getActivity().setContentView(content);
-                content.addView(controller);
-            }
+        rule().getActivity().runOnUiThread(() -> {
+            rule().getActivity().setContentView(content);
+            content.addView(controller);
         });
     }
 
@@ -79,12 +76,7 @@ public class AdVideoPlayerControllerViewTests extends BaseInstrumentationTest {
 
     @Test
     public void chrome_ToHave_Correct_SmallClickState() {
-        rule().getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                controller.setShouldShowSmallClickButton(true);
-            }
-        });
+        rule().getActivity().runOnUiThread(() -> controller.setShouldShowSmallClickButton(true));
 
         onView(withId(AdVideoPlayerControllerView.CRONO_BG_ID))
                 .check(matches(isDisplayed()));
@@ -112,12 +104,7 @@ public class AdVideoPlayerControllerViewTests extends BaseInstrumentationTest {
     @Test
     public void chrome_ToNot_DisplayPadlock_IfExplicitlyDisabled() {
 
-        rule().getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                controller.shouldShowPadlock(false);
-            }
-        });
+        rule().getActivity().runOnUiThread(() -> controller.shouldShowPadlock(false));
 
         onView(withId(AdVideoPlayerControllerView.PADLOCK_ID))
                 .check(matches(not(isDisplayed())));
@@ -125,12 +112,7 @@ public class AdVideoPlayerControllerViewTests extends BaseInstrumentationTest {
 
     @Test
     public void chrome_ToUpdate_TimeElements_Accordingly() {
-        rule().getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                controller.setTime(15000, 30000);
-            }
-        });
+        rule().getActivity().runOnUiThread(() -> controller.setTime(15000, 30000));
 
         onView(withId(AdVideoPlayerControllerView.CRONO_ID))
                 .check(matches(isDisplayed()))

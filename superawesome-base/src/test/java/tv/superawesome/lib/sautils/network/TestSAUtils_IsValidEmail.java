@@ -1,15 +1,9 @@
 package tv.superawesome.lib.sautils.network;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import tv.superawesome.lib.sautils.SAUtils;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
