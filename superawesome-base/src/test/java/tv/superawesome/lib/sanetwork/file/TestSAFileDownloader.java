@@ -17,7 +17,6 @@ import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import okio.Buffer;
 import tv.superawesome.lib.BufferedResourceReader;
-import tv.superawesome.lib.ResourceReader;
 import tv.superawesome.lib.sanetwork.mocks.MockExecutor;
 
 import static junit.framework.Assert.assertEquals;

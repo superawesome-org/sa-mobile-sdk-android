@@ -22,15 +22,7 @@ import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SADetails;
 import tv.superawesome.lib.samodelspace.saad.SAMedia;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
-import tv.superawesome.lib.sasession.defines.SAConfiguration;
-import tv.superawesome.lib.sasession.defines.SARTBInstl;
-import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
-import tv.superawesome.lib.sasession.defines.SARTBPosition;
-import tv.superawesome.lib.sasession.defines.SARTBSkip;
-import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.ISASession;
-import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.sautils.SAUtils;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;

@@ -1,7 +1,6 @@
 package tv.superawesome.lib.saevents.events.setup;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import tv.superawesome.lib.saevents.events.SAServerEvent;
