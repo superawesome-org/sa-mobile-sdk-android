@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright:   SADefaults Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -63,9 +63,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static boolean          isMoatLimitingEnabled = SADefaults.defaultMoatLimitingState();
 
-    /**********************************************************************************************
-     * Activity initialization & instance methods
-     **********************************************************************************************/
+    /*********************************************************************************************
+     Activity initialization & instance methods
+     */
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -176,9 +176,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
-    /**********************************************************************************************
-     * Class public interface - static methods to interact with an Interstitial Ad
-     **********************************************************************************************/
+    /*********************************************************************************************
+     Class public interface - static methods to interact with an Interstitial Ad
+     */
 
     /**
      * Static method that loads an ad into the interstitial queue.
