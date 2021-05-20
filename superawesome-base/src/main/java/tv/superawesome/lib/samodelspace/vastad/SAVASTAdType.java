@@ -33,15 +33,12 @@ public enum SAVASTAdType implements Parcelable {
         }
     };
 
-    private final int value;
-
     /**
      * Constructor that makes it possible for the enum to be initiated from an integer value
      *
      * @param i the integer value representing an enum
      */
     SAVASTAdType(int i) {
-        this.value = i;
     }
 
     /**

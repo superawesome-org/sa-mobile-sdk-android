@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
-import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.managed.SAManagedBannerAd;
@@ -120,7 +119,7 @@ class AdapterItem {
 }
 
 class HeaderItem extends AdapterItem {
-    public String title;
+    public final String title;
 
     public HeaderItem(String title) {
         this.title = title;
@@ -128,9 +127,9 @@ class HeaderItem extends AdapterItem {
 }
 
 class PlacementItem extends AdapterItem {
-    public String name;
-    public int pid;
-    public Type type;
+    public final String name;
+    public final int pid;
+    public final Type type;
 
     public PlacementItem(String name, int pid, Type type) {
         this.name = name;

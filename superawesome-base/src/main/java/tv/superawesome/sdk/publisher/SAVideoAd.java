@@ -26,8 +26,8 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class SAVideoAd {
 
     // private vars w/ a public interface
-    private static SAEvents events = new SAEvents();
-    public static HashMap<Integer, Object> ads = new HashMap<>();
+    private static final SAEvents events = new SAEvents();
+    public static final HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
 
     private static boolean shouldShowCloseWarning           = SADefaults.defaultCloseWarning();
@@ -149,7 +149,7 @@ public class SAVideoAd {
 
     public static boolean hasAdAvailable (int placementId) {
         Object object = ads.get(placementId);
-        return object != null && object instanceof SAAd;
+        return object instanceof SAAd;
     }
 
     public static SAAd getAd (int placementId) {
@@ -171,7 +171,7 @@ public class SAVideoAd {
         Object generic = ads.get(placementId);
 
         // if notnull & instance of SAAd
-        if (generic != null && generic instanceof SAAd) {
+        if (generic instanceof SAAd) {
 
             // try to get the ad that fits the placement id
             SAAd adL = (SAAd) generic;

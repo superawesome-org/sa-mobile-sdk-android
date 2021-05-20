@@ -16,7 +16,7 @@ public class SALoadScreen {
     private ProgressDialog progress;
 
     // instance var for singleton
-    private static SALoadScreen instance = new SALoadScreen();
+    private static final SALoadScreen instance = new SALoadScreen();
 
     /**
      * Private constructor

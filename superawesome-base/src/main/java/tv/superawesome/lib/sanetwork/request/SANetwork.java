@@ -6,7 +6,6 @@ package tv.superawesome.lib.sanetwork.request;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -29,8 +28,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class SANetwork {
 
     private int timeout = 15000;
-    private Executor executor = null;
-    private SANetworkUtils utils = new SANetworkUtils();
+    private Executor executor;
+    private final SANetworkUtils utils = new SANetworkUtils();
 
     /**
      * Constructor without any executor, so choose a new single thread executor
@@ -108,7 +107,7 @@ public class SANetwork {
 
                 try {
                     int statusCode;
-                    String response;
+                    StringBuilder response;
                     InputStreamReader in;
                     OutputStream os = null;
 
@@ -168,10 +167,10 @@ public class SANetwork {
 
                         // read the saDidGetResponse from the server
                         String line;
-                        response = "";
+                        response = new StringBuilder();
                         BufferedReader reader = new BufferedReader(in);
                         while ((line = reader.readLine()) != null) {
-                            response += line;
+                            response.append(line);
                         }
 
                         // close the body writer
@@ -234,10 +233,10 @@ public class SANetwork {
 
                         // read the saDidGetResponse from the server
                         String line;
-                        response = "";
+                        response = new StringBuilder();
                         BufferedReader reader = new BufferedReader(in);
                         while ((line = reader.readLine()) != null) {
-                            response += line;
+                            response.append(line);
                         }
 
                         // close the body writer
@@ -253,7 +252,7 @@ public class SANetwork {
                     }
 
                     if (statusCode < HttpsURLConnection.HTTP_BAD_REQUEST && response != null) {
-                        sendBack(listener, statusCode, response, true);
+                        sendBack(listener, statusCode, response.toString(), true);
                     }
                     else {
                         sendBack(listener, statusCode, null, false);

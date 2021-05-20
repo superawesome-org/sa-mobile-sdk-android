@@ -16,7 +16,6 @@ public class SADrawable extends Drawable {
     // instance members
     private final float mCornerRadius;
     private final RectF mRect = new RectF();
-    private final BitmapShader mBitmapShader;
     private final Paint mPaint;
     private final int mMargin;
 
@@ -30,7 +29,7 @@ public class SADrawable extends Drawable {
     SADrawable(Bitmap bitmap, float cornerRadius, int margin) {
         mCornerRadius = cornerRadius;
         mMargin = margin;
-        mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        BitmapShader mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setShader(mBitmapShader);

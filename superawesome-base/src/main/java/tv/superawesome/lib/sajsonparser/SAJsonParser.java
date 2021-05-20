@@ -201,7 +201,7 @@ public class SAJsonParser {
      */
     public static String getString(JSONObject jsonObject, String key) {
         Object object = get(jsonObject, key);
-        if (object != null && object instanceof String) {
+        if (object instanceof String) {
             return (String)object;
         } else {
             return null;
@@ -217,7 +217,7 @@ public class SAJsonParser {
      */
     public static String getString(JSONObject jsonObject, String key, String def) {
         Object object = get(jsonObject, key);
-        if (object != null && object instanceof String) {
+        if (object instanceof String) {
             return (String)object;
         } else {
             return def;
@@ -348,7 +348,7 @@ public class SAJsonParser {
      */
     public static JSONObject getJsonObject(JSONObject jsonObject, String key) {
         Object object = get(jsonObject, key);
-        if (object != null && object instanceof JSONObject) {
+        if (object instanceof JSONObject) {
             return (JSONObject) object;
         } else {
             return new JSONObject();
@@ -364,7 +364,7 @@ public class SAJsonParser {
      */
     public static JSONObject getJsonObject(JSONObject jsonObject, String key, JSONObject def) {
         Object object = get(jsonObject, key);
-        if (object != null && object instanceof JSONObject) {
+        if (object instanceof JSONObject) {
             return (JSONObject) object;
         } else {
             return def;
@@ -379,7 +379,7 @@ public class SAJsonParser {
      */
     public static JSONArray getJsonArray(JSONObject jsonObject, String key) {
         Object object = get(jsonObject, key);
-        if (object != null && object instanceof JSONArray) {
+        if (object instanceof JSONArray) {
             return (JSONArray) object;
         } else {
             return new JSONArray();
@@ -395,7 +395,7 @@ public class SAJsonParser {
      */
     public static JSONArray getJsonArray(JSONObject jsonObject, String key, JSONArray def) {
         Object object = get(jsonObject, key);
-        if (object != null && object instanceof JSONArray) {
+        if (object instanceof JSONArray) {
             return (JSONArray) object;
         } else {
             return def;

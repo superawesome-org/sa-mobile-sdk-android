@@ -33,7 +33,7 @@ public class SABumperPageBackground extends RelativeLayout {
             size = heightSize;
         }
         else{
-            size = widthSize < heightSize ? widthSize : heightSize;
+            size = Math.min(widthSize, heightSize);
         }
 
         int finalMeasureSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);

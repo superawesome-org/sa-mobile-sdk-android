@@ -6,7 +6,7 @@ import android.webkit.WebViewClient;
 
 public class SAWebClient extends WebViewClient {
 
-    private Listener listener;
+    private final Listener listener;
 
     SAWebClient(Listener listener) {
         this.listener = listener;

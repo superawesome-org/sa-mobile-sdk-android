@@ -32,10 +32,10 @@ public class SAFileDownloader {
     private static final String PREFERENCES = "MyPreferences";
 
     // Executor
-    private Context context = null;
+    private Context context;
     private int timeout = 15000;
     private boolean isDebug = false;
-    private Executor executor = null;
+    private Executor executor;
 
     /**
      * Classic constructor
@@ -218,7 +218,7 @@ public class SAFileDownloader {
                 if (filename != null) {
                     String fullPath = context.getFilesDir() + "/" + filename;
                     File file = new File(context.getFilesDir(), filename);
-                    boolean hasBeenDeleted = false;
+                    boolean hasBeenDeleted;
                     if (file.exists()) {
                         hasBeenDeleted = file.delete();
                         Log.d("SuperAwesome", "Have deleted " + filename + " ==> " + hasBeenDeleted);

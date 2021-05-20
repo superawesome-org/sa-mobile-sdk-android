@@ -34,7 +34,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
         private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
     }
 
-    private val BANNER_BACKGROUND: Int = android.graphics.Color.rgb(224, 224, 224)
+    private val BANNER_BACKGROUND: Int = Color.rgb(224, 224, 224)
 
     private var session: SASession = SASession(ctx)
     private var loader: SALoader = SALoader(ctx)
@@ -87,7 +87,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
             queryParams += "&${key}=${URLEncoder.encode(this.get(key).toString())}"
         }
 
-        return queryParams;
+        return queryParams
     }
 
     fun setListener(value: SAInterface? = null) {

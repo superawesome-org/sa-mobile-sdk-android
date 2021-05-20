@@ -40,7 +40,7 @@ class VideoComponentFactory {
         return padlock.createComponent(id, context);
     }
 
-    private static ComponentCreator<ImageView> bgcreator = new ComponentCreator<ImageView>() {
+    private static final ComponentCreator<ImageView> bgcreator = new ComponentCreator<ImageView>() {
 
         @Override
         public ImageView createComponent(int id, Context context) {
@@ -62,7 +62,7 @@ class VideoComponentFactory {
         }
     };
 
-    private static ComponentCreator<TextView> chronoCreator = new ComponentCreator<TextView>() {
+    private static final ComponentCreator<TextView> chronoCreator = new ComponentCreator<TextView>() {
 
         @Override
         public TextView createComponent(int id, Context context) {
@@ -84,7 +84,7 @@ class VideoComponentFactory {
         }
     };
 
-    private static ComponentCreator<ImageView> maskCreator = new ComponentCreator<ImageView>() {
+    private static final ComponentCreator<ImageView> maskCreator = new ComponentCreator<ImageView>() {
         @Override
         public ImageView createComponent(int id, Context context) {
             float scale = new VideoUtils().getScale(context);
@@ -105,7 +105,7 @@ class VideoComponentFactory {
         }
     };
 
-    private static ComponentCreator<Button> clickCreator = new ComponentCreator<Button>() {
+    private static final ComponentCreator<Button> clickCreator = new ComponentCreator<Button>() {
         @Override
         public Button createComponent(int id, Context context) {
             Button view = new Button(context);
@@ -123,7 +123,7 @@ class VideoComponentFactory {
         }
     };
 
-    private static ComponentCreator<Button> smallClickCreator = new ComponentCreator<Button>() {
+    private static final ComponentCreator<Button> smallClickCreator = new ComponentCreator<Button>() {
         @Override
         public Button createComponent(int id, Context context) {
             float scale = new VideoUtils().getScale(context);
@@ -147,7 +147,7 @@ class VideoComponentFactory {
         }
     };
 
-    private static ComponentCreator<ImageButton> padlock = new ComponentCreator<ImageButton>() {
+    private static final ComponentCreator<ImageButton> padlock = new ComponentCreator<ImageButton>() {
         @Override
         public ImageButton createComponent(int id, Context context) {
             float scale = new VideoUtils().getScale(context);

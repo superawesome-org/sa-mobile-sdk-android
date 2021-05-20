@@ -65,12 +65,10 @@ public class GetIsMinorModel extends SABaseObject implements Parcelable {
 
     @Override
     public JSONObject writeToJson() {
-        return SAJsonParser.newObject(new Object[]{
-                "country", country,
+        return SAJsonParser.newObject("country", country,
                 "consentAgeForCountry", consentAgeForCountry,
                 "age", age,
-                "isMinor", isMinor
-        });
+                "isMinor", isMinor);
     }
 
     @Override

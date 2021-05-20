@@ -20,11 +20,9 @@ import android.widget.RelativeLayout;
 import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
-import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
-import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
 import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
@@ -32,7 +30,6 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 
@@ -43,8 +40,6 @@ import tv.superawesome.lib.sautils.SAUtils;
  */
 public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityListener {
 
-    // subviews
-    private RelativeLayout          parent = null;
     private SABannerAd              interstitialBanner = null;
     private ImageButton             closeButton = null;
 
@@ -107,7 +102,8 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         }
 
         // create the parent relative layout
-        parent = new RelativeLayout(this);
+        // subviews
+        RelativeLayout parent = new RelativeLayout(this);
         parent.setId(SAUtils.randomNumberBetween(1000000, 1500000));
         parent.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
@@ -382,7 +378,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
      */
     public static boolean hasAdAvailable(int placementId) {
         Object object = ads.get(placementId);
-        return object != null && object instanceof SAAd;
+        return object instanceof SAAd;
     }
 
     public static SAAd getAd (int placementId) {
@@ -410,7 +406,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         Object generic = ads.get(placementId);
 
         // if notnull & instance of SAAd
-        if (generic != null && generic instanceof SAAd) {
+        if (generic instanceof SAAd) {
 
             // try to get the ad that fits the placement id
             SAAd adL = (SAAd) generic;
