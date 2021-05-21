@@ -25,7 +25,7 @@ import tv.superawesome.sdk.publisher.SAInterface;
 public class SAUnityBannerAd {
 
     // hash map containing banner ads
-    private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
+    private static final HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
 
     /**
      * Method that creates a new banner ad (from Unity)

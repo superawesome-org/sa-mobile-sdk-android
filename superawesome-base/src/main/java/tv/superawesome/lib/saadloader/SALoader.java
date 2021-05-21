@@ -39,10 +39,10 @@ import tv.superawesome.lib.savastparser.SAVASTParser;
 public class SALoader {
 
   // private context
-  private Executor executor;
-  private int timeout;
-  private Context context;
-  private boolean isDebug;
+  private final Executor executor;
+  private final int timeout;
+  private final Context context;
+  private final boolean isDebug;
 
   public SALoader(Context context) {
     this(context, Executors.newSingleThreadExecutor(), false, 15000);

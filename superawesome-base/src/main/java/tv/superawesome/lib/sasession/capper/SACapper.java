@@ -22,7 +22,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class SACapper implements ISACapper {
     private static final String SUPER_AWESOME_FIRST_PART_DAU = "SUPER_AWESOME_FIRST_PART_DAU";
 
-    private Context context;
+    private final Context context;
 
     /**
      * Constructor with executor

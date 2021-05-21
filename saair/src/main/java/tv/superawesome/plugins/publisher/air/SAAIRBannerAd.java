@@ -33,7 +33,7 @@ import tv.superawesome.sdk.publisher.SAInterface;
 public class SAAIRBannerAd {
 
     // hash map of all the banners that have been created
-    private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
+    private static final HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
 
     /**
      * Class that creates a new Banner Ad (from AIR)

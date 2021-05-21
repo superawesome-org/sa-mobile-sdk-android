@@ -28,7 +28,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class SANetwork {
 
     private int timeout = 15000;
-    private Executor executor;
+    private final Executor executor;
     private final SANetworkUtils utils = new SANetworkUtils();
 
     /**

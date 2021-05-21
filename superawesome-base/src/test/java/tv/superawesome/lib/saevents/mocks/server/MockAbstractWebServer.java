@@ -13,7 +13,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 public abstract class MockAbstractWebServer {
 
-    private MockWebServer server;
+    private final MockWebServer server;
 
     public MockAbstractWebServer () {
         // Create a MockWebServer. These are lean enough that you can create a new

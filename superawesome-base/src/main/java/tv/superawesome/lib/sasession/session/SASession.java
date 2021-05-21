@@ -34,7 +34,7 @@ public class SASession implements ISASession {
     private final static String      DEVICE_TABLET = "tablet";
 
     // the current frequency capper
-    private ISACapper                capper;
+    private final ISACapper                capper;
 
     // private state members
     private String                   baseUrl;
