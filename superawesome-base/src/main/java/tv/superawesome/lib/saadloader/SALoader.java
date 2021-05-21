@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright: SuperAwesome Trading Limited 2017 @Author: Gabriel Coman
  * (gabriel.coman@superawesome.tv)
  */
@@ -19,16 +19,12 @@ import tv.superawesome.lib.saadloader.postprocessor.SAProcessHTML;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SAResponse;
-import tv.superawesome.lib.samodelspace.vastad.SAVASTAd;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
-import tv.superawesome.lib.sanetwork.file.SAFileDownloaderInterface;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
-import tv.superawesome.lib.sanetwork.request.SANetworkInterface;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTParser;
-import tv.superawesome.lib.savastparser.SAVASTParserInterface;
 
 /**
  * This class abstracts away the loading of a SuperAwesome ad server by the server. It tries to
@@ -43,10 +39,10 @@ import tv.superawesome.lib.savastparser.SAVASTParserInterface;
 public class SALoader {
 
   // private context
-  private Executor executor = null;
-  private int timeout = 15000;
-  private Context context = null;
-  private boolean isDebug = false;
+  private final Executor executor;
+  private final int timeout;
+  private final Context context;
+  private final boolean isDebug;
 
   public SALoader(Context context) {
     this(context, Executors.newSingleThreadExecutor(), false, 15000);
@@ -246,10 +242,7 @@ public class SALoader {
     final SALoaderInterface localListener =
         listener != null
             ? listener
-            : new SALoaderInterface() {
-              @Override
-              public void saDidLoadAd(SAResponse response) {}
-            };
+            : response -> {};
 
     // create a new object of type SAResponse
     final SAResponse response = new SAResponse();
@@ -312,33 +305,26 @@ public class SALoader {
             SAVASTParser parser = new SAVASTParser(con, executor, timeout);
             parser.parseVAST(
                 ad.creative.details.vast,
-                new SAVASTParserInterface() {
-                  @Override
-                  public void saDidParseVAST(SAVASTAd savastAd) {
+                    savastAd -> {
 
-                    // copy the vast data
-                    ad.creative.details.media.vastAd = savastAd;
-                    // and the exact url to download
-                    ad.creative.details.media.url = savastAd.url;
-                    // download file
-                    SAFileDownloader downloader =
-                        new SAFileDownloader(context, executor, isDebug, timeout);
-                    downloader.downloadFileFrom(
-                        ad.creative.details.media.url,
-                        new SAFileDownloaderInterface() {
-                          @Override
-                          public void saDidDownloadFile(
-                              boolean success, String key, String playableDiskUrl) {
+                      // copy the vast data
+                      ad.creative.details.media.vastAd = savastAd;
+                      // and the exact url to download
+                      ad.creative.details.media.url = savastAd.url;
+                      // download file
+                      SAFileDownloader downloader =
+                          new SAFileDownloader(context, executor, isDebug, timeout);
+                      downloader.downloadFileFrom(
+                          ad.creative.details.media.url,
+                              (success, key, playableDiskUrl) -> {
 
-                            ad.creative.details.media.path = playableDiskUrl;
-                            ad.creative.details.media.isDownloaded = playableDiskUrl != null;
+                                ad.creative.details.media.path = playableDiskUrl;
+                                ad.creative.details.media.isDownloaded = playableDiskUrl != null;
 
-                            // finally respond with a response
-                            localListener.saDidLoadAd(response);
-                          }
-                        });
-                  }
-                });
+                                // finally respond with a response
+                                localListener.saDidLoadAd(response);
+                              });
+                    });
             break;
           }
       }

@@ -22,7 +22,7 @@ class AwesomeAdsMoPubBanner : BaseAd() {
     override fun onInvalidate() {
         if (bannerAd != null) {
             bannerAd = null
-            MoPubLog.log(adNetworkId, CUSTOM, adapterName, "Banner destroyed");
+            MoPubLog.log(adNetworkId, CUSTOM, adapterName, "Banner destroyed")
         }
     }
 

@@ -1,9 +1,12 @@
-/**
+/*
  * @Copyright:   SuperAwesome Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
 package tv.superawesome.lib.savastparser;
 
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.Contract;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,10 +33,9 @@ public class SAXMLParser {
      *
      * @param xml   xml string
      * @return      a Document object
-     * @throws      ParserConfigurationException
-     * @throws      IOException
-     * @throws      SAXException
      */
+    @NonNull
+    @Contract("null -> fail")
     public static Document parseXML(String xml) throws ParserConfigurationException, IOException, SAXException, NullPointerException {
         if (xml == null) {
             throw new NullPointerException();

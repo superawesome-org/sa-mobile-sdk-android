@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import tv.superawesome.lib.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
-import tv.superawesome.lib.sanetwork.request.SANetworkInterface;
 
 public class Service implements NetworkInterface {
 
@@ -15,9 +14,7 @@ public class Service implements NetworkInterface {
     protected String bundleId;
     protected String dateOfBirth;
 
-    // private data
-    private Context context = null;
-    private SANetwork network;
+    private final SANetwork network;
 
     public Service() {
         network = new SANetwork();
@@ -55,7 +52,7 @@ public class Service implements NetworkInterface {
     }
 
     public void execute(Context context, String dateOfBirth, String bundleId, ServiceResponseInterface listener) {
-        this.context = context;
+        // private data
 
         url = SAAgeCheck.sdk.getURL();
         this.bundleId = bundleId;
@@ -67,12 +64,7 @@ public class Service implements NetworkInterface {
 
         switch (getMethod()) {
             case GET: {
-                network.sendGET(url + getEndpoint(), getQuery(), getHeader(), new SANetworkInterface() {
-                    @Override
-                    public void saDidGetResponse(int status, String payload, boolean success) {
-                        instance.success(status, payload, success);
-                    }
-                });
+                network.sendGET(url + getEndpoint(), getQuery(), getHeader(), (status, payload, success) -> instance.success(status, payload, success));
                 break;
             }
         }

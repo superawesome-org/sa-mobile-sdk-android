@@ -15,14 +15,12 @@ import tv.superawesome.lib.saparentalgate.SAParentalGate;
 
 public class SAVideoClick {
 
-    private SAAd ad;
-    private boolean isParentalGateEnabled;
-    private boolean isBumperPageEnabled;
-    private SAEvents events;
+    private final SAAd ad;
+    private final boolean isParentalGateEnabled;
+    private final boolean isBumperPageEnabled;
+    private final SAEvents events;
 
     private Long currentClickThreshold = 0L;
-
-    private static String PADLOCK_URL = "https://ads.superawesome.tv/v2/safead";
 
     SAVideoClick(SAAd ad,
                  boolean isParentalGateEnabled,
@@ -37,30 +35,23 @@ public class SAVideoClick {
     public void handleSafeAdClick(View view) {
         final Context context = view.getContext();
 
-        Runnable clickRunner = new Runnable() {
-            @Override
-            public void run() {
-                showSuperAwesomeWebViewInExternalBrowser(context);
-            }
-        };
+        Runnable clickRunner = () -> showSuperAwesomeWebViewInExternalBrowser(context);
         showParentalGateIfNeededWithCompletion(context, clickRunner);
     }
 
     private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
         Uri uri = null;
         try {
+            String PADLOCK_URL = "https://ads.superawesome.tv/v2/safead";
             uri = Uri.parse(PADLOCK_URL);
         } catch (Exception ignored) {}
 
         if (context != null && uri != null) {
             final Uri safeUri = uri;
 
-            SABumperPage.Interface bumperCallback = new SABumperPage.Interface() {
-                @Override
-                public void didEndBumper() {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, safeUri);
-                    context.startActivity(browserIntent);
-                }
+            SABumperPage.Interface bumperCallback = () -> {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, safeUri);
+                context.startActivity(browserIntent);
             };
 
             if (isBumperPageEnabled) {
@@ -89,12 +80,7 @@ public class SAVideoClick {
 
         if (destinationUrl != null && context != null) {
             // check for parental gate on click
-            Runnable clickRunner = new Runnable() {
-                @Override
-                public void run() {
-                    click(context, destinationUrl);
-                }
-            };
+            Runnable clickRunner = () -> click(context, destinationUrl);
             clickRunner.run();
             // showParentalGateIfNeededWithCompletion(context, clickRunner);
         }
@@ -139,12 +125,7 @@ public class SAVideoClick {
     private void click(final Context context, final String destination) {
 
         if (isBumperPageEnabled) {
-            SABumperPage.setListener(new SABumperPage.Interface() {
-                @Override
-                public void didEndBumper() {
-                    handleUrl(context, destination);
-                }
-            });
+            SABumperPage.setListener(() -> handleUrl(context, destination));
 
             if (context instanceof Activity) {
                 SABumperPage.play((Activity)context);

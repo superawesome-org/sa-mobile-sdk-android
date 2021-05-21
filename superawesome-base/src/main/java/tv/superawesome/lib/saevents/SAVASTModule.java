@@ -12,15 +12,15 @@ import tv.superawesome.lib.samodelspace.vastad.SAVASTEvent;
 public class SAVASTModule {
 
     private SAURLEvent                  vastClickThrough = null;
-    private List<SAURLEvent>            vastError = new ArrayList<>();
-    private List<SAURLEvent>            vastImpression = new ArrayList<>();
-    private List<SAURLEvent>            vastCreativeView = new ArrayList<>();
-    private List<SAURLEvent>            vastStart = new ArrayList<>();
-    private List<SAURLEvent>            vastFirstQuartile = new ArrayList<>();
-    private List<SAURLEvent>            vastMidpoint = new ArrayList<>();
-    private List<SAURLEvent>            vastThirdQuartile = new ArrayList<>();
-    private List<SAURLEvent>            vastComplete = new ArrayList<>();
-    private List<SAURLEvent>            vastClickTracking = new ArrayList<>();
+    private final List<SAURLEvent>            vastError = new ArrayList<>();
+    private final List<SAURLEvent>            vastImpression = new ArrayList<>();
+    private final List<SAURLEvent>            vastCreativeView = new ArrayList<>();
+    private final List<SAURLEvent>            vastStart = new ArrayList<>();
+    private final List<SAURLEvent>            vastFirstQuartile = new ArrayList<>();
+    private final List<SAURLEvent>            vastMidpoint = new ArrayList<>();
+    private final List<SAURLEvent>            vastThirdQuartile = new ArrayList<>();
+    private final List<SAURLEvent>            vastComplete = new ArrayList<>();
+    private final List<SAURLEvent>            vastClickTracking = new ArrayList<>();
 
     public SAVASTModule (SAAd ad) {
         this(ad, Executors.newSingleThreadExecutor(), 15000, false);

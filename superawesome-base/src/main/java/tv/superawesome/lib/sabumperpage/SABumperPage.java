@@ -41,7 +41,7 @@ public class SABumperPage extends Activity {
 
     private static String appName = null;
     private static Drawable appIcon = null;
-    private static Interface listener = new SABumperPage.Interface() { @Override public void didEndBumper() {} };
+    private static Interface listener = () -> {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,20 +139,17 @@ public class SABumperPage extends Activity {
         // create the timer
         final int[] countdown = {MAX_TIMER};
         handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
+        runnable = () -> {
 
-                if (countdown[0] <= 0) {
-                    if (listener != null) {
-                        listener.didEndBumper();
-                    }
-                    SABumperPage.this.finish();
-                } else {
-                    countdown[0]--;
-                    smallText.setText(smallTextString.replace("%ld", "" + countdown[0]));
-                    handler.postDelayed(runnable, 1000);
+            if (countdown[0] <= 0) {
+                if (listener != null) {
+                    listener.didEndBumper();
                 }
+                SABumperPage.this.finish();
+            } else {
+                countdown[0]--;
+                smallText.setText(smallTextString.replace("%ld", "" + countdown[0]));
+                handler.postDelayed(runnable, 1000);
             }
         };
         handler.postDelayed(runnable, 1000);

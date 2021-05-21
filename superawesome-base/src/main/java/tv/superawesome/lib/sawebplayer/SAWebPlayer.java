@@ -1,6 +1,5 @@
 package tv.superawesome.lib.sawebplayer;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -29,14 +28,14 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     private boolean finishedLoading = false;
 
     // private variables for the web player
-    protected FrameLayout holder = null;
-    protected SAWebView webView = null;
+    protected FrameLayout holder;
+    protected SAWebView webView;
 
     // interface objects used for the web player callback mechanism
     protected Listener eventListener;
 
     // mraid instance
-    protected int holderBgColor = Color.TRANSPARENT;
+    protected final int holderBgColor = Color.TRANSPARENT;
 
     public SAWebPlayer(Context context) {
         this(context, null, 0);
@@ -49,10 +48,7 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     public SAWebPlayer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        eventListener = new Listener() {
-            @Override
-            public void saWebPlayerDidReceiveEvent(Event event, String destination) {
-            }
+        eventListener = (event, destination) -> {
         };
 
         holder = new FrameLayout(context);
@@ -154,8 +150,8 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
         void saWebPlayerDidReceiveEvent(Event event, String destination);
     }
 
-    private class MoatInterface {
-        protected Listener eventListener;
+    private static class MoatInterface {
+        protected final Listener eventListener;
 
         public MoatInterface(Listener eventListener) {
             this.eventListener = eventListener;

@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright:   SuperAwesome Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -8,12 +8,9 @@ import android.content.Context;
 import android.os.Looper;
 
 import java.util.Locale;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import tv.superawesome.lib.sasession.capper.ISACapper;
 import tv.superawesome.lib.sasession.capper.SACapper;
-import tv.superawesome.lib.sasession.capper.SACapperInterface;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
 import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
@@ -37,19 +34,19 @@ public class SASession implements ISASession {
     private final static String      DEVICE_TABLET = "tablet";
 
     // the current frequency capper
-    private ISACapper                capper = null;
+    private final ISACapper                capper;
 
     // private state members
     private String                   baseUrl;
     private boolean                  testEnabled;
     private int                      dauId;
     private String                   version;
-    private String                   packageName;
-    private String                   appName;
-    private SAUtils.SAConnectionType connectionType;
+    private final String                   packageName;
+    private final String                   appName;
+    private final SAUtils.SAConnectionType connectionType;
     private String                   lang;
-    private String                   device;
-    private String                   userAgent;
+    private final String                   device;
+    private final String                   userAgent;
     private SAConfiguration          configuration;
     private SARTBInstl               instl;
     private SARTBPosition            pos;
@@ -105,14 +102,11 @@ public class SASession implements ISASession {
      */
     @Override
     public void prepareSession (final SASessionInterface listener) {
-        capper.getDauID(new SACapperInterface() {
-            @Override
-            public void didFindDAUID(int dauID) {
-                setDauId(dauID);
+        capper.getDauID(dauID -> {
+            setDauId(dauID);
 
-                if (listener != null) {
-                    listener.didFindSessionReady();
-                }
+            if (listener != null) {
+                listener.didFindSessionReady();
             }
         });
     }

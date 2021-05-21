@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright: SuperAwesome Trading Limited 2017
  * @Author: Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -9,8 +9,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import java.util.Date;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import tv.superawesome.lib.sautils.SAUtils;
 
@@ -24,7 +22,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class SACapper implements ISACapper {
     private static final String SUPER_AWESOME_FIRST_PART_DAU = "SUPER_AWESOME_FIRST_PART_DAU";
 
-    private Context context = null;
+    private final Context context;
 
     /**
      * Constructor with executor

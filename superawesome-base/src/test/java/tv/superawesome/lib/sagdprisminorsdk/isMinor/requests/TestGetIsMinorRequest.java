@@ -1,9 +1,13 @@
 package tv.superawesome.lib.sagdprisminorsdk.isMinor.requests;
 
-import junit.framework.Assert;
+
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.json.JSONObject;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 
 import tv.superawesome.lib.sagdprisminorsdk.minor.network.HTTPMethod;
@@ -34,30 +38,30 @@ public class TestGetIsMinorRequest {
         getIsMinorRequest = new GetIsMinorRequest(bundleId, dateOfBirth);
 
         //then
-        Assert.assertNotNull(bundleId);
-        Assert.assertNotNull(dateOfBirth);
-        Assert.assertNotNull(endpoint);
+        assertNotNull(bundleId);
+        assertNotNull(dateOfBirth);
+        assertNotNull(endpoint);
 
-        Assert.assertNotNull(getIsMinorRequest);
+        assertNotNull(getIsMinorRequest);
 
-        Assert.assertEquals(method, getIsMinorRequest.getMethod());
-        Assert.assertEquals(endpoint, getIsMinorRequest.getEndpoint());
+        assertEquals(method, getIsMinorRequest.getMethod());
+        assertEquals(endpoint, getIsMinorRequest.getEndpoint());
 
         JSONObject body = getIsMinorRequest.getBody();
-        Assert.assertNotNull(body);
+        assertNotNull(body);
 
 
         JSONObject header = getIsMinorRequest.getHeader();
-        Assert.assertNotNull(header);
+        assertNotNull(header);
 
         JSONObject query = getIsMinorRequest.getQuery();
-        Assert.assertNotNull(query);
+        assertNotNull(query);
         String testBundleId = SAJsonParser.getString(query, "bundleId");
         String testDob = SAJsonParser.getString(query, "dob");
-        Assert.assertNotNull(testBundleId);
-        Assert.assertNotNull(testDob);
-        Assert.assertEquals(testBundleId, bundleId);
-        Assert.assertEquals(testDob, dateOfBirth);
+        assertNotNull(testBundleId);
+        assertNotNull(testDob);
+        assertEquals(testBundleId, bundleId);
+        assertEquals(testDob, dateOfBirth);
 
     }
 

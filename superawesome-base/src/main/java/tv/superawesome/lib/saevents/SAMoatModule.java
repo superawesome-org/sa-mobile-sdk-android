@@ -7,14 +7,13 @@ import android.widget.VideoView;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.concurrent.Future;
 
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sautils.SAUtils;
 
 public class SAMoatModule {
 
-    private static String TAG = "SuperAwesome-Moat-Module";
+    private static final String TAG = "SuperAwesome-Moat-Module";
     private static final String kMoatClass = "tv.superawesome.plugins.publisher.moat.SAMoatEvents";
 
     // boolean mostly used for tests, in order to not limit moat at all
@@ -25,7 +24,7 @@ public class SAMoatModule {
     private Object    moatInstance = null;
 
     // the ad object
-    private SAAd      ad;
+    private final SAAd      ad;
 
     public SAMoatModule (SAAd ad, boolean doLog) {
 

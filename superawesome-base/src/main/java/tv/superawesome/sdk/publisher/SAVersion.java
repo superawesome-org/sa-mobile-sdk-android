@@ -28,7 +28,7 @@ public class SAVersion {
      * Getter for a string comprising of SDK & version bundled
      *
      * @return  a string
-     * @param pluginName
+     * @param pluginName The name of the plugin
      */
     public static String getSDKVersion(String pluginName) {
         String pluginFormatted = pluginName != null ? String.format("_%s", pluginName) : "";

@@ -34,7 +34,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
         private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
     }
 
-    private val BANNER_BACKGROUND: Int = android.graphics.Color.rgb(224, 224, 224)
+    private val BANNER_BACKGROUND: Int = Color.rgb(224, 224, 224)
 
     private var session: SASession = SASession(ctx)
     private var loader: SALoader = SALoader(ctx)
@@ -78,16 +78,16 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
     fun JSONObject.toQueryParams(): String {
         var queryParams = ""
 
-        var looper = this.keys()
+        val looper = this.keys()
         while(looper.hasNext()) {
             val key = looper.next()
-            if (key.equals("test") && this.get(key).toString().equals("false")) {
+            if (key.equals("test") && this.get(key).toString() == "false") {
                 continue
             }
             queryParams += "&${key}=${URLEncoder.encode(this.get(key).toString())}"
         }
 
-        return queryParams;
+        return queryParams
     }
 
     fun setListener(value: SAInterface? = null) {
@@ -140,7 +140,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
     }
 
     fun setConfiguration(value: SAConfiguration?) {
-        session.setConfiguration(value)
+        session.configuration = value
     }
 
     fun setTestMode(value: Boolean) {

@@ -135,7 +135,7 @@ class AwesomeAdsMoPubVideo : BaseAd() {
         } else {
             MoPubLog.log(adNetworkId, MoPubLog.AdapterLogEvent.SHOW_FAILED, adapterName,
                     MoPubErrorCode.NETWORK_NO_FILL.intCode,
-                    MoPubErrorCode.NETWORK_NO_FILL);
+                    MoPubErrorCode.NETWORK_NO_FILL)
 
             mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
 

@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright: SADefaults Trading Limited 2017
  * @Author: Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -24,38 +24,35 @@ public class SAUnityVideoAd {
      * Method that creates a new Video Ad (from Unity)
      */
     public static void SuperAwesomeUnitySAVideoAdCreate(Context context) {
-        SAVideoAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                switch (event) {
-                    case adLoaded:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString());
-                        break;
-                    case adEmpty:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString());
-                        break;
-                    case adFailedToLoad:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString());
-                        break;
-                    case adAlreadyLoaded:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString());
-                        break;
-                    case adShown:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString());
-                        break;
-                    case adFailedToShow:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString());
-                        break;
-                    case adClicked:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString());
-                        break;
-                    case adEnded:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString());
-                        break;
-                    case adClosed:
-                        SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
-                        break;
-                }
+        SAVideoAd.setListener((SAInterface) (placementId, event) -> {
+            switch (event) {
+                case adLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString());
+                    break;
+                case adEmpty:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString());
+                    break;
+                case adFailedToLoad:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString());
+                    break;
+                case adAlreadyLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString());
+                    break;
+                case adShown:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString());
+                    break;
+                case adFailedToShow:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString());
+                    break;
+                case adClicked:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString());
+                    break;
+                case adEnded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString());
+                    break;
+                case adClosed:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
+                    break;
             }
         });
     }

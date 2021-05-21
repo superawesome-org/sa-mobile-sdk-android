@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright:   SuperAwesome Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -32,10 +32,10 @@ import tv.superawesome.lib.sautils.SAUtils;
 public class SAVASTParser {
 
     // private context
-    private Context context = null;
+    private final Context context;
     // the header & query
-    private JSONObject header = null;
-    private JSONObject query = null;
+    private final JSONObject header;
+    private final JSONObject query;
 
     private Executor executor;
     private int timeout;
@@ -78,7 +78,7 @@ public class SAVASTParser {
      */
     public void parseVAST (String url, final SAVASTParserInterface listener) {
         // make sure the local listener is never null so I don't have to do checks upon checks
-        final SAVASTParserInterface localListener = listener != null ? listener : new SAVASTParserInterface() {@Override public void saDidParseVAST(SAVASTAd ad) {}};
+        final SAVASTParserInterface localListener = listener != null ? listener : ad -> {};
 
         // start the recursive method
         recursiveParse(url, new SAVASTAd(), new SAVASTParserInterface() {
@@ -252,69 +252,51 @@ public class SAVASTParser {
         }
 
         // get errors
-        SAXMLParser.searchSiblingsAndChildrenOf(adElement, "Error", new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                SAVASTEvent tracking = new SAVASTEvent();
-                tracking.event = "vast_error";
-                tracking.URL = e.getTextContent();
-                ad.events.add(tracking);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(adElement, "Error", e -> {
+            SAVASTEvent tracking = new SAVASTEvent();
+            tracking.event = "vast_error";
+            tracking.URL = e.getTextContent();
+            ad.events.add(tracking);
         });
 
         // get impressions
-        SAXMLParser.searchSiblingsAndChildrenOf(adElement, "Impression", new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                SAVASTEvent tracking = new SAVASTEvent();
-                tracking.event = "vast_impression";
-                tracking.URL = e.getTextContent();
-                ad.events.add(tracking);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(adElement, "Impression", e -> {
+            SAVASTEvent tracking = new SAVASTEvent();
+            tracking.event = "vast_impression";
+            tracking.URL = e.getTextContent();
+            ad.events.add(tracking);
         });
 
         // get other events, located in the creative
         Element creativeXML = SAXMLParser.findFirstInstanceInSiblingsAndChildrenOf(adElement, "Creative");
 
-        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "ClickThrough", new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                SAVASTEvent tracking = new SAVASTEvent();
-                tracking.event = "vast_click_through";
-                tracking.URL = e.getTextContent().replace("&amp;", "&").replace("%3A", ":").replace("%2F", "/");
-                ad.events.add(tracking);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "ClickThrough", e -> {
+            SAVASTEvent tracking = new SAVASTEvent();
+            tracking.event = "vast_click_through";
+            tracking.URL = e.getTextContent().replace("&amp;", "&").replace("%3A", ":").replace("%2F", "/");
+            ad.events.add(tracking);
         });
 
-        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "ClickTracking", new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                SAVASTEvent tracking = new SAVASTEvent();
-                tracking.event = "vast_click_tracking";
-                tracking.URL = e.getTextContent();
-                ad.events.add(tracking);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "ClickTracking", e -> {
+            SAVASTEvent tracking = new SAVASTEvent();
+            tracking.event = "vast_click_tracking";
+            tracking.URL = e.getTextContent();
+            ad.events.add(tracking);
         });
 
-        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "Tracking", new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                SAVASTEvent tracking = new SAVASTEvent();
-                tracking.event = "vast_" + e.getAttribute("event");
-                tracking.URL = e.getTextContent();
-                ad.events.add(tracking);
-            }
+        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "Tracking", e -> {
+            SAVASTEvent tracking = new SAVASTEvent();
+            tracking.event = "vast_" + e.getAttribute("event");
+            tracking.URL = e.getTextContent();
+            ad.events.add(tracking);
         });
 
         // append only valid, mp4 type ads
 
-        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "MediaFile", new SAXMLParser.SAXMLIterator() {
-            @Override
-            public void saDidFindXMLElement(Element e) {
-                SAVASTMedia media = parseMediaXML(e);
-                if ((media.type.contains("mp4") || media.type.contains(".mp4")) && media.isValid()) {
-                    ad.media.add(media);
-                }
+        SAXMLParser.searchSiblingsAndChildrenOf(creativeXML, "MediaFile", e -> {
+            SAVASTMedia media = parseMediaXML(e);
+            if ((media.type.contains("mp4") || media.type.contains(".mp4")) && media.isValid()) {
+                ad.media.add(media);
             }
         });
 

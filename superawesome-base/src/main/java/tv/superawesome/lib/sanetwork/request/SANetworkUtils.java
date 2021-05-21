@@ -30,10 +30,10 @@ public class SANetworkUtils {
      */
     String formGetQueryFromDict(JSONObject dict) {
         // string to be returned
-        String queryString = "";
+        StringBuilder queryString = new StringBuilder();
 
         // if the JSONObject is null or empty, then just return the empty queryString
-        if (isJSONEmpty(dict)) return queryString;
+        if (isJSONEmpty(dict)) return queryString.toString();
 
         // if not, proceed to create an Array list of strings in the format
         // "key=value&", taken from the keys and values found in the JSONObject
@@ -49,7 +49,7 @@ public class SANetworkUtils {
 
         // add the values in the array to the final query string
         for (String queryObj : queryArray) {
-            queryString += queryObj;
+            queryString.append(queryObj);
         }
 
         // and if all is OK return the string without the last "&" character, so it stays a valid
@@ -57,7 +57,7 @@ public class SANetworkUtils {
         if (queryString.length() > 1) {
             return queryString.substring(0, queryString.length() - 1);
         } else {
-            return queryString;
+            return queryString.toString();
         }
     }
 }
