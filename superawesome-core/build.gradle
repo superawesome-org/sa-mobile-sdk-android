@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'kotlinx-serialization'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
 }
 
 android {
