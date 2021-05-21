@@ -6,7 +6,6 @@ import android.content.Context;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
-import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 
 /**
@@ -20,19 +19,16 @@ public class SAUnityAwesomeAds {
     }
 
     public static void SuperAwesomeUnityAwesomeAdsTriggerAgeCheck(Context context, String dateOfBirth) {
-        AwesomeAds.triggerAgeCheck(context, dateOfBirth, new GetIsMinorInterface() {
-            @Override
-            public void getIsMinorData(GetIsMinorModel getIsMinorModel) {
+        AwesomeAds.triggerAgeCheck(context, dateOfBirth, getIsMinorModel -> {
 
-                GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
+            GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
 
-                try {
-                    JSONObject jsonObject = model.writeToJson();
-                    SAUnityCallback.sendToUnity("AwesomeAds", jsonObject);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    SAUnityCallback.sendToUnity("AwesomeAds", new JSONObject());
-                }
+            try {
+                JSONObject jsonObject = model.writeToJson();
+                SAUnityCallback.sendToUnity("AwesomeAds", jsonObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+                SAUnityCallback.sendToUnity("AwesomeAds", new JSONObject());
             }
         });
     }

@@ -3,13 +3,14 @@ package tv.superawesome.plugins.publisher.admob;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.mediation.MediationAdRequest;
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitial;
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitialListener;
 
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
-import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
 import tv.superawesome.sdk.publisher.SAOrientation;
@@ -20,7 +21,7 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
     private Integer loadedPlacementId = 0;
 
     @Override
-    public void requestInterstitialAd(final Context context, final CustomEventInterstitialListener listener, String s, MediationAdRequest mediationAdRequest, Bundle bundle) {
+    public void requestInterstitialAd(@NonNull final Context context, @NonNull final CustomEventInterstitialListener listener, String s, @NonNull MediationAdRequest mediationAdRequest, Bundle bundle) {
 
         // save the context
         this.context = context;
@@ -35,56 +36,52 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
             SAInterstitialAd.setOrientation(SAOrientation.fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION)));
         }
 
-        SAInterstitialAd.setListener(new SAInterface() {
-            @Override
-            public void onEvent(int placementId, SAEvent event) {
-                switch (event) {
+        SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
+            switch (event) {
 
-                    case adLoaded: {
+                case adLoaded: {
 
-                        loadedPlacementId = placementId;
+                    loadedPlacementId = placementId;
 
-                        if (listener != null) {
-                            listener.onAdLoaded();
-                        }
-                        break;
+                    if (listener != null) {
+                        listener.onAdLoaded();
                     }
-                    case adEmpty:
-                    case adFailedToLoad: {
-                        if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
-                        }
-                        break;
+                    break;
+                }
+                case adEmpty:
+                case adFailedToLoad: {
+                    if (listener != null) {
+                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
                     }
-                    case adAlreadyLoaded:
-                        break;
-                    case adShown: {
-                        if (listener != null) {
-                            listener.onAdOpened();
-                        }
-                        break;
+                    break;
+                }
+                case adAlreadyLoaded:
+                case adEnded:
+                    break;
+                case adShown: {
+                    if (listener != null) {
+                        listener.onAdOpened();
                     }
-                    case adFailedToShow: {
-                        if (listener != null) {
-                            listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
-                        }
-                        break;
+                    break;
+                }
+                case adFailedToShow: {
+                    if (listener != null) {
+                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
                     }
-                    case adClicked: {
-                        if (listener != null) {
-                            listener.onAdClicked();
-                            listener.onAdLeftApplication();
-                        }
-                        break;
+                    break;
+                }
+                case adClicked: {
+                    if (listener != null) {
+                        listener.onAdClicked();
+                        listener.onAdLeftApplication();
                     }
-                    case adEnded:
-                        break;
-                    case adClosed: {
-                        if (listener != null) {
-                            listener.onAdClosed();
-                        }
-                        break;
+                    break;
+                }
+                case adClosed: {
+                    if (listener != null) {
+                        listener.onAdClosed();
                     }
+                    break;
                 }
             }
         });

@@ -1,57 +1,10 @@
 <resources>
     <string name="app_name">SASDK - Android</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="title_activity_banner_ad_code">Banner Ad (set with code)</string>
-    <string name="title_activity_banner_ad_xml">Banner Ad (set with XML)</string>
-    <string name="title_activity_interstitial_ad_code">Interstitial Ad (set with code)</string>
-    <string name="title_activity_interstitial_ad_xml">Interstitial Ad (set with XML)</string>
-    <string name="title_activity_video_ad_code">Video Ad (set with code)</string>
-    <string name="title_activity_video_ad_xml">Video Ad (set with XML)</string>
-
-    <string name="banner_ad_xml_code">
-        Ad created using: \n\n
-        <![CDATA[
-            <tv.superawesome.superawesomesdk.view.BannerView \n
-                android:id="@+id/banner_container" \n
-                android:layout_width="wrap_content" \n
-                android:layout_height="wrap_content" \n
-                android:layout_alignParentBottom="true" \n
-                android:layout_centerHorizontal="true" \n
-                custom:placementID="5687" \n
-                custom:testMode="true"> \n
-            </tv.superawesome.superawesomesdk.view.BannerView>
-        ]]>
-    </string>
-
-    <string name="interstitial_ad_xml_code">
-        Ad created using: \n\n
-        <![CDATA[
-            <tv.superawesome.superawesomesdk.view.InterstitialView \n
-                android:id="@+id/interstitial_container" \n
-                android:layout_width="wrap_content" \n
-                android:layout_height="wrap_content" \n
-                android:layout_alignParentBottom="true" \n
-                custom:placementID="5692" \n
-                custom:testMode="true" \n
-                custom:showInstantly="false"> \n
-            </tv.superawesome.superawesomesdk.view.InterstitialView>
-        ]]>
-    </string>
-    <string name="title_activity_all_ads">All Ads</string>
-    <string name="title_activity_gamewall">GameWall</string>
-    <string name="gamewall_description">This activity uses a gamewall. There is a button below that only shows when the gamewall has items available to display.</string>
-    <string name="gamewall_button">Open GameWall</string>
-    <string name="gamewall_reward">Total Currency earned:</string>
-    <string name="title_activity_activity_banner">activity_banner</string>
-    <string name="title_activity_activity_video">activity_video</string>
     <string name="play_admob_interstitial">Play AdMob interstitial</string>
     <string name="play_admob_video">Play AdMob video</string>
 
     <string name="admob_app_id" translatable="false">ca-app-pub-2222631699890286~7883084050</string>
     <string name="admob_banner_ad_id" translatable="false">ca-app-pub-2222631699890286/5392414677</string>
     <string name="admob_interstitial_ad_id" translatable="false">ca-app-pub-2222631699890286/3274545465</string>
-    <string name="admob_rewarded_ad_id" translatable="false">ca-app-pub-2222631699890286/4396055445</string>
 </resources>

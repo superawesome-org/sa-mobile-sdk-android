@@ -3,11 +3,7 @@ package tv.superawesome.lib.saevents.events.trigger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tv.superawesome.lib.saevents.events.SAServerEvent;
 import tv.superawesome.lib.saevents.events.SAURLEvent;
-import tv.superawesome.lib.saevents.events.SAViewableImpressionEvent;
-import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
-import tv.superawesome.lib.samodelspace.saad.SAAd;
 
 /**
  * Created by gabriel.coman on 09/05/2018.
@@ -23,13 +19,10 @@ public class TestSAURLEventTrigger extends TestEventTrigger {
         SAURLEvent event = new SAURLEvent(url, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
     }
 
@@ -41,13 +34,10 @@ public class TestSAURLEventTrigger extends TestEventTrigger {
         SAURLEvent event = new SAURLEvent(url, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
     }
 

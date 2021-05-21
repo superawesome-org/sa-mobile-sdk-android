@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class SAMoatEvents implements TrackerListener, VideoTrackerListener {
 
-    private static String TAG = "SuperAwesome-Moat";
+    private static final String TAG = "SuperAwesome-Moat";
 
     // Moat tracking hardcoded constants
     private static final String MOAT_SERVER                 = "https://z.moatads.com";

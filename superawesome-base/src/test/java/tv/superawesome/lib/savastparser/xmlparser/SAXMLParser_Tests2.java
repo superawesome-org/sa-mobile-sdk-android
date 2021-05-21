@@ -89,7 +89,7 @@ public class SAXMLParser_Tests2 {
 
         assertNotNull(impressions);
         assertTrue(impressions.size() == 0);
-        assertFalse(impressions.size() == 3);
+        assertEquals(false, impressions.size() == 3);
 
     }
 

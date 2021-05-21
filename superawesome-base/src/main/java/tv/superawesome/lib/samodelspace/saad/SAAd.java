@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright:   SuperAwesome Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -54,7 +54,7 @@ public class SAAd extends SABaseObject implements Parcelable {
 
     public SACreative     creative          = new SACreative();
 
-    public long           loadTime          = 0L;
+    public long           loadTime;
 
     /**
      * Basic constructor

@@ -3,7 +3,6 @@ package tv.superawesome.lib.saevents.events.trigger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tv.superawesome.lib.saevents.events.SAServerEvent;
 import tv.superawesome.lib.saevents.events.SAViewableImpressionEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
@@ -22,13 +21,10 @@ public class TestViewableImpressionEventTrigger extends TestEventTrigger {
         SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertTrue(success);
-            }
+            // then
+            Assert.assertTrue(success);
         });
     }
 
@@ -40,13 +36,10 @@ public class TestViewableImpressionEventTrigger extends TestEventTrigger {
         SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(new SAServerEvent.Listener() {
-            @Override
-            public void didTriggerEvent(boolean success) {
+        event.triggerEvent(success -> {
 
-                // then
-                Assert.assertFalse(success);
-            }
+            // then
+            Assert.assertFalse(success);
         });
     }
 }

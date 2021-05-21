@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright:   SADefaults Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -33,7 +33,7 @@ import tv.superawesome.sdk.publisher.SAInterface;
 public class SAAIRBannerAd {
 
     // hash map of all the banners that have been created
-    private static HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
+    private static final HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
 
     /**
      * Class that creates a new Banner Ad (from AIR)
@@ -66,20 +66,17 @@ public class SAAIRBannerAd {
             if (airName2 != null) {
                 final SABannerAd bannerAd = new SABannerAd(context);
                 bannerAd.setId(SAUtils.randomNumberBetween(1000000, 1500000));
-                bannerAd.setListener(new SAInterface() {
-                    @Override
-                    public void onEvent(int placementId, SAEvent event) {
-                        switch (event) {
-                            case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adLoaded.toString()); break;
-                            case adEmpty: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adEmpty.toString()); break;
-                            case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adFailedToLoad.toString()); break;
-                            case adAlreadyLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adAlreadyLoaded.toString()); break;
-                            case adShown: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adShown.toString()); break;
-                            case adFailedToShow: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adFailedToShow.toString()); break;
-                            case adClicked: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adClicked.toString()); break;
-                            case adEnded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adEnded.toString()); break;
-                            case adClosed: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adClosed.toString()); break;
-                        }
+                bannerAd.setListener((SAInterface) (placementId, event) -> {
+                    switch (event) {
+                        case adLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adLoaded.toString()); break;
+                        case adEmpty: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adEmpty.toString()); break;
+                        case adFailedToLoad: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adFailedToLoad.toString()); break;
+                        case adAlreadyLoaded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adAlreadyLoaded.toString()); break;
+                        case adShown: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adShown.toString()); break;
+                        case adFailedToShow: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adFailedToShow.toString()); break;
+                        case adClicked: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adClicked.toString()); break;
+                        case adEnded: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adEnded.toString()); break;
+                        case adClosed: SAAIRCallback.sendAdCallback(freContext, airName2, placementId, SAEvent.adClosed.toString()); break;
                     }
                 });
                 bannerAdHashMap.put(airName2, bannerAd);

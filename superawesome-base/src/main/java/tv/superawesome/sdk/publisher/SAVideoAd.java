@@ -8,11 +8,9 @@ import android.util.Log;
 import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
-import tv.superawesome.lib.saadloader.SALoaderInterface;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
-import tv.superawesome.lib.samodelspace.saad.SAResponse;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
 import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
@@ -20,15 +18,14 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
 
 public class SAVideoAd {
 
     // private vars w/ a public interface
-    private static SAEvents events = new SAEvents();
-    public static HashMap<Integer, Object> ads = new HashMap<>();
-    private static SAInterface listener = new SAInterface() { @Override public void onEvent(int placementId, SAEvent event) {} };
+    private static final SAEvents events = new SAEvents();
+    public static final HashMap<Integer, Object> ads = new HashMap<>();
+    private static SAInterface listener = (placementId, event) -> {};
 
     private static boolean shouldShowCloseWarning           = SADefaults.defaultCloseWarning();
     private static boolean isParentalGateEnabled            = SADefaults.defaultParentalGate();
@@ -65,53 +62,46 @@ public class SAVideoAd {
             // create a current session
             final SASession session = getNewSession(context);
 
-            session.prepareSession(new SASessionInterface() {
-                @Override
-                public void didFindSessionReady() {
+            session.prepareSession(() -> {
 
-                    // after session is OK - start loading
-                    loader.loadAd(placementId, session, new SALoaderInterface() {
-                        @Override
-                        public void saDidLoadAd(SAResponse response) {
+                // after session is OK - start loading
+                loader.loadAd(placementId, session, response -> {
 
-                            if (response.status != 200) {
-                                //
-                                // remove from here
-                                ads.remove(placementId);
+                    if (response.status != 200) {
+                        //
+                        // remove from here
+                        ads.remove(placementId);
 
-                                //
-                                // send callback
-                                if (listener != null) {
-                                    listener.onEvent(placementId, SAEvent.adFailedToLoad);
-                                } else {
-                                    Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToLoad");
-                                }
-                            }
-                            else {
-                                // find out the real valid
-                                boolean isValid = response.isValid();
-                                SAAd first = isValid ? response.ads.get(0) : null;
-                                isValid = first != null && first.creative.details.media.isDownloaded;
-
-                                // put the correct value
-                                if (isValid) {
-                                    ads.put(placementId, first);
-                                }
-                                // remove existing
-                                else {
-                                    ads.remove(placementId);
-                                }
-
-                                // call listener(s)
-                                if (listener != null) {
-                                    listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
-                                } else {
-                                    Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
-                                }
-                            }
+                        //
+                        // send callback
+                        if (listener != null) {
+                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                        } else {
+                            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToLoad");
                         }
-                    });
-                }
+                    } else {
+                        // find out the real valid
+                        boolean isValid = response.isValid();
+                        SAAd first = isValid ? response.ads.get(0) : null;
+                        isValid = first != null && first.creative.details.media.isDownloaded;
+
+                        // put the correct value
+                        if (isValid) {
+                            ads.put(placementId, first);
+                        }
+                        // remove existing
+                        else {
+                            ads.remove(placementId);
+                        }
+
+                        // call listener(s)
+                        if (listener != null) {
+                            listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                        } else {
+                            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                        }
+                    }
+                });
             });
 
         }
@@ -149,7 +139,7 @@ public class SAVideoAd {
 
     public static boolean hasAdAvailable (int placementId) {
         Object object = ads.get(placementId);
-        return object != null && object instanceof SAAd;
+        return object instanceof SAAd;
     }
 
     public static SAAd getAd (int placementId) {
@@ -171,7 +161,7 @@ public class SAVideoAd {
         Object generic = ads.get(placementId);
 
         // if notnull & instance of SAAd
-        if (generic != null && generic instanceof SAAd) {
+        if (generic instanceof SAAd) {
 
             // try to get the ad that fits the placement id
             SAAd adL = (SAAd) generic;

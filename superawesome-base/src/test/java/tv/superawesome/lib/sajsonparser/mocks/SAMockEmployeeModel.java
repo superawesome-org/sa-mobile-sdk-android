@@ -7,7 +7,6 @@ import java.util.List;
 import tv.superawesome.lib.sajsonparser.SABaseObject;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sajsonparser.SAJsonToList;
-import tv.superawesome.lib.sajsonparser.SAListToJson;
 
 /**
  * Created by gabriel.coman on 18/10/16.
@@ -37,12 +36,7 @@ public class SAMockEmployeeModel extends SABaseObject {
         age = SAJsonParser.getInt(json, "age");
         isActive = SAJsonParser.getBoolean(json, "isActive");
         position = new SAMockPositionModel(SAJsonParser.getJsonObject(json, "position"));
-        previous = SAJsonParser.getListFromJsonArray(json, "previous", new SAJsonToList<SAMockPositionModel, JSONObject>() {
-            @Override
-            public SAMockPositionModel traverseItem(JSONObject param) {
-                return new SAMockPositionModel(param);
-            }
-        });
+        previous = SAJsonParser.getListFromJsonArray(json, "previous", (SAJsonToList<SAMockPositionModel, JSONObject>) param -> new SAMockPositionModel(param));
     }
 
     @Override
@@ -51,12 +45,7 @@ public class SAMockEmployeeModel extends SABaseObject {
                 "age", age,
                 "isActive", isActive,
                 "position", position,
-                "previous", SAJsonParser.getJsonArrayFromList(previous, new SAListToJson<JSONObject, SAMockPositionModel>() {
-                            @Override
-                                public JSONObject traverseItem(SAMockPositionModel param) {
-                                    return param.writeToJson();
-                                }
-                            }));
+                "previous", SAJsonParser.getJsonArrayFromList(previous, param -> param.writeToJson()));
     }
 
     @Override

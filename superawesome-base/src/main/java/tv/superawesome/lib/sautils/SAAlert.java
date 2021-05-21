@@ -1,4 +1,4 @@
-/**
+/*
  * @Copyright:   SuperAwesome Trading Limited 2017
  * @Author:      Gabriel Coman (gabriel.coman@superawesome.tv)
  */
@@ -18,14 +18,11 @@ public class SAAlert {
     public static final int OK_BUTTON = 0;
     public static final int CANCEL_BUTTON = 1;
 
-    // private instance of an alert dialog
-    private AlertDialog dialog;
-
     // private instance of an input box
     private EditText input;
 
     // singleton instance for the SAAlert class
-    private static SAAlert instance = new SAAlert();
+    private static final SAAlert instance = new SAAlert();
 
     /**
      * Private constructor
@@ -59,7 +56,7 @@ public class SAAlert {
     public void show(Context c, String title, String message, String okTitle, String nokTitle, boolean hasInput, int inputType, final SAAlertInterface listener1) {
 
         // create a new listener, that is never null
-        final SAAlertInterface listener = listener1 != null ? listener1 : new SAAlertInterface() {@Override public void saDidClickOnAlertButton(int button, String message) {}};
+        final SAAlertInterface listener = listener1 != null ? listener1 : (button, message1) -> {};
 
         // create a new alert builder
         final AlertDialog.Builder alert = new AlertDialog.Builder(c);
@@ -102,7 +99,8 @@ public class SAAlert {
         }
 
         // create and show
-        dialog = alert.create();
+        // private instance of an alert dialog
+        AlertDialog dialog = alert.create();
         dialog.show();
     }
 }
