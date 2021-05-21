@@ -152,6 +152,9 @@ workflows:
     jobs:
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              ignore: develop
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
