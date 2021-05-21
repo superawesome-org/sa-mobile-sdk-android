@@ -152,6 +152,9 @@ workflows:
     jobs:
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              ignore: develop
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -164,8 +167,6 @@ workflows:
           requires:
             - test_superawesome_base
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - sdk_push_superawesome_base:
@@ -173,8 +174,6 @@ workflows:
           requires:
             - test_superawesome_base
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - sdk_push_superawesome_air:
@@ -182,8 +181,6 @@ workflows:
           requires:
             - test_superawesome_base
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - sdk_push_superawesome_admob:
@@ -191,8 +188,6 @@ workflows:
           requires:
             - test_superawesome_base
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - sdk_push_superawesome_moat:
@@ -200,8 +195,6 @@ workflows:
           requires:
             - test_superawesome_base
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - sdk_push_superawesome_mopub:
@@ -209,8 +202,6 @@ workflows:
           requires:
             - test_superawesome_base
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - sdk_push_superawesome_unity:
@@ -218,8 +209,6 @@ workflows:
           requires:
             - test_superawesome_base
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - publish_docs:
@@ -227,7 +216,5 @@ workflows:
           requires:
             - sdk_push_superawesome
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
