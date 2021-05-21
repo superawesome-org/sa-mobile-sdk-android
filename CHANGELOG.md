@@ -1,3 +1,13 @@
+## [8.0.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.1...v8.0.2) (2021-05-21)
+
+
+### Bug Fixes
+
+* **CI:** Initial publish test ([9b4782a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/9b4782a29d4cc4a52e2863cbfb0a91f2f8c7294f))
+* **CI:** Initial publish test ([beae60d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/beae60d64ee9260e550251ed8b538a0201e0b0f3))
+* **CI:** Removed branch filter ([f0b8d33](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f0b8d33f11bf54ed39adc6d70b5419b8c9d173fe))
+* **remove warning:** use charset ([#77](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/77)) ([7735b1f](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7735b1fc143c946c80188cec646d98a514244d3e))
+
 ## [8.0.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.0...v8.0.1) (2021-05-21)
 
 
