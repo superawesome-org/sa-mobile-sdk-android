@@ -1,3 +1,11 @@
+## [8.0.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.0...v8.0.1) (2021-05-21)
+
+
+### Bug Fixes
+
+* **update:** added nullability to ad ([cf31a68](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/cf31a68897a80f072c92594c92f4d2994ad7a954))
+* **update:** fix build ([bccadf5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/bccadf51a6637a4e484b0a4195bfcf5f960ae3d2))
+
 CHANGELOG
 =========
 7.2.10
