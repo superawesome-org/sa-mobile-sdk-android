@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import tv.superawesome.lib.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
-import tv.superawesome.lib.sanetwork.request.SANetworkInterface;
 
 public class Service implements NetworkInterface {
 

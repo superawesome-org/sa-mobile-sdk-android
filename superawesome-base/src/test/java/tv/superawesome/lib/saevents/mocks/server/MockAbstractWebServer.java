@@ -1,5 +1,7 @@
 package tv.superawesome.lib.saevents.mocks.server;
 
+import androidx.annotation.NonNull;
+
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -11,7 +13,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 public abstract class MockAbstractWebServer {
 
-    private MockWebServer server;
+    private final MockWebServer server;
 
     public MockAbstractWebServer () {
         // Create a MockWebServer. These are lean enough that you can create a new
@@ -29,8 +31,9 @@ public abstract class MockAbstractWebServer {
 
         // create a dispatcher
         final Dispatcher dispatcher = new Dispatcher() {
+            @NonNull
             @Override
-            public MockResponse dispatch (RecordedRequest request) throws InterruptedException {
+            public MockResponse dispatch (@NonNull RecordedRequest request) throws InterruptedException {
                 return handleRequest(request);
             }
         };

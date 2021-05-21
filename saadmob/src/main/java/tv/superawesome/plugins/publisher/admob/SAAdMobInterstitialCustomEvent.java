@@ -3,13 +3,14 @@ package tv.superawesome.plugins.publisher.admob;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.mediation.MediationAdRequest;
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitial;
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitialListener;
 
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
-import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
 import tv.superawesome.sdk.publisher.SAOrientation;
@@ -20,7 +21,7 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
     private Integer loadedPlacementId = 0;
 
     @Override
-    public void requestInterstitialAd(final Context context, final CustomEventInterstitialListener listener, String s, MediationAdRequest mediationAdRequest, Bundle bundle) {
+    public void requestInterstitialAd(@NonNull final Context context, @NonNull final CustomEventInterstitialListener listener, String s, @NonNull MediationAdRequest mediationAdRequest, Bundle bundle) {
 
         // save the context
         this.context = context;
@@ -55,6 +56,7 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
                     break;
                 }
                 case adAlreadyLoaded:
+                case adEnded:
                     break;
                 case adShown: {
                     if (listener != null) {
@@ -75,8 +77,6 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
                     }
                     break;
                 }
-                case adEnded:
-                    break;
                 case adClosed: {
                     if (listener != null) {
                         listener.onAdClosed();

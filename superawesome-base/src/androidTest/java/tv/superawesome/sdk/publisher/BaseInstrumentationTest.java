@@ -13,7 +13,7 @@ public class BaseInstrumentationTest {
     /**
      * The activity to load for the test
      */
-    private ActivityTestRule testActivityRule = new ActivityTestRule(SingleTestActivity.class, true, true);
+    private final ActivityTestRule testActivityRule = new ActivityTestRule(SingleTestActivity.class, true, true);
 
     /**
      * @return an instance of a test activity rule

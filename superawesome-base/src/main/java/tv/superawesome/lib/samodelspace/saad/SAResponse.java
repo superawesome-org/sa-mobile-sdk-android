@@ -16,7 +16,6 @@ import java.util.List;
 import tv.superawesome.lib.sajsonparser.SABaseObject;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sajsonparser.SAJsonToList;
-import tv.superawesome.lib.sajsonparser.SAListToJson;
 
 /**
  * Class that defines an ad server response in AwesomeAds.

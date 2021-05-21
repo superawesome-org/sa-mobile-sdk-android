@@ -10,7 +10,6 @@ import com.adobe.fre.FREWrongThreadException;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
-import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.sdk.publisher.AwesomeAds;
 

@@ -2,7 +2,6 @@ package tv.superawesome.lib.saparentalgate;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
 
