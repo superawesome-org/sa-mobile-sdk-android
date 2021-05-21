@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply from: '../publish.gradle'
+
+ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with Moat extension'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -8,7 +11,7 @@ android {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode 1
-        versionName "8.0.4"
+        versionName version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -20,10 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-ext {
-    publishDescription = 'SuperAwesome Mobile SDK for Android with Moat extension'
 }
 
 dependencies {
