@@ -32,10 +32,10 @@ public class SAFileDownloader {
     private static final String PREFERENCES = "MyPreferences";
 
     // Executor
-    private Context context;
+    private final Context context;
     private int timeout = 15000;
     private boolean isDebug = false;
-    private Executor executor;
+    private final Executor executor;
 
     /**
      * Classic constructor
@@ -118,7 +118,7 @@ public class SAFileDownloader {
                 int file_size = connection.getContentLength();
 
                 // start the file download operation
-                byte data[] = new byte[4096];
+                byte[] data = new byte[4096];
                 long total = 0;
                 int count;
                 while ((count = input.read(data)) != -1) {

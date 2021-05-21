@@ -21,17 +21,17 @@ import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAServerModule {
 
-  private SAClickEvent clickEvent;
-  private SAImpressionEvent impressionEvent;
-  private SAViewableImpressionEvent viewableImpressionEvent;
-  private SAPGOpenEvent sapgOpenEvent;
-  private SAPGCloseEvent sapgCloseEvent;
-  private SAPGFailEvent sapgFailEvent;
-  private SAPGSuccessEvent sapgSuccessEvent;
-  private SAMoatAttemptEvent saMoatAttemptEvent;
+  private final SAClickEvent clickEvent;
+  private final SAImpressionEvent impressionEvent;
+  private final SAViewableImpressionEvent viewableImpressionEvent;
+  private final SAPGOpenEvent sapgOpenEvent;
+  private final SAPGCloseEvent sapgCloseEvent;
+  private final SAPGFailEvent sapgFailEvent;
+  private final SAPGSuccessEvent sapgSuccessEvent;
+  private final SAMoatAttemptEvent saMoatAttemptEvent;
   private final SAMoatAttemptNoClassEvent saMoatAttemptNoClassEvent = null;
-  private SAMoatSuccessEvent saMoatSuccessEvent;
-  private SAMoatErrorEvent saMoatErrorEvent;
+  private final SAMoatSuccessEvent saMoatSuccessEvent;
+  private final SAMoatErrorEvent saMoatErrorEvent;
   private final DwellTimeEvent dwellTimeEvent;
 
   public SAServerModule(SAAd ad, ISASession session) {

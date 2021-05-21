@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 
 public class AdVideoPlayerControllerViewTests extends BaseInstrumentationTest {
 
-    private OnClickListenerSpy spy = new OnClickListenerSpy();
+    private final OnClickListenerSpy spy = new OnClickListenerSpy();
     private AdVideoPlayerControllerView controller;
 
     @Before

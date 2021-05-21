@@ -16,7 +16,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 
 public class MockSession implements ISASession {
 
-    private String serverUrl;
+    private final String serverUrl;
 
     public MockSession (String serverUrl) {
         this.serverUrl = serverUrl;

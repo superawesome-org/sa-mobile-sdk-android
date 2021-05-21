@@ -14,7 +14,6 @@ import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import tv.superawesome.lib.sanetwork.mocks.MockExecutor;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
-import tv.superawesome.lib.sanetwork.request.SANetworkInterface;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
