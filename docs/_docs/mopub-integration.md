@@ -6,6 +6,11 @@ description: Integrate with MoPub
 # Integrate with MoPub
 
 If you already have MoPub ads serving in your app, but want to integrate AwesomeAds as well, without having to directly use the Android Publisher SDK, you can follow the steps below:
+{% highlight gradle %}
+repositories {
+    maven { url "https://aa-sdk.s3-eu-west-1.amazonaws.com/android_repo" }
+}
+{% endhighlight %}
 
 ## Add the MoPub plugin
 

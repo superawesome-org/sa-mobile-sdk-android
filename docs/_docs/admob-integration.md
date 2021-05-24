@@ -7,6 +7,12 @@ description: Integrate with AdMob
 
 If you already have AdMob ads serving in your app, but want to integrate AwesomeAds as well, without having to directly use the Android Publisher SDK, you can follow the steps below:
 
+{% highlight gradle %}
+repositories {
+    maven { url "https://aa-sdk.s3-eu-west-1.amazonaws.com/android_repo" }
+}
+{% endhighlight %}
+
 ## Add the AdMob plugin
 
 You can either change your module’s `build.gradle` file (usually the file under MyApplication/app/) to the following format:
