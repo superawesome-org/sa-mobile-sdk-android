@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.mediation.MediationAdRequest;
@@ -81,7 +82,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                 case adEmpty:
                 case adFailedToLoad:
                   {
-                    customEventBannerListener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
+                    customEventBannerListener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_NO_FILL,"",""));
                     break;
                   }
                 case adAlreadyLoaded:
@@ -94,7 +95,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                   }
                 case adFailedToShow:
                   {
-                    customEventBannerListener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
+                    customEventBannerListener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_INTERNAL_ERROR,"",""));
                     break;
                   }
                 case adClicked:
@@ -122,7 +123,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
       int placementId = s != null ? Integer.parseInt(s) : 0;
       bannerAd.load(placementId);
     } catch (NumberFormatException e) {
-      customEventBannerListener.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST);
+      customEventBannerListener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_INVALID_REQUEST,"",""));
     }
   }
 
