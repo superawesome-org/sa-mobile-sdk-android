@@ -1,10 +1,10 @@
 package tv.superawesome.lib.saevents.events
 
-import java.util.concurrent.Executor
 import org.json.JSONObject
 import tv.superawesome.lib.sajsonparser.SAJsonParser
 import tv.superawesome.lib.samodelspace.saad.SAAd
 import tv.superawesome.lib.sasession.session.ISASession
+import java.util.concurrent.Executor
 
 class DwellTimeEvent(
     ad: SAAd? = null,

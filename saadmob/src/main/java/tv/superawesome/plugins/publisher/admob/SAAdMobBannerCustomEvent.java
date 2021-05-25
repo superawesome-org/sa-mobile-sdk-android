@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.mediation.MediationAdRequest;
@@ -66,7 +67,6 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
             (i, saEvent) -> {
               switch (saEvent) {
                 case adLoaded:
-                  {
                     // send load event
                     customEventBannerListener.onAdLoaded(bannerAd);
 
@@ -77,37 +77,32 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                       setup = true;
                     }
                     break;
-                  }
+
                 case adEmpty:
                 case adFailedToLoad:
-                  {
-                    customEventBannerListener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
+                    customEventBannerListener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_NO_FILL,"",""));
                     break;
-                  }
+
                 case adAlreadyLoaded:
                 case adEnded:
                   break;
                 case adShown:
-                  {
                     customEventBannerListener.onAdOpened();
                     break;
-                  }
+
                 case adFailedToShow:
-                  {
-                    customEventBannerListener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
+                    customEventBannerListener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_INTERNAL_ERROR,"",""));
                     break;
-                  }
+
                 case adClicked:
-                  {
                     customEventBannerListener.onAdClicked();
                     customEventBannerListener.onAdLeftApplication();
                     break;
-                  }
+
                 case adClosed:
-                  {
-                    customEventBannerListener.onAdClosed();
+                  customEventBannerListener.onAdClosed();
                     break;
-                  }
+
               }
             });
 
@@ -122,7 +117,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
       int placementId = s != null ? Integer.parseInt(s) : 0;
       bannerAd.load(placementId);
     } catch (NumberFormatException e) {
-      customEventBannerListener.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST);
+      customEventBannerListener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_INVALID_REQUEST,"",""));
     }
   }
 

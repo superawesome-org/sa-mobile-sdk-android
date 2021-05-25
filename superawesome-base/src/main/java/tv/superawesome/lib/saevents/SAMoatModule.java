@@ -77,7 +77,7 @@ public class SAMoatModule {
         int moatIntRand = SAUtils.randomNumberBetween(0, 100);
         double moatRand = moatIntRand / 100.0;
 
-        boolean response = ad != null && ((moatRand < ad.moat && moatLimiting) || !moatLimiting);
+        boolean response = ad != null && (moatRand < ad.moat || !moatLimiting);
 
         try {
             MyLog.i(TAG, "Is Moat allowed: moatRand="+moatRand + " | ad.moat="+ad.moat + " | moatLimiting="+moatLimiting + " | response="+response);

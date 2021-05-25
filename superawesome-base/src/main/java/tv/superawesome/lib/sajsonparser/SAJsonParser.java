@@ -4,6 +4,9 @@
  */
 package tv.superawesome.lib.sajsonparser;
 
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +20,10 @@ import java.util.List;
  * return a valid value, not a null
  */
 public class SAJsonParser {
+
+    private SAJsonParser(){
+
+    }
 
     /**
      * Function that safely puts a value in a Json object
@@ -61,6 +68,7 @@ public class SAJsonParser {
      *               "key1", val1, "key2", val2
      * @return       a valid JSONObject (or an empty one)
      */
+    @NonNull
     public static JSONObject newObject (Object... args) {
 
         // create a new json Object
@@ -72,7 +80,7 @@ public class SAJsonParser {
         // go through it, two at a time
         for (int i = 0; i < args.length; i += 2) {
 
-            Object key = null, val = null;
+            Object key = null;
 
             try {
                 key = args[i];
@@ -80,6 +88,7 @@ public class SAJsonParser {
                 // do nothing
             }
 
+            Object val = null;
             try {
                 val = args[i+1];
             } catch (IndexOutOfBoundsException e) {
@@ -346,6 +355,7 @@ public class SAJsonParser {
      * @param key        the key
      * @return           a json object value from the JSON
      */
+    @NonNull
     public static JSONObject getJsonObject(JSONObject jsonObject, String key) {
         Object object = get(jsonObject, key);
         if (object instanceof JSONObject) {
@@ -377,6 +387,7 @@ public class SAJsonParser {
      * @param key        the key
      * @return           a json array value from the JSON
      */
+    @NonNull
     public static JSONArray getJsonArray(JSONObject jsonObject, String key) {
         Object object = get(jsonObject, key);
         if (object instanceof JSONArray) {
@@ -408,6 +419,7 @@ public class SAJsonParser {
      * @param listener  a listener
      * @return          an ArrayList object
      */
+    @NonNull
     public static <A, B> List<A> getListFromJsonArray(JSONArray jsonArray, SAJsonToList<A, B> listener) {
         List<A> result = new ArrayList<>();
 
@@ -435,6 +447,7 @@ public class SAJsonParser {
      * @param key        the key
      * @param listener   a listener to traverse item
      */
+    @NonNull
     public static <A, B> List<A> getListFromJsonArray(JSONObject jsonObject, String key, SAJsonToList<A, B> listener) {
         JSONArray jsonArray = getJsonArray(jsonObject, key, new JSONArray());
         return getListFromJsonArray(jsonArray, listener);
@@ -447,6 +460,7 @@ public class SAJsonParser {
      * @param <A>       the generic param
      * @return          a JSON array
      */
+    @NonNull
     public static <A, B> JSONArray getJsonArrayFromList (List<B> arrayList, SAListToJson<A, B> listener) {
         JSONArray jsonArray = new JSONArray();
 

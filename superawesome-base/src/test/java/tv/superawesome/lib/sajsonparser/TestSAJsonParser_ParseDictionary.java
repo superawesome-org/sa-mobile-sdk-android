@@ -233,7 +233,5 @@ public class TestSAJsonParser_ParseDictionary {
         assertEquals(result11, expected11);
         JSONAssert.assertEquals(result12, expected12, false);
 
-//        assertEquals(result13.toString(), expected13.toString());
-//        assertEquals(result14.toString(), expected14.toString());
     }
 }

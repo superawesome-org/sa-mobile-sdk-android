@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.json.JSONObject;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 
 import tv.superawesome.lib.sagdprisminorsdk.minor.network.HTTPMethod;

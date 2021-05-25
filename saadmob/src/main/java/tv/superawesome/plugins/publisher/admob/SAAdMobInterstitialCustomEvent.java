@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.mediation.MediationAdRequest;
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitial;
@@ -17,103 +18,96 @@ import tv.superawesome.sdk.publisher.SAOrientation;
 
 public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
 
-    private Context context = null;
-    private Integer loadedPlacementId = 0;
+  private Context context = null;
+  private Integer loadedPlacementId = 0;
 
-    @Override
-    public void requestInterstitialAd(@NonNull final Context context, @NonNull final CustomEventInterstitialListener listener, String s, @NonNull MediationAdRequest mediationAdRequest, Bundle bundle) {
+  @Override
+  public void requestInterstitialAd(
+      @NonNull final Context context,
+      @NonNull final CustomEventInterstitialListener listener,
+      String s,
+      @NonNull MediationAdRequest mediationAdRequest,
+      Bundle bundle) {
 
-        // save the context
-        this.context = context;
+    // save the context
+    this.context = context;
 
-        // set values
-        if (bundle != null) {
-            SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
-            SAInterstitialAd.setTestMode(bundle.getBoolean(SAAdMobExtras.kKEY_TEST));
-            SAInterstitialAd.setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE));
-            SAInterstitialAd.setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE));
-            SAInterstitialAd.setBackButton(bundle.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON));
-            SAInterstitialAd.setOrientation(SAOrientation.fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION)));
-        }
+    // set values
+    if (bundle != null) {
+      SAInterstitialAd.setConfiguration(
+          SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
+      SAInterstitialAd.setTestMode(bundle.getBoolean(SAAdMobExtras.kKEY_TEST));
+      SAInterstitialAd.setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE));
+      SAInterstitialAd.setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE));
+      SAInterstitialAd.setBackButton(bundle.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON));
+      SAInterstitialAd.setOrientation(
+          SAOrientation.fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION)));
+    }
 
-        SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
-            switch (event) {
-
-                case adLoaded: {
-
+    SAInterstitialAd.setListener(
+        (SAInterface)
+            (placementId, event) -> {
+              switch (event) {
+                case adLoaded:
                     loadedPlacementId = placementId;
+                    listener.onAdLoaded();
+                    break;
 
-                    if (listener != null) {
-                        listener.onAdLoaded();
-                    }
-                    break;
-                }
                 case adEmpty:
-                case adFailedToLoad: {
-                    if (listener != null) {
-                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_NO_FILL);
-                    }
+                case adFailedToLoad:
+                    listener.onAdFailedToLoad(new AdError(AdRequest.ERROR_CODE_NO_FILL, "", ""));
                     break;
-                }
+
                 case adAlreadyLoaded:
                 case adEnded:
+                  break;
+                case adShown:
+                    listener.onAdOpened();
                     break;
-                case adShown: {
-                    if (listener != null) {
-                        listener.onAdOpened();
-                    }
+
+                case adFailedToShow:
+                    listener.onAdFailedToLoad(
+                        new AdError(AdRequest.ERROR_CODE_INTERNAL_ERROR, "", ""));
+
                     break;
-                }
-                case adFailedToShow: {
-                    if (listener != null) {
-                        listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INTERNAL_ERROR);
-                    }
+
+                case adClicked:
+                    listener.onAdClicked();
+                    listener.onAdLeftApplication();
                     break;
-                }
-                case adClicked: {
-                    if (listener != null) {
-                        listener.onAdClicked();
-                        listener.onAdLeftApplication();
-                    }
+
+                case adClosed:
+                    listener.onAdClosed();
                     break;
-                }
-                case adClosed: {
-                    if (listener != null) {
-                        listener.onAdClosed();
-                    }
-                    break;
-                }
-            }
-        });
 
+              }
+            });
 
-        try {
-            Integer placementId = Integer.parseInt(s);
-            SAInterstitialAd.load(placementId, context);
-        } catch (NumberFormatException e) {
-            if (listener != null) {
-                listener.onAdFailedToLoad(AdRequest.ERROR_CODE_INVALID_REQUEST);
-            }
-        }
+    try {
+      int placementId = Integer.parseInt(s);
+      SAInterstitialAd.load(placementId, context);
+    } catch (NumberFormatException e) {
+        listener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_INVALID_REQUEST,"",""));
     }
+  }
 
-    @Override
-    public void showInterstitial() {
-        SAInterstitialAd.play(loadedPlacementId, context);
-    }
+  @Override
+  public void showInterstitial() {
+    SAInterstitialAd.play(loadedPlacementId, context);
+  }
 
-    @Override
-    public void onDestroy() {
-        // do nothing
-    }
+  @Override
+  public void onDestroy() {
+    // do nothing
+  }
 
-    @Override
-    public void onPause() {
-        // do nothing
-    }
+  @Override
+  public void onPause() {
+    // do nothing
+  }
 
-    @Override
-    public void onResume() {
-        // do nothing
-    }
+  @Override
+  public void onResume() {
+    // do nothing
+  }
 }
