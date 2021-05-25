@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.Contract;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,16 +40,16 @@ import tv.superawesome.lib.savastparser.SAVASTParser;
 public class SALoader {
 
   // private context
-  private final Executor executor;
-  private final int timeout;
-  private final Context context;
+  private final @NonNull Executor executor;
+  private final @NonNull Context context;
   private final boolean isDebug;
+  private final int timeout;
 
-  public SALoader(Context context) {
+  public SALoader(@NonNull Context context) {
     this(context, Executors.newSingleThreadExecutor(), false, 15000);
   }
 
-  public SALoader(Context context, Executor executor, boolean isDebug, int timeout) {
+  public SALoader(@NonNull Context context, @NonNull Executor executor, boolean isDebug, int timeout) {
     this.context = context;
     this.executor = executor;
     this.timeout = timeout;

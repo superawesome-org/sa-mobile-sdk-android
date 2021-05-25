@@ -14,10 +14,10 @@ public enum SARTBSkip {
     }
 
     public static SARTBSkip fromValue (int skip) {
-        switch (skip) {
-            case 1: return SKIP;
-            default: return NO_SKIP;
+        if (skip == 1) {
+            return SKIP;
         }
+        return NO_SKIP;
     }
 
     public int getValue() {
