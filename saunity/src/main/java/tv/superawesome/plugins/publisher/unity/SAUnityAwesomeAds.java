@@ -3,6 +3,8 @@ package tv.superawesome.plugins.publisher.unity;
 import android.app.Activity;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
@@ -14,7 +16,7 @@ import tv.superawesome.sdk.publisher.AwesomeAds;
 
 public class SAUnityAwesomeAds {
 
-    public static void SuperAwesomeUnityAwesomeAdsInit(Activity activity, boolean loggingEnabled) {
+    public static void SuperAwesomeUnityAwesomeAdsInit(@NonNull Activity activity, boolean loggingEnabled) {
         AwesomeAds.init(activity.getApplication(), loggingEnabled);
     }
 
