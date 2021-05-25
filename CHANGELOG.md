@@ -4,9 +4,9 @@ CHANGELOG
  - Updated Android library to self-hosted location post Bintray deprecation
  - Added Dwell Time
  - Cleaned up and updated dependencies across the board, including Admob, Mopub and Kotlin
- - Added support for new formats: 3rd party programmatic display and interstitials
+ - Added support for new formats: 3rd party display and interstitials
  - Added measurement logs for Moat for better discrepancy investigation
- - Initial functionality added for IronSource integration
+ - Initial functionality added for selection of a specific creative based on request parameters
 
 7.2.10
  - Removed Google Advertiser Id from the codebase
