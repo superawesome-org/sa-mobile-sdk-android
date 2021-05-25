@@ -1,23 +1,13 @@
-## [8.0.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.1...v8.0.2) (2021-05-21)
-
-
-### Bug Fixes
-
-* **CI:** Initial publish test ([9b4782a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/9b4782a29d4cc4a52e2863cbfb0a91f2f8c7294f))
-* **CI:** Initial publish test ([beae60d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/beae60d64ee9260e550251ed8b538a0201e0b0f3))
-* **CI:** Removed branch filter ([f0b8d33](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f0b8d33f11bf54ed39adc6d70b5419b8c9d173fe))
-* **remove warning:** use charset ([#77](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/77)) ([7735b1f](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7735b1fc143c946c80188cec646d98a514244d3e))
-
-## [8.0.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.0...v8.0.1) (2021-05-21)
-
-
-### Bug Fixes
-
-* **update:** added nullability to ad ([cf31a68](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/cf31a68897a80f072c92594c92f4d2994ad7a954))
-* **update:** fix build ([bccadf5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/bccadf51a6637a4e484b0a4195bfcf5f960ae3d2))
-
 CHANGELOG
 =========
+8.0.2
+ - Updated Android library to self-hosted location post Bintray deprecation
+ - Added Dwell Time
+ - Cleaned up and updated dependencies across the board, including Admob, Mopub and Kotlin
+ - Added support for new formats: 3rd party programmatic display and interstitials
+ - Added measurement logs for Moat for better discrepancy investigation
+ - Initial functionality added for IronSource integration
+
 7.2.10
  - Removed Google Advertiser Id from the codebase
  
