@@ -14,7 +14,7 @@ import tv.superawesome.lib.saevents.events.SAPGCloseEvent;
 import tv.superawesome.lib.saevents.events.SAPGFailEvent;
 import tv.superawesome.lib.saevents.events.SAPGOpenEvent;
 import tv.superawesome.lib.saevents.events.SAPGSuccessEvent;
-import tv.superawesome.lib.saevents.events.SAURLEvent;
+import tv.superawesome.lib.saevents.events.SAServerEvent.Listener;
 import tv.superawesome.lib.saevents.events.SAViewableImpressionEvent;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.ISASession;
@@ -54,73 +54,73 @@ public class SAServerModule {
     dwellTimeEvent = new DwellTimeEvent(ad, session, executor, timeout, isDebug);
   }
 
-  public void triggerClickEvent(SAURLEvent.Listener listener) {
+  public void triggerClickEvent(Listener listener) {
     if (clickEvent != null) {
       clickEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerImpressionEvent(SAURLEvent.Listener listener) {
+  public void triggerImpressionEvent(Listener listener) {
     if (impressionEvent != null) {
       impressionEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerDwellEvent(SAURLEvent.Listener listener) {
+  public void triggerDwellEvent(Listener listener) {
     if (dwellTimeEvent != null) {
       dwellTimeEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerViewableImpressionEvent(SAURLEvent.Listener listener) {
+  public void triggerViewableImpressionEvent(Listener listener) {
     if (viewableImpressionEvent != null) {
       viewableImpressionEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerPgOpenEvent(SAURLEvent.Listener listener) {
+  public void triggerPgOpenEvent(Listener listener) {
     if (sapgOpenEvent != null) {
       sapgOpenEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerPgCloseEvent(SAURLEvent.Listener listener) {
+  public void triggerPgCloseEvent(Listener listener) {
     if (sapgCloseEvent != null) {
       sapgCloseEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerPgFailEvent(SAURLEvent.Listener listener) {
+  public void triggerPgFailEvent(Listener listener) {
     if (sapgFailEvent != null) {
       sapgFailEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerPgSuccessEvent(SAURLEvent.Listener listener) {
+  public void triggerPgSuccessEvent(Listener listener) {
     if (sapgSuccessEvent != null) {
       sapgSuccessEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerMoatAttemptEvent(SAURLEvent.Listener listener) {
+  public void triggerMoatAttemptEvent(Listener listener) {
     if (saMoatAttemptEvent != null) {
       saMoatAttemptEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerMoatAttemptNoClassEvent(SAURLEvent.Listener listener) {
-    if (saMoatAttemptEvent != null) {
+  public void triggerMoatAttemptNoClassEvent(Listener listener) {
+    if (saMoatAttemptNoClassEvent != null) {
       saMoatAttemptNoClassEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerMoatSuccessEvent(SAURLEvent.Listener listener) {
+  public void triggerMoatSuccessEvent(Listener listener) {
     if (saMoatSuccessEvent != null) {
       saMoatSuccessEvent.triggerEvent(listener);
     }
   }
 
-  public void triggerMoatErrorEvent(SAURLEvent.Listener listener) {
+  public void triggerMoatErrorEvent(Listener listener) {
     if (saMoatErrorEvent != null) {
       saMoatErrorEvent.triggerEvent(listener);
     }
