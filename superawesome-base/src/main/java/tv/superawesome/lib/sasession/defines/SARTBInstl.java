@@ -15,10 +15,10 @@ public enum  SARTBInstl {
     }
 
     public static SARTBInstl fromValue (int pos) {
-        switch (pos) {
-            case 1: return FULLSCREEN;
-            default: return NOT_FULLSCREEN;
+        if (pos == 1) {
+            return FULLSCREEN;
         }
+        return NOT_FULLSCREEN;
     }
 
     public int getValue() {
