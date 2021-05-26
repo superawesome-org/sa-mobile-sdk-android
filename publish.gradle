@@ -5,9 +5,10 @@ group = System.properties.getProperty("groupProj")
 def artifactProj = System.properties.getProperty("artifactProj")
 def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git'
 def libraryName = System.properties.getProperty("uploadName")
+def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'
 
 // Each project build.gradle provides this
-var libraryDescription = ''
+def libraryDescription = ''
 
 afterEvaluate {
     publishing {
@@ -15,28 +16,45 @@ afterEvaluate {
             release(MavenPublication) {
 
                 print 'Publishing $libraryName with description $libraryDescription'
-
-                groupId = group
-                artifactId = artifactProj
-                version = version
                 from components.release
 
-                pom {
-                    name = libraryName
-                    description = libraryDescription
-                    url = gitUrl
-                    licenses {
-                        license {
-                            name = 'The Apache Software License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                pom.withXml {
+                    asNode().with {
+                        getAt('packaging')[0].replaceNode { packaging('aar') }
+                        appendNode('name', libraryName)
+                        appendNode('description', libraryDescription)
+                        appendNode('url', siteUrl)
+
+                        appendNode('licenses').with {
+                            appendNode('license').with {
+                                appendNode('name', 'The Apache Software License, Version 2.0')
+                                appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+                            }
+                        }
+
+                        appendNode('developers').with {
+                            appendNode('developer').with {
+                                appendNode('id', 'gabrielcoman')
+                                appendNode('name', 'Gabriel Coman')
+                                appendNode('email', 'gabriel.coman@superawesome.tv')
+                            }
+                        }
+
+                        appendNode('scm').with {
+                            appendNode('connection', gitUrl)
+                            appendNode('developerConnection', gitUrl)
+                            appendNode('url', siteUrl)
                         }
                     }
 
-                    developers {
-                        developer {
-                            id = 'gabrielcoman'
-                            name = 'Gabriel Coman'
-                            email = 'gabriel.coman@superawesome.com'
+                    def dependenciesNode = asNode().getAt('dependencies')[0] ?: asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        if (it.name != 'unspecified') {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                            dependencyNode.appendNode('scope', 'compile')
                         }
                     }
                 }
