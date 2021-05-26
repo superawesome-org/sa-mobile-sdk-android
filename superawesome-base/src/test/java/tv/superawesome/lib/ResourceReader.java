@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * Created by gabriel.coman on 30/04/2018.
  */
-public class ResourceReader {1
+public class ResourceReader {
 
     public static String readResource(String name) {
         InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(name);
