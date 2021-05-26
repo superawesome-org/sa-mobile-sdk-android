@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply from: '../publish.gradle'
 
 ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with AdMob extension'
+ext.libraryName = 'SuperAwesome AdMob'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -20,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
