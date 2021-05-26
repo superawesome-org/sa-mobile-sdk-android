@@ -116,6 +116,82 @@ public class SAVideoAd {
         }
     }
 
+    public static void load (final int placementId,final int lineItemId, final int creativeId, final Context context) {
+
+        // very late init of the AwesomeAds SDK
+        try {
+            AwesomeAds.init(((Activity)context).getApplication(), false);
+        } catch (Exception e) {
+            Log.d("SuperAwesome", "Error initing AwesomeAds in SAVideoActivity " + e.getMessage());
+        }
+
+        // if the ad data for the placement id doesn't existing in the "ads" hash map, then
+        // proceed with loading it
+        if (!ads.containsKey(placementId)) {
+
+            // set a placeholder
+            ads.put(placementId, new Object());
+
+            // create a loader
+            final SALoader loader = new SALoader(context);
+
+            // create a current session
+            final SASession session = getNewSession(context);
+
+            session.prepareSession(() -> {
+
+                // after session is OK - start loading
+                loader.loadAd(placementId, lineItemId, creativeId, session, response -> {
+
+                    if (response.status != 200) {
+                        //
+                        // remove from here
+                        ads.remove(placementId);
+
+                        //
+                        // send callback
+                        if (listener != null) {
+                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                        } else {
+                            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToLoad");
+                        }
+                    } else {
+                        // find out the real valid
+                        boolean isValid = response.isValid();
+                        SAAd first = isValid ? response.ads.get(0) : null;
+                        isValid = first != null && first.creative.details.media.isDownloaded;
+
+                        // put the correct value
+                        if (isValid) {
+                            ads.put(placementId, first);
+                        }
+                        // remove existing
+                        else {
+                            ads.remove(placementId);
+                        }
+
+                        // call listener(s)
+                        if (listener != null) {
+                            listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                        } else {
+                            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                        }
+                    }
+                });
+            });
+
+        }
+        // else if the ad data for the placement exists in the "ads" hash map, then notify the
+        // user that it already exists and he should just play it
+        else {
+            if (listener != null) {
+                listener.onEvent(placementId, SAEvent.adAlreadyLoaded);
+            } else {
+                Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adAlreadyLoaded");
+            }
+        }
+    }
+
     private static SASession getNewSession(Context context) {
         SASession session = new SASession (context);
         session.setTestMode(isTestingEnabled);
