@@ -1,3 +1,10 @@
+## [8.1.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.1...v8.1.2) (2021-05-26)
+
+
+### Bug Fixes
+
+* **CI:** Adjusted CI config for tag ([ad24114](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ad24114761c7e36d21c2520b36254a2816f1becf))
+
 ## [8.1.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.0...v8.1.1) (2021-05-26)
 
 
