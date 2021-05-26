@@ -1,3 +1,15 @@
+# [8.1.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.2...v8.1.0) (2021-05-26)
+
+
+### Bug Fixes
+
+* **add SAVideo laod:** now accepts more arguments ([#85](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/85)) ([1361b01](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1361b01171092d1b1ac6450fbe79f7d3f13bb436))
+
+
+### Features
+
+* **CI:** Fixed issues in gradle build scripts ([c076fed](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/c076fed51d9c4890302206bc16af68771fa155fe))
+
 CHANGELOG
 =========
 8.0.2
