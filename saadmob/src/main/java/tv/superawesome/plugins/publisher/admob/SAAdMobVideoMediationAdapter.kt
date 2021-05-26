@@ -21,7 +21,6 @@ class SAAdMobVideoMediationAdapter : Adapter() {
             initializationCompleteCallback?.onInitializationFailed("Initialization Failed: Context is null.")
             return
         }
-
         AwesomeAds.init(context, false)
         initializationCompleteCallback?.onInitializationSucceeded()
     }
