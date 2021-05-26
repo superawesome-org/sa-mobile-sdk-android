@@ -5,7 +5,7 @@ group = System.properties.getProperty("groupProj")
 def artifactProj = System.properties.getProperty("artifactProj")
 def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git'
 def libraryName = System.properties.getProperty("uploadName")
-def siteUrl = 'https://developers.superawesome.tv/extdocs/sa-mobile-sdk-android/html/index.html'
+def siteUrl = 'https://sa-mobile-sdk-android.superawesome.tv/'
 
 // Each project build.gradle provides this
 def libraryDescription = ''
