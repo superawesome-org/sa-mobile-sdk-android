@@ -3,10 +3,10 @@ apply plugin: 'kotlin-android'
 apply from: '../publish.gradle'
 
 ext.libraryDescription = 'SuperAwesome Base Mobile SDK for Android'
-
+ext.libraryName = 'SuperAwesome Base'
 android {
-    compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
+    compileSdkVersion 29
+    buildToolsVersion '30.0.2'
 
     resourcePrefix "superawesome__"
 
@@ -29,6 +29,10 @@ android {
 
     testOptions {
         animationsDisabled true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
