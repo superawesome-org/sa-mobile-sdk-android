@@ -1,3 +1,10 @@
+## [8.1.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.0...v8.1.1) (2021-05-26)
+
+
+### Bug Fixes
+
+* **CI:** Releasing fix version ([01a41b4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/01a41b4a48642c6dc1ff0b6e509cf9472087b719))
+
 # [8.1.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.2...v8.1.0) (2021-05-26)
 
 
