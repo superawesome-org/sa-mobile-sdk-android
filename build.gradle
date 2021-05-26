@@ -40,5 +40,5 @@ allprojects {
 }
 
 ext.getSdkVersion = { ->
-    return "8.0.4"
+    return version
 }

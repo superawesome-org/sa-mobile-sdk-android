@@ -169,6 +169,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
       - sdk_push_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -176,6 +178,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
       - sdk_push_superawesome_air:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -183,6 +187,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -190,6 +196,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
       - sdk_push_superawesome_moat:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -197,6 +205,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
       - sdk_push_superawesome_mopub:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -204,6 +214,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
       - sdk_push_superawesome_unity:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -211,6 +223,8 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
       - publish_docs:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -218,3 +232,5 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              only: master
