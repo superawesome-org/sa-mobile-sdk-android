@@ -6,7 +6,6 @@ package tv.superawesome.lib.sajsonparser;
 
 import androidx.annotation.NonNull;
 
-import org.jetbrains.annotations.Contract;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
