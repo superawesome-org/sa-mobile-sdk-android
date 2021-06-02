@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import com.mopub.common.MoPub
 import com.mopub.common.MoPubReward
 import com.mopub.common.SdkConfiguration
@@ -33,6 +34,21 @@ class MoPubActivity : Activity() {
             configureBannerAd()
             configureInterstitialAd()
             configureRewardedVideoAd()
+        }
+         findViewById<Button>(R.id.playInterstitialBtn)?.setOnClickListener {
+             if (interstitial?.isReady == true) {
+                 interstitial?.show()
+             } else {
+                 Log.d("SADefaults/MoPub", "Interstitial not ready yet")
+             }
+         }
+
+        findViewById<Button>(R.id.playVideoBtn)?.setOnClickListener {
+            if (MoPubRewardedVideos.hasRewardedVideo(VideoId)) {
+                MoPubRewardedVideos.showRewardedVideo(VideoId)
+            } else {
+                Log.d("SADefaults/MoPub", "Video not ready yet")
+            }
         }
     }
 
@@ -122,21 +138,6 @@ class MoPubActivity : Activity() {
         banner?.loadAd()
     }
 
-    fun playInterstitial(view: View?) {
-        if (interstitial?.isReady == true) {
-            interstitial?.show()
-        } else {
-            Log.d("SADefaults/MoPub", "Interstitial not ready yet")
-        }
-    }
-
-    fun playVideo(view: View?) {
-        if (MoPubRewardedVideos.hasRewardedVideo(VideoId)) {
-            MoPubRewardedVideos.showRewardedVideo(VideoId)
-        } else {
-            Log.d("SADefaults/MoPub", "Video not ready yet")
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()

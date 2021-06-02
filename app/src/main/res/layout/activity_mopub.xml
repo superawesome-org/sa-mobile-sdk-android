@@ -9,14 +9,14 @@
     tools:context=".MoPubActivity">
 
     <Button
+        android:id="@+id/playInterstitialBtn"
         android:layout_width="match_parent"
-        android:text="Play MoPub interstitial"
-        android:onClick="playInterstitial"
+        android:text="@string/play_mopub_interstitial"
         android:layout_height="50dp" />
     <Button
-        android:text="Play MoPub video"
+        android:id="@+id/playVideoBtn"
+        android:text="@string/play_mopub_video"
         android:layout_width="match_parent"
-        android:onClick="playVideo"
         android:layout_height="50dp" />
     <com.mopub.mobileads.MoPubView
         android:id="@+id/adview"
