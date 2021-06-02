@@ -94,8 +94,6 @@ public class SABannerAd extends FrameLayout {
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        if (isInEditMode()) return;
-
         // create the loader
         session = new SASession (context);
         loader = new SALoader(context);

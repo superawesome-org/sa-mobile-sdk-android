@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply from: '../publish.gradle'
 
 ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with Unity extension'
+ext.libraryName = 'SuperAwesome Unity'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -16,6 +17,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
