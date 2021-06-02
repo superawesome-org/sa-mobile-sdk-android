@@ -9,7 +9,7 @@
         android:id="@+id/managed_interstitial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LOAD INTERSITIAL"
+        android:text="@string/load_intersitial"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

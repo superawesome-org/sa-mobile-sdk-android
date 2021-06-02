@@ -193,7 +193,7 @@ public class SAAd extends SABaseObject implements Parcelable {
 
         int val1 = SAJsonParser.getInt(jsonObject, "moat", (int) moat * 100);
         double val2 = SAJsonParser.getDouble(jsonObject, "moat", moat);
-        moat = Math.max(val2, (double) val1);
+        moat = Math.max(val2, val1);
         moat = moat > 1 ? 1 : moat;
 
         lineItemId = SAJsonParser.getInt(jsonObject, "line_item_id", lineItemId);

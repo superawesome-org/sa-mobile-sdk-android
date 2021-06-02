@@ -3,12 +3,8 @@ package tv.superawesome.demoapp
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import android.widget.Button
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.admanager.AdManagerAdRequest
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -39,6 +35,12 @@ class AdMobActivity : Activity() {
 
         adView = findViewById(R.id.adView)
         requestBannerAd()
+        findViewById<Button>(R.id.playInterstitialBtn)?.setOnClickListener {
+            requestInterstitialAd()
+        }
+        findViewById<Button>(R.id.playVideoBtn)?.setOnClickListener {
+            requestVideoAd()
+        }
     }
 
     private fun requestBannerAd() {
@@ -107,12 +109,7 @@ class AdMobActivity : Activity() {
                 }
             })
     }
-    fun playInterstitial(view: View?) {
-        requestInterstitialAd()
-    }
-    fun playVideo(view: View?) {
-        requestVideoAd()
-    }
+
     override fun onDestroy() {
         super.onDestroy()
         adView.destroy()

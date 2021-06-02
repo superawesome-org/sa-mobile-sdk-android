@@ -101,7 +101,7 @@ public class SAResponse extends SABaseObject implements Parcelable {
         format = SACreativeFormat.fromValue(SAJsonParser.getInt(jsonObject, "format", format.ordinal()));
 
         JSONArray adsArray = SAJsonParser.getJsonArray(jsonObject, "ads", new JSONArray());
-        ads = SAJsonParser.getListFromJsonArray(adsArray, (SAJsonToList<SAAd, JSONObject>) jsonObject1 -> new SAAd(jsonObject1));
+        ads = SAJsonParser.getListFromJsonArray(adsArray, (SAJsonToList<SAAd, JSONObject>) SAAd::new);
     }
 
     /**
@@ -115,7 +115,7 @@ public class SAResponse extends SABaseObject implements Parcelable {
                 "status", status,
                 "placementId", placementId,
                 "format", format.ordinal(),
-                "ads", SAJsonParser.getJsonArrayFromList(ads, saAd -> saAd.writeToJson()));
+                "ads", SAJsonParser.getJsonArrayFromList(ads, SAAd::writeToJson));
     }
 
     /**

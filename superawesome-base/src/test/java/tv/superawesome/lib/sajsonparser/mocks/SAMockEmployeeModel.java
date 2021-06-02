@@ -36,7 +36,7 @@ public class SAMockEmployeeModel extends SABaseObject {
         age = SAJsonParser.getInt(json, "age");
         isActive = SAJsonParser.getBoolean(json, "isActive");
         position = new SAMockPositionModel(SAJsonParser.getJsonObject(json, "position"));
-        previous = SAJsonParser.getListFromJsonArray(json, "previous", (SAJsonToList<SAMockPositionModel, JSONObject>) param -> new SAMockPositionModel(param));
+        previous = SAJsonParser.getListFromJsonArray(json, "previous", (SAJsonToList<SAMockPositionModel, JSONObject>) SAMockPositionModel::new);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SAMockEmployeeModel extends SABaseObject {
                 "age", age,
                 "isActive", isActive,
                 "position", position,
-                "previous", SAJsonParser.getJsonArrayFromList(previous, param -> param.writeToJson()));
+                "previous", SAJsonParser.getJsonArrayFromList(previous, SAMockPositionModel::writeToJson));
     }
 
     @Override
