@@ -20,26 +20,26 @@ public class TestSAVASTModule extends TestModule {
         SAVASTModule module = new SAVASTModule(ad, super.executor, 1000, true);
 
         // when
-        module.triggerVASTImpressionEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTImpressionEvent(Assert::assertTrue);
 
-        module.triggerVASTStartEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTStartEvent(Assert::assertTrue);
 
-        module.triggerVASTCreativeViewEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTCreativeViewEvent(Assert::assertTrue);
 
-        module.triggerVASTErrorEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTErrorEvent(Assert::assertTrue);
 
-        module.triggerVASTFirstQuartileEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTFirstQuartileEvent(Assert::assertTrue);
 
-        module.triggerVASTMidpointEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTMidpointEvent(Assert::assertTrue);
 
-        module.triggerVASTThirdQuartileEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTThirdQuartileEvent(Assert::assertTrue);
 
-        module.triggerVASTCompleteEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTCompleteEvent(Assert::assertTrue);
 
-        module.triggerVastClickThroughEvent(success -> Assert.assertTrue(success));
+        module.triggerVastClickThroughEvent(Assert::assertTrue);
 
 
-        module.triggerVASTClickTrackingEvent(success -> Assert.assertTrue(success));
+        module.triggerVASTClickTrackingEvent(Assert::assertTrue);
     }
 
     @Test
@@ -49,25 +49,25 @@ public class TestSAVASTModule extends TestModule {
         SAVASTModule module = new SAVASTModule(ad, super.executor, 1000, true);
 
         // when
-        module.triggerVASTImpressionEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTImpressionEvent(Assert::assertFalse);
 
-        module.triggerVASTStartEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTStartEvent(Assert::assertFalse);
 
-        module.triggerVASTCreativeViewEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTCreativeViewEvent(Assert::assertFalse);
 
-        module.triggerVASTErrorEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTErrorEvent(Assert::assertFalse);
 
-        module.triggerVASTFirstQuartileEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTFirstQuartileEvent(Assert::assertFalse);
 
-        module.triggerVASTMidpointEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTMidpointEvent(Assert::assertFalse);
 
-        module.triggerVASTThirdQuartileEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTThirdQuartileEvent(Assert::assertFalse);
 
-        module.triggerVASTCompleteEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTCompleteEvent(Assert::assertFalse);
 
-        module.triggerVastClickThroughEvent(success -> Assert.assertFalse(success));
+        module.triggerVastClickThroughEvent(Assert::assertFalse);
 
 
-        module.triggerVASTClickTrackingEvent(success -> Assert.assertFalse(success));
+        module.triggerVASTClickTrackingEvent(Assert::assertFalse);
     }
 }

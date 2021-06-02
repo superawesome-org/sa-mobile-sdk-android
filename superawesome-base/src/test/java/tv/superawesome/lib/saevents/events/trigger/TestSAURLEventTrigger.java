@@ -19,11 +19,8 @@ public class TestSAURLEventTrigger extends TestEventTrigger {
         SAURLEvent event = new SAURLEvent(url, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertTrue);
     }
 
     @Test
@@ -34,11 +31,8 @@ public class TestSAURLEventTrigger extends TestEventTrigger {
         SAURLEvent event = new SAURLEvent(url, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertFalse);
     }
 
 }

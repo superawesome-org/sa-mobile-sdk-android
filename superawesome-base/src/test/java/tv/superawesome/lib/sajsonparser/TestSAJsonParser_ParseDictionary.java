@@ -191,12 +191,12 @@ public class TestSAJsonParser_ParseDictionary {
         String expected6 = "test2";
         Object expected7 = 33;
         Object expected8 = "Smith";
-        Object expected9 = new JSONObject();
-        ((JSONObject)expected9).put("name", "St. Mary").put("start", 2008).put("end", 2010);
+        JSONObject expected9 = new JSONObject();
+        expected9.put("name", "St. Mary").put("start", 2008).put("end", 2010);
 
         JSONObject expected10 = new JSONObject();
         JSONObject expected11 = null;
-        JSONObject expected12 = (JSONObject) expected9;
+        JSONObject expected12 = expected9;
         JSONArray expected13 = null;
         JSONArray expected14 = new JSONArray().put(3).put(2);
 
@@ -228,7 +228,7 @@ public class TestSAJsonParser_ParseDictionary {
         assertEquals(result6, expected6);
         assertEquals(result7, expected7);
         assertEquals(result8, expected8);
-        JSONAssert.assertEquals((JSONObject)result9, (JSONObject)expected9, false);
+        JSONAssert.assertEquals((JSONObject)result9, expected9, false);
         JSONAssert.assertEquals(result10, expected10, false);
         assertEquals(result11, expected11);
         JSONAssert.assertEquals(result12, expected12, false);

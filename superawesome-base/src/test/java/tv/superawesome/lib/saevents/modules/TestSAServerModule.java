@@ -20,23 +20,14 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(success -> {
+        // then
+        module.triggerClickEvent(Assert::assertTrue);
 
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        module.triggerImpressionEvent(Assert::assertTrue);
 
-        module.triggerImpressionEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
-
-        module.triggerViewableImpressionEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        module.triggerViewableImpressionEvent(Assert::assertTrue);
     }
 
     @Test
@@ -47,23 +38,14 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(success -> {
+        // then
+        module.triggerClickEvent(Assert::assertFalse);
 
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        module.triggerImpressionEvent(Assert::assertFalse);
 
-        module.triggerImpressionEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
-
-        module.triggerViewableImpressionEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        module.triggerViewableImpressionEvent(Assert::assertFalse);
     }
 
     @Test
@@ -74,23 +56,14 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(success -> {
+        // then
+        module.triggerClickEvent(Assert::assertTrue);
 
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        module.triggerImpressionEvent(Assert::assertTrue);
 
-        module.triggerImpressionEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
-
-        module.triggerViewableImpressionEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        module.triggerViewableImpressionEvent(Assert::assertTrue);
     }
 
     @Test
@@ -101,22 +74,13 @@ public class TestSAServerModule extends TestModule {
         SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
 
         // when
-        module.triggerClickEvent(success -> {
+        // then
+        module.triggerClickEvent(Assert::assertFalse);
 
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        module.triggerImpressionEvent(Assert::assertFalse);
 
-        module.triggerImpressionEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
-
-        module.triggerViewableImpressionEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        module.triggerViewableImpressionEvent(Assert::assertFalse);
     }
 }
