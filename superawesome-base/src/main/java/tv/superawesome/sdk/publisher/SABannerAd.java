@@ -46,9 +46,9 @@ public class SABannerAd extends FrameLayout {
     private SAInterface     listener = (placementId, event) -> {};
 
     // the internal loader
-    private SASession       session;
-    private SAEvents        events;
-    private SALoader        loader;
+    private final SASession       session;
+    private final SAEvents        events;
+    private final SALoader        loader;
 
     // private subviews
     private SAWebPlayer     webPlayer;

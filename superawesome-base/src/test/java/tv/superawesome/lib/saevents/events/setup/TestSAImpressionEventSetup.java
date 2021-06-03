@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tv.superawesome.lib.saevents.events.SAImpressionEvent;
+import tv.superawesome.lib.saevents.events.TestEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 
@@ -12,7 +13,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
  * Created by gabriel.coman on 09/05/2018.
  */
 
-public class TestSAImpressionEventSetup extends TestEventSetup {
+public class TestSAImpressionEventSetup extends TestEvent {
 
     @Test
     public void test_SAImpression_Init () throws Exception {

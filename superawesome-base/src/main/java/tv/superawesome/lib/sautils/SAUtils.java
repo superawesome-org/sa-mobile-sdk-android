@@ -126,8 +126,8 @@ public class SAUtils {
     public static class SASize {
 
         // member vars
-        public int width;
-        public int height;
+        public final int width;
+        public final int height;
 
         /**
          * SASize basic constructor
