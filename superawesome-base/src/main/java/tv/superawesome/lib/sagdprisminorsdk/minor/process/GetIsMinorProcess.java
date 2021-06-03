@@ -16,7 +16,7 @@ public class GetIsMinorProcess {
     public void getIsMinor(final Context context, String dateOfBirth, String bundleId, final GetIsMinorInterface listener) {
 
         //return the model (may be null)
-        isMinor.execute(context, dateOfBirth, bundleId, (GetIsMinorInterface) listener::getIsMinorData);
+        isMinor.execute(context, dateOfBirth, bundleId, (GetIsMinorInterface) listener);
 
     }
 }

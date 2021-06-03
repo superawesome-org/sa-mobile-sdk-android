@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tv.superawesome.lib.saevents.events.SAServerEvent;
+import tv.superawesome.lib.saevents.events.TestEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 
@@ -11,7 +12,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
  * Created by gabriel.coman on 09/05/2018.
  */
 
-public class TestSAServerEventSetup extends TestEventSetup {
+public class TestSAServerEventSetup extends TestEvent {
 
     @Test
     public void test_SAServerEvent_Init () throws Throwable {

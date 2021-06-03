@@ -34,7 +34,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
         private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
     }
 
-    private val BANNER_BACKGROUND: Int = Color.rgb(224, 224, 224)
+    private val bannerBackgroundColor: Int = Color.rgb(224, 224, 224)
 
     private var session: SASession = SASession(ctx)
     private var loader: SALoader = SALoader(ctx)
@@ -123,7 +123,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
         } else {
-            setBackgroundColor(BANNER_BACKGROUND)
+            setBackgroundColor(bannerBackgroundColor)
         }
     }
 

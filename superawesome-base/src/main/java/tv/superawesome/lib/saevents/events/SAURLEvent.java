@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 
 public class SAURLEvent extends SAServerEvent {
 
-    protected String vastUrl;
+    protected final String vastUrl;
 
     public SAURLEvent(String vastUrl) {
         this(vastUrl, Executors.newSingleThreadExecutor(), 15000, false);
