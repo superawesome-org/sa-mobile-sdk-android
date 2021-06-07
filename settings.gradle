@@ -3,7 +3,6 @@ include ':app'
 include ':saunity'
 include ':samopub'
 include ':saadmob'
-include ':saair'
 include ':superawesome'
 include ':superawesome-base'
 project(':superawesome-base').projectDir = new File('superawesome-base')
