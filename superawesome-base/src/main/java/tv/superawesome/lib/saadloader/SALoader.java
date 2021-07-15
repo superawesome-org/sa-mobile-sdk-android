@@ -208,29 +208,6 @@ public class SALoader {
             });
   }
 
-  /**
-   * @param placementId the AwesomeAds ID to load an ad for
-   * @param creativeId - the creative id [SACreatve]
-   * @param lineItemId - The line Item id
-   * @param session the current session to load the placement Id for
-   * @param listener listener copy so that the loader can return the response to the library user
-   */
-  public void loadAdForLineItem(
-          final int placementId,
-          final int lineItemId,
-          final int creativeId,
-          @NonNull final ISASession session,
-          @NonNull final SALoaderInterface listener) {
-
-    // get connection things to AwesomeAds
-    String endpoint = session.getBaseUrl() + "/ads/" + lineItemId + "/" + creativeId;
-    JSONObject query = getAwesomeAdsQuery(session);
-    JSONObject header = getAwesomeAdsHeader(session);
-
-    // call to the load ad method
-    loadAd(endpoint, query, header, placementId, session.getConfiguration(), listener);
-  }
-
   public void processAd(
       int placementId,
       String data,
