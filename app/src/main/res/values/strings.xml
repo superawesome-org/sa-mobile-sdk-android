@@ -7,4 +7,7 @@
     <string name="admob_app_id" translatable="false">ca-app-pub-2222631699890286~7883084050</string>
     <string name="admob_banner_ad_id" translatable="false">ca-app-pub-2222631699890286/5392414677</string>
     <string name="admob_interstitial_ad_id" translatable="false">ca-app-pub-2222631699890286/3274545465</string>
+    <string name="play_mopub_interstitial">Play MoPub interstitial</string>
+    <string name="play_mopub_video">Play MoPub video</string>
+    <string name="load_intersitial">LOAD INTERSITIAL</string>
 </resources>

@@ -28,8 +28,8 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     private boolean finishedLoading = false;
 
     // private variables for the web player
-    protected FrameLayout holder;
-    protected SAWebView webView;
+    protected final FrameLayout holder;
+    protected final SAWebView webView;
 
     // interface objects used for the web player callback mechanism
     protected Listener eventListener;

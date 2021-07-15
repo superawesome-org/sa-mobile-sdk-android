@@ -140,7 +140,7 @@ public class SAVideoClick {
     private void handleUrl (Context context, String destination) {
 
         Long currentTime = System.currentTimeMillis()/1000;
-        Long diff = Math.abs(currentTime - currentClickThreshold);
+        long diff = Math.abs(currentTime - currentClickThreshold);
 
         if (diff < SADefaults.defaultClickThreshold()) {
             Log.d("AwesomeAds-2", "Current diff is " + diff);

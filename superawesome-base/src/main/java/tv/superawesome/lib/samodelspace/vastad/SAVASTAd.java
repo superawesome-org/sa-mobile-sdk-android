@@ -103,9 +103,9 @@ public class SAVASTAd extends SABaseObject implements Parcelable {
         url = SAJsonParser.getString(jsonObject, "url", null);
         type = SAVASTAdType.fromValue(SAJsonParser.getInt(jsonObject, "type", 0));
 
-        media = SAJsonParser.getListFromJsonArray(jsonObject, "media", (SAJsonToList<SAVASTMedia, JSONObject>) jsonObject12 -> new SAVASTMedia(jsonObject12));
+        media = SAJsonParser.getListFromJsonArray(jsonObject, "media", (SAJsonToList<SAVASTMedia, JSONObject>) SAVASTMedia::new);
 
-        events = SAJsonParser.getListFromJsonArray(jsonObject, "events", (SAJsonToList<SAVASTEvent, JSONObject>) jsonObject1 -> new SAVASTEvent(jsonObject1));
+        events = SAJsonParser.getListFromJsonArray(jsonObject, "events", (SAJsonToList<SAVASTEvent, JSONObject>) SAVASTEvent::new);
     }
 
     /**
@@ -119,8 +119,8 @@ public class SAVASTAd extends SABaseObject implements Parcelable {
                 "redirect", redirect,
                 "url", url,
                 "type", type.ordinal(),
-                "media", SAJsonParser.getJsonArrayFromList(media, savastMedia -> savastMedia.writeToJson()),
-                "events", SAJsonParser.getJsonArrayFromList(events, saTracking -> saTracking.writeToJson()));
+                "media", SAJsonParser.getJsonArrayFromList(media, SAVASTMedia::writeToJson),
+                "events", SAJsonParser.getJsonArrayFromList(events, SAVASTEvent::writeToJson));
     }
 
     /**

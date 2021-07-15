@@ -21,11 +21,8 @@ public class TestViewableImpressionEventTrigger extends TestEventTrigger {
         SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertTrue);
     }
 
     @Test
@@ -36,10 +33,7 @@ public class TestViewableImpressionEventTrigger extends TestEventTrigger {
         SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertFalse);
     }
 }
