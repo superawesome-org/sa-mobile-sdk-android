@@ -212,7 +212,7 @@ public class SABannerAd extends FrameLayout {
             // do nothing
         }
 
-        session.prepareSession(() -> {
+        session.prepareSession(() ->
 
             // after session is OK, prepare
             loader.loadAd( placementId, lineItemId, creativeId, session, response -> {
@@ -233,8 +233,8 @@ public class SABannerAd extends FrameLayout {
                         Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                     }
                 }
-            });
-        });
+            })
+        );
     }
 
     /**
