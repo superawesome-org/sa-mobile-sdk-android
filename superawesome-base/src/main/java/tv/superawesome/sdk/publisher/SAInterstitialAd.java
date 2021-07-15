@@ -322,7 +322,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
             session.prepareSession(() -> {
 
                 // after session is prepared, start loading
-                loader.loadAdForLineItem(placementId, lineItemId, creativeId,session, response -> {
+                loader.loadAd(placementId, lineItemId, creativeId,session, response -> {
 
                     if (response.status != 200) {
                         //
