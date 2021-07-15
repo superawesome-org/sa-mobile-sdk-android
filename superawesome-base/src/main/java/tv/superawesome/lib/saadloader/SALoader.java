@@ -224,7 +224,7 @@ public class SALoader {
           @NonNull final SALoaderInterface listener) {
 
     // get connection things to AwesomeAds
-    String endpoint = session.getBaseUrl() + "/ads/" + lineItemId + "/" + creativeId;
+    String endpoint = session.getBaseUrl() + "/ad/" + lineItemId + "/" + creativeId;
     JSONObject query = getAwesomeAdsQuery(session);
     JSONObject header = getAwesomeAdsHeader(session);
 
