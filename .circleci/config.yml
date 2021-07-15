@@ -66,15 +66,6 @@ jobs:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
 
-  sdk_push_superawesome_air:
-    <<: *android_config
-    steps:
-      - checkout
-      - *bootstrap
-      - run:
-          name: Push Superawesome-Air to the S3 Repo
-          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saair modulePkgName:SuperAwesome-Air
-
   sdk_push_superawesome_admob:
     <<: *android_config
     steps:
@@ -174,15 +165,6 @@ workflows:
             branches:
               ignore: /.*/
       - sdk_push_superawesome_base:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - test_superawesome_base
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - sdk_push_superawesome_air:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
