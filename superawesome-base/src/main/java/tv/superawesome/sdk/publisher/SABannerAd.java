@@ -46,9 +46,9 @@ public class SABannerAd extends FrameLayout {
     private SAInterface     listener = (placementId, event) -> {};
 
     // the internal loader
-    private SASession       session;
-    private SAEvents        events;
-    private SALoader        loader;
+    private final SASession       session;
+    private final SAEvents        events;
+    private final SALoader        loader;
 
     // private subviews
     private SAWebPlayer     webPlayer;
@@ -212,7 +212,7 @@ public class SABannerAd extends FrameLayout {
             // do nothing
         }
 
-        session.prepareSession(() -> {
+        session.prepareSession(() ->
 
             // after session is OK, prepare
             loader.loadAd( placementId, lineItemId, creativeId, session, response -> {
@@ -233,8 +233,8 @@ public class SABannerAd extends FrameLayout {
                         Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                     }
                 }
-            });
-        });
+            })
+        );
     }
 
     /**
@@ -429,7 +429,7 @@ public class SABannerAd extends FrameLayout {
         Log.d("AwesomeAds-2", "Got here!");
 
         Long currentTime = System.currentTimeMillis()/1000;
-        Long diff = Math.abs(currentTime - currentClickThreshold);
+        long diff = Math.abs(currentTime - currentClickThreshold);
 
         if (diff < SADefaults.defaultClickThreshold()) {
             Log.d("AwesomeAds-2", "Current diff is " + diff);

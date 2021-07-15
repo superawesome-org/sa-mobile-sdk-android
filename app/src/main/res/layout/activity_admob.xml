@@ -13,14 +13,14 @@
         android:text="Hello World!" />
 
     <Button
+        android:id="@+id/playInterstitialBtn"
         android:layout_width="match_parent"
         android:text="@string/play_admob_interstitial"
-        android:onClick="playInterstitial"
         android:layout_height="50dp" />
     <Button
+        android:id="@+id/playVideoBtn"
         android:text="@string/play_admob_video"
         android:layout_width="match_parent"
-        android:onClick="playVideo"
         android:layout_height="50dp" />
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"

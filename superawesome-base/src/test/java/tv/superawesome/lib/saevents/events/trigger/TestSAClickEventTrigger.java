@@ -21,11 +21,8 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertTrue);
     }
 
     @Test
@@ -36,11 +33,8 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertFalse);
     }
 
     @Test
@@ -51,11 +45,8 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertTrue(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertTrue);
     }
 
     @Test
@@ -66,10 +57,7 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // when
-        event.triggerEvent(success -> {
-
-            // then
-            Assert.assertFalse(success);
-        });
+        // then
+        event.triggerEvent(Assert::assertFalse);
     }
 }

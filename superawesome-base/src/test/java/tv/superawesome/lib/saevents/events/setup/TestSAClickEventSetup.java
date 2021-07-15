@@ -5,13 +5,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tv.superawesome.lib.saevents.events.SAClickEvent;
+import tv.superawesome.lib.saevents.events.TestEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 
 /**
  * Created by gabriel.coman on 09/05/2018.
  */
-public class TestSAClickEventSetup extends TestEventSetup {
+public class TestSAClickEventSetup extends TestEvent {
 
     @Test
     public void test_ClickEvent_Init_WithDisplayAd () throws Throwable {

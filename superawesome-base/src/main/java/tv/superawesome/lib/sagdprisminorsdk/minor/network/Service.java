@@ -63,7 +63,7 @@ public class Service implements NetworkInterface {
         final Service instance = this;
 
         if (getMethod() == HTTPMethod.GET) {
-            network.sendGET(url + getEndpoint(), getQuery(), getHeader(), (status, payload, success) -> instance.success(status, payload, success));
+            network.sendGET(url + getEndpoint(), getQuery(), getHeader(), instance::success);
         }
 
     }

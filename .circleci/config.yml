@@ -30,7 +30,7 @@ jobs:
           command: ./gradlew lint
       - run:
           name: Run unit tests for superawesome_base
-          command: fastlane run_all_tests module:superawesome-base
+          command: bundle exec fastlane run_all_tests module:superawesome-base
       - run:
           name: Copy test results to temp folder
           command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
@@ -55,7 +55,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-All to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
 
   sdk_push_superawesome_base:
     <<: *android_config
@@ -64,7 +64,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Base to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
 
   sdk_push_superawesome_air:
     <<: *android_config
@@ -73,7 +73,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Air to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saair modulePkgName:SuperAwesome-Air
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saair modulePkgName:SuperAwesome-Air
 
   sdk_push_superawesome_admob:
     <<: *android_config
@@ -82,7 +82,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
 
   sdk_push_superawesome_moat:
     <<: *android_config
@@ -91,7 +91,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Moat to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samoat modulePkgName:SuperAwesome-Moat
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samoat modulePkgName:SuperAwesome-Moat
 
   sdk_push_superawesome_mopub:
     <<: *android_config
@@ -100,7 +100,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-MoPub to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samopub modulePkgName:SuperAwesome-MoPub
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samopub modulePkgName:SuperAwesome-MoPub
 
   sdk_push_superawesome_unity:
     <<: *android_config
@@ -109,7 +109,7 @@ jobs:
       - *bootstrap
       - run:
           name: Push Superawesome-Unity to the S3 Repo
-          command: fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
 
   publish_docs:
     docker:

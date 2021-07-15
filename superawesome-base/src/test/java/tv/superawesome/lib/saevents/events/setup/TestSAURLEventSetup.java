@@ -4,11 +4,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tv.superawesome.lib.saevents.events.SAURLEvent;
+import tv.superawesome.lib.saevents.events.TestEvent;
 
 /**
  * Created by gabriel.coman on 09/05/2018.
  */
-public class TestSAURLEventSetup extends TestEventSetup {
+public class TestSAURLEventSetup extends TestEvent {
 
     @Test
     public void test_SAURLEvent_Init () {

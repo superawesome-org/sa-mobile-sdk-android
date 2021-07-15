@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = '1.5.0'
+        kotlin_version = '1.5.10'
         compile_sdk_version = 29
         build_tools_version = "30.0.2"
         min_sdk_version = 16
@@ -21,7 +21,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha15'
+        classpath 'com.android.tools.build:gradle:7.1.0-alpha01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
