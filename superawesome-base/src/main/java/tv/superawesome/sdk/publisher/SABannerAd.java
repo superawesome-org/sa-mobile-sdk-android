@@ -215,7 +215,7 @@ public class SABannerAd extends FrameLayout {
         session.prepareSession(() -> {
 
             // after session is OK, prepare
-            loader.loadAdForLineItem( placementId, lineItemId, creativeId, session, response -> {
+            loader.loadAd( placementId, lineItemId, creativeId, session, response -> {
 
                 if (response.status != 200) {
                     if (listener != null) {
