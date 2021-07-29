@@ -46,9 +46,9 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
                         val hasAd = SAInterstitialAd.hasAdAvailable(placementId)
 
                         if (hasAd) {
-                            mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                            mLoadListener?.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
                         } else {
-                            mLoadListener.onAdLoaded()
+                            mLoadListener?.onAdLoaded()
                         }
                     }
                 }
@@ -59,10 +59,7 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
                 SAEvent.AdFailedToShow -> mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_INVALID_STATE)
                 SAEvent.AdClicked -> mInteractionListener?.onAdClicked()
                 SAEvent.AdClosed -> mInteractionListener?.onAdDismissed()
-                SAEvent.AdAlreadyLoaded, SAEvent.AdEnded -> {
-                }
-                else -> {
-                }
+                SAEvent.AdAlreadyLoaded, SAEvent.AdEnded -> { /* n/a */}
             }
         }
 
@@ -83,10 +80,7 @@ class AwesomeAdsMoPubInterstitial : BaseAd() {
                 MoPubErrorCode.NETWORK_NO_FILL.intCode,
                 MoPubErrorCode.NETWORK_NO_FILL
             )
-
-            if (mInteractionListener != null) {
-                mInteractionListener.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
-            }
+            mInteractionListener?.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL)
         }
     }
 }

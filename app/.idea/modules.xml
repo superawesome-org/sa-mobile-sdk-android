@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" group="sa-mobile-sdk-android/app" />
+      <module fileurl="file://$PROJECT_DIR$/../sa-mobile-sdk-android.iml" filepath="$PROJECT_DIR$/../sa-mobile-sdk-android.iml" group="sa-mobile-sdk-android" />
+      <module fileurl="file://$PROJECT_DIR$/../saadmob/saadmob.iml" filepath="$PROJECT_DIR$/../saadmob/saadmob.iml" group="sa-mobile-sdk-android/saadmob" />
+      <module fileurl="file://$PROJECT_DIR$/../samoat/samoat.iml" filepath="$PROJECT_DIR$/../samoat/samoat.iml" group="sa-mobile-sdk-android/samoat" />
+      <module fileurl="file://$PROJECT_DIR$/../samopub/samopub.iml" filepath="$PROJECT_DIR$/../samopub/samopub.iml" group="sa-mobile-sdk-android/samopub" />
+      <module fileurl="file://$PROJECT_DIR$/../saunity/saunity.iml" filepath="$PROJECT_DIR$/../saunity/saunity.iml" group="sa-mobile-sdk-android/saunity" />
+      <module fileurl="file://$PROJECT_DIR$/../superawesome/superawesome.iml" filepath="$PROJECT_DIR$/../superawesome/superawesome.iml" group="sa-mobile-sdk-android/superawesome" />
+      <module fileurl="file://$PROJECT_DIR$/../superawesome-base/superawesome-base.iml" filepath="$PROJECT_DIR$/../superawesome-base/superawesome-base.iml" group="sa-mobile-sdk-android/superawesome-base" />
+    </modules>
+  </component>
+</project>

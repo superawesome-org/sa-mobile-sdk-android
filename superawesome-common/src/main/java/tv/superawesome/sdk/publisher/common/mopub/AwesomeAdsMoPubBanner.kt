@@ -53,9 +53,9 @@ class AwesomeAdsMoPubBanner : BaseAd() {
                             val isEmpty = html != null && html.contains("mopub://failLoad")
 
                             if (isEmpty) {
-                                mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
+                                mLoadListener?.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL)
                             } else {
-                                mLoadListener.onAdLoaded()
+                                mLoadListener?.onAdLoaded()
                                 play()
                             }
                         }
