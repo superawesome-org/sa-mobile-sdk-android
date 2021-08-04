@@ -21,6 +21,7 @@ import java.util.List;
 
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.sdk.publisher.AwesomeAds;
+import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
@@ -35,9 +36,12 @@ public class MainActivity extends Activity {
     setContentView(R.layout.activity_main);
     SABumperPage.overrideName("Test app");
 
-    final SAManagedBannerAd managedBannerAd = findViewById(R.id.preview);
-    managedBannerAd.setListener(
-        (SAInterface) (placementId, event) -> managedBannerAd.load(placementId));
+    final SABannerAd bannerAd = findViewById(R.id.preview);
+    bannerAd.setListener(
+        (SAInterface) (placementId, event) -> {
+          if(event == SAEvent.adLoaded)
+              bannerAd.play(this);
+          });
 
     ListView myList = findViewById(R.id.MyList);
     final List<AdapterItem> data =
@@ -65,7 +69,7 @@ public class MainActivity extends Activity {
 
             switch (placement.type) {
               case BANNER:
-                managedBannerAd.load(placement.pid);
+                bannerAd.load(placement.pid);
                 break;
               case INTERSTITIAL:
                 SAInterstitialAd.load(58166, 143306, 437339, MainActivity.this);
