@@ -7,6 +7,7 @@ import android.widget.VideoView;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.Map;
 
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -76,9 +77,7 @@ public class SAMoatModule {
         // here calc if moat should be displayed
         int moatIntRand = SAUtils.randomNumberBetween(0, 100);
         double moatRand = moatIntRand / 100.0;
-
         boolean response = ad != null && (moatRand < ad.moat || !moatLimiting);
-
         try {
             MyLog.i(TAG, "Is Moat allowed: moatRand="+moatRand + " | ad.moat="+ad.moat + " | moatLimiting="+moatLimiting + " | response="+response);
         } catch (Exception e) {
@@ -103,7 +102,7 @@ public class SAMoatModule {
 
         if (nullInstance && isAllowed) try {
 
-            HashMap<String, String> adData = new HashMap<>();
+            Map<String, String> adData = new HashMap<>();
             adData.put("advertiserId", "" + ad.advertiserId);
             adData.put("campaignId", "" + ad.campaignId);
             adData.put("lineItemId", "" + ad.lineItemId);
