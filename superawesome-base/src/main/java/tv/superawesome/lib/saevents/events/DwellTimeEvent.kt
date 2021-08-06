@@ -23,7 +23,13 @@ class DwellTimeEvent(
         return try {
             SAJsonParser.newObject(
                 "type", "custom.analytics.DWELL_TIME",
-                "value", 1
+                "placement", ad.placementId,
+                "bundle", session.packageName,
+                "creative", ad.creative.id,
+                "line_item", ad.lineItemId,
+                "ct", session.connectionType.ordinal,
+                "sdkVersion", session.version,
+                "rnd", session.cachebuster
             )
         } catch (e: Exception) {
             JSONObject()
