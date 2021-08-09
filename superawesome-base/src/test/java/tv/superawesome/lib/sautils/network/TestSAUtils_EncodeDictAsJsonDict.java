@@ -1,13 +1,13 @@
 package tv.superawesome.lib.sautils.network;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
 import tv.superawesome.lib.sautils.SAUtils;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by gabriel.coman on 03/05/2018.

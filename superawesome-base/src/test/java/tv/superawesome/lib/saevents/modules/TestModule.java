@@ -1,5 +1,7 @@
 package tv.superawesome.lib.saevents.modules;
 
+import static org.mockito.Mockito.mock;
+
 import android.content.Context;
 
 import org.junit.After;
@@ -11,8 +13,6 @@ import tv.superawesome.lib.saevents.mocks.executors.MockExecutor;
 import tv.superawesome.lib.saevents.mocks.server.events.MockEventsServer;
 import tv.superawesome.lib.saevents.mocks.session.MockSession;
 import tv.superawesome.lib.sasession.session.ISASession;
-
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by gabriel.coman on 09/05/2018.

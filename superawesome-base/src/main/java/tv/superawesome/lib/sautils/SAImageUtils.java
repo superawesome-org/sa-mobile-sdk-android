@@ -4,6 +4,9 @@
  */
 package tv.superawesome.lib.sautils;
 
+import static android.graphics.Bitmap.createScaledBitmap;
+import static android.graphics.BitmapFactory.decodeByteArray;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,9 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.util.Base64;
 
 import java.io.File;
-
-import static android.graphics.Bitmap.createScaledBitmap;
-import static android.graphics.BitmapFactory.decodeByteArray;
 
 public class SAImageUtils {
 

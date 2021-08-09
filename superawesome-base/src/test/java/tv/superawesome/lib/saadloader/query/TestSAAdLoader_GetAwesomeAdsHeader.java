@@ -1,5 +1,11 @@
 package tv.superawesome.lib.saadloader.query;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import android.content.Context;
 
 import org.json.JSONObject;
@@ -7,12 +13,6 @@ import org.junit.Test;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.sasession.session.SASession;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class TestSAAdLoader_GetAwesomeAdsHeader {
 

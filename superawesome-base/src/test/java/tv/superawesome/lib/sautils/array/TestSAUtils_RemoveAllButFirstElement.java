@@ -1,5 +1,8 @@
 package tv.superawesome.lib.sautils.array;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -7,9 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import tv.superawesome.lib.sautils.SAUtils;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
 
 /**
  * Created by gabriel.coman on 17/10/16.

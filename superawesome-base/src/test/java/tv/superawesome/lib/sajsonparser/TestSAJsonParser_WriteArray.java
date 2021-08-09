@@ -1,10 +1,10 @@
 package tv.superawesome.lib.sajsonparser;
 
+import static junit.framework.Assert.assertNotNull;
+
 import org.json.JSONArray;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
-
-import static junit.framework.Assert.assertNotNull;
 
 /**
  * Created by gabriel.coman on 17/10/16.
