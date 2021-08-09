@@ -1,9 +1,9 @@
 package tv.superawesome.lib.sabumperpage;
 
+import static android.graphics.BitmapFactory.decodeByteArray;
+
 import android.graphics.Bitmap;
 import android.util.Base64;
-
-import static android.graphics.BitmapFactory.decodeByteArray;
 
 public class SABumperPageImageUtils {
 

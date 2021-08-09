@@ -1,13 +1,13 @@
 package tv.superawesome.lib.samodelspace.vastad;
 
-import org.junit.Test;
-
-import tv.superawesome.lib.ResourceReader;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+
+import org.junit.Test;
+
+import tv.superawesome.lib.ResourceReader;
 
 public class TestSAVAST_1 {
     

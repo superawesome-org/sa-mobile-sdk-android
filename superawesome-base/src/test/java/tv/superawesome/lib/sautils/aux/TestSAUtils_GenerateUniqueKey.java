@@ -1,13 +1,13 @@
 package tv.superawesome.lib.sautils.aux;
 
+import static junit.framework.Assert.assertTrue;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import tv.superawesome.lib.sautils.SAUtils;
-
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by gabriel.coman on 03/05/2018.

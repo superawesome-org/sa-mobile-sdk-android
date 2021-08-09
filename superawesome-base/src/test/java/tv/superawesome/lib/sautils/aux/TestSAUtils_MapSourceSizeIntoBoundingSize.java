@@ -1,12 +1,12 @@
 package tv.superawesome.lib.sautils.aux;
 
+import static junit.framework.Assert.assertEquals;
+
 import android.graphics.Rect;
 
 import org.junit.Test;
 
 import tv.superawesome.lib.sautils.SAUtils;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by gabriel.coman on 03/05/2018.

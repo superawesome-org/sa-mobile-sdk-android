@@ -1,5 +1,9 @@
 package tv.superawesome.lib.savastparser.vastparser;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import android.content.Context;
 
 import org.junit.After;
@@ -15,10 +19,6 @@ import tv.superawesome.lib.savastparser.SAVASTParser;
 import tv.superawesome.lib.savastparser.mocks.executors.MockExecutor;
 import tv.superawesome.lib.savastparser.mocks.servers.MockAbstractWebServer;
 import tv.superawesome.lib.savastparser.mocks.servers.vast.MockVASTServer;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 
 public class SAVASTParser_Async_Test {
 

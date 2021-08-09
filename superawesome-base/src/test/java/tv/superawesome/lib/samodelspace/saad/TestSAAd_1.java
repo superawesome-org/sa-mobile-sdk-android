@@ -1,5 +1,9 @@
 package tv.superawesome.lib.samodelspace.saad;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,10 +13,6 @@ import java.util.List;
 import tv.superawesome.lib.samodelspace.vastad.SAVASTAdType;
 import tv.superawesome.lib.samodelspace.vastad.SAVASTEvent;
 import tv.superawesome.lib.samodelspace.vastad.SAVASTMedia;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by gabriel.coman on 30/04/2018.

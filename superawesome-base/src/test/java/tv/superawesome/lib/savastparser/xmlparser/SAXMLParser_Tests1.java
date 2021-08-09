@@ -1,5 +1,8 @@
 package tv.superawesome.lib.savastparser.xmlparser;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -7,9 +10,6 @@ import org.w3c.dom.NodeList;
 
 import tv.superawesome.lib.ResourceReader;
 import tv.superawesome.lib.savastparser.SAXMLParser;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 
 public class SAXMLParser_Tests1 {
 

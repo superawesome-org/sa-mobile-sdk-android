@@ -1,5 +1,9 @@
 package tv.superawesome.lib.savastparser.vastparser;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import android.content.Context;
 
 import org.junit.Before;
@@ -16,10 +20,6 @@ import tv.superawesome.lib.ResourceReader;
 import tv.superawesome.lib.samodelspace.vastad.SAVASTMedia;
 import tv.superawesome.lib.savastparser.SAVASTParser;
 import tv.superawesome.lib.savastparser.SAXMLParser;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 
 public class SAVASTParser_Local_Tests1  {
 
