@@ -1,11 +1,11 @@
 package tv.superawesome.lib.sajsonparser;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import org.json.JSONObject;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>

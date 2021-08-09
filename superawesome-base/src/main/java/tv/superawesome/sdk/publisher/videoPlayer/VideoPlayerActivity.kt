@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.OrientationEventListener
 import android.widget.RelativeLayout
-import tv.superawesome.sdk.publisher.videoPlayer.FullscreenMode
 import tv.superawesome.sdk.publisher.videoPlayer.FullscreenMode.Companion.fromValue
 
 class VideoPlayerActivity : Activity() {

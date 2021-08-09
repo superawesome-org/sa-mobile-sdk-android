@@ -1,5 +1,10 @@
 package tv.superawesome.lib.sajsonparser;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import org.json.JSONObject;
 import org.junit.Test;
 
@@ -8,11 +13,6 @@ import java.util.Arrays;
 import tv.superawesome.lib.sajsonparser.mocks.SAMockEmployeeModel;
 import tv.superawesome.lib.sajsonparser.mocks.SAMockLongHolderModel;
 import tv.superawesome.lib.sajsonparser.mocks.SAMockPositionModel;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by gabriel.coman on 17/10/16.

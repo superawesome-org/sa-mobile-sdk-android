@@ -1,15 +1,15 @@
 package tv.superawesome.lib.savastparser.xmlparser;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
 import tv.superawesome.lib.ResourceReader;
 import tv.superawesome.lib.savastparser.SAXMLParser;
-
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 
 public class SAXMLParser_Tests6 {

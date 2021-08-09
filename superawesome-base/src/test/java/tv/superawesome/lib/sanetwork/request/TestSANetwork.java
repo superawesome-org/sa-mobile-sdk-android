@@ -1,5 +1,11 @@
 package tv.superawesome.lib.sanetwork.request;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
@@ -13,13 +19,6 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import tv.superawesome.lib.sanetwork.mocks.MockExecutor;
-import tv.superawesome.lib.sanetwork.request.SANetwork;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by gabriel.coman on 30/04/2018.
