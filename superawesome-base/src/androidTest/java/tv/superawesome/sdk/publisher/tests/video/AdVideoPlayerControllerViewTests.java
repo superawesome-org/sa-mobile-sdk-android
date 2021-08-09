@@ -1,15 +1,5 @@
 package tv.superawesome.sdk.publisher.tests.video;
 
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import tv.superawesome.sdk.publisher.BaseInstrumentationTest;
-import tv.superawesome.sdk.publisher.spies.OnClickListenerSpy;
-import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -20,6 +10,16 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
+
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import tv.superawesome.sdk.publisher.BaseInstrumentationTest;
+import tv.superawesome.sdk.publisher.spies.OnClickListenerSpy;
+import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
 
 public class AdVideoPlayerControllerViewTests extends BaseInstrumentationTest {
 

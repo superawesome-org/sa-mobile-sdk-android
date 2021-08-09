@@ -1,11 +1,11 @@
 package tv.superawesome.lib.sajsonparser;
 
+import static junit.framework.Assert.assertEquals;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by gabriel.coman on 17/10/16.

@@ -1,5 +1,7 @@
 package tv.superawesome.sdk.publisher.video;
 
+import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -11,8 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import tv.superawesome.lib.sautils.SAImageUtils;
-
-import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 
 class VideoComponentFactory {
 
