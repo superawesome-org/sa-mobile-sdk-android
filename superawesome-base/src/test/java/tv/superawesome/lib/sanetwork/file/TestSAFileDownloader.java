@@ -1,5 +1,11 @@
 package tv.superawesome.lib.sanetwork.file;
 
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -18,12 +24,6 @@ import okhttp3.mockwebserver.SocketPolicy;
 import okio.Buffer;
 import tv.superawesome.lib.BufferedResourceReader;
 import tv.superawesome.lib.sanetwork.mocks.MockExecutor;
-
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by gabriel.coman on 30/04/2018.

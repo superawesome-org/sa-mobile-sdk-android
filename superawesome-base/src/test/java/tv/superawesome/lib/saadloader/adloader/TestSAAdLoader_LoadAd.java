@@ -1,5 +1,15 @@
 package tv.superawesome.lib.saadloader.adloader;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -21,16 +31,6 @@ import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SADetails;
 import tv.superawesome.lib.samodelspace.saad.SAMedia;
 import tv.superawesome.lib.sasession.session.ISASession;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by gabriel.coman on 03/05/2018.

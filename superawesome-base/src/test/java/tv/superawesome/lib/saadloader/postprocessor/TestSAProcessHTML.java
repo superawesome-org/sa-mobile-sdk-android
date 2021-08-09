@@ -1,14 +1,14 @@
 package tv.superawesome.lib.saadloader.postprocessor;
 
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import org.junit.Test;
 
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
-
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 public class TestSAProcessHTML {
 

@@ -1,5 +1,7 @@
 package tv.superawesome.lib.sautils.network;
 
+import static junit.framework.Assert.assertEquals;
+
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -7,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import tv.superawesome.lib.sautils.SAUtils;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Created by gabriel.coman on 17/10/16.

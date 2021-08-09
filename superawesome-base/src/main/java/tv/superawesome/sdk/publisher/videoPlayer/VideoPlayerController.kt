@@ -2,9 +2,7 @@ package tv.superawesome.sdk.publisher.videoPlayer
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
-import android.media.MediaPlayer.OnPreparedListener
-import android.media.MediaPlayer.OnSeekCompleteListener
+import android.media.MediaPlayer.*
 import android.net.Uri
 import android.os.CountDownTimer
 
