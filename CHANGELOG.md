@@ -1,6 +1,3 @@
-## [8.1.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.1...v8.1.2) (2021-05-26)
-
-
 CHANGELOG
 =========
 
