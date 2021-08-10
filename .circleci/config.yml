@@ -173,15 +173,6 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - sdk_push_superawesome_air:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - test_superawesome_base
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
