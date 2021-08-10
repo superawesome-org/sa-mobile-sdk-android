@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+8.1.5
+ - Fix for dwell time not sending all needed parameters on certain requests
+ - Fix for moat sometimes failing to load on certain versions of Android
+
 8.1.3
  - CI configuration update to remove unneeded SDK - SAAir
 
