@@ -111,7 +111,7 @@ public class SAMoatModule {
             adData.put("placementId", "" + ad.placementId);
             adData.put("publisherId", "" + ad.publisherId);
 
-            java.lang.reflect.Method method = moatClass.getMethod("startMoatTrackingForDisplay", WebView.class, HashMap.class);
+            java.lang.reflect.Method method = moatClass.getMethod("startMoatTrackingForDisplay", WebView.class, Map.class);
             Object returnValue = method.invoke(moatInstance, view, adData);
             MyLog.d(TAG,"Called 'startMoatTrackingForDisplay' with response " + returnValue);
             return (String) returnValue;
@@ -161,7 +161,7 @@ public class SAMoatModule {
             adData.put("placementId", "" + ad.placementId);
             adData.put("publisherId", "" + ad.publisherId);
 
-            java.lang.reflect.Method method = moatClass.getMethod("startMoatTrackingForVideoPlayer", VideoView.class, HashMap.class, int.class);
+            java.lang.reflect.Method method = moatClass.getMethod("startMoatTrackingForVideoPlayer", VideoView.class, Map.class, int.class);
             Object returnValue = method.invoke(moatInstance, videoView, adData, duration);
             MyLog.d(TAG,"Called 'startMoatTrackingForVideoPlayer' with response " + returnValue);
             return (Boolean) returnValue;
