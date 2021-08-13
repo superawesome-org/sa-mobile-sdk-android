@@ -39,6 +39,6 @@ enum class EventType {
     ParentalGateFail,
     @SerialName("parentalGateSuccess")
     ParentalGateSuccess,
-    @SerialName("custom.analytics.DWELL_TIME")
+    @SerialName("viewTime")
     DwellTime,
 }
