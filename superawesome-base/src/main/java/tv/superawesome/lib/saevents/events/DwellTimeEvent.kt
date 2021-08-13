@@ -22,7 +22,7 @@ class DwellTimeEvent(
     override fun getQuery(): JSONObject? {
         return try {
             SAJsonParser.newObject(
-                "type", "custom.analytics.DWELL_TIME",
+                "type", "viewTime",
                 "placement", ad.placementId,
                 "bundle", session.packageName,
                 "creative", ad.creative.id,
