@@ -1,31 +1,17 @@
-## [8.1.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.1...v8.1.2) (2021-05-26)
-
-
-### Bug Fixes
-
-* **CI:** Adjusted CI config for tag ([ad24114](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ad24114761c7e36d21c2520b36254a2816f1becf))
-
-## [8.1.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.0...v8.1.1) (2021-05-26)
-
-
-### Bug Fixes
-
-* **CI:** Releasing fix version ([01a41b4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/01a41b4a48642c6dc1ff0b6e509cf9472087b719))
-
-# [8.1.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.0.2...v8.1.0) (2021-05-26)
-
-
-### Bug Fixes
-
-* **add SAVideo laod:** now accepts more arguments ([#85](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/85)) ([1361b01](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1361b01171092d1b1ac6450fbe79f7d3f13bb436))
-
-
-### Features
-
-* **CI:** Fixed issues in gradle build scripts ([c076fed](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/c076fed51d9c4890302206bc16af68771fa155fe))
-
 CHANGELOG
 =========
+
+8.1.5
+ - Fix for dwell time not sending all needed parameters on certain requests
+ - Fix for moat sometimes failing to load on certain versions of Android
+
+8.1.3
+ - CI configuration update to remove unneeded SDK - SAAir
+
+8.1.0 
+ - Added additional request parameters for the selection of a specific creative
+
+
 8.0.2
  - Updated Android library to self-hosted location post Bintray deprecation
  - Added Dwell Time

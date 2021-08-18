@@ -38,10 +38,10 @@ public class MainActivity extends Activity {
 
     final SABannerAd bannerAd = findViewById(R.id.preview);
     bannerAd.setListener(
-        (SAInterface)
-            (placementId, event) -> {
-              if (event == SAEvent.adLoaded) bannerAd.play(this);
-            });
+        (SAInterface) (placementId, event) -> {
+          if(event == SAEvent.adLoaded)
+              bannerAd.play(this);
+          });
 
     ListView myList = findViewById(R.id.MyList);
     final List<AdapterItem> data =
