@@ -25,7 +25,7 @@ import tv.superawesome.sdk.publisher.SABannerAd;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
-import tv.superawesome.sdk.publisher.managed.SAManagedBannerAd;
+import tv.superawesome.sdk.publisher.SAVideoAd;
 
 public class MainActivity extends Activity {
 
@@ -55,7 +55,8 @@ public class MainActivity extends Activity {
             new PlacementItem("Insterstitial - Static", 61298, Type.INTERSTITIAL),
             new HeaderItem("KSF"),
             new PlacementItem("Insterstitial - Static", 61321, Type.INTERSTITIAL),
-            new PlacementItem("Insterstitial - Rich Media", 61320, Type.INTERSTITIAL));
+            new PlacementItem("Insterstitial - Rich Media", 44262, Type.INTERSTITIAL),
+            new PlacementItem("Video", 61320, Type.VIDEO));
     ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
     myList.setAdapter(adapter);
     adapter.updateData(data);
@@ -74,15 +75,28 @@ public class MainActivity extends Activity {
               case INTERSTITIAL:
                 SAInterstitialAd.load(58166, 143306, 437339, MainActivity.this);
                 break;
+
+              case VIDEO:
+                SAVideoAd.load(44262, this);
             }
           }
         });
 
-    SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
-      if (event == SAEvent.adLoaded){
-        SAInterstitialAd.play(placementId, MainActivity.this);
-      }
-    });
+    SAInterstitialAd.setListener(
+        (SAInterface)
+            (placementId, event) -> {
+              if (event == SAEvent.adLoaded) {
+                SAInterstitialAd.play(placementId, MainActivity.this);
+              }
+            });
+
+    SAVideoAd.setListener(
+        (SAInterface)
+            (placementId, event) -> {
+              if (event == SAEvent.adLoaded) {
+                SAVideoAd.play(placementId, MainActivity.this);
+              }
+            });
   }
 
   public void gotoAdMob(View view) {
