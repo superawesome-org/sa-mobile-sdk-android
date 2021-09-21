@@ -47,6 +47,15 @@ jobs:
             git clone "${SA_CONTINUOUS_INTEGRATION_GIT_REPO_URL}" "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
             ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh
 
+  #Await for all running builds to finish
+  prep_deploy:
+    <<: *android_config
+    steps:
+      - checkout
+      - run:
+          name: Preping deploy
+          command: echo "Preping deploy"
+
   ## Run sdk push
   sdk_push_superawesome:
     <<: *android_config
@@ -144,19 +153,26 @@ workflows:
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           filters:
+            tags:
+              ignore: /^v.*/
+      - prep_deploy:
+          context: MOBILE_ANDROID_APPS
+          filters:
             branches:
-              ignore: develop
+              ignore: /.*/
+            tags:
+              only: /^v.*/
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             branches:
               only: master
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             tags:
               only: /^v.*/
@@ -165,7 +181,7 @@ workflows:
       - sdk_push_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             tags:
               only: /^v.*/
@@ -174,7 +190,7 @@ workflows:
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             tags:
               only: /^v.*/
@@ -183,7 +199,7 @@ workflows:
       - sdk_push_superawesome_moat:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             tags:
               only: /^v.*/
@@ -192,7 +208,7 @@ workflows:
       - sdk_push_superawesome_mopub:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             tags:
               only: /^v.*/
@@ -201,7 +217,7 @@ workflows:
       - sdk_push_superawesome_unity:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             tags:
               only: /^v.*/
