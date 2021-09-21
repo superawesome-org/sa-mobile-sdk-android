@@ -144,8 +144,6 @@ workflows:
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           filters:
-            tags:
-              only: /^v.*/
             branches:
               ignore: develop
       - semantic_release:
