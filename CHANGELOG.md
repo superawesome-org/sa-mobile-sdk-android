@@ -1,3 +1,13 @@
+## [8.1.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.3...v8.1.4) (2021-09-21)
+
+
+### Bug Fixes
+
+* **CI:** Removed filter preventing Master from building and releasing on CI. ([23b5943](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/23b5943888721135fa3b650abd686211ffb62948))
+* **organise imports:** change to trigger release ([#106](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/106)) ([0616505](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/0616505f273075cda18f28588cef6079dc158e0c))
+* **update reflective signature:** update the signature ([#104](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/104)) ([594b84e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/594b84e1026576ce77b403559c6996ed8fd9abf0)), closes [#101](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/101) [#93](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/93) [#85](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/85) [#95](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/95) [#96](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/96) [#97](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/97) [#100](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/100)
+* **update_url:** update url ([#100](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/100)) ([f57dd15](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f57dd159be25248d6023f36baafbe74464d4e683))
+
 CHANGELOG
 =========
 
