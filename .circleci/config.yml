@@ -165,7 +165,7 @@ workflows:
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - prep_deploy
+            - test_superawesome_base
           filters:
             branches:
               only: master
