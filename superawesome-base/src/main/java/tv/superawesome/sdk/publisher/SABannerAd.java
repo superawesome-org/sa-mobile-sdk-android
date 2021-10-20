@@ -367,14 +367,10 @@ public class SABannerAd extends FrameLayout {
                     }
                     // and this is in case of click
                     case Web_Click: {
-
                         if (destination != null) {
-
                             Runnable runner = () -> click(destination);
-                            runner.run();
-                            // showParentalGateIfNeededWithCompletion(context, runner);
+                            showParentalGateIfNeededWithCompletion(context, runner);
                         }
-
                         break;
                     }
                     // this in case the script tag in moat loaded correctly
