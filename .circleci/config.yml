@@ -1,0 +1,234 @@
+version: 2.1
+references:
+  android_config: &android_config
+    docker:
+      - image: circleci/android:api-30
+    resource_class: medium
+    environment:
+      FL_OUTPUT_DIR: output
+      TERM: dumb
+      JAVA_TOOL_OPTIONS: "-Xmx2048m"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+
+  bootstrap: &bootstrap
+    run:
+      name: Bootstrap
+      command: |
+        git clone "${SA_CONTINUOUS_INTEGRATION_GIT_REPO_URL}" "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+        ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
+
+jobs:
+
+  ## Run unit tests
+  test_superawesome_base:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Lint Code
+          command: ./gradlew lint
+      - run:
+          name: Run unit tests for superawesome_base
+          command: bundle exec fastlane run_all_tests module:superawesome-base
+      - run:
+          name: Copy test results to temp folder
+          command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+      - store_test_results:
+          path: temp_files/test-results
+
+  semantic_release:
+    <<: *android_config
+    steps:
+      - checkout
+      - run:
+          name: Run semantic release
+          command: |
+            git clone "${SA_CONTINUOUS_INTEGRATION_GIT_REPO_URL}" "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh
+
+  #Await for all running builds to finish
+  prep_deploy:
+    <<: *android_config
+    steps:
+      - checkout
+      - run:
+          name: Preping deploy
+          command: echo "Preping deploy"
+
+  ## Run sdk push
+  sdk_push_superawesome:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Push Superawesome-All to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
+
+  sdk_push_superawesome_base:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Push Superawesome-Base to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
+
+  sdk_push_superawesome_admob:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Push Superawesome-AdMob to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
+
+  sdk_push_superawesome_moat:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Push Superawesome-Moat to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samoat modulePkgName:SuperAwesome-Moat
+
+  sdk_push_superawesome_mopub:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Push Superawesome-MoPub to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samopub modulePkgName:SuperAwesome-MoPub
+
+  sdk_push_superawesome_unity:
+    <<: *android_config
+    steps:
+      - checkout
+      - *bootstrap
+      - run:
+          name: Push Superawesome-Unity to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
+
+  publish_docs:
+    docker:
+      - image: circleci/ruby:2.4.1
+    working_directory: ~/repo
+    environment:
+      - JEKYLL_ENV: production
+      - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
+      - BUNDLE_PATH: ~/repo/docs/vendor/bundle
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - rubygems-v1
+      - run:
+          name: Bundle Install
+          command: |
+              cd ~/repo/docs
+              bundle check || bundle install
+      - save_cache:
+          key: rubygems-v1
+          paths:
+            - vendor/bundle
+      - run:
+          name: Publish Superawesome SDK to the website
+          command: |
+            cp ~/repo/docs/.circleci/circle_urls.sh ~/repo/docs/circle_urls.sh
+            cd ~/repo/docs
+            chmod u+x circle_urls.sh
+            bash circle_urls.sh
+            bundle exec jekyll build
+            zip -r _site _site/
+      - store_artifacts:
+          path: ~/repo/docs/_site.zip
+          destination: docsy-jekyll
+
+workflows:
+  version: 2.1
+  android_sdk_workflow:
+    jobs:
+      - test_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            tags:
+              ignore: /^v.*/
+      - prep_deploy:
+          context: MOBILE_ANDROID_APPS
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - semantic_release:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              only: master
+      - sdk_push_superawesome:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_admob:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_moat:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_mopub:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_unity:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - publish_docs:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - sdk_push_superawesome
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
