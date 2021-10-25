@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-common/Desktop.sa-mobile-sdk-android.superawesome-common.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-common/Desktop.sa-mobile-sdk-android.superawesome-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-unity/Desktop.sa-mobile-sdk-android.superawesome-unity.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-unity/Desktop.sa-mobile-sdk-android.superawesome-unity.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-common/mark.Desktop.sa-mobile-sdk-android.superawesome-common.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-common/mark.Desktop.sa-mobile-sdk-android.superawesome-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/superawesome-unity/mark.Desktop.sa-mobile-sdk-android.superawesome-unity.iml" filepath="$PROJECT_DIR$/.idea/modules/superawesome-unity/mark.Desktop.sa-mobile-sdk-android.superawesome-unity.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" filepath="$PROJECT_DIR$/.idea/modules/sa-mobile-sdk-android.iml" />
