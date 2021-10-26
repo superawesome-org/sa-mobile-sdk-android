@@ -417,6 +417,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
                 // create intent
                 Intent intent = new Intent(context, SAInterstitialAd.class);
                 intent.putExtra("ad", adL.writeToJson().toString());
+
                 // clear ad - meaning that it's been played
                 ads.remove(placementId);
 
