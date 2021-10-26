@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
                 bannerAd.load(placement.pid);
                 break;
               case INTERSTITIAL:
-                SAInterstitialAd.load(43694, MainActivity.this);
+                SAInterstitialAd.load(58166, 143306, 437339, MainActivity.this);
                 break;
 
               case VIDEO:
