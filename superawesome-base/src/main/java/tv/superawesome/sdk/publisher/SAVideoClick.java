@@ -82,7 +82,7 @@ public class SAVideoClick {
             // check for parental gate on click
             Runnable clickRunner = () -> click(context, destinationUrl);
             clickRunner.run();
-            // showParentalGateIfNeededWithCompletion(context, clickRunner);
+            showParentalGateIfNeededWithCompletion(context, clickRunner);
         }
     }
 
