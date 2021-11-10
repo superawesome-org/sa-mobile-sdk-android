@@ -67,6 +67,11 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
         webView.loadDataWithBaseURL(baseUrl, html, MIME_TYPE, ENCODING, HISTORY)
     }
 
+    fun load(placementId: Int, html: String) {
+        this.placementId = placementId
+        webView.loadDataWithBaseURL(session.baseUrl, html, MIME_TYPE, ENCODING, HISTORY)
+    }
+
     private fun formHTML(placementId: Int, baseUrl: String): String {
         val queryObject: JSONObject = loader.getAwesomeAdsQuery(session)
         val queryParams = queryObject.toQueryParams()

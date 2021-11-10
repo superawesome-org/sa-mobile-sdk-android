@@ -16,50 +16,51 @@ import tv.superawesome.lib.samodelspace.referral.SAReferral;
 /**
  * Main class that contains all the information needed to play an ad and send all relevant
  * events back to our ad server.
- *  - error (not really used)
- *  - advertiser, publisher, app, line item, campaign, placement IDs
- *  - campaign type (CPM or CPI)
- *  - moat - a float value that tells the SDK when to fire Moat tracking (if available); This value
- *    is compared to a randomly generated int between 0 and 1; if the int is less than the moat
- *    value, then the whole additional tracking happens
- *  - test, is fallback, is fill, is house, safe ad approved, show padlock - flags that determine
- *    whether the SDK should show the "Safe Ad Padlock" over an ad or not
- *  - device
- *  - a SACreative object
+ * - error (not really used)
+ * - advertiser, publisher, app, line item, campaign, placement IDs
+ * - campaign type (CPM or CPI)
+ * - moat - a float value that tells the SDK when to fire Moat tracking (if available); This value
+ * is compared to a randomly generated int between 0 and 1; if the int is less than the moat
+ * value, then the whole additional tracking happens
+ * - test, is fallback, is fill, is house, safe ad approved, show padlock - flags that determine
+ * whether the SDK should show the "Safe Ad Padlock" over an ad or not
+ * - device
+ * - a SACreative object
  */
 public class SAAd extends SABaseObject implements Parcelable {
 
     // member variables
-    public int            error             = 0;
-    public int            advertiserId      = 0;
-    public int            publisherId       = 0;
-    public int            appId             = 0;
-    public int            lineItemId        = 0;
-    public int            campaignId        = 0;
-    public int            placementId       = 0;
-    public int            configuration     = 0;
+    public int error = 0;
+    public int advertiserId = 0;
+    public int publisherId = 0;
+    public int appId = 0;
+    public int lineItemId = 0;
+    public int campaignId = 0;
+    public int placementId = 0;
+    public int configuration = 0;
 
-    public SACampaignType campaignType      = SACampaignType.CPM;
+    public SACampaignType campaignType = SACampaignType.CPM;
 
-    public double         moat              = 0.2;
+    public double moat = 0.2;
 
-    public boolean        isTest            = false;
-    public boolean        isFallback        = false;
-    public boolean        isFill            = false;
-    public boolean        isHouse           = false;
-    public boolean        isSafeAdApproved  = false;
-    public boolean        isPadlockVisible  = false;
+    public boolean isTest = false;
+    public boolean isFallback = false;
+    public boolean isFill = false;
+    public boolean isHouse = false;
+    public boolean isSafeAdApproved = false;
+    public boolean isPadlockVisible = false;
+    public boolean isVpaid = false;
 
-    public String         device            = null;
+    public String device = null;
 
-    public SACreative     creative          = new SACreative();
+    public SACreative creative = new SACreative();
 
-    public long           loadTime;
+    public long loadTime;
 
     /**
      * Basic constructor
      */
-    public SAAd () {
+    public SAAd() {
         loadTime = System.currentTimeMillis() / 1000L;
     }
 
@@ -68,7 +69,7 @@ public class SAAd extends SABaseObject implements Parcelable {
      *
      * @param json a valid JSON string
      */
-    public SAAd (String json) {
+    public SAAd(String json) {
         this();
         JSONObject jsonObject = SAJsonParser.newObject(json);
         readFromJson(jsonObject);
@@ -79,7 +80,7 @@ public class SAAd extends SABaseObject implements Parcelable {
      *
      * @param jsonObject a valid JSON object
      */
-    public SAAd (JSONObject jsonObject) {
+    public SAAd(JSONObject jsonObject) {
         this();
         readFromJson(jsonObject);
     }
@@ -91,7 +92,7 @@ public class SAAd extends SABaseObject implements Parcelable {
      * @param configuration configuration (STAGING or PRODUCTION) as an integer
      * @param json          a valid JSON string
      */
-    public SAAd (int placementId, int configuration, String json) {
+    public SAAd(int placementId, int configuration, String json) {
         this();
         this.placementId = placementId;
         this.configuration = configuration;
@@ -106,7 +107,7 @@ public class SAAd extends SABaseObject implements Parcelable {
      * @param configuration configuration (STAGING or PRODUCTION) as an integer
      * @param jsonObject    a valid JSON object
      */
-    public SAAd (int placementId, int configuration, JSONObject jsonObject) {
+    public SAAd(int placementId, int configuration, JSONObject jsonObject) {
         this();
         this.placementId = placementId;
         this.configuration = configuration;
@@ -159,13 +160,14 @@ public class SAAd extends SABaseObject implements Parcelable {
                 return creative.details.url != null && creative.details.media.html != null;
             }
             case video: {
-                return creative.details.vast != null &&
+                return (creative.details.vast != null &&
                         creative.details.media.url != null &&
                         creative.details.media.path != null &&
-                        creative.details.media.isDownloaded;
+                        creative.details.media.isDownloaded)
+                        || (this.isVpaid && isTagValid(creative));
             }
             case tag: {
-                return creative.details.tag != null && creative.details.media.html != null;
+                return isTagValid(creative);
             }
             case appwall: {
                 return creative.details.image != null &&
@@ -209,6 +211,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         isFallback = SAJsonParser.getBoolean(jsonObject, "is_fallback", isFallback);
         isFill = SAJsonParser.getBoolean(jsonObject, "is_fill", isFill);
         isHouse = SAJsonParser.getBoolean(jsonObject, "is_house", isHouse);
+        isVpaid = SAJsonParser.getBoolean(jsonObject, "is_vpaid", isVpaid);
         isSafeAdApproved = SAJsonParser.getBoolean(jsonObject, "safe_ad_approved", isSafeAdApproved);
         isPadlockVisible = SAJsonParser.getBoolean(jsonObject, "show_padlock", isPadlockVisible);
         device = SAJsonParser.getString(jsonObject, "device", device);
@@ -301,5 +304,9 @@ public class SAAd extends SABaseObject implements Parcelable {
         dest.writeString(device);
         dest.writeParcelable(creative, flags);
         dest.writeLong(loadTime);
+    }
+
+    private boolean isTagValid(SACreative creative) {
+        return creative.details.tag != null && creative.details.media.html != null;
     }
 }
