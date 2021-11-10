@@ -248,6 +248,7 @@ public class SAVideoAd {
             // try to start the activity
             if (adL.creative.format == SACreativeFormat.video && context != null) {
                 if (adL.isVpaid) {
+                    ads.remove(placementId);
                     SAManagedVideoAd.load(context, placementId, adL.creative.details.tag);
                 } else {
                     // setup eventing
