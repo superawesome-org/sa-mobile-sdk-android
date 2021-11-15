@@ -65,7 +65,7 @@ class SAManagedVideoAd: Activity() {
         fun load(context: Context, placementId: Int, html: String) {
             val intent = Intent(context, SAManagedVideoAd::class.java)
             intent.putExtra(PLACEMENT_ID_KEY, placementId)
-            intent.putExtra(HTML_KEY, placementId)
+            intent.putExtra(HTML_KEY, html)
             context.startActivity(intent)
         }
     }
