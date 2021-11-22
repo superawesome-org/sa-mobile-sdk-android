@@ -280,28 +280,33 @@ public class SALoader {
           {
             Context con = isDebug ? null : context;
             SAVASTParser parser = new SAVASTParser(con, executor, timeout);
-            parser.parseVAST(
-                ad.creative.details.vast,
-                    savastAd -> {
+            if(ad.isVpaid) {
+              ad.creative.details.media.html = SAProcessHTML.formatCreativeIntoTagHTML(ad);
+              localListener.saDidLoadAd(response);
+            } else {
+              parser.parseVAST(
+                      ad.creative.details.vast,
+                      savastAd -> {
 
-                      // copy the vast data
-                      ad.creative.details.media.vastAd = savastAd;
-                      // and the exact url to download
-                      ad.creative.details.media.url = savastAd.url;
-                      // download file
-                      SAFileDownloader downloader =
-                          new SAFileDownloader(context, executor, isDebug, timeout);
-                      downloader.downloadFileFrom(
-                          ad.creative.details.media.url,
-                              (success, key, playableDiskUrl) -> {
+                        // copy the vast data
+                        ad.creative.details.media.vastAd = savastAd;
+                        // and the exact url to download
+                        ad.creative.details.media.url = savastAd.url;
+                        // download file
+                        SAFileDownloader downloader =
+                                new SAFileDownloader(context, executor, isDebug, timeout);
+                        downloader.downloadFileFrom(
+                                ad.creative.details.media.url,
+                                (success, key, playableDiskUrl) -> {
 
-                                ad.creative.details.media.path = playableDiskUrl;
-                                ad.creative.details.media.isDownloaded = playableDiskUrl != null;
+                                  ad.creative.details.media.path = playableDiskUrl;
+                                  ad.creative.details.media.isDownloaded = playableDiskUrl != null;
 
-                                // finally respond with a response
-                                localListener.saDidLoadAd(response);
-                              });
-                    });
+                                  // finally respond with a response
+                                  localListener.saDidLoadAd(response);
+                                });
+                      });
+            }
             break;
           }
       }

@@ -24,6 +24,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <activity
+            android:name="tv.superawesome.sdk.publisher.managed.SAManagedVideoAd"
+            android:label="SAManagedInterstitialAd"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+        <activity
             android:name="tv.superawesome.lib.sabumperpage.SABumperPage"
             android:label="SABumperPage"
             android:configChanges="keyboardHidden|orientation|screenSize"

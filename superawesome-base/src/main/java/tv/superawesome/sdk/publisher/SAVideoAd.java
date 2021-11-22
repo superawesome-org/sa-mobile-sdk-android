@@ -19,6 +19,8 @@ import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.managed.SAManagedInterstitialAd;
+import tv.superawesome.sdk.publisher.managed.SAManagedVideoAd;
 
 public class SAVideoAd {
 
@@ -83,7 +85,8 @@ public class SAVideoAd {
                         // find out the real valid
                         boolean isValid = response.isValid();
                         SAAd first = isValid ? response.ads.get(0) : null;
-                        isValid = first != null && first.creative.details.media.isDownloaded;
+                        isValid = first != null
+                                && (first.creative.details.media.isDownloaded || first.isVpaid);
 
                         // put the correct value
                         if (isValid) {
@@ -244,37 +247,40 @@ public class SAVideoAd {
 
             // try to start the activity
             if (adL.creative.format == SACreativeFormat.video && context != null) {
+                if (adL.isVpaid) {
+                    ads.remove(placementId);
+                    SAManagedVideoAd.load(context, placementId, adL.creative.details.tag);
+                } else {
+                    // setup eventing
+                    SASession session = getNewSession(context);
+                    events.setAd(session, adL);
+                    if (!isMoatLimitingEnabled) {
+                        events.disableMoatLimiting();
+                    }
 
-                // setup eventing
-                SASession session = getNewSession(context);
-                events.setAd(session, adL);
-                if (!isMoatLimitingEnabled) {
-                    events.disableMoatLimiting();
+                    // create intent
+                    Intent intent = new Intent(context, SAVideoActivity.class);
+
+                    Config config = new Config(
+                            adL.isPadlockVisible,
+                            isParentalGateEnabled,
+                            isBumperPageEnabled || adL.creative.bumper,
+                            shouldShowSmallClickButton,
+                            isBackButtonEnabled,
+                            shouldAutomaticallyCloseAtEnd,
+                            shouldShowCloseButton,
+                            shouldShowCloseWarning,
+                            orientation);
+
+                    intent.putExtra("ad", adL);
+                    intent.putExtra("config", config);
+
+                    // clear ad - meaning that it's been played
+                    ads.remove(placementId);
+
+                    // start new activity
+                    context.startActivity(intent);
                 }
-
-                // create intent
-                Intent intent = new Intent(context, SAVideoActivity.class);
-
-                Config config = new Config(
-                        adL.isPadlockVisible,
-                        isParentalGateEnabled,
-                        isBumperPageEnabled || adL.creative.bumper,
-                        shouldShowSmallClickButton,
-                        isBackButtonEnabled,
-                        shouldAutomaticallyCloseAtEnd,
-                        shouldShowCloseButton,
-                        shouldShowCloseWarning,
-                        orientation);
-
-                intent.putExtra("ad", adL);
-                intent.putExtra("config", config);
-
-                // clear ad - meaning that it's been played
-                ads.remove(placementId);
-
-                // start new activity
-                context.startActivity(intent);
-
             } else {
                 if (listener != null) {
                     listener.onEvent(placementId, SAEvent.adFailedToShow);
