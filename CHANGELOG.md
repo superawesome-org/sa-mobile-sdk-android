@@ -1,3 +1,24 @@
+# [8.2.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.6...v8.2.0) (2021-11-22)
+
+
+### Bug Fixes
+
+* intent should pass html ([d53f488](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d53f488eef6c6b611959d09a0e5f8c6a28785048))
+* register activity ([dc4f430](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/dc4f43095ac3a1a7164384843213a684a250f936))
+* remove vpaid ad after it's been used ([11f7c31](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/11f7c31b334f531eb0538e74d7d531f9cf17931f))
+* set sa session back to normal ([e27a46a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e27a46afa818c4baa97cc33754448738e6d6fe1d))
+* set sa session back to normal ([8c50cf4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/8c50cf4567a5658beff034c701c9a7b4dc51663e))
+
+
+### Features
+
+* add vpaid support ([e6eec67](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e6eec67acfff669459eb66f4178bb2dc0e58ce81))
+
+
+### Reverts
+
+* Revert "Add in age check (#119)" ([f3042b1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f3042b105b07603e317140b5c7414dd162696617)), closes [#119](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/119)
+
 ## [8.1.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.1.3...v8.1.4) (2021-09-21)
 
 
