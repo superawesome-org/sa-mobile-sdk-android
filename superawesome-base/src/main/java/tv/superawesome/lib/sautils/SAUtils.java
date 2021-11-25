@@ -212,7 +212,6 @@ public class SAUtils {
      * @return    a random integer
      */
     public static int randomNumberBetween(int min, int max){
-
         return rand.nextInt(max - min + 1) + min;
     }
 

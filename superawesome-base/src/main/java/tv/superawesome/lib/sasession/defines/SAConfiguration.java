@@ -25,6 +25,13 @@ public enum SAConfiguration {
         this.value = value;
     }
 
+    public static SAConfiguration fromOrdinal(int ordinal){
+        if (ordinal < values().length){
+            return values()[ordinal];
+        }
+        return DEV;
+    }
+
     /**
      * Factory creation method from an integer value
      *
