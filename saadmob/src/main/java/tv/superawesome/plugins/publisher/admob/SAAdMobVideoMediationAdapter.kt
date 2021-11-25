@@ -43,8 +43,10 @@ class SAAdMobVideoMediationAdapter : Adapter() {
         }
     }
 
-    override fun loadRewardedAd(adConfiguration: MediationRewardedAdConfiguration,
-                                callback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>) {
+    override fun loadRewardedAd(
+        adConfiguration: MediationRewardedAdConfiguration,
+        callback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>
+    ) {
         rewardedAd = SAAdMobRewardedAd(adConfiguration, callback)
         rewardedAd?.load()
     }

@@ -49,37 +49,36 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
             (placementId, event) -> {
               switch (event) {
                 case adLoaded:
-                    loadedPlacementId = placementId;
-                    listener.onAdLoaded();
-                    break;
+                  loadedPlacementId = placementId;
+                  listener.onAdLoaded();
+                  break;
 
                 case adEmpty:
                 case adFailedToLoad:
-                    listener.onAdFailedToLoad(new AdError(AdRequest.ERROR_CODE_NO_FILL, "", ""));
-                    break;
+                  listener.onAdFailedToLoad(new AdError(AdRequest.ERROR_CODE_NO_FILL, "", ""));
+                  break;
 
                 case adAlreadyLoaded:
                 case adEnded:
                   break;
                 case adShown:
-                    listener.onAdOpened();
-                    break;
+                  listener.onAdOpened();
+                  break;
 
                 case adFailedToShow:
-                    listener.onAdFailedToLoad(
-                        new AdError(AdRequest.ERROR_CODE_INTERNAL_ERROR, "", ""));
+                  listener.onAdFailedToLoad(
+                      new AdError(AdRequest.ERROR_CODE_INTERNAL_ERROR, "", ""));
 
-                    break;
+                  break;
 
                 case adClicked:
-                    listener.onAdClicked();
-                    listener.onAdLeftApplication();
-                    break;
+                  listener.onAdClicked();
+                  listener.onAdLeftApplication();
+                  break;
 
                 case adClosed:
-                    listener.onAdClosed();
-                    break;
-
+                  listener.onAdClosed();
+                  break;
               }
             });
 
@@ -87,7 +86,7 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
       int placementId = Integer.parseInt(s);
       SAInterstitialAd.load(placementId, context);
     } catch (NumberFormatException e) {
-        listener.onAdFailedToLoad (new AdError( AdRequest.ERROR_CODE_INVALID_REQUEST,"",""));
+      listener.onAdFailedToLoad(new AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""));
     }
   }
 

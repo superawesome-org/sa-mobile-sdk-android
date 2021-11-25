@@ -13,8 +13,10 @@ import tv.superawesome.sdk.publisher.SAInterface
 import tv.superawesome.sdk.publisher.SAOrientation
 import tv.superawesome.sdk.publisher.SAVideoAd
 
-class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfiguration,
-                        private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>) : MediationRewardedAd, SAInterface {
+class SAAdMobRewardedAd(
+    private val adConfiguration: MediationRewardedAdConfiguration,
+    private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>
+) : MediationRewardedAd, SAInterface {
 
     private var rewardedAdCallback: MediationRewardedAdCallback? = null
     private var loadedPlacementId = 0
