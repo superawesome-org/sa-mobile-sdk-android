@@ -62,7 +62,7 @@ public class SAUnityInterstitialAd {
      */
     public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test) {
         SAInterstitialAd.setTestMode(test);
-        SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
+        SAInterstitialAd.setConfiguration(SAConfiguration.fromOrdinal(configuration));
         SAInterstitialAd.load(placementId, context);
     }
 
