@@ -6,6 +6,14 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/goToAdmobBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="go to ad mob"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ListView
         android:id="@+id/MyList"
         android:layout_width="0dp"

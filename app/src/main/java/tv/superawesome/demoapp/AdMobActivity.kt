@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Button
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.admanager.AdManagerAdRequest
-import com.google.android.gms.ads.admanager.AdManagerInterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardedAd
@@ -59,10 +58,10 @@ class AdMobActivity : Activity() {
         val bundle = SAAdMobExtras.extras()
             .setTestMode(false)
             .setOrientation(SAOrientation.PORTRAIT)
+           // .setConfiguration(SAConfiguration.DEV)
             .setParentalGate(true)
             .build()
-        AdManagerInterstitialAd.load(
-            this,
+        InterstitialAd.load(this,
             getString(R.string.admob_interstitial_ad_id),
             AdManagerAdRequest.Builder().addCustomEventExtrasBundle(
                 SAAdMobInterstitialCustomEvent::class.java, bundle

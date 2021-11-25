@@ -97,6 +97,8 @@ public class MainActivity extends Activity {
                 SAVideoAd.play(placementId, MainActivity.this);
               }
             });
+
+    findViewById(R.id.goToAdmobBtn).setOnClickListener(this::gotoAdMob);
   }
 
   public void gotoAdMob(View view) {
