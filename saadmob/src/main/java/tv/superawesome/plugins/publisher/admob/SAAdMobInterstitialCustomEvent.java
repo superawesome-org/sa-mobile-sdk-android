@@ -35,7 +35,7 @@ public class SAAdMobInterstitialCustomEvent implements CustomEventInterstitial {
     // set values
     if (bundle != null) {
       SAInterstitialAd.setConfiguration(
-          SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
+          SAConfiguration.fromOrdinal(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
       SAInterstitialAd.setTestMode(bundle.getBoolean(SAAdMobExtras.kKEY_TEST));
       SAInterstitialAd.setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE));
       SAInterstitialAd.setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE));

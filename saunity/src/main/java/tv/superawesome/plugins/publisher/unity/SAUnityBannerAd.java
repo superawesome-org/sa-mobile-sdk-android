@@ -59,7 +59,7 @@ public class SAUnityBannerAd {
     public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
-            bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
+            bannerAd.setConfiguration(SAConfiguration.fromOrdinal(configuration));
             bannerAd.setTestMode(test);
             bannerAd.load(placementId);
         }

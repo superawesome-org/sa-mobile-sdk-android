@@ -66,7 +66,7 @@ public class SAUnityVideoAd {
                                                       boolean test,
                                                       int playback) {
         SAVideoAd.setTestMode(test);
-        SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
+        SAVideoAd.setConfiguration(SAConfiguration.fromOrdinal(configuration));
         SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
         SAVideoAd.load(placementId, context);
     }
