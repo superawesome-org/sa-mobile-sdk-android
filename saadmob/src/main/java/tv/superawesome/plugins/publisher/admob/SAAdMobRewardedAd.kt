@@ -24,7 +24,7 @@ class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfigur
         val context = adConfiguration.context
 
         val mediationExtras = adConfiguration.mediationExtras
-        SAVideoAd.setConfiguration(SAConfiguration.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_CONFIGURATION)))
+        SAVideoAd.setConfiguration(SAConfiguration.fromOrdinal(mediationExtras.getInt(SAAdMobExtras.kKEY_CONFIGURATION)))
         SAVideoAd.setTestMode(mediationExtras.getBoolean(SAAdMobExtras.kKEY_TEST))
         SAVideoAd.setOrientation(SAOrientation.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
         SAVideoAd.setParentalGate(mediationExtras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))

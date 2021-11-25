@@ -56,7 +56,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
     if (bundle != null) {
       bannerAd.setTestMode(bundle.getBoolean(SAAdMobExtras.kKEY_TEST));
       bannerAd.setConfiguration(
-          SAConfiguration.fromValue(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
+          SAConfiguration.fromOrdinal(bundle.getInt(SAAdMobExtras.kKEY_CONFIGURATION)));
       bannerAd.setColor(bundle.getBoolean(SAAdMobExtras.kKEY_TRANSPARENT));
       bannerAd.setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE));
       bannerAd.setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE));
