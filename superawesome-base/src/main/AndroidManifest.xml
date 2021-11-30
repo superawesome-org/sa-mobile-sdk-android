@@ -7,18 +7,21 @@
         android:supportsRtl="true">
         <activity
             android:name="tv.superawesome.sdk.publisher.SAVideoActivity"
+            android:exported="false"
             android:label="SAFullscreenVideoAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <activity
             android:name="tv.superawesome.sdk.publisher.SAInterstitialAd"
+            android:exported="false"
             android:label="SAInterstitialAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <activity
             android:name="tv.superawesome.sdk.publisher.managed.SAManagedInterstitialAd"
+            android:exported="false"
             android:label="SAManagedInterstitialAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
@@ -31,14 +34,10 @@
 
         <activity
             android:name="tv.superawesome.lib.sabumperpage.SABumperPage"
+            android:exported="false"
             android:label="SABumperPage"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
             android:excludeFromRecents="true"/>
-
-<!--        <activity android:name="tv.superawesome.sdk.publisher.test.SingleTestActivity"-->
-<!--            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"-->
-<!--            android:screenOrientation="portrait"/>-->
-
     </application>
 </manifest>
