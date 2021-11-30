@@ -1,3 +1,10 @@
+## [8.2.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.0...v8.2.1) (2021-11-30)
+
+
+### Bug Fixes
+
+* **Manifest:** NOJIRA: Cleaned up Manifests and added exported property to activities. ([51c92a0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/51c92a0c1bfef184c494406a5a34b919690a91c2))
+
 CHANGELOG
 =========
 
