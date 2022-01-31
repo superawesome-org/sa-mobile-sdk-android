@@ -47,16 +47,15 @@ public class MainActivity extends Activity {
     final List<AdapterItem> data =
         Arrays.asList(
             new HeaderItem("Banners"),
-            new PlacementItem("Banner 300x250 (Tablet MPU)", 61296, Type.BANNER),
-            new PlacementItem("Banner 300x50 (Mobile Small Leaderboard)", 61294, Type.BANNER),
-            new PlacementItem("Banner 320x50 (Mobile Leaderboard)", 61297, Type.BANNER),
+            new PlacementItem("320x50 - Mobile Leaderboard", 78149, Type.BANNER),
             new HeaderItem("Interstitials"),
-            new PlacementItem("Insterstitial - Rich Media", 61295, Type.INTERSTITIAL),
-            new PlacementItem("Insterstitial - Static", 61298, Type.INTERSTITIAL),
+            new PlacementItem("Rich Media - Mobile Interstitial Portrait", 78150, Type.INTERSTITIAL),
+            new PlacementItem("Static - Mobile Interstitial Portrait", 61298, Type.INTERSTITIAL),
+            new HeaderItem("Videos"),
+            new PlacementItem("Video Direct", 44262, Type.VIDEO),
             new HeaderItem("KSF"),
             new PlacementItem("Insterstitial - Static", 61321, Type.INTERSTITIAL),
-            new PlacementItem("Insterstitial - Rich Media", 44262, Type.INTERSTITIAL),
-            new PlacementItem("Video", 61320, Type.VIDEO));
+            new PlacementItem("Insterstitial - Rich Media", 61320, Type.INTERSTITIAL));
     ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
     myList.setAdapter(adapter);
     adapter.updateData(data);
@@ -73,7 +72,7 @@ public class MainActivity extends Activity {
                 bannerAd.load(placement.pid);
                 break;
               case INTERSTITIAL:
-                SAInterstitialAd.load(58166, 143306, 437339, MainActivity.this);
+                SAInterstitialAd.load(placement.pid, MainActivity.this);
                 break;
 
               case VIDEO:
