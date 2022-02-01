@@ -47,12 +47,12 @@ public class MainActivity extends Activity {
     final List<AdapterItem> data =
         Arrays.asList(
             new HeaderItem("Banners"),
-            new PlacementItem("Mobile Leaderboard", 78149, Type.BANNER),
+            new PlacementItem("Mobile Leaderboard", 82088, Type.BANNER),
             new HeaderItem("Interstitials"),
-            new PlacementItem("Mobile Interstitial Portrait", 78150, Type.INTERSTITIAL),
+            new PlacementItem("Mobile Interstitial Portrait", 82089, Type.INTERSTITIAL),
             new PlacementItem("Interstitial via KSF", 82063, Type.INTERSTITIAL),
             new HeaderItem("Videos"),
-            new PlacementItem("Direct Video", 78148, Type.VIDEO),
+            new PlacementItem("Direct Video", 82090, Type.VIDEO),
             new PlacementItem("VPAID via KSF", 82064, Type.VIDEO));
     ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
     myList.setAdapter(adapter);
