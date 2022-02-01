@@ -47,15 +47,13 @@ public class MainActivity extends Activity {
     final List<AdapterItem> data =
         Arrays.asList(
             new HeaderItem("Banners"),
-            new PlacementItem("320x50 - Mobile Leaderboard", 78149, Type.BANNER),
+            new PlacementItem("Mobile Leaderboard", 78149, Type.BANNER),
             new HeaderItem("Interstitials"),
-            new PlacementItem("Rich Media - Mobile Interstitial Portrait", 78150, Type.INTERSTITIAL),
-            new PlacementItem("Static - Mobile Interstitial Portrait", 61298, Type.INTERSTITIAL),
+            new PlacementItem("Mobile Interstitial Portrait", 78150, Type.INTERSTITIAL),
+            new PlacementItem("Interstitial via KSF", 82063, Type.INTERSTITIAL),
             new HeaderItem("Videos"),
-            new PlacementItem("Video Direct", 44262, Type.VIDEO),
-            new HeaderItem("KSF"),
-            new PlacementItem("Insterstitial - Static", 61321, Type.INTERSTITIAL),
-            new PlacementItem("Insterstitial - Rich Media", 61320, Type.INTERSTITIAL));
+            new PlacementItem("Direct Video", 78148, Type.VIDEO),
+            new PlacementItem("VPAID via KSF", 82064, Type.VIDEO));
     ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
     myList.setAdapter(adapter);
     adapter.updateData(data);
@@ -76,7 +74,7 @@ public class MainActivity extends Activity {
                 break;
 
               case VIDEO:
-                SAVideoAd.load(44262, this);
+                SAVideoAd.load(placement.pid, this);
             }
           }
         });
