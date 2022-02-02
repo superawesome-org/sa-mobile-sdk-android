@@ -1,3 +1,10 @@
+## [8.2.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.3...v8.2.4) (2022-02-02)
+
+
+### Bug Fixes
+
+* generate token in semantic_release step ([16f8133](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/16f8133f1e5215a6cd97cbe76a3e228dc4055ea2))
+
 ## [8.2.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.2...v8.2.3) (2022-02-02)
 
 
