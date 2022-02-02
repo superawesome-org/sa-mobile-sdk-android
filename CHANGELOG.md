@@ -1,3 +1,10 @@
+## [8.2.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.2...v8.2.3) (2022-02-02)
+
+
+### Bug Fixes
+
+* use gha-token-generator and set GITHUB_TOKEN env var ([0bb5353](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/0bb5353628f17b6d42a1d7dbe716f5f1c49a64b3))
+
 ## [8.2.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.1...v8.2.2) (2022-02-02)
 
 
