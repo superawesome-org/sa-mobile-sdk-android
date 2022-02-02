@@ -1,3 +1,11 @@
+## [8.2.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.1...v8.2.2) (2022-02-02)
+
+
+### Bug Fixes
+
+* add KSF placements ([5536548](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/55365481f6d62a59e2d0e93e4d50c45bd522c5b1))
+* add working banner, video and interstitial placements. KSF placements TODO ([37574f6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/37574f6fd19637c88ab3839417e9a1c6ff6b2134))
+
 ## [8.2.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.0...v8.2.1) (2021-11-30)
 
 
