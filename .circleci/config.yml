@@ -10,11 +10,19 @@ references:
       JAVA_TOOL_OPTIONS: "-Xmx2048m"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 
+  generate_github_token: &generate_github_token
+    run:
+      name: Generate & store Github Token
+      command: |
+        curl -L https://github.com/SuperAwesomeLTD/gha-token-generator/releases/download/v1.0.3/gha-token-generator_1.0.3_Linux_x86_64.tar.gz | tar xz
+        GENERATED_APP_TOKEN=$( ./gha-token-generator -app-id ${SA_GITHUB_CIRCLECI_DOWNLOAD_TOOLS_APP_ID} -org-name SuperAwesomeLTD -pem-key ${SA_GITHUB_CIRCLECI_DOWNLOAD_TOOLS_APP_PEM} )
+        echo "export GITHUB_TOKEN=${GENERATED_APP_TOKEN}" >> $BASH_ENV
+
   bootstrap: &bootstrap
     run:
       name: Bootstrap
       command: |
-        git clone "${SA_CONTINUOUS_INTEGRATION_GIT_REPO_URL}" "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
 
 jobs:
@@ -24,6 +32,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *generate_github_token
       - *bootstrap
       - run:
           name: Lint Code
@@ -41,16 +50,11 @@ jobs:
     <<: *android_config
     steps:
       - checkout
-      - run:
-          name: Generate & store Github Token
-          command: |
-            curl -L https://github.com/SuperAwesomeLTD/gha-token-generator/releases/download/v1.0.3/gha-token-generator_1.0.3_Linux_x86_64.tar.gz | tar xz
-            GENERATED_APP_TOKEN=$( ./gha-token-generator -app-id ${SA_GITHUB_CIRCLECI_DOWNLOAD_TOOLS_APP_ID} -org-name SuperAwesomeLTD -pem-key ${SA_GITHUB_CIRCLECI_DOWNLOAD_TOOLS_APP_PEM} )
-            echo "export GITHUB_TOKEN=${GENERATED_APP_TOKEN}" >> $BASH_ENV
+      - *generate_github_token
       - run:
           name: Run semantic release
           command: |
-            git clone "${SA_CONTINUOUS_INTEGRATION_GIT_REPO_URL}" "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
             ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh
 
   #Await for all running builds to finish
@@ -67,6 +71,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *generate_github_token
       - *bootstrap
       - run:
           name: Push Superawesome-All to the S3 Repo
@@ -76,6 +81,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *generate_github_token
       - *bootstrap
       - run:
           name: Push Superawesome-Base to the S3 Repo
@@ -85,6 +91,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *generate_github_token
       - *bootstrap
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
@@ -94,6 +101,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *generate_github_token
       - *bootstrap
       - run:
           name: Push Superawesome-Moat to the S3 Repo
@@ -103,6 +111,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *generate_github_token
       - *bootstrap
       - run:
           name: Push Superawesome-MoPub to the S3 Repo
@@ -112,6 +121,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *generate_github_token
       - *bootstrap
       - run:
           name: Push Superawesome-Unity to the S3 Repo
