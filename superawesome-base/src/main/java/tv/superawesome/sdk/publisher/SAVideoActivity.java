@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -99,6 +100,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         chrome.setClickListener(view -> {
             videoClick.handleAdClick(view);
             listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
+            Log.d("VideoActivity.onCreate", "Event callback: " + SAEvent.adClicked.toString());
         });
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
 
@@ -166,6 +168,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adShown);
+            Log.d("SAVideoActivity.onPrep", "Event callback: " + SAEvent.adShown.toString());
         }
     }
 
