@@ -99,7 +99,9 @@ public class SAVideoAd {
 
                         // call listener(s)
                         if (listener != null) {
-                            listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                            SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
+                            listener.onEvent(placementId, eventToSend);
+                            Log.d("SAInterstitialAd.load", "Event callback: " + eventToSend.toString());
                         } else {
                             Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
@@ -175,7 +177,9 @@ public class SAVideoAd {
 
                         // call listener(s)
                         if (listener != null) {
-                            listener.onEvent(placementId, isValid ? SAEvent.adLoaded : SAEvent.adEmpty);
+                            SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
+                            listener.onEvent(placementId, eventToSend);
+                            Log.d("SAInterstitialAd.load", "Event callback: " + eventToSend.toString());
                         } else {
                             Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
