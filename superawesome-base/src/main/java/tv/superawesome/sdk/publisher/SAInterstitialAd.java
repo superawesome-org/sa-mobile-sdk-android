@@ -4,6 +4,7 @@
  */
 package tv.superawesome.sdk.publisher;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -187,6 +188,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
      * @param placementId   the Ad placement id to load data for
      * @param context       the current context
      */
+    @SuppressLint("LongLogTag")
     public static void load(final int placementId, Context context) {
 
         // very late init of the AwesomeAds SDK
@@ -257,7 +259,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                             listener.onEvent(placementId, eventToSend);
-                            Log.d("SAInterstitialAd.load", "Event callback: " + eventToSend.toString());
+                            Log.d("SAInterstitialAd.load.PL_ID", "Event callback: " + eventToSend.toString());
                         } else {
                             Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
@@ -284,6 +286,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
      * @param placementId   the Ad placement id to load data for
      * @param context       the current context
      */
+    @SuppressLint("LongLogTag")
     public static void load(final int placementId, final int lineItemId, final int creativeId, Context context) {
 
         // very late init of the AwesomeAds SDK
@@ -354,7 +357,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                             listener.onEvent(placementId, eventToSend);
-                            Log.d("SAInterstitialAd.load", "Event callback: " + eventToSend.toString());
+                            Log.d("SAInterstitialAd.load.ALL_IDs", "Event callback: " + eventToSend.toString());
                         } else {
                             Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
