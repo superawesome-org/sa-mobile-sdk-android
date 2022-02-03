@@ -62,7 +62,6 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
      *
      * @param savedInstanceState previous saved state
      */
-    @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +101,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         chrome.setClickListener(view -> {
             videoClick.handleAdClick(view);
             listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
-            Log.d("SAVideoActivity.onCreate", "Event callback: " + SAEvent.adClicked.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClicked.toString());
         });
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
 
@@ -163,7 +162,6 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     // VideoPlayer.VisibilityListener
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @SuppressLint("LongLogTag")
     @Override
     public void onPrepared(@NonNull IVideoPlayer videoPlayer, int time, int duration) {
 
@@ -171,7 +169,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adShown);
-            Log.d("SAVideoActivity.onPrepared", "Event callback: " + SAEvent.adShown.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown.toString());
         }
     }
 
@@ -180,7 +178,6 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         videoEvents.time(videoPlayer, time, duration);
     }
 
-    @SuppressLint("LongLogTag")
     @Override
     public void onComplete(@NonNull IVideoPlayer videoPlayer, int time, int duration) {
         completed = true;
@@ -189,7 +186,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
-            Log.d("SAVideoActivity.onComplete", "Event callback: " + SAEvent.adEnded.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded.toString());
         }
 
         if (config.shouldCloseAtEnd) {
@@ -242,7 +239,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         // call listener
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adClosed);
-            Log.d("SAVideoActivity.close", "Event callback: " + SAEvent.adClosed.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClosed.toString());
         }
 
         // close

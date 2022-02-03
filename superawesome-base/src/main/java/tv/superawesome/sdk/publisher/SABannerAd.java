@@ -164,7 +164,7 @@ public class SABannerAd extends FrameLayout {
                     if (listener != null) {
                         SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                         listener.onEvent(placementId, eventToSend);
-                        Log.d("SABannerAd.load.PL_ID", "Event callback: " + eventToSend.toString());
+                        Log.d("SABannerAd", "Event callback: " + eventToSend.toString());
                     } else {
                         Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                     }
@@ -232,7 +232,7 @@ public class SABannerAd extends FrameLayout {
                     if (listener != null) {
                         SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                         listener.onEvent(placementId, eventToSend);
-                        Log.d("SABannerAd.load.ALL_IDs", "Event callback: " + eventToSend.toString());
+                        Log.d("SABannerAd", "Event callback: " + eventToSend.toString());
                     } else {
                         Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                     }
@@ -302,7 +302,7 @@ public class SABannerAd extends FrameLayout {
                         // call listener
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adShown);
-                            Log.d("SABannerAd.play", "Event callback: " + SAEvent.adShown.toString());
+                            Log.d("SABannerAd", "Event callback: " + SAEvent.adShown.toString());
                         } else {
                             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
                         }
@@ -448,7 +448,7 @@ public class SABannerAd extends FrameLayout {
         // callback
         if (listener != null) {
             listener.onEvent(ad.placementId, SAEvent.adClicked);
-            Log.d("SABannerAd.handleUrl", "Event callback: " + SAEvent.adClicked.toString());
+            Log.d("SABannerAd", "Event callback: " + SAEvent.adClicked.toString());
         } else {
             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClicked");
         }
@@ -485,7 +485,7 @@ public class SABannerAd extends FrameLayout {
         // de-set public listener
         if (listener != null) {
             listener.onEvent(ad != null ? ad.placementId : 0, SAEvent.adClosed);
-            Log.d("SABannerAd.close", "Event callback: " + SAEvent.adClosed.toString());
+            Log.d("SABannerAd", "Event callback: " + SAEvent.adClosed.toString());
         } else {
             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClosed");
         }
