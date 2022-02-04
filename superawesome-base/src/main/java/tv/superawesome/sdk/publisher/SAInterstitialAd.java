@@ -4,6 +4,7 @@
  */
 package tv.superawesome.sdk.publisher;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -255,7 +256,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
 
                         // call listener
                         if (listener != null) {
-                            listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                            SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
+                            listener.onEvent(placementId, eventToSend);
+                            Log.d("SAInterstitialAd", "Event callback: " + eventToSend.toString());
                         } else {
                             Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
@@ -350,7 +353,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
 
                         // call listener
                         if (listener != null) {
-                            listener.onEvent(placementId, response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty);
+                            SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
+                            listener.onEvent(placementId, eventToSend);
+                            Log.d("SAInterstitialAd", "Event callback: " + eventToSend.toString());
                         } else {
                             Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
