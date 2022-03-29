@@ -50,10 +50,10 @@ public class MainActivity extends Activity {
             new PlacementItem("Mobile Leaderboard", 82088, Type.BANNER),
             new HeaderItem("Interstitials"),
             new PlacementItem("Mobile Interstitial Portrait", 82089, Type.INTERSTITIAL),
-            new PlacementItem("Interstitial via KSF", 82063, Type.INTERSTITIAL),
+            new PlacementItem("Interstitial via KSF", 84799, Type.INTERSTITIAL),
             new HeaderItem("Videos"),
             new PlacementItem("Direct Video", 82090, Type.VIDEO),
-            new PlacementItem("VPAID via KSF", 82064, Type.VIDEO));
+            new PlacementItem("VPAID via KSF", 84798, Type.VIDEO));
     ListAdapter<AdapterItem> adapter = new ListAdapter<>(this);
     myList.setAdapter(adapter);
     adapter.updateData(data);
