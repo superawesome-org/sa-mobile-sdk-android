@@ -215,12 +215,17 @@ public class SAAd extends SABaseObject implements Parcelable {
         isSafeAdApproved = SAJsonParser.getBoolean(jsonObject, "safe_ad_approved", isSafeAdApproved);
         isPadlockVisible = SAJsonParser.getBoolean(jsonObject, "show_padlock", isPadlockVisible);
         device = SAJsonParser.getString(jsonObject, "device", device);
+        String ksfRequest = SAJsonParser.getString(jsonObject, "ksfRequest", null);
 
         JSONObject creativeJson = SAJsonParser.getJsonObject(jsonObject, "creative", new JSONObject());
         creative = new SACreative(creativeJson);
         creative.referral = new SAReferral(configuration, campaignId, lineItemId, creative.id, placementId);
 
         loadTime = SAJsonParser.getLong(jsonObject, "loadTime", loadTime);
+
+        if (isPadlockVisible && ksfRequest != null && ksfRequest.length() > 0) {
+            isPadlockVisible = false;
+        }
     }
 
     /**
