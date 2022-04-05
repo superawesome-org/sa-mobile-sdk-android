@@ -103,7 +103,8 @@ public class SALoader {
           "startdelay", session.getStartDelay().getValue(),
           "instl", session.getInstl().getValue(),
           "w", session.getWidth(),
-          "h", session.getHeight()
+          "h", session.getHeight(),
+          "timestamp", System.currentTimeMillis() / 1000L
           // "preload", true
           );
     } catch (Exception e) {
