@@ -50,6 +50,9 @@ public class SALoader {
     this(context, Executors.newSingleThreadExecutor(), false, 15000, new SAClock());
   }
 
+  public SALoader(@NonNull Context context, SAClock clock) {
+    this(context, Executors.newSingleThreadExecutor(), false, 15000, clock);
+  }
   public SALoader(
           @NonNull Context context,
           @NonNull Executor executor,
