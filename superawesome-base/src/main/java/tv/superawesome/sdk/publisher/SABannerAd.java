@@ -26,6 +26,7 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
@@ -64,6 +65,8 @@ public class SABannerAd extends FrameLayout {
 
     private VisibilityListener visibilityListener = null;
 
+    // Utils
+    private final SAClock        clock;
 
     /**
      * Constructor with context
@@ -71,7 +74,7 @@ public class SABannerAd extends FrameLayout {
      * @param context current context (activity or fragment)
      */
     public SABannerAd(Context context) {
-        this(context, null, 0);
+        this(context, null, 0, new SAClock());
     }
 
     /**
@@ -81,7 +84,7 @@ public class SABannerAd extends FrameLayout {
      * @param attrs   new attribute set
      */
     public SABannerAd(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        this(context, attrs, 0, new SAClock());
     }
 
     /**
@@ -91,13 +94,16 @@ public class SABannerAd extends FrameLayout {
      * @param attrs         new attribute set
      * @param defStyleAttr  default style attribute
      */
-    public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr, SAClock clock) {
         super(context, attrs, defStyleAttr);
 
         // create the loader
         session = new SASession (context);
         loader = new SALoader(context);
         events = new SAEvents();
+
+        // Add the clock
+        this.clock = clock;
 
         // set default values
         setColor(SADefaults.defaultBgColor());
@@ -281,7 +287,7 @@ public class SABannerAd extends FrameLayout {
                                 .media
                                 .html
                                 .replace("_MOAT_", moatString)
-                                .replace("_TIMESTAMP_", Long.toString(System.currentTimeMillis() / 1000L));
+                                .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
                         if(moatString != null && !moatString.isEmpty()) {
                             events.triggerMoatAttemptEvent();
                         }

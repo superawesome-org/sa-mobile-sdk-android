@@ -19,6 +19,7 @@ import org.json.JSONObject
 import tv.superawesome.lib.saadloader.SALoader
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.lib.sasession.session.SASession
+import tv.superawesome.lib.sautils.SAClock
 import tv.superawesome.sdk.publisher.SADefaults
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterface
@@ -28,7 +29,11 @@ import java.net.URLEncoder
 @SuppressLint("AddJavascriptInterface")
 class SAManagedBannerAd
 @JvmOverloads
-constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attrs), WebViewJavaScriptInterface.Listener {
+constructor(
+        ctx: Context,
+        attrs: AttributeSet? = null,
+        val clock: SAClock = SAClock()
+): RelativeLayout(ctx, attrs), WebViewJavaScriptInterface.Listener {
 
     companion object {
         private const val MIME_TYPE = ""
@@ -72,7 +77,7 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
 
     fun load(placementId: Int, html: String) {
         this.placementId = placementId
-        val macroedHTML = html.replace("_TIMESTAMP_", (System.currentTimeMillis() / 1000L).toString())
+        val macroedHTML = html.replace("_TIMESTAMP_", clock.timestamp.toString())
         webView.loadDataWithBaseURL(session.baseUrl, macroedHTML, MIME_TYPE, ENCODING, HISTORY)
     }
 
