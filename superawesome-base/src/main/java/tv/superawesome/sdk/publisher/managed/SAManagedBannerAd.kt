@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.net.http.SslError
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
+import android.webkit.SslErrorHandler
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.RelativeLayout
 import org.json.JSONObject
 import tv.superawesome.lib.saadloader.SALoader
@@ -69,7 +72,8 @@ constructor(ctx: Context, attrs: AttributeSet? = null): RelativeLayout(ctx, attr
 
     fun load(placementId: Int, html: String) {
         this.placementId = placementId
-        webView.loadDataWithBaseURL(session.baseUrl, html, MIME_TYPE, ENCODING, HISTORY)
+        val macroedHTML = html.replace("_TIMESTAMP_", (System.currentTimeMillis() / 1000L).toString())
+        webView.loadDataWithBaseURL(session.baseUrl, macroedHTML, MIME_TYPE, ENCODING, HISTORY)
     }
 
     private fun formHTML(placementId: Int, baseUrl: String): String {
