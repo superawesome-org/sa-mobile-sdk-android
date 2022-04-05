@@ -276,7 +276,12 @@ public class SABannerAd extends FrameLayout {
 
                         // prepare moat tracking
                         String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
-                        String fullHTML = ad.creative.details.media.html.replace("_MOAT_", moatString);
+                        String fullHTML = ad.creative
+                                .details
+                                .media
+                                .html
+                                .replace("_MOAT_", moatString)
+                                .replace("_TIMESTAMP_", Long.toString(System.currentTimeMillis() / 1000L));
                         if(moatString != null && !moatString.isEmpty()) {
                             events.triggerMoatAttemptEvent();
                         }

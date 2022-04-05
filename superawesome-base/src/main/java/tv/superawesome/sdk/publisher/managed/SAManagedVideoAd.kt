@@ -41,6 +41,7 @@ class SAManagedVideoAd: Activity() {
 
     private val html by lazy {
         intent.getStringExtra(HTML_KEY)
+                .replace("_TIMESTAMP_", (System.currentTimeMillis() / 1000L).toString());
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
