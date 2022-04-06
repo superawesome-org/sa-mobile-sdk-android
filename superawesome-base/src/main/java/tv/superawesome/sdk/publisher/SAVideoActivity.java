@@ -4,7 +4,6 @@
  */
 package tv.superawesome.sdk.publisher;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -81,9 +80,15 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         // make sure direction is locked
         switch (config.orientation) {
-            case ANY: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED); break;
-            case PORTRAIT: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); break;
-            case LANDSCAPE: setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); break;
+            case ANY:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                break;
+            case PORTRAIT:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+            case LANDSCAPE:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                break;
         }
 
         int size = RelativeLayout.LayoutParams.MATCH_PARENT;
@@ -101,7 +106,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         chrome.setClickListener(view -> {
             videoClick.handleAdClick(view);
             listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClicked.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClicked);
         });
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
 
@@ -122,7 +127,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
         closeButton.setVisibility(View.GONE);
         float fp = SAUtils.getScaleFactor(this);
-        RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30* fp));
+        RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30 * fp));
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         closeButton.setLayoutParams(buttonLayout);
@@ -132,7 +137,14 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
             control.playAsync(this, fileUri);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        control.pause();
     }
 
     @Override
@@ -153,7 +165,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
      */
     @Override
     public void onBackPressed() {
-       if (config.isBackButtonEnabled) {
+        if (config.isBackButtonEnabled) {
             onCloseAction();
         }
     }
@@ -169,7 +181,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adShown);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown);
         }
     }
 
@@ -186,7 +198,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
         }
 
         if (config.shouldCloseAtEnd) {
@@ -210,7 +222,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void onCloseAction() {
-        if(config.shouldShowCloseWarning && !completed){
+        if (config.shouldShowCloseWarning && !completed) {
             control.pause();
             SACloseWarning.setListener(new SACloseWarning.Interface() {
                 @Override
@@ -239,7 +251,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         // call listener
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, SAEvent.adClosed);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClosed.toString());
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClosed);
         }
 
         // close
