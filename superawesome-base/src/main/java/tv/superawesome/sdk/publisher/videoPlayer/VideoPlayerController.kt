@@ -10,7 +10,7 @@ class VideoPlayerController :
     MediaPlayer(),
     IVideoPlayerController,
     OnPreparedListener,
-    MediaPlayer.OnErrorListener,
+    OnErrorListener,
     OnCompletionListener,
     OnSeekCompleteListener {
     private var listener: IVideoPlayerController.Listener? = null
@@ -35,6 +35,16 @@ class VideoPlayerController :
         } catch (e: Exception) {
             listener?.onError(this, e, 0, 0)
         }
+    }
+
+    override fun start() {
+        super.start()
+        createTimer()
+    }
+
+    override fun pause() {
+        super.pause()
+        removeTimer()
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,9 +78,7 @@ class VideoPlayerController :
         /*
          * re-create timer if it has been destroyed
          */
-        if (countDownTimer == null) {
-            createTimer()
-        }
+        createTimer()
         super.seekTo(position)
     }
 
