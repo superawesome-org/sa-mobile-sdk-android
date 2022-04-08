@@ -18,6 +18,7 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAUtils;
 
 public class TestSAAdLoader_GetAwesomeAdsQuery {
@@ -27,6 +28,7 @@ public class TestSAAdLoader_GetAwesomeAdsQuery {
         // given
         Context context = mock(Context.class);
         SASession session = mock(SASession.class);
+        SAClock clockMock = mock(SAClock.class);
 
         // when
         when(session.getTestMode()).thenReturn(true);
@@ -45,14 +47,15 @@ public class TestSAAdLoader_GetAwesomeAdsQuery {
         when(session.getInstl()).thenReturn(SARTBInstl.FULLSCREEN);
         when(session.getWidth()).thenReturn(320);
         when(session.getHeight()).thenReturn(240);
+        when(clockMock.getTimestamp()).thenReturn(123L);
 
-        SALoader loader = new SALoader(context);
+        SALoader loader = new SALoader(context, clockMock);
 
         // then
         JSONObject query = loader.getAwesomeAdsQuery(session);
 
         assertNotNull(query);
-        assertEquals(16, query.length());
+        assertEquals(17, query.length());
 
         assertNotNull(query.opt("test"));
         assertEquals(true, query.opt("test"));
@@ -101,15 +104,21 @@ public class TestSAAdLoader_GetAwesomeAdsQuery {
 
         assertNotNull(query.opt("h"));
         assertEquals(240, query.opt("h"));
+
+        assertNotNull(query.opt("timestamp"));
+        assertEquals(123L, query.opt("timestamp"));
     }
 
     @Test
     public void test_SAAdLoader_GetAwesomeAdsQuery_WithNullSession () {
         // given
         SASession session = null;
+        SAClock clockMock = mock(SAClock.class);
 
         // when
-        SALoader loader = new SALoader(null);
+
+        when(clockMock.getTimestamp()).thenReturn(123L);
+        SALoader loader = new SALoader(null, clockMock);
 
         // then
         JSONObject query = loader.getAwesomeAdsQuery(session);
@@ -125,5 +134,6 @@ public class TestSAAdLoader_GetAwesomeAdsQuery {
         assertNull(query.opt("ct"));
         assertNull(query.opt("lang"));
         assertNull(query.opt("device"));
+        assertNull(query.opt("timestamp"));
     }
 }
