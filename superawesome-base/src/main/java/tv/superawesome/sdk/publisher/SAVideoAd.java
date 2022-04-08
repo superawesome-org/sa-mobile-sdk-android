@@ -19,34 +19,34 @@ import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.publisher.managed.SAManagedInterstitialAd;
-import tv.superawesome.sdk.publisher.managed.SAManagedVideoAd;
+import tv.superawesome.sdk.publisher.managed.SAManagedAdActivity;
 
 public class SAVideoAd {
 
     // private vars w/ a public interface
     private static final SAEvents events = new SAEvents();
     public static final HashMap<Integer, Object> ads = new HashMap<>();
-    private static SAInterface listener = (placementId, event) -> {};
+    private static SAInterface listener = (placementId, event) -> {
+    };
 
-    private static boolean shouldShowCloseWarning           = SADefaults.defaultCloseWarning();
-    private static boolean isParentalGateEnabled            = SADefaults.defaultParentalGate();
-    private static boolean isBumperPageEnabled              = SADefaults.defaultBumperPage();
-    private static boolean shouldShowCloseButton            = SADefaults.defaultCloseButton();
-    private static boolean shouldAutomaticallyCloseAtEnd    = SADefaults.defaultCloseAtEnd();
-    private static boolean shouldShowSmallClickButton       = SADefaults.defaultSmallClick();
-    private static boolean isTestingEnabled                 = SADefaults.defaultTestMode();
-    private static boolean isBackButtonEnabled              = SADefaults.defaultBackButton();
-    private static boolean isMoatLimitingEnabled            = SADefaults.defaultMoatLimitingState();
-    private static SAOrientation orientation                = SADefaults.defaultOrientation();
-    private static SAConfiguration configuration            = SADefaults.defaultConfiguration();
-    private static SARTBStartDelay playback                 = SADefaults.defaultPlaybackMode();
+    private static boolean shouldShowCloseWarning = SADefaults.defaultCloseWarning();
+    private static boolean isParentalGateEnabled = SADefaults.defaultParentalGate();
+    private static boolean isBumperPageEnabled = SADefaults.defaultBumperPage();
+    private static boolean shouldShowCloseButton = SADefaults.defaultCloseButton();
+    private static boolean shouldAutomaticallyCloseAtEnd = SADefaults.defaultCloseAtEnd();
+    private static boolean shouldShowSmallClickButton = SADefaults.defaultSmallClick();
+    private static boolean isTestingEnabled = SADefaults.defaultTestMode();
+    private static boolean isBackButtonEnabled = SADefaults.defaultBackButton();
+    private static boolean isMoatLimitingEnabled = SADefaults.defaultMoatLimitingState();
+    private static SAOrientation orientation = SADefaults.defaultOrientation();
+    private static SAConfiguration configuration = SADefaults.defaultConfiguration();
+    private static SARTBStartDelay playback = SADefaults.defaultPlaybackMode();
 
-    public static void load (final int placementId, final Context context) {
+    public static void load(final int placementId, final Context context) {
 
         // very late init of the AwesomeAds SDK
         try {
-            AwesomeAds.init(((Activity)context).getApplication(), false);
+            AwesomeAds.init(((Activity) context).getApplication(), false);
         } catch (Exception e) {
             Log.d("SuperAwesome", "Error initing AwesomeAds in SAVideoActivity " + e.getMessage());
         }
@@ -101,7 +101,7 @@ public class SAVideoAd {
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                             listener.onEvent(placementId, eventToSend);
-                            Log.d("SAVideoAd", "Event callback: " + eventToSend.toString());
+                            Log.d("SAVideoAd", "Event callback: " + eventToSend);
                         } else {
                             Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
@@ -121,11 +121,11 @@ public class SAVideoAd {
         }
     }
 
-    public static void load (final int placementId,final int lineItemId, final int creativeId, final Context context) {
+    public static void load(final int placementId, final int lineItemId, final int creativeId, final Context context) {
 
         // very late init of the AwesomeAds SDK
         try {
-            AwesomeAds.init(((Activity)context).getApplication(), false);
+            AwesomeAds.init(((Activity) context).getApplication(), false);
         } catch (Exception e) {
             Log.d("SuperAwesome", "Error initing AwesomeAds in SAVideoActivity " + e.getMessage());
         }
@@ -179,7 +179,7 @@ public class SAVideoAd {
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                             listener.onEvent(placementId, eventToSend);
-                            Log.d("SAVideoAd", "Event callback: " + eventToSend.toString());
+                            Log.d("SAVideoAd", "Event callback: " + eventToSend);
                         } else {
                             Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
@@ -200,7 +200,7 @@ public class SAVideoAd {
     }
 
     private static SASession getNewSession(Context context) {
-        SASession session = new SASession (context);
+        SASession session = new SASession(context);
         session.setTestMode(isTestingEnabled);
         session.setConfiguration(configuration);
         session.setPos(SARTBPosition.FULLSCREEN);
@@ -220,12 +220,12 @@ public class SAVideoAd {
         return session;
     }
 
-    public static boolean hasAdAvailable (int placementId) {
+    public static boolean hasAdAvailable(int placementId) {
         Object object = ads.get(placementId);
         return object instanceof SAAd;
     }
 
-    public static SAAd getAd (int placementId) {
+    public static SAAd getAd(int placementId) {
         if (ads.containsKey(placementId)) {
             Object object = ads.get(placementId);
             if (object instanceof SAAd) {
@@ -238,7 +238,7 @@ public class SAVideoAd {
         }
     }
 
-    public static void play (final int placementId, final Context context) {
+    public static void play(final int placementId, final Context context) {
 
         // get the generic Object
         Object generic = ads.get(placementId);
@@ -253,7 +253,8 @@ public class SAVideoAd {
             if (adL.creative.format == SACreativeFormat.video && context != null) {
                 if (adL.isVpaid) {
                     ads.remove(placementId);
-                    SAManagedVideoAd.load(context, placementId, adL.creative.details.tag);
+                    Intent intent = SAManagedAdActivity.newInstance(context, placementId, adL.creative.details.tag);
+                    context.startActivity(intent);
                 } else {
                     // setup eventing
                     SASession session = getNewSession(context);
@@ -292,8 +293,7 @@ public class SAVideoAd {
                     Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToShow");
                 }
             }
-        }
-        else {
+        } else {
             if (listener != null) {
                 listener.onEvent(placementId, SAEvent.adFailedToShow);
             } else {
@@ -302,7 +302,7 @@ public class SAVideoAd {
         }
     }
 
-    public static void setAd (SAAd ad) {
+    public static void setAd(SAAd ad) {
         if (ad != null && ad.isValid()) {
             ads.put(ad.placementId, ad);
         }
@@ -320,71 +320,71 @@ public class SAVideoAd {
         listener = value; // != null ? value : listener;
     }
 
-    public static void enableParentalGate () {
+    public static void enableParentalGate() {
         setParentalGate(true);
     }
 
-    public static void disableParentalGate () {
+    public static void disableParentalGate() {
         setParentalGate(false);
     }
 
-    public static void enableBumperPage () {
+    public static void enableBumperPage() {
         setBumperPage(true);
     }
 
-    public static void disableBumperPage () {
+    public static void disableBumperPage() {
         setBumperPage(false);
     }
 
-    public static void enableTestMode () {
+    public static void enableTestMode() {
         setTestMode(true);
     }
 
-    public static void disableTestMode () {
+    public static void disableTestMode() {
         setTestMode(false);
     }
 
-    public static void setConfigurationProduction () {
+    public static void setConfigurationProduction() {
         setConfiguration(SAConfiguration.PRODUCTION);
     }
 
-    public static void setConfigurationStaging () {
+    public static void setConfigurationStaging() {
         setConfiguration(SAConfiguration.STAGING);
     }
 
-    public static void setConfigurationDev () {
+    public static void setConfigurationDev() {
         setConfiguration(SAConfiguration.DEV);
     }
 
-    public static void setOrientationAny () {
+    public static void setOrientationAny() {
         setOrientation(SAOrientation.ANY);
     }
 
-    public static void setOrientationPortrait () {
+    public static void setOrientationPortrait() {
         setOrientation(SAOrientation.PORTRAIT);
     }
 
-    public static void setOrientationLandscape () {
+    public static void setOrientationLandscape() {
         setOrientation(SAOrientation.LANDSCAPE);
     }
 
-    public static void setPlaybackMode (SARTBStartDelay mode) {
+    public static void setPlaybackMode(SARTBStartDelay mode) {
         playback = mode;
     }
 
-    public static void enableBackButton () {
+    public static void enableBackButton() {
         setBackButton(true);
     }
 
-    public static void disableBackButton () {
+    public static void disableBackButton() {
         setBackButton(false);
     }
 
-    public static void enableCloseButton () {
+    public static void enableCloseButton() {
         setCloseButton(true);
     }
 
-    public static void disableCloseButton () {
+    public static void disableCloseButton() {
         setCloseButton(false);
     }
 
@@ -393,93 +393,95 @@ public class SAVideoAd {
         setCloseButtonWarning(true);
     }
 
-    public static void enableCloseAtEnd () {
+    public static void enableCloseAtEnd() {
         setCloseAtEnd(true);
     }
 
-    public static void disableCloseAtEnd () {
+    public static void disableCloseAtEnd() {
         setCloseAtEnd(false);
     }
 
-    public static void enableSmallClickButton () {
+    public static void enableSmallClickButton() {
         setSmallClick(true);
     }
 
-    public static void disableSmallClickButton () {
+    public static void disableSmallClickButton() {
         setSmallClick(false);
     }
 
-    public static SAInterface getListener () {
+    public static SAInterface getListener() {
         return listener;
     }
 
-    public  static boolean getIsTestEnabled () {
+    public static boolean getIsTestEnabled() {
         return isTestingEnabled;
     }
 
-    public  static boolean getIsParentalGateEnabled () {
+    public static boolean getIsParentalGateEnabled() {
         return isParentalGateEnabled;
     }
 
-    public  static boolean getIsBumperPageEnabled () {
+    public static boolean getIsBumperPageEnabled() {
         return isBumperPageEnabled;
     }
 
-    public  static boolean getShouldShowCloseButton () {
+    public static boolean getShouldShowCloseButton() {
         return shouldShowCloseButton;
     }
 
-    public  static SARTBStartDelay getPlaybackMode () {
+    public static SARTBStartDelay getPlaybackMode() {
         return playback;
     }
 
-    public  static boolean getShouldAutomaticallyCloseAtEnd () {
+    public static boolean getShouldAutomaticallyCloseAtEnd() {
         return shouldAutomaticallyCloseAtEnd;
     }
 
-    public  static boolean getMoatLimitingState () { return isMoatLimitingEnabled; }
+    public static boolean getMoatLimitingState() {
+        return isMoatLimitingEnabled;
+    }
 
-    public  static boolean getShouldShowSmallClickButton () {
+    public static boolean getShouldShowSmallClickButton() {
         return shouldShowSmallClickButton;
     }
 
-    public  static SAOrientation getOrientation () {
+    public static SAOrientation getOrientation() {
         return orientation;
     }
 
-    public  static SAConfiguration getConfiguration () {
+    public static SAConfiguration getConfiguration() {
         return configuration;
     }
 
-    public  static boolean getIsBackButtonEnabled () {
+    public static boolean getIsBackButtonEnabled() {
         return isBackButtonEnabled;
     }
 
-    public static void setParentalGate (boolean value) {
+    public static void setParentalGate(boolean value) {
         isParentalGateEnabled = value;
     }
 
-    public static void setBumperPage (boolean value) {
+    public static void setBumperPage(boolean value) {
         isBumperPageEnabled = value;
     }
 
-    public static void setTestMode (boolean value) {
+    public static void setTestMode(boolean value) {
         isTestingEnabled = value;
     }
 
-    public static void setConfiguration (SAConfiguration value) {
+    public static void setConfiguration(SAConfiguration value) {
         configuration = value;
     }
 
-    public static void setOrientation (SAOrientation value) {
+    public static void setOrientation(SAOrientation value) {
         orientation = value;
     }
 
-    public static void setBackButton (boolean value) {
+    public static void setBackButton(boolean value) {
         isBackButtonEnabled = value;
     }
 
-    public static void setCloseButton (boolean value) {
+    public static void setCloseButton(boolean value) {
         shouldShowCloseButton = value;
     }
 
@@ -487,15 +489,15 @@ public class SAVideoAd {
         shouldShowCloseWarning = value;
     }
 
-    public static void setCloseAtEnd (boolean value) {
+    public static void setCloseAtEnd(boolean value) {
         shouldAutomaticallyCloseAtEnd = value;
     }
 
-    public static void setSmallClick (boolean value) {
+    public static void setSmallClick(boolean value) {
         shouldShowSmallClickButton = value;
     }
 
-    public static void disableMoatLimiting () {
+    public static void disableMoatLimiting() {
         isMoatLimitingEnabled = false;
     }
 

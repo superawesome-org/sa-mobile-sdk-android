@@ -7,37 +7,30 @@
         android:supportsRtl="true">
         <activity
             android:name="tv.superawesome.sdk.publisher.SAVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="SAFullscreenVideoAd"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
         <activity
             android:name="tv.superawesome.sdk.publisher.SAInterstitialAd"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="SAInterstitialAd"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
         <activity
-            android:name="tv.superawesome.sdk.publisher.managed.SAManagedInterstitialAd"
-            android:exported="false"
+            android:name="tv.superawesome.sdk.publisher.managed.SAManagedAdActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="SAManagedInterstitialAd"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-
-        <activity
-            android:name="tv.superawesome.sdk.publisher.managed.SAManagedVideoAd"
-            android:label="SAManagedInterstitialAd"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
         <activity
             android:name="tv.superawesome.lib.sabumperpage.SABumperPage"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
             android:exported="false"
             android:label="SABumperPage"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"
-            android:excludeFromRecents="true"/>
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
     </application>
 </manifest>
