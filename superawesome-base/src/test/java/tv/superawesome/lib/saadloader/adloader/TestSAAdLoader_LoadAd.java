@@ -31,6 +31,7 @@ import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.samodelspace.saad.SADetails;
 import tv.superawesome.lib.samodelspace.saad.SAMedia;
 import tv.superawesome.lib.sasession.session.ISASession;
+import tv.superawesome.lib.sautils.SAClock;
 
 /**
  * Created by gabriel.coman on 03/05/2018.
@@ -61,9 +62,10 @@ public class TestSAAdLoader_LoadAd {
     public void test_SAAdLoader_LoadAd_WithBannerCPMAd () {
         // given
         Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
 
         // when
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(1000, session, response -> {
@@ -120,9 +122,10 @@ public class TestSAAdLoader_LoadAd {
     public void test_SAAdLoader_LoadAd_WithBannerCPIAd () {
         // given
         Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
 
         // when
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(1001, session, response -> {
@@ -181,6 +184,7 @@ public class TestSAAdLoader_LoadAd {
         Context context = mock(Context.class);
         SharedPreferences prefs = mock(SharedPreferences.class);
         SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
+        SAClock clockMock = mock(SAClock.class);
 
         final FileOutputStream outputStream = new FileOutputStream("diskfile.png");
 
@@ -191,7 +195,7 @@ public class TestSAAdLoader_LoadAd {
         when(editor.commit()).thenReturn(true);
         when(context.openFileOutput(anyString(), anyInt())).thenReturn(outputStream);
 
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(1002, session, response -> {
@@ -257,9 +261,9 @@ public class TestSAAdLoader_LoadAd {
     public void test_SAAdLoader_LoadAd_WithVideoAdResponseButNoVASTTagResponse () {
         // given
         Context context = mock(Context.class);
-
+        SAClock clockMock = mock(SAClock.class);
         // when
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(1005, session, response -> {
@@ -284,9 +288,10 @@ public class TestSAAdLoader_LoadAd {
     public void test_SAAdLoader_LoadAd_WithVideoAdResponseAndVASTResponseButNoVideoResource () {
         // given
         Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
 
         // when
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(1006, session, response -> {
@@ -311,9 +316,10 @@ public class TestSAAdLoader_LoadAd {
     public void test_SAAdLoader_LoadAd_WithEmptyAd () {
         // given
         Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
 
         // when
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(1003, session, response -> {
@@ -338,9 +344,10 @@ public class TestSAAdLoader_LoadAd {
     public void test_SAAdLoader_LoadAd_WithMalformedResponse () {
         // given
         Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
 
         // when
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(1004, session, response -> {
@@ -365,9 +372,10 @@ public class TestSAAdLoader_LoadAd {
     public void test_SAAdLoader_LoadAd_WithTimeoutResponse () {
         // given
         Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
 
         // when
-        SALoader loader = new SALoader(context, executor, true, 1000);
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
         loader.loadAd(50000, session, response -> {
