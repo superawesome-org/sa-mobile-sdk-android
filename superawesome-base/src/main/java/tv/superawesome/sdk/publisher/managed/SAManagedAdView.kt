@@ -6,25 +6,21 @@ import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup
-import android.webkit.JavascriptInterface
-import android.webkit.SslErrorHandler
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.RelativeLayout
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.lib.sasession.session.SASession
 import tv.superawesome.lib.sautils.SAClock
 import tv.superawesome.sdk.publisher.SADefaults
 
-
 @SuppressLint("AddJavascriptInterface")
 class SAManagedAdView
 @JvmOverloads
 constructor(
-        ctx: Context,
-        attrs: AttributeSet? = null,
-        val clock: SAClock = SAClock()
-): RelativeLayout(ctx, attrs), WebViewJavaScriptInterface.Listener {
+    ctx: Context,
+    attrs: AttributeSet? = null,
+    private val clock: SAClock = SAClock()
+) : RelativeLayout(ctx, attrs) {
 
     companion object {
         private const val MIME_TYPE = ""
@@ -34,7 +30,6 @@ constructor(
     }
 
     private val bannerBackgroundColor: Int = Color.rgb(224, 224, 224)
-
     private var session: SASession = SASession(ctx)
     private var placementId: Int = 0
     private var isParentalGateEnabled: Boolean = false
@@ -59,15 +54,8 @@ constructor(
         this.placementId = placementId
         webView.removeJavascriptInterface(JS_BRIDGE_NAME)
         webView.addJavascriptInterface(AdViewJavaScriptBridge(listener), JS_BRIDGE_NAME)
-        webView.loadDataWithBaseURL(session.baseUrl, html, MIME_TYPE, ENCODING, HISTORY)
-        val html = formHTML(placementId = placementId, baseUrl = baseUrl)
-        webView.loadDataWithBaseURL(baseUrl, html, MIME_TYPE, ENCODING, HISTORY)
-    }
-
-    fun load(placementId: Int, html: String) {
-        this.placementId = placementId
-        val macroedHTML = html.replace("_TIMESTAMP_", clock.timestamp.toString())
-        webView.loadDataWithBaseURL(session.baseUrl, macroedHTML, MIME_TYPE, ENCODING, HISTORY)
+        val updatedHTML = html.replace("_TIMESTAMP_", clock.timestamp.toString())
+        webView.loadDataWithBaseURL(session.baseUrl, updatedHTML, MIME_TYPE, ENCODING, HISTORY)
     }
 
     fun setColor(value: Boolean) {
