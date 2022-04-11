@@ -1,7 +1,6 @@
 include ':samoat'
 include ':app'
 include ':saunity'
-include ':samopub'
 include ':saadmob'
 include ':superawesome'
 include ':superawesome-base'
