@@ -1,3 +1,16 @@
+# [8.3.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.4...v8.3.0) (2022-04-11)
+
+
+### Bug Fixes
+
+* ad sounds continue to play even after minimising the app. Now, it is paused/resumed after the minimising. ([#145](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/145)) ([281d669](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/281d669566eb4c123f494dee82f1528526c332dc))
+* safe af logo appearing multiple times when KSF ad is loaded ([#143](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/143)) ([9e55ef4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/9e55ef4cbe36598491df03b5484f6b25843a005d))
+
+
+### Features
+
+* add timestamp ([#144](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/144)) ([e6d6ae1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e6d6ae158d96d80b582cbbd5bc4ae64cc5c3bc1c))
+
 ## [8.2.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.3...v8.2.4) (2022-02-02)
 
 
