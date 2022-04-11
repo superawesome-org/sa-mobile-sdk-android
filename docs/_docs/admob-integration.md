@@ -24,7 +24,7 @@ dependencies {
     # add the Android Publisher SDK
     compile 'tv.superawesome.sdk.publisher:superawesome:{{ site.latest_version }}'
 
-    # add MoPub plugin
+    # add AdMob plugin
     compile 'tv.superawesome.sdk.publisher:saadmob:{{ site.latest_version }}'
 }
 {% endhighlight %}
