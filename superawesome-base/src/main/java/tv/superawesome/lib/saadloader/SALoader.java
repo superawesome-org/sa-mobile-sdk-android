@@ -24,6 +24,7 @@ import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.savastparser.SAVASTParser;
 
 /**
@@ -41,18 +42,29 @@ public class SALoader {
   // private context
   private final @NonNull Executor executor;
   private final @NonNull Context context;
+  private final @NonNull SAClock clock;
   private final boolean isDebug;
   private final int timeout;
 
   public SALoader(@NonNull Context context) {
-    this(context, Executors.newSingleThreadExecutor(), false, 15000);
+    this(context, Executors.newSingleThreadExecutor(), false, 15000, new SAClock());
   }
 
-  public SALoader(@NonNull Context context, @NonNull Executor executor, boolean isDebug, int timeout) {
+  public SALoader(@NonNull Context context, SAClock clock) {
+    this(context, Executors.newSingleThreadExecutor(), false, 15000, clock);
+  }
+  public SALoader(
+          @NonNull Context context,
+          @NonNull Executor executor,
+          boolean isDebug,
+          int timeout,
+          SAClock clock
+  ) {
     this.context = context;
     this.executor = executor;
     this.timeout = timeout;
     this.isDebug = isDebug;
+    this.clock = clock;
   }
 
   public String getAwesomeAdsEndpoint(ISASession session, int placementId) {
@@ -103,7 +115,8 @@ public class SALoader {
           "startdelay", session.getStartDelay().getValue(),
           "instl", session.getInstl().getValue(),
           "w", session.getWidth(),
-          "h", session.getHeight()
+          "h", session.getHeight(),
+          "timestamp", clock.getTimestamp()
           // "preload", true
           );
     } catch (Exception e) {
@@ -312,4 +325,5 @@ public class SALoader {
       }
     }
   }
+
 }
