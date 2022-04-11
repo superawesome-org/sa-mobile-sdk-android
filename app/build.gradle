@@ -36,11 +36,6 @@ repositories {
 dependencies {
     implementation project(':superawesome')
     implementation project(':saadmob')
-    api project(':samopub')
-
-    implementation('com.mopub:mopub-sdk-banner:5.17.0') { transitive = true }
-    implementation('com.mopub:mopub-sdk-fullscreen:5.17.0') { transitive = true }
-    implementation('com.mopub:mopub-sdk-native-static:5.17.0') { transitive = true }
 
     implementation 'com.google.android.gms:play-services-ads:20.1.0'
     implementation "androidx.multidex:multidex:2.0.1"

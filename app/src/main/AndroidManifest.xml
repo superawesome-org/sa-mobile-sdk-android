@@ -26,9 +26,6 @@
         <activity
             android:name=".AdMobActivity"
             android:label="AdMob Activity" />
-        <activity
-            android:name=".MoPubActivity"
-            android:label="MoPub Activity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
