@@ -10,6 +10,7 @@
 ### Features
 
 * add timestamp ([#144](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/144)) ([e6d6ae1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e6d6ae158d96d80b582cbbd5bc4ae64cc5c3bc1c))
+* Complete VPAID support with final features ([#146](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/pull/146)) ([c97948c](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/c97948c40490dfc08a583277b8a9883edb18b87f))
 
 ## [8.2.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.3...v8.2.4) (2022-02-02)
 
