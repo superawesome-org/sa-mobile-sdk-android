@@ -51,4 +51,40 @@ public class SAConfigurationTest  {
         assertEquals(expected,actual);
     }
 
+    @Test
+    public void test_ensure_fromValue_returns_expected_config_Dev(){
+        // arrange
+        SAConfiguration expected = SAConfiguration.DEV;
+
+        // act
+        SAConfiguration actual = SAConfiguration.fromValue(-1);
+
+        // assert
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void test_ensure_fromValue_returns_expected_config_Staging(){
+        // arrange
+        SAConfiguration expected = SAConfiguration.STAGING;
+
+        // act
+        SAConfiguration actual = SAConfiguration.fromValue(1);
+
+        // assert
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void test_ensure_fromValue_returns_expected_config_Production(){
+        // arrange
+        SAConfiguration expected = SAConfiguration.PRODUCTION;
+
+        // act
+        SAConfiguration actual = SAConfiguration.fromValue(0);
+
+        // assert
+        assertEquals(expected,actual);
+    }
+
 }
