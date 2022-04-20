@@ -1,3 +1,10 @@
+## [8.3.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.0...v8.3.1) (2022-04-20)
+
+
+### Bug Fixes
+
+* fix for missing ads on Unity Android ([6936809](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/6936809e7f6309d07584ec86128e4c9687c085fe))
+
 # [8.3.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.4...v8.3.0) (2022-04-11)
 
 
