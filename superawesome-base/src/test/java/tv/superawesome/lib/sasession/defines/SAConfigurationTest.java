@@ -9,6 +9,10 @@ import java.util.List;
 
 public class SAConfigurationTest  {
 
+    private static final int DEV = -1;
+    private static final int PRODUCTION = 0;
+    private static final int STAGING = 1;
+
     @Test
     public void test_ensure_parcel_and_un_parcel_works_dev(){
         // arrange
@@ -57,7 +61,7 @@ public class SAConfigurationTest  {
         SAConfiguration expected = SAConfiguration.DEV;
 
         // act
-        SAConfiguration actual = SAConfiguration.fromValue(-1);
+        SAConfiguration actual = SAConfiguration.fromValue(DEV);
 
         // assert
         assertEquals(expected,actual);
@@ -69,7 +73,7 @@ public class SAConfigurationTest  {
         SAConfiguration expected = SAConfiguration.STAGING;
 
         // act
-        SAConfiguration actual = SAConfiguration.fromValue(1);
+        SAConfiguration actual = SAConfiguration.fromValue(STAGING);
 
         // assert
         assertEquals(expected,actual);
@@ -81,7 +85,7 @@ public class SAConfigurationTest  {
         SAConfiguration expected = SAConfiguration.PRODUCTION;
 
         // act
-        SAConfiguration actual = SAConfiguration.fromValue(0);
+        SAConfiguration actual = SAConfiguration.fromValue(PRODUCTION);
 
         // assert
         assertEquals(expected,actual);
