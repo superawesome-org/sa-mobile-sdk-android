@@ -1,3 +1,10 @@
+## [8.3.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.1...v8.3.2) (2022-04-26)
+
+
+### Bug Fixes
+
+* Fixed the video player not resizing dynamically ([f7c6f68](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f7c6f684c294790d6823df13bc95eb43deaae7ba))
+
 ## [8.3.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.0...v8.3.1) (2022-04-20)
 
 
