@@ -371,8 +371,7 @@ public class SABannerAd extends FrameLayout {
                         }
                         break;
                     }
-                    // this is most likely from MoPub and other types of fallbacks indicating
-                    // a failure in loading a proper ad (through mopub://failLoad)
+                    // this is most likely from fallbacks indicating an ad failed to load
                     case Web_Empty:{
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
