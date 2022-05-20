@@ -5,6 +5,7 @@ references:
       - image: circleci/android:api-30
     resource_class: medium
     environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
       FL_OUTPUT_DIR: output
       TERM: dumb
       JAVA_TOOL_OPTIONS: "-Xmx2048m"
