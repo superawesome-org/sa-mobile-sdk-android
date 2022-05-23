@@ -176,7 +176,7 @@ workflows:
             - test_superawesome_base
           filters:
             branches:
-              only: master
+              only: develop
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
