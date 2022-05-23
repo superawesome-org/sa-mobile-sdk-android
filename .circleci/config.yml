@@ -48,6 +48,8 @@ jobs:
 
   semantic_release:
     <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
     steps:
       - checkout
       - *generate_github_token
