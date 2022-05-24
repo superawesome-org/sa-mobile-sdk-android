@@ -41,7 +41,7 @@ SABumperPage.overrideLogo(R.drawable.__MY_CUSTOM_LOGO__);
 
 By default the Bumper page will try to use the application name and the AwesomeAds logo and will look like following:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_06_BumperPage.png){:class="img-responsive"}
+![image-title-here]({{ "/assets/" | relative_url }}/img/IMG_06_BumperPage.png){:class="img-responsive"}
 
 ## Forcing the bumper
 

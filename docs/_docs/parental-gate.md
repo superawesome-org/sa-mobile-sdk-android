@@ -24,7 +24,7 @@ SAVideoAd.enableParentalGate();
 
 The final result will look something similar to this:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_06_ParentalGate.png){:class="img-responsive"}
+![image-title-here]({{ "/assets/" | relative_url }}/img/IMG_06_ParentalGate.png){:class="img-responsive"}
 
 These are the default values:
 
