@@ -6,7 +6,7 @@ description: Preparing SDK
 
 The first step in integrating the {{ site.title }} is to register on the [SuperAwesome Dashboard](http://dashboard.superawesome.tv/).
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_01_Dashboard_1.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_01_Dashboard_1.png){:class="img-responsive"}
 
 From here you’ll be able to create apps and placements, obtain performance reports (number of impressions, clicks), view current revenue, etc.
 
@@ -16,7 +16,7 @@ When first logging in to the dashboard, the first thing you’ll want to do is c
 
 Each app has a number of associated parameters such as ID, name, domain (or iTunes URL), etc. The name and domain can be configured when you create the app, while the ID is automatically assigned so as to be unique to each app.
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_01_Dashboard_3.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_01_Dashboard_3.png){:class="img-responsive"}
 
 In turn, each app can have multiple placements.
 
@@ -24,7 +24,7 @@ In turn, each app can have multiple placements.
 
 Placements represent ad units where creatives will be served. Creatives are the actual ad data that gets shown in your app, like images, videos, interactive rich media content, etc.
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_01_Dashboard_4.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_01_Dashboard_4.png){:class="img-responsive"}
 
 Each placement has a number of associated parameters like ID, name, format, dimension.
 

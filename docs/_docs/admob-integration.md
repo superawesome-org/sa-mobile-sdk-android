@@ -35,27 +35,27 @@ Login to the AdMob dashboard using your preferred account.
 
 From here forward the tutorial assumes you have an Android app with three ad units setup in AdMob; one banner, one interstitial ad and one rewarded video ad:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_1.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_08_AdMob_1.png){:class="img-responsive"}
 
 Then, in the `Mediation` menu, create a new Mediation Group:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_2.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_08_AdMob_2.png){:class="img-responsive"}
 
 Next, `Add Custom Event` as an Ad Source:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_3.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_08_AdMob_3.png){:class="img-responsive"}
 
 and add your app’s banner `Ad Unit` as target:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_4.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_08_AdMob_4.png){:class="img-responsive"}
 
 Then, in the `Ad Sources` panel, add a new `Custom Event`:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_5.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_08_AdMob_5.png){:class="img-responsive"}
 
 and, as well, customise it:
 
-![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_6.png){:class="img-responsive"}
+![image-title-here]({{ site.root }}/assets/img/IMG_08_AdMob_6.png){:class="img-responsive"}
 
 Notice that the custom event class names required by AdMob are:
  - <strong>for Banner Ads:</strong>
