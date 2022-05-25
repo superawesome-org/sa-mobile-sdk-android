@@ -8,6 +8,7 @@ description: >
   AwesomeAds Android Publisher SDK
 
 baseurl: "/"
+root: "/"
 
 # This is mostly for testing
 url: "https://sa-mobile-sdk-android.superawesome.tv"

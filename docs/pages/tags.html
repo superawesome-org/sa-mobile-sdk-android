@@ -15,7 +15,7 @@ permalink: /tags/
 </div>{%- endfor -%}
 {% for doc in site.docs %}{% if doc.tags contains tag %}
 <div class="tag-entry">
-    <a href="{{- site.baseurl -}}{{- doc.url -}}">{{ doc.title }}</a>
+    <a href="{{- site.root -}}{{- doc.url -}}">{{ doc.title }}</a>
         <time style="font-style:italic; float:right" datetime="{{- doc.date | date_to_xmlschema -}}"> {{- doc.date | date: "%B %d, %Y" -}}</time>
     </div>{% endif %}{% endfor %}
 </div>{% endif %}{%- endfor -%}
