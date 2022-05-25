@@ -1,3 +1,10 @@
+## [8.3.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.2...v8.3.3) (2022-05-25)
+
+
+### Bug Fixes
+
+* loading an ad with multiple parameters ([#157](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/157)) ([e83ee11](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e83ee117fd2071969bfec3eac7d7140ec8a6d82d))
+
 ## [8.3.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.1...v8.3.2) (2022-04-26)
 
 
