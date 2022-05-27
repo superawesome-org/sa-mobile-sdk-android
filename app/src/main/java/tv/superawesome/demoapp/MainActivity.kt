@@ -4,8 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.lib.sabumperpage.SABumperPage
@@ -85,54 +83,53 @@ class MainActivity : Activity() {
         adapter.updateData(data)
         adapter.reloadList()
 
-        listView.onItemClickListener =
-            OnItemClickListener { _: AdapterView<*>?, _: View?, position: Int, _: Long ->
-                (data[position] as? PlacementItem)?.let { item ->
-                    when (item.type) {
-                        Type.BANNER -> {
-                            if (item.isFull()) {
-                                bannerView.load(
-                                    item.placementId,
-                                    item.lineItemId ?: 0,
-                                    item.creativeId ?: 0
-                                )
-                            } else {
-                                bannerView.load(item.placementId)
-                            }
+        listView.setOnItemClickListener { _, _, position, _ ->
+            (data[position] as? PlacementItem)?.let { item ->
+                when (item.type) {
+                    Type.BANNER -> {
+                        if (item.isFull()) {
+                            bannerView.load(
+                                item.placementId,
+                                item.lineItemId ?: 0,
+                                item.creativeId ?: 0
+                            )
+                        } else {
+                            bannerView.load(item.placementId)
                         }
-                        Type.INTERSTITIAL -> {
+                    }
+                    Type.INTERSTITIAL -> {
+                        if (item.isFull()) {
+                            SAInterstitialAd.load(
+                                item.placementId,
+                                item.lineItemId ?: 0,
+                                item.creativeId ?: 0,
+                                this@MainActivity
+                            )
+                        } else {
+                            SAInterstitialAd.load(item.placementId, this@MainActivity)
+                        }
+                    }
+                    Type.VIDEO -> {
+                        if (SAVideoAd.hasAdAvailable(item.placementId)) {
+                            Log.i(TAG, "PLAYING VIDEO")
+                            SAVideoAd.play(item.placementId, this@MainActivity)
+                        } else {
+                            Log.i(TAG, "LOADING VIDEO")
                             if (item.isFull()) {
-                                SAInterstitialAd.load(
+                                SAVideoAd.load(
                                     item.placementId,
                                     item.lineItemId ?: 0,
                                     item.creativeId ?: 0,
                                     this@MainActivity
                                 )
                             } else {
-                                SAInterstitialAd.load(item.placementId, this@MainActivity)
-                            }
-                        }
-                        Type.VIDEO -> {
-                            if (SAVideoAd.hasAdAvailable(item.placementId)) {
-                                Log.i(TAG, "PLAYING VIDEO")
-                                SAVideoAd.play(item.placementId, this@MainActivity)
-                            } else {
-                                Log.i(TAG, "LOADING VIDEO")
-                                if (item.isFull()) {
-                                    SAVideoAd.load(
-                                        item.placementId,
-                                        item.lineItemId ?: 0,
-                                        item.creativeId ?: 0,
-                                        this@MainActivity
-                                    )
-                                } else {
-                                    SAVideoAd.load(item.placementId, this@MainActivity)
-                                }
+                                SAVideoAd.load(item.placementId, this@MainActivity)
                             }
                         }
                     }
                 }
             }
+        }
     }
 
     private fun configureVideoAd() {
