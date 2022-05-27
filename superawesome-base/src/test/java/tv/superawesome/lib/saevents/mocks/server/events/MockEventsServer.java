@@ -10,10 +10,15 @@ import tv.superawesome.lib.saevents.mocks.server.ResponseFactory;
  */
 public class MockEventsServer extends MockAbstractWebServer {
 
+    private String line;
+
+    public String getLine() {
+        return line;
+    }
+
     @Override
     public MockResponse handleRequest(RecordedRequest request) {
-
-        String line = request.getRequestLine();
+        line = request.getRequestLine();
         /*
          * Click event
          */

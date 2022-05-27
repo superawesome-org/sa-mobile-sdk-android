@@ -1,18 +1,11 @@
-package tv.superawesome.demoapp;
+package tv.superawesome.demoapp
 
-import androidx.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication
+import tv.superawesome.sdk.publisher.AwesomeAds
 
-import tv.superawesome.sdk.publisher.AwesomeAds;
-
-/**
- * Created by gabriel.coman on 30/04/2018.
- */
-
-public class MyApplication extends MultiDexApplication {
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        AwesomeAds.init(this, true);
+class MyApplication : MultiDexApplication() {
+    override fun onCreate() {
+        super.onCreate()
+        AwesomeAds.init(this, true, mapOf("openRtbPartnerId" to "xyz123"))
     }
 }
