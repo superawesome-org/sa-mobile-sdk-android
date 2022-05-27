@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:exported="false"
             android:name=".AdMobActivity"
             android:label="AdMob Activity" />
 
