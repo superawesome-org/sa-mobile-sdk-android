@@ -13,6 +13,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
 
 public class SAServerEvent {
 
@@ -59,14 +60,15 @@ public class SAServerEvent {
   }
 
   public void triggerEvent(final Listener listener) {
-
+    JSONObject query = getQuery();
+    QueryAdditionalOptions.Companion.appendTo(query);
     network.sendGET(
         getUrl() + getEndpoint(),
-        getQuery(),
+            query,
         getHeader(),
         (status, payload, success) -> {
           if (!isDebug) {
-            String url = getUrl() + getEndpoint() + "?" + SAUtils.formGetQueryFromDict(getQuery());
+            String url = getUrl() + getEndpoint() + "?" + SAUtils.formGetQueryFromDict(query);
             Log.d("SuperAwesome", success + " | " + status + " | " + url);
           }
 

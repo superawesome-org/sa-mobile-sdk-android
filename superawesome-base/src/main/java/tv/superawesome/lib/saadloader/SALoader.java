@@ -26,6 +26,7 @@ import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTParser;
+import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
 
 /**
  * This class abstracts away the loading of a SuperAwesome ad server by the server. It tries to
@@ -206,6 +207,7 @@ public class SALoader {
                 };
 
         SANetwork network = new SANetwork(executor, timeout);
+        QueryAdditionalOptions.Companion.appendTo(query);
         network.sendGET(
                 endpoint,
                 query,

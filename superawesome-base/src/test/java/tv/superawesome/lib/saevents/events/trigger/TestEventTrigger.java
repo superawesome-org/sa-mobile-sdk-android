@@ -6,13 +6,14 @@ import org.junit.Before;
 import tv.superawesome.lib.saevents.events.TestEvent;
 import tv.superawesome.lib.saevents.mocks.server.events.MockEventsServer;
 import tv.superawesome.lib.saevents.mocks.session.MockSession;
+import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
 
 /**
  * Created by gabriel.coman on 09/05/2018.
  */
 public class TestEventTrigger extends TestEvent {
 
-    private MockEventsServer server;
+    protected MockEventsServer server;
 
     @Override
     @Before
@@ -21,6 +22,7 @@ public class TestEventTrigger extends TestEvent {
         server = new MockEventsServer();
         server.start();
         super.session = new MockSession(server.url());
+        QueryAdditionalOptions.Companion.setDefault(null);
     }
 
     @After
