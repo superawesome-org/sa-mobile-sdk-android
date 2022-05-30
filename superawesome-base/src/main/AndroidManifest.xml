@@ -22,6 +22,7 @@
         <activity
             android:name="tv.superawesome.sdk.publisher.managed.SAManagedAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
             android:label="SAManagedInterstitialAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
