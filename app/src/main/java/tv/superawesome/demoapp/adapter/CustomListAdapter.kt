@@ -62,6 +62,7 @@ internal class CustomListAdapter<T : AdapterItem?>(context: Context?) :
                     "${item.placementId} | ${item.name}"
                 title.text = titleText
                 title.setBackgroundColor(Color.WHITE)
+                view.contentDescription = titleText
             }
         }
         return view
