@@ -28,6 +28,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
 import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayer;
@@ -125,7 +126,8 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         closeButton.setPadding(0, 0, 0, 0);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
-        closeButton.setVisibility(View.GONE);
+        closeButton.setVisibility(config.closeButtonState == CloseButtonState.VisibleImmediately ?
+                View.VISIBLE : View.GONE);
         float fp = SAUtils.getScaleFactor(this);
         RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30 * fp));
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -268,7 +270,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
     @Override
     public void hasBeenVisible() {
-        closeButton.setVisibility(config.shouldShowCloseButton ? View.VISIBLE : View.GONE);
+        closeButton.setVisibility(config.closeButtonState.isVisible() ? View.VISIBLE : View.GONE);
     }
 }
 
@@ -280,7 +282,7 @@ class Config implements Parcelable {
     final boolean shouldShowSmallClick;
     final boolean isBackButtonEnabled;
     final boolean shouldCloseAtEnd;
-    final boolean shouldShowCloseButton;
+    final CloseButtonState closeButtonState;
     final boolean shouldShowCloseWarning;
     final SAOrientation orientation;
 
@@ -290,7 +292,7 @@ class Config implements Parcelable {
            boolean shouldShowSmallClick,
            boolean isBackButtonEnabled,
            boolean shouldCloseAtEnd,
-           boolean shouldShowCloseButton,
+           CloseButtonState closeButtonState,
            boolean shouldShowCloseWarning,
            SAOrientation orientation) {
         this.shouldShowPadlock = shouldShowPadlock;
@@ -299,7 +301,7 @@ class Config implements Parcelable {
         this.shouldShowSmallClick = shouldShowSmallClick;
         this.isBackButtonEnabled = isBackButtonEnabled;
         this.shouldCloseAtEnd = shouldCloseAtEnd;
-        this.shouldShowCloseButton = shouldShowCloseButton;
+        this.closeButtonState = closeButtonState;
         this.shouldShowCloseWarning = shouldShowCloseWarning;
         this.orientation = orientation;
     }
@@ -311,7 +313,7 @@ class Config implements Parcelable {
         shouldShowSmallClick = in.readByte() != 0;
         isBackButtonEnabled = in.readByte() != 0;
         shouldCloseAtEnd = in.readByte() != 0;
-        shouldShowCloseButton = in.readByte() != 0;
+        closeButtonState = CloseButtonState.Companion.fromInt(in.readInt());
         shouldShowCloseWarning = in.readByte() != 0;
         orientation = SAOrientation.fromValue(in.readInt());
     }
@@ -341,7 +343,7 @@ class Config implements Parcelable {
         parcel.writeByte((byte) (shouldShowSmallClick ? 1 : 0));
         parcel.writeByte((byte) (isBackButtonEnabled ? 1 : 0));
         parcel.writeByte((byte) (shouldCloseAtEnd ? 1 : 0));
-        parcel.writeByte((byte) (shouldShowCloseButton ? 1 : 0));
+        parcel.writeInt(closeButtonState.getValue());
         parcel.writeByte((byte) (shouldShowCloseWarning ? 1 : 0));
         parcel.writeInt(orientation.ordinal());
     }

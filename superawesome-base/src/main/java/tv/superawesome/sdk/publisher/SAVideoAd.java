@@ -20,6 +20,7 @@ import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.managed.SAManagedAdActivity;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
 public class SAVideoAd {
 
@@ -32,7 +33,7 @@ public class SAVideoAd {
     private static boolean shouldShowCloseWarning = SADefaults.defaultCloseWarning();
     private static boolean isParentalGateEnabled = SADefaults.defaultParentalGate();
     private static boolean isBumperPageEnabled = SADefaults.defaultBumperPage();
-    private static boolean shouldShowCloseButton = SADefaults.defaultCloseButton();
+    private static CloseButtonState closeButtonState = SADefaults.defaultCloseButtonState();
     private static boolean shouldAutomaticallyCloseAtEnd = SADefaults.defaultCloseAtEnd();
     private static boolean shouldShowSmallClickButton = SADefaults.defaultSmallClick();
     private static boolean isTestingEnabled = SADefaults.defaultTestMode();
@@ -206,7 +207,7 @@ public class SAVideoAd {
         session.setPos(SARTBPosition.FULLSCREEN);
         session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
         session.setInstl(SARTBInstl.FULLSCREEN);
-        session.setSkip(shouldShowCloseButton ? SARTBSkip.SKIP : SARTBSkip.NO_SKIP);
+        session.setSkip(closeButtonState.isVisible() ? SARTBSkip.SKIP : SARTBSkip.NO_SKIP);
         session.setStartDelay(getPlaybackMode());
 
         try {
@@ -273,7 +274,7 @@ public class SAVideoAd {
                             shouldShowSmallClickButton,
                             isBackButtonEnabled,
                             shouldAutomaticallyCloseAtEnd,
-                            shouldShowCloseButton,
+                            closeButtonState,
                             shouldShowCloseWarning,
                             orientation);
 
@@ -393,6 +394,15 @@ public class SAVideoAd {
         setCloseButtonWarning(true);
     }
 
+    /**
+     * Method that enables the close button to display immediately without a delay.
+     * WARNING: this will allow users to close the ad before the viewable tracking event is fired
+     * and should only be used if you explicitly want this behaviour over consistent tracking.
+     */
+    public static void enableCloseButtonNoDelay() {
+        closeButtonState = CloseButtonState.VisibleImmediately;
+    }
+
     public static void enableCloseAtEnd() {
         setCloseAtEnd(true);
     }
@@ -426,7 +436,7 @@ public class SAVideoAd {
     }
 
     public static boolean getShouldShowCloseButton() {
-        return shouldShowCloseButton;
+        return closeButtonState.isVisible();
     }
 
     public static SARTBStartDelay getPlaybackMode() {
@@ -482,7 +492,7 @@ public class SAVideoAd {
     }
 
     public static void setCloseButton(boolean value) {
-        shouldShowCloseButton = value;
+        closeButtonState = value ? CloseButtonState.VisibleWithDelay : CloseButtonState.Hidden;
     }
 
     public static void setCloseButtonWarning(boolean value) {
