@@ -28,6 +28,7 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.base.R;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
 import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
@@ -134,6 +135,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         closeButton.setLayoutParams(buttonLayout);
         closeButton.setOnClickListener(v -> onCloseAction());
+        closeButton.setContentDescription(getString(R.string.superawesome__close_button));
         parent.addView(closeButton);
 
         try {
