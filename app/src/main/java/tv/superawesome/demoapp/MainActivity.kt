@@ -57,6 +57,7 @@ class MainActivity : Activity() {
 
             SAVideoAd.enableParentalGate()
             SAVideoAd.enableBumperPage()
+            SAVideoAd.enableCloseButton()
         }
         config2Button.setOnClickListener {
             Log.i(TAG, "Config 2 selected")
@@ -68,6 +69,7 @@ class MainActivity : Activity() {
 
             SAVideoAd.disableParentalGate()
             SAVideoAd.disableBumperPage()
+            SAVideoAd.enableCloseButtonNoDelay()
         }
     }
 
