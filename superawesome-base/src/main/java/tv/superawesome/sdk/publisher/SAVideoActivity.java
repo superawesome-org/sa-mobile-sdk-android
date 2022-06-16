@@ -135,7 +135,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         closeButton.setLayoutParams(buttonLayout);
         closeButton.setOnClickListener(v -> onCloseAction());
-        closeButton.setContentDescription(getString(R.string.superawesome__close_button));
+        closeButton.setContentDescription("Close");
         parent.addView(closeButton);
 
         try {

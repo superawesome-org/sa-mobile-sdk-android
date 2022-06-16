@@ -31,7 +31,7 @@ class VideoAdUITest {
             .perform(click())
 
         ViewTester()
-            .waitForView(withContentDescription(R.string.superawesome__close_button))
+            .waitForView(withContentDescription("Close"))
 
         // Then
         isVisible()
@@ -50,11 +50,11 @@ class VideoAdUITest {
             .perform(click())
 
         ViewTester()
-            .waitForView(withContentDescription(R.string.superawesome__close_button))
+            .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
 
         // Then
-        onView(withContentDescription(R.string.superawesome__close_button))
+        onView(withContentDescription("Close"))
             .check(matches(isDisplayed()))
     }
 }
