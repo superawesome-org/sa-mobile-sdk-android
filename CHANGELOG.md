@@ -1,3 +1,10 @@
+## [8.3.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.3...v8.3.4) (2022-06-17)
+
+
+### Bug Fixes
+
+* Close button to display immediately without a delay ([#163](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/163)) ([e41f4fa](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e41f4fa16232bab6aa4e22d6da912626af272e19))
+
 ## [8.3.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.2...v8.3.3) (2022-05-25)
 
 
