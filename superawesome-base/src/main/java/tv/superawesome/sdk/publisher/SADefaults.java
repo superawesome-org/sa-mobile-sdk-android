@@ -7,6 +7,7 @@ package tv.superawesome.sdk.publisher;
 
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
 /**
  * This is a Singleton class through which SDK users setup their AwesomeAds instance
@@ -39,6 +40,9 @@ public class SADefaults {
     }
     public static boolean defaultCloseButton () {
         return false;
+    }
+    public static CloseButtonState defaultCloseButtonState() {
+        return CloseButtonState.Hidden;
     }
     public static boolean defaultSmallClick () {
         return false;
