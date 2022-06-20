@@ -79,7 +79,8 @@ class VideoPlayer @JvmOverloads constructor(
         /**
          * Now add the new chrome instead of the old one
          */
-        this.chrome = chrome.also { it.setListener(this) }
+        chrome.setListener(this)
+        this.chrome = chrome
         val size = LayoutParams.MATCH_PARENT
         val params = LayoutParams(size, size)
         addView(this.chrome as? ViewGroup, params)
@@ -431,7 +432,7 @@ class VideoPlayer @JvmOverloads constructor(
         surface?.layoutParams = params
         addView(surface)
         /**
-         * Set touch listener for whole vieew
+         * Set touch listener for whole view
          */
         setOnTouchListener(this)
     }
