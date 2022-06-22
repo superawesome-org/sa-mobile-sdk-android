@@ -16,18 +16,15 @@ class MainActivity : Activity() {
     private val data = listOf(
         HeaderItem("Banners"),
         PlacementItem("Banner image", 82088, type = Type.BANNER),
+        PlacementItem("Banner image Flat Colour", 88001, type = Type.BANNER),
         HeaderItem("Interstitials"),
+        PlacementItem("Mobile Interstitial Flat Colour Portrait", 87892, type = Type.INTERSTITIAL),
         PlacementItem("Mobile Interstitial Portrait", 82089, type = Type.INTERSTITIAL),
         PlacementItem("Interstitial via KSF", 84799, type = Type.INTERSTITIAL),
         HeaderItem("Videos"),
         PlacementItem("Direct Video", 82090, type = Type.VIDEO),
-        PlacementItem(
-            "Vast Video",
-            84777,
-            lineItemId = 178822,
-            creativeId = 503585,
-            type = Type.VIDEO
-        ),
+        PlacementItem("Direct Video Flat Colour", 87969, type = Type.VIDEO),
+        PlacementItem("Vast Video", 84777, lineItemId = 178822, creativeId = 503585, type = Type.VIDEO),
         PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO)
     )
 
