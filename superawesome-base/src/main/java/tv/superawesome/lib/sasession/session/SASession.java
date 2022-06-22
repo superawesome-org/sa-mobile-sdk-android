@@ -70,7 +70,7 @@ public class SASession implements ISASession {
         setConfigurationProduction();
         disableTestMode();
         setDauId(0);
-        setVersion(SAVersion.getSDKVersion(SAUtils.getPluginName(context)));
+        setVersion(SAVersion.getSDKVersion(SAUtils.getPluginName(context), context));
         packageName = context != null ? context.getPackageName() : "unknown";
         appName = context != null ? SAUtils.getAppLabel(context) : "unknown";
         connectionType = context != null ? SAUtils.getNetworkConnectivity(context) : SAUtils.SAConnectionType.unknown;

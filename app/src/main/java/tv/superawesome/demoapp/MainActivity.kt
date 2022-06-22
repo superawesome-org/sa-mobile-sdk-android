@@ -74,7 +74,7 @@ class MainActivity : Activity() {
     }
 
     private fun initUI() {
-        val title = "AwesomeAds.version: ${SAVersion.getSDKVersion(null)}"
+        val title = "AwesomeAds.version: ${SAVersion.getSDKVersion(null, this)}"
         titleTextView.text = title
         configureListView()
     }
