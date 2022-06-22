@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class SAVersion {
 
-    private static String versionOverride = "";
+    private static String versionOverride = null;
     private static String sdk = "android";
 
     /**
@@ -20,9 +20,9 @@ public class SAVersion {
      */
     private static String getVersion(Context context) {
         try {
-            return versionOverride.isEmpty() ? loadVersion(context) : versionOverride;
+            return versionOverride == null ? loadVersion(context) : versionOverride;
         }
-        catch(IOException ex){
+        catch(IOException ex) {
             System.out.println("Could not load the version" + ex);
             return "";
         }
