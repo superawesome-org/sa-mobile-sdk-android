@@ -1,18 +1,46 @@
 package tv.superawesome.sdk.publisher;
 
+import android.content.Context;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 public class SAVersion {
 
-    // version & sdk private vars
-    private static String version = "8.3.4";
+    private static String versionOverride = "";
     private static String sdk = "android";
 
     /**
-     * Getter for the current version
+     * Getter for the current version.
+     * If the version override is empty (not set) then load the version from the properties file.
+     *
+     * @param context The context
      *
      * @return string representing the current version
      */
-    private static String getVersion() {
-        return version;
+    private static String getVersion(Context context) {
+        try {
+            return versionOverride.isEmpty() ? loadVersion(context) : versionOverride;
+        }
+        catch(IOException ex){
+            System.out.println("Could not load the version" + ex);
+            return "";
+        }
+    }
+
+    /**
+     * Method to load the current version from version.properties.
+     *
+     * @param context The context
+     *
+     * @return the stored string representing the current version
+     */
+
+    private static String loadVersion(Context context) throws IOException {
+        Properties properties = new Properties();
+        InputStream inputStream = context.getAssets().open("version.properties");
+        properties.load(inputStream);
+        return properties.getProperty("version.name");
     }
 
     /**
@@ -29,19 +57,20 @@ public class SAVersion {
      *
      * @return  a string
      * @param pluginName The name of the plugin
+     * @param context The context
      */
-    public static String getSDKVersion(String pluginName) {
+    public static String getSDKVersion(String pluginName, Context context) {
         String pluginFormatted = pluginName != null ? String.format("_%s", pluginName) : "";
-        return String.format("%s_%s%s", getSdk(), getVersion(), pluginFormatted);
+        return String.format("%s_%s%s", getSdk(), getVersion(context), pluginFormatted);
     }
 
     /**
-     * Method that overrides the current version string. It's used by the AIR & Unity SDKs
+     * Method that sets the versionOverride string. It's used by the AIR & Unity SDKs
      *
      * @param version the new version
      */
     public static void overrideVersion (String version) {
-        SAVersion.version = version;
+        SAVersion.versionOverride = version;
     }
 
     /**
