@@ -12,7 +12,7 @@ public class SAVersion {
 
     /**
      * Getter for the current version.
-     * If the version override is empty (not set) then load the version from the properties file.
+     * If the version override is not set then load the version from the properties file.
      *
      * @param context The context
      *
