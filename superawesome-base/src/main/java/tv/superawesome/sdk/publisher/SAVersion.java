@@ -1,10 +1,21 @@
 package tv.superawesome.sdk.publisher;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 public class SAVersion {
 
-    // version & sdk private vars
-    private static String version = "8.3.4";
+    private static String version = "";
+    private static String versionOverride = null;
     private static String sdk = "android";
+
+    static {
+        try {
+            version = loadVersion();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Getter for the current version
@@ -12,7 +23,24 @@ public class SAVersion {
      * @return string representing the current version
      */
     private static String getVersion() {
-        return version;
+        return versionOverride == null ? version : versionOverride;
+    }
+
+    /**
+     * Method to load the current version from version.properties.
+     *
+     * @return the stored string representing the current version
+     */
+
+    private static String loadVersion() throws Exception {
+        Properties properties = new Properties();
+        InputStream inputStream = SAVersion.class.getClassLoader().getResourceAsStream("version.properties");
+        if (inputStream != null) {
+            properties.load(inputStream);
+            return properties.getProperty("version.name");
+        } else {
+            throw new Exception("Unable to load version");
+        }
     }
 
     /**
@@ -36,12 +64,12 @@ public class SAVersion {
     }
 
     /**
-     * Method that overrides the current version string. It's used by the AIR & Unity SDKs
+     * Method that sets the versionOverride string. It's used by the AIR & Unity SDKs
      *
      * @param version the new version
      */
     public static void overrideVersion (String version) {
-        SAVersion.version = version;
+        SAVersion.versionOverride = version;
     }
 
     /**
