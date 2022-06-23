@@ -68,7 +68,7 @@ class TestSAVersion {
         SAVersion.overrideSdk(sdkOverride)
 
         // then
-        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion( null))
+        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(null))
     }
 
     @Test
@@ -79,7 +79,7 @@ class TestSAVersion {
 
         // when
 
-        val sdkVersionComponents = SAVersion.getSDKVersion( null).split("_")
+        val sdkVersionComponents = SAVersion.getSDKVersion(null).split("_")
 
         val sdkName = sdkVersionComponents.getOrNull(0) ?: ""
         val version = sdkVersionComponents.getOrNull(1) ?: ""
