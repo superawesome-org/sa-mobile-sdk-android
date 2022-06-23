@@ -146,6 +146,13 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     }
 
     @Override
+    protected void onDestroy() {
+        SAParentalGate.close();
+        SACloseWarning.close();
+        super.onDestroy();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         control.pause();

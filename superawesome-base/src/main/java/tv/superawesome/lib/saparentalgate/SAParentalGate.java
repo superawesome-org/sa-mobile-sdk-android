@@ -123,7 +123,10 @@ public class SAParentalGate {
      */
     public static void close () {
         if (dialog != null) {
-            dialog.cancel();
+            if(dialog.isShowing()) {
+                dialog.cancel();
+            }
+            dialog = null;
         }
     }
 
