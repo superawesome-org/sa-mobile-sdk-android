@@ -1,46 +1,46 @@
 package tv.superawesome.sdk.publisher;
 
-import android.content.Context;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class SAVersion {
 
+    private static String version = "";
     private static String versionOverride = null;
     private static String sdk = "android";
 
+    static {
+        try {
+            version = loadVersion();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Getter for the current version.
-     * If the version override is not set then load the version from the properties file.
-     *
-     * @param context The context
      *
      * @return string representing the current version
      */
-    private static String getVersion(Context context) {
-        try {
-            return versionOverride == null ? loadVersion(context) : versionOverride;
-        }
-        catch(IOException ex) {
-            System.out.println("Could not load the version" + ex);
-            return "";
-        }
+    private static String getVersion() {
+        return versionOverride == null ? version : versionOverride;
     }
 
     /**
      * Method to load the current version from version.properties.
      *
-     * @param context The context
-     *
      * @return the stored string representing the current version
      */
 
-    private static String loadVersion(Context context) throws IOException {
+    private static String loadVersion() throws Exception {
         Properties properties = new Properties();
-        InputStream inputStream = context.getAssets().open("version.properties");
-        properties.load(inputStream);
-        return properties.getProperty("version.name");
+        InputStream inputStream = SAVersion.class.getClassLoader().getResourceAsStream("version.properties");
+        if (inputStream != null) {
+            properties.load(inputStream);
+            return properties.getProperty("version.name");
+        } else {
+            throw new Exception("Unable to load version");
+        }
     }
 
     /**
@@ -56,12 +56,11 @@ public class SAVersion {
      * Getter for a string comprising of SDK & version bundled
      *
      * @return  a string
-     * @param context The context
      * @param pluginName The name of the plugin
      */
-    public static String getSDKVersion(Context context, String pluginName) {
+    public static String getSDKVersion(String pluginName) {
         String pluginFormatted = pluginName != null ? String.format("_%s", pluginName) : "";
-        return String.format("%s_%s%s", getSdk(), getVersion(context), pluginFormatted);
+        return String.format("%s_%s%s", getSdk(), getVersion(), pluginFormatted);
     }
 
     /**
