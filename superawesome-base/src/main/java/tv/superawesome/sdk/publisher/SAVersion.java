@@ -18,7 +18,7 @@ public class SAVersion {
     }
 
     /**
-     * Getter for the current version.
+     * Getter for the current version
      *
      * @return string representing the current version
      */
