@@ -1,8 +1,5 @@
 package tv.superawesome.lib.saversion
 
-import android.content.Context
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -21,9 +18,7 @@ class TestSAVersion {
     }
 
     @Test
-    fun test_SAVersion_Version_Override_With_PluginName() {
-
-        val context = mockk<Context>(relaxed = true)
+    fun test_Version_Override_With_PluginName() {
 
         // given
         val expectedSDKVersion = "android_5.6.7_admob"
@@ -32,13 +27,11 @@ class TestSAVersion {
         SAVersion.overrideVersion(versionOverride)
 
         // then
-        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(context, pluginName))
+        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(pluginName))
     }
 
     @Test
-    fun test_SAVersion_Version_Override_Without_PluginName() {
-
-        val context = mockk<Context>(relaxed = true)
+    fun test_Version_Override_Without_PluginName() {
 
         // given
         val expectedSDKVersion = "android_5.6.7"
@@ -47,42 +40,54 @@ class TestSAVersion {
         SAVersion.overrideVersion(versionOverride)
 
         // then
-        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(context, null))
+        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(null))
     }
 
     @Test
-    fun test_SAVersion_SDK_Override_With_PluginName() {
-
-        val context = mockk<Context>(relaxed = true)
-
-        // Reads from version.properties as a version override is not set
-        every { context.assets.open("version.properties") } returns "version.name=5.6.7".byteInputStream()
+    fun test_SDK_Override_With_PluginName() {
 
         // given
         val expectedSDKVersion = "unity_5.6.7_admob"
 
         // when
+        SAVersion.overrideVersion(versionOverride)
         SAVersion.overrideSdk(sdkOverride)
 
         // then
-        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(context, pluginName))
+        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(pluginName))
     }
 
     @Test
     fun test_SAVersion_SDK_Override_Without_PluginName() {
 
-        val context = mockk<Context>(relaxed = true)
-
-        // Reads from version.properties as a version override is not set
-        every { context.assets.open("version.properties") } returns "version.name=5.6.7".byteInputStream()
-
         // given
         val expectedSDKVersion = "unity_5.6.7"
 
         // when
+        SAVersion.overrideVersion(versionOverride)
         SAVersion.overrideSdk(sdkOverride)
 
         // then
-        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion(context, null))
+        Assert.assertEquals(expectedSDKVersion, SAVersion.getSDKVersion( null))
+    }
+
+    @Test
+    fun test_getSDKVersion_defaults() {
+
+        // given
+        val expectedSDK = "android"
+
+        // when
+
+        val sdkVersionComponents = SAVersion.getSDKVersion( null).split("_")
+
+        val sdkName = sdkVersionComponents.getOrNull(0) ?: ""
+        val version = sdkVersionComponents.getOrNull(1) ?: ""
+        val strippedVersion = version.replace(".", "")
+        val isVersionNumeric = strippedVersion.all { char -> char.isDigit() }
+
+        // then
+        Assert.assertEquals(sdkName, expectedSDK)
+        Assert.assertTrue(isVersionNumeric)
     }
 }
