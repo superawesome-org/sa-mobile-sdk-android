@@ -1,3 +1,10 @@
+## [8.3.5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.4...v8.3.5) (2022-06-23)
+
+
+### Bug Fixes
+
+* Video Ad crashes when the Warning dialog is accessed even after the activity is closed ([#165](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/165)) ([146be04](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/146be04c369aaa6b3a6c28eb1e7800f7cc1b36ed))
+
 ## [8.3.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.3...v8.3.4) (2022-06-17)
 
 
