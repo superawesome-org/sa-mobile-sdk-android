@@ -78,7 +78,6 @@ class TestSAVersion {
         val expectedSDK = "android"
 
         // when
-
         val sdkVersionComponents = SAVersion.getSDKVersion(null).split("_")
 
         val sdkName = sdkVersionComponents.getOrNull(0) ?: ""
