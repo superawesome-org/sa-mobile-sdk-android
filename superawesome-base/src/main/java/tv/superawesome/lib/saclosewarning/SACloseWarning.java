@@ -1,5 +1,8 @@
 package tv.superawesome.lib.saclosewarning;
 
+import static android.os.Build.VERSION;
+import static android.os.Build.VERSION_CODES;
+
 import android.app.AlertDialog;
 import android.content.Context;
 
@@ -13,12 +16,12 @@ public class SACloseWarning {
 
     private static SACloseWarning.Interface listener;
 
-    public static void show(final Context c) {
+    public static void show(final Context context) {
         final AlertDialog.Builder alert;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-            alert = new AlertDialog.Builder(c, android.R.style.Theme_DeviceDefault_Dialog_Alert);
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1) {
+            alert = new AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Dialog_Alert);
         } else {
-            alert = new AlertDialog.Builder(c);
+            alert = new AlertDialog.Builder(context);
         }
         alert.setTitle(AlertTitle);
         alert.setCancelable(false);
@@ -44,7 +47,9 @@ public class SACloseWarning {
 
     public static void close() {
         if (dialog != null) {
-            dialog.cancel();
+            if (dialog.isShowing()) {
+                dialog.cancel();
+            }
             dialog = null;
         }
     }
