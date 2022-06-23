@@ -10,4 +10,5 @@
     <string name="load_intersitial">LOAD INTERSITIAL</string>
     <string name="config_1">Enable checks</string>
     <string name="config_2">Disable checks</string>
+    <string name="banner_ad_content_description">Banner Ad</string>
 </resources>
