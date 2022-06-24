@@ -79,7 +79,6 @@ class TestSAVersion {
 
         // when
         val sdkVersionComponents = SAVersion.getSDKVersion(null).split("_")
-
         val sdkName = sdkVersionComponents.getOrNull(0) ?: ""
         val version = sdkVersionComponents.getOrNull(1) ?: ""
         val strippedVersion = version.replace(".", "")
