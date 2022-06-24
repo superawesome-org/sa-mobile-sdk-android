@@ -1,3 +1,10 @@
+## [8.3.6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.5...v8.3.6) (2022-06-24)
+
+
+### Bug Fixes
+
+* Version number store updates formatting ([75ac1df](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/75ac1df6fb1bf756ec3f0260021abc58afd82832))
+
 ## [8.3.5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.4...v8.3.5) (2022-06-23)
 
 
