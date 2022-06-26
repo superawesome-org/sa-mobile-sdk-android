@@ -24,6 +24,7 @@ class MainActivity : Activity() {
         HeaderItem("Videos"),
         PlacementItem("Direct Video", 82090, type = Type.VIDEO),
         PlacementItem("Direct Video Flat Colour", 87969, type = Type.VIDEO),
+        PlacementItem("VAST Video Flat Colour", 88406, type = Type.VIDEO),
         PlacementItem("Vast Video", 84777, lineItemId = 178822, creativeId = 503585, type = Type.VIDEO),
         PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO)
     )
