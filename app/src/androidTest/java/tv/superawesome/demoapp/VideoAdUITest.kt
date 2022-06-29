@@ -27,7 +27,7 @@ class VideoAdUITest {
             .perform(waitUntil(isCompletelyDisplayed()), click(), click())
 
         onData(anything()).inAdapterView(withId(R.id.listView))
-            .atPosition(8)
+            .atPosition(10)
             .perform(click())
 
         ViewTester()
@@ -46,7 +46,7 @@ class VideoAdUITest {
             .perform(waitUntil(isCompletelyDisplayed()), click())
 
         onData(anything()).inAdapterView(withId(R.id.listView))
-            .atPosition(8)
+            .atPosition(10)
             .perform(click())
 
         ViewTester()
