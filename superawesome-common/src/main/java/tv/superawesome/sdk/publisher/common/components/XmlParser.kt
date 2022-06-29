@@ -8,7 +8,7 @@ import org.xml.sax.InputSource
 import org.xml.sax.SAXException
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import java.util.*
+import java.util.ArrayList
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
@@ -16,11 +16,11 @@ interface XmlParserType {
     /**
      * Function that parses a XML document
      *
-     * @param xml   xml string
-     * @return      a Document object
-     * @throws      ParserConfigurationException
-     * @throws      IOException
-     * @throws      SAXException
+     * @param xml xml string
+     * @return a Document object
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
      */
     fun parse(xml: String): Document
 
@@ -28,9 +28,9 @@ interface XmlParserType {
      * Method that returns a list of XML elements after performing a thorough search of all
      * the node parameter's siblings and children, by a given "name".
      *
-     * @param node  the parent node
-     * @param name  the name to search for
-     * @return      a List of XML elements
+     * @param node the parent node
+     * @param name the name to search for
+     * @return a List of XML elements
      */
     fun findAll(node: Node, name: String): List<Element>
 
@@ -38,9 +38,9 @@ interface XmlParserType {
      * Finds only the first instance of a XML element with given name by searching in all of
      * the node parameter's siblings and children.
      *
-     * @param node  the parent node
-     * @param name  the name to search for
-     * @return      the first element found
+     * @param node the parent node
+     * @param name the name to search for
+     * @return the first element found
      */
     fun findFirst(node: Node, name: String): Element?
 
@@ -48,9 +48,9 @@ interface XmlParserType {
      * Method that checks if in all children and siblings of a XML node, there exists
      * at least one element with given name
      *
-     * @param node  parent XML node
-     * @param name  name to search for
-     * @return      true if found any, false otherwise
+     * @param node parent XML node
+     * @param name name to search for
+     * @return true if found any, false otherwise
      */
     fun exists(node: Node, name: String): Boolean
 }
@@ -69,19 +69,16 @@ class XmlParser : XmlParserType {
         return doc
     }
 
-
     override fun findAll(node: Node, name: String): List<Element> {
         val list: MutableList<Element> = ArrayList()
         searchSiblingsAndChildrenOf(node, name, list)
         return list
     }
 
-
     override fun findFirst(node: Node, name: String): Element? {
         val list = findAll(node, name)
         return list.firstOrNull()
     }
-
 
     override fun exists(node: Node, name: String): Boolean {
         val list = findAll(node, name)
@@ -93,9 +90,9 @@ class XmlParser : XmlParserType {
      * given "name" string parameter.
      * It will return the result into the list of XML elements given as paramter.
      *
-     * @param node  the XML parent node
-     * @param name  the XML name ot search for
-     * @param list  a list of returned Elements
+     * @param node the XML parent node
+     * @param name the XML name ot search for
+     * @param list a list of returned Elements
      */
     private fun searchSiblingsAndChildrenOf(node: Node, name: String, list: MutableList<Element>) {
 

@@ -37,6 +37,7 @@ repositories {
 dependencies {
     implementation project(':superawesome')
     implementation project(':saadmob')
+    implementation project(':superawesome-common')
 
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
     implementation "androidx.multidex:multidex:2.0.1"

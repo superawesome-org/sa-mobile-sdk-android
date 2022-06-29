@@ -2,4 +2,19 @@
     package="tv.superawesome.sdk.publisher.common">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <activity
+            android:name=".ui.interstitial.InterstitialActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.common.BumperPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.fullscreen.FullScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.video.VideoActivity"
+            android:exported="false" />
+    </application>
 </manifest>

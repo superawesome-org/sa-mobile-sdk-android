@@ -1,12 +1,12 @@
 package tv.superawesome.sdk.publisher.common.network
 
 enum class Environment {
-    production,
-    staging;
+    Production,
+    Staging;
 
     val baseUrl: String
         get() = when (this) {
-            production -> "https://ads.superawesome.tv/v2"
-            staging -> "https://ads.staging.superawesome.tv/v2"
+            Production -> "https://ads.superawesome.tv/v2/"
+            Staging -> "https://ads.staging.superawesome.tv/v2/"
         }
 }
