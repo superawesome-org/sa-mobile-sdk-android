@@ -29,14 +29,9 @@ android {
     }
 }
 
-androidExtensions {
-    experimental = true
-}
-
 repositories {
     mavenCentral()
-    google()
-//    maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
+    maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
 
 dependencies {
