@@ -1,14 +1,12 @@
 package tv.superawesome.sdk.publisher.common.components
 
 import android.util.DisplayMetrics
-import io.mockk.MockKAnnotations
 import io.mockk.mockk
-import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import kotlin.test.assertEquals
 
-class DeviceTest : BaseTest()  {
+class DeviceTest : BaseTest() {
     @Test
     fun testDeviceCategory_phone() {
         // Given

@@ -1,18 +1,12 @@
 package tv.superawesome.sdk.publisher.common.models
 
-enum class ConnectionType(val value: Int) {
-    unknown(0),
-    ethernet(1),
-    wifi(2),
-    cellularUnknown(3),
-    cellular2g(4),
-    cellular3g(5),
-    cellular4g(6);
+enum class ConnectionType {
+    Unknown, Ethernet, Wifi, CellularUnknown, Cellular2g, Cellular3g, Cellular4g;
 
     fun findQuality(): ConnectionQuality {
         return when (this) {
-            cellularUnknown, cellular2g -> ConnectionQuality.Minimum
-            ethernet, cellular4g, wifi, unknown -> ConnectionQuality.Maximum
+            CellularUnknown, Cellular2g -> ConnectionQuality.Minimum
+            Ethernet, Cellular4g, Wifi, Unknown -> ConnectionQuality.Maximum
             else -> ConnectionQuality.Medium
         }
     }

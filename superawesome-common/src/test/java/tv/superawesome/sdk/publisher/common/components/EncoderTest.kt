@@ -10,7 +10,8 @@ class EncoderTest {
     @Test
     fun test() {
         // Given
-        val given1 = "https://s3-eu-west-1.amazonaws.com/sb-ads-video-transcoded/x7XkGy43vim5P1OpldlOUuxk2cuKsDSn.mp4"
+        val given1 =
+            "https://s3-eu-west-1.amazonaws.com/sb-ads-video-transcoded/x7XkGy43vim5P1OpldlOUuxk2cuKsDSn.mp4"
         val given2 = ""
         val given3: String? = null
         val given4 = "Gunhan Sancar"
@@ -22,7 +23,10 @@ class EncoderTest {
         val result4 = encoder.encodeUri(given4)
 
         // Then
-        assertEquals("https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fsb-ads-video-transcoded%2Fx7XkGy43vim5P1OpldlOUuxk2cuKsDSn.mp4", result1)
+        assertEquals(
+            "https%3A%2F%2Fs3-eu-west-1.amazonaws.com%2Fsb-ads-video-transcoded%2Fx7XkGy43vim5P1OpldlOUuxk2cuKsDSn.mp4",
+            result1
+        )
         assertEquals("", result2)
         assertEquals("", result3)
         assertEquals("Gunhan+Sancar", result4)

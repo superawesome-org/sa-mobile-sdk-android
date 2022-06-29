@@ -41,25 +41,25 @@ class ConnectionProviderTest : BaseTest()  {
         val result = connectionProvider.findConnectionType()
 
         // Then
-        assertEquals(ConnectionType.unknown, result)
+        assertEquals(ConnectionType.Unknown, result)
     }
 
     @Test
     fun test_connectionType_HasWifiCapability_wifi() {
-        whenNetworkCapability(NetworkCapabilities.TRANSPORT_WIFI, ConnectionType.wifi)
+        whenNetworkCapability(NetworkCapabilities.TRANSPORT_WIFI, ConnectionType.Wifi)
     }
 
     @Test
     fun test_connectionType_HasEthernetCapability_ethernet() {
-        whenNetworkCapability(NetworkCapabilities.TRANSPORT_ETHERNET, ConnectionType.ethernet)
+        whenNetworkCapability(NetworkCapabilities.TRANSPORT_ETHERNET, ConnectionType.Ethernet)
     }
 
     @Test
     fun test_connectionType_HasCellularCapability_cellular() {
-        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_UNKNOWN, ConnectionType.unknown)
-        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_GSM, ConnectionType.cellular2g)
-        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_HSPA, ConnectionType.cellular3g)
-        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_LTE, ConnectionType.cellular4g)
+        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_UNKNOWN, ConnectionType.Unknown)
+        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_GSM, ConnectionType.Cellular2g)
+        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_HSPA, ConnectionType.Cellular3g)
+        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_LTE, ConnectionType.Cellular4g)
     }
 
     private fun whenNetworkCapability(networkCapability: Int, expected: ConnectionType) {
