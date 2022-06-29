@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.webkit.WebResourceError
@@ -36,8 +37,12 @@ public class WebView @JvmOverloads constructor(
         isHorizontalScrollBarEnabled = false
         scrollBarStyle = SCROLLBARS_OUTSIDE_OVERLAY
         isFocusableInTouchMode = false
-        settings.mediaPlaybackRequiresUserGesture = false
-        setWebContentsDebuggingEnabled(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            settings.mediaPlaybackRequiresUserGesture = false
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setWebContentsDebuggingEnabled(true)
+        }
         settings.javaScriptEnabled = true
         webViewClient = object : WebViewClient() {
 

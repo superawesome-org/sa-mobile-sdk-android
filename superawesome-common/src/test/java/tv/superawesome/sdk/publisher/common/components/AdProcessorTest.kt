@@ -8,14 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
-import tv.superawesome.sdk.publisher.common.models.Ad
-import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.models.Creative
-import tv.superawesome.sdk.publisher.common.models.CreativeDetail
-import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
-import tv.superawesome.sdk.publisher.common.models.CreativeReferral
-import tv.superawesome.sdk.publisher.common.models.VastAd
-import tv.superawesome.sdk.publisher.common.models.VastType
+import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import kotlin.test.assertTrue
 

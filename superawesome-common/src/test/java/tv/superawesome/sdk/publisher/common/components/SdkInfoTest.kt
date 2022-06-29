@@ -19,7 +19,7 @@ class SdkInfoTest : BaseTest() {
             every { getApplicationLabel(any()) } returns "testAppName"
         }
         val mockApplicationInfo = mockk<ApplicationInfo>()
-        val context = mockk<Context>() {
+        val context = mockk<Context> {
             every { packageName } returns "testBundleName"
             every { packageManager } returns mockPackageManager
             every { applicationInfo } returns mockApplicationInfo

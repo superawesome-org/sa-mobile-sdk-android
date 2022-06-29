@@ -154,9 +154,6 @@ class BumperPageActivity : Activity() {
         private var appIcon: Drawable? = null
         private var listener: Interface? = null
 
-        // //////////////////////////////////////////////////////////////////////////////////////////////
-        // Public methods
-        // //////////////////////////////////////////////////////////////////////////////////////////////
         fun play(activity: Activity) {
             val intent = Intent(activity, BumperPageActivity::class.java)
             activity.startActivity(intent)
