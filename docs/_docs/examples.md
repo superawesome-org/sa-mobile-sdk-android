@@ -128,7 +128,7 @@ public class MainActivity extends Activity {
 
 # Version info
 
-The SDK version info can be obtained through the SAVersion class:
+The SDK version can be obtained through the SAVersion class:
 
 {% highlight java %}
 
