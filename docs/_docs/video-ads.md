@@ -29,6 +29,11 @@ public class MainActivity extends Activity {
 
         // enable or disable a close button
         SAVideoAd.enableCloseButton ();
+
+        // enable or disable a close button that displays without a delay. Use instead of enableCloseButton.
+        // WARNING: this will allow users to close the ad before the viewable tracking event is fired
+        // and should only be used if you explicitly want this behaviour over consistent tracking.
+        SAVideoAd.enableCloseButtonNoDelay();
         
         // enable close button and warn user before closing
         SAVideoAd.enableCloseButtonWithWarning();
