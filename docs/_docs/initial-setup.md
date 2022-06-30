@@ -19,3 +19,16 @@ public class MyApplication extends Application {
 {% endhighlight %}
 
 Where the <strong>initSDK</strong> method takes a boolean parameter indicating whether logging is enabled or not. For production environments logging should be <strong>off</strong>.
+
+The SDK can also be initialised with an options dictionary. The options dictionary is used to set additional tracking information that will be sent when events are fired from the SDK in the form of key value pairs:
+
+{% highlight java %}
+public class MyApplication extends Application {
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    AwesomeAds.init(this, true, mapOf("key" to "value"))
+  }
+}
+{% endhighlight %}
