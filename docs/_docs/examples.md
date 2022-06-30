@@ -125,3 +125,16 @@ public class MainActivity extends Activity {
     }
 }
 {% endhighlight %}
+
+# Version info
+
+The SDK version info can be obtained through the SAVersion class:
+
+{% highlight java %}
+
+// Returns a string comprising the SDK name and the version number. Optionally the null parameter 
+// can be replaced with the name of a plugin if this is the context in which the SDK is being used
+// which will be appended to the end of the string.
+SAVersion.getSDKVersion(null)}
+
+{% endhighlight %}
