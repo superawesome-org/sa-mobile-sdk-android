@@ -50,3 +50,5 @@
           url: "docs/examples#simple-example"
         - title: Complex example
           url: "docs/examples#complex-example"
+        - title: Version info
+          url: "docs/examples#version-info"
