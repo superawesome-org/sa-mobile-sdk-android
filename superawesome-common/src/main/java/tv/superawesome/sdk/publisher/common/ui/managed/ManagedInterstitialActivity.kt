@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.interstitial.InterstitialActivity
-import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
+import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 
 public class ManagedInterstitialActivity : FullScreenActivity() {
     private lateinit var interstitialBanner: ManagedBannerView
