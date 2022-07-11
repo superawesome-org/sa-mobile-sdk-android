@@ -4,39 +4,23 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import kotlinx.android.synthetic.main.activity_main.*
-import tv.superawesome.demoapp.adapter.*
-import tv.superawesome.lib.sabumperpage.SABumperPage
-import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.SAInterstitialAd
+import kotlinx.android.synthetic.main.activity_main_2.*
+import tv.superawesome.demoapp.adapter.AdapterItem
+import tv.superawesome.demoapp.adapter.CustomListAdapter
+import tv.superawesome.demoapp.adapter.PlacementItem
+import tv.superawesome.demoapp.adapter.Type
 import tv.superawesome.sdk.publisher.SAVersion
-import tv.superawesome.sdk.publisher.SAVideoAd
+import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.common.ui.common.BumperPageActivity
+import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
+import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 
-val data = listOf(
-    HeaderItem("Banners"),
-    PlacementItem("Banner image", 82088, type = Type.BANNER),
-    PlacementItem("Banner image Flat Colour", 88001, type = Type.BANNER),
-    HeaderItem("Interstitials"),
-    PlacementItem("Mobile Interstitial Flat Colour Portrait", 87892, type = Type.INTERSTITIAL),
-    PlacementItem("Mobile Interstitial Portrait", 82089, type = Type.INTERSTITIAL),
-    PlacementItem("Interstitial via KSF", 84799, type = Type.INTERSTITIAL),
-    PlacementItem("Interstitial Flat Colour via KSF", 87970, type = Type.INTERSTITIAL),
-    HeaderItem("Videos"),
-    PlacementItem("VAST Video Flat Colour", 88406, type = Type.VIDEO),
-    PlacementItem("Direct Video", 82090, type = Type.VIDEO),
-    PlacementItem("Direct Video Flat Colour", 87969, type = Type.VIDEO),
-    PlacementItem("Vast Video", 84777, lineItemId = 178822, creativeId = 503585, type = Type.VIDEO),
-    PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO)
-)
-
-class MainActivity : Activity() {
-
-
+class MainActivity2 : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_2)
 
-        SABumperPage.overrideName("AwesomeAds Demo")
+        BumperPageActivity.overrideName("AwesomeAds SDK Demo")
 
         initUI()
 
@@ -70,7 +54,7 @@ class MainActivity : Activity() {
 
             SAVideoAd.disableParentalGate()
             SAVideoAd.disableBumperPage()
-            SAVideoAd.enableCloseButtonNoDelay()
+            // SAVideoAd.enableCloseButtonNoDelay()
         }
     }
 
@@ -106,29 +90,35 @@ class MainActivity : Activity() {
                                 item.placementId,
                                 item.lineItemId ?: 0,
                                 item.creativeId ?: 0,
-                                this@MainActivity
+                                this@MainActivity2
                             )
                         } else {
-                            SAInterstitialAd.load(item.placementId, this@MainActivity)
+                            SAInterstitialAd.load(item.placementId, this@MainActivity2)
                         }
                     }
                     Type.VIDEO -> {
                         if (SAVideoAd.hasAdAvailable(item.placementId)) {
                             Log.i(TAG, "PLAYING VIDEO")
-                            SAVideoAd.play(item.placementId, this@MainActivity)
+                            SAVideoAd.play(item.placementId, this@MainActivity2)
                         } else {
-                            Log.i(TAG, "LOADING VIDEO")
-                            if (item.isFull()) {
-                                SAVideoAd.load(
-                                    item.placementId,
-                                    item.lineItemId ?: 0,
-                                    item.creativeId ?: 0,
-                                    this@MainActivity
-                                )
-                            } else {
-                                SAVideoAd.load(item.placementId, this@MainActivity)
-                            }
+                            SAVideoAd.load(item.placementId, this@MainActivity2)
                         }
+//                        if (SAVideoAd.hasAdAvailable(item.placementId)) {
+//                            Log.i(TAG, "PLAYING VIDEO")
+//                            SAVideoAd.play(item.placementId, this@MainActivity2)
+//                        } else {
+//                            Log.i(TAG, "LOADING VIDEO")
+//                            if (item.isFull()) {
+//                                SAVideoAd.load(
+//                                    item.placementId,
+//                                    item.lineItemId ?: 0,
+//                                    item.creativeId ?: 0,
+//                                    this@MainActivity2
+//                                )
+//                            } else {
+//                                SAVideoAd.load(item.placementId, this@MainActivity2)
+//                            }
+//                        }
                     }
                 }
             }
@@ -140,8 +130,8 @@ class MainActivity : Activity() {
         SAVideoAd.setListener { placementId, event ->
             Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
 
-            if (event == SAEvent.adLoaded) {
-                SAVideoAd.play(placementId, this@MainActivity)
+            if (event == SAEvent.AdLoaded) {
+                SAVideoAd.play(placementId, this@MainActivity2)
             }
         }
     }
@@ -150,8 +140,8 @@ class MainActivity : Activity() {
         SAInterstitialAd.setListener { placementId, event ->
             Log.i(TAG, "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
-            if (event == SAEvent.adLoaded) {
-                SAInterstitialAd.play(placementId, this@MainActivity)
+            if (event == SAEvent.AdLoaded) {
+                SAInterstitialAd.play(placementId, this@MainActivity2)
             }
         }
     }
@@ -159,8 +149,8 @@ class MainActivity : Activity() {
     private fun configureBannerAd() {
         bannerView.visibility = View.VISIBLE
         bannerView.setListener { _, event ->
-            if (event == SAEvent.adLoaded) {
-                bannerView.play(this@MainActivity)
+            if (event == SAEvent.AdLoaded) {
+                bannerView.play()
             }
         }
     }

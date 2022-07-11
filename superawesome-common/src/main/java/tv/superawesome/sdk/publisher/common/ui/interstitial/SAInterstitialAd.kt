@@ -1,6 +1,6 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
 
-package tv.superawesome.sdk.publisher.ui.interstitial
+package tv.superawesome.sdk.publisher.common.ui.interstitial
 
 import android.app.Activity
 import android.content.Context
@@ -11,7 +11,6 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
-import tv.superawesome.sdk.publisher.common.ui.interstitial.InterstitialActivity
 
 public object SAInterstitialAd {
     private var orientation: Orientation = Constants.defaultOrientation
