@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
-import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
 
 /**
  * Class that abstracts away the process of loading & displaying an
