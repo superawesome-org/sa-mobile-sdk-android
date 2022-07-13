@@ -6,7 +6,6 @@ package tv.superawesome.lib.sanetwork.request;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -21,8 +20,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import tv.superawesome.lib.sautils.SAUtils;
 
 /**
  * This is the main class that abstracts away most major network operations needed in order
@@ -260,9 +257,6 @@ public class SANetwork {
                 }
 
             } catch (Exception e) {
-                Log.d(
-                        "HTTPEXCEPTION",
-                        e.toString());
                 sendBack(listener, 0, null, false);
             }
         });

@@ -24,7 +24,7 @@ class VaporPOCTest {
 		/* The test is setup as normal, the endpoints and responses are configured in the separate
 			Vapor server project. The main change required is to point the app to Android localhost (http://10.0.2.2:8080).
 			Note that WireMock works with pointing to http://localhost:8080 in SASession.
-			We would also need a way to start the server from the command line (running vapor run from the root of the vapor server folder)
+			We would also need a way to start the server from the command line (running `vapor run` from the root of the vapor server folder)
 			and to consider how this would work on CI as the Vapor server would exist in a separate repo
 			(it's bundled in this PR for ease of review as a POC).
 			The advantages are sharing the server with iOS and having shared mock responses, the
