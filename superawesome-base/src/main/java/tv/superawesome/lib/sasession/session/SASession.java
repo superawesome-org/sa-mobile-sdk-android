@@ -30,6 +30,8 @@ public class SASession implements ISASession {
     private final static String      DEV_URL = "https://ads.dev.superawesome.tv/v2";
     private final static String      PRODUCTION_URL = "https://ads.superawesome.tv/v2";
     private final static String      STAGING_URL = "https://ads.staging.superawesome.tv/v2";
+    private final static String      UITESTING_URL = "http://10.0.2.2:8080"; // VAPOR
+    //private final static String      UITESTING_URL = "http://localhost:8080"; // WIREMOCK
     private final static String      DEVICE_PHONE = "phone";
     private final static String      DEVICE_TABLET = "tablet";
 
@@ -121,6 +123,9 @@ public class SASession implements ISASession {
         } else if (configuration == SAConfiguration.STAGING) {
             this.configuration = SAConfiguration.STAGING;
             baseUrl = STAGING_URL;
+        } else if (configuration == SAConfiguration.UITESTING) {
+            this.configuration = SAConfiguration.UITESTING;
+            baseUrl = UITESTING_URL;
         } else {
             this.configuration = SAConfiguration.DEV;
             baseUrl = DEV_URL;

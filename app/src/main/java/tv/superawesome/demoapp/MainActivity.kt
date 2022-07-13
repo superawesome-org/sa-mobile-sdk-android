@@ -7,6 +7,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.lib.sabumperpage.SABumperPage
+import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVersion
@@ -30,7 +31,6 @@ val data = listOf(
 )
 
 class MainActivity : Activity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,6 +147,7 @@ class MainActivity : Activity() {
     }
 
     private fun configureInterstitialAd() {
+        SAInterstitialAd.setConfiguration(SAConfiguration.UITESTING)
         SAInterstitialAd.setListener { placementId, event ->
             Log.i(TAG, "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
