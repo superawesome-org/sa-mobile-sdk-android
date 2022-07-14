@@ -23,8 +23,9 @@ val data = listOf(
     PlacementItem("Interstitial Flat Colour via KSF", 87970, type = Type.INTERSTITIAL),
     HeaderItem("Videos"),
     PlacementItem("VAST Video Flat Colour", 88406, type = Type.VIDEO),
-    PlacementItem("Direct Video", 82090, type = Type.VIDEO),
+    PlacementItem("VPAID Video Flat Colour", 89056, type = Type.VIDEO),
     PlacementItem("Direct Video Flat Colour", 87969, type = Type.VIDEO),
+    PlacementItem("Direct Video", 82090, type = Type.VIDEO),
     PlacementItem("Vast Video", 84777, lineItemId = 178822, creativeId = 503585, type = Type.VIDEO),
     PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO)
 )
