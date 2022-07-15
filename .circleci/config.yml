@@ -158,17 +158,22 @@ workflows:
   version: 2.1
   android_sdk_workflow:
     jobs:
-      - hold:
-          type: approval
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           filters:
             tags:
               ignore: /^v.*/
+      - approve_release:
+          type: approval
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              only: develop
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
           requires:
-            - hold
+            - approve_release
           filters:
             branches:
               ignore: /.*/
