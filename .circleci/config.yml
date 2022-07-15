@@ -163,8 +163,17 @@ workflows:
           filters:
             tags:
               ignore: /^v.*/
+      - approve_release:
+          type: approval
+          requires:
+            - test_superawesome_base
+          filters:
+            branches:
+              only: develop
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
+          requires:
+            - approve_release
           filters:
             branches:
               ignore: /.*/
@@ -173,7 +182,7 @@ workflows:
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - prep_deploy
           filters:
             branches:
               only: develop
