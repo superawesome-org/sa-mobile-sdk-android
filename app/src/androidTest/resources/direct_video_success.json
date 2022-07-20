@@ -1,0 +1,68 @@
+{
+  "programmaticUuid": null,
+  "creative": {
+    "id": 503276,
+    "format": "video",
+    "details": {
+      "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl.mp4",
+      "image": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl.mp4",
+      "video": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl.mp4",
+      "placement_format": "video",
+      "width": 600,
+      "height": 480,
+      "transcodedVideos": [
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl.mp4",
+          "bitrate": 720
+        },
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl-med.mp4",
+          "bitrate": 540
+        },
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl-low.mp4",
+          "bitrate": 360
+        },
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl.m3u8",
+          "bitrate": 1800
+        },
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl-watermark.mp4",
+          "bitrate": 720
+        },
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl-med-watermark.mp4",
+          "bitrate": 540
+        },
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl-low-watermark.mp4",
+          "bitrate": 360
+        },
+        {
+          "url": "/pjWzF4EgyPXyV1XGdORt0BtJGpXKDPMl.m3u8",
+          "bitrate": 1800
+        }
+      ],
+      "duration": 14,
+      "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/82090/176803/503276/?sdkVersion=unknown&rnd=ecbf2714-041b-4f3f-8098-59cbe3bf0eb4&bundle=com.superawesome&device=web&country=TR&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgzLjAuNDEwMy45NyBTYWZhcmkvNTM3LjM2.fNi_jam5Bd9ip_c68rVpQWyuOY_Az3Jsv05mC2mCsnM&tip=eyJhbGciOiJIUzI1NiJ9.OTQuNTQuMjI5LjA.ERSeGwexXkfxq8g40qwGMZUXbij8nZBk1JOF181GM0M"
+    }
+  },
+  "advertiserId": 4,
+  "publisherId": 4,
+  "is_fill": false,
+  "is_fallback": false,
+  "campaign_type": 0,
+  "is_house": true,
+  "safe_ad_approved": true,
+  "show_padlock": true,
+  "line_item_id": 176803,
+  "moat": 0.1,
+  "test": false,
+  "campaign_id": 49137,
+  "app": 41037,
+  "device": "web",
+  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgzLjAuNDEwMy45NyBTYWZhcmkvNTM3LjM2.fNi_jam5Bd9ip_c68rVpQWyuOY_Az3Jsv05mC2mCsnM",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.OTQuNTQuMjI5LjA.ERSeGwexXkfxq8g40qwGMZUXbij8nZBk1JOF181GM0M",
+  "is_vpaid": false
+}
