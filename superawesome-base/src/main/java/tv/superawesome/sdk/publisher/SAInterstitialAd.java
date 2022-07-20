@@ -137,6 +137,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         closeButton.setLayoutParams(buttonLayout);
         closeButton.setOnClickListener(v -> close());
+        closeButton.setContentDescription("Close");
 
         // set the view hierarchy
         parent.addView(interstitialBanner);

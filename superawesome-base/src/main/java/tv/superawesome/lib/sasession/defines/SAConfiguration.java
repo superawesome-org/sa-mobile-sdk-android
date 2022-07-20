@@ -12,7 +12,8 @@ package tv.superawesome.lib.sasession.defines;
 public enum SAConfiguration {
     DEV(-1),
     PRODUCTION(0),
-    STAGING(1);
+    STAGING(1),
+    UITESTING(2);
 
     private final int value;
 
@@ -35,7 +36,7 @@ public enum SAConfiguration {
     /**
      * Factory creation method from an integer value
      *
-     * @param configuration integer value (should be either 0 or 1)
+     * @param configuration integer value (should be either 0, 1 or 2)
      * @return              a new SAConfiguration enum
      */
     public static SAConfiguration fromValue (int configuration) {
@@ -44,6 +45,8 @@ public enum SAConfiguration {
                 return PRODUCTION;
             case 1:
                 return STAGING;
+            case 2:
+                return UITESTING;
             default:
                 return DEV;
         }
