@@ -30,8 +30,7 @@ public class SASession implements ISASession {
     private final static String      DEV_URL = "https://ads.dev.superawesome.tv/v2";
     private final static String      PRODUCTION_URL = "https://ads.superawesome.tv/v2";
     private final static String      STAGING_URL = "https://ads.staging.superawesome.tv/v2";
-    private final static String      UITESTING_URL = "http://10.0.2.2:8080"; // VAPOR
-    //private final static String      UITESTING_URL = "http://localhost:8080"; // WIREMOCK
+    private final static String      UITESTING_URL = "http://localhost:8080";
     private final static String      DEVICE_PHONE = "phone";
     private final static String      DEVICE_TABLET = "tablet";
 
