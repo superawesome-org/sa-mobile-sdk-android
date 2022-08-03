@@ -1,9 +1,9 @@
 package tv.superawesome.demoapp
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.lib.sabumperpage.SABumperPage
@@ -11,6 +11,7 @@ import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVersion
 import tv.superawesome.sdk.publisher.SAVideoAd
+import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 val data = listOf(
     HeaderItem("Banners"),
@@ -30,7 +31,7 @@ val data = listOf(
     PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO)
 )
 
-class MainActivity : Activity() {
+class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +72,33 @@ class MainActivity : Activity() {
             SAVideoAd.disableParentalGate()
             SAVideoAd.disableBumperPage()
             SAVideoAd.enableCloseButtonNoDelay()
+        }
+        settingsButton.setOnClickListener {
+            val dialog = SettingsDialogFragment()
+            dialog.show(supportFragmentManager, "settings")
+            dialog.onDismissListener = {
+                updateSettings()
+            }
+        }
+    }
+
+    private fun updateSettings() {
+        val app = application as? MyApplication ?: return
+        val config = app.settings.environment
+        bannerView.setConfiguration(config)
+        SAInterstitialAd.setConfiguration(config)
+        SAVideoAd.setConfiguration(config)
+
+        when (app.settings.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+            }
+            CloseButtonState.Hidden -> {
+                SAVideoAd.disableCloseButton()
+            }
         }
     }
 
@@ -138,6 +166,7 @@ class MainActivity : Activity() {
     private fun configureVideoAd() {
         SAVideoAd.enableCloseButton()
         SAVideoAd.setListener { placementId, event ->
+            updateMessage(placementId, event)
             Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
 
             if (event == SAEvent.adLoaded) {
@@ -148,6 +177,7 @@ class MainActivity : Activity() {
 
     private fun configureInterstitialAd() {
         SAInterstitialAd.setListener { placementId, event ->
+            updateMessage(placementId, event)
             Log.i(TAG, "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
             if (event == SAEvent.adLoaded) {
@@ -158,11 +188,18 @@ class MainActivity : Activity() {
 
     private fun configureBannerAd() {
         bannerView.visibility = View.VISIBLE
-        bannerView.setListener { _, event ->
+        bannerView.setListener { placementId, event ->
+            updateMessage(placementId, event)
+
             if (event == SAEvent.adLoaded) {
                 bannerView.play(this@MainActivity)
             }
         }
+    }
+
+    private fun updateMessage(placementId: Int, event: SAEvent) {
+        val message = "$placementId $event"
+        subtitleTextView.text = message
     }
 }
 
