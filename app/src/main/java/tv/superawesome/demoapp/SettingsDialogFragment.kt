@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
@@ -12,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 
 class SettingsDialogFragment : DialogFragment() {
-
     var onDismissListener: (() -> Unit)? = null
     private var app = (activity?.application as? MyApplication)
 
@@ -24,13 +24,12 @@ class SettingsDialogFragment : DialogFragment() {
 
     override fun getTheme(): Int = R.style.AppTheme_DialogOverlay
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_settings, null, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_settings, null, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
