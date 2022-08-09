@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp
 
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
@@ -48,5 +49,15 @@ class BannerUITest {
         CommonInteraction.clickItemAt(2)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
+
+    @Test
+    fun test_safeAdVisible() {
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/banner_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(2)
+
+        ViewTester().waitForView(withContentDescription("Safe Ad Logo"))
     }
 }

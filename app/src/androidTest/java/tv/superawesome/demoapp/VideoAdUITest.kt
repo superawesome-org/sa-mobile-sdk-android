@@ -2,6 +2,7 @@ package tv.superawesome.demoapp
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -109,5 +110,15 @@ class VideoAdUITest {
         CommonInteraction.clickItemAt(11)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
+
+    @Test
+    fun test_vast_safeAdVisible() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vast_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(11)
+
+        ViewTester().waitForView(ViewMatchers.withContentDescription("Safe Ad Logo"))
     }
 }
