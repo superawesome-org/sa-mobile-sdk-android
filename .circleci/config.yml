@@ -176,7 +176,7 @@ workflows:
           filters:
             tags:
               ignore: /^v.*/
-      -semantic_release_dry_run:
+      - semantic_release_dry_run:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
