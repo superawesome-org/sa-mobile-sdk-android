@@ -183,7 +183,7 @@ workflows:
           filters:
             branches:
               only: develop          
-      - approve_dry_run_output:
+      - approve_dry_run_and_release:
           type: approval
           requires:
             - semantic_release_dry_run
@@ -193,7 +193,7 @@ workflows:
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
           requires:
-            - approve_dry_run_output
+            - approve_dry_run_and_release
           filters:
             branches:
               ignore: /.*/
