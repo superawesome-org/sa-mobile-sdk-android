@@ -1,27 +1,22 @@
 package tv.superawesome.demoapp
 
-import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
-import org.hamcrest.Matchers.anything
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
+import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.SettingsInteraction
+import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
-import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
-import tv.superawesome.demoapp.util.WireMockHelper.stubSuccess
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
-import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
-import tv.superawesome.lib.sasession.defines.SAConfiguration
-import tv.superawesome.sdk.publisher.SAVideoAd
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -29,50 +24,30 @@ class VideoAdUITest {
     @get:Rule
     var wireMockRule = WireMockRule(8080)
 
-    @Before
-    fun setup() {
-        SAVideoAd.setConfiguration(SAConfiguration.UITESTING)
-    }
-
     @Test
     fun test_CloseButtonWithNoDelay() {
         // Given
-        stubCommonPaths()
-        stubSuccess("82090", "direct_video_success.json")
-
-        launchActivity<MainActivity>()
+        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json") {
+            SettingsInteraction.closeNoDelay()
+        }
 
         // When the close button is configured to be displayed with no delay
-        onView(withId(R.id.config2Button))
-            .perform(waitUntil(isCompletelyDisplayed()), click(), click())
-
-        onData(anything()).inAdapterView(withId(R.id.listView))
-            .atPosition(12)
-            .perform(click())
+        CommonInteraction.clickItemAt(11)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
 
         // Then
-        isVisible()
         verifyUrlPathCalled("/moat")
     }
 
     @Test
     fun test_CloseButtonWithDelay() {
         // Given
-        stubCommonPaths()
-        stubSuccess("82090", "direct_video_success.json")
-
-        launchActivity<MainActivity>()
+        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json")
 
         // When the close button is configured to be displayed with a delay
-        onView(withId(R.id.config1Button))
-            .perform(waitUntil(isCompletelyDisplayed()), click())
-
-        onData(anything()).inAdapterView(withId(R.id.listView))
-            .atPosition(12)
-            .perform(click())
+        CommonInteraction.clickItemAt(11)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
@@ -84,5 +59,55 @@ class VideoAdUITest {
 
         verifyUrlPathCalled("/moat")
         verifyUrlPathCalled("/event")
+    }
+
+    @Test
+    fun test_vast_adLoading() {
+        testAdLoading(
+            "88406",
+            "video_vast_success.json",
+            9,
+            TestColors.vastYellow
+        )
+    }
+
+    @Test
+    fun test_vpaid_adLoading() {
+        testAdLoading(
+            "89056",
+            "video_vpaid_success.json",
+            10,
+            TestColors.vpaidYellow
+        )
+    }
+
+    @Test
+    fun test_direct_adLoading() {
+        testAdLoading(
+            "87969",
+            "video_direct_success.json",
+            11,
+            TestColors.directYellow
+        )
+    }
+
+    @Test
+    fun test_adFailure() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithFailureStub(placement)
+
+        CommonInteraction.clickItemAt(11)
+
+        CommonInteraction.checkSubtitle("$placement adFailedToLoad")
+    }
+
+    @Test
+    fun test_adNotFound() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
+
+        CommonInteraction.clickItemAt(11)
+
+        CommonInteraction.checkSubtitle("$placement adEmpty")
     }
 }
