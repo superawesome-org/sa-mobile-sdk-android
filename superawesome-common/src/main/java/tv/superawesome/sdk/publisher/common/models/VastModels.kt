@@ -16,8 +16,9 @@ data class VastAd(
     val completeEvents: List<String>,
     val clickTrackingEvents: List<String>,
 ) {
-    fun merge(from: VastAd): VastAd =
-        copy(
+    fun merge(fromAd: VastAd?): VastAd {
+        val from = fromAd ?: return this
+        return copy(
             url = from.url ?: url,
             clickThroughUrl = from.clickThroughUrl ?: clickThroughUrl,
             errorEvents = errorEvents.toMutableList().also { it.addAll(from.errorEvents) },
@@ -37,6 +38,7 @@ data class VastAd(
             media = this.media.toMutableList().also { it.addAll(from.media) },
             redirect = null
         )
+    }
 }
 
 enum class VastType {
