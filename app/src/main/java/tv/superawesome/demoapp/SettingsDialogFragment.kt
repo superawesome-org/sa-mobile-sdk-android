@@ -14,7 +14,9 @@ import tv.superawesome.lib.sasession.defines.SAConfiguration
 
 class SettingsDialogFragment : DialogFragment() {
     var onDismissListener: (() -> Unit)? = null
-    private var app = (activity?.application as? MyApplication)
+
+    private val app: MyApplication?
+        get() = activity?.application as? MyApplication
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -38,7 +40,7 @@ class SettingsDialogFragment : DialogFragment() {
             dismiss()
         }
         uiTestingButton.setOnClickListener {
-            (activity?.application as? MyApplication)?.updateSettings {
+            app?.updateSettings {
                 it.copy(environment = SAConfiguration.UITESTING)
             }
         }

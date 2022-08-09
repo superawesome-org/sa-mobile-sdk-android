@@ -45,4 +45,14 @@ class InterstitialUITest {
 
         CommonInteraction.checkSubtitle("$placement adFailedToLoad")
     }
+
+    @Test
+    fun test_adNotFound() {
+        val placement = "87970"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
+
+        CommonInteraction.clickItemAt(7)
+
+        CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
 }

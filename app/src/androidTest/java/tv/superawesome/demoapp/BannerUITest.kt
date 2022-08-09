@@ -8,7 +8,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
@@ -23,8 +22,6 @@ class BannerUITest {
     @Test
     fun test_adLoading() {
         CommonInteraction.launchActivityWithSuccessStub("88001", "banner_success.json")
-
-        SettingsInteraction.applyCommonSettings()
 
         CommonInteraction.clickItemAt(2)
 
@@ -41,5 +38,15 @@ class BannerUITest {
         CommonInteraction.clickItemAt(2)
 
         CommonInteraction.checkSubtitle("$placement adFailedToLoad")
+    }
+
+    @Test
+    fun test_adNotFound() {
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
+
+        CommonInteraction.clickItemAt(2)
+
+        CommonInteraction.checkSubtitle("$placement adEmpty")
     }
 }

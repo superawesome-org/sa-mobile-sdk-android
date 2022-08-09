@@ -100,4 +100,14 @@ class VideoAdUITest {
 
         CommonInteraction.checkSubtitle("$placement adFailedToLoad")
     }
+
+    @Test
+    fun test_adNotFound() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
+
+        CommonInteraction.clickItemAt(11)
+
+        CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
 }
