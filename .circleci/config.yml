@@ -57,7 +57,7 @@ jobs:
           name: Check semantic release version
           command: |
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
-            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run --branches ${CIRCLE_BRANCH}
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run
 
   semantic_release:
     <<: *android_config
@@ -180,6 +180,9 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
+          filters:
+            branches:
+              only: develop
       - approve_dry_run_output:
           type: approval
           requires:
