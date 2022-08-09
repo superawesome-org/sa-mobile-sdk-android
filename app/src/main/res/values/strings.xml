@@ -11,4 +11,12 @@
     <string name="config_1">Enable checks</string>
     <string name="config_2">Disable checks</string>
     <string name="banner_ad_content_description">Banner Ad</string>
+    <string name="config">Settings</string>
+    <string name="settings_ui_testing">UI Testing</string>
+    <string name="close">Close</string>
+    <string name="settings_configuration">Environment</string>
+    <string name="settings_production">Production</string>
+    <string name="settings_close_button">Close button</string>
+    <string name="settings_close_immediately">No delay</string>
+    <string name="settings_close_delay">Delay</string>
 </resources>

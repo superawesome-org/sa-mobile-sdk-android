@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp.util
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.test.espresso.*
@@ -104,5 +105,29 @@ open class ViewTester {
                 sleep(waitMillisPerTry)
             }
         throw Exception("Could not find view for $viewMatcher")
+    }
+
+    fun waitForColorInCenter(
+        color: Color,
+        waitMillis: Int = 15000,
+        waitMillisPerTry: Long = 500
+    ) {
+        val maxTries = waitMillis / waitMillisPerTry.toInt()
+        var tries = 0
+
+        for (i in 0..maxTries)
+            try {
+                tries++
+                if (color == ScreenshotUtil.captureColorInCenter()) {
+                    return
+                }
+                sleep(waitMillisPerTry)
+            } catch (e: Exception) {
+                if (tries == maxTries) {
+                    throw e
+                }
+                sleep(waitMillisPerTry)
+            }
+        throw Exception("Could not find color $color")
     }
 }

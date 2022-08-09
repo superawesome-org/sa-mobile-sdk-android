@@ -14,6 +14,17 @@ object WireMockHelper {
         )
     }
 
+    fun stubFailure(placement: String) {
+        stubFor(
+            get(urlPathMatching("/ad/$placement"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(400)
+                        .withBody("")
+                )
+        )
+    }
+
     fun stubCommonPaths() {
         stubFor(
             get(urlPathMatching("/moat"))
@@ -25,6 +36,14 @@ object WireMockHelper {
         )
         stubFor(
             get(urlPathMatching("/event"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
+        stubFor(
+            get(urlPathMatching("/impression"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
