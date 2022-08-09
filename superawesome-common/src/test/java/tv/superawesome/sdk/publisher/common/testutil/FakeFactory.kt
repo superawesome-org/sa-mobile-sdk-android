@@ -9,7 +9,7 @@ object FakeFactory {
     const val exampleParamString = "id=12&name=tester"
     const val exampleVastUrl = "https://www.superAwesome.com"
 
-    fun makeFakeAd(type: CreativeFormatType) = Ad(
+    fun makeFakeAd(type: CreativeFormatType, vastUrl: String = exampleVastUrl) = Ad(
         advertiserId = null,
         publisherId = 123,
         moat = 10.0f,
@@ -36,14 +36,18 @@ object FakeFactory {
                 height = 1,
                 duration = 1,
                 image = exampleUrl,
-                vast = exampleVastUrl
+                vast = vastUrl
             )
         )
     )
 
-    fun makeVastAd(url: String = "www.here.com", redDirect: String? = null) = VastAd(
+    fun makeVastAd(
+        url: String = "www.here.com",
+        redDirect: String? = null,
+        type: VastType = VastType.Invalid
+    ) = VastAd(
         url,
-        type = VastType.Invalid,
+        type = type,
         errorEvents = emptyList(),
         impressionEvents = emptyList(),
         redirect = redDirect,

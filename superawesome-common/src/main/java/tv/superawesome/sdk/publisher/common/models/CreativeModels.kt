@@ -35,9 +35,9 @@ data class CreativeReferral(
 
 @Serializable
 data class CreativeDetail(
-    val url: String,
+    val url: String? = null,
     val image: String? = null,
-    val video: String,
+    val video: String? = null,
     @SerialName("placement_format") val placementFormat: String,
     var tag: String? = null,
     val width: Int,
