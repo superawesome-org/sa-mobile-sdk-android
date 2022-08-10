@@ -45,6 +45,19 @@ jobs:
           command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
+  
+  semantic_release_dry_run:
+    <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
+    steps:
+      - checkout
+      - *generate_github_token
+      - run:
+          name: Check semantic release version
+          command: |
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run
 
   semantic_release:
     <<: *android_config
@@ -163,17 +176,24 @@ workflows:
           filters:
             tags:
               ignore: /^v.*/
-      - approve_release:
-          type: approval
+      - semantic_release_dry_run:
+          context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
+          filters:
+            branches:
+              only: develop          
+      - approve_dry_run_and_release:
+          type: approval
+          requires:
+            - semantic_release_dry_run
           filters:
             branches:
               only: develop
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
           requires:
-            - approve_release
+            - approve_dry_run_and_release
           filters:
             branches:
               ignore: /.*/
