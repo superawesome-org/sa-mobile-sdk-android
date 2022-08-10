@@ -60,7 +60,19 @@ class InterstitialUITest {
     }
 
     @Test
-    fun test_safeAdVisible() {
+    fun test_standard_safeAdVisible() {
+        val placement = "87892"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/interstitial_standard_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(4)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_ksf_safeAdVisible() {
         val placement = "87970"
         CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/interstitial_standard_success_padlock_enabled.json")
 

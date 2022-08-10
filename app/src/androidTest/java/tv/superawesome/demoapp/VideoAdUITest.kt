@@ -135,16 +135,4 @@ class VideoAdUITest {
             .waitForView(withContentDescription("Safe Ad Logo"))
             .check(isVisible())
     }
-
-    @Test
-    fun test_vpaid_safeAdVisible() {
-        val placement = "89056"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vpaid_success_padlock_enabled.json")
-
-        CommonInteraction.clickItemAt(10)
-
-        ViewTester()
-            .waitForView(withContentDescription("Safe Ad Logo"))
-            .check(isVisible())
-    }
 }
