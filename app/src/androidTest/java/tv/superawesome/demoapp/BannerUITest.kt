@@ -12,6 +12,7 @@ import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
@@ -58,6 +59,8 @@ class BannerUITest {
 
         CommonInteraction.clickItemAt(2)
 
-        ViewTester().waitForView(withContentDescription("Safe Ad Logo"))
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
     }
 }

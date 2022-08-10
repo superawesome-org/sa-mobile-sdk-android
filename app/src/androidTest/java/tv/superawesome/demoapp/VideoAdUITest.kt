@@ -2,7 +2,6 @@ package tv.superawesome.demoapp
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -17,6 +16,7 @@ import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
@@ -113,12 +113,38 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_vast_safeAdVisible() {
+    fun test_direct_safeAdVisible() {
         val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vast_success_padlock_enabled.json")
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_direct_success_padlock_enabled.json")
 
         CommonInteraction.clickItemAt(11)
 
-        ViewTester().waitForView(ViewMatchers.withContentDescription("Safe Ad Logo"))
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_vast_safeAdVisible() {
+        val placement = "88406"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vast_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(9)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_vpaid_safeAdVisible() {
+        val placement = "89056"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vpaid_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(10)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
     }
 }
