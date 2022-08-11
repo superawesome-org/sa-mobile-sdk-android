@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp
 
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
@@ -11,6 +12,7 @@ import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
@@ -48,5 +50,17 @@ class BannerUITest {
         CommonInteraction.clickItemAt(2)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
+
+    @Test
+    fun test_safeAdVisible() {
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/banner_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(2)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
     }
 }
