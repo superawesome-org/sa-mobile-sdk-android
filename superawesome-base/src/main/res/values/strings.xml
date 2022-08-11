@@ -16,5 +16,4 @@
     <string name="superawesome__video_duration0">Ad: 0</string>
     <string name="superawesome__video_durationErr">Ad: Err</string>
     <string name="superawesome__video_durationN">Ad: %1$d</string>
-    <string name="superawesome__safe_ad_logo_content_description">Safe Ad Logo</string>
 </resources>

@@ -70,10 +70,9 @@ public class AdVideoPlayerControllerView extends RelativeLayout implements IVide
         addView(smallShowMore);
 
         padlock = VideoComponentFactory.getPadlock(PADLOCK_ID, this.getContext());
-        padlock.setContentDescription(context.getString(R.string.superawesome__safe_ad_logo_content_description));
+        padlock.setContentDescription("Safe Ad Logo");
         addView(padlock);
     }
-
 
     public void setShouldShowSmallClickButton (boolean value) {
         if (value) {
