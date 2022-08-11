@@ -9,6 +9,9 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.isVisible
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -54,5 +57,17 @@ class InterstitialUITest {
         CommonInteraction.clickItemAt(7)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
+
+    @Test
+    fun test_standard_safeAdVisible() {
+        val placement = "87892"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/interstitial_standard_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(4)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
     }
 }

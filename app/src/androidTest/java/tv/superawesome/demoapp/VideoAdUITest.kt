@@ -16,6 +16,7 @@ import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
@@ -109,5 +110,29 @@ class VideoAdUITest {
         CommonInteraction.clickItemAt(11)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
+
+    @Test
+    fun test_direct_safeAdVisible() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_direct_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(11)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_vast_safeAdVisible() {
+        val placement = "88406"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vast_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(9)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
     }
 }

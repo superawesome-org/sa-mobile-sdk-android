@@ -39,7 +39,7 @@
   "campaign_type":0,
   "is_house":true,
   "safe_ad_approved":false,
-  "show_padlock":false,
+  "show_padlock":true,
   "line_item_id":181342,
   "moat":0.1,
   "test":false,
