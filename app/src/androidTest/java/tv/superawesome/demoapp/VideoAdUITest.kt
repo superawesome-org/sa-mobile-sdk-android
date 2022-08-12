@@ -37,7 +37,9 @@ class VideoAdUITest {
 
     @Test
     fun test_standard_CloseButtonWithDelay() {
-        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json")
+        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json") {
+            SettingsInteraction.closeDelayed()
+        }
 
         CommonInteraction.clickItemAt(11)
 
@@ -67,7 +69,9 @@ class VideoAdUITest {
 
     @Test
     fun test_vast_CloseButtonWithDelay() {
-        CommonInteraction.launchActivityWithSuccessStub("88406", "video_vast_success.json")
+        CommonInteraction.launchActivityWithSuccessStub("88406", "video_vast_success.json") {
+            SettingsInteraction.closeDelayed()
+        }
 
         CommonInteraction.clickItemAt(9)
 
