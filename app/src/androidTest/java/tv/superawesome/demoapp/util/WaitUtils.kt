@@ -1,6 +1,7 @@
 package tv.superawesome.demoapp.util
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.test.espresso.*
@@ -118,6 +119,7 @@ open class ViewTester {
         for (i in 0..maxTries)
             try {
                 tries++
+                Log.i("gunhanx"," }}}}}} WAIT }} COLOR }}}} ${ScreenshotUtil.captureColorInCenter()}")
                 if (color == ScreenshotUtil.captureColorInCenter()) {
                     return
                 }
