@@ -13,6 +13,7 @@ import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
@@ -34,6 +35,8 @@ class VideoAdUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+
+        verifyUrlPathCalled("/moat")
     }
 
     @Test
@@ -47,6 +50,9 @@ class VideoAdUITest {
             .check(matches(withEffectiveVisibility(Visibility.GONE)))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+
+        verifyUrlPathCalled("/moat")
+        verifyUrlPathCalled("/event")
     }
 
     @Test
