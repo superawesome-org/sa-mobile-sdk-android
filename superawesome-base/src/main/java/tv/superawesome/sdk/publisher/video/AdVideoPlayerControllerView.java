@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import tv.superawesome.sdk.publisher.base.R;
 import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayerControllerView;
 
 
@@ -69,9 +70,9 @@ public class AdVideoPlayerControllerView extends RelativeLayout implements IVide
         addView(smallShowMore);
 
         padlock = VideoComponentFactory.getPadlock(PADLOCK_ID, this.getContext());
+        padlock.setContentDescription("Safe Ad Logo");
         addView(padlock);
     }
-
 
     public void setShouldShowSmallClickButton (boolean value) {
         if (value) {

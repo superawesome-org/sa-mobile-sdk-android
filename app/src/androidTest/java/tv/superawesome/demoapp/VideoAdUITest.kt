@@ -1,9 +1,7 @@
 package tv.superawesome.demoapp
 
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -15,7 +13,7 @@ import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
-import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
@@ -25,40 +23,69 @@ class VideoAdUITest {
     var wireMockRule = WireMockRule(8080)
 
     @Test
-    fun test_CloseButtonWithNoDelay() {
-        // Given
+    fun test_standard_CloseButtonWithNoDelay() {
         CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json") {
             SettingsInteraction.closeNoDelay()
         }
 
-        // When the close button is configured to be displayed with no delay
-        CommonInteraction.clickItemAt(11)
-
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-
-        // Then
-        verifyUrlPathCalled("/moat")
-    }
-
-    @Test
-    fun test_CloseButtonWithDelay() {
-        // Given
-        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json")
-
-        // When the close button is configured to be displayed with a delay
         CommonInteraction.clickItemAt(11)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
+    }
 
-        // Then
-        onView(withContentDescription("Close"))
-            .check(matches(isDisplayed()))
+    @Test
+    fun test_standard_CloseButtonWithDelay() {
+        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json")
 
-        verifyUrlPathCalled("/moat")
-        verifyUrlPathCalled("/event")
+        CommonInteraction.clickItemAt(11)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .check(matches(withEffectiveVisibility(Visibility.GONE)))
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_vast_CloseButtonWithNoDelay() {
+        CommonInteraction.launchActivityWithSuccessStub("88406", "video_vast_success.json") {
+            SettingsInteraction.closeNoDelay()
+        }
+
+        CommonInteraction.clickItemAt(9)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_vast_CloseButtonWithDelay() {
+        CommonInteraction.launchActivityWithSuccessStub("88406", "video_vast_success.json")
+
+        CommonInteraction.clickItemAt(9)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .check(matches(withEffectiveVisibility(Visibility.GONE)))
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_vpaid_CloseButton() {
+        CommonInteraction.launchActivityWithSuccessStub("89056", "video_vpaid_success.json")
+
+        CommonInteraction.clickItemAt(10)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
     }
 
     @Test
@@ -109,5 +136,29 @@ class VideoAdUITest {
         CommonInteraction.clickItemAt(11)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
+
+    @Test
+    fun test_direct_safeAdVisible() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_direct_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(11)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_vast_safeAdVisible() {
+        val placement = "88406"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vast_success_padlock_enabled.json")
+
+        CommonInteraction.clickItemAt(9)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
     }
 }

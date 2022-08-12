@@ -45,10 +45,10 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
         closeButton.layoutParams = buttonLayout
         closeButton.setOnClickListener { close() }
+        closeButton.contentDescription = "Close"
 
         return@lazy closeButton
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
