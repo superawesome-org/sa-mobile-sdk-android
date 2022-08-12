@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp
 
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -8,7 +9,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.*
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -54,5 +55,29 @@ class InterstitialUITest {
         CommonInteraction.clickItemAt(7)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
+    }
+
+    @Test
+    fun test_standard_CloseButton() {
+        CommonInteraction.launchActivityWithSuccessStub("87892", "interstitial_standard_success.json")
+
+        CommonInteraction.clickItemAt(4)
+
+        ViewTester()
+            .waitForView(ViewMatchers.withContentDescription("Close"))
+            .perform(waitUntil(ViewMatchers.isDisplayed()))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_ksf_CloseButton() {
+        CommonInteraction.launchActivityWithSuccessStub("87970", "interstitial_ksf_success.json")
+
+        CommonInteraction.clickItemAt(7)
+
+        ViewTester()
+            .waitForView(ViewMatchers.withContentDescription("Close"))
+            .perform(waitUntil(ViewMatchers.isDisplayed()))
+            .check(isVisible())
     }
 }
