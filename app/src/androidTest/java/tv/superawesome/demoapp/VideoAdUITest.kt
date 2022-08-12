@@ -1,6 +1,5 @@
 package tv.superawesome.demoapp
 
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
@@ -11,11 +10,8 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
-import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
-import tv.superawesome.demoapp.util.isVisible
-import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -47,7 +43,7 @@ class VideoAdUITest {
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
-            .check(matches(withEffectiveVisibility(Visibility.GONE)))
+            .check(isGone())
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
 
@@ -77,7 +73,7 @@ class VideoAdUITest {
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
-            .check(matches(withEffectiveVisibility(Visibility.GONE)))
+            .check(isGone())
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
     }
