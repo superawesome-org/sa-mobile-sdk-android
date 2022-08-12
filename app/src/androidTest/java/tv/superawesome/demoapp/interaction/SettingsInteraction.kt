@@ -18,6 +18,11 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun closeDelayed() {
+        onView(withId(R.id.closeDelayedButton))
+            .perform(click())
+    }
+
     fun closeNoDelay() {
         onView(withId(R.id.closeImmediatelyButton))
             .perform(click())

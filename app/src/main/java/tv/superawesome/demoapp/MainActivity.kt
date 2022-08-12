@@ -40,8 +40,6 @@ class MainActivity : FragmentActivity() {
 
         SABumperPage.overrideName("AwesomeAds Demo")
 
-        resetSettings()
-
         initUI()
 
         configureBannerAd()
@@ -83,11 +81,6 @@ class MainActivity : FragmentActivity() {
                 updateSettings()
             }
         }
-    }
-
-    private fun resetSettings() {
-        val app = application as? MyApplication ?: return
-        app.settings = SettingsData()
     }
 
     private fun updateSettings() {
