@@ -2,8 +2,10 @@ package tv.superawesome.demoapp
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -60,6 +62,19 @@ class VideoAdUITest {
 
         verifyUrlPathCalled("/moat")
         verifyUrlPathCalled("/event")
+    }
+
+    @Test
+    fun test_auto_close_on_finish() {
+        testAdLoading(
+            "87969",
+            "video_direct_success.json",
+            11,
+            TestColors.directYellow
+        )
+        ViewTester()
+            .waitForView(withId(R.id.subtitleTextView))
+            .perform(waitUntil(isDisplayed()))
     }
 
     @Test
