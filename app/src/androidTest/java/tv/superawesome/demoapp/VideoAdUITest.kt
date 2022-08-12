@@ -94,6 +94,18 @@ class VideoAdUITest {
             .check(isVisible())
     }
 
+    fun test_auto_close_on_finish() {
+        testAdLoading(
+            "87969",
+            "video_direct_success.json",
+            11,
+            TestColors.directYellow
+        )
+        ViewTester()
+            .waitForView(withId(R.id.subtitleTextView))
+            .perform(waitUntil(isDisplayed()))
+    }
+
     @Test
     fun test_vast_adLoading() {
         testAdLoading(
