@@ -11,6 +11,7 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
 import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 class SettingsDialogFragment : DialogFragment() {
     var onDismissListener: (() -> Unit)? = null
@@ -50,6 +51,17 @@ class SettingsDialogFragment : DialogFragment() {
             }
         }
 
+        closeImmediatelyButton.setOnClickListener {
+            app?.updateSettings {
+                it.copy(closeButtonState = CloseButtonState.VisibleImmediately)
+            }
+        }
+
+        closeDelayedButton.setOnClickListener {
+            app?.updateSettings {
+                it.copy(closeButtonState = CloseButtonState.VisibleWithDelay)
+            }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

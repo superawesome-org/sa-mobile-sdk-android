@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp
 
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -12,6 +13,7 @@ import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.isVisible
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -68,6 +70,30 @@ class InterstitialUITest {
 
         ViewTester()
             .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_standard_CloseButton() {
+        CommonInteraction.launchActivityWithSuccessStub("87892", "interstitial_standard_success.json")
+
+        CommonInteraction.clickItemAt(4)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(ViewMatchers.isDisplayed()))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_ksf_CloseButton() {
+        CommonInteraction.launchActivityWithSuccessStub("87970", "interstitial_ksf_success.json")
+
+        CommonInteraction.clickItemAt(7)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(ViewMatchers.isDisplayed()))
             .check(isVisible())
     }
 }
