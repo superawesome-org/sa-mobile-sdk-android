@@ -2,13 +2,12 @@
 
 package tv.superawesome.sdk.publisher.common.models
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
+import kotlinx.serialization.*
+import tv.superawesome.sdk.publisher.common.serializers.AdSerializer
 
 const val CPI_CAMPAIGN_ID = 1
 
-@Serializable
+@Serializable(with = AdSerializer::class)
 data class Ad(
     val advertiserId: Int? = null,
     val publisherId: Int,
@@ -21,6 +20,7 @@ data class Ad(
     @SerialName("safe_ad_approved") val safeAdApproved: Boolean,
     @SerialName("show_padlock") val showPadlock: Boolean,
     @SerialName("line_item_id") val lineItemId: Int,
+    @SerialName("ksfRequest") val ksfRequest: String,
     val test: Boolean,
     val app: Int,
     val device: String,
