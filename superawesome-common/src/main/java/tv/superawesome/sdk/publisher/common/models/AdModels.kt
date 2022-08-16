@@ -20,7 +20,6 @@ data class Ad(
     @SerialName("safe_ad_approved") val safeAdApproved: Boolean,
     @SerialName("show_padlock") val showPadlock: Boolean,
     @SerialName("line_item_id") val lineItemId: Int,
-    @SerialName("ksfRequest") val ksfRequest: String,
     val test: Boolean,
     val app: Int,
     val device: String,

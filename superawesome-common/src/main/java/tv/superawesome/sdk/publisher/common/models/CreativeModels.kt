@@ -11,7 +11,8 @@ data class Creative(
     @SerialName("click_url") val clickUrl: String? = null,
     val details: CreativeDetail,
     val bumper: Boolean? = null,
-    val referral: CreativeReferral? = null
+    val referral: CreativeReferral? = null,
+    val isKSF: Boolean = false
 )
 
 @Serializable

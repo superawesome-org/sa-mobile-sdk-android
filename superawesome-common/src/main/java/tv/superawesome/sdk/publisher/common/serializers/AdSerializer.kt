@@ -22,7 +22,6 @@ class AdSerializer: KSerializer<Ad> {
 		element<Int>("campaign_id")
 		element<Boolean>("is_house")
 		element<Boolean>("safe_ad_approved")
-		element<String>("ksfRequest")
 		element<Boolean>("show_padlock")
 		element<Int>("line_item_id")
 		element<Boolean>("test")
@@ -46,22 +45,15 @@ class AdSerializer: KSerializer<Ad> {
 			encodeIntElement(descriptor, 5, value.campaignType)
 			encodeIntElement(descriptor, 6, value.campaignId)
 			encodeBooleanElement(descriptor, 7, value.isHouse)
-			encodeStringElement(descriptor, 8, value.ksfRequest)
-			encodeBooleanElement(descriptor, 9, value.safeAdApproved)
-
-			if (value.showPadlock && value.ksfRequest != null && value.ksfRequest.isNotEmpty()) {
-				encodeBooleanElement(descriptor, 10, false)
-			} else {
-				encodeBooleanElement(descriptor, 10, value.showPadlock)
-			}
-
-			encodeIntElement(descriptor, 11, value.lineItemId)
-			encodeBooleanElement(descriptor, 12, value.test)
-			encodeIntElement(descriptor, 13, value.app)
-			encodeStringElement(descriptor, 14, value.device)
+			encodeBooleanElement(descriptor, 8, value.safeAdApproved)
+			encodeBooleanElement(descriptor, 9, value.showPadlock)
+			encodeIntElement(descriptor, 10, value.lineItemId)
+			encodeBooleanElement(descriptor, 11, value.test)
+			encodeIntElement(descriptor, 12, value.app)
+			encodeStringElement(descriptor, 13, value.device)
 
 			// Custom Types
-			encodeSerializableElement(Creative.serializer().descriptor, index = 15, Creative.serializer(), value.creative)
+			encodeSerializableElement(Creative.serializer().descriptor, index = 14, Creative.serializer(), value.creative)
 		}
 	}
 
@@ -77,7 +69,6 @@ class AdSerializer: KSerializer<Ad> {
 			var campaignId = 0
 			var isHouse = false
 			var safeAdApproved = false
-			var ksfRequest = ""
 			var showPadlock = false
 			var lineItemId = 0
 			var test = false
@@ -112,16 +103,19 @@ class AdSerializer: KSerializer<Ad> {
 					6 -> campaignId = decodeIntElement(descriptor, 6)
 					7 -> isHouse = decodeBooleanElement(descriptor, 7)
 					8 -> safeAdApproved = decodeBooleanElement(descriptor, 8)
-					9 -> ksfRequest = decodeStringElement(descriptor, 9)
-					10 -> showPadlock = decodeBooleanElement(descriptor, 10)
-					11 -> lineItemId = decodeIntElement(descriptor, 11)
-					12 -> test = decodeBooleanElement(descriptor, 12)
-					13 -> app = decodeIntElement(descriptor, 13)
-					14 -> device = decodeStringElement(descriptor, 14)
-					15 -> creative = decodeSerializableElement(descriptor, 15, Creative.serializer())
+					9 -> showPadlock = decodeBooleanElement(descriptor, 9)
+					10 -> lineItemId = decodeIntElement(descriptor, 10)
+					11 -> test = decodeBooleanElement(descriptor, 11)
+					12 -> app = decodeIntElement(descriptor, 12)
+					13 -> device = decodeStringElement(descriptor, 13)
+					14 -> creative = decodeSerializableElement(descriptor, 14, Creative.serializer())
 					CompositeDecoder.DECODE_DONE -> break
 					else -> error("Unexpected index: $index")
 				}
+			}
+
+			if (showPadlock && creative.isKSF) {
+				showPadlock = false
 			}
 
 			Ad(
@@ -136,7 +130,6 @@ class AdSerializer: KSerializer<Ad> {
 				safeAdApproved,
 				showPadlock,
 				lineItemId,
-				ksfRequest,
 				test,
 				app,
 				device,
