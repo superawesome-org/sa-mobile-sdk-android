@@ -53,7 +53,7 @@ class AdSerializer: KSerializer<Ad> {
 			encodeStringElement(descriptor, 13, value.device)
 
 			// Custom Types
-			encodeSerializableElement(Creative.serializer().descriptor, index = 14, Creative.serializer(), value.creative)
+			encodeSerializableElement(descriptor, index = 14, Creative.serializer(), value.creative)
 		}
 	}
 
