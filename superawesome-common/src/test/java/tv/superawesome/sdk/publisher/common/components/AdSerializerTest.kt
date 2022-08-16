@@ -4,7 +4,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.models.*
-import tv.superawesome.sdk.publisher.common.testutil.FakeFactory
 import tv.superawesome.sdk.publisher.common.testutil.ResourceReader
 import kotlin.test.assertEquals
 
@@ -12,14 +11,15 @@ class AdSerializerTest {
 
 	private val json = Json {
 		ignoreUnknownKeys = true
-		useAlternativeNames = false
 	}
 
 	@Test
 	fun `test_decoding_successfully`() = runBlocking {
 
-		val jsonFile = ResourceReader.readResource("mock_ksf_interstitial.json")
-		val ad = json.decodeFromString(Ad.serializer(), jsonFile)
+		val ad = json.decodeFromString(
+			Ad.serializer(),
+			ResourceReader.readResource("mock_ksf_interstitial.json")
+		)
 		val creative = ad.creative
 		val creativeDetails = ad.creative.details
 
@@ -32,6 +32,7 @@ class AdSerializerTest {
 		assertEquals(0.1f, ad.moat)
 		assertEquals(true, ad.isHouse)
 		assertEquals(true, ad.safeAdApproved)
+		// showPadlock is false although it is true in the response as isKSF is true
 		assertEquals(false, ad.showPadlock)
 		assertEquals(176805, ad.lineItemId)
 		assertEquals(false, ad.test)
@@ -49,7 +50,7 @@ class AdSerializerTest {
 		// Creative Detail
 		assertEquals("mobile_display", creativeDetails.placementFormat)
 		assertEquals(
-			"<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n    </header>\n    <body><script type=\"text/javascript\" src=\"https://eu-west-1-ads.superawesome.tv/v2/ad.js?placement=84799&lineItemId=176805&creativeId=499595&sdkVersion=android_8.3.6_admob&rnd=71922ddc-06aa-4f56-9496-4ae0af720b16&bundle=tv.superawesome.demoapp&dauid=580289352&ct=2&lang=en_US&device=phone&pos=7&timestamp=_TIMESTAMP_&skip=1&playbackmethod=5&startdelay=0&instl=1&isProgrammatic=true\"></script></body>\n    </html>",
+			"\"<html></html>\"",
 			creativeDetails.tag
 		)
 		assertEquals(320, creativeDetails.width)
@@ -59,8 +60,6 @@ class AdSerializerTest {
 
 	@Test
 	fun `test_encoding_successfully`() = runBlocking {
-
-		val jsonFile = ResourceReader.readResource("mock_ksf_interstitial.json")
 
 		val ad = Ad(
 			advertiserId = 4,
@@ -72,30 +71,37 @@ class AdSerializerTest {
 			campaignId = 49137,
 			isHouse = true,
 			safeAdApproved = true,
-			showPadlock = true,
+			showPadlock = false,
 			lineItemId = 176805,
 			test = false,
 			app = 41037,
 			device = "phone",
 			creative = Creative(
 				id = 499595,
+				name = "QA_SDK_Interstitial_KSF_Latest_Test",
 				format = CreativeFormatType.Tag,
-				referral = CreativeReferral(),
+				clickUrl = "undefined",
+				referral = null,
 				details = CreativeDetail(
-					url = FakeFactory.exampleUrl,
-					video = "",
 					placementFormat = "mobile_display",
+					tag = "\"<html></html>\"",
 					width = 320,
 					height = 480,
-					duration = 0,
-					image = FakeFactory.exampleUrl,
-					vast = ""
-				)
+					duration = 0
+				),
+				bumper = false,
+				isKSF = true
 			)
 		)
 
-		val encodedAd = json.encodeToString(Ad.serializer(), ad)
+		val expectedAd = json.decodeFromString(
+			Ad.serializer(),
+			ResourceReader.readResource("mock_ksf_interstitial.json")
+		)
 
-		assertEquals(jsonFile, encodedAd)
+		val encodedAd = json.encodeToString(Ad.serializer(), ad)
+		val decodedAd = json.decodeFromString(Ad.serializer(), encodedAd)
+
+		assertEquals(expectedAd, decodedAd)
 	}
 }

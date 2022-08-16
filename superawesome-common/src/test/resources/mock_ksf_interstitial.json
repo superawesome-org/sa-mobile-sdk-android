@@ -14,7 +14,7 @@
     "freqCappingLimit": 0,
     "details": {
       "placement_format": "mobile_display",
-      "tag": "<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n    </header>\n    <body><script type=\"text/javascript\" src=\"https://eu-west-1-ads.superawesome.tv/v2/ad.js?placement=84799&lineItemId=176805&creativeId=499595&sdkVersion=android_8.3.6_admob&rnd=71922ddc-06aa-4f56-9496-4ae0af720b16&bundle=tv.superawesome.demoapp&dauid=580289352&ct=2&lang=en_US&device=phone&pos=7&timestamp=_TIMESTAMP_&skip=1&playbackmethod=5&startdelay=0&instl=1&isProgrammatic=true\"></script></body>\n    </html>",
+      "tag": "\"<html></html>\"",
       "width": 320,
       "height": 480,
       "duration": 0
