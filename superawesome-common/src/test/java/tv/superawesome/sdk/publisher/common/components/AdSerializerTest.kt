@@ -32,7 +32,7 @@ class AdSerializerTest {
 		assertEquals(0.1f, ad.moat)
 		assertEquals(true, ad.isHouse)
 		assertEquals(true, ad.safeAdApproved)
-		// showPadlock is false although it is true in the response as isKSF is true
+		// showPadlock is false although it is true in the response as 'isKSF' is true
 		assertEquals(false, ad.showPadlock)
 		assertEquals(176805, ad.lineItemId)
 		assertEquals(false, ad.test)
