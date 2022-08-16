@@ -118,8 +118,7 @@ class AdSerializer: KSerializer<Ad> {
 				showPadlock = false
 			}
 
-			Ad(
-				advertiserId,
+			Ad(advertiserId,
 				publisherId,
 				moat,
 				isFill,
