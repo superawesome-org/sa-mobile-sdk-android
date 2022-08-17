@@ -43,8 +43,10 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single<IdGeneratorType> { IdGenerator(get(), get(), get(), get()) }
     single<UserAgentProviderType> { UserAgentProvider(get()) }
     single<ConnectionProviderType> { ConnectionProvider(get()) }
+    single<TimeProviderType> { TimeProvider() }
     single<AdQueryMakerType> {
         AdQueryMaker(
+            get(),
             get(),
             get(),
             get(),

@@ -13,6 +13,7 @@ import android.widget.ImageView
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.components.TimeProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
@@ -32,6 +33,7 @@ public class BannerView @JvmOverloads constructor(
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val moatRepository: MoatRepositoryType by inject(MoatRepositoryType::class.java)
+    private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
 
     private var placementId: Int = 0
     private var webView: WebView? = null
@@ -100,11 +102,14 @@ public class BannerView @JvmOverloads constructor(
 
         addWebView()
         showPadlockIfNeeded()
-        val html = moatRepository.startMoatTrackingForDisplay(
+        val moatHtml = moatRepository.startMoatTrackingForDisplay(
             webView as android.webkit.WebView,
             adResponse
         )
-        webView?.loadHTML(data.first, data.second.replace("_MOAT_", html))
+        val bodyHtml = data.second
+            .replace("_MOAT_", moatHtml)
+            .replace("_TIMESTAMP_", timeProvider.millis().toString())
+        webView?.loadHTML(data.first, bodyHtml)
     }
 
     public fun setListener(delegate: SAInterface) {
