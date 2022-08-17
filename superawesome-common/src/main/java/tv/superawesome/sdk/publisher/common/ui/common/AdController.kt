@@ -25,9 +25,9 @@ interface AdControllerType {
     var config: Config
     var closed: Boolean
     var moatLimiting: Boolean
-
     var currentAdResponse: AdResponse?
     var delegate: SAInterface?
+    val shouldShowPadlock: Boolean
 
     fun triggerImpressionEvent(placementId: Int)
     fun triggerViewableImpression(placementId: Int)
@@ -58,9 +58,10 @@ class AdController(
     override var config: Config = Config.default
     override var closed: Boolean = false
     override var moatLimiting: Boolean = Constants.defaultMoatLimitingState
-
     override var currentAdResponse: AdResponse? = null
     override var delegate: SAInterface? = null
+    override val shouldShowPadlock: Boolean
+        get() = currentAdResponse?.shouldShowPadlock() ?: false
 
     private val scope = CoroutineScope(Dispatchers.Main)
     private var parentalGate: ParentalGate? = null

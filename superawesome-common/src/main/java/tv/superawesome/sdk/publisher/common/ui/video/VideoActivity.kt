@@ -55,21 +55,10 @@ class VideoActivity : FullScreenActivity() {
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
         val params = RelativeLayout.LayoutParams(size, size)
 
-        // Chrome
-        val chrome = AdVideoPlayerControllerView(this)
-        chrome.shouldShowPadlock(config.shouldShowPadlock)
-        chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick)
-        chrome.setClickListener {
-            controller.adClicked()
-            controller.handleAdTapForVast(this)
-        }
-        chrome.padlock.setOnClickListener { controller.handleSafeAdTap(this) }
-
         // Video Player
         videoPlayer = VideoPlayer(this)
         videoPlayer.layoutParams = params
         videoPlayer.setController(control)
-        videoPlayer.setControllerView(chrome)
         videoPlayer.setBackgroundColor(Color.BLACK)
         parentLayout.addView(videoPlayer)
 
@@ -95,10 +84,10 @@ class VideoActivity : FullScreenActivity() {
             }
 
             override fun onError(
-                player: IVideoPlayer,
-                error: Throwable,
-                time: Int,
-                duration: Int
+               player: IVideoPlayer,
+               error: Throwable,
+               time: Int,
+               duration: Int
             ) {
                 videoEvents?.error(player, time, duration)
                 controller.adFailedToShow()
@@ -109,10 +98,11 @@ class VideoActivity : FullScreenActivity() {
 
     public override fun playContent() {
         controller.play(placementId)?.let {
+            addChrome()
             it.vast?.let { _ ->
                 videoEvents = get(
-                    clazz = VideoEvents::class.java,
-                    parameters = { parametersOf(it, config.moatLimiting) }
+                   clazz = VideoEvents::class.java,
+                   parameters = { parametersOf(it, config.moatLimiting) }
                 )
                 val filePath = it.filePath ?: ""
                 try {
@@ -141,6 +131,18 @@ class VideoActivity : FullScreenActivity() {
         val height = displayMetrics.heightPixels
         val width = displayMetrics.widthPixels
         videoPlayer.updateLayout(width, height)
+    }
+
+    private fun addChrome() {
+        val chrome = AdVideoPlayerControllerView(this)
+        chrome.shouldShowPadlock(controller.shouldShowPadlock)
+        chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick)
+        chrome.setClickListener {
+            controller.adClicked()
+            controller.handleAdTapForVast(this)
+        }
+        chrome.padlock.setOnClickListener { controller.handleSafeAdTap(this) }
+        videoPlayer.setControllerView(chrome)
     }
 
     companion object {
