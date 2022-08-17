@@ -15,7 +15,6 @@ object Constants {
 
     const val defaultTestMode = false
     const val defaultParentalGate = false
-    const val defaultPadlock = false
     const val defaultBumperPage = false
     const val defaultCloseAtEnd = true
     const val defaultCloseButton = false

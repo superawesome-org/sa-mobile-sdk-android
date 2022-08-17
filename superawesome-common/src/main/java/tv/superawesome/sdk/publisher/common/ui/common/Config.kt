@@ -9,7 +9,6 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 open class Config : Parcelable {
     var moatLimiting: Boolean
     var testEnabled: Boolean
-    var shouldShowPadlock: Boolean
     var isParentalGateEnabled: Boolean
     var isBumperPageEnabled: Boolean
     var shouldShowSmallClick: Boolean
@@ -22,7 +21,6 @@ open class Config : Parcelable {
     constructor(
         moatLimiting: Boolean,
         testEnabled: Boolean,
-        shouldShowPadlock: Boolean,
         isParentalGateEnabled: Boolean,
         isBumperPageEnabled: Boolean,
         shouldShowSmallClick: Boolean,
@@ -34,7 +32,6 @@ open class Config : Parcelable {
     ) {
         this.moatLimiting = moatLimiting
         this.testEnabled = testEnabled
-        this.shouldShowPadlock = shouldShowPadlock
         this.isParentalGateEnabled = isParentalGateEnabled
         this.isBumperPageEnabled = isBumperPageEnabled
         this.shouldShowSmallClick = shouldShowSmallClick
@@ -48,7 +45,6 @@ open class Config : Parcelable {
     protected constructor(parcel: Parcel) {
         moatLimiting = parcel.readByte().toInt() != 0
         testEnabled = parcel.readByte().toInt() != 0
-        shouldShowPadlock = parcel.readByte().toInt() != 0
         isParentalGateEnabled = parcel.readByte().toInt() != 0
         isBumperPageEnabled = parcel.readByte().toInt() != 0
         shouldShowSmallClick = parcel.readByte().toInt() != 0
@@ -64,7 +60,6 @@ open class Config : Parcelable {
     override fun writeToParcel(parcel: Parcel, i: Int) {
         parcel.writeByte((if (moatLimiting) 1 else 0).toByte())
         parcel.writeByte((if (testEnabled) 1 else 0).toByte())
-        parcel.writeByte((if (shouldShowPadlock) 1 else 0).toByte())
         parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
         parcel.writeByte((if (shouldShowSmallClick) 1 else 0).toByte())
@@ -83,7 +78,6 @@ open class Config : Parcelable {
         val default = Config(
             moatLimiting = Constants.defaultMoatLimitingState,
             testEnabled = Constants.defaultTestMode,
-            shouldShowPadlock = Constants.defaultPadlock,
             isParentalGateEnabled = Constants.defaultParentalGate,
             isBumperPageEnabled = Constants.defaultBumperPage,
             shouldShowSmallClick = Constants.defaultSmallClick,
