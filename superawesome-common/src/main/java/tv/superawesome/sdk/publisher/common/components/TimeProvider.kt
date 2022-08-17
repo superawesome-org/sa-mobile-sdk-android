@@ -1,5 +1,7 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import java.util.*
+
 interface TimeProviderType {
     /**
      * Returns the current time in milliseconds.
@@ -8,5 +10,5 @@ interface TimeProviderType {
 }
 
 class TimeProvider : TimeProviderType {
-    override fun millis(): Long = System.currentTimeMillis()
+    override fun millis(): Long = Calendar.getInstance().timeInMillis
 }
