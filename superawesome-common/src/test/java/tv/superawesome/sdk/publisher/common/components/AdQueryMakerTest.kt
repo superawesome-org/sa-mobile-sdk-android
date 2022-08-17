@@ -15,6 +15,9 @@ import kotlin.test.assertEquals
 
 class AdQueryMakerTest : BaseTest() {
     @MockK
+    lateinit var timeProvider: TimeProviderType
+
+    @MockK
     lateinit var deviceType: DeviceType
 
     @MockK
@@ -53,6 +56,7 @@ class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
         every { deviceType.genericType } returns DeviceCategory.tablet
         every { locale.toString() } returns "en_en"
+        every { timeProvider.millis() } returns 12345678912345
 
         // When
         val query = runBlocking { queryMaker.makeAdQuery(request) }
@@ -74,6 +78,7 @@ class AdQueryMakerTest : BaseTest() {
         assertEquals(50, query.install)
         assertEquals(60, query.w)
         assertEquals(70, query.h)
+        assertEquals(12345678912345, query.timestamp)
     }
 
     @Test

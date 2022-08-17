@@ -47,6 +47,7 @@ data class AdQuery(
     @SerialName("instl") val install: Int,
     val w: Int,
     val h: Int,
+    val timestamp: Long
 )
 
 data class AdResponse(

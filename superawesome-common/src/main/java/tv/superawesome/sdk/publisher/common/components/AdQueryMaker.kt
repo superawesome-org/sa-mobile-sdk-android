@@ -21,6 +21,7 @@ class AdQueryMaker(
     private val encoder: EncoderType,
     private val json: Json,
     private val locale: Locale,
+    private val timeProvider: TimeProviderType,
 ) : AdQueryMakerType {
 
     override suspend fun makeAdQuery(request: AdRequest): AdQuery = AdQuery(
@@ -39,7 +40,8 @@ class AdQueryMaker(
         startDelay = request.startDelay,
         install = request.install,
         w = request.w,
-        h = request.h
+        h = request.h,
+        timestamp = timeProvider.millis()
     )
 
     override fun makeImpressionQuery(adResponse: AdResponse): EventQuery = EventQuery(
