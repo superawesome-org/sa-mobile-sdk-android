@@ -11,6 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
+import tv.superawesome.sdk.publisher.common.extensions.toPx
 
 class VideoComponentFactory {
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
@@ -103,7 +104,7 @@ class VideoComponentFactory {
         val view = ImageButton(context)
         view.id = id
         view.setImageBitmap(imageProvider.padlockImage())
-        view.setPadding(0, 0, 0, 0)
+        view.setPadding(0, 2.toPx, 0, 0)
         view.setBackgroundColor(Color.TRANSPARENT)
         view.scaleType = ImageView.ScaleType.FIT_XY
         view.layoutParams = ViewGroup.LayoutParams((77 * scale).toInt(), (31 * scale).toInt())

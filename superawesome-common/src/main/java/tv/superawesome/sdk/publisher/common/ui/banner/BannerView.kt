@@ -192,7 +192,7 @@ public class BannerView @JvmOverloads constructor(
     }
 
     private fun showPadlockIfNeeded() {
-        if (!controller.config.shouldShowPadlock || webView == null) return
+        if (!controller.shouldShowPadlock || webView == null) return
 
         val padlockButton = ImageButton(context)
         padlockButton.setImageBitmap(imageProvider.padlockImage())

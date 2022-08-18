@@ -27,6 +27,7 @@ data class Ad(
     val creative: Creative
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
+    fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF
 }
 
 @Serializable
@@ -60,7 +61,7 @@ data class AdResponse(
     var referral: String? = null,
 ) {
     fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.Video
-
+    fun shouldShowPadlock(): Boolean = ad.shouldShowPadlock()
     /**
      * Returns `baseUrl` and `html` data to show in the `WebView`
      */
