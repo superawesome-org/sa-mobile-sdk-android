@@ -18,18 +18,21 @@ val data = listOf(
     HeaderItem("Banners"),
     PlacementItem("Banner image", 82088, type = Type.BANNER),
     PlacementItem("Banner image Flat Colour", 88001, type = Type.BANNER),
+    PlacementItem("Banner Test Multi Id", 82088, lineItemId = 176803, creativeId = 499387, type = Type.BANNER),
     HeaderItem("Interstitials"),
     PlacementItem("Mobile Interstitial Flat Colour Portrait", 87892, type = Type.INTERSTITIAL),
     PlacementItem("Mobile Interstitial Portrait", 82089, type = Type.INTERSTITIAL),
     PlacementItem("Interstitial via KSF", 84799, type = Type.INTERSTITIAL),
     PlacementItem("Interstitial Flat Colour via KSF", 87970, type = Type.INTERSTITIAL),
+    PlacementItem("Interstitial Test Multi Id", 82089, lineItemId = 176803, creativeId = 503038, type = Type.INTERSTITIAL),
     HeaderItem("Videos"),
     PlacementItem("VAST Video Flat Colour", 88406, type = Type.VIDEO),
     PlacementItem("VPAID Video Flat Colour", 89056, type = Type.VIDEO),
     PlacementItem("Direct Video Flat Colour", 87969, type = Type.VIDEO),
     PlacementItem("Direct Video", 82090, type = Type.VIDEO),
     PlacementItem("Vast Video", 84777, lineItemId = 178822, creativeId = 503585, type = Type.VIDEO),
-    PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO)
+    PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO),
+    PlacementItem("Video Test Multi Id", 82090, lineItemId = 176803, creativeId = 499385, type = Type.VIDEO),
 )
 
 class MainActivity : FragmentActivity() {

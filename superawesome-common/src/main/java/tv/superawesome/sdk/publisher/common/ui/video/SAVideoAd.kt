@@ -16,7 +16,7 @@ public object SAVideoAd {
     private val logger: Logger by inject(Logger::class.java)
 
     /**
-     * Static method that loads an ad into the interstitial queue.
+     * Static method that loads an ad into the queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
      * @param placementId the Ad placement id to load data for
@@ -25,6 +25,19 @@ public object SAVideoAd {
     public fun load(placementId: Int, context: Context) {
         logger.info("load($placementId)")
         controller.load(placementId, makeAdRequest(context))
+    }
+
+    /**
+     * Static method that loads an ad into the queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId the Ad placement id to load data for
+     * @param lineItemId
+     * @param creativeId id of the Creative
+     * @param context the current context
+     */
+    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context) {
+        controller.load(placementId, lineItemId, creativeId, makeAdRequest(context))
     }
 
     /**
