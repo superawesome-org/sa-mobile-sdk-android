@@ -19,10 +19,11 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
         DataResult.Failure(exception)
     }
 
-    override suspend fun getAd(lineItemId: Int, creativeId: Int, query: AdQuery): DataResult<Ad> =
+    override suspend fun getAd(placementId: Int, lineItemId: Int, creativeId: Int, query: AdQuery): DataResult<Ad> =
         try {
             DataResult.Success(
                 awesomeAdsApi.ad(
+                    placementId,
                     lineItemId,
                     creativeId,
                     Properties.encodeToMap(query)

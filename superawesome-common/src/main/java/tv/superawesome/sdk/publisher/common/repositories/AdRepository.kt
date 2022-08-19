@@ -40,7 +40,7 @@ class AdRepository(
     ): DataResult<AdResponse> = withContext(Dispatchers.IO) {
         when (
             val result =
-                dataSource.getAd(lineItemId, creativeId, adQueryMaker.makeAdQuery(request))
+                dataSource.getAd(placementId, lineItemId, creativeId, adQueryMaker.makeAdQuery(request))
         ) {
             is DataResult.Success -> adProcessor.process(placementId, result.value)
             is DataResult.Failure -> result

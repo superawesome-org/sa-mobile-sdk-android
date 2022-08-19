@@ -26,7 +26,7 @@ class InterstitialUITest {
         testAdLoading(
             "87892",
             "interstitial_standard_success.json",
-            4,
+            5,
             TestColors.yellow
         )
     }
@@ -36,7 +36,7 @@ class InterstitialUITest {
         testAdLoading(
             "87970",
             "interstitial_ksf_success.json",
-            7,
+            8,
             TestColors.ksfYellow
         )
     }
@@ -46,7 +46,7 @@ class InterstitialUITest {
         val placement = "87970"
         CommonInteraction.launchActivityWithFailureStub(placement)
 
-        CommonInteraction.clickItemAt(7)
+        CommonInteraction.clickItemAt(8)
 
         CommonInteraction.checkSubtitle("$placement adFailedToLoad")
     }
@@ -56,7 +56,7 @@ class InterstitialUITest {
         val placement = "87970"
         CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
 
-        CommonInteraction.clickItemAt(7)
+        CommonInteraction.clickItemAt(8)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
     }
@@ -66,7 +66,7 @@ class InterstitialUITest {
         val placement = "87892"
         CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/interstitial_standard_success_padlock_enabled.json")
 
-        CommonInteraction.clickItemAt(4)
+        CommonInteraction.clickItemAt(5)
 
         ViewTester()
             .waitForView(withContentDescription("Safe Ad Logo"))
@@ -77,7 +77,7 @@ class InterstitialUITest {
     fun test_standard_CloseButton() {
         CommonInteraction.launchActivityWithSuccessStub("87892", "interstitial_standard_success.json")
 
-        CommonInteraction.clickItemAt(4)
+        CommonInteraction.clickItemAt(5)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
@@ -89,7 +89,7 @@ class InterstitialUITest {
     fun test_ksf_CloseButton() {
         CommonInteraction.launchActivityWithSuccessStub("87970", "interstitial_ksf_success.json")
 
-        CommonInteraction.clickItemAt(7)
+        CommonInteraction.clickItemAt(8)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))

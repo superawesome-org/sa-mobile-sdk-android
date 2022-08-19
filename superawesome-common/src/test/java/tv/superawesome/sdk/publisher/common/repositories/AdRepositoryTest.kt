@@ -58,4 +58,34 @@ class AdRepositoryTest : BaseTest() {
         // Then
         assertEquals(true, result.isFailure)
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun test_getAdMultiIdCalled_validResponse_success() = runTest {
+        // Given
+        val ad = mockk<Ad>(relaxed = true)
+        val adResponse = AdResponse(1, ad)
+        coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
+        coEvery { adProcessorType.process(any(), any()) } returns DataResult.Success(adResponse)
+        coEvery { adDataSourceType.getAd(any(), any(), any(), any()) } returns DataResult.Success(ad)
+
+        // When
+        val result = adRepository.getAd(1, 2, 3, mockk())
+
+        // Then
+        assertEquals(true, result.isSuccess)
+    }
+
+    @Test
+    fun test_getAdMultiIdCalled_invalidResponse_failure() = runTest {
+        // Given
+        coEvery { adDataSourceType.getAd(any(), any(), any(), any()) } returns DataResult.Failure(mockk())
+        coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
+
+        // When
+        val result = adRepository.getAd(1, 2, 3, mockk())
+
+        // Then
+        assertEquals(true, result.isFailure)
+    }
 }

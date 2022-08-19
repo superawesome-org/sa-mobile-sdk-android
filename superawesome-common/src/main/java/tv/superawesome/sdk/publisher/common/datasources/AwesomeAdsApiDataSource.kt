@@ -9,7 +9,7 @@ interface AwesomeAdsApiDataSourceType {
 
     suspend fun getAd(placementId: Int, query: AdQuery): DataResult<Ad>
 
-    suspend fun getAd(lineItemId: Int, creativeId: Int, query: AdQuery): DataResult<Ad>
+    suspend fun getAd(placementId: Int, lineItemId: Int, creativeId: Int, query: AdQuery): DataResult<Ad>
 
     suspend fun impression(query: EventQuery): DataResult<Void>
 
