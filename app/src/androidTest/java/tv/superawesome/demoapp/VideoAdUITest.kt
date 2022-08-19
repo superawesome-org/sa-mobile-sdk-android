@@ -25,7 +25,7 @@ class VideoAdUITest {
             SettingsInteraction.closeNoDelay()
         }
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(13)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
@@ -41,7 +41,7 @@ class VideoAdUITest {
             SettingsInteraction.closeDelayed()
         }
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(13)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
@@ -59,7 +59,7 @@ class VideoAdUITest {
             SettingsInteraction.closeNoDelay()
         }
 
-        CommonInteraction.clickItemAt(9)
+        CommonInteraction.clickItemAt(11)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
@@ -73,7 +73,7 @@ class VideoAdUITest {
             SettingsInteraction.closeDelayed()
         }
 
-        CommonInteraction.clickItemAt(9)
+        CommonInteraction.clickItemAt(11)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
@@ -86,7 +86,7 @@ class VideoAdUITest {
     fun test_vpaid_CloseButton() {
         CommonInteraction.launchActivityWithSuccessStub("89056", "video_vpaid_success.json")
 
-        CommonInteraction.clickItemAt(10)
+        CommonInteraction.clickItemAt(12)
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
@@ -98,7 +98,7 @@ class VideoAdUITest {
         testAdLoading(
             "87969",
             "video_direct_success.json",
-            11,
+            13,
             TestColors.directYellow
         )
         ViewTester()
@@ -111,7 +111,7 @@ class VideoAdUITest {
         testAdLoading(
             "88406",
             "video_vast_success.json",
-            9,
+            11,
             TestColors.vastYellow
         )
     }
@@ -121,7 +121,7 @@ class VideoAdUITest {
         testAdLoading(
             "89056",
             "video_vpaid_success.json",
-            10,
+            12,
             TestColors.vpaidYellow
         )
     }
@@ -131,7 +131,7 @@ class VideoAdUITest {
         testAdLoading(
             "87969",
             "video_direct_success.json",
-            11,
+            13,
             TestColors.directYellow
         )
     }
@@ -141,7 +141,7 @@ class VideoAdUITest {
         val placement = "87969"
         CommonInteraction.launchActivityWithFailureStub(placement)
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(13)
 
         CommonInteraction.checkSubtitle("$placement adFailedToLoad")
     }
@@ -151,7 +151,7 @@ class VideoAdUITest {
         val placement = "87969"
         CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(13)
 
         CommonInteraction.checkSubtitle("$placement adEmpty")
     }
@@ -161,7 +161,7 @@ class VideoAdUITest {
         val placement = "87969"
         CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_direct_success_padlock_enabled.json")
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(13)
 
         ViewTester()
             .waitForView(withContentDescription("Safe Ad Logo"))
@@ -173,7 +173,7 @@ class VideoAdUITest {
         val placement = "88406"
         CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vast_success_padlock_enabled.json")
 
-        CommonInteraction.clickItemAt(9)
+        CommonInteraction.clickItemAt(11)
 
         ViewTester()
             .waitForView(withContentDescription("Safe Ad Logo"))

@@ -97,28 +97,16 @@ class MainActivity2 : Activity() {
                         }
                     }
                     Type.VIDEO -> {
-                        if (SAVideoAd.hasAdAvailable(item.placementId)) {
-                            Log.i(TAG, "PLAYING VIDEO")
-                            SAVideoAd.play(item.placementId, this@MainActivity2)
+                        if(item.isFull()){
+                            SAVideoAd.load(
+                                item.placementId,
+                                item.lineItemId ?: 0,
+                                item.creativeId ?: 0,
+                                this@MainActivity2
+                            )
                         } else {
                             SAVideoAd.load(item.placementId, this@MainActivity2)
                         }
-//                        if (SAVideoAd.hasAdAvailable(item.placementId)) {
-//                            Log.i(TAG, "PLAYING VIDEO")
-//                            SAVideoAd.play(item.placementId, this@MainActivity2)
-//                        } else {
-//                            Log.i(TAG, "LOADING VIDEO")
-//                            if (item.isFull()) {
-//                                SAVideoAd.load(
-//                                    item.placementId,
-//                                    item.lineItemId ?: 0,
-//                                    item.creativeId ?: 0,
-//                                    this@MainActivity2
-//                                )
-//                            } else {
-//                                SAVideoAd.load(item.placementId, this@MainActivity2)
-//                            }
-//                        }
                     }
                 }
             }
