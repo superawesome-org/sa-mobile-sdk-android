@@ -61,10 +61,12 @@ class VideoPlayerController :
     }
 
     override val isIVideoPlaying: Boolean = false
-    override val videoIVideoWidth: Int = 100
-    override val videoIVideoHeight: Int = 100
     override val iVideoDuration: Int = 10
     override val currentIVideoPosition: Int = 0
+    override var videoIVideoWidth: Int = 100
+        private set
+    override  var videoIVideoHeight: Int = 100
+        private set
 
     override fun seekTo(position: Int) {
         /*
@@ -136,10 +138,18 @@ class VideoPlayerController :
         countDownTimer = null
     }
 
+    private fun onVideoSizeChanged(width: Int, height: Int) {
+        videoIVideoWidth = width;
+        videoIVideoHeight = height;
+    }
+
     init {
         setOnPreparedListener(this)
         setOnCompletionListener(this)
         setOnErrorListener(this)
         setOnSeekCompleteListener(this)
+        setOnVideoSizeChangedListener { _, width, height ->
+            onVideoSizeChanged(width, height)
+        }
     }
 }
