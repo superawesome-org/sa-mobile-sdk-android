@@ -5,6 +5,7 @@ import android.os.Parcelable
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 
 open class Config : Parcelable {
     var moatLimiting: Boolean
@@ -14,7 +15,7 @@ open class Config : Parcelable {
     var shouldShowSmallClick: Boolean
     var isBackButtonEnabled: Boolean
     var shouldCloseAtEnd: Boolean
-    var shouldShowCloseButton: Boolean
+    var closeButtonState: CloseButtonState
     var orientation: Orientation
     var startDelay: AdRequest.StartDelay
 
@@ -26,7 +27,7 @@ open class Config : Parcelable {
         shouldShowSmallClick: Boolean,
         isBackButtonEnabled: Boolean,
         shouldCloseAtEnd: Boolean,
-        shouldShowCloseButton: Boolean,
+        closeButtonState: CloseButtonState,
         orientation: Orientation,
         startDelay: AdRequest.StartDelay,
     ) {
@@ -37,7 +38,7 @@ open class Config : Parcelable {
         this.shouldShowSmallClick = shouldShowSmallClick
         this.isBackButtonEnabled = isBackButtonEnabled
         this.shouldCloseAtEnd = shouldCloseAtEnd
-        this.shouldShowCloseButton = shouldShowCloseButton
+        this.closeButtonState = closeButtonState
         this.orientation = orientation
         this.startDelay = startDelay
     }
@@ -50,7 +51,7 @@ open class Config : Parcelable {
         shouldShowSmallClick = parcel.readByte().toInt() != 0
         isBackButtonEnabled = parcel.readByte().toInt() != 0
         shouldCloseAtEnd = parcel.readByte().toInt() != 0
-        shouldShowCloseButton = parcel.readByte().toInt() != 0
+        closeButtonState = CloseButtonState.fromInt(parcel.readInt())
         orientation = Orientation.fromValue(parcel.readInt()) ?: Orientation.Any
         startDelay = AdRequest.StartDelay.fromValue(parcel.readInt()) ?: Constants.defaultStartDelay
     }
@@ -65,7 +66,7 @@ open class Config : Parcelable {
         parcel.writeByte((if (shouldShowSmallClick) 1 else 0).toByte())
         parcel.writeByte((if (isBackButtonEnabled) 1 else 0).toByte())
         parcel.writeByte((if (shouldCloseAtEnd) 1 else 0).toByte())
-        parcel.writeByte((if (shouldShowCloseButton) 1 else 0).toByte())
+        parcel.writeInt(closeButtonState.value)
         parcel.writeInt(orientation.ordinal)
         parcel.writeInt(startDelay.value)
     }
