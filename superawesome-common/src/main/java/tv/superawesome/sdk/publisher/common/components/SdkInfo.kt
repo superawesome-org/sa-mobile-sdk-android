@@ -18,8 +18,11 @@ class SdkInfo(
     locale: Locale
 ) : SdkInfoType {
     private object Keys {
-        const val unknown = "unknown"
-        const val platform = "android"
+        const val Unknown = "unknown"
+        const val Platform = "android"
+        const val VersionFile = "version.properties"
+        const val VersionName = "version.name"
+
         val storedVersion = loadVersion()
 
         /**
@@ -27,22 +30,17 @@ class SdkInfo(
          *
          * @return the stored string representing the current version
          */
-
         fun loadVersion(): String {
+            val inputStream = javaClass.classLoader?.getResourceAsStream(VersionFile) ?: return ""
             val properties = Properties()
-            val inputStream = javaClass.classLoader?.getResourceAsStream("version.properties")
-            return if(inputStream != null) {
-                properties.load(inputStream)
-                properties?.getProperty("version.name") ?: ""
-            } else {
-                ""
-            }
+            properties.load(inputStream)
+            return properties.getProperty(VersionName) ?: ""
         }
     }
 
     override val version: String
-        get() = overrideVersion ?: "${Keys.platform}_${Keys.storedVersion}"
-    override val bundle: String = context.packageName ?: Keys.unknown
+        get() = overrideVersion ?: "${Keys.Platform}_${Keys.storedVersion}"
+    override val bundle: String = context.packageName ?: Keys.Unknown
     override val name: String by lazy { findAppName() }
     override val lang: String = locale.toString()
 
@@ -50,7 +48,7 @@ class SdkInfo(
         val label = context.packageManager.getApplicationLabel(context.applicationInfo).toString()
         encoder.encodeUri(label)
     } catch (exception: PackageManager.NameNotFoundException) {
-        Keys.unknown
+        Keys.Unknown
     }
 
     companion object {
