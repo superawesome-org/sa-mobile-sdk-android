@@ -14,7 +14,6 @@ class SdkInfoTest : BaseTest() {
     @Test
     fun testSdkInfo() {
         // Given
-        val versionFileName = "mock_version.properties"
         val locale = Locale("xx", "YY")
         val mockPackageManager = mockk<PackageManager> {
             every { getApplicationLabel(any()) } returns "testAppName"
@@ -28,28 +27,12 @@ class SdkInfoTest : BaseTest() {
         }
         val encoderType = Encoder()
 
-        val sdkInfo = SdkInfo(context, encoderType, locale, versionFileName)
+        val sdkInfo = SdkInfo(context, encoderType, locale)
 
         // Then
         assertEquals("testBundleName", sdkInfo.bundle)
         assertEquals("testAppName", sdkInfo.name)
         assertEquals("xx_YY", sdkInfo.lang)
         assertEquals("android_1.2.3", sdkInfo.version)
-    }
-
-    @Test
-    fun testSdkInfo_version_incorrect_properties_path() {
-        // Given
-        val versionFileName = ""
-        val locale = Locale("xx", "YY")
-        val context = mockk<Context> {
-            every { packageName } returns "testBundleName"
-        }
-        val encoderType = Encoder()
-
-        val sdkInfo = SdkInfo(context, encoderType, locale, versionFileName)
-
-        // Then
-        assertEquals("android_", sdkInfo.version)
     }
 }

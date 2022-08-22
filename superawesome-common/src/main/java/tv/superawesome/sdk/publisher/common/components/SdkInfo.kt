@@ -15,8 +15,7 @@ interface SdkInfoType {
 class SdkInfo(
     private val context: Context,
     private val encoder: EncoderType,
-    locale: Locale,
-    private val versionFileName: String = "version.properties"
+    locale: Locale
 ) : SdkInfoType {
     object Keys {
         const val unknown = "unknown"
@@ -36,9 +35,15 @@ class SdkInfo(
         Keys.unknown
     }
 
+    /**
+     * Method to load the current version from version.properties.
+     *
+     * @return the stored string representing the current version
+     */
+
     private fun loadVersion(): String {
         val properties = Properties()
-        val inputStream = javaClass.classLoader?.getResourceAsStream(versionFileName)
+        val inputStream = javaClass.classLoader?.getResourceAsStream("version.properties")
         return if(inputStream != null) {
             properties.load(inputStream)
             properties?.getProperty("version.name") ?: ""
