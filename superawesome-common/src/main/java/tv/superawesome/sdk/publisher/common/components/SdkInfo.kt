@@ -3,6 +3,7 @@ package tv.superawesome.sdk.publisher.common.components
 import android.content.Context
 import android.content.pm.PackageManager
 import java.util.Locale
+import java.util.Properties
 
 interface SdkInfoType {
     val version: String
@@ -15,7 +16,7 @@ class SdkInfo(
     private val context: Context,
     private val encoder: EncoderType,
     locale: Locale,
-    private val versionNumber: String
+    private val versionFileName: String = "version.properties"
 ) : SdkInfoType {
     object Keys {
         const val unknown = "unknown"
@@ -23,7 +24,7 @@ class SdkInfo(
     }
 
     override val version: String
-        get() = overrideVersion ?: "${Keys.platform}_$versionNumber"
+        get() = overrideVersion ?: "${Keys.platform}_${loadVersion()}"
     override val bundle: String = context.packageName ?: Keys.unknown
     override val name: String by lazy { findAppName() }
     override val lang: String = locale.toString()
@@ -33,6 +34,17 @@ class SdkInfo(
         encoder.encodeUri(label)
     } catch (exception: PackageManager.NameNotFoundException) {
         Keys.unknown
+    }
+
+    private fun loadVersion(): String {
+        val properties = Properties()
+        val inputStream = javaClass.classLoader?.getResourceAsStream(versionFileName)
+        return if(inputStream != null) {
+            properties.load(inputStream)
+            properties?.getProperty("version.name") ?: ""
+        } else {
+            ""
+        }
     }
 
     companion object {
