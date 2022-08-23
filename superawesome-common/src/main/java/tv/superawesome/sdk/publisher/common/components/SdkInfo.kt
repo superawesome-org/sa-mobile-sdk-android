@@ -17,12 +17,7 @@ class SdkInfo(
     private val encoder: EncoderType,
     locale: Locale
 ) : SdkInfoType {
-    private object Keys {
-        const val Unknown = "unknown"
-        const val Platform = "android"
-        const val VersionFile = "version.properties"
-        const val VersionName = "version.name"
-
+    private object VersionInfo {
         val storedVersion = loadVersion()
 
         /**
@@ -39,8 +34,8 @@ class SdkInfo(
     }
 
     override val version: String
-        get() = overrideVersion ?: "${Keys.Platform}_${Keys.storedVersion}"
-    override val bundle: String = context.packageName ?: Keys.Unknown
+        get() = overrideVersion ?: "${Platform}_${VersionInfo.storedVersion}"
+    override val bundle: String = context.packageName ?: Unknown
     override val name: String by lazy { findAppName() }
     override val lang: String = locale.toString()
 
@@ -48,7 +43,7 @@ class SdkInfo(
         val label = context.packageManager.getApplicationLabel(context.applicationInfo).toString()
         encoder.encodeUri(label)
     } catch (exception: PackageManager.NameNotFoundException) {
-        Keys.Unknown
+        Unknown
     }
 
     companion object {
@@ -56,3 +51,8 @@ class SdkInfo(
         var overridePlatform: String? = null
     }
 }
+
+const val Unknown = "unknown"
+const val Platform = "android"
+const val VersionFile = "version.properties"
+const val VersionName = "version.name"
