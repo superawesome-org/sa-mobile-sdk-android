@@ -52,7 +52,12 @@ public object SAVideoAd {
         logger.info("play($placementId)")
         val adResponse = controller.peakAdResponse(placementId)
         val intent = if (adResponse?.ad?.isVpaid == true) {
-            ManagedAdActivity.newInstance(context, placementId, adResponse.html ?: "")
+            ManagedAdActivity.newInstance(
+                context,
+                placementId,
+                controller.config,
+                adResponse.html ?: ""
+            )
         } else {
             VideoActivity.newInstance(context, placementId, controller.config)
         }

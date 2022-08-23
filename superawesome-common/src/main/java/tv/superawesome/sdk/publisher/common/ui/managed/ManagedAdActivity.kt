@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 
 public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Listener {
@@ -30,11 +30,11 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         adView.setColor(false)
-        adView.setTestMode(SAInterstitialAd.isTestEnabled())
-        adView.setBumperPage(SAInterstitialAd.isBumperPageEnabled())
-        adView.setParentalGate(SAInterstitialAd.isParentalGateEnabled())
+        adView.setTestMode(config.testEnabled)
+        adView.setBumperPage(config.isBumperPageEnabled)
+        adView.setParentalGate(config.isParentalGateEnabled)
 
-        if (!SAInterstitialAd.isMoatLimiting()) {
+        if (!config.moatLimiting) {
             adView.disableMoatLimiting()
         }
 
@@ -42,11 +42,11 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
     }
 
     public override fun playContent() {
-        adView.configure(placementId, SAInterstitialAd.getDelegate()) {
+        listener = SAVideoAd.getDelegate()
+        adView.configure(placementId, listener) {
             closeButton.visibility = View.VISIBLE
         }
         adView.load(placementId, html, this)
-        listener = SAVideoAd.getDelegate()
     }
 
     public override fun close() {
@@ -97,9 +97,10 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
 
     companion object {
         @JvmStatic
-        fun newInstance(context: Context, placementId: Int, html: String): Intent =
+        fun newInstance(context: Context, placementId: Int, config: Config, html: String): Intent =
             Intent(context, ManagedAdActivity::class.java).apply {
                 putExtra(Constants.Keys.placementId, placementId)
+                putExtra(Constants.Keys.config, config)
                 putExtra(Constants.Keys.html, html)
             }
     }
