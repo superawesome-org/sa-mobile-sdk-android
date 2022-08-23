@@ -50,7 +50,7 @@ public object SAVideoAd {
      */
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
-        val adResponse = controller.peakAdResponse(placementId)
+        val adResponse = controller.peekAdResponse(placementId)
         val intent = if (adResponse?.ad?.isVpaid == true) {
             ManagedAdActivity.newInstance(
                 context,

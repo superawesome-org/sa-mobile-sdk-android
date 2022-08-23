@@ -6,8 +6,8 @@ interface AdStoreType {
     fun put(adResponse: AdResponse)
     fun consume(placementId: Int): AdResponse?
 
-    /** Peaks the content inside the store without consuming it */
-    fun peak(placementId: Int): AdResponse?
+    /** Peeks the content inside the store without consuming it */
+    fun peek(placementId: Int): AdResponse?
 }
 
 class AdStore : AdStoreType {
@@ -25,5 +25,5 @@ class AdStore : AdStoreType {
         return item
     }
 
-    override fun peak(placementId: Int): AdResponse? = data[placementId]
+    override fun peek(placementId: Int): AdResponse? = data[placementId]
 }

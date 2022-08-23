@@ -44,7 +44,7 @@ interface AdControllerType {
     fun adEnded()
     fun adClosed()
 
-    fun peakAdResponse(placementId: Int): AdResponse?
+    fun peekAdResponse(placementId: Int): AdResponse?
 }
 
 class AdController(
@@ -223,7 +223,7 @@ class AdController(
         delegate?.onEvent(placementId, SAEvent.AdClosed)
     }
 
-    override fun peakAdResponse(placementId: Int): AdResponse? = adStore.peak(placementId)
+    override fun peekAdResponse(placementId: Int): AdResponse? = adStore.peek(placementId)
 
     override fun load(placementId: Int, request: AdRequest) {
         logger.info("load($placementId) thread:${Thread.currentThread()}")
