@@ -1,11 +1,7 @@
 package tv.superawesome.sdk.publisher.common.components
 
-import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.telephony.TelephonyManager
 import tv.superawesome.sdk.publisher.common.models.ConnectionType
 
@@ -15,14 +11,11 @@ interface ConnectionProviderType {
 
 class ConnectionProvider(private val context: Context) : ConnectionProviderType {
     override fun findConnectionType(): ConnectionType {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-            ?: return ConnectionType.Unknown
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+                ?: return ConnectionType.Unknown
 
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            findConnectionType(connectivityManager)
-        } else {
-            findConnectionTypeLegacy(connectivityManager)
-        }
+        return findConnectionTypeLegacy(connectivityManager)
     }
 
     private fun findCellularType(type: Int): ConnectionType = when (type) {
@@ -46,25 +39,6 @@ class ConnectionProvider(private val context: Context) : ConnectionProviderType 
         TelephonyManager.NETWORK_TYPE_LTE,
         TelephonyManager.NETWORK_TYPE_IWLAN -> ConnectionType.Cellular4g
         else -> ConnectionType.Unknown
-    }
-
-    @SuppressLint("MissingPermission")
-    @TargetApi(Build.VERSION_CODES.M)
-    private fun findConnectionType(connectivityManager: ConnectivityManager): ConnectionType {
-        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            ?: return ConnectionType.Unknown
-        capabilities.run {
-            return@findConnectionType when {
-                hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> ConnectionType.Wifi
-                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                    val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
-                        ?: return ConnectionType.Unknown
-                    return findCellularType(telephonyManager.networkType)
-                }
-                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> ConnectionType.Ethernet
-                else -> ConnectionType.Unknown
-            }
-        }
     }
 
     @Suppress("DEPRECATION")

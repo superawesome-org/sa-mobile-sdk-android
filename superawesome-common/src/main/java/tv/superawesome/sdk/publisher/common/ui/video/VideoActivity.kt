@@ -4,19 +4,16 @@ package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.RelativeLayout
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
@@ -26,6 +23,7 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayer
 import java.io.File
+
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
@@ -46,12 +44,6 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
 
     override fun initChildUI() {
         listener = SAVideoAd.getDelegate()
-        // make sure direction is locked
-        requestedOrientation = when (config.orientation) {
-            Orientation.Any -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            Orientation.Portrait -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            Orientation.Landscape -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
 
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
         val params = RelativeLayout.LayoutParams(size, size)
@@ -86,10 +78,10 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
             }
 
             override fun onError(
-               player: IVideoPlayer,
-               error: Throwable,
-               time: Int,
-               duration: Int
+                player: IVideoPlayer,
+                error: Throwable,
+                time: Int,
+                duration: Int
             ) {
                 videoEvents?.error(player, time, duration)
                 controller.adFailedToShow()
@@ -103,8 +95,8 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
             addChrome()
             it.vast?.let { _ ->
                 videoEvents = get(
-                   clazz = VideoEvents::class.java,
-                   parameters = { parametersOf(it, config.moatLimiting) }
+                    clazz = VideoEvents::class.java,
+                    parameters = { parametersOf(it, config.moatLimiting) }
                 )
                 videoEvents?.listener = this
                 val filePath = it.filePath ?: ""
@@ -133,10 +125,10 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val displayMetrics = resources.displayMetrics
         val height = displayMetrics.heightPixels
         val width = displayMetrics.widthPixels
+
         videoPlayer.updateLayout(width, height)
     }
 
@@ -153,11 +145,10 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
     }
 
     companion object {
-        internal fun start(placementId: Int, config: Config, context: Context) {
-            val intent = Intent(context, VideoActivity::class.java)
-            intent.putExtra(Constants.Keys.placementId, placementId)
-            intent.putExtra(Constants.Keys.config, config)
-            context.startActivity(intent)
-        }
+        internal fun newInstance(context: Context, placementId: Int, config: Config): Intent =
+            Intent(context, VideoActivity::class.java).apply {
+                putExtra(Constants.Keys.placementId, placementId)
+                putExtra(Constants.Keys.config, config)
+            }
     }
 }

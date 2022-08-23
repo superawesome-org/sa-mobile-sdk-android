@@ -104,6 +104,21 @@ class AdProcessorTest {
         assertEquals(exampleUrl, response.optValue?.baseUrl)
     }
 
+    @Test
+    fun `video with no url returns failure`() = runBlocking {
+        // Given
+        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(exampleVastUrl)
+        coEvery { networkDataSource.getData(any()) } returns DataResult.Success("")
+        coEvery { vastParser.parse(any()) } returns makeVastAd(null)
+
+        // When
+        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Video))
+
+        // Then
+        assertTrue(response.isFailure)
+        assertEquals((response as DataResult.Failure).error.message, "empty url")
+    }
+
     // handle vast tests
     @Test
     fun `network request is failed then return failure`() = runBlocking {
@@ -113,7 +128,6 @@ class AdProcessorTest {
 
         // When
         val result = adProcessor.process(1, ad)
-
 
         // Then
         assertTrue(result.isFailure)

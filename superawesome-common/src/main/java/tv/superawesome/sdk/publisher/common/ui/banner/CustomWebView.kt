@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.banner
 
 import android.annotation.SuppressLint
@@ -12,10 +13,9 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import tv.superawesome.sdk.publisher.common.models.AdRequest
 
 @SuppressLint("SetJavaScriptEnabled")
-public class WebView @JvmOverloads constructor(
+public class CustomWebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -45,7 +45,6 @@ public class WebView @JvmOverloads constructor(
         }
         settings.javaScriptEnabled = true
         webViewClient = object : WebViewClient() {
-
             override fun onReceivedError(
                 view: WebView?,
                 request: WebResourceRequest?,
@@ -55,7 +54,6 @@ public class WebView @JvmOverloads constructor(
                 listener?.webViewOnError()
             }
 
-            @Suppress("DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 if (finishedLoading) {
                     val fullUrl = url ?: return false
@@ -97,30 +95,5 @@ public class WebView @JvmOverloads constructor(
         val baseHtml =
             "<html><header><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></header><body>$html</body></html>"
         loadDataWithBaseURL(base, baseHtml, "text/html", "UTF-8", null)
-    }
-
-    /***
-     *
-     * This function uses a js script to load the advert
-     *
-     * @param placementId
-     * @param adRequest
-     */
-    fun loadAdViaJs(placementId: Int, adRequest: AdRequest) {
-        val queryParams = adRequest.propertyString.map { "&${it.key}=${it.value}" }.joinToString(separator = "")
-        val html = """
-        <html>
-          <header>
-           <meta name='viewport' content='width=device-width'/>
-           <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>
-          </header>
-          <body>
-            <script type="text/javascript"
-            src="https://ads.superawesome.tv/v2/ad.js?placement=$placementId$queryParams">
-            </script>
-          </body>
-        </html>
-        """
-        loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
     }
 }
