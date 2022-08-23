@@ -24,12 +24,11 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerControll
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayer
 import java.io.File
 
-
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
+class VideoActivity : FullScreenActivity() {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val control: IVideoPlayerController by inject(IVideoPlayerController::class.java)
     private var videoEvents: VideoEvents? = null
@@ -98,7 +97,11 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
                     clazz = VideoEvents::class.java,
                     parameters = { parametersOf(it, config.moatLimiting) }
                 )
-                videoEvents?.listener = this
+                videoEvents?.listener = object : VideoEvents.Listener {
+                    override fun hasBeenVisible() {
+                        closeButton.visibility = if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
+                    }
+                }
                 val filePath = it.filePath ?: ""
                 try {
                     val fileUri = Uri.fromFile(File(filePath))
@@ -116,10 +119,6 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
         videoPlayer.destroy()
 
         super.close()
-    }
-
-    override fun hasBeenVisible() {
-        closeButton.visibility = if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
