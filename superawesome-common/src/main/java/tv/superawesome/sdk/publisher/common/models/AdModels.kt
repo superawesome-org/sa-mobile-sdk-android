@@ -24,7 +24,8 @@ data class Ad(
     val test: Boolean,
     val app: Int,
     val device: String,
-    val creative: Creative
+    val creative: Creative,
+    @SerialName("is_vpaid") val isVpaid: Boolean = false
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
     fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF
@@ -62,8 +63,9 @@ data class AdResponse(
 ) {
     fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.Video
     fun shouldShowPadlock(): Boolean = ad.shouldShowPadlock()
+
     /**
-     * Returns `baseUrl` and `html` data to show in the `WebView`
+     * Returns `baseUrl` and `html` data to use in `WebView`
      */
     fun getDataPair(): Pair<String, String>? {
         val base = baseUrl ?: return null
@@ -96,16 +98,16 @@ data class AdRequest(
     )
 
     companion object {
-        // / The playback method
+        /** The playback method */
         const val PlaybackSoundOnScreen = 5
     }
 
-    // / Specify if the ad is in full screen or not
+    /** Specify if the ad is in full screen or not */
     enum class FullScreen(val value: Int) {
         On(1), Off(0)
     }
 
-    // / Start delay cases
+    /** Start delay cases */
     enum class StartDelay(val value: Int) {
         PostRoll(-2),
         GenericMidRoll(-1),
@@ -118,14 +120,14 @@ data class AdRequest(
         }
     }
 
-    // / Specify the position of the ad
+    /** Specify the position of the ad */
     enum class Position(val value: Int) {
         AboveTheFold(1),
         BelowTheFold(3),
         FullScreen(7),
     }
 
-    // / Specify if the ad can be skipped
+    /** Specify if the ad can be skipped */
     enum class Skip(val value: Int) {
         No(0),
         Yes(1),

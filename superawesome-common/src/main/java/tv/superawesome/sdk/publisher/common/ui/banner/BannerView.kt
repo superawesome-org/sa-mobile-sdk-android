@@ -36,7 +36,7 @@ public class BannerView @JvmOverloads constructor(
     private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
 
     private var placementId: Int = 0
-    private var webView: WebView? = null
+    private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
     private val viewableDetector: ViewableDetectorType by inject(ViewableDetectorType::class.java)
     private var hasBeenVisible: VoidBlock? = null
@@ -211,12 +211,12 @@ public class BannerView @JvmOverloads constructor(
     private fun addWebView() {
         removeWebView()
 
-        val webView = WebView(context)
+        val webView = CustomWebView(context)
         webView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        webView.listener = object : WebView.Listener {
+        webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
                 controller.adShown()
                 viewableDetector.cancel()

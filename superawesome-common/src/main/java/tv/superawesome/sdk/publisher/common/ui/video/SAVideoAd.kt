@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.app.Activity
@@ -10,6 +11,7 @@ import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
+import tv.superawesome.sdk.publisher.common.ui.managed.ManagedAdActivity
 
 public object SAVideoAd {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
@@ -48,7 +50,13 @@ public object SAVideoAd {
      */
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
-        VideoActivity.start(placementId, controller.config, context)
+        val adResponse = controller.peakAdResponse(placementId)
+        val intent = if (adResponse?.ad?.isVpaid == true) {
+            ManagedAdActivity.newInstance(context, placementId, adResponse.html ?: "")
+        } else {
+            VideoActivity.newInstance(context, placementId, controller.config)
+        }
+        context.startActivity(intent)
     }
 
     public fun setListener(value: SAInterface) {
@@ -56,7 +64,7 @@ public object SAVideoAd {
     }
 
     public fun setPlaybackMode(mode: AdRequest.StartDelay) {
-        controller.config.moatLimiting
+        controller.config.startDelay = mode
     }
 
     public fun enableParentalGate() {
@@ -75,7 +83,7 @@ public object SAVideoAd {
         setBumperPage(false)
     }
 
-    public  fun enableTestMode() {
+    public fun enableTestMode() {
         setTestMode(true)
     }
 

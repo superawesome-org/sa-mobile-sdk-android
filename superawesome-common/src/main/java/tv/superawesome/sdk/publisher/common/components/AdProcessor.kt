@@ -32,15 +32,20 @@ class AdProcessor(
                 response.baseUrl = Constants.defaultSuperAwesomeUrl
             }
             CreativeFormatType.Video -> {
-                ad.creative.details.vast?.let { url ->
-                    response.vast = handleVast(url, null)
-                    response.baseUrl = response.vast?.url?.baseUrl
-                    response.vast?.url?.let {
-                        when (val downloadFileResult = networkDataSource.downloadFile(it)) {
-                            is DataResult.Success -> response.filePath = downloadFileResult.value
-                            is DataResult.Failure -> return downloadFileResult
-                        }
-                    } ?: return DataResult.Failure(Exception("empty url"))
+                if (ad.isVpaid) {
+                    response.html = ad.creative.details.tag
+                } else {
+                    ad.creative.details.vast?.let { url ->
+                        response.vast = handleVast(url, null)
+                        response.baseUrl = response.vast?.url?.baseUrl
+                        response.vast?.url?.let {
+                            when (val downloadFileResult = networkDataSource.downloadFile(it)) {
+                                is DataResult.Success -> response.filePath =
+                                    downloadFileResult.value
+                                is DataResult.Failure -> return downloadFileResult
+                            }
+                        } ?: return DataResult.Failure(Exception("empty url"))
+                    }
                 }
             }
         }
