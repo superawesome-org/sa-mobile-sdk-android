@@ -18,6 +18,7 @@ import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
@@ -61,6 +62,8 @@ class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
         videoPlayer.setController(control)
         videoPlayer.setBackgroundColor(Color.BLACK)
         parentLayout.addView(videoPlayer)
+
+        closeButton.visibility = if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
