@@ -9,17 +9,19 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.Config
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 
 open class FullScreenActivity : Activity() {
-    private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     internal val logger: Logger by inject(Logger::class.java)
     internal val numberGenerator: NumberGeneratorType by inject(NumberGeneratorType::class.java)
 
@@ -28,6 +30,12 @@ open class FullScreenActivity : Activity() {
 
     internal var config: Config = Config.default
     internal var placementId: Int = 0
+
+    private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
+    private val viewableDetector: ViewableDetectorType by KoinJavaComponent.inject(
+        ViewableDetectorType::class.java
+    )
+    private var hasBeenVisible: VoidBlock? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
