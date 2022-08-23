@@ -2,6 +2,7 @@
 
 package tv.superawesome.sdk.publisher.common.ui.managed
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -14,16 +15,18 @@ import android.widget.ImageView
 import org.koin.java.KoinJavaComponent
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.components.TimeProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
-import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
-import tv.superawesome.sdk.publisher.common.ui.banner.WebView
+import tv.superawesome.sdk.publisher.common.network.Environment
+import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 
-public class ManagedBannerView @JvmOverloads constructor(
+@SuppressLint("AddJavascriptInterface")
+public class ManagedAdView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -31,10 +34,12 @@ public class ManagedBannerView @JvmOverloads constructor(
 
     val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
     private val imageProvider: ImageProviderType by KoinJavaComponent.inject(ImageProviderType::class.java)
+    private val timeProvider: TimeProviderType by KoinJavaComponent.inject(TimeProviderType::class.java)
     private val logger: Logger by KoinJavaComponent.inject(Logger::class.java)
+    private val environment: Environment by KoinJavaComponent.inject(Environment::class.java)
 
     private var placementId: Int = 0
-    private var webView: WebView? = null
+    private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
     private val viewableDetector: ViewableDetectorType by KoinJavaComponent.inject(
         ViewableDetectorType::class.java
@@ -45,6 +50,17 @@ public class ManagedBannerView @JvmOverloads constructor(
         setColor(Constants.defaultBackgroundColorEnabled)
         isSaveEnabled = true
         addWebView()
+    }
+
+    public fun load(placementId: Int, html: String, listener: AdViewJavaScriptBridge.Listener) {
+        logger.info("load($placementId)")
+        this.placementId = placementId
+        showPadlockIfNeeded()
+
+        webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
+        webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener), JS_BRIDGE_NAME)
+        val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
+        webView?.loadDataWithBaseURL(environment.baseUrl, updatedHTML, MIME_TYPE, ENCODING, HISTORY)
     }
 
     override fun onSaveInstanceState(): Parcelable = Bundle().apply {
@@ -60,19 +76,6 @@ public class ManagedBannerView @JvmOverloads constructor(
             restoreState = bundle.getParcelable("superState")
         }
         super.onRestoreInstanceState(restoreState)
-    }
-
-    /**
-     * One of the main public methods of the SABannerAd class. This will load a new SAAd object
-     * corresponding to a given placement Id.
-     *
-     * @param placementId Awesome Ads ID for ad data to be loaded
-     */
-    public fun play(placementId: Int) {
-        logger.info("load($placementId)")
-        this.placementId = placementId
-        showPadlockIfNeeded()
-        webView?.loadAdViaJs(placementId, makeAdRequest())
     }
 
     public fun setListener(delegate: SAInterface) {
@@ -174,17 +177,17 @@ public class ManagedBannerView @JvmOverloads constructor(
     private fun addWebView() {
         removeWebView()
 
-        val webView = WebView(context)
+        val webView = CustomWebView(context)
         webView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        webView.listener = object : WebView.Listener {
+        webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
                 controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
-                viewableDetector.start(this@ManagedBannerView) {
+                viewableDetector.start(this@ManagedAdView) {
                     controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
                 }
@@ -207,25 +210,16 @@ public class ManagedBannerView @JvmOverloads constructor(
         }
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        logger.info("BannerView.onDetachedFromWindow")
-    }
-
-    private fun makeAdRequest(): AdRequest = AdRequest(
-        test = controller.config.testEnabled,
-        pos = AdRequest.Position.AboveTheFold.value,
-        skip = AdRequest.Skip.No.value,
-        playbackMethod = AdRequest.PlaybackSoundOnScreen,
-        startDelay = AdRequest.StartDelay.PreRoll.value,
-        install = AdRequest.FullScreen.Off.value,
-        w = width,
-        h = height
-    )
-
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
         this.placementId = placementId
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible
+    }
+
+    companion object {
+        private const val MIME_TYPE = ""
+        private const val ENCODING = ""
+        private val HISTORY: String? = null
+        private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
     }
 }

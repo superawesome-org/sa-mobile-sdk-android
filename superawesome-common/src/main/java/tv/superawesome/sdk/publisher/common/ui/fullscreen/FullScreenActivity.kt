@@ -15,6 +15,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 
 open class FullScreenActivity : Activity() {
@@ -25,13 +26,16 @@ open class FullScreenActivity : Activity() {
     internal lateinit var parentLayout: RelativeLayout
     internal lateinit var closeButton: ImageButton
 
-    internal var config: Config = Config.default
-    internal var placementId: Int = 0
+    internal val placementId: Int by lazy {
+        intent?.getIntExtra(Constants.Keys.placementId, 0) ?: 0
+    }
+
+    internal val config: Config by lazy {
+        intent?.getParcelableExtra(Constants.Keys.config) ?: Config.default
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        processExtras()
 
         initParentUI()
         initChildUI()
@@ -41,11 +45,6 @@ open class FullScreenActivity : Activity() {
         setContentView(parentLayout)
 
         playContent()
-    }
-
-    open fun processExtras() {
-        this.placementId = intent?.getIntExtra(Constants.Keys.placementId, 0) ?: 0
-        this.config = intent?.getParcelableExtra(Constants.Keys.config) ?: Config.default
     }
 
     open fun initChildUI() {
@@ -78,6 +77,13 @@ open class FullScreenActivity : Activity() {
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP)
         closeButton.layoutParams = buttonLayout
         closeButton.setOnClickListener { close() }
+
+        // make sure direction is locked
+        requestedOrientation = when (config.orientation) {
+            Orientation.Any -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            Orientation.Portrait -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            Orientation.Landscape -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
     }
 
     override fun onBackPressed() {
@@ -88,7 +94,9 @@ open class FullScreenActivity : Activity() {
     }
 
     open fun close() {
-        this.finish()
+        if (!isFinishing) {
+            finish()
+        }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 }

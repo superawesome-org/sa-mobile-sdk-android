@@ -8,7 +8,6 @@ object Constants {
     const val defaultSafeAdUrl = "https://ads.superawesome.tv/v2/safead"
     const val defaultClickThresholdInMs: Long = 5000
     const val defaultBumperPageShowTimeInSec: Int = 5
-    const val defaultPlacementId: Int = 0
 
     const val defaultBackgroundColorEnabled = false
     val backgroundColorGray = Color.rgb(224, 224, 224)
@@ -29,5 +28,6 @@ object Constants {
     object Keys {
         const val placementId = "placementId"
         const val config = "config"
+        const val html = "html"
     }
 }
