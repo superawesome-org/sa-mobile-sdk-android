@@ -30,7 +30,7 @@ import java.io.File
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-class VideoActivity : FullScreenActivity() {
+class VideoActivity : FullScreenActivity(), VideoEvents.Listener {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val control: IVideoPlayerController by inject(IVideoPlayerController::class.java)
     private var videoEvents: VideoEvents? = null
@@ -74,7 +74,6 @@ class VideoActivity : FullScreenActivity() {
 
             override fun onComplete(player: IVideoPlayer, time: Int, duration: Int) {
                 videoEvents?.complete(player, time, duration)
-                closeButton.visibility = View.VISIBLE
 
                 controller.adEnded()
 
@@ -104,6 +103,7 @@ class VideoActivity : FullScreenActivity() {
                    clazz = VideoEvents::class.java,
                    parameters = { parametersOf(it, config.moatLimiting) }
                 )
+                videoEvents?.listener = this
                 val filePath = it.filePath ?: ""
                 try {
                     val fileUri = Uri.fromFile(File(filePath))
@@ -121,6 +121,10 @@ class VideoActivity : FullScreenActivity() {
         videoPlayer.destroy()
 
         super.close()
+    }
+
+    override fun hasBeenVisible() {
+        closeButton.visibility = if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

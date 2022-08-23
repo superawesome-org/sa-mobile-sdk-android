@@ -39,7 +39,7 @@ public class InterstitialActivity : FullScreenActivity() {
 
     public override fun playContent() {
         interstitialBanner.configure(placementId, SAInterstitialAd.getDelegate()) {
-            closeButton.visibility = View.VISIBLE
+            closeButton.visibility = if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
         }
         interstitialBanner.play()
     }
