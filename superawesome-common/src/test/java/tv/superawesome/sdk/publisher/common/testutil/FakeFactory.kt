@@ -42,7 +42,7 @@ object FakeFactory {
     )
 
     fun makeVastAd(
-        url: String = "www.here.com",
+        url: String? = "www.here.com",
         redDirect: String? = null,
         type: VastType = VastType.Invalid
     ) = VastAd(
