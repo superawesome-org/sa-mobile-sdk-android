@@ -15,6 +15,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 
 open class FullScreenActivity : Activity() {
@@ -67,11 +68,12 @@ open class FullScreenActivity : Activity() {
 
         // close button
         closeButton = ImageButton(this)
-        closeButton.visibility = View.GONE
+        closeButton.visibility = if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
         closeButton.setImageBitmap(imageProvider.closeImage())
         closeButton.setBackgroundColor(Color.TRANSPARENT)
         closeButton.setPadding(0, 0, 0, 0)
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
+        closeButton.contentDescription = "Close"
 
         val buttonLayout = RelativeLayout.LayoutParams(30.toPx, 30.toPx)
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)

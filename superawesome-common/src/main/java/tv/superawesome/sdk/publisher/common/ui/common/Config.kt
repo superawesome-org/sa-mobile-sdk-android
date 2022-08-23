@@ -84,7 +84,7 @@ open class Config : Parcelable {
             shouldShowSmallClick = Constants.defaultSmallClick,
             isBackButtonEnabled = Constants.defaultBackButtonEnabled,
             shouldCloseAtEnd = Constants.defaultCloseAtEnd,
-            shouldShowCloseButton = Constants.defaultCloseButton,
+            closeButtonState = Constants.defaultCloseButtonState,
             orientation = Constants.defaultOrientation,
             startDelay = Constants.defaultStartDelay,
         )

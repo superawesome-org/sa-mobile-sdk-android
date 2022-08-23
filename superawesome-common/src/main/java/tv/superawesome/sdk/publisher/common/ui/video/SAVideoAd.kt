@@ -9,6 +9,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 
 public object SAVideoAd {
@@ -91,10 +92,6 @@ public object SAVideoAd {
         setBackButton(false)
     }
 
-    public fun setCloseButton(value: Boolean) {
-        controller.config.shouldShowCloseButton = value
-    }
-
     public fun setSmallClick(value: Boolean) {
         controller.config.shouldShowSmallClick = value
     }
@@ -109,6 +106,20 @@ public object SAVideoAd {
 
     public fun disableCloseButton() {
         setCloseButton(false)
+    }
+
+    /**
+     * Method that enables the close button to display immediately without a delay.
+     * WARNING: this will allow users to close the ad before the viewable tracking event is fired
+     * and should only be used if you explicitly want this behaviour over consistent tracking.
+     */
+    public fun enableCloseButtonNoDelay() {
+        controller.config.closeButtonState = CloseButtonState.VisibleImmediately
+    }
+
+    public fun setCloseButton(value: Boolean) {
+        controller.config.closeButtonState =
+            if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
     }
 
     fun setConfigurationProduction() {
@@ -179,7 +190,7 @@ public object SAVideoAd {
         return AdRequest(
             test = isTestEnabled(),
             pos = AdRequest.Position.FullScreen.value,
-            skip = if (controller.config.shouldShowCloseButton) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
+            skip = if (controller.config.closeButtonState.isVisible()) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
             playbackMethod = AdRequest.PlaybackSoundOnScreen,
             startDelay = AdRequest.StartDelay.PreRoll.value,
             install = AdRequest.FullScreen.On.value,
