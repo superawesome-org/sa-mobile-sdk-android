@@ -36,7 +36,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single { Locale.getDefault() }
     single { Resources.getSystem().displayMetrics }
     factory<GoogleAdvertisingProxyType> { GoogleAdvertisingProxy(get()) }
-    single<SdkInfoType> { SdkInfo(get(), get(), get(), "1.2.3") }
+    single<SdkInfoType> { SdkInfo(get(), get(), get()) }
     single<NumberGeneratorType> { NumberGenerator() }
     single<DeviceType> { Device(get()) }
     single<EncoderType> { Encoder() }

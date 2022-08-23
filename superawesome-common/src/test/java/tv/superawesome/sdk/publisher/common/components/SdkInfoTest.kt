@@ -26,7 +26,7 @@ class SdkInfoTest : BaseTest() {
         }
         val encoderType = Encoder()
 
-        val sdkInfo = SdkInfo(context, encoderType, locale, "1.2.3")
+        val sdkInfo = SdkInfo(context, encoderType, locale)
 
         // Then
         assertEquals("testBundleName", sdkInfo.bundle)
