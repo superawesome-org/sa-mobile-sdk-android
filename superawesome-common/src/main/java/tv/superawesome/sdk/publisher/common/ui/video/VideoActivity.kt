@@ -41,6 +41,11 @@ class VideoActivity : FullScreenActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onPause() {
+        super.onPause()
+        control.pause()
+    }
+
     override fun initChildUI() {
         listener = SAVideoAd.getDelegate()
 

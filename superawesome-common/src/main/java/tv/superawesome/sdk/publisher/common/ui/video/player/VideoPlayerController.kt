@@ -2,9 +2,7 @@ package tv.superawesome.sdk.publisher.common.ui.video.player
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
-import android.media.MediaPlayer.OnPreparedListener
-import android.media.MediaPlayer.OnSeekCompleteListener
+import android.media.MediaPlayer.*
 import android.net.Uri
 import android.os.CountDownTimer
 
@@ -12,7 +10,7 @@ class VideoPlayerController :
     MediaPlayer(),
     IVideoPlayerController,
     OnPreparedListener,
-    MediaPlayer.OnErrorListener,
+    OnErrorListener,
     OnCompletionListener,
     OnSeekCompleteListener {
     private var listener: IVideoPlayerController.Listener? = null
@@ -65,16 +63,11 @@ class VideoPlayerController :
     override val currentIVideoPosition: Int = 0
     override var videoIVideoWidth: Int = 100
         private set
-    override  var videoIVideoHeight: Int = 100
+    override var videoIVideoHeight: Int = 100
         private set
 
     override fun seekTo(position: Int) {
-        /*
-         * re-create timer if it has been destroyed
-         */
-        if (countDownTimer == null) {
-            createTimer()
-        }
+        createTimer()
         super.seekTo(position)
     }
 
@@ -116,7 +109,7 @@ class VideoPlayerController :
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun createTimer() {
         if (countDownTimer == null) {
-            countDownTimer = object : CountDownTimer(duration.toLong(), 500) {
+            countDownTimer = object : CountDownTimer(duration.toLong(), CountDownInterval) {
                 override fun onTick(remainingTime: Long) {
                     listener?.onTimeUpdated(
                         this@VideoPlayerController,
@@ -138,9 +131,19 @@ class VideoPlayerController :
         countDownTimer = null
     }
 
+    override fun start() {
+        super.start()
+        createTimer()
+    }
+
+    override fun pause() {
+        super.pause()
+        removeTimer()
+    }
+
     private fun onVideoSizeChanged(width: Int, height: Int) {
-        videoIVideoWidth = width;
-        videoIVideoHeight = height;
+        videoIVideoWidth = width
+        videoIVideoHeight = height
     }
 
     init {
@@ -153,3 +156,5 @@ class VideoPlayerController :
         }
     }
 }
+
+private const val CountDownInterval: Long = 500
