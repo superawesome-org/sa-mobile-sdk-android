@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.common.models
 
 import android.graphics.Color
 import tv.superawesome.sdk.publisher.common.network.Environment
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 
 object Constants {
     const val defaultSuperAwesomeUrl = "https://ads.superawesome.tv"
@@ -16,10 +17,10 @@ object Constants {
     const val defaultParentalGate = false
     const val defaultBumperPage = false
     const val defaultCloseAtEnd = true
-    const val defaultCloseButton = false
     const val defaultSmallClick = false
     const val defaultBackButtonEnabled = true
 
+    val defaultCloseButtonState = CloseButtonState.Hidden
     val defaultOrientation = Orientation.Any
     val defaultEnvironment = Environment.Production
     const val defaultMoatLimitingState = true

@@ -71,6 +71,7 @@ open class FullScreenActivity : Activity() {
         closeButton.setBackgroundColor(Color.TRANSPARENT)
         closeButton.setPadding(0, 0, 0, 0)
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
+        closeButton.contentDescription = "Close"
 
         val buttonLayout = RelativeLayout.LayoutParams(30.toPx, 30.toPx)
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
