@@ -15,6 +15,7 @@ import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
@@ -22,7 +23,6 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayer
 import java.io.File
-
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
@@ -54,6 +54,8 @@ class VideoActivity : FullScreenActivity() {
         videoPlayer.setBackgroundColor(Color.BLACK)
         parentLayout.addView(videoPlayer)
 
+        closeButton.visibility = if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
+
         videoPlayer.setListener(object : IVideoPlayer.Listener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
                 videoEvents?.prepare(player, time, duration)
@@ -66,7 +68,6 @@ class VideoActivity : FullScreenActivity() {
 
             override fun onComplete(player: IVideoPlayer, time: Int, duration: Int) {
                 videoEvents?.complete(player, time, duration)
-                closeButton.visibility = View.VISIBLE
 
                 controller.adEnded()
 
@@ -96,6 +97,11 @@ class VideoActivity : FullScreenActivity() {
                     clazz = VideoEvents::class.java,
                     parameters = { parametersOf(it, config.moatLimiting) }
                 )
+                videoEvents?.listener = object : VideoEvents.Listener {
+                    override fun hasBeenVisible() {
+                        closeButton.visibility = if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
+                    }
+                }
                 val filePath = it.filePath ?: ""
                 try {
                     val fileUri = Uri.fromFile(File(filePath))
@@ -114,7 +120,6 @@ class VideoActivity : FullScreenActivity() {
 
         super.close()
     }
-
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)

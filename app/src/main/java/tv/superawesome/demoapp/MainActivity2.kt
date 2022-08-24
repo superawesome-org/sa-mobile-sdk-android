@@ -54,7 +54,7 @@ class MainActivity2 : Activity() {
 
             SAVideoAd.disableParentalGate()
             SAVideoAd.disableBumperPage()
-            // SAVideoAd.enableCloseButtonNoDelay()
+            SAVideoAd.enableCloseButtonNoDelay()
         }
     }
 
