@@ -146,13 +146,18 @@ class VideoActivity : FullScreenActivity() {
         }
     }
 
-    public override fun close() {
+    override fun close() {
         CloseWarning.close()
         controller.adClosed()
         controller.close()
         videoPlayer.destroy()
 
         super.close()
+    }
+
+    override fun onDestroy() {
+        CloseWarning.close()
+        super.onDestroy()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
