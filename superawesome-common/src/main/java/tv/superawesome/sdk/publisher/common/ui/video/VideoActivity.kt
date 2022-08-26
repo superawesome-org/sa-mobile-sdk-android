@@ -151,7 +151,6 @@ class VideoActivity : FullScreenActivity() {
         controller.adClosed()
         controller.close()
         videoPlayer.destroy()
-
         super.close()
     }
 
