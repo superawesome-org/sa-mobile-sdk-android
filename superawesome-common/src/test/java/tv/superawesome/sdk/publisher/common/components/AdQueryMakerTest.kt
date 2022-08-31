@@ -7,11 +7,14 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.properties.Properties
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
+import tv.superawesome.sdk.publisher.common.extensions.encodeToMap
 import tv.superawesome.sdk.publisher.common.models.*
 import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class AdQueryMakerTest : BaseTest() {
     @MockK
@@ -167,5 +170,73 @@ class AdQueryMakerTest : BaseTest() {
         assertEquals(33, query.rnd)
         assertEquals(null, query.noImage)
         assertEquals("encoded_uri", query.data)
+    }
+
+    @Test
+    fun test_encoded_adQuery_with_QueryAdditionalOptions_includes_additional_values() {
+        // Given
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val options = mapOf("key1" to "value1", "key2" to "value2")
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(options)
+        val encoded = Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+
+        // Then
+        assertTrue(encoded.entries.containsAll(options.entries))
+    }
+
+    @Test
+    fun test_encoded_adQuery_without_additional_options_encodes_original_adQuery_only() {
+        // Given
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val encoded = Properties.encodeToMap(query, null)
+
+        // Then
+        assertEquals("" +
+            "{test=false, " +
+            "sdkVersion=, " +
+            "rnd=0, " +
+            "bundle=, " +
+            "name=, " +
+            "dauid=0, " +
+            "ct=Cellular4g, " +
+            "lang=en_en, " +
+            "device=, " +
+            "pos=10, " +
+            "skip=20, " +
+            "playbackmethod=30, " +
+            "startdelay=40, " +
+            "instl=50, " +
+            "w=60, " +
+            "h=70, " +
+            "timestamp=0}",
+            encoded.toString()
+        )
     }
 }
