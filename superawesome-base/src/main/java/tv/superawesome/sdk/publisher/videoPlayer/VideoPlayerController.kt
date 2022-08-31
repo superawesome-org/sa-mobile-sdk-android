@@ -104,14 +104,12 @@ class VideoPlayerController :
     }
 
     override fun onCompletion(mediaPlayer: MediaPlayer) {
-        //removeTimer()
         reset()
         listener?.onMediaComplete(this, currentPosition, duration)
     }
 
     // todo: why doesn't the video player stop at the error?
     override fun onError(mediaPlayer: MediaPlayer, error: Int, payload: Int): Boolean {
-        //removeTimer()
         reset()
         listener?.onError(this, Throwable(), 0, 0)
         return false
