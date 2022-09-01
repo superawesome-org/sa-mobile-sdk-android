@@ -113,6 +113,11 @@ public object SAVideoAd {
         controller.config.shouldCloseAtEnd = value
     }
 
+    public fun setCloseButton(value: Boolean) {
+        controller.config.closeButtonState =
+            if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
+    }
+
     public fun enableCloseButton() {
         setCloseButton(true)
     }
@@ -130,9 +135,17 @@ public object SAVideoAd {
         controller.config.closeButtonState = CloseButtonState.VisibleImmediately
     }
 
-    public fun setCloseButton(value: Boolean) {
-        controller.config.closeButtonState =
-            if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
+    /**
+     * Method that shows a warning dialog prior to closing the video via the close button or the
+     * the back button.
+     */
+    public fun enableCloseButtonWithWarning() {
+        setCloseButton(true)
+        setCloseButtonWarning(true)
+    }
+
+    public fun setCloseButtonWarning(value: Boolean) {
+        controller.config.shouldShowCloseWarning = value
     }
 
     fun setConfigurationProduction() {

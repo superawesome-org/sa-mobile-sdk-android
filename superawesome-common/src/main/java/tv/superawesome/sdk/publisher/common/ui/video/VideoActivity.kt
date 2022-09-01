@@ -18,6 +18,7 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
+import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
@@ -33,6 +34,7 @@ class VideoActivity : FullScreenActivity() {
     private val control: IVideoPlayerController by inject(IVideoPlayerController::class.java)
     private var videoEvents: VideoEvents? = null
     private var listener: SAInterface? = null
+    private var completed = false
 
     private lateinit var videoPlayer: VideoPlayer
 
@@ -60,6 +62,7 @@ class VideoActivity : FullScreenActivity() {
         parentLayout.addView(videoPlayer)
 
         closeButton.visibility = if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
+        closeButton.setOnClickListener { onCloseAction() }
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
@@ -72,6 +75,7 @@ class VideoActivity : FullScreenActivity() {
             }
 
             override fun onComplete(player: IVideoPlayer, time: Int, duration: Int) {
+                completed = true
                 videoEvents?.complete(player, time, duration)
 
                 controller.adEnded()
@@ -118,12 +122,41 @@ class VideoActivity : FullScreenActivity() {
         }
     }
 
-    public override fun close() {
+    private fun onCloseAction() {
+        if (config.shouldShowCloseWarning && !completed) {
+            control.pause()
+            CloseWarning.setListener(object : CloseWarning.Interface {
+                override fun onResumeSelected() {
+                    control.start()
+                }
+
+                override fun onCloseSelected() {
+                    close()
+                }
+            })
+            CloseWarning.show(this)
+        } else {
+            close()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (config.isBackButtonEnabled) {
+            onCloseAction()
+        }
+    }
+
+    override fun close() {
+        CloseWarning.close()
         controller.adClosed()
         controller.close()
         videoPlayer.destroy()
-
         super.close()
+    }
+
+    override fun onDestroy() {
+        CloseWarning.close()
+        super.onDestroy()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
