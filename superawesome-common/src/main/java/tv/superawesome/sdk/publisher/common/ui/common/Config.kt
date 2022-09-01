@@ -13,6 +13,7 @@ open class Config : Parcelable {
     var isParentalGateEnabled: Boolean
     var isBumperPageEnabled: Boolean
     var shouldShowSmallClick: Boolean
+    var shouldShowCloseWarning: Boolean
     var isBackButtonEnabled: Boolean
     var shouldCloseAtEnd: Boolean
     var closeButtonState: CloseButtonState
@@ -25,6 +26,7 @@ open class Config : Parcelable {
         isParentalGateEnabled: Boolean,
         isBumperPageEnabled: Boolean,
         shouldShowSmallClick: Boolean,
+        shouldShowCloseWarning: Boolean,
         isBackButtonEnabled: Boolean,
         shouldCloseAtEnd: Boolean,
         closeButtonState: CloseButtonState,
@@ -36,6 +38,7 @@ open class Config : Parcelable {
         this.isParentalGateEnabled = isParentalGateEnabled
         this.isBumperPageEnabled = isBumperPageEnabled
         this.shouldShowSmallClick = shouldShowSmallClick
+        this.shouldShowCloseWarning = shouldShowCloseWarning
         this.isBackButtonEnabled = isBackButtonEnabled
         this.shouldCloseAtEnd = shouldCloseAtEnd
         this.closeButtonState = closeButtonState
@@ -49,6 +52,7 @@ open class Config : Parcelable {
         isParentalGateEnabled = parcel.readByte().toInt() != 0
         isBumperPageEnabled = parcel.readByte().toInt() != 0
         shouldShowSmallClick = parcel.readByte().toInt() != 0
+        shouldShowCloseWarning = parcel.readByte().toInt() != 0
         isBackButtonEnabled = parcel.readByte().toInt() != 0
         shouldCloseAtEnd = parcel.readByte().toInt() != 0
         closeButtonState = CloseButtonState.fromInt(parcel.readInt())
@@ -64,6 +68,7 @@ open class Config : Parcelable {
         parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
         parcel.writeByte((if (shouldShowSmallClick) 1 else 0).toByte())
+        parcel.writeByte((if (shouldShowCloseWarning) 1 else 0).toByte())
         parcel.writeByte((if (isBackButtonEnabled) 1 else 0).toByte())
         parcel.writeByte((if (shouldCloseAtEnd) 1 else 0).toByte())
         parcel.writeInt(closeButtonState.value)
@@ -82,6 +87,7 @@ open class Config : Parcelable {
             isParentalGateEnabled = Constants.defaultParentalGate,
             isBumperPageEnabled = Constants.defaultBumperPage,
             shouldShowSmallClick = Constants.defaultSmallClick,
+            shouldShowCloseWarning = Constants.defaultCloseWarning,
             isBackButtonEnabled = Constants.defaultBackButtonEnabled,
             shouldCloseAtEnd = Constants.defaultCloseAtEnd,
             closeButtonState = Constants.defaultCloseButtonState,

@@ -19,6 +19,7 @@ object Constants {
     const val defaultCloseAtEnd = true
     const val defaultSmallClick = false
     const val defaultBackButtonEnabled = true
+    const val defaultCloseWarning = false
 
     val defaultCloseButtonState = CloseButtonState.Hidden
     val defaultOrientation = Orientation.Any
