@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.common.network.retrofit
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.properties.Properties
 import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
-import tv.superawesome.sdk.publisher.common.extensions.encodeToMap
+import tv.superawesome.sdk.publisher.common.extensions.mergeToMap
 import tv.superawesome.sdk.publisher.common.models.Ad
 import tv.superawesome.sdk.publisher.common.models.AdQuery
 import tv.superawesome.sdk.publisher.common.models.EventQuery
@@ -18,7 +18,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
         DataResult.Success(
             awesomeAdsApi.ad(
                 placementId,
-                Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+                Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
             )
         )
     } catch (exception: Exception) {
@@ -32,7 +32,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
                     placementId,
                     lineItemId,
                     creativeId,
-                    Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+                    Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
                 )
             )
         } catch (exception: Exception) {
@@ -42,7 +42,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
     override suspend fun impression(query: EventQuery): DataResult<Void> = try {
         DataResult.Success(
             awesomeAdsApi.impression(
-                Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+                Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
             )
         )
     } catch (exception: Exception) {
@@ -52,7 +52,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
     override suspend fun click(query: EventQuery): DataResult<Void> = try {
         DataResult.Success(
             awesomeAdsApi.click(
-                Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+                Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
             )
         )
     } catch (exception: Exception) {
@@ -62,7 +62,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
     override suspend fun videoClick(query: EventQuery): DataResult<Void> = try {
         DataResult.Success(
             awesomeAdsApi.videoClick(
-                Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+                Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
             )
         )
     } catch (exception: Exception) {
@@ -72,7 +72,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
     override suspend fun event(query: EventQuery): DataResult<Void> = try {
         DataResult.Success(
             awesomeAdsApi.event(
-                Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+                Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
             )
         )
     } catch (exception: Exception) {

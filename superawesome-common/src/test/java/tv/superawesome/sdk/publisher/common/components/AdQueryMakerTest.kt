@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.properties.Properties
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.extensions.encodeToMap
+import tv.superawesome.sdk.publisher.common.extensions.mergeToMap
 import tv.superawesome.sdk.publisher.common.models.*
 import java.util.*
 import kotlin.test.assertEquals
@@ -191,7 +191,7 @@ class AdQueryMakerTest : BaseTest() {
         val query = runBlocking { queryMaker.makeAdQuery(request) }
         val options = mapOf("key1" to "value1", "key2" to "value2")
         QueryAdditionalOptions.instance = QueryAdditionalOptions(options)
-        val encoded = Properties.encodeToMap(query, QueryAdditionalOptions.instance?.options)
+        val encoded = Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
 
         // Then
         assertTrue(encoded.entries.containsAll(options.entries))
@@ -215,7 +215,7 @@ class AdQueryMakerTest : BaseTest() {
 
         // When
         val query = runBlocking { queryMaker.makeAdQuery(request) }
-        val encoded = Properties.encodeToMap(query, null)
+        val encoded = Properties.mergeToMap(query, null)
 
         // Then
         assertEquals("" +
