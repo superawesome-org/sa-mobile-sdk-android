@@ -98,8 +98,9 @@ class TestSAVersion {
         val sdkVersionNumber = SAVersion.getSDKVersionNumber()
 
         // when
-        val strippedVersion = sdkVersionNumber.replace(".", "")
-        val isVersionNumeric = strippedVersion.all { char -> char.isDigit() }
+        val isVersionNumeric = sdkVersionNumber
+            .replace(".", "")
+            .all { char -> char.isDigit() }
 
         // then
         Assert.assertEquals(expectedSDK, sdkVersionNumber)
@@ -113,8 +114,9 @@ class TestSAVersion {
         val sdkVersionNumber = SAVersion.getSDKVersionNumber()
 
         // when
-        val strippedVersion = sdkVersionNumber.replace(".", "")
-        val isVersionNumeric = strippedVersion.all { char -> char.isDigit() }
+        val isVersionNumeric = sdkVersionNumber
+            .replace(".", "")
+            .all { char -> char.isDigit() }
 
         // then
         Assert.assertTrue(isVersionNumeric)
