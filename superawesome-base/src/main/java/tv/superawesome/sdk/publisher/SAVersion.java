@@ -18,15 +18,6 @@ public class SAVersion {
     }
 
     /**
-     * Getter for the current version
-     *
-     * @return string representing the current version
-     */
-    private static String getVersion() {
-        return versionOverride == null ? version : versionOverride;
-    }
-
-    /**
      * Method to load the current version from version.properties.
      *
      * @return the stored string representing the current version
@@ -46,10 +37,19 @@ public class SAVersion {
     /**
      * Getter for the current SDK
      *
-     * @return string representing the current SDK
+     * @return a string representing the current SDK
      */
     private static String getSdk() {
         return sdk;
+    }
+
+    /**
+     * Getter for the current version number
+     *
+     * @return a string representing the current version number
+     */
+    public static String getSDKVersionNumber() {
+        return versionOverride == null ? version : versionOverride;
     }
 
     /**
@@ -60,7 +60,7 @@ public class SAVersion {
      */
     public static String getSDKVersion(String pluginName) {
         String pluginFormatted = pluginName != null ? String.format("_%s", pluginName) : "";
-        return String.format("%s_%s%s", getSdk(), getVersion(), pluginFormatted);
+        return String.format("%s_%s%s", getSdk(), getSDKVersionNumber(), pluginFormatted);
     }
 
     /**

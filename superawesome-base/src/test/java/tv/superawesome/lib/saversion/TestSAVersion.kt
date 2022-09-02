@@ -88,4 +88,37 @@ class TestSAVersion {
         Assert.assertEquals(sdkName, expectedSDK)
         Assert.assertTrue(isVersionNumeric)
     }
+
+    @Test
+    fun test_getSDKVersionNumber_with_version_override() {
+
+        // given
+        val expectedSDK = "5.6.7"
+        SAVersion.overrideVersion(versionOverride)
+        val sdkVersionNumber = SAVersion.getSDKVersionNumber()
+
+        // when
+        val isVersionNumeric = sdkVersionNumber
+            .replace(".", "")
+            .all { char -> char.isDigit() }
+
+        // then
+        Assert.assertEquals(expectedSDK, sdkVersionNumber)
+        Assert.assertTrue(isVersionNumeric)
+    }
+
+    @Test
+    fun test_getSDKVersionNumber_defaults() {
+
+        // given
+        val sdkVersionNumber = SAVersion.getSDKVersionNumber()
+
+        // when
+        val isVersionNumeric = sdkVersionNumber
+            .replace(".", "")
+            .all { char -> char.isDigit() }
+
+        // then
+        Assert.assertTrue(isVersionNumeric)
+    }
 }
