@@ -28,6 +28,7 @@ class SdkInfoTest : BaseTest() {
         assertEquals("testAppName", sdkInfo.name)
         assertEquals("xx_YY", sdkInfo.lang)
         assertEquals("android_1.2.3", sdkInfo.version)
+        // The version number is read from the version.properties file in the test resources
         assertEquals("1.2.3", sdkInfo.versionNumber)
     }
 
