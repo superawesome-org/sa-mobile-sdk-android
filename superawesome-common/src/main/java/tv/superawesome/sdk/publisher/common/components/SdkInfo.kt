@@ -7,6 +7,7 @@ import java.util.Properties
 
 interface SdkInfoType {
     val version: String
+    val versionNumber: String
     val bundle: String
     val name: String
     val lang: String
@@ -40,6 +41,8 @@ class SdkInfo(
 
     override val version: String
         get() = overrideVersion ?: "${Keys.Platform}_${Keys.storedVersion}"
+    override val versionNumber: String
+        get() = overrideVersion ?: Keys.storedVersion
     override val bundle: String = context.packageName ?: Keys.Unknown
     override val name: String by lazy { findAppName() }
     override val lang: String = locale.toString()
