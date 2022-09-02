@@ -37,7 +37,7 @@ public class SAVersion {
     /**
      * Getter for the current SDK
      *
-     * @return string representing the current SDK
+     * @return a string representing the current SDK
      */
     private static String getSdk() {
         return sdk;
@@ -46,7 +46,7 @@ public class SAVersion {
     /**
      * Getter for the current version
      *
-     * @return string representing the current version
+     * @return a string representing the current version
      */
     public static String getSDKVersionNumber() {
         return versionOverride == null ? version : versionOverride;
