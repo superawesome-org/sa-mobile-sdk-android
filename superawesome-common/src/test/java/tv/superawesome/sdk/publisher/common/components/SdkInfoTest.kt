@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import java.util.*
