@@ -28,7 +28,6 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.publisher.base.R;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
 import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
@@ -215,6 +214,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         if (config.shouldCloseAtEnd) {
             close();
         }
+        removeListenerRef();
     }
 
     @Override
@@ -275,6 +275,11 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         // close
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        removeListenerRef();
+    }
+
+    private void removeListenerRef() {
+        listenerRef = null;
     }
 
     @Override
