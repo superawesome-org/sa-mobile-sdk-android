@@ -94,6 +94,7 @@ class VideoAdUITest {
             .check(isVisible())
     }
 
+    @Test
     fun test_auto_close_on_finish() {
         testAdLoading(
             "87969",
