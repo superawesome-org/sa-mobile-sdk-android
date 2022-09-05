@@ -190,22 +190,22 @@ workflows:
           filters:
             branches:
               only: develop
+      - semantic_release:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - approve_dry_run_and_release
+          filters:
+            branches:
+              only: develop
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
           requires:
-            - approve_dry_run_and_release
+            - semantic_release
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
-      - semantic_release:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - prep_deploy
-          filters:
-            branches:
-              only: develop
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
