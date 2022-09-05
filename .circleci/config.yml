@@ -193,7 +193,7 @@ workflows:
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
           requires:
-            - approve_dry_run_and_release
+            - semantic_release
           filters:
             branches:
               ignore: /.*/
@@ -202,7 +202,7 @@ workflows:
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - prep_deploy
+            - approve_dry_run_and_release
           filters:
             branches:
               only: develop
