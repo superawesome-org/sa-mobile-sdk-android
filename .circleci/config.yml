@@ -195,6 +195,8 @@ workflows:
           requires:
             - approve_dry_run_and_release
           filters:
+            tags:
+              only: /^v.*/
             branches:
               only: develop
       - prep_deploy:
@@ -202,10 +204,10 @@ workflows:
           requires:
             - semantic_release
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
