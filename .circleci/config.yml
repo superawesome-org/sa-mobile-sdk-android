@@ -195,14 +195,10 @@ workflows:
           requires:
             - approve_dry_run_and_release
           filters:
-            tags:
-              only: /^v.*/
             branches:
               only: develop
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
-          requires:
-            - semantic_release
           filters:
             tags:
               only: /^v.*/
