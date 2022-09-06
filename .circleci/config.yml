@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Output next release
           command: |
-            `cat .nextRelease`
+            `cat nextRelease`
 
   semantic_release:
     <<: *android_config
