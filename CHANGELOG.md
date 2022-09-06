@@ -1,13 +1,3 @@
-## [8.3.7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.6...v8.3.7) (2022-09-06)
-
-
-### Bug Fixes
-
-* approval step in the circle ci ([#176](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/176)) ([d12b2c4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d12b2c4c01e623ec3d24d58c408868e7876cecb1))
-* swapping filter order ([#200](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/200)) ([79962a3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/79962a355ec1fdac1f2844ddc8cbd1480349954d))
-* triggering semantic release on dry run approval ([#199](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/199)) ([da1045e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/da1045e5d56793c5309b8fc4da77de923440c86e))
-* Vast ads that are wrapped were not loading correctly. Fixed the recursive loading issue ([#179](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/179)) ([6d51f60](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/6d51f60cf8df41430ef9ad3b6fef9afc37f2a893))
-
 ## [8.3.6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.5...v8.3.6) (2022-06-24)
 
 
