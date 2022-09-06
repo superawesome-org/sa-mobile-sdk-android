@@ -72,7 +72,7 @@ jobs:
           at: .
       - run:
           name: Output next release
-          command: echo nextRelease
+          command: cat nextRelease
 
   semantic_release:
     <<: *android_config
@@ -186,15 +186,15 @@ workflows:
   version: 2.1
   android_sdk_workflow:
     jobs:
-      - test_superawesome_base:
-          context: MOBILE_ANDROID_SDKS
-          filters:
-            tags:
-              ignore: /^v.*/
+      # - test_superawesome_base:
+      #     context: MOBILE_ANDROID_SDKS
+      #     filters:
+      #       tags:
+      #         ignore: /^v.*/
       - semantic_release_dry_run:
           context: MOBILE_ANDROID_SDKS
-          requires:
-            - test_superawesome_base
+          # requires:
+          #   - test_superawesome_base
           filters:
             branches:
               only: feat/AAG-2246-auto-version-bump-feature-branch
