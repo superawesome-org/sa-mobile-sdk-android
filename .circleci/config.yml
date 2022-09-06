@@ -69,7 +69,7 @@ jobs:
     <<: *android_config
     steps:
       - run:
-          name: Output next release version
+          name: Output next release
           command: echo nextRelease
 
   semantic_release:
