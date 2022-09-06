@@ -191,14 +191,14 @@ workflows:
       #       - semantic_release_dry_run
       #     filters:
       #       branches:
-      #         only: AAG-2246-auto-version-bump-feature-branch
+      #         only: feat/AAG-2246-auto-version-bump-feature-branch
       # - semantic_release:
       #     context: MOBILE_ANDROID_SDKS
       #     requires:
       #       - approve_dry_run_and_release
       #     filters:
       #       branches:
-      #         only: AAG-2246-auto-version-bump-feature-branch
+      #         only: feat/AAG-2246-auto-version-bump-feature-branch
       # - prep_deploy:
       #     context: MOBILE_ANDROID_APPS
       #     filters:
