@@ -51,6 +51,8 @@ jobs:
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
+      - attach_workspace:
+          at: .
       - checkout
       - *generate_github_token
       - run:
@@ -58,8 +60,19 @@ jobs:
           command: |
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
             ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run
-            echo "Next Release Version: "
-            echo ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run ${nextRelease.version}
+      - persist_to_workspace:
+          root: "."
+          paths:
+          - "nextRelease"
+
+  output_next_release_version:
+    <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
+    steps:
+      - run:
+          name: Output next release version
+          command: echo nextRelease
 
   semantic_release:
     <<: *android_config
@@ -182,6 +195,13 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
+          filters:
+            branches:
+              only: feat/AAG-2246-auto-version-bump-feature-branch
+      - output_next_release_version:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - semantic_release_dry_run
           filters:
             branches:
               only: feat/AAG-2246-auto-version-bump-feature-branch
