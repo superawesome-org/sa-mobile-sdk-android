@@ -68,6 +68,8 @@ jobs:
   output_next_release_version:
     <<: *android_config
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Output next release
           command: echo nextRelease
