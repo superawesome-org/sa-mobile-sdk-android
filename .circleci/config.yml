@@ -72,8 +72,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: |
-          `cat ./nextRelease`
+      - run:
+          name: Output next release
+          command: cat ./nextRelease
 
   semantic_release:
     <<: *android_config
