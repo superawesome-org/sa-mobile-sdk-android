@@ -74,7 +74,12 @@ jobs:
           at: .
       - run:
           name: Output next release
-          command: echo "$(cat ./nextRelease)"
+          #command: echo "$(cat ./nextRelease)"
+          command: |
+            FILE=./nextRelease
+            if [ -f "$FILE" ]; then
+              echo "$FILE exists."
+            fi
 
   semantic_release:
     <<: *android_config
