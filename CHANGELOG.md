@@ -1,3 +1,26 @@
+## [8.3.8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.7...v8.3.8) (2022-09-07)
+
+
+### Bug Fixes
+
+* Added else branch and cat ([f96cd40](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f96cd4078d5301ca51a9a9db27e10b6151d4661e))
+* cat test ([#211](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/211)) ([1ec2cf1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1ec2cf144f4843eaab9efc2db347094fd081d666))
+* command syntax ([#208](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/208)) ([f7946e7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f7946e78184cdc8f66654b3225e3dd3ebf54591f))
+* echo result of cat ([f1ed4f4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f1ed4f434893ca493184e79301b4213ce2dd624b))
+* format test ([1b189c1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1b189c17ebf86ee8bf772b06d2be312656fc0ee9))
+* path test ([aac906a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/aac906a32c827ff922333b65e6c05661dc1ff522))
+* replacing semantic release dry run with semantic release to test outputting the version ([b762ddc](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b762ddc3d7ebf7409039db8417f1b23fc32fa632))
+* revert cat command ([49682d3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/49682d3067902677832e64f27e5e277ed13f98be))
+* Test 2 removing unnecessary '"' ([#205](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/205)) ([e7d48aa](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e7d48aa7856e4dd18f4497a6b9c4d71b7a55f230))
+* test cat output ([1514c60](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1514c60da640a058715765637e43953f445abf95))
+* test for the existence of nextRelease ([6c2b78e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/6c2b78eec76cb32b8d076ed02658bd2fc4de197e))
+* test non-existent path ([ef1c325](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ef1c325219d50cfd3cc7aa4c5f85557f4cc025ae))
+* testing basic echo ([8ab1513](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/8ab15134d49ef37184a73e372af43a5c854fbc4b))
+* testing directory ([#209](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/209)) ([3b78488](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3b78488420c2a8e0d741fdcffa50e5902822d1ab))
+* testing with cat ([#207](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/207)) ([ccb488e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ccb488e75017515d3887ee2265a24353ea262aad))
+* workspace path test ([5e2ee7b](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/5e2ee7b2bedaeaeabf4b8e2293163bbc205f321b))
+* workspace path test ([9fa1256](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/9fa1256398663b57b5e7d378a3c89f5422cad364))
+
 ## [8.3.7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.6...v8.3.7) (2022-09-06)
 
 
