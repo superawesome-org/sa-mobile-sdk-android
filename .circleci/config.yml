@@ -74,7 +74,7 @@ jobs:
           at: .
       - run:
           name: Output next release
-          command: echo "$(cat ./nextRelease)"
+          command: echo "$(cat ./non-existent-path)"
 
   semantic_release:
     <<: *android_config
