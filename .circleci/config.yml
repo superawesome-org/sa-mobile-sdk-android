@@ -79,6 +79,9 @@ jobs:
             FILE=./nextRelease
             if [ -f "$FILE" ]; then
               echo "$FILE exists."
+              cat $FILE
+            else 
+              echo "$FILE does not exist."
             fi
 
   semantic_release:
