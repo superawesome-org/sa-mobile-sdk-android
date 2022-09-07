@@ -61,7 +61,7 @@ jobs:
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
             ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run
       - persist_to_workspace:
-          root: "workspace"
+          root: "."
           paths:
           - "nextRelease"
 
@@ -71,9 +71,9 @@ jobs:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: .
       - run: |
-          `cat /tmp/workspace/nextRelease`
+          `cat ./nextRelease`
 
   semantic_release:
     <<: *android_config
