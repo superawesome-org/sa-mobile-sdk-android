@@ -1,13 +1,21 @@
 package tv.superawesome.demoapp
 
+import android.content.Intent
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
+import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
@@ -18,6 +26,16 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 class VideoAdUITest {
     @get:Rule
     var wireMockRule = WireMockRule(8080)
+
+    @Before
+    fun setup() {
+        Intents.init()
+    }
+
+    @After
+    fun tearDown() {
+        Intents.release()
+    }
 
     @Test
     fun test_standard_CloseButtonWithNoDelay() {
@@ -160,7 +178,10 @@ class VideoAdUITest {
     @Test
     fun test_direct_safeAdVisible() {
         val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_direct_success_padlock_enabled.json")
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/video_direct_success_padlock_enabled.json"
+        )
 
         CommonInteraction.clickItemAt(13)
 
@@ -172,12 +193,61 @@ class VideoAdUITest {
     @Test
     fun test_vast_safeAdVisible() {
         val placement = "88406"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/video_vast_success_padlock_enabled.json")
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/video_vast_success_padlock_enabled.json"
+        )
 
         CommonInteraction.clickItemAt(11)
 
         ViewTester()
             .waitForView(withContentDescription("Safe Ad Logo"))
             .check(isVisible())
+    }
+
+    @Test
+    fun test_bumper_enabled_from_settings() {
+        // Given bumper page is enabled from settings
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "video_direct_success.json"
+        ) {
+            SettingsInteraction.enableBumper()
+        }
+        CommonInteraction.clickItemAt(13)
+
+        // When ad is clicked
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        // Then bumper page is shown
+        BumperInteraction.waitUntilBumper()
+
+        // And view URL is redirected to browser
+        Thread.sleep(4500)
+        intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
+    }
+
+    @Test
+    fun test_bumper_enabled_from_api() {
+        // Given bumper page is enabled from api
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "video_direct_enabled_success.json"
+        )
+        CommonInteraction.clickItemAt(13)
+
+        // When ad is clicked
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        // Then bumper page is shown
+        BumperInteraction.waitUntilBumper()
     }
 }

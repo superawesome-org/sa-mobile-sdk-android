@@ -19,4 +19,7 @@
     <string name="settings_close_button">Close button</string>
     <string name="settings_close_immediately">No delay</string>
     <string name="settings_close_delay">Delay</string>
+    <string name="settings_bumper">Bumper</string>
+    <string name="settings_enable">Enable</string>
+    <string name="settings_disable">Disable</string>
 </resources>

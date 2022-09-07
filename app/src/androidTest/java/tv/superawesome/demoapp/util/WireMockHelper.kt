@@ -50,6 +50,14 @@ object WireMockHelper {
                         .withBody("")
                 )
         )
+        stubFor(
+            get(urlPathMatching("/click"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
     }
 
     fun verifyUrlPathCalled(urlPath: String) {

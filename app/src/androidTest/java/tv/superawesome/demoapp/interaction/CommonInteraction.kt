@@ -15,7 +15,11 @@ import tv.superawesome.demoapp.util.WireMockHelper.stubFailure
 import tv.superawesome.demoapp.util.WireMockHelper.stubSuccess
 
 object CommonInteraction {
-    fun launchActivityWithSuccessStub(placement: String, fileName: String, settings: (() -> Unit)? = null) {
+    fun launchActivityWithSuccessStub(
+        placement: String,
+        fileName: String,
+        settings: (() -> Unit)? = null
+    ) {
         stubCommonPaths()
         stubSuccess(placement, fileName)
 

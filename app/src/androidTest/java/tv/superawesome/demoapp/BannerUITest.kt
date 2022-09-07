@@ -1,17 +1,27 @@
 package tv.superawesome.demoapp
 
+import android.content.Intent
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
@@ -20,6 +30,16 @@ import tv.superawesome.demoapp.util.waitUntil
 class BannerUITest {
     @get:Rule
     var wireMockRule = WireMockRule(8080)
+
+    @Before
+    fun setup() {
+        Intents.init()
+    }
+
+    @After
+    fun tearDown() {
+        Intents.release()
+    }
 
     @Test
     fun test_adLoading() {
@@ -55,12 +75,52 @@ class BannerUITest {
     @Test
     fun test_safeAdVisible() {
         val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/banner_success_padlock_enabled.json")
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/banner_success_padlock_enabled.json"
+        )
 
         CommonInteraction.clickItemAt(2)
 
         ViewTester()
             .waitForView(withContentDescription("Safe Ad Logo"))
             .check(isVisible())
+    }
+
+    @Test
+    fun test_bumper_enabled_from_settings() {
+        // Given bumper page is enabled from settings
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json") {
+            SettingsInteraction.enableBumper()
+        }
+        CommonInteraction.clickItemAt(2)
+
+        // When ad is clicked
+        onView(withId(R.id.bannerView))
+            .perform(click())
+
+        // Then bumper page is shown
+        BumperInteraction.waitUntilBumper()
+
+        // And view URL is redirected to browser
+        Thread.sleep(4500)
+        Intents.intended(hasAction(Intent.ACTION_VIEW))
+        verifyUrlPathCalled("/click")
+    }
+
+    @Test
+    fun test_bumper_enabled_from_api() {
+        // Given bumper page is enabled from api
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_enabled_success.json")
+        CommonInteraction.clickItemAt(2)
+
+        // When ad is clicked
+        onView(withId(R.id.bannerView))
+            .perform(click())
+
+        // Then bumper page is shown
+        BumperInteraction.waitUntilBumper()
     }
 }
