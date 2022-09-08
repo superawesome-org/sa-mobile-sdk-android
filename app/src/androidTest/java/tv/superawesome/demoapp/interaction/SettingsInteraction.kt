@@ -28,6 +28,11 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun enableBumper() {
+        onView(withId(R.id.bumperEnableButton))
+            .perform(click())
+    }
+
     fun closeSettings() {
         onView(withId(R.id.closeButton))
             .perform(click())

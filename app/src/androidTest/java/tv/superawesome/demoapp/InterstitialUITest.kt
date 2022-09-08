@@ -1,25 +1,42 @@
 package tv.superawesome.demoapp
 
+import android.content.Intent
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
+import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
-import tv.superawesome.demoapp.util.isVisible
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import tv.superawesome.demoapp.util.waitUntil
+import tv.superawesome.demoapp.interaction.SettingsInteraction
+import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class InterstitialUITest {
     @get:Rule
     var wireMockRule = WireMockRule(8080)
+
+    @Before
+    fun setup() {
+        Intents.init()
+    }
+
+    @After
+    fun tearDown() {
+        Intents.release()
+    }
 
     @Test
     fun test_standard_adLoading() {
@@ -64,7 +81,10 @@ class InterstitialUITest {
     @Test
     fun test_standard_safeAdVisible() {
         val placement = "87892"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "padlock/interstitial_standard_success_padlock_enabled.json")
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/interstitial_standard_success_padlock_enabled.json"
+        )
 
         CommonInteraction.clickItemAt(5)
 
@@ -75,7 +95,10 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_CloseButton() {
-        CommonInteraction.launchActivityWithSuccessStub("87892", "interstitial_standard_success.json")
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87892",
+            "interstitial_standard_success.json"
+        )
 
         CommonInteraction.clickItemAt(5)
 
@@ -95,5 +118,49 @@ class InterstitialUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(ViewMatchers.isDisplayed()))
             .check(isVisible())
+    }
+
+    @Test
+    fun test_bumper_enabled_from_settings() {
+        // Given bumper page is enabled from settings
+        val placement = "87892"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "interstitial_standard_success.json"
+        ) {
+            SettingsInteraction.enableBumper()
+        }
+        CommonInteraction.clickItemAt(5)
+
+        // When ad is clicked
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(ViewMatchers.isDisplayed()))
+            .perform(click())
+
+        // Then bumper page is shown
+        BumperInteraction.waitUntilBumper()
+
+        // And view URL is redirected to browser
+        Thread.sleep(4500)
+        Intents.intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
+        verifyUrlPathCalled("/click")
+    }
+
+    @Test
+    fun test_bumper_enabled_from_api() {
+        // Given bumper page is enabled from api
+        val placement = "87892"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "interstitial_standard_enabled_success.json"
+        )
+        CommonInteraction.clickItemAt(5)
+
+        // When ad is clicked
+        onView(withContentDescription("Ad content")).perform(click())
+
+        // Then bumper page is shown
+        BumperInteraction.waitUntilBumper()
     }
 }

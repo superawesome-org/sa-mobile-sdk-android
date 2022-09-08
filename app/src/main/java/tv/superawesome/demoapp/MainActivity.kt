@@ -88,10 +88,17 @@ class MainActivity : FragmentActivity() {
 
     private fun updateSettings() {
         val app = application as? MyApplication ?: return
-        val config = app.settings.environment
+        val settings = app.settings
+        val config = settings.environment
+
         bannerView.setConfiguration(config)
+        bannerView.setBumperPage(settings.bumperEnabled)
+
         SAInterstitialAd.setConfiguration(config)
+        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
+
         SAVideoAd.setConfiguration(config)
+        SAVideoAd.setBumperPage(settings.bumperEnabled)
         when (app.settings.closeButtonState) {
             CloseButtonState.VisibleImmediately -> {
                 SAVideoAd.enableCloseButtonNoDelay()
@@ -106,7 +113,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initUI() {
-        val title = "AwesomeAds.version: ${SAVersion.getSDKVersion(null)}"
+        val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()}"
         titleTextView.text = title
         configureListView()
     }
