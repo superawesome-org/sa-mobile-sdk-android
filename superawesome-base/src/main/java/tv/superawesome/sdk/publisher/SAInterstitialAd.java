@@ -120,6 +120,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         interstitialBanner.setListener(listenerL);
         interstitialBanner.setBumperPage(isBumperPageEnabledL);
         interstitialBanner.setParentalGate(isParentalGateEnabledL);
+        interstitialBanner.setContentDescription("Ad content");
         if (!isMoatLimitingEnabledL) {
             interstitialBanner.disableMoatLimiting();
         }

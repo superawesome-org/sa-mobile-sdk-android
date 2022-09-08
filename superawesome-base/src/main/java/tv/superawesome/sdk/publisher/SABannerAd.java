@@ -460,7 +460,7 @@ public class SABannerAd extends FrameLayout {
         // callback
         if (listener != null) {
             listener.onEvent(ad.placementId, SAEvent.adClicked);
-            Log.d("SABannerAd", "Event callback: " + SAEvent.adClicked.toString());
+            Log.d("SABannerAd", "Event callback: " + SAEvent.adClicked);
         } else {
             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClicked");
         }

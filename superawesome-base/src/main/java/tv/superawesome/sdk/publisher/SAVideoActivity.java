@@ -116,6 +116,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         videoPlayer.setController(control);
         videoPlayer.setControllerView(chrome);
         videoPlayer.setBackgroundColor(Color.BLACK);
+        videoPlayer.setContentDescription("Ad content");
         parent.addView(videoPlayer);
 
         videoPlayer.setListener(this);
