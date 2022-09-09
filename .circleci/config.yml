@@ -25,6 +25,11 @@ references:
         git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
 
+  download_android_properties_plugin: &download_android_properties_plugin
+    run:
+      name: Download Plugin for updating properties in fastlane
+      command: bundle exec fastlane add_plugin properties
+
 jobs:
 
   ## Run unit tests
@@ -85,6 +90,7 @@ jobs:
     steps:
       - checkout
       - *generate_github_token
+      - *download_android_properties_plugin
       - attach_workspace:
           at: .
       - run:
@@ -101,13 +107,18 @@ jobs:
             # ls
             # ################################################
 
+            # VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
+            # cat $VERSION_PROPERTIES
+            # echo "version.name=7.8.9" > $VERSION_PROPERTIES
+            # echo "Updated version properties: "
+            # cat $VERSION_PROPERTIES
+            # git commit -m "Auto increment version via Circle CI [skip ci]"
+            # git push -q origin feat/AAG-2246-auto-version-bump-feature-branch
+
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             cat $VERSION_PROPERTIES
-            echo "version.name=7.8.9" > $VERSION_PROPERTIES
-            echo "Updated version properties: "
+            bundle exec fastlane properties set_properties_value path: $VERSION_PROPERTIES key: 'version.name' value: '9.10.11'
             cat $VERSION_PROPERTIES
-            git commit -m "Auto increment version via Circle CI [skip ci]"
-            git push -q origin feat/AAG-2246-auto-version-bump-feature-branch
 
   verify_version_properties:
     <<: *android_config
