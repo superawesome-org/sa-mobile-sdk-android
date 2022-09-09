@@ -84,24 +84,26 @@ jobs:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
       - checkout
+      - *generate_github_token
       - attach_workspace:
           at: .
       - run:
           name: Auto bump version
           command: |
             # ################################################
-            # FILE=./nextRelease
-            # if [ -f "$FILE" ]; then
-            #   echo "$FILE exists."
-            #   cat $FILE
+            # NEXT_RELEASE=./nextRelease
+            # if [ -f "$NEXT_RELEASE" ]; then
+            #   echo "File at $NEXT_RELEASE exists."
+            #   cat $NEXT_RELEASE
             # else 
-            #   echo "$FILE does not exist."
+            #   echo "File at $NEXT_RELEASE does not exist."
             # fi
+            # ls
             # ################################################
 
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             cat $VERSION_PROPERTIES
-            echo "version.name=1.2.3" >> $VERSION_PROPERTIES
+            echo "version.name=4.5.6" > $VERSION_PROPERTIES
             echo "Updated version properties: "
             cat $VERSION_PROPERTIES
   #Await for all running builds to finish
