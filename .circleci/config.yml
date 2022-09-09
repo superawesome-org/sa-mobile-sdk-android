@@ -91,7 +91,7 @@ jobs:
           name: Auto bump version
           command: |
             # ################################################
-            # NEXT_RELEASE=./nextRelease
+            # NEXT_RELEASE=nextRelease
             # if [ -f "$NEXT_RELEASE" ]; then
             #   echo "File at $NEXT_RELEASE exists."
             #   cat $NEXT_RELEASE
@@ -103,9 +103,10 @@ jobs:
 
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             cat $VERSION_PROPERTIES
-            echo "version.name=4.5.6" > $VERSION_PROPERTIES
+            echo "version.name=1.2.3" > $VERSION_PROPERTIES
             echo "Updated version properties: "
             cat $VERSION_PROPERTIES
+            git log
   #Await for all running builds to finish
   prep_deploy:
     <<: *android_config
