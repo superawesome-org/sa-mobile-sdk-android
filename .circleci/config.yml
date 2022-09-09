@@ -83,8 +83,6 @@ jobs:
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
-      - attach_workspace:
-          at: .
       - checkout
       - *generate_github_token
       - attach_workspace:
@@ -117,6 +115,8 @@ jobs:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: Verify bumped version
           command: |
