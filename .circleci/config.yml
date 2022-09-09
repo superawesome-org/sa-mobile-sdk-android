@@ -100,15 +100,10 @@ jobs:
             # ################################################
 
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
-
-            if [ -f "$VERSION_PROPERTIES" ]; then
-              echo "$VERSION_PROPERTIES exists."
-              cat $VERSION_PROPERTIES
-            else 
-              echo "$VERSION_PROPERTIES does not exist."
-            fi
-            ls
-
+            cat $VERSION_PROPERTIES
+            echo "version.name=1.2.3" >> $VERSION_PROPERTIES
+            echo "Updated version properties: "
+            cat $VERSION_PROPERTIES
   #Await for all running builds to finish
   prep_deploy:
     <<: *android_config
