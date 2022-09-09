@@ -101,10 +101,10 @@ jobs:
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
 
             if [ -f "$VERSION_PROPERTIES" ]; then
-              echo "$FILE exists."
-              cat $FILE
+              echo "$VERSION_PROPERTIES exists."
+              cat $VERSION_PROPERTIES
             else 
-              echo "$FILE does not exist."
+              echo "$VERSION_PROPERTIES does not exist."
             fi
 
   #Await for all running builds to finish
