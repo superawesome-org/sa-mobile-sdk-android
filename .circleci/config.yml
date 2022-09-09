@@ -103,10 +103,24 @@ jobs:
 
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             cat $VERSION_PROPERTIES
-            echo "version.name=1.2.3" > $VERSION_PROPERTIES
+            echo "version.name=7.8.9" > $VERSION_PROPERTIES
             echo "Updated version properties: "
             cat $VERSION_PROPERTIES
-            git log
+            git commit -m "Auto increment version via Circle CI [skip ci]"
+            git push -q
+
+    verify_version_properties:
+    <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
+    steps:
+      - checkout
+      - run:
+          name: Verify bumped version
+          command: |
+            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
+            cat $VERSION_PROPERTIES
+
   #Await for all running builds to finish
   prep_deploy:
     <<: *android_config
@@ -222,6 +236,13 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - semantic_release_dry_run
+          filters:
+            branches:
+              only: feat/AAG-2246-auto-version-bump-feature-branch
+      - verify_version_properties:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - update_version_properties
           filters:
             branches:
               only: feat/AAG-2246-auto-version-bump-feature-branch
