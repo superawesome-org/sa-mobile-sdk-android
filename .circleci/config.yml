@@ -29,7 +29,7 @@ references:
     run:
       name: Download Plugin for updating properties in fastlane
       command: |
-        bundle install fastlane
+        bundle install
         bundle exec fastlane add_plugin properties
 
 jobs:
