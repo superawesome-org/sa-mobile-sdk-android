@@ -29,7 +29,7 @@ references:
     run:
       name: Download Plugin for updating properties in fastlane
       command: |
-        bundle install
+        bundle install fastlane
         bundle exec fastlane add_plugin properties
 
 jobs:
@@ -119,7 +119,7 @@ jobs:
 
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             cat $VERSION_PROPERTIES
-            bundle exec fastlane properties set_properties_value path: $VERSION_PROPERTIES key: 'version.name' value: '9.10.11'
+            bundle exec fastlane [properties] set_properties_value path: $VERSION_PROPERTIES key: 'version.name' value: '9.10.11'
             cat $VERSION_PROPERTIES
 
   verify_version_properties:
