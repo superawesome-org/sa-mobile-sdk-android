@@ -221,7 +221,7 @@ workflows:
       - update_version_properties:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - semantic_release
+            - semantic_release_dry_run
           filters:
             branches:
               only: feat/AAG-2246-auto-version-bump-feature-branch
