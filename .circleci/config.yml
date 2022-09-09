@@ -98,7 +98,7 @@ jobs:
             # fi
             # ################################################
 
-            VERSION_PROPERTIES=superawesome-base/src/main/resources
+            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
 
             if [ -f "$VERSION_PROPERTIES" ]; then
               echo "$FILE exists."
