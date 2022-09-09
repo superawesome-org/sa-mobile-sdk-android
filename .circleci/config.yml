@@ -83,6 +83,8 @@ jobs:
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
+      - attach_workspace:
+          at: .
       - checkout
       - *generate_github_token
       - attach_workspace:
@@ -107,7 +109,7 @@ jobs:
             echo "Updated version properties: "
             cat $VERSION_PROPERTIES
             git commit -m "Auto increment version via Circle CI [skip ci]"
-            git push -q
+            git push -q origin feat/AAG-2246-auto-version-bump-feature-branch
 
   verify_version_properties:
     <<: *android_config
