@@ -33,6 +33,11 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun enableParentalGate() {
+        onView(withId(R.id.parentalEnableButton))
+            .perform(click())
+    }
+
     fun closeSettings() {
         onView(withId(R.id.closeButton))
             .perform(click())

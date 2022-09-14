@@ -62,6 +62,14 @@ class SettingsDialogFragment : DialogFragment() {
         bumperDisableButton.setOnClickListener {
             app?.updateSettings { it.copy(bumperEnabled = false) }
         }
+
+        parentalEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(parentalEnabled = true) }
+        }
+
+        parentalDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(parentalEnabled = false) }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

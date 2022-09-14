@@ -7,6 +7,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -19,8 +20,11 @@ import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
-import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.isVisible
+import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -162,5 +166,25 @@ class InterstitialUITest {
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
+    }
+
+    @Test
+    fun test_parental_gate_for_safe_ad_click() {
+        val placement = "87892"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/interstitial_standard_success_padlock_enabled.json"
+        ) {
+            SettingsInteraction.enableParentalGate()
+        }
+        CommonInteraction.clickItemAt(5)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+            .perform(click())
+
+        onView(withText("Parental Gate"))
+            .check(isVisible())
     }
 }
