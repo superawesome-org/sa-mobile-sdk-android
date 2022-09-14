@@ -63,4 +63,18 @@ object WireMockHelper {
     fun verifyUrlPathCalled(urlPath: String) {
         verify(anyRequestedFor(urlPathMatching(urlPath)))
     }
+
+    fun verifyUrlPathCalledWithQueryParam(
+        urlPath: String,
+        queryParamKey: String,
+        queryParamValueRegex: String,
+        sleepDuration: Long = 0) {
+
+        if(sleepDuration > 0) {
+            Thread.sleep(sleepDuration)
+        }
+
+        verify(anyRequestedFor(urlPathMatching(urlPath))
+            .withQueryParam(queryParamKey, matching(queryParamValueRegex)))
+    }
 }

@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
 import org.junit.Before
@@ -22,8 +23,10 @@ import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
+
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -50,6 +53,14 @@ class BannerUITest {
         ViewTester()
             .waitForView(withId(R.id.bannerView))
             .perform(waitUntil(matchesColor(TestColors.yellow)))
+
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*",
+            2500
+        )
     }
 
     @Test
