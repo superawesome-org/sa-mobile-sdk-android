@@ -9,7 +9,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
 import org.junit.Before
@@ -54,12 +53,13 @@ class BannerUITest {
             .waitForView(withId(R.id.bannerView))
             .perform(waitUntil(matchesColor(TestColors.yellow)))
 
+        Thread.sleep(2500)
+
         verifyUrlPathCalled("/impression")
         verifyUrlPathCalledWithQueryParam(
             "/event",
             "data",
-            ".*viewable_impression.*",
-            2500
+            ".*viewable_impression.*"
         )
     }
 
@@ -108,7 +108,8 @@ class BannerUITest {
         CommonInteraction.clickItemAt(2)
 
         // When ad is clicked
-        onView(withId(R.id.bannerView))
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
             .perform(click())
 
         // Then bumper page is shown
@@ -128,10 +129,29 @@ class BannerUITest {
         CommonInteraction.clickItemAt(2)
 
         // When ad is clicked
-        onView(withId(R.id.bannerView))
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
             .perform(click())
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
+    }
+
+    @Test
+    fun test_ad_click_event() {
+        // Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88001",
+            "banner_success.json"
+        )
+        CommonInteraction.clickItemAt(2)
+
+        // When
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
+            .perform(click())
+
+        // Then
+        verifyUrlPathCalled("/click")
     }
 }

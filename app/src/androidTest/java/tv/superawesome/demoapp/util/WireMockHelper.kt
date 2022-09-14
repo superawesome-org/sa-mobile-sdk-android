@@ -1,6 +1,9 @@
 package tv.superawesome.demoapp.util
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import junit.framework.Assert.assertTrue
+import org.junit.Assert
+
 
 object WireMockHelper {
     fun stubSuccess(placement: String, fileName: String) {
@@ -67,13 +70,8 @@ object WireMockHelper {
     fun verifyUrlPathCalledWithQueryParam(
         urlPath: String,
         queryParamKey: String,
-        queryParamValueRegex: String,
-        sleepDuration: Long = 0) {
-
-        if(sleepDuration > 0) {
-            Thread.sleep(sleepDuration)
-        }
-
+        queryParamValueRegex: String)
+    {
         verify(anyRequestedFor(urlPathMatching(urlPath))
             .withQueryParam(queryParamKey, matching(queryParamValueRegex)))
     }

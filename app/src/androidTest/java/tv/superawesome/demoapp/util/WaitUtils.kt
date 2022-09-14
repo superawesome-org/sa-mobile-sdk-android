@@ -128,6 +128,7 @@ open class ViewTester {
                 }
                 sleep(waitMillisPerTry)
             }
-        throw Exception("Could not find color $color")
+        val expectedColor = ScreenshotUtil.captureColorInCenter()
+        throw Exception("Could not find color $color. Found: $expectedColor")
     }
 }

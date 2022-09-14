@@ -20,6 +20,7 @@ import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -126,16 +127,6 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_vast_adLoading() {
-        testAdLoading(
-            "88406",
-            "video_vast_success.json",
-            11,
-            TestColors.vastYellow
-        )
-    }
-
-    @Test
     fun test_vpaid_adLoading() {
         testAdLoading(
             "89056",
@@ -146,12 +137,36 @@ class VideoAdUITest {
     }
 
     @Test
+    fun test_vast_adLoading() {
+        testAdLoading(
+            "88406",
+            "video_vast_success.json",
+            11,
+            TestColors.vastYellow
+        )
+
+        Thread.sleep(3000)
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
     fun test_direct_adLoading() {
         testAdLoading(
             "87969",
             "video_direct_success.json",
             13,
             TestColors.directYellow
+        )
+
+        Thread.sleep(3000)
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
         )
     }
 
@@ -249,5 +264,41 @@ class VideoAdUITest {
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
+    }
+
+    @Test
+    fun test_direct_ad_dwell_time() {
+        testAdLoading(
+            "87969",
+            "video_direct_success.json",
+            13,
+            TestColors.directYellow
+        )
+
+        Thread.sleep(3000)
+
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "type",
+            ".*viewTime.*"
+        )
+    }
+
+    @Test
+    fun test_vast_ad_dwell_time() {
+        testAdLoading(
+            "88406",
+            "video_vast_success.json",
+            11,
+            TestColors.vastYellow
+        )
+
+        Thread.sleep(3000)
+
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "type",
+            ".*viewTime.*"
+        )
     }
 }

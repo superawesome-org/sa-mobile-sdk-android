@@ -21,6 +21,7 @@ import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -46,6 +47,15 @@ class InterstitialUITest {
             5,
             TestColors.yellow
         )
+
+        Thread.sleep(2500)
+
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
     }
 
     @Test
@@ -55,6 +65,15 @@ class InterstitialUITest {
             "interstitial_ksf_success.json",
             8,
             TestColors.ksfYellow
+        )
+
+        Thread.sleep(2500)
+
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
         )
     }
 
@@ -162,5 +181,21 @@ class InterstitialUITest {
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
+    }
+
+    @Test
+    fun test_ad_click_event() {
+        // Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87892",
+            "interstitial_standard_success.json"
+        )
+        CommonInteraction.clickItemAt(5)
+
+        // When
+        onView(withContentDescription("Ad content")).perform(click())
+
+        // Then
+        verifyUrlPathCalled("/click")
     }
 }
