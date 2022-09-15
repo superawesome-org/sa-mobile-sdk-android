@@ -2,8 +2,6 @@ package tv.superawesome.demoapp.util
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import junit.framework.Assert.assertTrue
-import org.junit.Assert
-
 
 object WireMockHelper {
     fun stubSuccess(placement: String, fileName: String) {
@@ -47,6 +45,32 @@ object WireMockHelper {
         )
         stubFor(
             get(urlPathMatching("/impression"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
+        stubFor(
+            get(urlPathMatching("/vast/tag"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vast_success_tag.xml"))
+                )
+        )
+
+        stubFor(
+            get(urlPathMatching("/vast/impression"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
+
+        stubFor(
+            get(urlPathMatching("/vast/click"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)

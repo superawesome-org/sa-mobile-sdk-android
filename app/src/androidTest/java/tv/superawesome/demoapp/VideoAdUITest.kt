@@ -146,10 +146,18 @@ class VideoAdUITest {
         )
 
         Thread.sleep(3000)
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
+
+        verifyUrlPathCalled(
+            "/vast/impression"
+        )
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        verifyUrlPathCalled(
+            "/vast/click"
         )
     }
 
