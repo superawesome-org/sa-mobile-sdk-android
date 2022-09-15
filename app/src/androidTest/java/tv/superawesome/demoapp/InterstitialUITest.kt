@@ -47,15 +47,6 @@ class InterstitialUITest {
             5,
             TestColors.yellow
         )
-
-        Thread.sleep(2500)
-
-        verifyUrlPathCalled("/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
     }
 
     @Test
@@ -65,15 +56,6 @@ class InterstitialUITest {
             "interstitial_ksf_success.json",
             8,
             TestColors.ksfYellow
-        )
-
-        Thread.sleep(2500)
-
-        verifyUrlPathCalled("/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
         )
     }
 
