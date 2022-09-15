@@ -84,6 +84,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_disable" />
+
+            <TextView
+                android:text="@string/settings_parental"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/parentalEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/parentalDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

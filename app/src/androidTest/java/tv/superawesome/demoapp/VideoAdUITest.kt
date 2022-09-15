@@ -1,6 +1,7 @@
 package tv.superawesome.demoapp
 
 import android.content.Intent
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
@@ -249,5 +250,44 @@ class VideoAdUITest {
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
+    }
+
+    @Test
+    fun test_parental_gate_for_safe_ad_click() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/video_direct_success_padlock_enabled.json"
+        ) {
+            SettingsInteraction.enableParentalGate()
+        }
+        CommonInteraction.clickItemAt(13)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+            .perform(click())
+
+        onView(withText("Parental Gate"))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_parental_gate_for_ad_click() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/video_direct_success_padlock_enabled.json"
+        ) {
+            SettingsInteraction.enableParentalGate()
+        }
+        CommonInteraction.clickItemAt(13)
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()), click())
+
+        onView(withText("Parental Gate"))
+            .check(isVisible())
     }
 }
