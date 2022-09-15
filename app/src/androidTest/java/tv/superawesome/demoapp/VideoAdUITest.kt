@@ -127,22 +127,22 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_vpaid_adLoading() {
-        testAdLoading(
-            "89056",
-            "video_vpaid_success.json",
-            12,
-            TestColors.vpaidYellow
-        )
-    }
-
-    @Test
     fun test_vast_adLoading() {
         testAdLoading(
             "88406",
             "video_vast_success.json",
             11,
             TestColors.vastYellow
+        )
+    }
+
+    @Test
+    fun test_vpaid_adLoading() {
+        testAdLoading(
+            "89056",
+            "video_vpaid_success.json",
+            12,
+            TestColors.vpaidYellow
         )
     }
 
