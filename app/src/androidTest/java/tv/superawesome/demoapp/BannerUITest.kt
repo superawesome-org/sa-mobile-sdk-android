@@ -136,12 +136,12 @@ class BannerUITest {
             "banner_success.json"
         )
 
-        // When
         CommonInteraction.clickItemAt(2)
 
         ViewTester()
             .waitForView(withId(R.id.bannerView))
 
+        // When we wait for impressions
         Thread.sleep(2500)
 
         // Then

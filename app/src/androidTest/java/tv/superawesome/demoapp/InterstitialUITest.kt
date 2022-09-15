@@ -183,8 +183,54 @@ class InterstitialUITest {
         BumperInteraction.waitUntilBumper()
     }
 
+    // Events
+
     @Test
-    fun test_ad_click_event() {
+    fun test_standard_impression_events() {
+        //Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87892",
+            "interstitial_standard_success.json"
+        )
+
+        CommonInteraction.clickItemAt(5)
+
+        // When we wait for impressions
+        Thread.sleep(2500)
+
+        // Then
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_ksf_impression_events() {
+        //Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87970",
+            "interstitial_ksf_success.json"
+        )
+
+        CommonInteraction.clickItemAt(8)
+
+        // When we wait for impressions
+        Thread.sleep(2500)
+
+        // Then
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_standard_ad_click_event() {
         // Given
         CommonInteraction.launchActivityWithSuccessStub(
             "87892",
