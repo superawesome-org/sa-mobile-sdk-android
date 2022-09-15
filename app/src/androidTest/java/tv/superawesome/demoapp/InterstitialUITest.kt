@@ -166,7 +166,6 @@ class InterstitialUITest {
     }
 
     // Events
-
     @Test
     fun test_standard_impression_events() {
         //Given

@@ -144,21 +144,6 @@ class VideoAdUITest {
             11,
             TestColors.vastYellow
         )
-
-        Thread.sleep(3000)
-
-        verifyUrlPathCalled(
-            "/vast/impression"
-        )
-
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
-
-        verifyUrlPathCalled(
-            "/vast/click"
-        )
     }
 
     @Test
@@ -307,6 +292,42 @@ class VideoAdUITest {
             "/event",
             "type",
             ".*viewTime.*"
+        )
+    }
+
+    // Events
+    @Test
+    fun test_vast_impression_events() {
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88406",
+            "video_vast_success.json"
+        )
+
+        CommonInteraction.clickItemAt(11)
+
+        Thread.sleep(2500)
+
+        verifyUrlPathCalled(
+            "/vast/impression"
+        )
+    }
+
+    @Test
+    fun test_vast_click_event() {
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88406",
+            "video_vast_success.json"
+        )
+
+        CommonInteraction.clickItemAt(11)
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        verifyUrlPathCalled(
+            "/vast/click"
         )
     }
 }

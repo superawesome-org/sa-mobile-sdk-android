@@ -26,7 +26,6 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryP
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
-
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class BannerUITest {
@@ -127,7 +126,6 @@ class BannerUITest {
     }
 
     // Events
-
     @Test
     fun test_banner_impression_events() {
         // Given
