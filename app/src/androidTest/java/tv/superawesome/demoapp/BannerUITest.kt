@@ -52,15 +52,6 @@ class BannerUITest {
         ViewTester()
             .waitForView(withId(R.id.bannerView))
             .perform(waitUntil(matchesColor(TestColors.yellow)))
-
-        Thread.sleep(2500)
-
-        verifyUrlPathCalled("/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
     }
 
     @Test
