@@ -108,8 +108,7 @@ class BannerUITest {
         CommonInteraction.clickItemAt(2)
 
         // When ad is clicked
-        ViewTester()
-            .waitForView(withId(R.id.bannerView))
+        onView(withId(R.id.bannerView))
             .perform(click())
 
         // Then bumper page is shown
@@ -129,16 +128,42 @@ class BannerUITest {
         CommonInteraction.clickItemAt(2)
 
         // When ad is clicked
-        ViewTester()
-            .waitForView(withId(R.id.bannerView))
+        onView(withId(R.id.bannerView))
             .perform(click())
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
     }
 
+    // Events
+
     @Test
-    fun test_ad_click_event() {
+    fun test_banner_impression_events() {
+        // Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88001",
+            "banner_success.json"
+        )
+
+        // When
+        CommonInteraction.clickItemAt(2)
+
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
+
+        Thread.sleep(2500)
+
+        // Then
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_banner_click_event() {
         // Given
         CommonInteraction.launchActivityWithSuccessStub(
             "88001",
