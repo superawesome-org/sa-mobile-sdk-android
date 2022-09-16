@@ -1,7 +1,6 @@
 package tv.superawesome.demoapp.util
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import junit.framework.Assert.assertTrue
 
 object WireMockHelper {
     fun stubSuccess(placement: String, fileName: String) {

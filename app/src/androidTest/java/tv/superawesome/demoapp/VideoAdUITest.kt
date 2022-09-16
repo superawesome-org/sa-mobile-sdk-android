@@ -297,7 +297,7 @@ class VideoAdUITest {
 
     // Events
     @Test
-    fun test_vast_impression_events() {
+    fun test_vast_ad_impression_events() {
         CommonInteraction.launchActivityWithSuccessStub(
             "88406",
             "video_vast_success.json"
@@ -328,6 +328,26 @@ class VideoAdUITest {
 
         verifyUrlPathCalled(
             "/vast/click"
+        )
+    }
+
+    @Test
+    fun test_direct_ad_impression_events() {
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87969",
+            "video_direct_success.json"
+        )
+        CommonInteraction.clickItemAt(13)
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+
+        Thread.sleep(4500)
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
         )
     }
 }
