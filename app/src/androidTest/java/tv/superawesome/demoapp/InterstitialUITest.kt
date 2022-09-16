@@ -23,6 +23,7 @@ import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
@@ -186,5 +187,66 @@ class InterstitialUITest {
 
         onView(withText("Parental Gate"))
             .check(isVisible())
+    }
+
+    // Events
+    @Test
+    fun test_standard_ad_impression_events() {
+        //Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87892",
+            "interstitial_standard_success.json"
+        )
+
+        CommonInteraction.clickItemAt(5)
+
+        // When
+        Thread.sleep(2500)
+
+        // Then
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_ksf_ad_impression_events() {
+        //Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87970",
+            "interstitial_ksf_success.json"
+        )
+
+        CommonInteraction.clickItemAt(8)
+
+        // When
+        Thread.sleep(2500)
+
+        // Then
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_standard_ad_click_event() {
+        // Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87892",
+            "interstitial_standard_success.json"
+        )
+        CommonInteraction.clickItemAt(5)
+
+        // When
+        onView(withContentDescription("Ad content")).perform(click())
+
+        // Then
+        verifyUrlPathCalled("/click")
     }
 }

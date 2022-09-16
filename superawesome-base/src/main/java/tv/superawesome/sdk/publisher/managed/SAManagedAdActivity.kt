@@ -59,7 +59,6 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
         listener = SAVideoAd.getListener()
     }
 
-
     override fun adLoaded() {
         listener?.onEvent(this.placementId, SAEvent.adLoaded)
     }
