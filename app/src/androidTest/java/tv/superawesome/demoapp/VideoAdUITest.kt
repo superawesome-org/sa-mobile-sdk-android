@@ -295,7 +295,8 @@ class VideoAdUITest {
 
     // Events
     @Test
-    fun test_direct_ad_viewable_impression() {
+    fun test_direct_ad_impression_events() {
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "87969",
             "video_direct_success.json"
@@ -307,6 +308,7 @@ class VideoAdUITest {
             .perform(waitUntil(isDisplayed()))
 
         Thread.sleep(5000)
+        verifyUrlPathCalled("/vast/impression")
         verifyUrlPathCalledWithQueryParam(
             "/event",
             "data",
