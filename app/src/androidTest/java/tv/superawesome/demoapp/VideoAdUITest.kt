@@ -295,7 +295,7 @@ class VideoAdUITest {
 
     // Events
     @Test
-    fun test_direct_ad_impression_events() {
+    fun test_direct_ad_viewable_impression() {
         CommonInteraction.launchActivityWithSuccessStub(
             "87969",
             "video_direct_success.json"
@@ -311,6 +311,24 @@ class VideoAdUITest {
             "/event",
             "data",
             ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_direct_ad_dwell_time() {
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87969",
+            "video_direct_success.json"
+        )
+
+        CommonInteraction.clickItemAt(13)
+
+        Thread.sleep(3000)
+
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "type",
+            ".*viewTime.*"
         )
     }
 
@@ -350,24 +368,6 @@ class VideoAdUITest {
             .perform(click())
 
         verifyUrlPathCalled("/vast/click")
-    }
-
-    @Test
-    fun test_direct_ad_dwell_time() {
-        CommonInteraction.launchActivityWithSuccessStub(
-            "87969",
-            "video_direct_success.json"
-        )
-
-        CommonInteraction.clickItemAt(13)
-
-        Thread.sleep(3000)
-
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "type",
-            ".*viewTime.*"
-        )
     }
 
     @Test
