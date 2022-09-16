@@ -50,6 +50,18 @@ object WireMockHelper {
                         .withBody("")
                 )
         )
+
+        stubFor(
+            get(urlPathMatching("/click"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
+    }
+
+    fun stubVASTPaths() {
         stubFor(
             get(urlPathMatching("/vast/tag"))
                 .willReturn(
@@ -70,14 +82,6 @@ object WireMockHelper {
 
         stubFor(
             get(urlPathMatching("/vast/click"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
-        stubFor(
-            get(urlPathMatching("/click"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)

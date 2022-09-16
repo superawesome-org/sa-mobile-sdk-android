@@ -139,7 +139,7 @@ class BannerUITest {
         ViewTester()
             .waitForView(withId(R.id.bannerView))
 
-        // When we wait for impressions
+        // When
         Thread.sleep(2500)
 
         // Then

@@ -19,6 +19,7 @@ import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.util.WireMockHelper.stubVASTPaths
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 
@@ -253,7 +254,6 @@ class VideoAdUITest {
     }
 
     // Events
-
     @Test
     fun test_direct_ad_impression_events() {
         CommonInteraction.launchActivityWithSuccessStub(
@@ -276,6 +276,7 @@ class VideoAdUITest {
 
     @Test
     fun test_vast_ad_impression_events() {
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "88406",
             "video_vast_success.json"
@@ -283,7 +284,7 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(11)
 
-        Thread.sleep(2500)
+        Thread.sleep(4500)
 
         verifyUrlPathCalled(
             "/vast/impression"
@@ -292,6 +293,7 @@ class VideoAdUITest {
 
     @Test
     fun test_vast_click_event() {
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "88406",
             "video_vast_success.json"
@@ -311,12 +313,12 @@ class VideoAdUITest {
 
     @Test
     fun test_direct_ad_dwell_time() {
-        testAdLoading(
+        CommonInteraction.launchActivityWithSuccessStub(
             "87969",
-            "video_direct_success.json",
-            13,
-            TestColors.directYellow
+            "video_direct_success.json"
         )
+
+        CommonInteraction.clickItemAt(13)
 
         Thread.sleep(3000)
 
@@ -329,12 +331,13 @@ class VideoAdUITest {
 
     @Test
     fun test_vast_ad_dwell_time() {
-        testAdLoading(
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(
             "88406",
-            "video_vast_success.json",
-            11,
-            TestColors.vastYellow
+            "video_vast_success.json"
         )
+
+        CommonInteraction.clickItemAt(11)
 
         Thread.sleep(3000)
 
