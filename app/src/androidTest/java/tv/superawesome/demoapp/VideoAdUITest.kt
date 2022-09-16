@@ -154,13 +154,6 @@ class VideoAdUITest {
             13,
             TestColors.directYellow
         )
-
-        Thread.sleep(3000)
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
     }
 
     @Test
@@ -259,43 +252,28 @@ class VideoAdUITest {
         BumperInteraction.waitUntilBumper()
     }
 
-    @Test
-    fun test_direct_ad_dwell_time() {
-        testAdLoading(
-            "87969",
-            "video_direct_success.json",
-            13,
-            TestColors.directYellow
-        )
-
-        Thread.sleep(3000)
-
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "type",
-            ".*viewTime.*"
-        )
-    }
-
-    @Test
-    fun test_vast_ad_dwell_time() {
-        testAdLoading(
-            "88406",
-            "video_vast_success.json",
-            11,
-            TestColors.vastYellow
-        )
-
-        Thread.sleep(3000)
-
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "type",
-            ".*viewTime.*"
-        )
-    }
-
     // Events
+
+    @Test
+    fun test_direct_ad_impression_events() {
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87969",
+            "video_direct_success.json"
+        )
+        CommonInteraction.clickItemAt(13)
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+
+        Thread.sleep(4500)
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
     @Test
     fun test_vast_ad_impression_events() {
         CommonInteraction.launchActivityWithSuccessStub(
@@ -332,22 +310,38 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_direct_ad_impression_events() {
-        CommonInteraction.launchActivityWithSuccessStub(
+    fun test_direct_ad_dwell_time() {
+        testAdLoading(
             "87969",
-            "video_direct_success.json"
+            "video_direct_success.json",
+            13,
+            TestColors.directYellow
         )
-        CommonInteraction.clickItemAt(13)
 
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
+        Thread.sleep(3000)
 
-        Thread.sleep(4500)
         verifyUrlPathCalledWithQueryParam(
             "/event",
-            "data",
-            ".*viewable_impression.*"
+            "type",
+            ".*viewTime.*"
+        )
+    }
+
+    @Test
+    fun test_vast_ad_dwell_time() {
+        testAdLoading(
+            "88406",
+            "video_vast_success.json",
+            11,
+            TestColors.vastYellow
+        )
+
+        Thread.sleep(3000)
+
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "type",
+            ".*viewTime.*"
         )
     }
 }
