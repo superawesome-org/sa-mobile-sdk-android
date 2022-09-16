@@ -167,7 +167,7 @@ class InterstitialUITest {
 
     // Events
     @Test
-    fun test_standard_impression_events() {
+    fun test_standard_ad_impression_events() {
         //Given
         CommonInteraction.launchActivityWithSuccessStub(
             "87892",
@@ -176,7 +176,7 @@ class InterstitialUITest {
 
         CommonInteraction.clickItemAt(5)
 
-        // When we wait for impressions
+        // When
         Thread.sleep(2500)
 
         // Then
@@ -189,7 +189,7 @@ class InterstitialUITest {
     }
 
     @Test
-    fun test_ksf_impression_events() {
+    fun test_ksf_ad_impression_events() {
         //Given
         CommonInteraction.launchActivityWithSuccessStub(
             "87970",
