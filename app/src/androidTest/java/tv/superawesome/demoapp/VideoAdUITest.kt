@@ -284,10 +284,13 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(11)
 
-        Thread.sleep(4500)
+        Thread.sleep(5000)
 
-        verifyUrlPathCalled(
-            "/vast/impression"
+        verifyUrlPathCalled("/vast/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
         )
     }
 
@@ -306,9 +309,7 @@ class VideoAdUITest {
             .perform(waitUntil(isDisplayed()))
             .perform(click())
 
-        verifyUrlPathCalled(
-            "/vast/click"
-        )
+        verifyUrlPathCalled("/vast/click")
     }
 
     @Test
