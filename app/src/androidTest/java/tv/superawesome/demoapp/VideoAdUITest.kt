@@ -355,7 +355,7 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_vast_click_event() {
+    fun test_vast_ad_click_event() {
         stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "88406",
