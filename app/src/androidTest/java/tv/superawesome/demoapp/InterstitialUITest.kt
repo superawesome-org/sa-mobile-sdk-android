@@ -222,7 +222,7 @@ class InterstitialUITest {
 
         CommonInteraction.clickItemAt(8)
 
-        // When we wait for impressions
+        // When
         Thread.sleep(2500)
 
         // Then

@@ -296,6 +296,7 @@ class VideoAdUITest {
     // Events
     @Test
     fun test_direct_ad_impression_events() {
+        // Given
         stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "87969",
@@ -307,7 +308,10 @@ class VideoAdUITest {
             .waitForView(withContentDescription("Ad content"))
             .perform(waitUntil(isDisplayed()))
 
+        // When
         Thread.sleep(5000)
+
+        // Then
         verifyUrlPathCalled("/vast/impression")
         verifyUrlPathCalledWithQueryParam(
             "/event",
@@ -318,6 +322,7 @@ class VideoAdUITest {
 
     @Test
     fun test_direct_ad_click_event() {
+        // Given
         stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "87969",
@@ -325,6 +330,7 @@ class VideoAdUITest {
         )
         CommonInteraction.clickItemAt(13)
 
+        // When
         ViewTester()
             .waitForView(withContentDescription("Ad content"))
             .perform(waitUntil(isDisplayed()))
@@ -335,6 +341,7 @@ class VideoAdUITest {
 
     @Test
     fun test_direct_ad_dwell_time() {
+        // Given
         CommonInteraction.launchActivityWithSuccessStub(
             "87969",
             "video_direct_success.json"
@@ -342,8 +349,10 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(13)
 
+        // When
         Thread.sleep(3000)
 
+        // Then
         verifyUrlPathCalledWithQueryParam(
             "/event",
             "type",
@@ -353,6 +362,7 @@ class VideoAdUITest {
 
     @Test
     fun test_vast_ad_impression_events() {
+        // Given
         stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "88406",
@@ -361,8 +371,10 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(11)
 
+        // When
         Thread.sleep(5000)
 
+        // Then
         verifyUrlPathCalled("/vast/impression")
         verifyUrlPathCalledWithQueryParam(
             "/event",
@@ -373,6 +385,7 @@ class VideoAdUITest {
 
     @Test
     fun test_vast_ad_click_event() {
+        // Given
         stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "88406",
@@ -381,16 +394,19 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(11)
 
+        // When
         ViewTester()
             .waitForView(withContentDescription("Ad content"))
             .perform(waitUntil(isDisplayed()))
             .perform(click())
 
+        // Then
         verifyUrlPathCalled("/vast/click")
     }
 
     @Test
     fun test_vast_ad_dwell_time() {
+        // Given
         stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "88406",
@@ -399,8 +415,10 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(11)
 
+        // When
         Thread.sleep(3000)
 
+        // Then
         verifyUrlPathCalledWithQueryParam(
             "/event",
             "type",
