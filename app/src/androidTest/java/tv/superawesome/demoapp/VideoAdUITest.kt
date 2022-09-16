@@ -20,7 +20,9 @@ import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.util.WireMockHelper.stubVASTPaths
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -289,5 +291,139 @@ class VideoAdUITest {
 
         onView(withText("Parental Gate"))
             .check(isVisible())
+    }
+
+    // Events
+    @Test
+    fun test_direct_ad_impression_events() {
+        // Given
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87969",
+            "video_direct_success.json"
+        )
+        CommonInteraction.clickItemAt(13)
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+
+        // When
+        Thread.sleep(5000)
+
+        // Then
+        verifyUrlPathCalled("/vast/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_direct_ad_click_event() {
+        // Given
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87969",
+            "video_direct_success.json"
+        )
+        CommonInteraction.clickItemAt(13)
+
+        // When
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        // Then
+        verifyUrlPathCalled("/vast/click")
+    }
+
+    @Test
+    fun test_direct_ad_dwell_time() {
+        // Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87969",
+            "video_direct_success.json"
+        )
+
+        CommonInteraction.clickItemAt(13)
+
+        // When
+        Thread.sleep(3000)
+
+        // Then
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "type",
+            ".*viewTime.*"
+        )
+    }
+
+    @Test
+    fun test_vast_ad_impression_events() {
+        // Given
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88406",
+            "video_vast_success.json"
+        )
+
+        CommonInteraction.clickItemAt(11)
+
+        // When
+        Thread.sleep(5000)
+
+        // Then
+        verifyUrlPathCalled("/vast/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_vast_ad_click_event() {
+        // Given
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88406",
+            "video_vast_success.json"
+        )
+
+        CommonInteraction.clickItemAt(11)
+
+        // When
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        // Then
+        verifyUrlPathCalled("/vast/click")
+    }
+
+    @Test
+    fun test_vast_ad_dwell_time() {
+        // Given
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88406",
+            "video_vast_success.json"
+        )
+
+        CommonInteraction.clickItemAt(11)
+
+        // When
+        Thread.sleep(3000)
+
+        // Then
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "type",
+            ".*viewTime.*"
+        )
     }
 }

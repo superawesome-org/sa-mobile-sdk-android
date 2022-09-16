@@ -21,6 +21,7 @@ import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
@@ -141,5 +142,49 @@ class BannerUITest {
 
         onView(withText("Parental Gate"))
             .check(isVisible())
+    }
+
+    // Events
+    @Test
+    fun test_banner_impression_events() {
+        // Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88001",
+            "banner_success.json"
+        )
+
+        CommonInteraction.clickItemAt(2)
+
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
+
+        // When
+        Thread.sleep(2500)
+
+        // Then
+        verifyUrlPathCalled("/impression")
+        verifyUrlPathCalledWithQueryParam(
+            "/event",
+            "data",
+            ".*viewable_impression.*"
+        )
+    }
+
+    @Test
+    fun test_banner_click_event() {
+        // Given
+        CommonInteraction.launchActivityWithSuccessStub(
+            "88001",
+            "banner_success.json"
+        )
+        CommonInteraction.clickItemAt(2)
+
+        // When
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
+            .perform(click())
+
+        // Then
+        verifyUrlPathCalled("/click")
     }
 }

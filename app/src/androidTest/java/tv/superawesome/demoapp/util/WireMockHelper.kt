@@ -50,6 +50,7 @@ object WireMockHelper {
                         .withBody("")
                 )
         )
+
         stubFor(
             get(urlPathMatching("/click"))
                 .willReturn(
@@ -60,7 +61,45 @@ object WireMockHelper {
         )
     }
 
+    fun stubVASTPaths() {
+        stubFor(
+            get(urlPathMatching("/vast/tag"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vast_success_tag.xml"))
+                )
+        )
+
+        stubFor(
+            get(urlPathMatching("/vast/impression"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
+
+        stubFor(
+            get(urlPathMatching("/vast/click"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
+    }
+
     fun verifyUrlPathCalled(urlPath: String) {
         verify(anyRequestedFor(urlPathMatching(urlPath)))
+    }
+
+    fun verifyUrlPathCalledWithQueryParam(
+        urlPath: String,
+        queryParamKey: String,
+        queryParamValueRegex: String)
+    {
+        verify(anyRequestedFor(urlPathMatching(urlPath))
+            .withQueryParam(queryParamKey, matching(queryParamValueRegex)))
     }
 }
