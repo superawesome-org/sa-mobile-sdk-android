@@ -128,6 +128,6 @@ open class ViewTester {
                 }
                 sleep(waitMillisPerTry)
             }
-        throw Exception("Could not find color $color.")
+        throw Exception("Could not find color $color")
     }
 }
