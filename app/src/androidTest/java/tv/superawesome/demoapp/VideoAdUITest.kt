@@ -336,6 +336,7 @@ class VideoAdUITest {
             .perform(waitUntil(isDisplayed()))
             .perform(click())
 
+        // Then
         verifyUrlPathCalled("/vast/click")
     }
 
