@@ -5,8 +5,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -123,6 +122,26 @@ class BannerUITest {
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
+    }
+
+    @Test
+    fun test_parental_gate_for_safe_ad_click() {
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/banner_success_padlock_enabled.json"
+        ) {
+            SettingsInteraction.enableParentalGate()
+        }
+        CommonInteraction.clickItemAt(2)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+            .perform(click())
+
+        onView(withText("Parental Gate"))
+            .check(isVisible())
     }
 
     // Events
