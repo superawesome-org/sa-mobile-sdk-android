@@ -317,6 +317,23 @@ class VideoAdUITest {
     }
 
     @Test
+    fun test_direct_ad_click_event() {
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(
+            "87969",
+            "video_direct_success.json"
+        )
+        CommonInteraction.clickItemAt(13)
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        verifyUrlPathCalled("/vast/click")
+    }
+
+    @Test
     fun test_direct_ad_dwell_time() {
         CommonInteraction.launchActivityWithSuccessStub(
             "87969",
