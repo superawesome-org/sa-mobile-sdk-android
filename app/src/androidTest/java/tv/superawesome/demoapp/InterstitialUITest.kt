@@ -19,6 +19,7 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
@@ -248,5 +249,42 @@ class InterstitialUITest {
 
         // Then
         verifyUrlPathCalled("/click")
+    }
+
+    @Test
+    fun test_parental_gate_success_event() {
+        openParentalGate()
+        ParentalGateInteraction.testSuccess()
+    }
+
+    @Test
+    fun test_parental_gate_close_event() {
+        openParentalGate()
+        ParentalGateInteraction.testClose()
+    }
+
+    @Test
+    fun test_parental_gate_failure_event() {
+        openParentalGate()
+        ParentalGateInteraction.testFailure()
+    }
+
+    private fun openParentalGate() {
+        val placement = "87892"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/interstitial_standard_success_padlock_enabled.json"
+        ) {
+            SettingsInteraction.enableParentalGate()
+        }
+        CommonInteraction.clickItemAt(5)
+
+        ViewTester()
+            .waitForView(withContentDescription("Safe Ad Logo"))
+            .check(isVisible())
+            .perform(click())
+
+        // Then parental gate open event is triggered
+        ParentalGateInteraction.testOpen()
     }
 }

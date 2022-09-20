@@ -102,4 +102,8 @@ object WireMockHelper {
         verify(anyRequestedFor(urlPathMatching(urlPath))
             .withQueryParam(queryParamKey, matching(queryParamValueRegex)))
     }
+
+    fun verifyQueryParamContains(urlPath: String, paramKey: String, paramValue: String) {
+        verify(anyRequestedFor(urlPathMatching(urlPath)).withQueryParam(paramKey, containing(paramValue)))
+    }
 }
