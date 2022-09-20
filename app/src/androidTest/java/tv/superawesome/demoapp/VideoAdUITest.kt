@@ -18,6 +18,7 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.WireMockHelper.stubVASTPaths
@@ -425,5 +426,41 @@ class VideoAdUITest {
             "type",
             ".*viewTime.*"
         )
+    }
+
+    @Test
+    fun test_parental_gate_success_event() {
+        openParentalGate()
+        ParentalGateInteraction.testSuccess()
+    }
+
+    @Test
+    fun test_parental_gate_close_event() {
+        openParentalGate()
+        ParentalGateInteraction.testClose()
+    }
+
+    @Test
+    fun test_parental_gate_failure_event() {
+        openParentalGate()
+        ParentalGateInteraction.testFailure()
+    }
+
+    private fun openParentalGate() {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "padlock/video_direct_success_padlock_enabled.json"
+        ) {
+            SettingsInteraction.enableParentalGate()
+        }
+        CommonInteraction.clickItemAt(13)
+
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()), click())
+
+        // Then parental gate open event is triggered
+        ParentalGateInteraction.testOpen()
     }
 }
