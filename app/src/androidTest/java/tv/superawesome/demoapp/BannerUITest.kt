@@ -1,9 +1,12 @@
 package tv.superawesome.demoapp
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -25,6 +28,7 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
+
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -205,6 +209,28 @@ class BannerUITest {
     fun test_parental_gate_failure_event() {
         openParentalGate()
         ParentalGateInteraction.testFailure()
+    }
+
+    @Test
+    fun test_external_webpage_opening_on_click() {
+        // Given
+        intending(hasAction(Intent.ACTION_VIEW)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_OK,
+                Intent()
+            )
+        )
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json")
+        CommonInteraction.clickPlacementById(placement)
+
+        // When ad is clicked
+        onView(withId(R.id.bannerView))
+            .perform(click())
+
+        // Then view URL is redirected to browser
+        Intents.intended(hasAction(Intent.ACTION_VIEW))
+        verifyUrlPathCalled("/click")
     }
 
     private fun openParentalGate() {
