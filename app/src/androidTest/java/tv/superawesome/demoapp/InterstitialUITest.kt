@@ -1,13 +1,13 @@
 package tv.superawesome.demoapp
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -110,7 +110,7 @@ class InterstitialUITest {
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(ViewMatchers.isDisplayed()))
+            .perform(waitUntil(isDisplayed()))
             .check(isVisible())
     }
 
@@ -122,7 +122,7 @@ class InterstitialUITest {
 
         ViewTester()
             .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(ViewMatchers.isDisplayed()))
+            .perform(waitUntil(isDisplayed()))
             .check(isVisible())
     }
 
@@ -141,7 +141,7 @@ class InterstitialUITest {
         // When ad is clicked
         ViewTester()
             .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(ViewMatchers.isDisplayed()))
+            .perform(waitUntil(isDisplayed()))
             .perform(click())
 
         // Then bumper page is shown
@@ -267,6 +267,33 @@ class InterstitialUITest {
     fun test_parental_gate_failure_event() {
         openParentalGate()
         ParentalGateInteraction.testFailure()
+    }
+
+    @Test
+    fun test_external_webpage_opening_on_click() {
+        // Given
+        Intents.intending(IntentMatchers.hasAction(Intent.ACTION_VIEW)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_OK,
+                Intent()
+            )
+        )
+        val placement = "87892"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "interstitial_standard_success.json"
+        )
+        CommonInteraction.clickPlacementById(placement)
+
+        // When ad is clicked
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        // Then view URL is redirected to browser
+        Intents.intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
+        verifyUrlPathCalled("/click")
     }
 
     private fun openParentalGate() {

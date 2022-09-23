@@ -10,6 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.hamcrest.Matchers.anything
 import tv.superawesome.demoapp.MainActivity
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.util.AdapterUtil
 import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
 import tv.superawesome.demoapp.util.WireMockHelper.stubFailure
 import tv.superawesome.demoapp.util.WireMockHelper.stubSuccess
@@ -47,6 +48,11 @@ object CommonInteraction {
     fun clickItemAt(position: Int) {
         onData(anything()).inAdapterView(withId(R.id.listView))
             .atPosition(position)
+            .perform(click())
+    }
+
+    fun clickPlacementById(placementId: String) {
+        onData(AdapterUtil.withPlacementId(placementId)).inAdapterView(withId(R.id.listView))
             .perform(click())
     }
 
