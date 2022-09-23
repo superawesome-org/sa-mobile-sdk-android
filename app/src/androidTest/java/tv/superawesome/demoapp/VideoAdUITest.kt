@@ -1,5 +1,7 @@
 package tv.superawesome.demoapp
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -444,6 +446,32 @@ class VideoAdUITest {
     fun test_parental_gate_failure_event() {
         openParentalGate()
         ParentalGateInteraction.testFailure()
+    }
+
+    @Test
+    fun test_external_webpage_opening_on_click() {
+        // Given
+        Intents.intending(IntentMatchers.hasAction(Intent.ACTION_VIEW)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_OK,
+                Intent()
+            )
+        )
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "video_direct_success.json"
+        )
+        CommonInteraction.clickPlacementById(placement)
+
+        // When ad is clicked
+        ViewTester()
+            .waitForView(withContentDescription("Ad content"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        // Then view URL is redirected to browser
+        intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
     }
 
     private fun openParentalGate() {

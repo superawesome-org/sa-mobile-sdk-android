@@ -7,9 +7,6 @@
       "url": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
       "image": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
       "video": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
-      "placement_format": "video",
-      "width": 600,
-      "height": 480,
       "transcodedVideos": [
         {
           "url": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
@@ -28,9 +25,13 @@
           "bitrate": 1800
         }
       ],
+      "placement_format": "video",
+      "width": 600,
+      "height": 480,
       "duration": 10,
-      "vast": "http://localhost:8080/vast/tag"
-    }
+      "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/87969/181342/512633/?sdkVersion=unknown&rnd=76735278-a7ad-417d-9534-e50466f301ed&bundle=com.superawesome&device=web&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgzLjAuNDEwMy45NyBTYWZhcmkvNTM3LjM2.fNi_jam5Bd9ip_c68rVpQWyuOY_Az3Jsv05mC2mCsnM&tip=eyJhbGciOiJIUzI1NiJ9.OTAuMjU0LjI1LjA.VeY1NyHYwSXlTJbVgPkkAmPx4buBj8VB7IjHHtcIVHs"
+    },
+    "click_url": "https://www.popjam.com/"
   },
   "advertiserId": 4,
   "publisherId": 4,
@@ -47,6 +48,6 @@
   "app": 41037,
   "device": "web",
   "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgzLjAuNDEwMy45NyBTYWZhcmkvNTM3LjM2.fNi_jam5Bd9ip_c68rVpQWyuOY_Az3Jsv05mC2mCsnM",
-  "tip": "eyJhbGciOiJIUzI1NiJ9.NS4xNzYuMS4w.yJa6mBEUD_t7rLsGQBfEcpAa8xfPYR4nL3SzR_JDKf4",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.OTAuMjU0LjI1LjA.VeY1NyHYwSXlTJbVgPkkAmPx4buBj8VB7IjHHtcIVHs",
   "is_vpaid": false
 }
