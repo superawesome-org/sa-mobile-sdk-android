@@ -1,6 +1,5 @@
 package tv.superawesome.demoapp.util
 
-import android.util.Log
 import androidx.test.espresso.matcher.BoundedMatcher
 import org.hamcrest.Description
 import tv.superawesome.demoapp.adapter.AdapterItem
@@ -14,11 +13,8 @@ object AdapterUtil {
                 description.appendText("has value $value")
             }
 
-            override fun matchesSafely(item: AdapterItem): Boolean {
-                println(" ||| matchesSafely > $item")
-                Log.i("gunhanx"," ||| matchesSafely > ${(item as? PlacementItem)?.placementId?.toString()} result = ${(item as? PlacementItem)?.placementId?.toString() == value}" )
-                return (item as? PlacementItem)?.placementId?.toString() == value
-            }
+            override fun matchesSafely(item: AdapterItem): Boolean =
+                (item as? PlacementItem)?.placementId?.toString() == value
         }
     }
 }
