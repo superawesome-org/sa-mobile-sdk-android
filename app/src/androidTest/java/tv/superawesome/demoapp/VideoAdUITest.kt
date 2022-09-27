@@ -168,7 +168,7 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(13)
 
-        CommonInteraction.checkSubtitle("$placement adFailedToLoad")
+        CommonInteraction.checkSubtitleContains("$placement adFailedToLoad")
     }
 
     @Test
@@ -178,7 +178,7 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(13)
 
-        CommonInteraction.checkSubtitle("$placement adEmpty")
+        CommonInteraction.checkSubtitleContains("$placement adEmpty")
     }
 
     @Test

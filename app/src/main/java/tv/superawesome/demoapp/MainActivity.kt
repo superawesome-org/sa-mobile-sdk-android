@@ -222,7 +222,8 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val message = "$placementId $event"
+        val originalMessage = subtitleTextView.text
+        val message = "$originalMessage $placementId $event"
         subtitleTextView.text = message
     }
 }

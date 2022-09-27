@@ -71,7 +71,7 @@ class InterstitialUITest {
 
         CommonInteraction.clickItemAt(8)
 
-        CommonInteraction.checkSubtitle("$placement adFailedToLoad")
+        CommonInteraction.checkSubtitleContains("$placement adFailedToLoad")
     }
 
     @Test
@@ -81,7 +81,7 @@ class InterstitialUITest {
 
         CommonInteraction.clickItemAt(8)
 
-        CommonInteraction.checkSubtitle("$placement adEmpty")
+        CommonInteraction.checkSubtitleContains("$placement adEmpty")
     }
 
     @Test

@@ -1,12 +1,9 @@
 package tv.superawesome.demoapp
 
-import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.CommonInteraction.stubIntents
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
@@ -28,7 +26,6 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
-
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -48,13 +45,17 @@ class BannerUITest {
 
     @Test
     fun test_adLoading() {
-        CommonInteraction.launchActivityWithSuccessStub("88001", "banner_success.json")
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json")
 
         CommonInteraction.clickItemAt(2)
 
         ViewTester()
             .waitForView(withId(R.id.bannerView))
             .perform(waitUntil(matchesColor(TestColors.yellow)))
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
@@ -64,7 +65,7 @@ class BannerUITest {
 
         CommonInteraction.clickItemAt(2)
 
-        CommonInteraction.checkSubtitle("$placement adFailedToLoad")
+        CommonInteraction.checkSubtitleContains("$placement adFailedToLoad")
     }
 
     @Test
@@ -74,7 +75,7 @@ class BannerUITest {
 
         CommonInteraction.clickItemAt(2)
 
-        CommonInteraction.checkSubtitle("$placement adEmpty")
+        CommonInteraction.checkSubtitleContains("$placement adEmpty")
     }
 
     @Test
@@ -178,8 +179,10 @@ class BannerUITest {
     @Test
     fun test_banner_click_event() {
         // Given
+        stubIntents()
+        val placement = "88001"
         CommonInteraction.launchActivityWithSuccessStub(
-            "88001",
+            placement,
             "banner_success.json"
         )
         CommonInteraction.clickItemAt(2)
@@ -190,6 +193,7 @@ class BannerUITest {
             .perform(click())
 
         // Then
+        CommonInteraction.checkSubtitleContains("$placement adClicked")
         verifyUrlPathCalled("/click")
     }
 
@@ -214,12 +218,7 @@ class BannerUITest {
     @Test
     fun test_external_webpage_opening_on_click() {
         // Given
-        intending(hasAction(Intent.ACTION_VIEW)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK,
-                Intent()
-            )
-        )
+        stubIntents()
         val placement = "88001"
         CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json")
         CommonInteraction.clickPlacementById(placement)
