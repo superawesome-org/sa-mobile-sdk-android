@@ -14,7 +14,6 @@ url: "https://sa-mobile-sdk-android.superawesome.tv"
 
 latest_version: RELEASE-VERSION-NAME
 changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop/CHANGELOG.md
-licence_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop/LICENSE
 repo: "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android"
 github_user: "SuperAwesomeLTD"
 github_repo: "sa-mobile-sdk-android"
