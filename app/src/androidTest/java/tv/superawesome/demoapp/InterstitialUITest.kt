@@ -46,22 +46,40 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_adLoading() {
+        val placement = "87892"
         testAdLoading(
             "87892",
             "interstitial_standard_success.json",
             5,
             TestColors.yellow
         )
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
     fun test_ksf_adLoading() {
+        val placement = "87970"
         testAdLoading(
-            "87970",
+            placement,
             "interstitial_ksf_success.json",
             8,
             TestColors.ksfYellow
         )
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
@@ -101,8 +119,9 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_CloseButton() {
+        val placement = "87892"
         CommonInteraction.launchActivityWithSuccessStub(
-            "87892",
+            placement,
             "interstitial_standard_success.json"
         )
 
@@ -112,11 +131,15 @@ class InterstitialUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
     }
 
     @Test
     fun test_ksf_CloseButton() {
-        CommonInteraction.launchActivityWithSuccessStub("87970", "interstitial_ksf_success.json")
+        val placement = "87970"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_ksf_success.json")
 
         CommonInteraction.clickItemAt(8)
 
@@ -124,6 +147,9 @@ class InterstitialUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
     }
 
     @Test
@@ -238,16 +264,23 @@ class InterstitialUITest {
     @Test
     fun test_standard_ad_click_event() {
         // Given
+        val placement = "87892"
+        CommonInteraction.stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(
-            "87892",
+            placement,
             "interstitial_standard_success.json"
         )
         CommonInteraction.clickItemAt(5)
 
         // When
         onView(withContentDescription("Ad content")).perform(click())
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
 
         // Then
+        CommonInteraction.checkSubtitleContains("$placement adClicked")
         verifyUrlPathCalled("/click")
     }
 
