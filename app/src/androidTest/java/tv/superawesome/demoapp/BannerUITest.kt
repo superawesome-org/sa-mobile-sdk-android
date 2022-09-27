@@ -150,6 +150,23 @@ class BannerUITest {
             .check(isVisible())
     }
 
+    @Test
+    fun test_adClosed_callback() {
+        val placement = "88001"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json")
+
+        CommonInteraction.clickItemAt(2)
+
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
+            .perform(waitUntil(matchesColor(TestColors.yellow)))
+
+        CommonInteraction.clickItemAt(2)
+
+        // The banner is closed automatically when a new one is opened
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
+    }
+
     // Events
     @Test
     fun test_banner_impression_events() {
