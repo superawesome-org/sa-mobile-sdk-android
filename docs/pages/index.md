@@ -14,7 +14,6 @@ The {{ site.title }} (Software Development Kit) lets you to easily add COPPA com
 | Support   |   Android 4.1+ (API 16) (Video) | Android 6+ (Insterstitial)
 | GitHub    |   [{{ site.repo }}]({{ site.repo }})         |
 | Contact   |   [{{ site.email }}]({{ site.email }})        |
-| License   |   [GNU Lesser General Public License Version 3]({{ site.license_url }})           |
 
 Here you can quickly jump to a particular page.
 
