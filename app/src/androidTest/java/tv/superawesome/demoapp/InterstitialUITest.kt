@@ -21,7 +21,7 @@ import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
-import tv.superawesome.demoapp.util.WireMockHelper.stubIntents
+import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
