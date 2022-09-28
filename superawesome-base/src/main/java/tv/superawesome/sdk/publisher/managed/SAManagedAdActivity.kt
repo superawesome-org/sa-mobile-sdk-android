@@ -44,7 +44,10 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
         closeButton.setPadding(0, 0, 0, 0)
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
         closeButton.layoutParams = buttonLayout
-        closeButton.setOnClickListener { close() }
+        closeButton.setOnClickListener {
+            listener?.onEvent(this.placementId, SAEvent.adClosed)
+            close()
+        }
         closeButton.contentDescription = "Close"
 
         return@lazy closeButton

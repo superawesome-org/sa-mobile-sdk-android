@@ -25,6 +25,7 @@ import tv.superawesome.demoapp.util.AdapterUtil
 import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
 import tv.superawesome.demoapp.util.WireMockHelper.stubFailure
 import tv.superawesome.demoapp.util.WireMockHelper.stubSuccess
+import tv.superawesome.demoapp.util.waitUntil
 import java.util.concurrent.TimeoutException
 
 object CommonInteraction {
@@ -70,11 +71,13 @@ object CommonInteraction {
 
     fun checkSubtitle(text: String) {
         onView(withId(R.id.subtitleTextView))
+            .perform(waitUntil(isDisplayed()))
             .check(matches(withText(text)))
     }
 
     fun checkSubtitleContains(text: String, timeout: Long = 5000) {
         onView(withId(R.id.subtitleTextView))
+            .perform(waitUntil(isDisplayed()))
             .perform(waitForText(text, timeout))
     }
 

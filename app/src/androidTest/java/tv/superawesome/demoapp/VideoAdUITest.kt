@@ -45,7 +45,8 @@ class VideoAdUITest {
 
     @Test
     fun test_standard_CloseButtonWithNoDelay() {
-        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json") {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
             SettingsInteraction.closeNoDelay()
         }
 
@@ -55,13 +56,16 @@ class VideoAdUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
 
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
         verifyUrlPathCalled("/moat")
     }
 
     @Test
     fun test_standard_CloseButtonWithDelay() {
-        CommonInteraction.launchActivityWithSuccessStub("87969", "video_direct_success.json") {
+        val placement = "87969"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
             SettingsInteraction.closeDelayed()
         }
 
@@ -72,14 +76,17 @@ class VideoAdUITest {
             .check(isGone())
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
 
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
         verifyUrlPathCalled("/moat")
         verifyUrlPathCalled("/event")
     }
 
     @Test
     fun test_vast_CloseButtonWithNoDelay() {
-        CommonInteraction.launchActivityWithSuccessStub("88406", "video_vast_success.json") {
+        val placement = "88406"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vast_success.json") {
             SettingsInteraction.closeNoDelay()
         }
 
@@ -89,11 +96,16 @@ class VideoAdUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
     }
 
     @Test
     fun test_vast_CloseButtonWithDelay() {
-        CommonInteraction.launchActivityWithSuccessStub("88406", "video_vast_success.json") {
+        val placement = "88406"
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vast_success.json") {
             SettingsInteraction.closeDelayed()
         }
 
@@ -104,11 +116,16 @@ class VideoAdUITest {
             .check(isGone())
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
     }
 
     @Test
     fun test_vpaid_CloseButton() {
-        CommonInteraction.launchActivityWithSuccessStub("89056", "video_vpaid_success.json")
+        val placement = "89056"
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vpaid_success.json")
 
         CommonInteraction.clickItemAt(12)
 
@@ -116,49 +133,86 @@ class VideoAdUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
     }
 
     @Test
     fun test_auto_close_on_finish() {
-        testAdLoading(
-            "87969",
-            "video_direct_success.json",
-            13,
-            TestColors.directYellow
+        val placement = "87969"
+        stubVASTPaths()
+
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement, "video_direct_success.json"
         )
+
+        CommonInteraction.clickItemAt(13)
+
         ViewTester()
             .waitForView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
+
+        CommonInteraction.checkSubtitleContains("$placement adEnded", 20000)
     }
 
     @Test
     fun test_vast_adLoading() {
+        val placement = "88406"
+        stubVASTPaths()
         testAdLoading(
-            "88406",
+            placement,
             "video_vast_success.json",
             11,
             TestColors.vastYellow
         )
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
     fun test_vpaid_adLoading() {
+        val placement = "89056"
+        stubVASTPaths()
         testAdLoading(
-            "89056",
+            placement,
             "video_vpaid_success.json",
             12,
             TestColors.vpaidYellow
         )
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
     fun test_direct_adLoading() {
+        val placement = "87969"
         testAdLoading(
             "87969",
             "video_direct_success.json",
             13,
             TestColors.directYellow
         )
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
