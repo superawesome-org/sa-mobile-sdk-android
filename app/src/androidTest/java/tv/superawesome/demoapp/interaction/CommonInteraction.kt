@@ -73,32 +73,6 @@ object CommonInteraction {
     fun checkSubtitleContains(text: String, timeout: Long = 5000) {
         onView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
-            .perform(waitForText(text, timeout))
-    }
-
-    fun waitForText(text: String, timeout: Long): ViewAction = object : ViewAction {
-
-        override fun getConstraints(): Matcher<View> {
-            return isAssignableFrom(TextView::class.java)
-        }
-
-        override fun getDescription(): String {
-            return "wait up to $timeout milliseconds for the view to have text $text"
-        }
-
-        override fun perform(uiController: UiController?, view: View?) {
-            val endTime = System.currentTimeMillis() + timeout
-
-            do {
-                if ((view as? TextView)?.text?.contains(text) == true) return
-                with(uiController) { this?.loopMainThreadForAtLeast(50) }
-            } while (System.currentTimeMillis() < endTime)
-
-            throw PerformException.Builder()
-                .withActionDescription(description)
-                .withCause(TimeoutException("Waited $timeout milliseconds"))
-                .withViewDescription(HumanReadables.describe(view))
-                .build()
-        }
+            .perform(waitUntil(withSubstring(text)))
     }
 }

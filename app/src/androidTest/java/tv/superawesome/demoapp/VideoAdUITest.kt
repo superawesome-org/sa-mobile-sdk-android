@@ -157,7 +157,7 @@ class VideoAdUITest {
             .waitForView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
 
-        CommonInteraction.checkSubtitleContains("$placement adEnded", 20000)
+        CommonInteraction.checkSubtitleContains("$placement adEnded")
     }
 
     @Test
