@@ -16,12 +16,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.CommonInteraction.stubIntents
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.WireMockHelper.stubIntents
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible

@@ -1,8 +1,5 @@
 package tv.superawesome.demoapp.interaction
 
-import android.app.Activity
-import android.app.Instrumentation
-import android.content.Intent
 import android.view.View
 import android.widget.TextView
 import androidx.test.core.app.launchActivity
@@ -13,8 +10,6 @@ import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.util.HumanReadables
 import org.hamcrest.Matcher
@@ -105,14 +100,5 @@ object CommonInteraction {
                 .withViewDescription(HumanReadables.describe(view))
                 .build()
         }
-    }
-
-    fun stubIntents() {
-        Intents.intending(IntentMatchers.hasAction(Intent.ACTION_VIEW)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK,
-                Intent()
-            )
-        )
     }
 }

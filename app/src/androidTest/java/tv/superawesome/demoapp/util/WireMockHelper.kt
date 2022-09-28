@@ -1,5 +1,10 @@
 package tv.superawesome.demoapp.util
 
+import android.app.Activity
+import android.app.Instrumentation
+import android.content.Intent
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import com.github.tomakehurst.wiremock.client.WireMock.*
 
 object WireMockHelper {
@@ -87,6 +92,15 @@ object WireMockHelper {
                         .withStatus(200)
                         .withBody("")
                 )
+        )
+    }
+
+    fun stubIntents() {
+        Intents.intending(IntentMatchers.hasAction(Intent.ACTION_VIEW)).respondWith(
+            Instrumentation.ActivityResult(
+                Activity.RESULT_OK,
+                Intent()
+            )
         )
     }
 

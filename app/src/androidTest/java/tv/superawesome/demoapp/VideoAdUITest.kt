@@ -20,10 +20,10 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.CommonInteraction.stubIntents
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.util.WireMockHelper.stubIntents
 import tv.superawesome.demoapp.util.WireMockHelper.stubVASTPaths
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam

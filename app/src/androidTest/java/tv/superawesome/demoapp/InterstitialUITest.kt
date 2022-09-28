@@ -1,7 +1,5 @@
 package tv.superawesome.demoapp
 
-import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -19,11 +17,11 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.CommonInteraction.stubIntents
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.WireMockHelper.stubIntents
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
@@ -267,7 +265,7 @@ class InterstitialUITest {
     fun test_standard_ad_click_event() {
         // Given
         val placement = "87892"
-        CommonInteraction.stubIntents()
+        stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(
             placement,
             "interstitial_standard_success.json"
