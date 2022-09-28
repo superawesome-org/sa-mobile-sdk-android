@@ -47,7 +47,7 @@ class InterstitialUITest {
     fun test_standard_adLoading() {
         val placement = "87892"
         testAdLoading(
-            "87892",
+            placement,
             "interstitial_standard_success.json",
             5,
             TestColors.yellow
