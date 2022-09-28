@@ -20,6 +20,7 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.CommonInteraction.stubIntents
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.*
@@ -380,11 +381,15 @@ class VideoAdUITest {
     @Test
     fun test_direct_ad_click_event() {
         // Given
+        val placement = "87969"
         stubVASTPaths()
+        stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(
-            "87969",
+            placement,
             "video_direct_success.json"
-        )
+        ) {
+            SettingsInteraction.closeNoDelay()
+        }
         CommonInteraction.clickItemAt(13)
 
         // When
@@ -393,8 +398,14 @@ class VideoAdUITest {
             .perform(waitUntil(isDisplayed()))
             .perform(click())
 
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
         // Then
         verifyUrlPathCalled("/vast/click")
+        CommonInteraction.checkSubtitleContains("$placement adClicked")
     }
 
     @Test
@@ -444,11 +455,15 @@ class VideoAdUITest {
     @Test
     fun test_vast_ad_click_event() {
         // Given
+        val placement = "88406"
+        stubIntents()
         stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
-            "88406",
+            placement,
             "video_vast_success.json"
-        )
+        ) {
+            SettingsInteraction.closeNoDelay()
+        }
 
         CommonInteraction.clickItemAt(11)
 
@@ -458,8 +473,14 @@ class VideoAdUITest {
             .perform(waitUntil(isDisplayed()))
             .perform(click())
 
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
         // Then
         verifyUrlPathCalled("/vast/click")
+        CommonInteraction.checkSubtitleContains("$placement adClicked")
     }
 
     @Test
