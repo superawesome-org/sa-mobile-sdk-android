@@ -62,7 +62,7 @@ object CommonInteraction {
             .check(matches(withText(text)))
     }
 
-    fun checkSubtitleContains(text: String, timeout: Long = 5000) {
+    fun checkSubtitleContains(text: String) {
         onView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
             .perform(waitUntil(withSubstring(text)))
