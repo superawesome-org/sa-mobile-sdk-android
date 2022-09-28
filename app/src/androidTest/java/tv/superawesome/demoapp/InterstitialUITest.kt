@@ -19,6 +19,7 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.CommonInteraction.stubIntents
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.util.TestColors
@@ -183,6 +184,7 @@ class InterstitialUITest {
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
         val placement = "87892"
+        stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(
             placement,
             "interstitial_standard_enabled_success.json"
@@ -305,12 +307,7 @@ class InterstitialUITest {
     @Test
     fun test_external_webpage_opening_on_click() {
         // Given
-        Intents.intending(IntentMatchers.hasAction(Intent.ACTION_VIEW)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK,
-                Intent()
-            )
-        )
+        stubIntents()
         val placement = "87892"
         CommonInteraction.launchActivityWithSuccessStub(
             placement,
