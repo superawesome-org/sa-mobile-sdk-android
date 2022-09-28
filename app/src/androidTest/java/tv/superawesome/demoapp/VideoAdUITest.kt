@@ -47,6 +47,7 @@ class VideoAdUITest {
     @Test
     fun test_standard_CloseButtonWithNoDelay() {
         val placement = "87969"
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
             SettingsInteraction.closeNoDelay()
         }
@@ -66,6 +67,7 @@ class VideoAdUITest {
     @Test
     fun test_standard_CloseButtonWithDelay() {
         val placement = "87969"
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
             SettingsInteraction.closeDelayed()
         }
@@ -87,6 +89,7 @@ class VideoAdUITest {
     @Test
     fun test_vast_CloseButtonWithNoDelay() {
         val placement = "88406"
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(placement, "video_vast_success.json") {
             SettingsInteraction.closeNoDelay()
         }
@@ -194,12 +197,12 @@ class VideoAdUITest {
             .perform(click())
 
         CommonInteraction.checkSubtitleContains("$placement adLoaded")
-        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
     fun test_direct_adLoading() {
         val placement = "87969"
+        stubVASTPaths()
         testAdLoading(
             "87969",
             "video_direct_success.json",
@@ -270,6 +273,7 @@ class VideoAdUITest {
     fun test_bumper_enabled_from_settings() {
         // Given bumper page is enabled from settings
         val placement = "87969"
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             placement,
             "video_direct_success.json"
@@ -411,6 +415,7 @@ class VideoAdUITest {
     @Test
     fun test_direct_ad_dwell_time() {
         // Given
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             "87969",
             "video_direct_success.json"
@@ -533,6 +538,7 @@ class VideoAdUITest {
             )
         )
         val placement = "87969"
+        stubVASTPaths()
         CommonInteraction.launchActivityWithSuccessStub(
             placement,
             "video_direct_success.json"
