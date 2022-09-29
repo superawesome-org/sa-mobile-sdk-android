@@ -119,9 +119,16 @@ class MainActivity : FragmentActivity() {
         SAVideoAd.setConfiguration(config)
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
+
         when (app.settings.closeButtonState) {
-            CloseButtonState.VisibleImmediately -> SAVideoAd.enableCloseButtonNoDelay()
-            CloseButtonState.VisibleWithDelay -> SAVideoAd.enableCloseButton()
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
+            }
             CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
         }
     }

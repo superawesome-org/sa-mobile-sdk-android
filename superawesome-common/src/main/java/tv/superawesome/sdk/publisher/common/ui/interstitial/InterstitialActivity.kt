@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 
@@ -35,6 +36,8 @@ public class InterstitialActivity : FullScreenActivity() {
         }
 
         parentLayout.addView(interstitialBanner)
+
+        closeButton.visibility = if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
     }
 
     public override fun playContent() {

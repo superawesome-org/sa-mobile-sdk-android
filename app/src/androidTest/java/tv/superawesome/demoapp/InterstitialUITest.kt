@@ -21,12 +21,10 @@ import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
-import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
-import tv.superawesome.demoapp.util.isVisible
-import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -34,9 +32,12 @@ class InterstitialUITest {
     @get:Rule
     var wireMockRule = WireMockRule(8080)
 
+    private var testData = TestData.empty
+
     @Before
     fun setup() {
         Intents.init()
+        testData = TestData.empty
     }
 
     @After
@@ -141,7 +142,7 @@ class InterstitialUITest {
         // When ad is clicked
         ViewTester()
             .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
+            .perform(waitUntil(withSubstring("")))
             .perform(click())
 
         // Then bumper page is shown
@@ -294,6 +295,37 @@ class InterstitialUITest {
         // Then view URL is redirected to browser
         Intents.intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
         verifyUrlPathCalled("/click")
+    }
+
+    @Test
+    fun test_standard_CloseButtonWithNoDelay() {
+        testData = TestData("87892", "interstitial_standard_success.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.closeNoDelay()
+        }
+
+        CommonInteraction.clickItemAt(testData)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
+    }
+
+    @Test
+    fun test_standard_CloseButtonWithDelay() {
+        testData = TestData("87892", "interstitial_standard_success.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.closeDelayed()
+        }
+
+        CommonInteraction.clickItemAt(testData)
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .check(isGone())
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
     }
 
     private fun openParentalGate() {
