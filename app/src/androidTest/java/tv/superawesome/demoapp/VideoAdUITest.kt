@@ -355,6 +355,48 @@ class VideoAdUITest {
             .check(isVisible())
     }
 
+    @Test
+    fun test_direct_adAlreadyLoaded_callback() {
+        val placement = "87969"
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
+            SettingsInteraction.disablePlay()
+        }
+
+        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(13)
+
+        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+    }
+
+    @Test
+    fun test_vast_adAlreadyLoaded_callback() {
+        val placement = "88406"
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vast_success.json") {
+            SettingsInteraction.disablePlay()
+        }
+
+        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(11)
+
+        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+    }
+
+    @Test
+    fun test_vpaid_adAlreadyLoaded_callback() {
+        val placement = "89056"
+        stubVASTPaths()
+        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vpaid_success.json") {
+            SettingsInteraction.disablePlay()
+        }
+
+        CommonInteraction.clickItemAt(12)
+        CommonInteraction.clickItemAt(12)
+
+        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+    }
+
     // Events
     @Test
     fun test_direct_ad_impression_events() {

@@ -216,6 +216,34 @@ class InterstitialUITest {
             .check(isVisible())
     }
 
+    @Test
+    fun test_standard_adAlreadyLoaded_callback() {
+        val placement = "87892"
+
+        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_standard_success.json") {
+            SettingsInteraction.disablePlay()
+        }
+
+        CommonInteraction.clickItemAt(5)
+        CommonInteraction.clickItemAt(5)
+
+        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+    }
+
+    @Test
+    fun test_ksf_adAlreadyLoaded_callback() {
+        val placement = "87970"
+
+        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_ksf_success.json") {
+            SettingsInteraction.disablePlay()
+        }
+
+        CommonInteraction.clickItemAt(8)
+        CommonInteraction.clickItemAt(8)
+
+        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+    }
+
     // Events
     @Test
     fun test_standard_ad_impression_events() {

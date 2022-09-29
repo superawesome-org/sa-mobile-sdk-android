@@ -70,6 +70,14 @@ class SettingsDialogFragment : DialogFragment() {
         parentalDisableButton.setOnClickListener {
             app?.updateSettings { it.copy(parentalEnabled = false) }
         }
+
+        playbackEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(playEnabled = true) }
+        }
+
+        playbackDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(playEnabled = false) }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
