@@ -142,7 +142,7 @@ class InterstitialUITest {
         // When ad is clicked
         ViewTester()
             .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(withSubstring("")))
+            .perform(waitUntil(isDisplayed()))
             .perform(click())
 
         // Then bumper page is shown
