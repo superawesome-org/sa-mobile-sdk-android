@@ -104,9 +104,7 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun getSettings(): SettingsData? {
-        return (application as? MyApplication)?.settings
-    }
+    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
 
     private fun updateSettings() {
         val settings = getSettings() ?: return

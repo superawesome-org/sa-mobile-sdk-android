@@ -21,8 +21,6 @@ import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.*
-import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
@@ -223,7 +221,10 @@ class InterstitialUITest {
     fun test_standard_adAlreadyLoaded_callback() {
         val placement = "87892"
 
-        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_standard_success.json") {
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "interstitial_standard_success.json"
+        ) {
             SettingsInteraction.disablePlay()
         }
 
@@ -237,7 +238,10 @@ class InterstitialUITest {
     fun test_ksf_adAlreadyLoaded_callback() {
         val placement = "87970"
 
-        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_ksf_success.json") {
+        CommonInteraction.launchActivityWithSuccessStub(
+            placement,
+            "interstitial_ksf_success.json"
+        ) {
             SettingsInteraction.disablePlay()
         }
 
