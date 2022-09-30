@@ -8,5 +8,6 @@ data class SettingsData(
     val environment: SAConfiguration = SAConfiguration.PRODUCTION,
     val closeButtonState: CloseButtonState = CloseButtonState.VisibleWithDelay,
     val bumperEnabled: Boolean = Constants.defaultBumperPage,
-    val parentalEnabled: Boolean = Constants.defaultParentalGate
+    val parentalEnabled: Boolean = Constants.defaultParentalGate,
+    val playEnabled: Boolean = true
 )

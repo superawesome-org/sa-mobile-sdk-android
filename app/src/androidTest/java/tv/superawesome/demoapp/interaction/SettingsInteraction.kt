@@ -38,6 +38,11 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun disablePlay() {
+        onView(withId(R.id.playbackDisableButton))
+            .perform(click())
+    }
+
     fun closeSettings() {
         onView(withId(R.id.closeButton))
             .perform(click())

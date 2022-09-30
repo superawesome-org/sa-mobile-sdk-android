@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.adapter.*
+import tv.superawesome.demoapp.model.SettingsData
 import tv.superawesome.lib.sabumperpage.SABumperPage
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
@@ -103,9 +104,12 @@ class MainActivity : FragmentActivity() {
         }
     }
 
+    private fun getSettings(): SettingsData? {
+        return (application as? MyApplication)?.settings
+    }
+
     private fun updateSettings() {
-        val app = application as? MyApplication ?: return
-        val settings = app.settings
+        val settings = getSettings() ?: return
         val config = settings.environment
 
         bannerView.setConfiguration(config)
@@ -120,7 +124,7 @@ class MainActivity : FragmentActivity() {
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
 
-        when (app.settings.closeButtonState) {
+        when (settings.closeButtonState) {
             CloseButtonState.VisibleImmediately -> {
                 SAVideoAd.enableCloseButtonNoDelay()
                 SAInterstitialAd.enableCloseButtonNoDelay()
@@ -172,21 +176,15 @@ class MainActivity : FragmentActivity() {
                         }
                     }
                     Type.VIDEO -> {
-                        if (SAVideoAd.hasAdAvailable(item.placementId)) {
-                            Log.i(TAG, "PLAYING VIDEO")
-                            SAVideoAd.play(item.placementId, this@MainActivity)
+                        if (item.isFull()) {
+                            SAVideoAd.load(
+                                item.placementId,
+                                item.lineItemId ?: 0,
+                                item.creativeId ?: 0,
+                                this@MainActivity
+                            )
                         } else {
-                            Log.i(TAG, "LOADING VIDEO")
-                            if (item.isFull()) {
-                                SAVideoAd.load(
-                                    item.placementId,
-                                    item.lineItemId ?: 0,
-                                    item.creativeId ?: 0,
-                                    this@MainActivity
-                                )
-                            } else {
-                                SAVideoAd.load(item.placementId, this@MainActivity)
-                            }
+                            SAVideoAd.load(item.placementId, this@MainActivity)
                         }
                     }
                 }
@@ -200,7 +198,7 @@ class MainActivity : FragmentActivity() {
             updateMessage(placementId, event)
             Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
 
-            if (event == SAEvent.adLoaded) {
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
                 SAVideoAd.play(placementId, this@MainActivity)
             }
         }
@@ -211,7 +209,7 @@ class MainActivity : FragmentActivity() {
             updateMessage(placementId, event)
             Log.i(TAG, "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
-            if (event == SAEvent.adLoaded) {
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
                 SAInterstitialAd.play(placementId, this@MainActivity)
             }
         }
@@ -222,14 +220,19 @@ class MainActivity : FragmentActivity() {
         bannerView.setListener { placementId, event ->
             updateMessage(placementId, event)
 
-            if (event == SAEvent.adLoaded) {
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
                 bannerView.play(this@MainActivity)
             }
         }
     }
 
+    private fun isPlayEnabled(): Boolean {
+        return getSettings()?.playEnabled == true
+    }
+
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val message = "$placementId $event"
+        val originalMessage = subtitleTextView.text
+        val message = "$originalMessage $placementId $event"
         subtitleTextView.text = message
     }
 }

@@ -1,7 +1,5 @@
 package tv.superawesome.demoapp
 
-import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -23,6 +21,9 @@ import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 
@@ -47,22 +48,40 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_adLoading() {
+        val placement = "87892"
         testAdLoading(
-            "87892",
+            placement,
             "interstitial_standard_success.json",
             5,
             TestColors.yellow
         )
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
     fun test_ksf_adLoading() {
+        val placement = "87970"
         testAdLoading(
-            "87970",
+            placement,
             "interstitial_ksf_success.json",
             8,
             TestColors.ksfYellow
         )
+
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("$placement adShown")
     }
 
     @Test
@@ -72,7 +91,7 @@ class InterstitialUITest {
 
         CommonInteraction.clickItemAt(8)
 
-        CommonInteraction.checkSubtitle("$placement adFailedToLoad")
+        CommonInteraction.checkSubtitleContains("$placement adFailedToLoad")
     }
 
     @Test
@@ -82,7 +101,7 @@ class InterstitialUITest {
 
         CommonInteraction.clickItemAt(8)
 
-        CommonInteraction.checkSubtitle("$placement adEmpty")
+        CommonInteraction.checkSubtitleContains("$placement adEmpty")
     }
 
     @Test
@@ -102,8 +121,9 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_CloseButton() {
+        val placement = "87892"
         CommonInteraction.launchActivityWithSuccessStub(
-            "87892",
+            placement,
             "interstitial_standard_success.json"
         )
 
@@ -113,11 +133,15 @@ class InterstitialUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
     }
 
     @Test
     fun test_ksf_CloseButton() {
-        CommonInteraction.launchActivityWithSuccessStub("87970", "interstitial_ksf_success.json")
+        val placement = "87970"
+        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_ksf_success.json")
 
         CommonInteraction.clickItemAt(8)
 
@@ -125,6 +149,9 @@ class InterstitialUITest {
             .waitForView(withContentDescription("Close"))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+            .perform(click())
+
+        CommonInteraction.checkSubtitleContains("$placement adClosed")
     }
 
     @Test
@@ -158,6 +185,7 @@ class InterstitialUITest {
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
         val placement = "87892"
+        stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(
             placement,
             "interstitial_standard_enabled_success.json"
@@ -189,6 +217,34 @@ class InterstitialUITest {
 
         onView(withText("Parental Gate"))
             .check(isVisible())
+    }
+
+    @Test
+    fun test_standard_adAlreadyLoaded_callback() {
+        val placement = "87892"
+
+        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_standard_success.json") {
+            SettingsInteraction.disablePlay()
+        }
+
+        CommonInteraction.clickItemAt(5)
+        CommonInteraction.clickItemAt(5)
+
+        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+    }
+
+    @Test
+    fun test_ksf_adAlreadyLoaded_callback() {
+        val placement = "87970"
+
+        CommonInteraction.launchActivityWithSuccessStub(placement, "interstitial_ksf_success.json") {
+            SettingsInteraction.disablePlay()
+        }
+
+        CommonInteraction.clickItemAt(8)
+        CommonInteraction.clickItemAt(8)
+
+        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
     }
 
     // Events
@@ -239,16 +295,23 @@ class InterstitialUITest {
     @Test
     fun test_standard_ad_click_event() {
         // Given
+        val placement = "87892"
+        stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(
-            "87892",
+            placement,
             "interstitial_standard_success.json"
         )
         CommonInteraction.clickItemAt(5)
 
         // When
         onView(withContentDescription("Ad content")).perform(click())
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .perform(click())
 
         // Then
+        CommonInteraction.checkSubtitleContains("$placement adClicked")
         verifyUrlPathCalled("/click")
     }
 
@@ -273,12 +336,7 @@ class InterstitialUITest {
     @Test
     fun test_external_webpage_opening_on_click() {
         // Given
-        Intents.intending(IntentMatchers.hasAction(Intent.ACTION_VIEW)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK,
-                Intent()
-            )
-        )
+        stubIntents()
         val placement = "87892"
         CommonInteraction.launchActivityWithSuccessStub(
             placement,
