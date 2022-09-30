@@ -5,8 +5,7 @@ import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Matchers.anything
 import tv.superawesome.demoapp.MainActivity
 import tv.superawesome.demoapp.R
@@ -14,6 +13,7 @@ import tv.superawesome.demoapp.util.AdapterUtil
 import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
 import tv.superawesome.demoapp.util.WireMockHelper.stubFailure
 import tv.superawesome.demoapp.util.WireMockHelper.stubSuccess
+import tv.superawesome.demoapp.util.waitUntil
 
 object CommonInteraction {
     fun launchActivityWithSuccessStub(
@@ -58,6 +58,13 @@ object CommonInteraction {
 
     fun checkSubtitle(text: String) {
         onView(withId(R.id.subtitleTextView))
+            .perform(waitUntil(isDisplayed()))
             .check(matches(withText(text)))
+    }
+
+    fun checkSubtitleContains(text: String) {
+        onView(withId(R.id.subtitleTextView))
+            .perform(waitUntil(isDisplayed()))
+            .perform(waitUntil(withSubstring(text)))
     }
 }
