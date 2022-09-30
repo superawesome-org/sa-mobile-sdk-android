@@ -44,6 +44,9 @@ public class SADefaults {
     public static CloseButtonState defaultCloseButtonState() {
         return CloseButtonState.Hidden;
     }
+    public static CloseButtonState defaultCloseButtonStateInterstitial() {
+        return CloseButtonState.VisibleWithDelay;
+    }
     public static boolean defaultSmallClick () {
         return false;
     }

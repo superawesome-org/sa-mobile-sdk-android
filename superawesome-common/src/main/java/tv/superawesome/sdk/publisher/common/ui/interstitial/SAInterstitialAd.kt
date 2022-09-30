@@ -10,6 +10,7 @@ import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 
 public object SAInterstitialAd {
@@ -139,6 +140,22 @@ public object SAInterstitialAd {
      * @return true or false
      */
     public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
+
+    /**
+     * Method that enables the close button to display immediately without a delay.
+     * WARNING: this will allow users to close the ad before the viewable tracking event is fired
+     * and should only be used if you explicitly want this behaviour over consistent tracking.
+     */
+    public fun enableCloseButtonNoDelay() {
+        controller.config.closeButtonState = CloseButtonState.VisibleImmediately
+    }
+
+    /**
+     * Method that enables the close button to display with a delay.
+     */
+    fun enableCloseButton() {
+        controller.config.closeButtonState = CloseButtonState.VisibleWithDelay
+    }
 
     private fun makeAdRequest(context: Context): AdRequest {
         val width: Int

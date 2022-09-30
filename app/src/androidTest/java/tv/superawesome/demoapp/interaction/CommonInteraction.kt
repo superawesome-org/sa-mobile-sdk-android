@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Matchers.anything
 import tv.superawesome.demoapp.MainActivity
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.AdapterUtil
 import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
 import tv.superawesome.demoapp.util.WireMockHelper.stubFailure
@@ -36,6 +37,10 @@ object CommonInteraction {
         }
     }
 
+    fun launchActivityWithSuccessStub(testData: TestData, settings: () -> Unit) {
+        launchActivityWithSuccessStub(testData.placement, testData.fileName, settings)
+    }
+
     fun launchActivityWithFailureStub(placement: String) {
         stubCommonPaths()
         stubFailure(placement)
@@ -54,6 +59,10 @@ object CommonInteraction {
     fun clickPlacementById(placementId: String) {
         onData(AdapterUtil.withPlacementId(placementId)).inAdapterView(withId(R.id.listView))
             .perform(click())
+    }
+
+    fun clickItemAt(testData: TestData) {
+        clickPlacementById(testData.placement)
     }
 
     fun checkSubtitle(text: String) {
