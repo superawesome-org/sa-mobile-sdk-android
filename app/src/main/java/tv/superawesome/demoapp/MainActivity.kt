@@ -104,9 +104,7 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun getSettings(): SettingsData? {
-        return (application as? MyApplication)?.settings
-    }
+    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
 
     private fun updateSettings() {
         val settings = getSettings() ?: return
@@ -123,9 +121,16 @@ class MainActivity : FragmentActivity() {
         SAVideoAd.setConfiguration(config)
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
+
         when (settings.closeButtonState) {
-            CloseButtonState.VisibleImmediately -> SAVideoAd.enableCloseButtonNoDelay()
-            CloseButtonState.VisibleWithDelay -> SAVideoAd.enableCloseButton()
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
+            }
             CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
         }
     }

@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.banner
 
 import android.content.Context
@@ -22,6 +23,7 @@ import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.interstitialMaxTickCount
 
 public class BannerView @JvmOverloads constructor(
     context: Context,
@@ -221,7 +223,7 @@ public class BannerView @JvmOverloads constructor(
                 controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
-                viewableDetector.start(this@BannerView) {
+                viewableDetector.start(this@BannerView, interstitialMaxTickCount) {
                     controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
                 }
