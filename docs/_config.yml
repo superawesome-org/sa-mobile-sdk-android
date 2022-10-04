@@ -50,7 +50,7 @@ themeColor: red # purple, green, blue, orange, purple, grey
 fixedNav: 'true' # true or false
 
 permalink: /:year/:title/
-exclude: [_site, CHANGELOG.md, LICENSE, README.md, vendor, VERSION, Gemfile, Gemfile.lock, CNAME, _config.yml, circle_urls.sh, docker-compose.yml]
+exclude: [_site, LICENSE, README.md, vendor, VERSION, Gemfile, Gemfile.lock, CNAME, _config.yml, circle_urls.sh, docker-compose.yml]
 
 # Collections
 collections:
