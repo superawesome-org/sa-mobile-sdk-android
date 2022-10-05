@@ -1,3 +1,10 @@
+# [8.4.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.7...v8.4.0) (2022-10-05)
+
+
+### Features
+
+* add immediately close button functionality to the interstitial ads ([#222](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/222)) ([2842a03](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2842a03a0ce1af0c7a661c3b4b35373b23dd3338))
+
 ## [8.3.7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.6...v8.3.7) (2022-09-06)
 
 
