@@ -87,7 +87,7 @@ fun waitForViewMatcherOneTime(viewMatcher: Matcher<View>): ViewAction {
 open class ViewTester {
     fun waitForView(
         viewMatcher: Matcher<View>,
-        waitMillis: Int = 10000,
+        waitMillis: Int = 15000,
         waitMillisPerTry: Long = 100
     ): ViewInteraction {
         val maxTries = waitMillis / waitMillisPerTry.toInt()
@@ -114,11 +114,13 @@ open class ViewTester {
     ) {
         val maxTries = waitMillis / waitMillisPerTry.toInt()
         var tries = 0
+        var lastColor:Color? = null
 
         for (i in 0..maxTries)
             try {
                 tries++
-                if (color == ScreenshotUtil.captureColorInCenter()) {
+                lastColor = ScreenshotUtil.captureColorInCenter()
+                if (TestColors.checkApproximatelyEqual(color, lastColor)) {
                     return
                 }
                 sleep(waitMillisPerTry)
@@ -128,6 +130,6 @@ open class ViewTester {
                 }
                 sleep(waitMillisPerTry)
             }
-        throw Exception("Could not find color $color")
+        throw Exception("Could not find color $color but last color was $lastColor")
     }
 }

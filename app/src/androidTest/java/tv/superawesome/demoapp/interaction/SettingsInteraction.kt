@@ -13,7 +13,12 @@ object SettingsInteraction {
             .perform(waitUntil(isCompletelyDisplayed()), click())
     }
 
-    fun enableUITesting() {
+    private fun resetSettings() {
+        onView(withId(R.id.resetButton))
+            .perform(click())
+    }
+
+    private fun enableUITesting() {
         onView(withId(R.id.uiTestingButton))
             .perform(click())
     }
@@ -48,9 +53,14 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun commonSettings() {
+        resetSettings()
+        enableUITesting()
+    }
+
     fun applyCommonSettings() {
         openSettings()
-        enableUITesting()
+        commonSettings()
         closeSettings()
     }
 }

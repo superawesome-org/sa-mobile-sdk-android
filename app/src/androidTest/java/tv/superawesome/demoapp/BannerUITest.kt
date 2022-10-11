@@ -5,7 +5,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -18,13 +18,13 @@ import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
+import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
+import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
-import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
-import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
@@ -45,62 +45,60 @@ class BannerUITest {
 
     @Test
     fun test_adLoading() {
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json")
-
-        CommonInteraction.clickItemAt(2)
+        val testData = TestData.bannerSuccess
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        CommonInteraction.clickItemAt(testData)
 
         ViewTester()
             .waitForView(withId(R.id.bannerView))
-            .perform(waitUntil(matchesColor(TestColors.yellow)))
+            .perform(waitUntil(matchesColor(TestColors.bannerYellow)))
 
-        CommonInteraction.checkSubtitleContains("$placement adLoaded")
-        CommonInteraction.checkSubtitleContains("$placement adShown")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
     }
 
     @Test
     fun test_adFailure() {
-        val placement = "88001"
-        CommonInteraction.launchActivityWithFailureStub(placement)
+        val testData = TestData.bannerSuccess
+        CommonInteraction.launchActivityWithFailureStub(testData)
 
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("$placement adFailedToLoad")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
     }
 
     @Test
     fun test_adNotFound() {
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
+        val testData = TestData("88001", "not_found.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("$placement adEmpty")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adEmpty")
     }
 
     @Test
     fun test_safeAdVisible() {
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/banner_success_padlock_enabled.json"
-        )
+        // Given
+        val testData = TestData.bannerPadlock
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(2)
+        // When
+        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withContentDescription("Safe Ad Logo"))
-            .check(isVisible())
+        // Then
+        CommonInteraction.waitAndCheckSafeAdLogo()
     }
 
     @Test
     fun test_bumper_enabled_from_settings() {
         // Given bumper page is enabled from settings
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json") {
+        val testData = TestData.bannerSuccess
+        stubIntents()
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableBumper()
         }
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(testData)
 
         // When ad is clicked
         onView(withId(R.id.bannerView))
@@ -118,9 +116,9 @@ class BannerUITest {
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_enabled_success.json")
-        CommonInteraction.clickItemAt(2)
+        val testData = TestData("88001", "banner_enabled_success.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        CommonInteraction.clickItemAt(testData)
 
         // When ad is clicked
         onView(withId(R.id.bannerView))
@@ -132,51 +130,42 @@ class BannerUITest {
 
     @Test
     fun test_parental_gate_for_safe_ad_click() {
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/banner_success_padlock_enabled.json"
-        ) {
+        val testData = TestData.bannerPadlock
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableParentalGate()
         }
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withContentDescription("Safe Ad Logo"))
-            .check(isVisible())
-            .perform(click())
+        CommonInteraction.waitForSafeAdLogoThenClick()
 
-        onView(withText("Parental Gate"))
-            .check(isVisible())
+        ParentalGateInteraction.checkVisible()
     }
 
     @Test
     fun test_adClosed_callback() {
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json")
+        val testData = TestData.bannerSuccess
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(testData)
 
         ViewTester()
             .waitForView(withId(R.id.bannerView))
-            .perform(waitUntil(matchesColor(TestColors.yellow)))
+            .perform(waitUntil(matchesColor(TestColors.bannerYellow)))
 
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(testData)
 
         // The banner is closed automatically when a new one is opened
-        CommonInteraction.checkSubtitleContains("$placement adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     // Events
     @Test
     fun test_banner_impression_events() {
         // Given
-        CommonInteraction.launchActivityWithSuccessStub(
-            "88001",
-            "banner_success.json"
-        )
+        val testData = TestData.bannerSuccess
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(testData)
 
         ViewTester()
             .waitForView(withId(R.id.bannerView))
@@ -196,13 +185,10 @@ class BannerUITest {
     @Test
     fun test_banner_click_event() {
         // Given
+        val testData = TestData.bannerSuccess
         stubIntents()
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "banner_success.json"
-        )
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        CommonInteraction.clickItemAt(testData)
 
         // When
         ViewTester()
@@ -210,14 +196,16 @@ class BannerUITest {
             .perform(click())
 
         // Then
-        CommonInteraction.checkSubtitleContains("$placement adClicked")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
         verifyUrlPathCalled("/click")
     }
 
     @Test
     fun test_parental_gate_success_event() {
+        stubIntents()
         openParentalGate()
         ParentalGateInteraction.testSuccess()
+        Intents.intended(hasAction(Intent.ACTION_VIEW))
     }
 
     @Test
@@ -235,10 +223,10 @@ class BannerUITest {
     @Test
     fun test_external_webpage_opening_on_click() {
         // Given
+        val testData = TestData.bannerSuccess
         stubIntents()
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "banner_success.json")
-        CommonInteraction.clickPlacementById(placement)
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        CommonInteraction.clickItemAt(testData)
 
         // When ad is clicked
         onView(withId(R.id.bannerView))
@@ -250,20 +238,13 @@ class BannerUITest {
     }
 
     private fun openParentalGate() {
-        val placement = "88001"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/banner_success_padlock_enabled.json"
-        ) {
+        CommonInteraction.launchActivityWithSuccessStub(TestData.bannerPadlock) {
             SettingsInteraction.enableParentalGate()
         }
-        CommonInteraction.clickItemAt(2)
+        CommonInteraction.clickItemAt(TestData.bannerPadlock)
 
         // When parental gate is shown
-        ViewTester()
-            .waitForView(withContentDescription("Safe Ad Logo"))
-            .check(isVisible())
-            .perform(click())
+        CommonInteraction.waitForSafeAdLogoThenClick()
 
         // Then parental gate open event is triggered
         ParentalGateInteraction.testOpen()

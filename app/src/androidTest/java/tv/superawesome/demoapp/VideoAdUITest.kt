@@ -1,9 +1,6 @@
 package tv.superawesome.demoapp
 
-import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
@@ -22,11 +19,15 @@ import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
-import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
-import tv.superawesome.demoapp.util.WireMockHelper.stubVASTPaths
+import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.ViewTester
+import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
+import tv.superawesome.demoapp.util.waitUntil
+import tv.superawesome.sdk.publisher.SAVideoAd
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -37,6 +38,10 @@ class VideoAdUITest {
     @Before
     fun setup() {
         Intents.init()
+
+        val ads = SAVideoAd::class.java.getDeclaredMethod("clearCache")
+        ads.isAccessible = true
+        ads.invoke(null)
     }
 
     @After
@@ -46,247 +51,175 @@ class VideoAdUITest {
 
     @Test
     fun test_standard_CloseButtonWithNoDelay() {
-        val placement = "87969"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeNoDelay()
         }
 
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
+        CommonInteraction.waitForCloseButtonThenClick()
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .check(isVisible())
-            .perform(click())
-
-        CommonInteraction.checkSubtitleContains("$placement adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
         verifyUrlPathCalled("/moat")
     }
 
     @Test
     fun test_standard_CloseButtonWithDelay() {
-        val placement = "87969"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeDelayed()
         }
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.waitForCloseButtonWithDelayThenClick()
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .check(isGone())
-            .perform(waitUntil(isDisplayed()))
-            .check(isVisible())
-            .perform(click())
-
-        CommonInteraction.checkSubtitleContains("$placement adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
         verifyUrlPathCalled("/moat")
         verifyUrlPathCalled("/event")
     }
 
     @Test
     fun test_vast_CloseButtonWithNoDelay() {
-        val placement = "88406"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vast_success.json") {
+        val testData = TestData.videoVast
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeNoDelay()
         }
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(testData)
+        CommonInteraction.waitForCloseButtonThenClick()
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .check(isVisible())
-            .perform(click())
-
-        CommonInteraction.checkSubtitleContains("$placement adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_vast_CloseButtonWithDelay() {
-        val placement = "88406"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vast_success.json") {
+        val testData = TestData.videoVast
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeDelayed()
         }
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .check(isGone())
-            .perform(waitUntil(isDisplayed()))
-            .check(isVisible())
-            .perform(click())
+        CommonInteraction.waitForCloseButtonWithDelayThenClick()
 
-        CommonInteraction.checkSubtitleContains("$placement adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_vpaid_CloseButton() {
-        val placement = "89056"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vpaid_success.json")
+        val testData = TestData.videoVpaid
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(12)
+        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .check(isVisible())
-            .perform(click())
+        CommonInteraction.waitForCloseButtonThenClick()
 
-        CommonInteraction.checkSubtitleContains("$placement adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_auto_close_on_finish() {
-        val placement = "87969"
-        stubVASTPaths()
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement, "video_direct_success.json"
-        )
-
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
 
         ViewTester()
             .waitForView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
 
-        CommonInteraction.checkSubtitleContains("$placement adEnded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
+
+        // Then all of the events are triggered
+        verifyQueryParamContains("/video/tracking", "event", "start")
+        verifyQueryParamContains("/video/tracking", "event", "creativeView")
+        verifyQueryParamContains("/video/tracking", "event", "firstQuartile")
+        verifyQueryParamContains("/video/tracking", "event", "midpoint")
+        verifyQueryParamContains("/video/tracking", "event", "thirdQuartile")
+        verifyQueryParamContains("/video/tracking", "event", "complete")
     }
 
     @Test
     fun test_vast_adLoading() {
-        val placement = "88406"
-        stubVASTPaths()
-        testAdLoading(
-            placement,
-            "video_vast_success.json",
-            11,
-            TestColors.vastYellow
-        )
+        val testData = TestData.videoVast
+        testAdLoading(testData, TestColors.vastYellow)
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForCloseButtonThenClick()
 
-        CommonInteraction.checkSubtitleContains("$placement adLoaded")
-        CommonInteraction.checkSubtitleContains("$placement adShown")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
     }
 
     @Test
     fun test_vpaid_adLoading() {
-        val placement = "89056"
-        stubVASTPaths()
-        testAdLoading(
-            placement,
-            "video_vpaid_success.json",
-            12,
-            TestColors.vpaidYellow
-        )
+        val testData = TestData.videoVpaid
+        testAdLoading(testData, TestColors.vpaidYellow)
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForCloseButtonThenClick()
 
-        CommonInteraction.checkSubtitleContains("$placement adLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
     }
 
     @Test
     fun test_direct_adLoading() {
-        val placement = "87969"
-        stubVASTPaths()
-        testAdLoading(
-            "87969",
-            "video_direct_success.json",
-            13,
-            TestColors.directYellow
-        )
+        val testData = TestData.videoDirect
+        testAdLoading(testData, TestColors.vastYellow)
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForCloseButtonThenClick()
 
-        CommonInteraction.checkSubtitleContains("$placement adLoaded")
-        CommonInteraction.checkSubtitleContains("$placement adShown")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
     }
 
     @Test
     fun test_adFailure() {
-        val placement = "87969"
-        CommonInteraction.launchActivityWithFailureStub(placement)
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithFailureStub(testData)
 
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("$placement adFailedToLoad")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
     }
 
     @Test
     fun test_adNotFound() {
-        val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(placement, "not_found.json")
+        val testData = TestData("87969", "not_found.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("$placement adEmpty")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adEmpty")
     }
 
     @Test
     fun test_direct_safeAdVisible() {
-        val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/video_direct_success_padlock_enabled.json"
-        )
+        CommonInteraction.launchActivityWithSuccessStub(TestData.videoPadlock)
+        CommonInteraction.clickItemAt(TestData.videoPadlock)
 
-        CommonInteraction.clickItemAt(13)
-
-        ViewTester()
-            .waitForView(withContentDescription("Safe Ad Logo"))
-            .check(isVisible())
+        CommonInteraction.waitAndCheckSafeAdLogo()
     }
 
     @Test
     fun test_vast_safeAdVisible() {
-        val placement = "88406"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/video_vast_success_padlock_enabled.json"
-        )
+        val testData = TestData("88406", "padlock/video_vast_success_padlock_enabled.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withContentDescription("Safe Ad Logo"))
-            .check(isVisible())
+        CommonInteraction.waitAndCheckSafeAdLogo()
     }
 
     @Test
     fun test_bumper_enabled_from_settings() {
         // Given bumper page is enabled from settings
-        val placement = "87969"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "video_direct_success.json"
-        ) {
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableBumper()
         }
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
 
         // When ad is clicked
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForAdContentThenClick()
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
@@ -299,18 +232,12 @@ class VideoAdUITest {
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
-        val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "video_direct_enabled_success.json"
-        )
-        CommonInteraction.clickItemAt(13)
+        val testData = TestData("87969", "video_direct_enabled_success.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        CommonInteraction.clickItemAt(testData)
 
         // When ad is clicked
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForAdContentThenClick()
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
@@ -318,95 +245,78 @@ class VideoAdUITest {
 
     @Test
     fun test_parental_gate_for_safe_ad_click() {
-        val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/video_direct_success_padlock_enabled.json"
-        ) {
+        val testData = TestData.videoPadlock
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableParentalGate()
         }
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withContentDescription("Safe Ad Logo"))
-            .check(isVisible())
-            .perform(click())
+        CommonInteraction.waitForSafeAdLogoThenClick()
 
-        onView(withText("Parental Gate"))
-            .check(isVisible())
+        ParentalGateInteraction.checkVisible()
     }
 
     @Test
     fun test_parental_gate_for_ad_click() {
-        val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/video_direct_success_padlock_enabled.json"
-        ) {
+        val testData = TestData("87969", "padlock/video_direct_success_padlock_enabled.json")
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableParentalGate()
         }
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
 
         ViewTester()
             .waitForView(withContentDescription("Ad content"))
             .perform(waitUntil(isDisplayed()), click())
 
-        onView(withText("Parental Gate"))
-            .check(isVisible())
+        ParentalGateInteraction.checkVisible()
     }
 
     @Test
     fun test_direct_adAlreadyLoaded_callback() {
-        val placement = "87969"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_direct_success.json") {
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.disablePlay()
         }
 
-        CommonInteraction.clickItemAt(13)
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
     }
 
     @Test
     fun test_vast_adAlreadyLoaded_callback() {
-        val placement = "88406"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vast_success.json") {
+        val testData = TestData.videoVast
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.disablePlay()
         }
 
-        CommonInteraction.clickItemAt(11)
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(testData)
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
     }
 
     @Test
     fun test_vpaid_adAlreadyLoaded_callback() {
-        val placement = "89056"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(placement, "video_vpaid_success.json") {
+        val testData = TestData.videoVpaid
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.disablePlay()
         }
 
-        CommonInteraction.clickItemAt(12)
-        CommonInteraction.clickItemAt(12)
+        CommonInteraction.clickItemAt(testData)
+        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("$placement adAlreadyLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
     }
 
     // Events
     @Test
     fun test_direct_ad_impression_events() {
         // Given
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(
-            "87969",
-            "video_direct_success.json"
-        )
-        CommonInteraction.clickItemAt(13)
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        CommonInteraction.clickItemAt(testData)
 
         ViewTester()
             .waitForView(withContentDescription("Ad content"))
@@ -427,43 +337,28 @@ class VideoAdUITest {
     @Test
     fun test_direct_ad_click_event() {
         // Given
-        val placement = "87969"
-        stubVASTPaths()
+        val testData = TestData.videoDirect
         stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "video_direct_success.json"
-        ) {
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeNoDelay()
         }
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.clickItemAt(testData)
 
         // When
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForAdContentThenClick()
 
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForCloseButtonThenClick()
 
         // Then
         verifyUrlPathCalled("/vast/click")
-        CommonInteraction.checkSubtitleContains("$placement adClicked")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
 
     @Test
     fun test_direct_ad_dwell_time() {
         // Given
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(
-            "87969",
-            "video_direct_success.json"
-        )
-
-        CommonInteraction.clickItemAt(13)
+        CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect)
+        CommonInteraction.clickItemAt(TestData.videoDirect)
 
         // When
         Thread.sleep(3000)
@@ -479,13 +374,8 @@ class VideoAdUITest {
     @Test
     fun test_vast_ad_impression_events() {
         // Given
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(
-            "88406",
-            "video_vast_success.json"
-        )
-
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.launchActivityWithSuccessStub(TestData.videoVast)
+        CommonInteraction.clickItemAt(TestData.videoVast)
 
         // When
         Thread.sleep(5000)
@@ -502,44 +392,27 @@ class VideoAdUITest {
     @Test
     fun test_vast_ad_click_event() {
         // Given
-        val placement = "88406"
+        val testData = TestData.videoVast
         stubIntents()
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "video_vast_success.json"
-        ) {
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeNoDelay()
         }
-
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.clickItemAt(testData)
 
         // When
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
-
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForAdContentThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         // Then
         verifyUrlPathCalled("/vast/click")
-        CommonInteraction.checkSubtitleContains("$placement adClicked")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
 
     @Test
     fun test_vast_ad_dwell_time() {
         // Given
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(
-            "88406",
-            "video_vast_success.json"
-        )
-
-        CommonInteraction.clickItemAt(11)
+        CommonInteraction.launchActivityWithSuccessStub(TestData.videoVast)
+        CommonInteraction.clickItemAt(TestData.videoVast)
 
         // When
         Thread.sleep(3000)
@@ -573,43 +446,39 @@ class VideoAdUITest {
     @Test
     fun test_external_webpage_opening_on_click() {
         // Given
-        Intents.intending(IntentMatchers.hasAction(Intent.ACTION_VIEW)).respondWith(
-            Instrumentation.ActivityResult(
-                Activity.RESULT_OK,
-                Intent()
-            )
-        )
-        val placement = "87969"
-        stubVASTPaths()
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "video_direct_success.json"
-        )
-        CommonInteraction.clickPlacementById(placement)
+        stubIntents()
+        CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect)
+        CommonInteraction.clickItemAt(TestData.videoDirect)
 
         // When ad is clicked
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
-            .perform(click())
+        CommonInteraction.waitForAdContentThenClick()
 
         // Then view URL is redirected to browser
         intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
     }
 
+    @Test
+    fun test_vast_click_event() {
+        // Given CPI Vast Ad
+        val testData = TestData("88406", "video_vast_cpi_success.json")
+        stubIntents()
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        CommonInteraction.clickItemAt(testData)
+
+        // When ad is clicked
+        CommonInteraction.waitForAdContentThenClick()
+
+        // Then view URL is redirected to browser
+        intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
+        verifyUrlPathCalled("/vast/clickthrough")
+    }
+
     private fun openParentalGate() {
-        val placement = "87969"
-        CommonInteraction.launchActivityWithSuccessStub(
-            placement,
-            "padlock/video_direct_success_padlock_enabled.json"
-        ) {
+        CommonInteraction.launchActivityWithSuccessStub(TestData.videoPadlock) {
             SettingsInteraction.enableParentalGate()
         }
-        CommonInteraction.clickItemAt(13)
-
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()), click())
+        CommonInteraction.clickItemAt(TestData.videoPadlock)
+        CommonInteraction.waitForAdContentThenClick()
 
         // Then parental gate open event is triggered
         ParentalGateInteraction.testOpen()
