@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
@@ -589,5 +591,10 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(View.VISIBLE);
+    }
+
+    @VisibleForTesting
+    private static void clearCache() {
+        ads.clear();
     }
 }

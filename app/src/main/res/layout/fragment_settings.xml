@@ -12,6 +12,17 @@
         android:background="@android:color/white">
 
         <ImageButton
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/close"
+            android:padding="16dp"
+            android:src="@drawable/ic_baseline_wifi_protected_setup_24"
+            app:layout_constraintEnd_toStartOf="@+id/closeButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
             android:id="@+id/closeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

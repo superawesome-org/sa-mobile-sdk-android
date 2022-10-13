@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.HashMap;
 
 import tv.superawesome.lib.saadloader.SALoader;
@@ -513,5 +515,10 @@ public class SAVideoAd {
 
     public static SAEvents getEvents() {
         return events;
+    }
+
+    @VisibleForTesting
+    private static void clearCache() {
+        ads.clear();
     }
 }
