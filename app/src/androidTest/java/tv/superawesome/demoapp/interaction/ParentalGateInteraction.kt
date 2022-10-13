@@ -10,6 +10,7 @@ import org.hamcrest.Matchers.endsWith
 import tv.superawesome.demoapp.util.ParentalGateUtil
 import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.getText
+import tv.superawesome.demoapp.util.isVisible
 
 object ParentalGateInteraction {
     fun testFailure() {
@@ -52,5 +53,10 @@ object ParentalGateInteraction {
 
     fun testOpen() {
         verifyQueryParamContains("/event", "data", "parentalGateOpen")
+    }
+
+    fun checkVisible() {
+        onView(withText("Parental Gate"))
+            .check(isVisible())
     }
 }

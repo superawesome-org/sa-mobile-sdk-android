@@ -15,6 +15,10 @@ class MyApplication : MultiDexApplication() {
         AwesomeAdsSdk.init(this, Configuration(logging = true))
     }
 
+    fun resetSettings() {
+        settings = SettingsData()
+    }
+
     fun updateSettings(update: (current: SettingsData) -> SettingsData) {
         settings = update(settings)
     }

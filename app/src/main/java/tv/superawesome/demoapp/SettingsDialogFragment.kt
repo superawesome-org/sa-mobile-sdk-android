@@ -37,6 +37,9 @@ class SettingsDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        resetButton.setOnClickListener {
+            app?.resetSettings()
+        }
         closeButton.setOnClickListener {
             dismiss()
         }

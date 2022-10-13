@@ -26,42 +26,16 @@ object WireMockHelper {
     }
 
     fun stubCommonPaths() {
-        stubFor(
-            get(urlPathMatching("/moat"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
-        stubFor(
-            get(urlPathMatching("/event"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
-        stubFor(
-            get(urlPathMatching("/impression"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
+        stubForSuccess("/moat")
+        stubForSuccess("/event")
+        stubForSuccess("/impression")
+        stubForSuccess("/click")
+        stubForSuccess("/video/tracking")
 
-        stubFor(
-            get(urlPathMatching("/click"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
+        stubVASTPaths()
     }
 
-    fun stubVASTPaths() {
+    private fun stubVASTPaths() {
         stubFor(
             get(urlPathMatching("/vast/tag"))
                 .willReturn(
@@ -71,23 +45,9 @@ object WireMockHelper {
                 )
         )
 
-        stubFor(
-            get(urlPathMatching("/vast/impression"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
-
-        stubFor(
-            get(urlPathMatching("/vast/click"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
+        stubForSuccess("/vast/impression")
+        stubForSuccess("/vast/click")
+        stubForSuccess("/vast/clickthrough")
     }
 
     fun verifyUrlPathCalled(urlPath: String) {
@@ -97,13 +57,29 @@ object WireMockHelper {
     fun verifyUrlPathCalledWithQueryParam(
         urlPath: String,
         queryParamKey: String,
-        queryParamValueRegex: String)
-    {
-        verify(anyRequestedFor(urlPathMatching(urlPath))
-            .withQueryParam(queryParamKey, matching(queryParamValueRegex)))
+        queryParamValueRegex: String
+    ) {
+        verify(
+            anyRequestedFor(urlPathMatching(urlPath))
+                .withQueryParam(queryParamKey, matching(queryParamValueRegex))
+        )
     }
 
     fun verifyQueryParamContains(urlPath: String, paramKey: String, paramValue: String) {
-        verify(anyRequestedFor(urlPathMatching(urlPath)).withQueryParam(paramKey, containing(paramValue)))
+        verify(
+            anyRequestedFor(urlPathMatching(urlPath))
+                .withQueryParam(paramKey, containing(paramValue))
+        )
+    }
+
+    private fun stubForSuccess(path: String) {
+        stubFor(
+            get(urlPathMatching(path))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
     }
 }
