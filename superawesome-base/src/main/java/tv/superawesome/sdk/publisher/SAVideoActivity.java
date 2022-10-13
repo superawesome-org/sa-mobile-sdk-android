@@ -106,7 +106,9 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
         chrome.setClickListener(view -> {
             videoClick.handleAdClick(view);
-            listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
+            if (listenerRef != null) {
+                listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
+            }
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClicked);
         });
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
