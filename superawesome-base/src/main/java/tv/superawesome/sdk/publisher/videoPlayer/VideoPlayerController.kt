@@ -122,7 +122,7 @@ class VideoPlayerController :
         removeTimer()
         reset()
         listener?.onError(this, Throwable(), 0, 0)
-        return true
+        return false
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
