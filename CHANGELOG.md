@@ -1,3 +1,10 @@
+## [8.4.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.1...v8.4.2) (2022-10-17)
+
+
+### Bug Fixes
+
+* Update SDK version to 8.4.2 ([#226](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/226)) ([b910d59](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b910d593b7b83be5e866b591690e239ee00ea8b0))
+
 ## [8.4.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.0...v8.4.1) (2022-10-17)
 
 
