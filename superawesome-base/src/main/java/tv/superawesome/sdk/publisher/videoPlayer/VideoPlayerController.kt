@@ -15,6 +15,14 @@ class VideoPlayerController :
     OnSeekCompleteListener {
     private var listener: IVideoPlayerController.Listener? = null
     private var countDownTimer: CountDownTimer? = null
+    private var completed: Boolean = false
+    override val isIVideoPlaying: Boolean = false
+    override val iVideoDuration: Int = 10
+    override val currentIVideoPosition: Int = 0
+    override var videoIVideoWidth: Int = 100
+        private set
+    override var videoIVideoHeight: Int = 100
+        private set
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
     // Custom safe play & prepare method
@@ -38,6 +46,11 @@ class VideoPlayerController :
     }
 
     override fun start() {
+        if (completed) {
+            // if the video is completed then show the last frame only
+            seekTo(currentPosition)
+            return
+        }
         super.start()
         createTimer()
     }
@@ -61,20 +74,14 @@ class VideoPlayerController :
     }
 
     override fun reset() {
+        completed = false
+
         try {
             removeTimer()
             super.reset()
         } catch (ignored: Exception) {
         }
     }
-
-    override val isIVideoPlaying: Boolean = false
-    override val iVideoDuration: Int = 10
-    override val currentIVideoPosition: Int = 0
-    override var videoIVideoWidth: Int = 100
-        private set
-    override  var videoIVideoHeight: Int = 100
-        private set
 
     override fun seekTo(position: Int) {
         /*
@@ -104,6 +111,7 @@ class VideoPlayerController :
     }
 
     override fun onCompletion(mediaPlayer: MediaPlayer) {
+        completed = true
         removeTimer()
         // todo: add a "reset" here and see how it goes
         listener?.onMediaComplete(this, currentPosition, duration)
@@ -121,6 +129,7 @@ class VideoPlayerController :
     // Timer
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun createTimer() {
+        if (completed) return
         if (countDownTimer == null) {
             countDownTimer = object : CountDownTimer(duration.toLong(), 500) {
                 override fun onTick(remainingTime: Long) {
@@ -145,8 +154,8 @@ class VideoPlayerController :
     }
 
     private fun onVideoSizeChanged(width: Int, height: Int) {
-        videoIVideoWidth = width;
-        videoIVideoHeight = height;
+        videoIVideoWidth = width
+        videoIVideoHeight = height
     }
 
     init {
