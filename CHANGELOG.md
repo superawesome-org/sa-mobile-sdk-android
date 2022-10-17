@@ -1,3 +1,10 @@
+## [8.4.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.0...v8.4.1) (2022-10-17)
+
+
+### Bug Fixes
+
+* crash when the video is completed ([#225](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/225)) ([ca545c1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ca545c1d043a0a1a1a6752eced11a1c3cfcc40d6))
+
 # [8.4.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.7...v8.4.0) (2022-10-05)
 
 
