@@ -1,3 +1,10 @@
+## [8.4.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.2...v8.4.3) (2022-10-26)
+
+
+### Bug Fixes
+
+* when the `WebView` fails to load ([#227](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/227)) ([b29f503](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b29f50366c7a768074901a828dd0e630946d9ef0))
+
 ## [8.4.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.1...v8.4.2) (2022-10-17)
 
 
