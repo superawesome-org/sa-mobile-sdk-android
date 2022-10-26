@@ -41,7 +41,7 @@ import tv.superawesome.sdk.publisher.state.CloseButtonState;
  * interstitial / fullscreen type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityListener {
+public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdListener {
 
     private SABannerAd              interstitialBanner = null;
     private ImageButton             closeButton = null;
@@ -112,7 +112,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
 
         // create the interstitial banner
         interstitialBanner = new SABannerAd(this);
-        interstitialBanner.setVisibilityListener(this);
+        interstitialBanner.setBannerListener(this);
         interstitialBanner.setId(SAUtils.randomNumberBetween(1000000, 1500000));
         interstitialBanner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         interstitialBanner.setColor(false);
@@ -591,6 +591,11 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void failedToShow() {
+        close();
     }
 
     @VisibleForTesting

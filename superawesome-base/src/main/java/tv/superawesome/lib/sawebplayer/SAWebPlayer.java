@@ -1,5 +1,6 @@
 package tv.superawesome.lib.sawebplayer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -45,6 +46,7 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
         this(context, attrs, 0);
     }
 
+    @SuppressLint("AddJavascriptInterface")
     public SAWebPlayer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -89,7 +91,7 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     @Override
     public void onPageStarted(WebView view, String url) {
         if (shouldOverrideUrlLoading(view, url)) {
-                view.stopLoading();
+            view.stopLoading();
         }
     }
 
@@ -115,6 +117,13 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public void onError() {
+        if (eventListener != null) {
+            eventListener.saWebPlayerDidReceiveEvent(Event.Web_Error, null);
         }
     }
 
