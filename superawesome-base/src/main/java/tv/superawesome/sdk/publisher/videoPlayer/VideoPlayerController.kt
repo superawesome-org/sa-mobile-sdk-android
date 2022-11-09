@@ -24,6 +24,9 @@ class VideoPlayerController :
     override var videoIVideoHeight: Int = 100
         private set
 
+    override var isMuted: Boolean = false
+        private set
+
     // //////////////////////////////////////////////////////////////////////////////////////////////
     // Custom safe play & prepare method
     // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +92,12 @@ class VideoPlayerController :
          */
         createTimer()
         super.seekTo(position)
+    }
+
+    override fun setMuted(muted: Boolean) {
+        val volume = if (muted) 0f else 1f
+        setVolume(volume, volume)
+        isMuted = muted
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
