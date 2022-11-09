@@ -81,6 +81,14 @@ class SettingsDialogFragment : DialogFragment() {
         playbackDisableButton.setOnClickListener {
             app?.updateSettings { it.copy(playEnabled = false) }
         }
+
+        muteEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(muteOnStart = true) }
+        }
+
+        muteDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(muteOnStart = false) }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

@@ -9,5 +9,6 @@ data class SettingsData(
     val closeButtonState: CloseButtonState = CloseButtonState.VisibleWithDelay,
     val bumperEnabled: Boolean = Constants.defaultBumperPage,
     val parentalEnabled: Boolean = Constants.defaultParentalGate,
-    val playEnabled: Boolean = true
+    val playEnabled: Boolean = true,
+    val muteOnStart: Boolean = false,
 )

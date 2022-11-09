@@ -44,6 +44,7 @@ public class SAVideoAd {
     private static SAOrientation orientation = SADefaults.defaultOrientation();
     private static SAConfiguration configuration = SADefaults.defaultConfiguration();
     private static SARTBStartDelay playback = SADefaults.defaultPlaybackMode();
+    private static boolean shouldMuteOnStart = SADefaults.defaultMuteOnStart();
 
     public static void load(final int placementId, final Context context) {
 
@@ -276,6 +277,7 @@ public class SAVideoAd {
                             shouldShowSmallClickButton,
                             isBackButtonEnabled,
                             shouldAutomaticallyCloseAtEnd,
+                            shouldMuteOnStart,
                             closeButtonState,
                             shouldShowCloseWarning,
                             orientation);
@@ -515,6 +517,18 @@ public class SAVideoAd {
 
     public static SAEvents getEvents() {
         return events;
+    }
+
+    public static void setMuteOnStart(boolean mute) {
+        shouldMuteOnStart = mute;
+    }
+
+    public static void enableMuteOnStart() {
+        setMuteOnStart(true);
+    }
+
+    public static void disableMuteOnStart() {
+        setMuteOnStart(false);
     }
 
     @VisibleForTesting
