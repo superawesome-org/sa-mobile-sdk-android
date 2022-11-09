@@ -63,6 +63,7 @@ public class SADefaults {
         return false;
     }
     public static boolean defaultMoatLimitingState () { return true; }
+    public static boolean defaultMuteOnStart () { return false; }
     public static SARTBStartDelay defaultPlaybackMode () {
         return SARTBStartDelay.PRE_ROLL;
     }
