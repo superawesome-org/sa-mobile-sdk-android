@@ -1,5 +1,8 @@
 package tv.superawesome.sdk.publisher;
 
+import static tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod.WITH_SOUND_OFF_SCREEN;
+import static tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +18,6 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
-import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
 import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
@@ -208,7 +210,7 @@ public class SAVideoAd {
         session.setTestMode(isTestingEnabled);
         session.setConfiguration(configuration);
         session.setPos(SARTBPosition.FULLSCREEN);
-        session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+        session.setPlaybackMethod(shouldMuteOnStart ? WITH_SOUND_OFF_SCREEN : WITH_SOUND_ON_SCREEN);
         session.setInstl(SARTBInstl.FULLSCREEN);
         session.setSkip(closeButtonState.isVisible() ? SARTBSkip.SKIP : SARTBSkip.NO_SKIP);
         session.setStartDelay(getPlaybackMode());
