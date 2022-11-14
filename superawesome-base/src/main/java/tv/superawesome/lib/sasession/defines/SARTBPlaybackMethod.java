@@ -14,8 +14,8 @@ public enum SARTBPlaybackMethod {
         this.value = value;
     }
 
-    public static SARTBPlaybackMethod fromValue(int skip) {
-        if (skip == 2) return WITH_SOUND_OFF_SCREEN;
+    public static SARTBPlaybackMethod fromValue(int playbackValue) {
+        if (playbackValue == 2) return WITH_SOUND_OFF_SCREEN;
         return WITH_SOUND_ON_SCREEN;
     }
 
