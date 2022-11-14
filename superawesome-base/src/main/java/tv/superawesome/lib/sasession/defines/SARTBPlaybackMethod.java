@@ -5,7 +5,8 @@ package tv.superawesome.lib.sasession.defines;
  */
 
 public enum SARTBPlaybackMethod {
-    WITH_SOUND_ON_SCREEN(5);
+    WITH_SOUND_ON_SCREEN(5),
+    WITH_SOUND_OFF_SCREEN(2);
 
     private final int value;
 
@@ -13,7 +14,8 @@ public enum SARTBPlaybackMethod {
         this.value = value;
     }
 
-    public static SARTBPlaybackMethod fromValue (int skip) {
+    public static SARTBPlaybackMethod fromValue(int playbackValue) {
+        if (playbackValue == 2) return WITH_SOUND_OFF_SCREEN;
         return WITH_SOUND_ON_SCREEN;
     }
 
