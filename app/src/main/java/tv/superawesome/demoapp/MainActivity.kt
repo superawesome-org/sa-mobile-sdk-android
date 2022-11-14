@@ -71,30 +71,6 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initButtons() {
-        config1Button.setOnClickListener {
-            Log.i(TAG, "Config 1 selected")
-            bannerView.enableParentalGate()
-            bannerView.enableBumperPage()
-
-            SAInterstitialAd.enableParentalGate()
-            SAInterstitialAd.enableBumperPage()
-
-            SAVideoAd.enableParentalGate()
-            SAVideoAd.enableBumperPage()
-            SAVideoAd.enableCloseButton()
-        }
-        config2Button.setOnClickListener {
-            Log.i(TAG, "Config 2 selected")
-            bannerView.disableParentalGate()
-            bannerView.disableBumperPage()
-
-            SAInterstitialAd.disableParentalGate()
-            SAInterstitialAd.disableBumperPage()
-
-            SAVideoAd.disableParentalGate()
-            SAVideoAd.disableBumperPage()
-            SAVideoAd.enableCloseButtonNoDelay()
-        }
         settingsButton.setOnClickListener {
             val dialog = SettingsDialogFragment()
             dialog.show(supportFragmentManager, "settings")
