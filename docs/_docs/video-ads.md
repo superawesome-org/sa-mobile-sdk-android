@@ -43,6 +43,9 @@ public class MainActivity extends Activity {
 
         // make the whole video surface area clickable
         SAVideoAd.disableSmallClick ();
+        
+        // mute the video on start
+        SAVideoAd.enableMuteOnStart ();
 
         // start loading ad data for a placement
         SAVideoAd.load (30479, MainActivity.this);
