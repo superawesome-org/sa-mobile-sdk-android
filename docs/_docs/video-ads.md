@@ -78,5 +78,6 @@ These are the default values:
 | Close button | Disabled |
 | Small click button | Disabled | 
 | Back button | Enabled |
+| Close button with no delay | Disabled |
 | Close with warning | Disabled |
 | Mute on start | Disabled |
