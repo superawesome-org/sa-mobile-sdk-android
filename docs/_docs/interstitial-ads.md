@@ -62,3 +62,6 @@ These are the default values:
 | Configuration | Production |
 | Test mode | Disabled |
 | Orientation | Any | 
+| Back button | Enabled |
+| Close button | Enabled |
+| Close button with no delay | Disabled |
