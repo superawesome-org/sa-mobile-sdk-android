@@ -1,3 +1,10 @@
+# [8.5.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.3...v8.5.0) (2022-11-17)
+
+
+### Features
+
+* adding a new button to the video controller to mute and unmute ([#228](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/228)) ([a998600](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/a998600f7b42b41d27f6312ba2aa788758f6c2f2))
+
 ## [8.4.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.2...v8.4.3) (2022-10-26)
 
 
