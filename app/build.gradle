@@ -9,7 +9,7 @@ android {
         minSdkVersion 19
         targetSdkVersion target_sdk_version
         versionCode 1
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner "tv.superawesome.demoapp.runner.UITestRunner"
         multiDexEnabled true
     }
     buildTypes {
