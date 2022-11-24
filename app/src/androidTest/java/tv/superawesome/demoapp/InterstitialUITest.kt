@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
 import org.junit.Before
@@ -34,7 +35,7 @@ import tv.superawesome.sdk.publisher.SAInterstitialAd
 @SmallTest
 class InterstitialUITest {
     @get:Rule
-    var wireMockRule = WireMockRule(8080)
+    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @Before
     fun setup() {
