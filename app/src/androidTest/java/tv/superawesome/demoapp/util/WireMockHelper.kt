@@ -33,6 +33,18 @@ object WireMockHelper {
         stubForSuccess("/video/tracking")
 
         stubVASTPaths()
+        stubAssets()
+    }
+
+    private fun stubAssets() {
+        stubFor(
+            get(urlPathMatching("/video/video_yellow.mp4"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readBytes("video_yellow.mp4"))
+                )
+        )
     }
 
     private fun stubVASTPaths() {
@@ -42,6 +54,15 @@ object WireMockHelper {
                     aResponse()
                         .withStatus(200)
                         .withBody(FileUtils.readFile("video_vast_success_tag.xml"))
+                )
+        )
+
+        stubFor(
+            get(urlPathMatching("/vast/ad_tag"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vast_success_ad_tag.xml"))
                 )
         )
 

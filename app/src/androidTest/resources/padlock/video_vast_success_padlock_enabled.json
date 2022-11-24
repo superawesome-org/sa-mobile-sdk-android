@@ -9,7 +9,7 @@
       "width": 600,
       "height": 480,
       "duration": 0,
-      "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/88406/181936/508709/?sdkVersion=unknown&rnd=0a4b0755-379b-4ec5-b9e7-64d7e1f6d3d6&bundle=com.superawesome&device=web&country=TR&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgzLjAuNDEwMy45NyBTYWZhcmkvNTM3LjM2.fNi_jam5Bd9ip_c68rVpQWyuOY_Az3Jsv05mC2mCsnM&tip=eyJhbGciOiJIUzI1NiJ9.NS4xNzYuNC4w.TdOrpR7ZGEEQVxws5zjS3d6ia2M_Tbhgeodh2iZSRZY"
+      "vast": "http://localhost:8080/vast/tag"
     }
   },
   "advertiserId": 4,

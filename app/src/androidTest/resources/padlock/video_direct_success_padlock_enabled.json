@@ -29,7 +29,7 @@
         }
       ],
       "duration":10,
-      "vast":"https://eu-west-1-ads.superawesome.tv/v2/video/vast/87969/181342/512633/?sdkVersion=android_8.3.6_admob&rnd=ebdb60a5-1b7a-4e32-ab15-a239b8f19c0f&dauid=189315213&bundle=tv.superawesome.demoapp&device=phone&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDEwKSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvODMuMC40MTAzLjk2IE1vYmlsZSBTYWZhcmkvNTM3LjM2.I_tn7-WYamd5_dlbbCVEZM0gj0A0s3akPbjkX2p2v6E&tip=eyJhbGciOiJIUzI1NiJ9.ODEuMTEwLjI0OS4w.JID_ookEWOeYqark_ZJ8RGhOQaLYYq2UodGzzmzy0oQ&lang=en_US&ct=2"
+      "vast": "http://localhost:8080/vast/tag"
     }
   },
   "advertiserId":4,
