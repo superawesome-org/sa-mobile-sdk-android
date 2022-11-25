@@ -59,7 +59,7 @@ jobs:
           name: Check semantic release version
           command: |
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
-            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release-test/semantic-release.sh --dry-run
       - persist_to_workspace:
           root: "."
           paths:
@@ -76,7 +76,7 @@ jobs:
           name: Run semantic release
           command: |
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
-            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release-test/semantic-release.sh
 
   update_version_properties:
     <<: *android_config
@@ -90,20 +90,18 @@ jobs:
       - run:
           name: Auto bump version
           command: |
-            # ################################################
-            # NEXT_RELEASE=nextRelease
-            # if [ -f "$NEXT_RELEASE" ]; then
-            #   echo "File at $NEXT_RELEASE exists."
-            #   cat $NEXT_RELEASE
-            # else 
-            #   echo "File at $NEXT_RELEASE does not exist."
-            # fi
-            # ls
-            # ################################################
+            NEXT_RELEASE=nextRelease
+            if [ -f "$NEXT_RELEASE" ]; then
+              echo "File at $NEXT_RELEASE exists."
+              cat $NEXT_RELEASE
+            else
+              echo "File at $NEXT_RELEASE does not exist."
+            fi
+            ls
 
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             cat $VERSION_PROPERTIES
-            echo "version.name=7.8.9" > $VERSION_PROPERTIES
+            echo cat $NEXT_RELEASE > $VERSION_PROPERTIES
             echo "Updated version properties: "
             cat $VERSION_PROPERTIES
             # git commit -m "Auto increment version via Circle CI [skip ci]"
