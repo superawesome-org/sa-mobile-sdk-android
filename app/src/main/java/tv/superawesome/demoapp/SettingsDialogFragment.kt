@@ -37,30 +37,57 @@ class SettingsDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        resetButton.setOnClickListener {
+            app?.resetSettings()
+        }
         closeButton.setOnClickListener {
             dismiss()
         }
         uiTestingButton.setOnClickListener {
-            app?.updateSettings {
-                it.copy(environment = SAConfiguration.UITESTING)
-            }
+            app?.updateSettings { it.copy(environment = SAConfiguration.UITESTING) }
         }
         productionButton.setOnClickListener {
-            app?.updateSettings {
-                it.copy(environment = SAConfiguration.PRODUCTION)
-            }
+            app?.updateSettings { it.copy(environment = SAConfiguration.PRODUCTION) }
         }
 
         closeImmediatelyButton.setOnClickListener {
-            app?.updateSettings {
-                it.copy(closeButtonState = CloseButtonState.VisibleImmediately)
-            }
+            app?.updateSettings { it.copy(closeButtonState = CloseButtonState.VisibleImmediately) }
         }
 
         closeDelayedButton.setOnClickListener {
-            app?.updateSettings {
-                it.copy(closeButtonState = CloseButtonState.VisibleWithDelay)
-            }
+            app?.updateSettings { it.copy(closeButtonState = CloseButtonState.VisibleWithDelay) }
+        }
+
+        bumperEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(bumperEnabled = true) }
+        }
+
+        bumperDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(bumperEnabled = false) }
+        }
+
+        parentalEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(parentalEnabled = true) }
+        }
+
+        parentalDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(parentalEnabled = false) }
+        }
+
+        playbackEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(playEnabled = true) }
+        }
+
+        playbackDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(playEnabled = false) }
+        }
+
+        muteEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(muteOnStart = true) }
+        }
+
+        muteDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(muteOnStart = false) }
         }
     }
 

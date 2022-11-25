@@ -52,6 +52,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     private SAVideoClick videoClick = null;
 
     private ImageButton closeButton = null;
+    private ImageButton volumeButton = null;
     private VideoPlayer videoPlayer = null;
 
     private Boolean completed = false;
@@ -106,7 +107,9 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
         chrome.setClickListener(view -> {
             videoClick.handleAdClick(view);
-            listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
+            if (listenerRef != null) {
+                listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
+            }
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClicked);
         });
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
@@ -116,6 +119,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         videoPlayer.setController(control);
         videoPlayer.setControllerView(chrome);
         videoPlayer.setBackgroundColor(Color.BLACK);
+        videoPlayer.setContentDescription("Ad content");
         parent.addView(videoPlayer);
 
         videoPlayer.setListener(this);
@@ -128,14 +132,29 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
         closeButton.setVisibility(config.closeButtonState == CloseButtonState.VisibleImmediately ?
                 View.VISIBLE : View.GONE);
-        float fp = SAUtils.getScaleFactor(this);
-        RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * fp), (int) (30 * fp));
+        float scale = SAUtils.getScaleFactor(this);
+        RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * scale), (int) (30 * scale));
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         closeButton.setLayoutParams(buttonLayout);
         closeButton.setOnClickListener(v -> onCloseAction());
         closeButton.setContentDescription("Close");
         parent.addView(closeButton);
+
+        // create volume button
+        volumeButton = new ImageButton(this);
+        setMuted(config.shouldMuteOnStart);
+        volumeButton.setPadding(0, 0, 0, 0);
+        volumeButton.setBackgroundColor(Color.TRANSPARENT);
+        volumeButton.setScaleType(ImageView.ScaleType.FIT_XY);
+        volumeButton.setVisibility(config.shouldMuteOnStart ? View.VISIBLE : View.GONE);
+        RelativeLayout.LayoutParams volumeLayout = new RelativeLayout.LayoutParams((int) (40 * scale), (int) (40 * scale));
+        volumeLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        volumeLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        volumeButton.setLayoutParams(volumeLayout);
+        volumeButton.setOnClickListener(v -> onVolumeAction());
+        volumeButton.setContentDescription("Volume");
+        parent.addView(volumeButton);
 
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
@@ -252,6 +271,17 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         }
     }
 
+    private void onVolumeAction() {
+        setMuted(!control.isMuted());
+    }
+
+    private void setMuted(Boolean muted) {
+        volumeButton.setImageBitmap(
+                muted ? SAImageUtils.createVolumeOffBitmap() : SAImageUtils.createVolumeOnBitmap()
+        );
+        control.setMuted(muted);
+    }
+
     /**
      * Method that closes the Video ad
      */
@@ -296,6 +326,7 @@ class Config implements Parcelable {
     final boolean shouldShowSmallClick;
     final boolean isBackButtonEnabled;
     final boolean shouldCloseAtEnd;
+    final boolean shouldMuteOnStart;
     final CloseButtonState closeButtonState;
     final boolean shouldShowCloseWarning;
     final SAOrientation orientation;
@@ -306,6 +337,7 @@ class Config implements Parcelable {
            boolean shouldShowSmallClick,
            boolean isBackButtonEnabled,
            boolean shouldCloseAtEnd,
+           boolean shouldMuteOnStart,
            CloseButtonState closeButtonState,
            boolean shouldShowCloseWarning,
            SAOrientation orientation) {
@@ -315,6 +347,7 @@ class Config implements Parcelable {
         this.shouldShowSmallClick = shouldShowSmallClick;
         this.isBackButtonEnabled = isBackButtonEnabled;
         this.shouldCloseAtEnd = shouldCloseAtEnd;
+        this.shouldMuteOnStart = shouldMuteOnStart;
         this.closeButtonState = closeButtonState;
         this.shouldShowCloseWarning = shouldShowCloseWarning;
         this.orientation = orientation;
@@ -327,6 +360,7 @@ class Config implements Parcelable {
         shouldShowSmallClick = in.readByte() != 0;
         isBackButtonEnabled = in.readByte() != 0;
         shouldCloseAtEnd = in.readByte() != 0;
+        shouldMuteOnStart = in.readByte() != 0;
         closeButtonState = CloseButtonState.Companion.fromInt(in.readInt());
         shouldShowCloseWarning = in.readByte() != 0;
         orientation = SAOrientation.fromValue(in.readInt());
@@ -357,6 +391,7 @@ class Config implements Parcelable {
         parcel.writeByte((byte) (shouldShowSmallClick ? 1 : 0));
         parcel.writeByte((byte) (isBackButtonEnabled ? 1 : 0));
         parcel.writeByte((byte) (shouldCloseAtEnd ? 1 : 0));
+        parcel.writeByte((byte) (shouldMuteOnStart ? 1 : 0));
         parcel.writeInt(closeButtonState.getValue());
         parcel.writeByte((byte) (shouldShowCloseWarning ? 1 : 0));
         parcel.writeInt(orientation.ordinal());

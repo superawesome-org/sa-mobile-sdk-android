@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 
 public class VideoEvents(
@@ -93,7 +95,7 @@ public class VideoEvents(
             viewableDetector?.cancel()
             viewableDetector = get(ViewableDetectorType::class.java)
             if (videoPlayer is ViewGroup) {
-                viewableDetector?.start(videoPlayer) {
+                viewableDetector?.start(videoPlayer, videoMaxTickCount) {
                     scope.launch { eventRepository.viewableImpression(adResponse) }
                     listener?.hasBeenVisible()
                 }

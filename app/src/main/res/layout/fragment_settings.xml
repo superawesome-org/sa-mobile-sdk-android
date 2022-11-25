@@ -12,6 +12,17 @@
         android:background="@android:color/white">
 
         <ImageButton
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/close"
+            android:padding="16dp"
+            android:src="@drawable/ic_baseline_wifi_protected_setup_24"
+            app:layout_constraintEnd_toStartOf="@+id/closeButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
             android:id="@+id/closeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,6 +77,78 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_close_delay" />
+
+            <TextView
+                android:text="@string/settings_bumper"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/bumperEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/bumperDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
+
+            <TextView
+                android:text="@string/settings_parental"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/parentalEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/parentalDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
+
+            <TextView
+                android:text="@string/settings_playback"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/playbackEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/playbackDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
+
+            <TextView
+                android:text="@string/settings_mute"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/muteEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/muteDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

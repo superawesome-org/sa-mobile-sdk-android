@@ -11,21 +11,20 @@ import java.lang.ref.WeakReference
 
 interface ViewableDetectorType {
     var isVisible: VoidBlock?
-    fun start(view: View, hasBeenVisible: VoidBlock)
+    fun start(view: View, targetTickCount: Int, hasBeenVisible: VoidBlock)
     fun cancel()
 }
 
 class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
     override var isVisible: VoidBlock? = null
     private var viewableCounter = 0
-    private val targetTickCount = 3
-    private val delayMillis: Long = 1000
     private var runnable: Runnable? = null
     private var handler = Handler(Looper.getMainLooper())
 
-    override fun start(view: View, hasBeenVisible: VoidBlock) {
+    override fun start(view: View,  targetTickCount: Int, hasBeenVisible: VoidBlock) {
         logger.info("start")
         val weak = WeakReference(view)
+        viewableCounter = 0
         runnable = Runnable {
             val weakView = weak.get() ?: return@Runnable
             if (isViewVisible(weakView)) {
@@ -72,3 +71,18 @@ class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
         runnable = null
     }
 }
+
+/**
+ * Number of ticks required for banner/interstitial to decide viewable status
+ */
+const val interstitialMaxTickCount = 1
+
+/**
+ * Number of ticks required for video to decide viewable status
+ */
+const val videoMaxTickCount = 2
+
+/**
+ * The delay between each tick to check viewable status
+ */
+private const val delayMillis: Long = 1000

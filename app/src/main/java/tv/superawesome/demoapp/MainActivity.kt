@@ -18,13 +18,25 @@ val data = listOf(
     HeaderItem("Banners"),
     PlacementItem("Banner image", 82088, type = Type.BANNER),
     PlacementItem("Banner image Flat Colour", 88001, type = Type.BANNER),
-    PlacementItem("Banner Test Multi Id", 82088, lineItemId = 176803, creativeId = 499387, type = Type.BANNER),
+    PlacementItem(
+        "Banner Test Multi Id",
+        82088,
+        lineItemId = 176803,
+        creativeId = 499387,
+        type = Type.BANNER
+    ),
     HeaderItem("Interstitials"),
     PlacementItem("Mobile Interstitial Flat Colour Portrait", 87892, type = Type.INTERSTITIAL),
     PlacementItem("Mobile Interstitial Portrait", 82089, type = Type.INTERSTITIAL),
     PlacementItem("Interstitial via KSF", 84799, type = Type.INTERSTITIAL),
     PlacementItem("Interstitial Flat Colour via KSF", 87970, type = Type.INTERSTITIAL),
-    PlacementItem("Interstitial Test Multi Id", 82089, lineItemId = 176803, creativeId = 503038, type = Type.INTERSTITIAL),
+    PlacementItem(
+        "Interstitial Test Multi Id",
+        82089,
+        lineItemId = 176803,
+        creativeId = 503038,
+        type = Type.INTERSTITIAL
+    ),
     HeaderItem("Videos"),
     PlacementItem("VAST Video Flat Colour", 88406, type = Type.VIDEO),
     PlacementItem("VPAID Video Flat Colour", 89056, type = Type.VIDEO),
@@ -32,7 +44,13 @@ val data = listOf(
     PlacementItem("Direct Video", 82090, type = Type.VIDEO),
     PlacementItem("Vast Video", 84777, lineItemId = 178822, creativeId = 503585, type = Type.VIDEO),
     PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO),
-    PlacementItem("Video Test Multi Id", 82090, lineItemId = 176803, creativeId = 499385, type = Type.VIDEO),
+    PlacementItem(
+        "Video Test Multi Id",
+        82090,
+        lineItemId = 176803,
+        creativeId = 499385,
+        type = Type.VIDEO
+    ),
 )
 
 class MainActivity : FragmentActivity() {
@@ -53,30 +71,6 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initButtons() {
-        config1Button.setOnClickListener {
-            Log.i(TAG, "Config 1 selected")
-            bannerView.enableParentalGate()
-            bannerView.enableBumperPage()
-
-            SAInterstitialAd.enableParentalGate()
-            SAInterstitialAd.enableBumperPage()
-
-            SAVideoAd.enableParentalGate()
-            SAVideoAd.enableBumperPage()
-            SAVideoAd.enableCloseButton()
-        }
-        config2Button.setOnClickListener {
-            Log.i(TAG, "Config 2 selected")
-            bannerView.disableParentalGate()
-            bannerView.disableBumperPage()
-
-            SAInterstitialAd.disableParentalGate()
-            SAInterstitialAd.disableBumperPage()
-
-            SAVideoAd.disableParentalGate()
-            SAVideoAd.disableBumperPage()
-            SAVideoAd.enableCloseButtonNoDelay()
-        }
         settingsButton.setOnClickListener {
             val dialog = SettingsDialogFragment()
             dialog.show(supportFragmentManager, "settings")
@@ -86,27 +80,40 @@ class MainActivity : FragmentActivity() {
         }
     }
 
+    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
+
     private fun updateSettings() {
-        val app = application as? MyApplication ?: return
-        val config = app.settings.environment
+        val settings = getSettings() ?: return
+        val config = settings.environment
+
         bannerView.setConfiguration(config)
+        bannerView.setBumperPage(settings.bumperEnabled)
+        bannerView.setParentalGate(settings.parentalEnabled)
+
         SAInterstitialAd.setConfiguration(config)
+        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
+        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+
         SAVideoAd.setConfiguration(config)
-        when (app.settings.closeButtonState) {
+        SAVideoAd.setBumperPage(settings.bumperEnabled)
+        SAVideoAd.setParentalGate(settings.parentalEnabled)
+        SAVideoAd.setMuteOnStart(settings.muteOnStart)
+
+        when (settings.closeButtonState) {
             CloseButtonState.VisibleImmediately -> {
                 SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
             }
             CloseButtonState.VisibleWithDelay -> {
                 SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
             }
-            CloseButtonState.Hidden -> {
-                SAVideoAd.disableCloseButton()
-            }
+            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
         }
     }
 
     private fun initUI() {
-        val title = "AwesomeAds.version: ${SAVersion.getSDKVersion(null)}"
+        val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()}"
         titleTextView.text = title
         configureListView()
     }
@@ -144,21 +151,15 @@ class MainActivity : FragmentActivity() {
                         }
                     }
                     Type.VIDEO -> {
-                        if (SAVideoAd.hasAdAvailable(item.placementId)) {
-                            Log.i(TAG, "PLAYING VIDEO")
-                            SAVideoAd.play(item.placementId, this@MainActivity)
+                        if (item.isFull()) {
+                            SAVideoAd.load(
+                                item.placementId,
+                                item.lineItemId ?: 0,
+                                item.creativeId ?: 0,
+                                this@MainActivity
+                            )
                         } else {
-                            Log.i(TAG, "LOADING VIDEO")
-                            if (item.isFull()) {
-                                SAVideoAd.load(
-                                    item.placementId,
-                                    item.lineItemId ?: 0,
-                                    item.creativeId ?: 0,
-                                    this@MainActivity
-                                )
-                            } else {
-                                SAVideoAd.load(item.placementId, this@MainActivity)
-                            }
+                            SAVideoAd.load(item.placementId, this@MainActivity)
                         }
                     }
                 }
@@ -172,7 +173,7 @@ class MainActivity : FragmentActivity() {
             updateMessage(placementId, event)
             Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
 
-            if (event == SAEvent.adLoaded) {
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
                 SAVideoAd.play(placementId, this@MainActivity)
             }
         }
@@ -183,7 +184,7 @@ class MainActivity : FragmentActivity() {
             updateMessage(placementId, event)
             Log.i(TAG, "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
 
-            if (event == SAEvent.adLoaded) {
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
                 SAInterstitialAd.play(placementId, this@MainActivity)
             }
         }
@@ -194,14 +195,19 @@ class MainActivity : FragmentActivity() {
         bannerView.setListener { placementId, event ->
             updateMessage(placementId, event)
 
-            if (event == SAEvent.adLoaded) {
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
                 bannerView.play(this@MainActivity)
             }
         }
     }
 
+    private fun isPlayEnabled(): Boolean {
+        return getSettings()?.playEnabled == true
+    }
+
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val message = "$placementId $event"
+        val originalMessage = subtitleTextView.text
+        val message = "$originalMessage $placementId $event"
         subtitleTextView.text = message
     }
 }

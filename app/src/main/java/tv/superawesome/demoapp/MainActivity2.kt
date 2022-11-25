@@ -1,10 +1,15 @@
 package tv.superawesome.demoapp
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.activity_main_2.*
+import kotlinx.android.synthetic.main.activity_main_2.bannerView
+import kotlinx.android.synthetic.main.activity_main_2.config1Button
+import kotlinx.android.synthetic.main.activity_main_2.config2Button
+import kotlinx.android.synthetic.main.activity_main_2.listView
+import kotlinx.android.synthetic.main.activity_main_2.titleTextView
 import tv.superawesome.demoapp.adapter.AdapterItem
 import tv.superawesome.demoapp.adapter.CustomListAdapter
 import tv.superawesome.demoapp.adapter.PlacementItem
@@ -14,8 +19,9 @@ import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.ui.common.BumperPageActivity
 import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
+import tv.superawesome.sdk.publisher.state.CloseButtonState
 
-class MainActivity2 : Activity() {
+class MainActivity2 : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_2)
@@ -56,12 +62,45 @@ class MainActivity2 : Activity() {
             SAVideoAd.disableBumperPage()
             SAVideoAd.enableCloseButtonNoDelay()
         }
+        settingsButton.setOnClickListener {
+            val dialog = SettingsDialogFragment()
+            dialog.show(supportFragmentManager, "settings")
+            dialog.onDismissListener = {
+                updateSettings()
+            }
+        }
     }
 
     private fun initUI() {
         val title = "AwesomeAds.version: ${SAVersion.getSDKVersion(null)}"
         titleTextView.text = title
         configureListView()
+    }
+
+    private fun updateSettings() {
+        val app = application as? MyApplication ?: return
+        val settings = app.settings
+
+        bannerView.setBumperPage(settings.bumperEnabled)
+        bannerView.setParentalGate(settings.parentalEnabled)
+
+        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
+        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+
+        SAVideoAd.setBumperPage(settings.bumperEnabled)
+        SAVideoAd.setParentalGate(settings.parentalEnabled)
+
+        when (app.settings.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
+            }
+            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
+        }
     }
 
     private fun configureListView() {

@@ -13,7 +13,12 @@ object SettingsInteraction {
             .perform(waitUntil(isCompletelyDisplayed()), click())
     }
 
-    fun enableUITesting() {
+    private fun resetSettings() {
+        onView(withId(R.id.resetButton))
+            .perform(click())
+    }
+
+    private fun enableUITesting() {
         onView(withId(R.id.uiTestingButton))
             .perform(click())
     }
@@ -28,14 +33,34 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun enableBumper() {
+        onView(withId(R.id.bumperEnableButton))
+            .perform(click())
+    }
+
+    fun enableParentalGate() {
+        onView(withId(R.id.parentalEnableButton))
+            .perform(click())
+    }
+
+    fun disablePlay() {
+        onView(withId(R.id.playbackDisableButton))
+            .perform(click())
+    }
+
     fun closeSettings() {
         onView(withId(R.id.closeButton))
             .perform(click())
     }
 
+    fun commonSettings() {
+        resetSettings()
+        enableUITesting()
+    }
+
     fun applyCommonSettings() {
         openSettings()
-        enableUITesting()
+        commonSettings()
         closeSettings()
     }
 }

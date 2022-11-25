@@ -175,14 +175,7 @@ class VideoPlayer @JvmOverloads constructor(
     }
 
     override fun onSeekComplete(control: IVideoPlayerController) {
-        /**
-         * When seeking is complete, re-start the media control (e.g. resume play)
-         */
-        control.start()
-        /**
-         * Then set the chrome state in it's playing state
-         */
-        chrome?.setPlaying()
+        // We don't need to re-start video automatically after seek to
     }
 
     override fun onMediaComplete(control: IVideoPlayerController, time: Int, duration: Int) {

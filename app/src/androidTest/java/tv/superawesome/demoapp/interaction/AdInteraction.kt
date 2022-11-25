@@ -1,20 +1,26 @@
 package tv.superawesome.demoapp.interaction
 
 import android.graphics.Color
-import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.ScreenshotUtil
+import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 
 object AdInteraction {
-
-    fun testAdLoading(placement: String, fileName: String, position: Int, color: Color) {
-        CommonInteraction.launchActivityWithSuccessStub(placement, fileName)
-        assertColor(position, color)
+    fun testAdLoading(testData: TestData, color: Color) {
+        CommonInteraction.launchActivityWithSuccessStub(testData)
+        assertColor(testData, color)
     }
 
-    fun assertColor(position: Int, color: Color) {
-        CommonInteraction.clickItemAt(position)
-        ViewTester().waitForColorInCenter(color)
-        assertEquals(ScreenshotUtil.captureColorInCenter(), color)
+    private fun assertColor(testData: TestData, targetColor: Color) {
+        CommonInteraction.clickItemAt(testData)
+        ViewTester().waitForColorInCenter(targetColor)
+        assertTrue(
+            TestColors.checkApproximatelyEqual(
+                ScreenshotUtil.captureColorInCenter(),
+                targetColor
+            )
+        )
     }
 }

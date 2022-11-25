@@ -27,6 +27,14 @@ public class MainActivity extends Activity {
         // enable or disable the android back button
         SAInterstitialAd.enableBackButton ();
 
+        // enable close button with a delay
+        SAInterstitialAd.enableCloseButton ();
+
+        // enable or disable a close button that displays without a delay. Use instead of enableCloseButton.
+        // WARNING: this will allow users to close the ad before the viewable tracking event is fired
+        // and should only be used if you explicitly want this behaviour over consistent tracking.
+        SAInterstitialAd.enableCloseButtonNoDelay();
+
         // start loading ad data for a placement
         SAInterstitialAd.load (30473, MainActivity.this);
     }
@@ -54,3 +62,6 @@ These are the default values:
 | Configuration | Production |
 | Test mode | Disabled |
 | Orientation | Any | 
+| Back button | Enabled |
+| Close button | Enabled |
+| Close button with no delay | Disabled |

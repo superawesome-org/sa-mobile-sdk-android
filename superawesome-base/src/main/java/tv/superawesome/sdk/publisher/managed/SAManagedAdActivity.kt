@@ -44,7 +44,9 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
         closeButton.setPadding(0, 0, 0, 0)
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
         closeButton.layoutParams = buttonLayout
-        closeButton.setOnClickListener { close() }
+        closeButton.setOnClickListener {
+            close()
+        }
         closeButton.contentDescription = "Close"
 
         return@lazy closeButton
@@ -58,7 +60,6 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
 
         listener = SAVideoAd.getListener()
     }
-
 
     override fun adLoaded() {
         listener?.onEvent(this.placementId, SAEvent.adLoaded)
@@ -97,12 +98,12 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
     }
 
     override fun adClosed() {
-        listener?.onEvent(this.placementId, SAEvent.adClosed)
         close()
     }
 
     private fun close() {
         if (!isFinishing) {
+            listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
     }

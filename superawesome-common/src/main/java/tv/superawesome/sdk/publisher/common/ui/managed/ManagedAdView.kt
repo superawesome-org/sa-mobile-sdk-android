@@ -24,6 +24,7 @@ import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
 
 @SuppressLint("AddJavascriptInterface")
 public class ManagedAdView @JvmOverloads constructor(
@@ -187,7 +188,7 @@ public class ManagedAdView @JvmOverloads constructor(
                 controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
-                viewableDetector.start(this@ManagedAdView) {
+                viewableDetector.start(this@ManagedAdView, videoMaxTickCount) {
                     controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
                 }

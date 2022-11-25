@@ -1,0 +1,53 @@
+{
+  "programmaticUuid": null,
+  "creative": {
+    "id": 512633,
+    "format": "video",
+    "details": {
+      "url": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
+      "image": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
+      "video": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
+      "placement_format": "video",
+      "width": 600,
+      "height": 480,
+      "transcodedVideos": [
+        {
+          "url": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
+          "bitrate": 720
+        },
+        {
+          "url": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE-med.mp4",
+          "bitrate": 540
+        },
+        {
+          "url": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE-low.mp4",
+          "bitrate": 360
+        },
+        {
+          "url": "/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.m3u8",
+          "bitrate": 1800
+        }
+      ],
+      "duration": 10,
+      "vast": "http://localhost:8080/vast/tag"
+    },
+    "bumper": true
+  },
+  "advertiserId": 4,
+  "publisherId": 4,
+  "is_fill": false,
+  "is_fallback": false,
+  "campaign_type": 0,
+  "is_house": true,
+  "safe_ad_approved": false,
+  "show_padlock": false,
+  "line_item_id": 181342,
+  "moat": 0.1,
+  "test": false,
+  "campaign_id": 48202,
+  "app": 41037,
+  "device": "web",
+  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgzLjAuNDEwMy45NyBTYWZhcmkvNTM3LjM2.fNi_jam5Bd9ip_c68rVpQWyuOY_Az3Jsv05mC2mCsnM",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.NS4xNzYuMS4w.yJa6mBEUD_t7rLsGQBfEcpAa8xfPYR4nL3SzR_JDKf4",
+  "is_vpaid": false
+}

@@ -44,6 +44,9 @@ public class SADefaults {
     public static CloseButtonState defaultCloseButtonState() {
         return CloseButtonState.Hidden;
     }
+    public static CloseButtonState defaultCloseButtonStateInterstitial() {
+        return CloseButtonState.VisibleWithDelay;
+    }
     public static boolean defaultSmallClick () {
         return false;
     }
@@ -60,6 +63,7 @@ public class SADefaults {
         return false;
     }
     public static boolean defaultMoatLimitingState () { return true; }
+    public static boolean defaultMuteOnStart () { return false; }
     public static SARTBStartDelay defaultPlaybackMode () {
         return SARTBStartDelay.PRE_ROLL;
     }

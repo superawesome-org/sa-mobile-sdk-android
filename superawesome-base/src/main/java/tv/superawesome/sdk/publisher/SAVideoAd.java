@@ -1,9 +1,14 @@
 package tv.superawesome.sdk.publisher;
 
+import static tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod.WITH_SOUND_OFF_SCREEN;
+import static tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import androidx.annotation.VisibleForTesting;
 
 import java.util.HashMap;
 
@@ -13,7 +18,6 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
-import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
 import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
@@ -42,6 +46,7 @@ public class SAVideoAd {
     private static SAOrientation orientation = SADefaults.defaultOrientation();
     private static SAConfiguration configuration = SADefaults.defaultConfiguration();
     private static SARTBStartDelay playback = SADefaults.defaultPlaybackMode();
+    private static boolean shouldMuteOnStart = SADefaults.defaultMuteOnStart();
 
     public static void load(final int placementId, final Context context) {
 
@@ -205,7 +210,7 @@ public class SAVideoAd {
         session.setTestMode(isTestingEnabled);
         session.setConfiguration(configuration);
         session.setPos(SARTBPosition.FULLSCREEN);
-        session.setPlaybackMethod(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+        session.setPlaybackMethod(shouldMuteOnStart ? WITH_SOUND_OFF_SCREEN : WITH_SOUND_ON_SCREEN);
         session.setInstl(SARTBInstl.FULLSCREEN);
         session.setSkip(closeButtonState.isVisible() ? SARTBSkip.SKIP : SARTBSkip.NO_SKIP);
         session.setStartDelay(getPlaybackMode());
@@ -274,6 +279,7 @@ public class SAVideoAd {
                             shouldShowSmallClickButton,
                             isBackButtonEnabled,
                             shouldAutomaticallyCloseAtEnd,
+                            shouldMuteOnStart,
                             closeButtonState,
                             shouldShowCloseWarning,
                             orientation);
@@ -513,5 +519,22 @@ public class SAVideoAd {
 
     public static SAEvents getEvents() {
         return events;
+    }
+
+    public static void setMuteOnStart(boolean mute) {
+        shouldMuteOnStart = mute;
+    }
+
+    public static void enableMuteOnStart() {
+        setMuteOnStart(true);
+    }
+
+    public static void disableMuteOnStart() {
+        setMuteOnStart(false);
+    }
+
+    @VisibleForTesting
+    private static void clearCache() {
+        ads.clear();
     }
 }

@@ -30,44 +30,46 @@ import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
-import tv.superawesome.sdk.publisher.base.R;
 
 public class SABannerAd extends FrameLayout {
 
-    interface VisibilityListener {
+    interface SABannerAdListener {
         void hasBeenVisible();
+
+        void failedToShow();
     }
 
     // constants
-    private final int       BANNER_BACKGROUND = Color.rgb(224, 224, 224);
+    private final int BANNER_BACKGROUND = Color.rgb(224, 224, 224);
 
     // private vars w/ exposed setters & getters
-    private boolean         isParentalGateEnabled = false;
-    private boolean         isBumperPageEnabled = false;
-    private SAAd            ad;
-    private SAInterface     listener = (placementId, event) -> {};
+    private boolean isParentalGateEnabled = false;
+    private boolean isBumperPageEnabled = false;
+    private SAAd ad;
+    private SAInterface listener = (placementId, event) -> {
+    };
 
     // the internal loader
-    private final SASession       session;
-    private final SAEvents        events;
-    private final SALoader        loader;
+    private final SASession session;
+    private final SAEvents events;
+    private final SALoader loader;
 
     // private subviews
-    private SAWebPlayer     webPlayer;
-    private ImageButton     padlock;
+    private SAWebPlayer webPlayer;
+    private ImageButton padlock;
 
     // bool
-    private boolean         canPlay              = true;
-    private boolean         firstPlay            = true;
-    private boolean         isClosed             = false;
-    private boolean         moatLimiting;
+    private boolean canPlay = true;
+    private boolean firstPlay = true;
+    private boolean isClosed = false;
+    private boolean moatLimiting;
 
-    private Long            currentClickThreshold = 0L;
+    private Long currentClickThreshold = 0L;
 
-    private VisibilityListener visibilityListener = null;
+    private SABannerAdListener bannerListener = null;
 
     // Utils
-    private final SAClock        clock;
+    private final SAClock clock;
 
     /**
      * Constructor with context
@@ -91,15 +93,15 @@ public class SABannerAd extends FrameLayout {
     /**
      * Constructor with context, attribute set and default style attribute
      *
-     * @param context       current context (activity or fragment)
-     * @param attrs         new attribute set
-     * @param defStyleAttr  default style attribute
+     * @param context      current context (activity or fragment)
+     * @param attrs        new attribute set
+     * @param defStyleAttr default style attribute
      */
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr, SAClock clock) {
         super(context, attrs, defStyleAttr);
 
         // create the loader
-        session = new SASession (context);
+        session = new SASession(context);
         loader = new SALoader(context);
         events = new SAEvents();
 
@@ -121,11 +123,11 @@ public class SABannerAd extends FrameLayout {
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
-    public void load (final int placementId) {
+    public void load(final int placementId) {
 
         // very late init of the AwesomeAds SDK
         try {
-            AwesomeAds.init(((Activity)this.getContext()).getApplication(), false);
+            AwesomeAds.init(((Activity) this.getContext()).getApplication(), false);
         } catch (Exception e) {
             Log.d("SuperAwesome", "Error initing AwesomeAds in SABannerAd " + e.getMessage());
         }
@@ -171,7 +173,7 @@ public class SABannerAd extends FrameLayout {
                     if (listener != null) {
                         SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                         listener.onEvent(placementId, eventToSend);
-                        Log.d("SABannerAd", "Event callback: " + eventToSend.toString());
+                        Log.d("SABannerAd", "Event callback: " + eventToSend);
                     } else {
                         Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                     }
@@ -185,14 +187,14 @@ public class SABannerAd extends FrameLayout {
      * corresponding to a given placement Id.
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
-     * @param lineItemId The id of the lineItem
-     * @param creativeId The id of the creative
+     * @param lineItemId  The id of the lineItem
+     * @param creativeId  The id of the creative
      */
-    public void load (final int placementId, final int lineItemId, final int creativeId) {
+    public void load(final int placementId, final int lineItemId, final int creativeId) {
 
         // very late init of the AwesomeAds SDK
         try {
-            AwesomeAds.init(((Activity)this.getContext()).getApplication(), false);
+            AwesomeAds.init(((Activity) this.getContext()).getApplication(), false);
         } catch (Exception e) {
             Log.d("SuperAwesome", "Error initing AwesomeAds in SABannerAd " + e.getMessage());
         }
@@ -223,28 +225,27 @@ public class SABannerAd extends FrameLayout {
 
         session.prepareSession(() ->
 
-            // after session is OK, prepare
-            loader.loadAd( placementId, lineItemId, creativeId, session, response -> {
+                // after session is OK, prepare
+                loader.loadAd(placementId, lineItemId, creativeId, session, response -> {
 
-                if (response.status != 200) {
-                    if (listener != null) {
-                        listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                    if (response.status != 200) {
+                        if (listener != null) {
+                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
+                        } else {
+                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
+                        }
                     } else {
-                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
+                        canPlay = response.isValid();
+                        setAd(response.isValid() ? response.ads.get(0) : null);
+                        if (listener != null) {
+                            SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
+                            listener.onEvent(placementId, eventToSend);
+                            Log.d("SABannerAd", "Event callback: " + eventToSend);
+                        } else {
+                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                        }
                     }
-                }
-                else {
-                    canPlay = response.isValid();
-                    setAd(response.isValid() ? response.ads.get(0) : null);
-                    if (listener != null) {
-                        SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
-                        listener.onEvent(placementId, eventToSend);
-                        Log.d("SABannerAd", "Event callback: " + eventToSend.toString());
-                    } else {
-                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
-                    }
-                }
-            })
+                })
         );
     }
 
@@ -254,7 +255,7 @@ public class SABannerAd extends FrameLayout {
      *
      * @param context current context (activity or fragment)
      */
-    public void play (final Context context) {
+    public void play(final Context context) {
 
         if (!moatLimiting && events != null) {
             events.disableMoatLimiting();
@@ -289,7 +290,7 @@ public class SABannerAd extends FrameLayout {
                                 .html
                                 .replace("_MOAT_", moatString)
                                 .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
-                        if(moatString != null && !moatString.isEmpty()) {
+                        if (moatString != null && !moatString.isEmpty()) {
                             events.triggerMoatAttemptEvent();
                         }
                         // load the HTML
@@ -306,15 +307,15 @@ public class SABannerAd extends FrameLayout {
                         events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
                             if (success) {
                                 events.triggerViewableImpressionEvent();
-                                if (visibilityListener != null) {
-                                    visibilityListener.hasBeenVisible();
+                                if (bannerListener != null) {
+                                    bannerListener.hasBeenVisible();
                                 }
                             }
                         });
                         // call listener
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adShown);
-                            Log.d("SABannerAd", "Event callback: " + SAEvent.adShown.toString());
+                            Log.d("SABannerAd", "Event callback: " + SAEvent.adShown);
                         } else {
                             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
                         }
@@ -323,14 +324,14 @@ public class SABannerAd extends FrameLayout {
                     }
                     // this is actually a fragment event notifying the banner class that
                     // the fragment has started
-                    case Web_Started:{
+                    case Web_Started: {
 
-                        float sf = SAUtils.getScaleFactor((Activity)context);
+                        float sf = SAUtils.getScaleFactor((Activity) context);
                         padlock = new ImageButton(context);
                         padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
                         padlock.setBackgroundColor(Color.TRANSPARENT);
                         padlock.setScaleType(ImageView.ScaleType.FIT_XY);
-                        int topPadding = (int)(2 * sf);
+                        int topPadding = (int) (2 * sf);
                         padlock.setPadding(0, topPadding, 0, 0);
                         padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (77 * sf), (int) (31 * sf)));
                         padlock.setContentDescription("Safe Ad Logo");
@@ -346,8 +347,8 @@ public class SABannerAd extends FrameLayout {
                         }
 
                         padlock.setOnClickListener(v -> {
-                        Runnable runner = () -> showSuperAwesomeWebViewInExternalBrowser(context);
-                        showParentalGateIfNeededWithCompletion(context, runner);
+                            Runnable runner = () -> showSuperAwesomeWebViewInExternalBrowser(context);
+                            showParentalGateIfNeededWithCompletion(context, runner);
                         });
                         webPlayer.getHolder().addView(padlock);
                         padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
@@ -356,7 +357,7 @@ public class SABannerAd extends FrameLayout {
                         break;
                     }
                     // this is called when the fragment & web view have all been laid out
-                    case Web_Layout:{
+                    case Web_Layout: {
 
                         if (webPlayer.getWebView() != null && padlock != null) {
                             padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
@@ -371,10 +372,13 @@ public class SABannerAd extends FrameLayout {
                         } else {
                             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToShow");
                         }
+                        if (bannerListener != null) {
+                            bannerListener.failedToShow();
+                        }
                         break;
                     }
                     // this is most likely from fallbacks indicating an ad failed to load
-                    case Web_Empty:{
+                    case Web_Empty: {
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
                         } else {
@@ -426,17 +430,17 @@ public class SABannerAd extends FrameLayout {
      *
      * @param destination the destination url
      */
-    public void click (final String destination) {
+    public void click(final String destination) {
 
         if ((ad != null && ad.creative != null && ad.creative.bumper) || isBumperPageEnabled) {
             SABumperPage.setListener(() -> handleUrl(destination));
-            SABumperPage.play((Activity)getContext());
+            SABumperPage.play((Activity) getContext());
         } else {
             handleUrl(destination);
         }
     }
 
-    private void handleUrl (String destination) {
+    private void handleUrl(String destination) {
 
         // if someone's closed this thing
         if (ad == null || ad.creative == null) {
@@ -445,7 +449,7 @@ public class SABannerAd extends FrameLayout {
 
         Log.d("AwesomeAds-2", "Got here!");
 
-        Long currentTime = System.currentTimeMillis()/1000;
+        Long currentTime = System.currentTimeMillis() / 1000;
         long diff = Math.abs(currentTime - currentClickThreshold);
 
         if (diff < SADefaults.defaultClickThreshold()) {
@@ -460,7 +464,7 @@ public class SABannerAd extends FrameLayout {
         // callback
         if (listener != null) {
             listener.onEvent(ad.placementId, SAEvent.adClicked);
-            Log.d("SABannerAd", "Event callback: " + SAEvent.adClicked.toString());
+            Log.d("SABannerAd", "Event callback: " + SAEvent.adClicked);
         } else {
             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClicked");
         }
@@ -488,20 +492,20 @@ public class SABannerAd extends FrameLayout {
     /**
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
-    public void close () {
+    public void close() {
         // de-set visibility listener
-        if (visibilityListener != null) {
-            visibilityListener = null;
+        if (bannerListener != null) {
+            bannerListener = null;
         }
 
         // de-set public listener
         if (listener != null) {
             listener.onEvent(ad != null ? ad.placementId : 0, SAEvent.adClosed);
-            Log.d("SABannerAd", "Event callback: " + SAEvent.adClosed.toString());
+            Log.d("SABannerAd", "Event callback: " + SAEvent.adClosed);
         } else {
             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClosed");
         }
-        
+
         // unregister moat events
         events.stopMoatTrackingForDisplay();
 
@@ -539,11 +543,11 @@ public class SABannerAd extends FrameLayout {
      *
      * @return true or false
      */
-    public boolean hasAdAvailable () {
+    public boolean hasAdAvailable() {
         return ad != null;
     }
 
-    public SAAd getAd () {
+    public SAAd getAd() {
         return ad;
     }
 
@@ -589,7 +593,7 @@ public class SABannerAd extends FrameLayout {
 
         if (isBumperPageEnabled) {
             SABumperPage.setListener(bumperCallback);
-            SABumperPage.play((Activity)getContext());
+            SABumperPage.play((Activity) getContext());
         } else {
             bumperCallback.didEndBumper();
         }
@@ -599,7 +603,7 @@ public class SABannerAd extends FrameLayout {
      * Setters & Getters
      **********************************************************************************************/
 
-    public boolean isClosed () {
+    public boolean isClosed() {
         return isClosed;
     }
 
@@ -607,74 +611,74 @@ public class SABannerAd extends FrameLayout {
         listener = value != null ? value : listener;
     }
 
-    public void enableParentalGate () {
+    public void enableParentalGate() {
         setParentalGate(true);
     }
 
-    public void disableParentalGate () {
+    public void disableParentalGate() {
         setParentalGate(false);
     }
 
-    public void enableBumperPage () {
+    public void enableBumperPage() {
         setBumperPage(true);
     }
 
-    public void disableBumperPage () {
+    public void disableBumperPage() {
         setBumperPage(false);
     }
 
-    public void enableTestMode () {
+    public void enableTestMode() {
         setTestMode(true);
     }
 
-    public void disableTestMode () {
+    public void disableTestMode() {
         setTestMode(false);
     }
 
-    public void setConfigurationProduction () {
+    public void setConfigurationProduction() {
         setConfiguration(SAConfiguration.PRODUCTION);
     }
 
-    public void setConfigurationStaging () {
+    public void setConfigurationStaging() {
         setConfiguration(SAConfiguration.STAGING);
     }
 
-    public void setConfigurationDev () {
+    public void setConfigurationDev() {
         setConfiguration(SAConfiguration.DEV);
     }
 
-    public void setColorTransparent () {
+    public void setColorTransparent() {
         setColor(true);
     }
 
-    public void setColorGray () {
+    public void setColorGray() {
         setColor(false);
     }
 
-    public void setParentalGate (boolean value) {
+    public void setParentalGate(boolean value) {
         isParentalGateEnabled = value;
     }
 
-    public void setBumperPage (boolean value) {
+    public void setBumperPage(boolean value) {
         isBumperPageEnabled = value;
     }
 
-    public void setTestMode (boolean value) {
+    public void setTestMode(boolean value) {
         session.setTestMode(value);
     }
 
-    public void setConfiguration (SAConfiguration value) {
+    public void setConfiguration(SAConfiguration value) {
         session.setConfiguration(value);
     }
 
-    public void setVisibilityListener(VisibilityListener listener) {
-        visibilityListener = listener;
+    void setBannerListener(SABannerAdListener listener) {
+        bannerListener = listener;
     }
 
-    public void setColor (boolean value) {
+    public void setColor(boolean value) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT);
-        } else  {
+        } else {
             setBackgroundColor(BANNER_BACKGROUND);
         }
     }
@@ -683,7 +687,7 @@ public class SABannerAd extends FrameLayout {
     // SABannerAd.VisibilityListener
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void disableMoatLimiting () {
+    public void disableMoatLimiting() {
         moatLimiting = false;
     }
 }

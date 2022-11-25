@@ -26,33 +26,81 @@ object WireMockHelper {
     }
 
     fun stubCommonPaths() {
+        stubForSuccess("/moat")
+        stubForSuccess("/event")
+        stubForSuccess("/impression")
+        stubForSuccess("/click")
+        stubForSuccess("/video/tracking")
+
+        stubVASTPaths()
+        stubAssets()
+    }
+
+    private fun stubAssets() {
         stubFor(
-            get(urlPathMatching("/moat"))
+            get(urlPathMatching("/video/video_yellow.mp4"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody("")
-                )
-        )
-        stubFor(
-            get(urlPathMatching("/event"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
-                )
-        )
-        stubFor(
-            get(urlPathMatching("/impression"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody("")
+                        .withBody(FileUtils.readBytes("video_yellow.mp4"))
                 )
         )
     }
 
+    private fun stubVASTPaths() {
+        stubFor(
+            get(urlPathMatching("/vast/tag"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vast_success_tag.xml"))
+                )
+        )
+
+        stubFor(
+            get(urlPathMatching("/vast/ad_tag"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vast_success_ad_tag.xml"))
+                )
+        )
+
+        stubForSuccess("/vast/impression")
+        stubForSuccess("/vast/click")
+        stubForSuccess("/vast/clickthrough")
+    }
+
     fun verifyUrlPathCalled(urlPath: String) {
         verify(anyRequestedFor(urlPathMatching(urlPath)))
+    }
+
+    fun verifyUrlPathCalledWithQueryParam(
+        urlPath: String,
+        queryParamKey: String,
+        queryParamValueRegex: String
+    ) {
+        verify(
+            anyRequestedFor(urlPathMatching(urlPath))
+                .withQueryParam(queryParamKey, matching(queryParamValueRegex))
+        )
+    }
+
+    fun verifyQueryParamContains(urlPath: String, paramKey: String, paramValue: String) {
+        verify(
+            anyRequestedFor(urlPathMatching(urlPath))
+                .withQueryParam(paramKey, containing(paramValue))
+        )
+    }
+
+    private fun stubForSuccess(path: String) {
+        stubFor(
+            get(urlPathMatching(path))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody("")
+                )
+        )
     }
 }

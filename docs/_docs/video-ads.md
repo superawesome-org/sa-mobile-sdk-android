@@ -43,6 +43,9 @@ public class MainActivity extends Activity {
 
         // make the whole video surface area clickable
         SAVideoAd.disableSmallClick ();
+        
+        // mute the video on start
+        SAVideoAd.enableMuteOnStart ();
 
         // start loading ad data for a placement
         SAVideoAd.load (30479, MainActivity.this);
@@ -75,3 +78,6 @@ These are the default values:
 | Close button | Disabled |
 | Small click button | Disabled | 
 | Back button | Enabled |
+| Close button with no delay | Disabled |
+| Close with warning | Disabled |
+| Mute on start | Disabled |

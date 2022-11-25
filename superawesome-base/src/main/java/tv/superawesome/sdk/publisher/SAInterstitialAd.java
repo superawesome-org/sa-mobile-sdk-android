@@ -4,7 +4,6 @@
  */
 package tv.superawesome.sdk.publisher;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.VisibleForTesting;
 
 import java.util.HashMap;
 
@@ -33,16 +34,18 @@ import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
 /**
  * Class that abstracts away the process of loading & displaying an
  * interstitial / fullscreen type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityListener {
+public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdListener {
 
     private SABannerAd              interstitialBanner = null;
     private ImageButton             closeButton = null;
+    private static CloseButtonState closeButtonState = SADefaults.defaultCloseButtonStateInterstitial();
 
     // the ad
     private SAAd ad = null;
@@ -63,10 +66,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static boolean          isMoatLimitingEnabled = SADefaults.defaultMoatLimitingState();
-
-    /*********************************************************************************************
-     Activity initialization & instance methods
-     */
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -89,6 +88,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         String adStr = bundle.getString("ad");
         ad = new SAAd(SAJsonParser.newObject(adStr));
 
+        int closeButtonValue = bundle.getInt("closeButton", SADefaults.defaultCloseButtonStateInterstitial().getValue());
+        CloseButtonState closeButtonState = CloseButtonState.Companion.fromInt(closeButtonValue);
+
         // make sure direction is locked
         switch (orientationL) {
             case ANY:
@@ -110,7 +112,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
 
         // create the interstitial banner
         interstitialBanner = new SABannerAd(this);
-        interstitialBanner.setVisibilityListener(this);
+        interstitialBanner.setBannerListener(this);
         interstitialBanner.setId(SAUtils.randomNumberBetween(1000000, 1500000));
         interstitialBanner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         interstitialBanner.setColor(false);
@@ -120,6 +122,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         interstitialBanner.setListener(listenerL);
         interstitialBanner.setBumperPage(isBumperPageEnabledL);
         interstitialBanner.setParentalGate(isParentalGateEnabledL);
+        interstitialBanner.setContentDescription("Ad content");
         if (!isMoatLimitingEnabledL) {
             interstitialBanner.disableMoatLimiting();
         }
@@ -127,7 +130,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         // create the close button
         float fp = SAUtils.getScaleFactor(this);
         closeButton = new ImageButton(this);
-        closeButton.setVisibility(View.GONE);
+        closeButton.setVisibility(closeButtonState == CloseButtonState.VisibleImmediately ? View.VISIBLE :View.GONE);
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap());
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setPadding(0, 0, 0, 0);
@@ -177,10 +180,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
-
-    /*********************************************************************************************
-     Class public interface - static methods to interact with an Interstitial Ad
-     */
 
     /**
      * Static method that loads an ad into the interstitial queue.
@@ -259,7 +258,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                             listener.onEvent(placementId, eventToSend);
-                            Log.d("SAInterstitialAd", "Event callback: " + eventToSend.toString());
+                            Log.d("SAInterstitialAd", "Event callback: " + eventToSend);
                         } else {
                             Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
@@ -356,7 +355,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                             listener.onEvent(placementId, eventToSend);
-                            Log.d("SAInterstitialAd", "Event callback: " + eventToSend.toString());
+                            Log.d("SAInterstitialAd", "Event callback: " + eventToSend);
                         } else {
                             Log.w("AwesomeAds", "Interstitial Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
@@ -423,6 +422,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
                 // create intent
                 Intent intent = new Intent(context, SAInterstitialAd.class);
                 intent.putExtra("ad", adL.writeToJson().toString());
+                intent.putExtra("closeButton", closeButtonState.getValue());
 
                 // clear ad - meaning that it's been played
                 ads.remove(placementId);
@@ -456,6 +456,22 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
         if (ad != null && ad.isValid()) {
             ads.put(ad.placementId, ad);
         }
+    }
+
+    /**
+     * Method that enables the close button to display immediately without a delay.
+     * WARNING: this will allow users to close the ad before the viewable tracking event is fired
+     * and should only be used if you explicitly want this behaviour over consistent tracking.
+     */
+    public static void enableCloseButtonNoDelay() {
+        closeButtonState = CloseButtonState.VisibleImmediately;
+    }
+
+    /**
+     * Method that enables the close button to display with a delay.
+     */
+    public static void enableCloseButton() {
+        closeButtonState = CloseButtonState.VisibleWithDelay;
     }
 
     /**********************************************************************************************
@@ -575,5 +591,15 @@ public class SAInterstitialAd extends Activity implements SABannerAd.VisibilityL
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void failedToShow() {
+        close();
+    }
+
+    @VisibleForTesting
+    private static void clearCache() {
+        ads.clear();
     }
 }
