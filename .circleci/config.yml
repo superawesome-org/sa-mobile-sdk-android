@@ -96,8 +96,8 @@ jobs:
               exit 1
             fi
 
-    verify_version_properties:
-      <<: *android_config
+  verify_version_properties:
+    <<: *android_config
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
