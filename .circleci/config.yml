@@ -49,20 +49,71 @@ jobs:
   semantic_release_dry_run:
     <<: *android_config
     environment:
-      SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2426-auto-update-android-sdk-version
     steps:
+      - attach_workspace:
+          at: .
       - checkout
       - *generate_github_token
       - run:
           name: Check semantic release version
           command: |
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
-            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release-test/semantic-release.sh --dry-run
+      - persist_to_workspace:
+          root: "."
+          paths:
+          - "nextRelease"
+
+  auto_update_release_version:
+    <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2426-auto-update-android-sdk-version
+    steps:
+      - checkout
+      - *generate_github_token
+      - attach_workspace:
+          at: .
+      - run:
+          name: Auto update release version
+          command: |
+            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
+            if [ -f "nextRelease" ]; then
+              NEXT_RELEASE_NUMBER="cat nextRelease"
+
+              echo "****** Current release version ******"
+              cat $VERSION_PROPERTIES
+
+              echo "version.name=$NEXT_RELEASE_NUMBER" > $VERSION_PROPERTIES
+
+              echo "****** Updated release version ******"
+              cat $VERSION_PROPERTIES
+
+              git commit -m "Auto incremented version to $NEXT_RELEASE_NUMBER" via Circle CI [skip ci]"
+              git push -q origin feat/AAG-2426-auto-update-android-sdk-version
+            else
+              echo "nextRelease version number not found, exiting."
+              exit 1
+            fi
+
+    verify_version_properties:
+    <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Verify bumped version
+          command: |
+            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
+            cat $VERSION_PROPERTIES
 
   semantic_release:
     <<: *android_config
     environment:
-      SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2426-auto-update-android-sdk-version
     steps:
       - checkout
       - *generate_github_token
@@ -70,7 +121,7 @@ jobs:
           name: Run semantic release
           command: |
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
-            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release-test/semantic-release.sh
 
   #Await for all running builds to finish
   prep_deploy:
@@ -182,79 +233,86 @@ workflows:
             - test_superawesome_base
           filters:
             branches:
-              only: develop          
+              only: feat/AAG-2426-auto-update-android-sdk-version          
       - approve_dry_run_and_release:
           type: approval
           requires:
             - semantic_release_dry_run
           filters:
             branches:
-              only: develop
-      - semantic_release:
+              only: feat/AAG-2426-auto-update-android-sdk-version
+      - auto_update_release_version:
           context: MOBILE_ANDROID_SDKS
           requires:
             - approve_dry_run_and_release
           filters:
             branches:
-              only: develop
-      - prep_deploy:
-          context: MOBILE_ANDROID_APPS
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - sdk_push_superawesome:
+              only: feat/AAG-2426-auto-update-android-sdk-version
+      - verify_version_properties:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - prep_deploy
+            - auto_update_release_version
           filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
-      - sdk_push_superawesome_base:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - prep_deploy
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - sdk_push_superawesome_admob:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - prep_deploy
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - sdk_push_superawesome_moat:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - prep_deploy
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - sdk_push_superawesome_unity:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - prep_deploy
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - publish_docs:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - sdk_push_superawesome
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+              only: feat/AAG-2426-auto-update-android-sdk-version
+      #- prep_deploy:
+      #    context: MOBILE_ANDROID_APPS
+      #    filters:
+      #      tags:
+      #        only: /^v.*/
+      #      branches:
+      #        ignore: /.*/
+      #- sdk_push_superawesome:
+      #    context: MOBILE_ANDROID_SDKS
+      #    requires:
+      #      - prep_deploy
+      #    filters:
+      #      tags:
+      #        only: /^v.*/
+      #      branches:
+      #        ignore: /.*/
+      #- sdk_push_superawesome_base:
+      #    context: MOBILE_ANDROID_SDKS
+      #    requires:
+      #      - prep_deploy
+      #    filters:
+      #      tags:
+      #        only: /^v.*/
+      #      branches:
+      #        ignore: /.*/
+      #- sdk_push_superawesome_admob:
+      #    context: MOBILE_ANDROID_SDKS
+      #    requires:
+      #      - prep_deploy
+      #    filters:
+      #      tags:
+      #        only: /^v.*/
+      #      branches:
+      #        ignore: /.*/
+      #- sdk_push_superawesome_moat:
+      #    context: MOBILE_ANDROID_SDKS
+      #    requires:
+      #      - prep_deploy
+      #    filters:
+      #      tags:
+      #        only: /^v.*/
+      #      branches:
+      #        ignore: /.*/
+      #- sdk_push_superawesome_unity:
+      #    context: MOBILE_ANDROID_SDKS
+      #    requires:
+      #      - prep_deploy
+      #    filters:
+      #      tags:
+      #        only: /^v.*/
+      #      branches:
+      #        ignore: /.*/
+      #- publish_docs:
+      #    context: MOBILE_ANDROID_SDKS
+      #    requires:
+      #      - sdk_push_superawesome
+      #    filters:
+      #      tags:
+      #        only: /^v.*/
+      #      branches:
+      #        ignore: /.*/
