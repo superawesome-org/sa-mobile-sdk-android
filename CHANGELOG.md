@@ -1,25 +1,3 @@
-## [8.5.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.0...v8.5.1) (2022-11-28)
-
-
-### Bug Fixes
-
-* adding file to git ([64f30e3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/64f30e3b1359a2f2e5e2385b3302ff6a4b35f532))
-* check for existence of version.properties ([ec5f004](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ec5f004a8ed94b2a436ad24b33e26096f0f7c933))
-* Improved error message ([0a7e52a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/0a7e52ad0aa2023c26e832c1789da6a5669fdebb))
-* test git push using release bot ([3002512](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3002512b69dc0bd92a466ce0b898ea2b7dab16fc))
-* testing git push ([2d63439](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2d63439d068d09d0b86686cc40c62b35a9dfecf4))
-
-
-### Reverts
-
-* Revert "chore(release): 8.5.1 [skip ci]" ([b14416b](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b14416bdd55f9717aae3fe89d816ed32d028a426))
-* Revert "chore(release): 8.5.1 [skip ci]" ([cbf2dbc](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/cbf2dbc38cf93da202aef3f672315ba1cb62cd0f))
-* Revert "chore(release): 8.5.1 [skip ci]" ([57a7bb9](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/57a7bb93ff4269b1c49b06282fc76af7be03806f))
-* Revert "chore(release): 8.5.1 [skip ci]" ([d268a68](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d268a688ee7a5ee21f029d6498440f37aa215b66))
-* Revert "fix(): check if version.properties exists" ([69caece](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/69caeceb2757109a4578aebfced7d9d39720312f))
-* Revert "chore(release): 8.5.1 [skip ci]" ([33c5386](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/33c5386e334f3df1c8d4370f21cd946da027c01f))
-* Revert "chore(release): 8.5.1 [skip ci]" ([39485b3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/39485b372fb7828eea179829ab4efaa1995cbaa6))
-
 # [8.5.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.3...v8.5.0) (2022-11-17)
 
 
