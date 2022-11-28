@@ -67,8 +67,6 @@ jobs:
 
   auto_update_release_version:
     <<: *android_config
-    environment:
-      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2426-auto-update-android-sdk-version
     steps:
       - checkout
       - *generate_github_token
@@ -106,8 +104,6 @@ jobs:
 
   verify_version_properties:
     <<: *android_config
-    environment:
-      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
       - checkout
       - attach_workspace:
