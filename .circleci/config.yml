@@ -79,7 +79,7 @@ jobs:
           command: |
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             NEXT_RELEASE_NUMBER=`cat nextRelease`
-            if [[ ( ! -z "$NEXT_RELEASE_NUMBER" ) && ( -f "VERSION_PROPERTIES" ) ]]; then
+            if [[ ! -z "$NEXT_RELEASE_NUMBER" ]]; then
 
               echo "****** Current release version ******"
               cat $VERSION_PROPERTIES
