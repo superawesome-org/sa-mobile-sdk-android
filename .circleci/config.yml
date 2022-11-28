@@ -93,6 +93,8 @@ jobs:
               echo "****** Updated release version ******"
               cat $VERSION_PROPERTIES
 
+              echo "****** Pushing updated version ******"
+
               git pull origin feat/AAG-2426-auto-update-android-sdk-version
               git add $VERSION_PROPERTIES
               git commit -m "Auto incremented version to $NEXT_RELEASE_NUMBER via Circle CI [skip ci]"
@@ -104,6 +106,8 @@ jobs:
 
   verify_version_properties:
     <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
     steps:
       - checkout
       - attach_workspace:
@@ -321,4 +325,3 @@ workflows:
       #        only: /^v.*/
       #      branches:
       #        ignore: /.*/
-
