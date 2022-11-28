@@ -104,21 +104,6 @@ jobs:
               exit 1
             fi
 
-  verify_version_properties:
-    <<: *android_config
-    environment:
-      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2246-auto-version-bump-feature-branch
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Verify bumped version
-          command: |
-            git pull origin feat/AAG-2426-auto-update-android-sdk-version
-            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
-            cat $VERSION_PROPERTIES
-
   semantic_release:
     <<: *android_config
     environment:
@@ -257,71 +242,64 @@ workflows:
           filters:
             branches:
               only: feat/AAG-2426-auto-update-android-sdk-version
-      - verify_version_properties:
+      - prep_deploy:
+          context: MOBILE_ANDROID_APPS
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - auto_update_release_version
+            - prep_deploy
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: feat/AAG-2426-auto-update-android-sdk-version
-      #- prep_deploy:
-      #    context: MOBILE_ANDROID_APPS
-      #    filters:
-      #      tags:
-      #        only: /^v.*/
-      #      branches:
-      #        ignore: /.*/
-      #- sdk_push_superawesome:
-      #    context: MOBILE_ANDROID_SDKS
-      #    requires:
-      #      - prep_deploy
-      #    filters:
-      #      tags:
-      #        only: /^v.*/
-      #      branches:
-      #        ignore: /.*/
-      #- sdk_push_superawesome_base:
-      #    context: MOBILE_ANDROID_SDKS
-      #    requires:
-      #      - prep_deploy
-      #    filters:
-      #      tags:
-      #        only: /^v.*/
-      #      branches:
-      #        ignore: /.*/
-      #- sdk_push_superawesome_admob:
-      #    context: MOBILE_ANDROID_SDKS
-      #    requires:
-      #      - prep_deploy
-      #    filters:
-      #      tags:
-      #        only: /^v.*/
-      #      branches:
-      #        ignore: /.*/
-      #- sdk_push_superawesome_moat:
-      #    context: MOBILE_ANDROID_SDKS
-      #    requires:
-      #      - prep_deploy
-      #    filters:
-      #      tags:
-      #        only: /^v.*/
-      #      branches:
-      #        ignore: /.*/
-      #- sdk_push_superawesome_unity:
-      #    context: MOBILE_ANDROID_SDKS
-      #    requires:
-      #      - prep_deploy
-      #    filters:
-      #      tags:
-      #        only: /^v.*/
-      #      branches:
-      #        ignore: /.*/
-      #- publish_docs:
-      #    context: MOBILE_ANDROID_SDKS
-      #    requires:
-      #      - sdk_push_superawesome
-      #    filters:
-      #      tags:
-      #        only: /^v.*/
-      #      branches:
-      #        ignore: /.*/
+              ignore: /.*/
+      - sdk_push_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_admob:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_moat:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - sdk_push_superawesome_unity:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - prep_deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - publish_docs:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - sdk_push_superawesome
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
