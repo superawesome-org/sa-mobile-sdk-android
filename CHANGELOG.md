@@ -1,10 +1,3 @@
-## [8.5.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.0...v8.5.1) (2022-11-28)
-
-
-### Bug Fixes
-
-* Improved error message ([0a7e52a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/0a7e52ad0aa2023c26e832c1789da6a5669fdebb))
-
 # [8.5.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.3...v8.5.0) (2022-11-17)
 
 
