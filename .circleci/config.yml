@@ -242,6 +242,13 @@ workflows:
           filters:
             branches:
               only: develop
+      - semantic_release:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - auto_update_release_version
+          filters:
+            branches:
+              only: develop
       - prep_deploy:
           context: MOBILE_ANDROID_APPS
           filters:
