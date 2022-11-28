@@ -67,6 +67,8 @@ jobs:
 
   auto_update_release_version:
     <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: feat/AAG-2426-auto-update-android-sdk-version
     steps:
       - checkout
       - *generate_github_token
@@ -92,8 +94,6 @@ jobs:
 
               echo "****** Updated release version ******"
               cat $VERSION_PROPERTIES
-
-              echo "****** Pushing updated version ******"
 
               git pull origin feat/AAG-2426-auto-update-android-sdk-version
               git add $VERSION_PROPERTIES
