@@ -1,3 +1,18 @@
+## [8.5.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.0...v8.5.1) (2022-11-28)
+
+
+### Bug Fixes
+
+* check for existence of version.properties ([ec5f004](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ec5f004a8ed94b2a436ad24b33e26096f0f7c933))
+* Improved error message ([0a7e52a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/0a7e52ad0aa2023c26e832c1789da6a5669fdebb))
+
+
+### Reverts
+
+* Revert "fix(): check if version.properties exists" ([69caece](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/69caeceb2757109a4578aebfced7d9d39720312f))
+* Revert "chore(release): 8.5.1 [skip ci]" ([33c5386](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/33c5386e334f3df1c8d4370f21cd946da027c01f))
+* Revert "chore(release): 8.5.1 [skip ci]" ([39485b3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/39485b372fb7828eea179829ab4efaa1995cbaa6))
+
 # [8.5.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.3...v8.5.0) (2022-11-17)
 
 
