@@ -77,8 +77,8 @@ jobs:
       - run:
           name: Auto update release version
           command: |
-            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             NEXT_RELEASE_NUMBER=`cat nextRelease`
+            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             if [[ ( ! -z "$NEXT_RELEASE_NUMBER" ) && ( -f "$VERSION_PROPERTIES" ) ]]; then
 
               echo "****** Current release version ******"
