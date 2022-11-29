@@ -51,6 +51,8 @@ jobs:
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
     steps:
+      - attach_workspace:
+          at: .
       - checkout
       - *generate_github_token
       - run:
@@ -58,6 +60,49 @@ jobs:
           command: |
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
             ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh --dry-run
+      - persist_to_workspace:
+          root: "."
+          paths:
+          - "nextRelease"
+
+  auto_update_release_version:
+    <<: *android_config
+    environment:
+      SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
+    steps:
+      - checkout
+      - *generate_github_token
+      - attach_workspace:
+          at: .
+      - run:
+          name: Auto update release version
+          command: |
+            export GIT_AUTHOR_NAME=sa-release-bot
+            export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv
+            export GIT_COMMITTER_NAME=sa-release-bot
+            export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv
+
+            NEXT_RELEASE_NUMBER=`cat nextRelease`
+            VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
+
+            if [[ ( ! -z "$NEXT_RELEASE_NUMBER" ) && ( -f "$VERSION_PROPERTIES" ) ]]; then
+
+              echo "****** Current release version ******"
+              cat $VERSION_PROPERTIES
+
+              echo "version.name=$NEXT_RELEASE_NUMBER" > $VERSION_PROPERTIES
+
+              echo "****** Updated release version ******"
+              cat $VERSION_PROPERTIES
+
+              git pull origin develop
+              git add $VERSION_PROPERTIES
+              git commit -m "Auto incremented version to $NEXT_RELEASE_NUMBER via Circle CI [skip ci]"
+              git push -q origin develop
+            else
+              echo "Next release version number not found, no new version to release."
+              exit 1
+            fi
 
   semantic_release:
     <<: *android_config
@@ -190,10 +235,17 @@ workflows:
           filters:
             branches:
               only: develop
-      - semantic_release:
+      - auto_update_release_version:
           context: MOBILE_ANDROID_SDKS
           requires:
             - approve_dry_run_and_release
+          filters:
+            branches:
+              only: develop
+      - semantic_release:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - auto_update_release_version
           filters:
             branches:
               only: develop
