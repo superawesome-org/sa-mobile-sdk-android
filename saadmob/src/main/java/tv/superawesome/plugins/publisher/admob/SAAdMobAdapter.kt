@@ -6,9 +6,9 @@ import tv.superawesome.sdk.publisher.AwesomeAds
 import tv.superawesome.sdk.publisher.SAVersion
 
 /**
- * This adapter will be retired and instead use `SAAdMobAdapter` for all ad types
+ * AdMob mediation adapter for AwesomeAds
  */
-class SAAdMobVideoMediationAdapter : Adapter() {
+class SAAdMobAdapter : Adapter() {
 
     private var bannerAd: SAAdMobBannerAd? = null
     private var interstitialAd: SAAdMobInterstitialAd? = null
