@@ -13,29 +13,34 @@ import tv.superawesome.sdk.publisher.SAInterface
 import tv.superawesome.sdk.publisher.SAOrientation
 import tv.superawesome.sdk.publisher.SAVideoAd
 
-class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfiguration,
-                        private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>) : MediationRewardedAd, SAInterface {
+class SAAdMobRewardedAd(
+    private val adConfiguration: MediationRewardedAdConfiguration,
+    private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>
+) : MediationRewardedAd, SAInterface {
 
     private var rewardedAdCallback: MediationRewardedAdCallback? = null
     private var loadedPlacementId = 0
-    private val paramKey = "parameter"
 
     fun load() {
         val context = adConfiguration.context
 
-        val mediationExtras = adConfiguration.mediationExtras
-        SAVideoAd.setConfiguration(SAConfiguration.fromOrdinal(mediationExtras.getInt(SAAdMobExtras.kKEY_CONFIGURATION)))
-        SAVideoAd.setTestMode(mediationExtras.getBoolean(SAAdMobExtras.kKEY_TEST))
-        SAVideoAd.setOrientation(SAOrientation.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
-        SAVideoAd.setParentalGate(mediationExtras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
-        SAVideoAd.setBumperPage(mediationExtras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
-        SAVideoAd.setSmallClick(mediationExtras.getBoolean(SAAdMobExtras.kKEY_SMALL_CLICK))
-        SAVideoAd.setCloseButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_BUTTON))
-        SAVideoAd.setCloseAtEnd(mediationExtras.getBoolean(SAAdMobExtras.kKEY_CLOSE_AT_END))
-        SAVideoAd.setBackButton(mediationExtras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
-        SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(mediationExtras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE)))
+        val extras = adConfiguration.mediationExtras
 
-        loadedPlacementId = adConfiguration.serverParameters.getString(paramKey)?.toIntOrNull() ?: 0
+        if (extras.size() > 0) {
+            SAVideoAd.setConfiguration(SAConfiguration.fromOrdinal(extras.getInt(SAAdMobExtras.kKEY_CONFIGURATION)))
+            SAVideoAd.setTestMode(extras.getBoolean(SAAdMobExtras.kKEY_TEST))
+            SAVideoAd.setOrientation(SAOrientation.fromValue(extras.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
+            SAVideoAd.setParentalGate(extras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
+            SAVideoAd.setBumperPage(extras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
+            SAVideoAd.setSmallClick(extras.getBoolean(SAAdMobExtras.kKEY_SMALL_CLICK))
+            SAVideoAd.setCloseButton(extras.getBoolean(SAAdMobExtras.kKEY_CLOSE_BUTTON))
+            SAVideoAd.setCloseAtEnd(extras.getBoolean(SAAdMobExtras.kKEY_CLOSE_AT_END))
+            SAVideoAd.setBackButton(extras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
+            SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(extras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE)))
+        }
+
+        loadedPlacementId =
+            adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
         if (loadedPlacementId == 0) {
             mediationAdLoadCallback.onFailure("Failed to request ad, placementID is null or empty.")
@@ -46,7 +51,7 @@ class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfigur
         SAVideoAd.load(loadedPlacementId, context)
     }
 
-    override fun showAd(context: Context?) {
+    override fun showAd(context: Context) {
         if (SAVideoAd.hasAdAvailable(loadedPlacementId)) {
             SAVideoAd.play(loadedPlacementId, context)
 
@@ -70,6 +75,7 @@ class SAAdMobRewardedAd(private val adConfiguration: MediationRewardedAdConfigur
             SAEvent.adClicked -> rewardedAdCallback?.reportAdClicked()
             SAEvent.adEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
             SAEvent.adClosed -> rewardedAdCallback?.onAdClosed()
+            else -> {}
         }
     }
 
