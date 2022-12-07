@@ -4,19 +4,18 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.telephony.TelephonyManager
-import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.models.ConnectionType
 import tv.superawesome.sdk.publisher.common.testutil.BuildUtil
 import kotlin.test.assertEquals
 
-class ConnectionProviderTest : BaseTest()  {
+class ConnectionProviderTest : BaseTest() {
     @MockK
     lateinit var context: Context
 
@@ -35,6 +34,9 @@ class ConnectionProviderTest : BaseTest()  {
     @MockK
     lateinit var telephonyManager: TelephonyManager
 
+    @MockK
+    lateinit var networkInfo: NetworkInfo
+
     @Test
     fun test_connectionType_noSystemServiceAvailable_unknown() {
         // When
@@ -46,12 +48,12 @@ class ConnectionProviderTest : BaseTest()  {
 
     @Test
     fun test_connectionType_HasWifiCapability_wifi() {
-        whenNetworkCapability(NetworkCapabilities.TRANSPORT_WIFI, ConnectionType.Wifi)
+        whenNetworkType(ConnectivityManager.TYPE_WIFI, ConnectionType.Wifi)
     }
 
     @Test
     fun test_connectionType_HasEthernetCapability_ethernet() {
-        whenNetworkCapability(NetworkCapabilities.TRANSPORT_ETHERNET, ConnectionType.Ethernet)
+        whenNetworkType(ConnectivityManager.TYPE_ETHERNET, ConnectionType.Ethernet)
     }
 
     @Test
@@ -62,10 +64,14 @@ class ConnectionProviderTest : BaseTest()  {
         whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_LTE, ConnectionType.Cellular4g)
     }
 
-    private fun whenNetworkCapability(networkCapability: Int, expected: ConnectionType) {
+    private fun whenNetworkType(networkCapability: Int, expected: ConnectionType) {
         // Given
         every { context.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
         every { connectivityManager.getNetworkCapabilities(any()) } returns networkCapabilities
+        every { connectivityManager.activeNetworkInfo } returns networkInfo
+        every { networkInfo.isConnected } returns true
+        every { networkInfo.type } returns networkCapability
+        every { networkInfo.subtype } returns networkCapability
         every { networkCapabilities.hasTransport(networkCapability) } returns true
         BuildUtil.mockSdkInt(30)
 
@@ -83,6 +89,10 @@ class ConnectionProviderTest : BaseTest()  {
         every { connectivityManager.getNetworkCapabilities(any()) } returns networkCapabilities
         every { networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) } returns true
         every { telephonyManager.networkType } returns networkType
+        every { connectivityManager.activeNetworkInfo } returns networkInfo
+        every { networkInfo.isConnected } returns true
+        every { networkInfo.type } returns ConnectivityManager.TYPE_MOBILE
+        every { networkInfo.subtype } returns networkType
         BuildUtil.mockSdkInt(30)
 
         // When
