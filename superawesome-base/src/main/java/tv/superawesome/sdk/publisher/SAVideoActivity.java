@@ -16,6 +16,7 @@ import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -66,6 +67,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // get values from the intent
         Intent myIntent = getIntent();

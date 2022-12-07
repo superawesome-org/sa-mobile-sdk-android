@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -54,6 +55,7 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(adView)
         adView.load(placementId, html, this)
         adView.addView(closeButton)
