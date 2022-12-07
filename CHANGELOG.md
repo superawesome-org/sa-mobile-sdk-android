@@ -1,3 +1,11 @@
+## [8.5.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.0...v8.5.1) (2022-12-07)
+
+
+### Bug Fixes
+
+* CI semantic release fix ([#238](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/238)) ([8ebacd8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/8ebacd893fd8f209218a59d895dcbcda40f7e38e))
+* This PR prevents the app from going to sleep when playing video ads ([#237](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/237)) ([d74c716](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d74c7167d5d685ed1ba371e4e3a57c92fb515d8d))
+
 # [8.5.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.3...v8.5.0) (2022-11-17)
 
 
