@@ -20,6 +20,7 @@ public class SAAdMobExtras {
     static final String kKEY_CLOSE_AT_END = "SA_CLOSE_AT_END";
     static final String kKEY_SMALL_CLICK = "SA_SMALL_CLICK";
     static final String kKEY_PLAYBACK_MODE = "SA_PLAYBACK_MODE";
+    static final String PARAMETER = "parameter";
 
     private boolean transparent = SADefaults.defaultBgColor();
     private boolean testMode = SADefaults.defaultTestMode();

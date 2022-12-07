@@ -27,9 +27,9 @@ import tv.superawesome.sdk.publisher.SAInterface;
 public class SAAdMobBannerCustomEvent implements CustomEventBanner {
 
     private final int ID = SAUtils.randomNumberBetween(1000000, 1500000);
-    private boolean layouted = false;
-    private boolean loaded = false;
-    private boolean setup = false;
+    private boolean layoutChanged = false;
+    private boolean adLoaded = false;
+    private boolean setupCompleted = false;
     private SABannerAd bannerAd;
 
     @Override
@@ -73,47 +73,41 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                                     // send load event
                                     customEventBannerListener.onAdLoaded(bannerAd);
 
-                                    loaded = true;
+                                    adLoaded = true;
 
-                                    if (layouted && bannerAd != null && !setup) {
+                                    if (layoutChanged && bannerAd != null && !setupCompleted) {
                                         bannerAd.play(context);
-                                        setup = true;
+                                        setupCompleted = true;
                                     }
                                     break;
-
                                 case adEmpty:
                                 case adFailedToLoad:
                                     customEventBannerListener.onAdFailedToLoad(new AdError(AdRequest.ERROR_CODE_NO_FILL, "", ""));
                                     break;
-
                                 case adAlreadyLoaded:
                                 case adEnded:
                                     break;
                                 case adShown:
                                     customEventBannerListener.onAdOpened();
                                     break;
-
                                 case adFailedToShow:
                                     customEventBannerListener.onAdFailedToLoad(new AdError(AdRequest.ERROR_CODE_INTERNAL_ERROR, "", ""));
                                     break;
-
                                 case adClicked:
                                     customEventBannerListener.onAdClicked();
                                     customEventBannerListener.onAdLeftApplication();
                                     break;
-
                                 case adClosed:
                                     customEventBannerListener.onAdClosed();
                                     break;
-
                             }
                         });
 
         try {
             bannerAd.addOnLayoutChangeListener(
                     (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-                        layouted = true;
-                        if (loaded && !setup) {
+                        layoutChanged = true;
+                        if (adLoaded && !setupCompleted) {
                             bannerAd.play(context);
                         }
                     });

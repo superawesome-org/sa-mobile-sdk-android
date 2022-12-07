@@ -20,7 +20,6 @@ class SAAdMobRewardedAd(
 
     private var rewardedAdCallback: MediationRewardedAdCallback? = null
     private var loadedPlacementId = 0
-    private val paramKey = "parameter"
 
     fun load() {
         val context = adConfiguration.context
@@ -40,7 +39,8 @@ class SAAdMobRewardedAd(
             SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(extras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE)))
         }
 
-        loadedPlacementId = adConfiguration.serverParameters.getString(paramKey)?.toIntOrNull() ?: 0
+        loadedPlacementId =
+            adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
         if (loadedPlacementId == 0) {
             mediationAdLoadCallback.onFailure("Failed to request ad, placementID is null or empty.")

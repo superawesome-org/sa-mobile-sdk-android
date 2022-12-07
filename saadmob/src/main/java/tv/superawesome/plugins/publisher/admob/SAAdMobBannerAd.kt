@@ -22,14 +22,14 @@ class SAAdMobBannerAd(
     private val ID = SAUtils.randomNumberBetween(1000000, 1500000)
     private var adCallback: MediationBannerAdCallback? = null
     private var loadedPlacementId = 0
-    private val paramKey = "parameter"
-    private var loaded = false
-    private var setup = false
-    private var layouted = false
+    private var adLoaded = false
+    private var setupCompleted = false
+    private var layoutChanged = false
 
     fun load() {
         val context = adConfiguration.context
-        loadedPlacementId = adConfiguration.serverParameters.getString(paramKey)?.toIntOrNull() ?: 0
+        loadedPlacementId =
+            adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
         bannerAd = SABannerAd(context)
         bannerAd?.id = ID
@@ -52,8 +52,8 @@ class SAAdMobBannerAd(
 
         bannerAd?.setListener(this)
         bannerAd?.addOnLayoutChangeListener { v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int ->
-            layouted = true
-            if (loaded && !setup) {
+            layoutChanged = true
+            if (adLoaded && !setupCompleted) {
                 bannerAd?.play(context)
             }
         }
@@ -80,11 +80,11 @@ class SAAdMobBannerAd(
     }
 
     private fun adLoaded() {
-        loaded = true
+        adLoaded = true
 
-        if (layouted && bannerAd != null && !setup) {
+        if (layoutChanged && bannerAd != null && !setupCompleted) {
             bannerAd?.play(bannerAd?.context)
-            setup = true
+            setupCompleted = true
         }
         adCallback = mediationAdLoadCallback.onSuccess(this)
     }

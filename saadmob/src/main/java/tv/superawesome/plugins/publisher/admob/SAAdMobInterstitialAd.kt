@@ -18,7 +18,6 @@ class SAAdMobInterstitialAd(
 
     private var adCallback: MediationInterstitialAdCallback? = null
     private var loadedPlacementId = 0
-    private val paramKey = "parameter"
 
     fun load() {
         val context = adConfiguration.context
@@ -36,7 +35,8 @@ class SAAdMobInterstitialAd(
             SAInterstitialAd.setBackButton(extras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
         }
 
-        loadedPlacementId = adConfiguration.serverParameters.getString(paramKey)?.toIntOrNull() ?: 0
+        loadedPlacementId =
+            adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
         if (loadedPlacementId == 0) {
             mediationAdLoadCallback.onFailure("Failed to request ad, placementID is null or empty.")
