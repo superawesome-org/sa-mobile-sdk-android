@@ -47,6 +47,7 @@ class ConnectionProvider(private val context: Context) : ConnectionProviderType 
 
         if (info == null || !info.isConnected) return ConnectionType.Unknown
         if (info.type == ConnectivityManager.TYPE_WIFI) return ConnectionType.Wifi
+        if (info.type == ConnectivityManager.TYPE_ETHERNET) return ConnectionType.Ethernet
         if (info.type == ConnectivityManager.TYPE_MOBILE) return findCellularType(info.subtype)
 
         return ConnectionType.Unknown
