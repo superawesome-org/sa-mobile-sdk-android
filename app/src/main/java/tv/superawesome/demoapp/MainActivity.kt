@@ -38,6 +38,7 @@ val data = listOf(
         type = Type.INTERSTITIAL
     ),
     HeaderItem("Videos"),
+    PlacementItem("PopJam VPAID Video", 93969, type = Type.VIDEO),
     PlacementItem("VAST Video Flat Colour", 88406, type = Type.VIDEO),
     PlacementItem("VPAID Video Flat Colour", 89056, type = Type.VIDEO),
     PlacementItem("Direct Video Flat Colour", 87969, type = Type.VIDEO),
