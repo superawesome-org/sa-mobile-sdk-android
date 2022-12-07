@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.RelativeLayout
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
@@ -41,6 +42,7 @@ class VideoActivity : FullScreenActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         logger.info("onCreate")
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onPause() {
