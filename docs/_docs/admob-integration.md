@@ -57,16 +57,14 @@ and, as well, customise it:
 
 ![image-title-here]({{ site.baseurl }}/assets/img/IMG_08_AdMob_6.png){:class="img-responsive"}
 
-Notice that the custom event class names required by AdMob are:
- - <strong>for Banner Ads:</strong>
+Notice that the custom event class name and parameter should be following:
+ - <strong>Class name</strong>
  
- `tv.superawesome.plugins.publisher.admob.SAAdMobBannerCustomEvent`
- - <strong>for Interstitial Ads:</strong> 
+ `tv.superawesome.plugins.publisher.admob.SAAdMobAdapter`
+ - <strong>Parameter</strong> 
  
- `tv.superawesome.plugins.publisher.admob.SAAdMobInterstitialCustomEvent`
- - <strong>for Rewarded Video Ads:</strong> 
- 
- `tv.superawesome.plugins.publisher.admob.SAAdMobVideoMediationAdapter`
+ `12345` -> This is the placement ID 
+
 
 You should now have at least two different `Ad Sources`.
 
