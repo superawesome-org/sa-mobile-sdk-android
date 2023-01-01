@@ -12,3 +12,4 @@ For more information check out the [SuperAwesome Developer Portal](https://super
 
 - To contribute to the Android SDK, create a new branch with your desired commits.
 - Create a pull request, and once it's merged, our automated build pipeline will release a new version based on the commit message prefaces given. You can find out more about the necessary commit prefaces for your desired release version [here](https://superawesomeltd.atlassian.net/wiki/spaces/AA/pages/4932993069/Releasing+Versions+with+Semantic+Release).
+test
