@@ -7,6 +7,8 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
@@ -16,7 +18,7 @@ import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
  * interstitial / fullscreen type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class InterstitialActivity : FullScreenActivity() {
+public class InterstitialActivity : FullScreenActivity(), SAInterface {
     private lateinit var interstitialBanner: BannerView
 
     override fun initChildUI() {
@@ -30,6 +32,7 @@ public class InterstitialActivity : FullScreenActivity() {
         interstitialBanner.setTestMode(SAInterstitialAd.isTestEnabled())
         interstitialBanner.setBumperPage(SAInterstitialAd.isBumperPageEnabled())
         interstitialBanner.setParentalGate(SAInterstitialAd.isParentalGateEnabled())
+        interstitialBanner.setListener(this)
 
         if (!SAInterstitialAd.isMoatLimiting()) {
             interstitialBanner.disableMoatLimiting()
@@ -37,7 +40,8 @@ public class InterstitialActivity : FullScreenActivity() {
 
         parentLayout.addView(interstitialBanner)
 
-        closeButton.visibility = if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
+        closeButton.visibility =
+            if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
     }
 
     public override fun playContent() {
@@ -50,6 +54,13 @@ public class InterstitialActivity : FullScreenActivity() {
     public override fun close() {
         interstitialBanner.close()
         super.close()
+    }
+
+    override fun onEvent(placementId: Int, event: SAEvent) {
+        SAInterstitialAd.getDelegate()?.onEvent(placementId, event)
+        if (event == SAEvent.AdFailedToShow) {
+            close()
+        }
     }
 
     companion object {

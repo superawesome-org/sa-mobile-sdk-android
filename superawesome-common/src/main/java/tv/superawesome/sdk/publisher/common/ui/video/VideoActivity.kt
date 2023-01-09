@@ -10,12 +10,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
+import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
@@ -26,6 +28,7 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerControll
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayer
 import java.io.File
 
+
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
@@ -34,8 +37,8 @@ class VideoActivity : FullScreenActivity() {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val control: IVideoPlayerController by inject(IVideoPlayerController::class.java)
     private var videoEvents: VideoEvents? = null
-    private var listener: SAInterface? = null
     private var completed = false
+    private var volumeButton: ImageButton? = null
 
     private lateinit var videoPlayer: VideoPlayer
 
@@ -51,7 +54,7 @@ class VideoActivity : FullScreenActivity() {
     }
 
     override fun initChildUI() {
-        listener = SAVideoAd.getDelegate()
+        controller.delegate = SAVideoAd.getDelegate()
 
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
         val params = RelativeLayout.LayoutParams(size, size)
@@ -63,7 +66,8 @@ class VideoActivity : FullScreenActivity() {
         videoPlayer.setBackgroundColor(Color.BLACK)
         parentLayout.addView(videoPlayer)
 
-        closeButton.visibility = if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
+        closeButton.visibility =
+            if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
         closeButton.setOnClickListener { onCloseAction() }
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
@@ -110,7 +114,8 @@ class VideoActivity : FullScreenActivity() {
                 )
                 videoEvents?.listener = object : VideoEvents.Listener {
                     override fun hasBeenVisible() {
-                        closeButton.visibility = if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
+                        closeButton.visibility =
+                            if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
                     }
                 }
                 val filePath = it.filePath ?: ""
@@ -122,6 +127,38 @@ class VideoActivity : FullScreenActivity() {
                 }
             }
         }
+    }
+
+    private fun onVolumeAction() {
+        setMuted(!control.isMuted)
+    }
+
+    private fun setMuted(muted: Boolean) {
+        volumeButton?.setImageBitmap(
+            if (muted) imageProvider.volumeOff() else imageProvider.volumeOn()
+        )
+        control.setMuted(muted)
+    }
+
+    private fun initVolumeButton() {
+        val button = ImageButton(this)
+        button.visibility = if (config.shouldMuteOnStart) View.VISIBLE else View.GONE
+        button.setBackgroundColor(Color.TRANSPARENT)
+        button.setPadding(0, 0, 0, 0)
+        button.scaleType = ImageView.ScaleType.FIT_XY
+        button.contentDescription = "Volume"
+        button.setOnClickListener { onVolumeAction() }
+
+        val buttonLayout = RelativeLayout.LayoutParams(40.toPx, 40.toPx)
+        buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+        buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        button.layoutParams = buttonLayout
+        button.setOnClickListener { close() }
+
+        volumeButton = button
+        setMuted(config.shouldMuteOnStart)
+
+        parentLayout.addView(button)
     }
 
     private fun onCloseAction() {

@@ -192,6 +192,18 @@ public object SAVideoAd {
         controller.moatLimiting = false
     }
 
+    fun setMuteOnStart(mute: Boolean) {
+        controller.config.shouldMuteOnStart = mute
+    }
+
+    fun enableMuteOnStart() {
+        setMuteOnStart(true)
+    }
+
+    fun disableMuteOnStart() {
+        setMuteOnStart(false)
+    }
+
     /**
      * Static method that returns whether ad data for a certain placement has already been loaded
      *
@@ -217,7 +229,7 @@ public object SAVideoAd {
             test = isTestEnabled(),
             pos = AdRequest.Position.FullScreen.value,
             skip = if (controller.config.closeButtonState.isVisible()) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
-            playbackMethod = AdRequest.PlaybackSoundOnScreen,
+            playbackMethod = if (controller.config.shouldMuteOnStart) AdRequest.PlaybackSoundOffScreen else AdRequest.PlaybackSoundOnScreen,
             startDelay = AdRequest.StartDelay.PreRoll.value,
             install = AdRequest.FullScreen.On.value,
             w = width,

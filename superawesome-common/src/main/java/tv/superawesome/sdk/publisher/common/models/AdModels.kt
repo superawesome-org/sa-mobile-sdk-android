@@ -98,8 +98,11 @@ data class AdRequest(
     )
 
     companion object {
-        /** The playback method */
+        /** The playback sound is on at the start */
         const val PlaybackSoundOnScreen = 5
+
+        /** The playback sound is off at the start */
+        const val PlaybackSoundOffScreen = 2
     }
 
     /** Specify if the ad is in full screen or not */

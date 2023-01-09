@@ -19,6 +19,7 @@ open class Config : Parcelable {
     var closeButtonState: CloseButtonState
     var orientation: Orientation
     var startDelay: AdRequest.StartDelay
+    var shouldMuteOnStart: Boolean
 
     constructor(
         moatLimiting: Boolean,
@@ -32,6 +33,7 @@ open class Config : Parcelable {
         closeButtonState: CloseButtonState,
         orientation: Orientation,
         startDelay: AdRequest.StartDelay,
+        shouldMuteOnStart: Boolean,
     ) {
         this.moatLimiting = moatLimiting
         this.testEnabled = testEnabled
@@ -44,6 +46,7 @@ open class Config : Parcelable {
         this.closeButtonState = closeButtonState
         this.orientation = orientation
         this.startDelay = startDelay
+        this.shouldMuteOnStart = shouldMuteOnStart
     }
 
     protected constructor(parcel: Parcel) {
@@ -58,6 +61,7 @@ open class Config : Parcelable {
         closeButtonState = CloseButtonState.fromInt(parcel.readInt())
         orientation = Orientation.fromValue(parcel.readInt()) ?: Orientation.Any
         startDelay = AdRequest.StartDelay.fromValue(parcel.readInt()) ?: Constants.defaultStartDelay
+        shouldMuteOnStart = parcel.readByte().toInt() != 0
     }
 
     override fun describeContents(): Int = 0
@@ -74,6 +78,7 @@ open class Config : Parcelable {
         parcel.writeInt(closeButtonState.value)
         parcel.writeInt(orientation.ordinal)
         parcel.writeInt(startDelay.value)
+        parcel.writeByte((if (shouldMuteOnStart) 1 else 0).toByte())
     }
 
     companion object CREATOR : Parcelable.Creator<Config> {
@@ -93,6 +98,7 @@ open class Config : Parcelable {
             closeButtonState = Constants.defaultCloseButtonState,
             orientation = Constants.defaultOrientation,
             startDelay = Constants.defaultStartDelay,
+            shouldMuteOnStart = Constants.defaultMuteOnStart,
         )
     }
 }

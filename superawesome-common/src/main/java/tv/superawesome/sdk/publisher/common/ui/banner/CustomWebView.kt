@@ -28,6 +28,9 @@ public class CustomWebView @JvmOverloads constructor(
 
     var listener: Listener? = null
 
+    /* Flag to indicate error is only handled once to send single event in case multiple error occurs */
+    private var errorHandled = false
+
     // boolean holding whether the web view has finished loading or not
     private var finishedLoading = false
 
@@ -47,13 +50,33 @@ public class CustomWebView @JvmOverloads constructor(
         webViewClient = object : WebViewClient() {
             override fun onReceivedError(
                 view: WebView?,
-                request: WebResourceRequest?,
-                error: WebResourceError?
+                request: WebResourceRequest,
+                error: WebResourceError
             ) {
                 super.onReceivedError(view, request, error)
-                listener?.webViewOnError()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    handleError(error.errorCode)
+                }
             }
 
+            /**
+             * Required to handle API version below 23(M). Could be removed if
+             * we increase the minimum supported version.
+             */
+            @Deprecated("Deprecated in Java")
+            @Suppress("DEPRECATION")
+            override fun onReceivedError(
+                view: WebView?,
+                errorCode: Int,
+                description: String?,
+                failingUrl: String?
+            ) {
+                super.onReceivedError(view, errorCode, description, failingUrl)
+                handleError(errorCode)
+            }
+
+            @Deprecated("Deprecated in Java")
+            @Suppress("DEPRECATION")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 if (finishedLoading) {
                     val fullUrl = url ?: return false
@@ -72,6 +95,7 @@ public class CustomWebView @JvmOverloads constructor(
             @Suppress("DEPRECATION")
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
+                errorHandled = false
                 if (shouldOverrideUrlLoading(view, url)) {
                     view?.stopLoading()
                 }
@@ -84,6 +108,15 @@ public class CustomWebView @JvmOverloads constructor(
             }
         }
     }
+
+    private fun handleError(errorCode: Int) {
+        if (errorHandled) return
+        if (errorCode == WebViewClient.ERROR_HOST_LOOKUP) {
+            errorHandled = true
+            listener?.webViewOnError()
+        }
+    }
+
 
     override fun destroy() {
         super.destroy()

@@ -19,7 +19,7 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 
 open class FullScreenActivity : Activity() {
-    private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
+    internal val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     internal val logger: Logger by inject(Logger::class.java)
     internal val numberGenerator: NumberGeneratorType by inject(NumberGeneratorType::class.java)
 
