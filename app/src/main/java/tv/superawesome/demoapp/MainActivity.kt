@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.demoapp.model.SettingsData
 import tv.superawesome.lib.sabumperpage.SABumperPage
+import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVersion
@@ -33,6 +34,7 @@ class MainActivity : FragmentActivity() {
 
         initUI()
 
+        configureDataSource()
         configureBannerAd()
         configureInterstitialAd()
         configureVideoAd()
@@ -86,7 +88,6 @@ class MainActivity : FragmentActivity() {
         val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()}"
         titleTextView.text = title
         configureListView()
-        configureDataSource()
     }
 
     private fun configureDataSource() {
@@ -203,9 +204,13 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val originalMessage = subtitleTextView.text
-        val message = "$originalMessage $placementId $event"
-        subtitleTextView.text = message
+        val settings = getSettings() ?: return
+
+        if(settings.environment == SAConfiguration.UITESTING) {
+            val originalMessage = subtitleTextView.text
+            val message = "$originalMessage $placementId $event"
+            subtitleTextView.text = message
+        }
     }
 }
 
