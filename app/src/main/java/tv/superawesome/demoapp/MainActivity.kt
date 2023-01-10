@@ -4,57 +4,27 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.adapter.*
+import tv.superawesome.demoapp.model.Constants
 import tv.superawesome.demoapp.model.SettingsData
 import tv.superawesome.lib.sabumperpage.SABumperPage
+import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVersion
 import tv.superawesome.sdk.publisher.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
-val data = listOf(
-    HeaderItem("Banners"),
-    PlacementItem("Banner image", 82088, type = Type.BANNER),
-    PlacementItem("Banner image Flat Colour", 88001, type = Type.BANNER),
-    PlacementItem(
-        "Banner Test Multi Id",
-        82088,
-        lineItemId = 176803,
-        creativeId = 499387,
-        type = Type.BANNER
-    ),
-    HeaderItem("Interstitials"),
-    PlacementItem("Mobile Interstitial Flat Colour Portrait", 87892, type = Type.INTERSTITIAL),
-    PlacementItem("Mobile Interstitial Portrait", 82089, type = Type.INTERSTITIAL),
-    PlacementItem("Interstitial via KSF", 84799, type = Type.INTERSTITIAL),
-    PlacementItem("Interstitial Flat Colour via KSF", 87970, type = Type.INTERSTITIAL),
-    PlacementItem(
-        "Interstitial Test Multi Id",
-        82089,
-        lineItemId = 176803,
-        creativeId = 503038,
-        type = Type.INTERSTITIAL
-    ),
-    HeaderItem("Videos"),
-    PlacementItem("PopJam VPAID Video", 93969, type = Type.VIDEO),
-    PlacementItem("VAST Video Flat Colour", 88406, type = Type.VIDEO),
-    PlacementItem("VPAID Video Flat Colour", 89056, type = Type.VIDEO),
-    PlacementItem("Direct Video Flat Colour", 87969, type = Type.VIDEO),
-    PlacementItem("Direct Video", 82090, type = Type.VIDEO),
-    PlacementItem("Vast Video", 84777, lineItemId = 178822, creativeId = 503585, type = Type.VIDEO),
-    PlacementItem("VPAID via KSF", 84798, type = Type.VIDEO),
-    PlacementItem(
-        "Video Test Multi Id",
-        82090,
-        lineItemId = 176803,
-        creativeId = 499385,
-        type = Type.VIDEO
-    ),
-)
+var data: List<AdapterItem> = listOf()
 
 class MainActivity : FragmentActivity() {
+
+    private lateinit var database: DatabaseReference
+    private lateinit var adapter: CustomListAdapter<AdapterItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +34,7 @@ class MainActivity : FragmentActivity() {
 
         initUI()
 
+        configureDataSource()
         configureBannerAd()
         configureInterstitialAd()
         configureVideoAd()
@@ -81,49 +52,47 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
-
-    private fun updateSettings() {
-        val settings = getSettings() ?: return
-        val config = settings.environment
-
-        bannerView.setConfiguration(config)
-        bannerView.setBumperPage(settings.bumperEnabled)
-        bannerView.setParentalGate(settings.parentalEnabled)
-
-        SAInterstitialAd.setConfiguration(config)
-        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
-        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
-
-        SAVideoAd.setConfiguration(config)
-        SAVideoAd.setBumperPage(settings.bumperEnabled)
-        SAVideoAd.setParentalGate(settings.parentalEnabled)
-        SAVideoAd.setMuteOnStart(settings.muteOnStart)
-
-        when (settings.closeButtonState) {
-            CloseButtonState.VisibleImmediately -> {
-                SAVideoAd.enableCloseButtonNoDelay()
-                SAInterstitialAd.enableCloseButtonNoDelay()
-            }
-            CloseButtonState.VisibleWithDelay -> {
-                SAVideoAd.enableCloseButton()
-                SAInterstitialAd.enableCloseButton()
-            }
-            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
-        }
-    }
-
     private fun initUI() {
         val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()}"
         titleTextView.text = title
         configureListView()
     }
 
+    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
+
+    private fun isPlayEnabled(): Boolean {
+        return getSettings()?.playEnabled == true
+    }
+
+    private fun configureDataSource() {
+        database = Firebase.database(Constants.FIREBASE_DATABASE_URL).reference
+
+        database.child("list-items").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                data = dataSnapshot.children.mapNotNull { item ->
+
+                    val rowStyle = item.getValue(ListItem::class.java)?.rowStyle
+
+                    if(rowStyle == RowStyle.HEADER) {
+                        item.getValue(HeaderItem::class.java)
+                    } else {
+                        item.getValue(PlacementItem::class.java)
+                    }
+                }
+
+                adapter?.updateData(data)
+                adapter?.reloadList()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to load list items.", error.toException())
+            }
+        })
+    }
+
     private fun configureListView() {
-        val adapter = CustomListAdapter<AdapterItem>(this)
+        adapter = CustomListAdapter(this)
         listView.adapter = adapter
-        adapter.updateData(data)
-        adapter.reloadList()
 
         listView.setOnItemClickListener { _, _, position, _ ->
             (data[position] as? PlacementItem)?.let { item ->
@@ -202,14 +171,44 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun isPlayEnabled(): Boolean {
-        return getSettings()?.playEnabled == true
+    private fun updateSettings() {
+        val settings = getSettings() ?: return
+        val config = settings.environment
+
+        bannerView.setConfiguration(config)
+        bannerView.setBumperPage(settings.bumperEnabled)
+        bannerView.setParentalGate(settings.parentalEnabled)
+
+        SAInterstitialAd.setConfiguration(config)
+        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
+        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+
+        SAVideoAd.setConfiguration(config)
+        SAVideoAd.setBumperPage(settings.bumperEnabled)
+        SAVideoAd.setParentalGate(settings.parentalEnabled)
+        SAVideoAd.setMuteOnStart(settings.muteOnStart)
+
+        when (settings.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
+            }
+            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
+        }
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val originalMessage = subtitleTextView.text
-        val message = "$originalMessage $placementId $event"
-        subtitleTextView.text = message
+        val settings = getSettings() ?: return
+
+        if(settings.environment == SAConfiguration.UITESTING) {
+            val originalMessage = subtitleTextView.text
+            val message = "$originalMessage $placementId $event"
+            subtitleTextView.text = message
+        }
     }
 }
 

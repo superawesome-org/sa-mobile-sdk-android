@@ -13,18 +13,23 @@ enum class Type {
     BANNER, INTERSTITIAL, VIDEO
 }
 
+enum class RowStyle {
+    HEADER, ITEM
+}
+
 open class AdapterItem
-class HeaderItem(var title: String) : AdapterItem()
-class PlacementItem(
-    var name: String,
-    var placementId: Int,
+
+data class ListItem(var rowStyle: RowStyle = RowStyle.ITEM)
+data class HeaderItem(var name: String = "") : AdapterItem()
+data class PlacementItem(
+    var name: String = "",
+    var placementId: Int = 0,
     var lineItemId: Int? = null,
     var creativeId: Int? = null,
-    var type: Type
+    var type: Type = Type.BANNER
 ) : AdapterItem() {
     fun isFull(): Boolean = lineItemId != null && creativeId != null
 }
-
 
 internal class CustomListAdapter<T : AdapterItem?>(context: Context?) :
     ArrayAdapter<T?>(context!!, 0) {
@@ -53,7 +58,7 @@ internal class CustomListAdapter<T : AdapterItem?>(context: Context?) :
         val title = view!!.findViewById<TextView>(R.id.RowTitle)
         when (val item = getItem(position)) {
             is HeaderItem -> {
-                title.text = item.title
+                title.text = item.name
                 view.setBackgroundColor(Color.LTGRAY)
             }
             is PlacementItem -> {

@@ -4,24 +4,30 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_main_2.*
 import kotlinx.android.synthetic.main.activity_main_2.bannerView
 import kotlinx.android.synthetic.main.activity_main_2.config1Button
 import kotlinx.android.synthetic.main.activity_main_2.config2Button
 import kotlinx.android.synthetic.main.activity_main_2.listView
 import kotlinx.android.synthetic.main.activity_main_2.titleTextView
-import tv.superawesome.demoapp.adapter.AdapterItem
-import tv.superawesome.demoapp.adapter.CustomListAdapter
-import tv.superawesome.demoapp.adapter.PlacementItem
-import tv.superawesome.demoapp.adapter.Type
 import tv.superawesome.sdk.publisher.SAVersion
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.ui.common.BumperPageActivity
 import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
+import tv.superawesome.demoapp.adapter.*
+import tv.superawesome.demoapp.adapter.CustomListAdapter
+import tv.superawesome.demoapp.model.Constants
 
 class MainActivity2 : FragmentActivity() {
+
+    private lateinit var database: DatabaseReference
+    private lateinit var adapter: CustomListAdapter<AdapterItem>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_2)
@@ -30,6 +36,7 @@ class MainActivity2 : FragmentActivity() {
 
         initUI()
 
+        configureDataSource()
         configureBannerAd()
         configureInterstitialAd()
         configureVideoAd()
@@ -77,37 +84,35 @@ class MainActivity2 : FragmentActivity() {
         configureListView()
     }
 
-    private fun updateSettings() {
-        val app = application as? MyApplication ?: return
-        val settings = app.settings
+    private fun configureDataSource() {
+        database = Firebase.database(Constants.FIREBASE_DATABASE_URL).reference
 
-        bannerView.setBumperPage(settings.bumperEnabled)
-        bannerView.setParentalGate(settings.parentalEnabled)
+        database.child("list-items").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                data = dataSnapshot.children.mapNotNull { item ->
 
-        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
-        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+                    val rowStyle = item.getValue(ListItem::class.java)?.rowStyle
 
-        SAVideoAd.setBumperPage(settings.bumperEnabled)
-        SAVideoAd.setParentalGate(settings.parentalEnabled)
+                    if(rowStyle == RowStyle.HEADER) {
+                        item.getValue(HeaderItem::class.java)
+                    } else {
+                        item.getValue(PlacementItem::class.java)
+                    }
+                }
 
-        when (app.settings.closeButtonState) {
-            CloseButtonState.VisibleImmediately -> {
-                SAVideoAd.enableCloseButtonNoDelay()
-                SAInterstitialAd.enableCloseButtonNoDelay()
+                adapter?.updateData(data)
+                adapter?.reloadList()
             }
-            CloseButtonState.VisibleWithDelay -> {
-                SAVideoAd.enableCloseButton()
-                SAInterstitialAd.enableCloseButton()
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to load list items.", error.toException())
             }
-            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
-        }
+        })
     }
 
     private fun configureListView() {
-        val adapter = CustomListAdapter<AdapterItem>(this)
+        adapter = CustomListAdapter(this)
         listView.adapter = adapter
-        adapter.updateData(data)
-        adapter.reloadList()
 
         listView.setOnItemClickListener { _, _, position, _ ->
             (data[position] as? PlacementItem)?.let { item ->
@@ -179,6 +184,32 @@ class MainActivity2 : FragmentActivity() {
             if (event == SAEvent.AdLoaded) {
                 bannerView.play()
             }
+        }
+    }
+
+    private fun updateSettings() {
+        val app = application as? MyApplication ?: return
+        val settings = app.settings
+
+        bannerView.setBumperPage(settings.bumperEnabled)
+        bannerView.setParentalGate(settings.parentalEnabled)
+
+        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
+        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+
+        SAVideoAd.setBumperPage(settings.bumperEnabled)
+        SAVideoAd.setParentalGate(settings.parentalEnabled)
+
+        when (app.settings.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
+            }
+            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
         }
     }
 }
