@@ -97,9 +97,9 @@ class MainActivity : FragmentActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 data = dataSnapshot.children.mapNotNull { item ->
 
-                    val rowType = item.getValue(ListItem::class.java)?.rowStyle
+                    val rowStyle = item.getValue(ListItem::class.java)?.rowStyle
 
-                    if(rowType == RowStyle.HEADER) {
+                    if(rowStyle == RowStyle.HEADER) {
                         item.getValue(HeaderItem::class.java)
                     } else {
                         item.getValue(PlacementItem::class.java)
