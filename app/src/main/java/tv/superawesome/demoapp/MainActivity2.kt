@@ -44,32 +44,6 @@ class MainActivity2 : FragmentActivity() {
         initButtons()
     }
 
-    private fun configureDataSource() {
-        database = Firebase.database(Constants.FIREBASE_DATABASE_URL).reference
-
-        database.child("list-items").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                data = dataSnapshot.children.mapNotNull { item ->
-
-                    val rowStyle = item.getValue(ListItem::class.java)?.rowStyle
-
-                    if(rowStyle == RowStyle.HEADER) {
-                        item.getValue(HeaderItem::class.java)
-                    } else {
-                        item.getValue(PlacementItem::class.java)
-                    }
-                }
-
-                adapter?.updateData(data)
-                adapter?.reloadList()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to load list items.", error.toException())
-            }
-        })
-    }
-
     private fun initButtons() {
         config1Button.setOnClickListener {
             Log.i(TAG, "Config 1 selected")
@@ -110,30 +84,30 @@ class MainActivity2 : FragmentActivity() {
         configureListView()
     }
 
-    private fun updateSettings() {
-        val app = application as? MyApplication ?: return
-        val settings = app.settings
+    private fun configureDataSource() {
+        database = Firebase.database(Constants.FIREBASE_DATABASE_URL).reference
 
-        bannerView.setBumperPage(settings.bumperEnabled)
-        bannerView.setParentalGate(settings.parentalEnabled)
+        database.child("list-items").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                data = dataSnapshot.children.mapNotNull { item ->
 
-        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
-        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+                    val rowStyle = item.getValue(ListItem::class.java)?.rowStyle
 
-        SAVideoAd.setBumperPage(settings.bumperEnabled)
-        SAVideoAd.setParentalGate(settings.parentalEnabled)
+                    if(rowStyle == RowStyle.HEADER) {
+                        item.getValue(HeaderItem::class.java)
+                    } else {
+                        item.getValue(PlacementItem::class.java)
+                    }
+                }
 
-        when (app.settings.closeButtonState) {
-            CloseButtonState.VisibleImmediately -> {
-                SAVideoAd.enableCloseButtonNoDelay()
-                SAInterstitialAd.enableCloseButtonNoDelay()
+                adapter?.updateData(data)
+                adapter?.reloadList()
             }
-            CloseButtonState.VisibleWithDelay -> {
-                SAVideoAd.enableCloseButton()
-                SAInterstitialAd.enableCloseButton()
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to load list items.", error.toException())
             }
-            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
-        }
+        })
     }
 
     private fun configureListView() {
@@ -210,6 +184,32 @@ class MainActivity2 : FragmentActivity() {
             if (event == SAEvent.AdLoaded) {
                 bannerView.play()
             }
+        }
+    }
+
+    private fun updateSettings() {
+        val app = application as? MyApplication ?: return
+        val settings = app.settings
+
+        bannerView.setBumperPage(settings.bumperEnabled)
+        bannerView.setParentalGate(settings.parentalEnabled)
+
+        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
+        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+
+        SAVideoAd.setBumperPage(settings.bumperEnabled)
+        SAVideoAd.setParentalGate(settings.parentalEnabled)
+
+        when (app.settings.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
+            }
+            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
         }
     }
 }

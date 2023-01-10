@@ -52,42 +52,16 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
-
-    private fun updateSettings() {
-        val settings = getSettings() ?: return
-        val config = settings.environment
-
-        bannerView.setConfiguration(config)
-        bannerView.setBumperPage(settings.bumperEnabled)
-        bannerView.setParentalGate(settings.parentalEnabled)
-
-        SAInterstitialAd.setConfiguration(config)
-        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
-        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
-
-        SAVideoAd.setConfiguration(config)
-        SAVideoAd.setBumperPage(settings.bumperEnabled)
-        SAVideoAd.setParentalGate(settings.parentalEnabled)
-        SAVideoAd.setMuteOnStart(settings.muteOnStart)
-
-        when (settings.closeButtonState) {
-            CloseButtonState.VisibleImmediately -> {
-                SAVideoAd.enableCloseButtonNoDelay()
-                SAInterstitialAd.enableCloseButtonNoDelay()
-            }
-            CloseButtonState.VisibleWithDelay -> {
-                SAVideoAd.enableCloseButton()
-                SAInterstitialAd.enableCloseButton()
-            }
-            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
-        }
-    }
-
     private fun initUI() {
         val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()}"
         titleTextView.text = title
         configureListView()
+    }
+
+    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
+
+    private fun isPlayEnabled(): Boolean {
+        return getSettings()?.playEnabled == true
     }
 
     private fun configureDataSource() {
@@ -197,8 +171,34 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun isPlayEnabled(): Boolean {
-        return getSettings()?.playEnabled == true
+    private fun updateSettings() {
+        val settings = getSettings() ?: return
+        val config = settings.environment
+
+        bannerView.setConfiguration(config)
+        bannerView.setBumperPage(settings.bumperEnabled)
+        bannerView.setParentalGate(settings.parentalEnabled)
+
+        SAInterstitialAd.setConfiguration(config)
+        SAInterstitialAd.setBumperPage(settings.bumperEnabled)
+        SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+
+        SAVideoAd.setConfiguration(config)
+        SAVideoAd.setBumperPage(settings.bumperEnabled)
+        SAVideoAd.setParentalGate(settings.parentalEnabled)
+        SAVideoAd.setMuteOnStart(settings.muteOnStart)
+
+        when (settings.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> {
+                SAVideoAd.enableCloseButtonNoDelay()
+                SAInterstitialAd.enableCloseButtonNoDelay()
+            }
+            CloseButtonState.VisibleWithDelay -> {
+                SAVideoAd.enableCloseButton()
+                SAInterstitialAd.enableCloseButton()
+            }
+            CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
+        }
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
