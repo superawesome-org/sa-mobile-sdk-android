@@ -9,6 +9,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.adapter.*
+import tv.superawesome.demoapp.model.Constants
 import tv.superawesome.demoapp.model.SettingsData
 import tv.superawesome.lib.sabumperpage.SABumperPage
 import tv.superawesome.lib.sasession.defines.SAConfiguration
@@ -19,7 +20,6 @@ import tv.superawesome.sdk.publisher.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 var data: List<AdapterItem> = listOf()
-    private set
 
 class MainActivity : FragmentActivity() {
 
@@ -91,7 +91,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun configureDataSource() {
-        database = Firebase.database(DATABASE_URL).reference
+        database = Firebase.database(Constants.FIREBASE_DATABASE_URL).reference
 
         database.child("list-items").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -213,4 +213,3 @@ class MainActivity : FragmentActivity() {
 }
 
 private const val TAG = "AwesomeAds"
-private const val DATABASE_URL = "https://awesomeads-default-rtdb.europe-west1.firebasedatabase.app/"

@@ -10,18 +10,24 @@ import kotlinx.android.synthetic.main.activity_main_2.config1Button
 import kotlinx.android.synthetic.main.activity_main_2.config2Button
 import kotlinx.android.synthetic.main.activity_main_2.listView
 import kotlinx.android.synthetic.main.activity_main_2.titleTextView
-import tv.superawesome.demoapp.adapter.AdapterItem
-import tv.superawesome.demoapp.adapter.CustomListAdapter
-import tv.superawesome.demoapp.adapter.PlacementItem
-import tv.superawesome.demoapp.adapter.Type
 import tv.superawesome.sdk.publisher.SAVersion
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.ui.common.BumperPageActivity
 import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
+import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.ktx.database
+import tv.superawesome.demoapp.adapter.*
+import tv.superawesome.demoapp.adapter.CustomListAdapter
+import tv.superawesome.demoapp.model.Constants
 
 class MainActivity2 : FragmentActivity() {
+
+    private lateinit var database: DatabaseReference
+    private lateinit var adapter: CustomListAdapter<AdapterItem>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_2)
@@ -30,11 +36,38 @@ class MainActivity2 : FragmentActivity() {
 
         initUI()
 
+        configureDataSource()
         configureBannerAd()
         configureInterstitialAd()
         configureVideoAd()
 
         initButtons()
+    }
+
+    private fun configureDataSource() {
+        database = Firebase.database(Constants.FIREBASE_DATABASE_URL).reference
+
+        database.child("list-items").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                data = dataSnapshot.children.mapNotNull { item ->
+
+                    val rowStyle = item.getValue(ListItem::class.java)?.rowStyle
+
+                    if(rowStyle == RowStyle.HEADER) {
+                        item.getValue(HeaderItem::class.java)
+                    } else {
+                        item.getValue(PlacementItem::class.java)
+                    }
+                }
+
+                adapter?.updateData(data)
+                adapter?.reloadList()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to load list items.", error.toException())
+            }
+        })
     }
 
     private fun initButtons() {
@@ -104,10 +137,8 @@ class MainActivity2 : FragmentActivity() {
     }
 
     private fun configureListView() {
-        val adapter = CustomListAdapter<AdapterItem>(this)
+        adapter = CustomListAdapter(this)
         listView.adapter = adapter
-        adapter.updateData(data)
-        adapter.reloadList()
 
         listView.setOnItemClickListener { _, _, position, _ ->
             (data[position] as? PlacementItem)?.let { item ->
