@@ -21,6 +21,8 @@ import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.demoapp.adapter.CustomListAdapter
+import tv.superawesome.demoapp.model.Constants
+
 class MainActivity2 : FragmentActivity() {
 
     private lateinit var database: DatabaseReference
