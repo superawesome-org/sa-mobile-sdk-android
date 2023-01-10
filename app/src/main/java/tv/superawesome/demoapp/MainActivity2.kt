@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_main_2.*
 import kotlinx.android.synthetic.main.activity_main_2.bannerView
 import kotlinx.android.synthetic.main.activity_main_2.config1Button
@@ -16,13 +19,8 @@ import tv.superawesome.sdk.publisher.common.ui.common.BumperPageActivity
 import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
-import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.database.ktx.database
 import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.demoapp.adapter.CustomListAdapter
-import tv.superawesome.demoapp.model.Constants
-
 class MainActivity2 : FragmentActivity() {
 
     private lateinit var database: DatabaseReference
