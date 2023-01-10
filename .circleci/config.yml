@@ -10,6 +10,13 @@ references:
       JAVA_TOOL_OPTIONS: "-Xmx2048m"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 
+  configure_google_services: &configure_google_services
+    run:
+      name: Configure Google Services
+      command: |
+        echo "Google Services"
+        echo "${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC}" | base64 --decode > ${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_NAME}.json
+
   generate_github_token: &generate_github_token
     run:
       name: Generate & store Github Token
@@ -37,6 +44,7 @@ jobs:
     steps:
       - checkout
       - *generate_github_token
+      - *configure_google_services
       - *bootstrap
       - run:
           name: Lint Code
@@ -59,6 +67,7 @@ jobs:
           at: .
       - checkout
       - *generate_github_token
+      - *configure_google_services
       - run:
           name: Check semantic release version
           command: |
@@ -76,6 +85,7 @@ jobs:
     steps:
       - checkout
       - *generate_github_token
+      - *configure_google_services
       - attach_workspace:
           at: .
       - run:
@@ -110,6 +120,7 @@ jobs:
     steps:
       - checkout
       - *generate_github_token
+      - *configure_google_services
       - run:
           name: Run semantic release
           command: |
@@ -122,6 +133,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *configure_google_services
       - run:
           name: Preping deploy
           command: echo "Preping deploy"
@@ -131,6 +143,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *configure_google_services
       - *generate_github_token
       - *bootstrap
       - run:
@@ -141,6 +154,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *configure_google_services
       - *generate_github_token
       - *bootstrap
       - run:
@@ -151,6 +165,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *configure_google_services
       - *generate_github_token
       - *bootstrap
       - run:
@@ -161,6 +176,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *configure_google_services
       - *generate_github_token
       - *bootstrap
       - run:
@@ -171,6 +187,7 @@ jobs:
     <<: *android_config
     steps:
       - checkout
+      - *configure_google_services
       - *generate_github_token
       - *bootstrap
       - run:
