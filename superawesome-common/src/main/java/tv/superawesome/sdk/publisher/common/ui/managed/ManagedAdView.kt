@@ -5,10 +5,12 @@ package tv.superawesome.sdk.publisher.common.ui.managed
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -61,7 +63,7 @@ public class ManagedAdView @JvmOverloads constructor(
         webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
         webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener), JS_BRIDGE_NAME)
         val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
-        webView?.loadDataWithBaseURL(environment.baseUrl, updatedHTML, MIME_TYPE, ENCODING, HISTORY)
+        webView?.loadDataWithBaseURL(environment.baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
     }
 
     override fun onSaveInstanceState(): Parcelable = Bundle().apply {
@@ -175,6 +177,7 @@ public class ManagedAdView @JvmOverloads constructor(
         this.padlockButton = padlockButton
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun addWebView() {
         removeWebView()
 
@@ -183,6 +186,20 @@ public class ManagedAdView @JvmOverloads constructor(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+        webView.setBackgroundColor(Color.TRANSPARENT)
+        webView.isVerticalScrollBarEnabled = false
+        webView.isHorizontalScrollBarEnabled = false
+        webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
+        webView.isFocusableInTouchMode = false
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            webView.settings.mediaPlaybackRequiresUserGesture = false
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true)
+        }
+        webView.settings.javaScriptEnabled = true
+
         webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
                 controller.adShown()
@@ -216,11 +233,8 @@ public class ManagedAdView @JvmOverloads constructor(
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible
     }
-
-    companion object {
-        private const val MIME_TYPE = ""
-        private const val ENCODING = ""
-        private val HISTORY: String? = null
-        private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
-    }
 }
+
+private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
+private const val MIME_TYPE = ""
+private const val ENCODING = ""

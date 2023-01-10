@@ -26,6 +26,7 @@ object Constants {
     val defaultEnvironment = Environment.Production
     const val defaultMoatLimitingState = true
     val defaultStartDelay = AdRequest.StartDelay.PreRoll
+    const val defaultMuteOnStart = false
 
     object Keys {
         const val placementId = "placementId"
