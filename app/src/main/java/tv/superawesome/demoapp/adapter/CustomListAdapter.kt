@@ -31,7 +31,6 @@ data class PlacementItem(
     fun isFull(): Boolean = lineItemId != null && creativeId != null
 }
 
-
 internal class CustomListAdapter<T : AdapterItem?>(context: Context?) :
     ArrayAdapter<T?>(context!!, 0) {
     private var data: List<T> = emptyList()

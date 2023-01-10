@@ -20,11 +20,11 @@ import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 var data: List<AdapterItem> = listOf()
     private set
-private var adapter: CustomListAdapter<AdapterItem>? = null
 
 class MainActivity : FragmentActivity() {
 
     private lateinit var database: DatabaseReference
+    private lateinit var adapter: CustomListAdapter<AdapterItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
