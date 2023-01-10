@@ -50,6 +50,10 @@ interface IVideoPlayerController {
      */
     fun seekTo(position: Int)
 
+    fun setMuted(muted: Boolean)
+
+    val isMuted: Boolean
+
     /**
      * @return true or false, depending on whether the media control is playing
      */

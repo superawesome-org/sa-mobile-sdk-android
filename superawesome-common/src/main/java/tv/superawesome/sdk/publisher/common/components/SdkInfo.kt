@@ -2,8 +2,7 @@ package tv.superawesome.sdk.publisher.common.components
 
 import android.content.Context
 import android.content.pm.PackageManager
-import java.util.Locale
-import java.util.Properties
+import java.util.*
 
 interface SdkInfoType {
     val version: String
@@ -56,6 +55,5 @@ class SdkInfo(
 
     companion object {
         var overrideVersion: String? = null
-        var overridePlatform: String? = null
     }
 }
