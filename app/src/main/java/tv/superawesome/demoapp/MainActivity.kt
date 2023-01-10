@@ -92,14 +92,12 @@ class MainActivity : FragmentActivity() {
 
     private fun configureDataSource() {
         database = Firebase.database(DATABASE_URL).reference
-        database.child("list-items").get().addOnCompleteListener {
-            if (it.isSuccessful) {
 
-                data = it.result.children.mapNotNull { item ->
+        database.child("list-items").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                data = dataSnapshot.children.mapNotNull { item ->
 
-                    val listItem = item.getValue(ListItem::class.java)
-
-                    val rowType = listItem?.rowStyle
+                    val rowType = item.getValue(ListItem::class.java)?.rowStyle
 
                     if(rowType == RowStyle.HEADER) {
                         item.getValue(HeaderItem::class.java)
@@ -110,12 +108,12 @@ class MainActivity : FragmentActivity() {
 
                 adapter?.updateData(data)
                 adapter?.reloadList()
-
-            } else {
-                Log.d(TAG, "Error: Failed to load placements")
-                Log.d(TAG, it.exception?.message.toString())
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to load list items.", error.toException())
+            }
+        })
     }
 
     private fun configureListView() {
