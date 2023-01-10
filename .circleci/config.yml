@@ -15,7 +15,7 @@ references:
       name: Configure Google Services
       command: |
         echo "Google Services"
-        echo "export SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC=${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC}" >> $BASH_ENV
+        echo 'export SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC="$SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC"' >> $BASH_ENV
         echo $SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC | base64 -di > app/${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_NAME}.json
 
   generate_github_token: &generate_github_token
