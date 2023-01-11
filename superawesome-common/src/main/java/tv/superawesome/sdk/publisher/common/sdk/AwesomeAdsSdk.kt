@@ -4,9 +4,10 @@ import android.content.Context
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
-import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
+import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 import tv.superawesome.sdk.publisher.common.di.createCommonModule
 import tv.superawesome.sdk.publisher.common.models.Configuration
+import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
 
 object AwesomeAdsSdk {
     private var app: KoinApplication? = null
@@ -19,12 +20,22 @@ object AwesomeAdsSdk {
     }
 
     @JvmStatic
-    fun init(applicationContext: Context, configuration: Configuration, options: Map<String, String>) {
+    fun init(
+        applicationContext: Context,
+        configuration: Configuration,
+        options: Map<String, String>
+    ) {
         if (app == null) {
             QueryAdditionalOptions.instance = QueryAdditionalOptions(options)
             app = buildKoinApplication(applicationContext, configuration)
         }
     }
+
+    /** Information about the SDK e.g. version number
+     * @return SDK info or `null` if the SDK is not initialised
+     * */
+    @JvmStatic
+    fun info(): SdkInfoType? = app?.koin?.get()
 
     private fun buildKoinApplication(
         applicationContext: Context,
