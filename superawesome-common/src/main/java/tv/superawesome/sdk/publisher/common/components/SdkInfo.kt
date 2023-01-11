@@ -5,10 +5,22 @@ import android.content.pm.PackageManager
 import java.util.*
 
 interface SdkInfoType {
+    /** Returns the combined version information platform + version number
+     * e.g. android_x.y.z */
     val version: String
+
+    /** Returns the version number only
+     * e.g. x.y.z */
     val versionNumber: String
+
+    /** Returns the bundle name for the app */
     val bundle: String
+
+    /** Returns the name of the app */
     val name: String
+
+    /** Returns the preferred locale language and region
+     * e.g. en_UK */
     val lang: String
 }
 
