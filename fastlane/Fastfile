@@ -1,5 +1,6 @@
 if ENV['SA_USE_DEV_FASTFILE'] then
   if ENV['FAST_PATH'] then
+    FAST_PATH = ENV['FAST_PATH']
     import "#{FAST_PATH}/mobile/sdks/android/Fastfile"
   else
     USER = `printf $USER`
