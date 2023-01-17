@@ -29,7 +29,7 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
     override fun requestInterstitialAd(
         context: Context,
         listener: CustomEventInterstitialListener,
-        s: String?,
+        placement: String?,
         mediationAdRequest: MediationAdRequest,
         bundle: Bundle?
     ) {
@@ -77,7 +77,7 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
             }
         })
         try {
-            val placementId = s!!.toInt()
+            val placementId = placement!!.toInt()
             load(placementId, context)
         } catch (e: NumberFormatException) {
             listener.onAdFailedToLoad(AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""))
