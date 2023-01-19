@@ -57,6 +57,7 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(adView)
+        adView.contentDescription = "Ad content"
         adView.load(placementId, html, this)
         adView.addView(closeButton)
 
