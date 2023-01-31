@@ -173,17 +173,6 @@ jobs:
           name: Push Superawesome-AdMob to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
 
-  sdk_push_superawesome_moat:
-    <<: *android_config
-    steps:
-      - checkout
-      - *configure_google_services
-      - *generate_github_token
-      - *bootstrap
-      - run:
-          name: Push Superawesome-Moat to the S3 Repo
-          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:samoat modulePkgName:SuperAwesome-Moat
-
   sdk_push_superawesome_unity:
     <<: *android_config
     steps:
@@ -293,15 +282,6 @@ workflows:
             branches:
               ignore: /.*/
       - sdk_push_superawesome_admob:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - prep_deploy
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - sdk_push_superawesome_moat:
           context: MOBILE_ANDROID_SDKS
           requires:
             - prep_deploy

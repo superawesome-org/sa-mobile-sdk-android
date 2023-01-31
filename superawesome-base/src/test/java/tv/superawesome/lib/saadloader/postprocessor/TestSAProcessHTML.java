@@ -40,7 +40,7 @@ public class TestSAProcessHTML {
         assertTrue(ad.creative.details.media.html.contains("<img src='https://ads.superawesome.tv/v2/demo_images/320x50.jpg' width='100%' height='100%' style='object-fit: contain;'/>"));
         assertFalse(ad.creative.details.media.html.contains("<a href='http://hotnews.ro' target='_blank'>"));
         assertFalse(ad.creative.details.media.html.contains("</a>"));
-        assertTrue(ad.creative.details.media.html.equals("<img src='https://ads.superawesome.tv/v2/demo_images/320x50.jpg' width='100%' height='100%' style='object-fit: contain;'/>_MOAT_"));
+        assertTrue(ad.creative.details.media.html.equals("<img src='https://ads.superawesome.tv/v2/demo_images/320x50.jpg' width='100%' height='100%' style='object-fit: contain;'/>"));
 
     }
 
@@ -56,8 +56,7 @@ public class TestSAProcessHTML {
         ad.creative.details.media.html = SAProcessHTML.formatCreativeIntoRichMediaHTML(ad, 123456);
 
         assertNotNull(ad.creative.details.media.html);
-        assertTrue(ad.creative.details.media.html.contains("_MOAT_"));
-        assertTrue(ad.creative.details.media.html.contains("<iframe style='padding:0;border:0;' width='100%' height='100%' src='https://s3-eu-west-1.amazonaws.com/sb-ads-uploads/rich-media/tNmFLJ7kGQWBbyORkIqTJ4oqykaGPU9w/rich-media/index.html?placement=4091&line_item=2001&creative=2081&rnd=123456'></iframe>_MOAT_"));
+        assertTrue(ad.creative.details.media.html.contains("<iframe style='padding:0;border:0;' width='100%' height='100%' src='https://s3-eu-west-1.amazonaws.com/sb-ads-uploads/rich-media/tNmFLJ7kGQWBbyORkIqTJ4oqykaGPU9w/rich-media/index.html?placement=4091&line_item=2001&creative=2081&rnd=123456'></iframe>"));
     }
 
     @Test
@@ -69,7 +68,6 @@ public class TestSAProcessHTML {
         ad.creative.details.media.html = SAProcessHTML.formatCreativeIntoTagHTML(ad);
 
         assertNotNull(ad.creative.details.media.html);
-        assertTrue(ad.creative.details.media.html.contains("_MOAT_"));
         assertTrue(ad.creative.details.media.html.contains("<!-- Beginning PassBack for Ad unit FK:Site-Skyscraper-Passback ### size: [[120,600]] -->\\\\n\\\\t<script type='text/javascript' src='http://www.googletagservices.com/tag/js/gpt.js'>\\\\n\\\\t\\\\tgoogletag.pubads().definePassback('1002534/FK:Site-Skyscraper-Passback', [[120,600]]).display();\\\\n\\\\t</script>\\\\n<!-- End Passback -->"));
     }
 
@@ -82,8 +80,7 @@ public class TestSAProcessHTML {
         ad.creative.details.media.html = SAProcessHTML.formatCreativeIntoTagHTML(ad);
 
         assertNotNull(ad.creative.details.media.html);
-        assertTrue(ad.creative.details.media.html.contains("_MOAT_"));
-        assertTrue(ad.creative.details.media.html.contains("<A HREF=\"https://ad.doubleclick.net/ddm/jump/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729?\"><IMG SRC=\"https://ad.doubleclick.net/ddm/ad/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=?\" BORDER=0 WIDTH=480 HEIGHT=320 ALT=\"Advertisement\"></A>_MOAT_"));
+        assertTrue(ad.creative.details.media.html.contains("<A HREF=\"https://ad.doubleclick.net/ddm/jump/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729?\"><IMG SRC=\"https://ad.doubleclick.net/ddm/ad/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=?\" BORDER=0 WIDTH=480 HEIGHT=320 ALT=\"Advertisement\"></A>"));
     }
 
     @Test
@@ -96,7 +93,6 @@ public class TestSAProcessHTML {
         ad.creative.details.media.html = SAProcessHTML.formatCreativeIntoTagHTML(ad);
 
         assertNotNull(ad.creative.details.media.html);
-        assertTrue(ad.creative.details.media.html.contains("_MOAT_"));
-        assertTrue(ad.creative.details.media.html.contains("<A HREF=\"http://hotnews.ro&redir=https://ad.doubleclick.net/ddm/jump/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729?\"><IMG SRC=\"https://ad.doubleclick.net/ddm/ad/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=?\" BORDER=0 WIDTH=480 HEIGHT=320 ALT=\"Advertisement\"></A>_MOAT_"));
+        assertTrue(ad.creative.details.media.html.contains("<A HREF=\"http://hotnews.ro&redir=https://ad.doubleclick.net/ddm/jump/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729?\"><IMG SRC=\"https://ad.doubleclick.net/ddm/ad/N304202.1915243SUPERAWESOME.TV/B10773905.144955457;sz=480x320;ord=1486394166729;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=?\" BORDER=0 WIDTH=480 HEIGHT=320 ALT=\"Advertisement\"></A>"));
     }
 }

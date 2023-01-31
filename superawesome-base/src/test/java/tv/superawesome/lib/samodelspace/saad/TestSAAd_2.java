@@ -48,7 +48,6 @@ public class TestSAAd_2 {
         assertEquals(result.error, expected_error);
         assertEquals(result.advertiserId, expected_advertiserId);
         assertEquals(result.publisherId, expected_publisherId);
-        assertEquals(result.moat, expected_moat, 0.01);
         assertEquals(result.appId, expected_appId);
         assertEquals(result.lineItemId, expected_lineItemId);
         assertEquals(result.campaignId, expected_campaignId);
