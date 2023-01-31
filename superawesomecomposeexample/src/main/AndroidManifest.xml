@@ -23,9 +23,6 @@
         <activity
             android:name=".activities.FeatureDetailActivity"
             android:theme="@style/Theme.Samobilesdkandroid" />
-        <activity
-            android:name="tv.superawesome.sdk.publisher.videoPlayer.VideoPlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>
