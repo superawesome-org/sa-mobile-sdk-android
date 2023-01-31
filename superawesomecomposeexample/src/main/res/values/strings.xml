@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">SuperAwesomeComposeExample</string>
+    <string name="version_title">AwesomeAds version:</string>
+    <string name="features_title">Features</string>
+    <string name="features_banner_title">Banner</string>
+    <string name="features_interstitial_title">Interstitial</string>
+    <string name="features_video_title">Video</string>
+    <string name="options_test_mode_title">Test Mode</string>
+    <string name="options_bumper_title">Bumper</string>
+    <string name="options_parent_gate_title">Parent Gate</string>
+    <string name="options_back_button_title">Back Button</string>
+    <string name="options_close_button_title">Close Button</string>
+    <string name="options_close_button_delay_title">Close Button with Delay</string>
+    <string name="options_mute_video_start_title">Mute video on start</string>
+</resources>

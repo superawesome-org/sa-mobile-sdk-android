@@ -7,3 +7,4 @@ include ':superawesome-base'
 include ':superawesome-common'
 project(':superawesome-base').projectDir = new File('superawesome-base')
 project(':superawesome-common').projectDir = new File('superawesome-common')
+include ':superawesomecomposeexample'
