@@ -7,6 +7,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
+import tv.superawesome.sdk.publisher.common.models.Platform
 import java.util.*
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
@@ -15,7 +16,7 @@ class SdkInfoTest : BaseTest() {
 
     @BeforeTest
     fun prepare() {
-        SdkInfo.Companion.overrideVersion = null
+        SdkInfo.Companion.overrideVersionPlatform(null, null)
     }
 
     @Test
@@ -38,7 +39,7 @@ class SdkInfoTest : BaseTest() {
         val sdkInfo = configureSdkInfo()
 
         // When
-        SdkInfo.Companion.overrideVersion = "4.5.6"
+        SdkInfo.Companion.overrideVersionPlatform("4.5.6", Platform.Android)
 
         // Then
         assertEquals("4.5.6", sdkInfo.versionNumber)
