@@ -6,7 +6,8 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.sdk.publisher.SAVersion;
+import tv.superawesome.sdk.publisher.common.components.SdkInfo;
+import tv.superawesome.sdk.publisher.common.models.Platform;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -18,12 +19,8 @@ public class SAUnityVersion {
      *
      * @param context current context
      * @param version current version string
-     * @param sdk     current sdk string
      */
-    public static void SuperAwesomeUnityVersionSetVersion (Context context, String version, String sdk) {
-
-        SAVersion.overrideVersion(version);
-        SAVersion.overrideSdk(sdk);
-
+    public static void SuperAwesomeUnityVersionSetVersion(Context context, String version) {
+        SdkInfo.Companion.overrideVersionPlatform(version, Platform.Unity);
     }
 }

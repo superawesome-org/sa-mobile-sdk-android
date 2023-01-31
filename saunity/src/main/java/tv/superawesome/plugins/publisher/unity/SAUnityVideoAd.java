@@ -6,12 +6,10 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.lib.sasession.defines.SAConfiguration;
-import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
-import tv.superawesome.sdk.publisher.SAEvent;
-import tv.superawesome.sdk.publisher.SAInterface;
-import tv.superawesome.sdk.publisher.SAOrientation;
-import tv.superawesome.sdk.publisher.SAVideoAd;
+import tv.superawesome.sdk.publisher.common.models.AdRequest;
+import tv.superawesome.sdk.publisher.common.models.Orientation;
+import tv.superawesome.sdk.publisher.common.models.SAEvent;
+import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -24,34 +22,34 @@ public class SAUnityVideoAd {
      * Method that creates a new Video Ad (from Unity)
      */
     public static void SuperAwesomeUnitySAVideoAdCreate(Context context) {
-        SAVideoAd.setListener((SAInterface) (placementId, event) -> {
+        SAVideoAd.INSTANCE.setListener((placementId, event) -> {
             switch (event) {
-                case adLoaded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString());
+                case AdLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdLoaded.getValue());
                     break;
-                case adEmpty:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString());
+                case AdEmpty:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEmpty.getValue());
                     break;
-                case adFailedToLoad:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString());
+                case AdFailedToLoad:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToLoad.getValue());
                     break;
-                case adAlreadyLoaded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString());
+                case AdAlreadyLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdAlreadyLoaded.getValue());
                     break;
-                case adShown:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString());
+                case AdShown:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdShown.getValue());
                     break;
-                case adFailedToShow:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString());
+                case AdFailedToShow:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToShow.getValue());
                     break;
-                case adClicked:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString());
+                case AdClicked:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClicked.getValue());
                     break;
-                case adEnded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString());
+                case AdEnded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEnded.getValue());
                     break;
-                case adClosed:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
+                case AdClosed:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClosed.getValue());
                     break;
             }
         });
@@ -65,10 +63,9 @@ public class SAUnityVideoAd {
                                                       int configuration,
                                                       boolean test,
                                                       int playback) {
-        SAVideoAd.setTestMode(test);
-        SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
-        SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
-        SAVideoAd.load(placementId, context);
+        SAVideoAd.INSTANCE.setTestMode(test);
+        setStartDelay(playback);
+        SAVideoAd.INSTANCE.load(placementId, context);
     }
 
     /**
@@ -76,7 +73,7 @@ public class SAUnityVideoAd {
      */
     public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable(Context context,
                                                                    int placementId) {
-        return SAVideoAd.hasAdAvailable(placementId);
+        return SAVideoAd.INSTANCE.hasAdAvailable(placementId);
     }
 
     /**
@@ -92,15 +89,15 @@ public class SAUnityVideoAd {
                                                       int orientation,
                                                       boolean isBackButtonEnabled,
                                                       boolean shouldShowCloseWarning) {
-        SAVideoAd.setParentalGate(isParentalGateEnabled);
-        SAVideoAd.setBumperPage(isBumperPageEnabled);
-        SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setCloseButton(shouldShowCloseButton);
-        SAVideoAd.setSmallClick(shouldShowSmallClickButton);
-        SAVideoAd.setBackButton(isBackButtonEnabled);
-        SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
-        SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
-        SAVideoAd.play(placementId, context);
+        SAVideoAd.INSTANCE.setParentalGate(isParentalGateEnabled);
+        SAVideoAd.INSTANCE.setBumperPage(isBumperPageEnabled);
+        SAVideoAd.INSTANCE.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+        SAVideoAd.INSTANCE.setCloseButton(shouldShowCloseButton);
+        SAVideoAd.INSTANCE.setSmallClick(shouldShowSmallClickButton);
+        SAVideoAd.INSTANCE.setBackButton(isBackButtonEnabled);
+        setOrientation(orientation);
+        SAVideoAd.INSTANCE.setCloseButtonWarning(shouldShowCloseWarning);
+        SAVideoAd.INSTANCE.play(placementId, context);
     }
 
     /**
@@ -116,14 +113,28 @@ public class SAUnityVideoAd {
             boolean isBackButtonEnabled,
             boolean shouldShowCloseWarning,
             boolean testModeEnabled) {
-        SAVideoAd.setParentalGate(isParentalGateEnabled);
-        SAVideoAd.setBumperPage(isBumperPageEnabled);
-        SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setCloseButton(shouldShowCloseButton);
-        SAVideoAd.setSmallClick(shouldShowSmallClickButton);
-        SAVideoAd.setBackButton(isBackButtonEnabled);
-        SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
-        SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
-        SAVideoAd.setTestMode(testModeEnabled);
+        SAVideoAd.INSTANCE.setParentalGate(isParentalGateEnabled);
+        SAVideoAd.INSTANCE.setBumperPage(isBumperPageEnabled);
+        SAVideoAd.INSTANCE.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
+        SAVideoAd.INSTANCE.setCloseButton(shouldShowCloseButton);
+        SAVideoAd.INSTANCE.setSmallClick(shouldShowSmallClickButton);
+        SAVideoAd.INSTANCE.setBackButton(isBackButtonEnabled);
+        setOrientation(orientation);
+        SAVideoAd.INSTANCE.setCloseButtonWarning(shouldShowCloseWarning);
+        SAVideoAd.INSTANCE.setTestMode(testModeEnabled);
+    }
+
+    private static void setOrientation(int orientation) {
+        Orientation orientationInstance = Orientation.Companion.fromValue(orientation);
+        if (orientationInstance != null) {
+            SAVideoAd.INSTANCE.setOrientation(orientationInstance);
+        }
+    }
+
+    private static void setStartDelay(int startDelay) {
+        AdRequest.StartDelay delay = AdRequest.StartDelay.Companion.fromValue(startDelay);
+        if (delay != null) {
+            SAVideoAd.INSTANCE.setPlaybackMode(delay);
+        }
     }
 }
