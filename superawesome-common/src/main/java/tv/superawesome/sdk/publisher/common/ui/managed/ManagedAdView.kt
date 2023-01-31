@@ -156,10 +156,6 @@ public class ManagedAdView @JvmOverloads constructor(
         }
     }
 
-    public fun disableMoatLimiting() {
-        controller.moatLimiting = false
-    }
-
     private fun showPadlockIfNeeded() {
         if (!controller.shouldShowPadlock || webView == null) return
 

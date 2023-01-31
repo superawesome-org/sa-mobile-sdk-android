@@ -24,7 +24,6 @@ object Constants {
     val defaultCloseButtonState = CloseButtonState.Hidden
     val defaultOrientation = Orientation.Any
     val defaultEnvironment = Environment.Production
-    const val defaultMoatLimitingState = true
     val defaultStartDelay = AdRequest.StartDelay.PreRoll
     const val defaultMuteOnStart = false
 

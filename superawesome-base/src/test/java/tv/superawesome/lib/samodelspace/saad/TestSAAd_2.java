@@ -35,7 +35,6 @@ public class TestSAAd_2 {
         int expected_lineItemId = 931;
         int expected_campaignId = 0;
         int expected_placementId = 100;
-        double expected_moat = 0.2;
         SACampaignType expected_campaignType = SACampaignType.CPM;
         boolean expected_isTest = false;
         boolean expected_isFallback = false;

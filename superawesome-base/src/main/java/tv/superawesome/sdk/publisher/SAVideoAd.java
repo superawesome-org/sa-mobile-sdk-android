@@ -42,7 +42,6 @@ public class SAVideoAd {
     private static boolean shouldShowSmallClickButton = SADefaults.defaultSmallClick();
     private static boolean isTestingEnabled = SADefaults.defaultTestMode();
     private static boolean isBackButtonEnabled = SADefaults.defaultBackButton();
-    private static boolean isMoatLimitingEnabled = SADefaults.defaultMoatLimitingState();
     private static SAOrientation orientation = SADefaults.defaultOrientation();
     private static SAConfiguration configuration = SADefaults.defaultConfiguration();
     private static SARTBStartDelay playback = SADefaults.defaultPlaybackMode();
@@ -265,9 +264,6 @@ public class SAVideoAd {
                     // setup eventing
                     SASession session = getNewSession(context);
                     events.setAd(session, adL);
-                    if (!isMoatLimitingEnabled) {
-                        events.disableMoatLimiting();
-                    }
 
                     // create intent
                     Intent intent = new Intent(context, SAVideoActivity.class);
@@ -453,10 +449,6 @@ public class SAVideoAd {
         return shouldAutomaticallyCloseAtEnd;
     }
 
-    public static boolean getMoatLimitingState() {
-        return isMoatLimitingEnabled;
-    }
-
     public static boolean getShouldShowSmallClickButton() {
         return shouldShowSmallClickButton;
     }
@@ -511,10 +503,6 @@ public class SAVideoAd {
 
     public static void setSmallClick(boolean value) {
         shouldShowSmallClickButton = value;
-    }
-
-    public static void disableMoatLimiting() {
-        isMoatLimitingEnabled = false;
     }
 
     public static SAEvents getEvents() {

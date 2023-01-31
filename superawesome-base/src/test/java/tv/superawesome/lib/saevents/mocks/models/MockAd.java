@@ -19,7 +19,6 @@ public class MockAd extends SAAd {
         this.campaignId = 3001;
         this.placementId = placementId;
         this.configuration = SAConfiguration.PRODUCTION.getValue();
-        this.moat = 0.2f;
         this.isTest = false;
         this.isFallback = false;
         this.isFill = false;

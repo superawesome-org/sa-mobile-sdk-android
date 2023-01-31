@@ -6,10 +6,6 @@ import java.util.concurrent.Executors;
 import tv.superawesome.lib.saevents.events.DwellTimeEvent;
 import tv.superawesome.lib.saevents.events.SAClickEvent;
 import tv.superawesome.lib.saevents.events.SAImpressionEvent;
-import tv.superawesome.lib.saevents.events.SAMoatAttemptEvent;
-import tv.superawesome.lib.saevents.events.SAMoatAttemptNoClassEvent;
-import tv.superawesome.lib.saevents.events.SAMoatErrorEvent;
-import tv.superawesome.lib.saevents.events.SAMoatSuccessEvent;
 import tv.superawesome.lib.saevents.events.SAPGCloseEvent;
 import tv.superawesome.lib.saevents.events.SAPGFailEvent;
 import tv.superawesome.lib.saevents.events.SAPGOpenEvent;
@@ -28,10 +24,6 @@ public class SAServerModule {
   private final SAPGCloseEvent sapgCloseEvent;
   private final SAPGFailEvent sapgFailEvent;
   private final SAPGSuccessEvent sapgSuccessEvent;
-  private final SAMoatAttemptEvent saMoatAttemptEvent;
-  private final SAMoatAttemptNoClassEvent saMoatAttemptNoClassEvent = null;
-  private final SAMoatSuccessEvent saMoatSuccessEvent;
-  private final SAMoatErrorEvent saMoatErrorEvent;
   private final DwellTimeEvent dwellTimeEvent;
 
   public SAServerModule(SAAd ad, ISASession session) {
@@ -48,9 +40,6 @@ public class SAServerModule {
     sapgCloseEvent = new SAPGCloseEvent(ad, session, executor, timeout, isDebug);
     sapgFailEvent = new SAPGFailEvent(ad, session, executor, timeout, isDebug);
     sapgSuccessEvent = new SAPGSuccessEvent(ad, session, executor, timeout, isDebug);
-    saMoatAttemptEvent = new SAMoatAttemptEvent(ad, session, executor, timeout, isDebug);
-    saMoatSuccessEvent = new SAMoatSuccessEvent(ad, session, executor, timeout, isDebug);
-    saMoatErrorEvent = new SAMoatErrorEvent(ad, session, executor, timeout, isDebug);
     dwellTimeEvent = new DwellTimeEvent(ad, session, executor, timeout, isDebug);
   }
 
@@ -99,30 +88,6 @@ public class SAServerModule {
   public void triggerPgSuccessEvent(Listener listener) {
     if (sapgSuccessEvent != null) {
       sapgSuccessEvent.triggerEvent(listener);
-    }
-  }
-
-  public void triggerMoatAttemptEvent(Listener listener) {
-    if (saMoatAttemptEvent != null) {
-      saMoatAttemptEvent.triggerEvent(listener);
-    }
-  }
-
-  public void triggerMoatAttemptNoClassEvent(Listener listener) {
-    if (saMoatAttemptNoClassEvent != null) {
-      saMoatAttemptNoClassEvent.triggerEvent(listener);
-    }
-  }
-
-  public void triggerMoatSuccessEvent(Listener listener) {
-    if (saMoatSuccessEvent != null) {
-      saMoatSuccessEvent.triggerEvent(listener);
-    }
-  }
-
-  public void triggerMoatErrorEvent(Listener listener) {
-    if (saMoatErrorEvent != null) {
-      saMoatErrorEvent.triggerEvent(listener);
     }
   }
 

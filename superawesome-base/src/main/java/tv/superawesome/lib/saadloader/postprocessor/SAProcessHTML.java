@@ -23,7 +23,7 @@ public class SAProcessHTML {
      * @return      the formatted HTML string to be used by a WebView
      */
     public static String formatCreativeIntoImageHTML(SAAd ad) {
-        String htmlString = "<a href='_HREF_URL_' target='_blank'><img src='_IMAGE_URL_' width='100%' height='100%' style='object-fit: contain;'/></a>_MOAT_";
+        String htmlString = "<a href='_HREF_URL_' target='_blank'><img src='_IMAGE_URL_' width='100%' height='100%' style='object-fit: contain;'/></a>";
 
         if (ad.creative.details.image != null) {
             htmlString = htmlString.replace("_IMAGE_URL_", ad.creative.details.image);
@@ -48,7 +48,7 @@ public class SAProcessHTML {
      * @return      the formatted HTML string to be used by a WebView
      */
     public static String formatCreativeIntoRichMediaHTML(SAAd ad, int random) {
-        String htmlString = "<iframe style='padding:0;border:0;' width='100%' height='100%' src='_RICH_MEDIA_URL_'></iframe>_MOAT_";
+        String htmlString = "<iframe style='padding:0;border:0;' width='100%' height='100%' src='_RICH_MEDIA_URL_'></iframe>";
         String richMediaURL = ad.creative.details.url +
                 "?placement=" + ad.placementId +
                 "&line_item=" + ad.lineItemId +
@@ -65,7 +65,7 @@ public class SAProcessHTML {
      * @return      the formatted HTML string to be used by a WebView
      */
     public static String formatCreativeIntoTagHTML(SAAd ad) {
-        String htmlString = "_TAGDATA__MOAT_";
+        String htmlString = "_TAGDATA_";
 
         String tagString = ad.creative.details.tag;
         if (ad.creative.clickUrl != null) {

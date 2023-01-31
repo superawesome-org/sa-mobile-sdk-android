@@ -129,10 +129,6 @@ public object SAInterstitialAd {
         orientation = value
     }
 
-    public fun disableMoatLimiting() {
-        controller.moatLimiting = false
-    }
-
     /**
      * Static method that returns whether ad data for a certain placement has already been loaded
      *
@@ -187,8 +183,6 @@ public object SAInterstitialAd {
     internal fun isBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
 
     internal fun isParentalGateEnabled(): Boolean = controller.config.isParentalGateEnabled
-
-    internal fun isMoatLimiting(): Boolean = controller.moatLimiting
 
     internal fun getDelegate(): SAInterface? = controller.delegate
 }

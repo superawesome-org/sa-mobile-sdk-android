@@ -29,5 +29,4 @@ repositories {
 
 dependencies {
     api project(':superawesome-base')
-    implementation project(':samoat')
 }
