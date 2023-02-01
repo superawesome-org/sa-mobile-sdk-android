@@ -39,13 +39,13 @@ class FeatureDetailActivity : ComponentActivity() {
 
     private fun loadAd(placement: PlacementItem) {
         when (featureItem.type) {
-            FeatureType.Banner -> {}
             FeatureType.Interstitial -> {
                 loadInterstitial(placement = placement)
             }
             FeatureType.Video -> {
                 loadVideo(placement = placement)
             }
+            else -> Unit
         }
     }
 
