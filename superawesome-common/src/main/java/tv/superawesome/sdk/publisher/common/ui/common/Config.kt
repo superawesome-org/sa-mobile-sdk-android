@@ -20,18 +20,19 @@ open class Config : Parcelable {
     var startDelay: AdRequest.StartDelay
     var shouldMuteOnStart: Boolean
 
+    @Suppress("LongParameterList")
     constructor(
-        testEnabled: Boolean,
-        isParentalGateEnabled: Boolean,
-        isBumperPageEnabled: Boolean,
-        shouldShowSmallClick: Boolean,
-        shouldShowCloseWarning: Boolean,
-        isBackButtonEnabled: Boolean,
-        shouldCloseAtEnd: Boolean,
-        closeButtonState: CloseButtonState,
-        orientation: Orientation,
-        startDelay: AdRequest.StartDelay,
-        shouldMuteOnStart: Boolean,
+        testEnabled: Boolean = Constants.defaultTestMode,
+        isParentalGateEnabled: Boolean = Constants.defaultParentalGate,
+        isBumperPageEnabled: Boolean = Constants.defaultBumperPage,
+        shouldShowSmallClick: Boolean = Constants.defaultSmallClick,
+        shouldShowCloseWarning: Boolean = Constants.defaultCloseWarning,
+        isBackButtonEnabled: Boolean = Constants.defaultBackButtonEnabled,
+        shouldCloseAtEnd: Boolean = Constants.defaultCloseAtEnd,
+        closeButtonState: CloseButtonState = Constants.defaultCloseButtonState,
+        orientation: Orientation = Constants.defaultOrientation,
+        startDelay: AdRequest.StartDelay = Constants.defaultStartDelay,
+        shouldMuteOnStart: Boolean = Constants.defaultMuteOnStart,
     ) {
         this.testEnabled = testEnabled
         this.isParentalGateEnabled = isParentalGateEnabled
@@ -80,19 +81,5 @@ open class Config : Parcelable {
         override fun createFromParcel(parcel: Parcel): Config = Config(parcel)
 
         override fun newArray(size: Int): Array<Config?> = arrayOfNulls(size)
-
-        val default = Config(
-            testEnabled = Constants.defaultTestMode,
-            isParentalGateEnabled = Constants.defaultParentalGate,
-            isBumperPageEnabled = Constants.defaultBumperPage,
-            shouldShowSmallClick = Constants.defaultSmallClick,
-            shouldShowCloseWarning = Constants.defaultCloseWarning,
-            isBackButtonEnabled = Constants.defaultBackButtonEnabled,
-            shouldCloseAtEnd = Constants.defaultCloseAtEnd,
-            closeButtonState = Constants.defaultCloseButtonState,
-            orientation = Constants.defaultOrientation,
-            startDelay = Constants.defaultStartDelay,
-            shouldMuteOnStart = Constants.defaultMuteOnStart,
-        )
     }
 }

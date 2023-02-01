@@ -52,7 +52,7 @@ class AdController(
     private val logger: Logger,
     private val adStore: AdStoreType
 ) : AdControllerType {
-    override var config: Config = Config.default
+    override var config: Config = Config()
     override var closed: Boolean = false
     override var currentAdResponse: AdResponse? = null
     override var delegate: SAInterface? = null
