@@ -35,7 +35,6 @@ android {
 
 repositories {
     mavenCentral()
-    maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
 
 dependencies {

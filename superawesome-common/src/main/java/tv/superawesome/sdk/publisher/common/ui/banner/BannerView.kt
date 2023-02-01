@@ -20,7 +20,6 @@ import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
-import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.common.interstitialMaxTickCount
@@ -34,7 +33,6 @@ public class BannerView @JvmOverloads constructor(
     val controller: AdControllerType by inject(AdControllerType::class.java)
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private val logger: Logger by inject(Logger::class.java)
-    private val moatRepository: MoatRepositoryType by inject(MoatRepositoryType::class.java)
     private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
 
     private var placementId: Int = 0
@@ -104,12 +102,8 @@ public class BannerView @JvmOverloads constructor(
 
         addWebView()
         showPadlockIfNeeded()
-        val moatHtml = moatRepository.startMoatTrackingForDisplay(
-            webView as android.webkit.WebView,
-            adResponse
-        )
+
         val bodyHtml = data.second
-            .replace("_MOAT_", moatHtml)
             .replace("_TIMESTAMP_", timeProvider.millis().toString())
         webView?.loadHTML(data.first, bodyHtml)
     }
@@ -187,10 +181,6 @@ public class BannerView @JvmOverloads constructor(
         } else {
             setBackgroundColor(Constants.backgroundColorGray)
         }
-    }
-
-    public fun disableMoatLimiting() {
-        controller.moatLimiting = false
     }
 
     private fun showPadlockIfNeeded() {

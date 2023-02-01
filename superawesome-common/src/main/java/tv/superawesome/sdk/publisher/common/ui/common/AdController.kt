@@ -20,7 +20,6 @@ import kotlin.math.abs
 interface AdControllerType {
     var config: Config
     var closed: Boolean
-    var moatLimiting: Boolean
     var currentAdResponse: AdResponse?
     var delegate: SAInterface?
     val shouldShowPadlock: Boolean
@@ -55,7 +54,6 @@ class AdController(
 ) : AdControllerType {
     override var config: Config = Config.default
     override var closed: Boolean = false
-    override var moatLimiting: Boolean = Constants.defaultMoatLimitingState
     override var currentAdResponse: AdResponse? = null
     override var delegate: SAInterface? = null
     override val shouldShowPadlock: Boolean

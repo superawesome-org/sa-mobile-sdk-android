@@ -26,7 +26,6 @@ object WireMockHelper {
     }
 
     fun stubCommonPaths() {
-        stubForSuccess("/moat")
         stubForSuccess("/event")
         stubForSuccess("/impression")
         stubForSuccess("/click")

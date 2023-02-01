@@ -1,3 +1,0 @@
--keep class com.moat.** { *; }
--dontwarn com.moat.**
--keep class androidx.localbroadcastmanager.content.LocalBroadcastManager { *; }

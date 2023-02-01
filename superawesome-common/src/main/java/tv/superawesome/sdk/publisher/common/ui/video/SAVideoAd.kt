@@ -188,10 +188,6 @@ public object SAVideoAd {
         controller.config.orientation = value
     }
 
-    public fun disableMoatLimiting() {
-        controller.moatLimiting = false
-    }
-
     fun setMuteOnStart(mute: Boolean) {
         controller.config.shouldMuteOnStart = mute
     }
@@ -242,8 +238,6 @@ public object SAVideoAd {
     internal fun isBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
 
     internal fun isParentalGateEnabled(): Boolean = controller.config.isParentalGateEnabled
-
-    internal fun isMoatLimiting(): Boolean = controller.moatLimiting
 
     internal fun getDelegate(): SAInterface? = controller.delegate
 }

@@ -13,7 +13,6 @@ public class SAEvents {
 
     private SAServerModule              serverModule;
     private SAVASTModule                vastModule;
-    private SAMoatModule                moatModule;
     private SAViewableModule            viewableModule;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,14 +22,12 @@ public class SAEvents {
     public void setAd (ISASession session, SAAd ad) {
         serverModule = new SAServerModule(ad, session);
         vastModule = new SAVASTModule(ad);
-        moatModule = new SAMoatModule(ad, true);
         viewableModule = new SAViewableModule();
     }
 
     public void unsetAd () {
         serverModule = null;
         vastModule = null;
-        moatModule = null;
         viewableModule = null;
     }
 
@@ -193,112 +190,6 @@ public class SAEvents {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // MOAT
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static void initMoat (Application application, boolean loggingEnabled) {
-        SAMoatModule.initMoat(application, loggingEnabled);
-    }
-
-    public String startMoatTrackingForDisplay(WebView view) {
-        if(moatModule == null) {
-            triggerMoatAttemptNoClassEvent();
-            return "";
-        }
-        Log.d("Event_Tracking", "moat: display");
-        return moatModule.startMoatTrackingForDisplay(view);
-    }
-
-    public boolean stopMoatTrackingForDisplay() {
-        return moatModule == null || moatModule.stopMoatTrackingForDisplay();
-    }
-
-    public boolean startMoatTrackingForVideoPlayer(VideoView videoView, int duration){
-        if(moatModule != null) {
-            final boolean isAllowed = moatModule.isMoatAllowed();
-            if (isAllowed) {
-                triggerMoatAttemptEvent();
-            }
-            final boolean result =
-                    moatModule.startMoatTrackingForVideoPlayer(videoView, duration, isAllowed, moatModule.hasMoatInstance());
-            if (result) {
-                Log.d("Event_Tracking", "moat: video");
-                triggerMoatSuccessEvent();
-            } else {
-                triggerMoatErrorEvent();
-            }
-            return result;
-        } else {
-            triggerMoatAttemptNoClassEvent();
-        }
-        return true;
-    }
-
-    public void triggerMoatAttemptEvent () {
-        if (serverModule != null) {
-            serverModule.triggerMoatAttemptEvent(null);
-        }
-    }
-
-    public void triggerMoatAttemptNoClassEvent () {
-        if (serverModule != null) {
-            serverModule.triggerMoatAttemptNoClassEvent(null);
-        }
-    }
-
-    public void triggerMoatSuccessEvent () {
-        if (serverModule != null) {
-            serverModule.triggerMoatSuccessEvent(null);
-        }
-    }
-
-    public void triggerMoatErrorEvent () {
-        if (serverModule != null) {
-            serverModule.triggerMoatErrorEvent(null);
-        }
-    }
-
-    public boolean sendMoatPlayingEvent (int position) {
-        Log.d("Event_Tracking", "moat: playing");
-        return moatModule == null || moatModule.sendPlayingEvent(position);
-    }
-
-    public boolean sendMoatStartEvent (int position) {
-        Log.d("Event_Tracking", "moat: start");
-        return moatModule == null || moatModule.sendStartEvent(position);
-    }
-
-    public boolean sendMoatFirstQuartileEvent (int position) {
-        Log.d("Event_Tracking", "moat: firstQuartile");
-        return moatModule == null || moatModule.sendFirstQuartileEvent(position);
-    }
-
-    public boolean sendMoatMidpointEvent (int position) {
-        Log.d("Event_Tracking", "moat: midpoint");
-        return moatModule == null || moatModule.sendMidpointEvent(position);
-    }
-
-    public boolean sendMoatThirdQuartileEvent (int position) {
-    Log.d("Event_Tracking", "moat: thirdQuartile");
-        return moatModule == null || moatModule.sendThirdQuartileEvent(position);
-    }
-
-    public boolean sendMoatCompleteEvent (int position) {
-        Log.d("Event_Tracking", "moat: complete");
-        return moatModule == null || moatModule.sendCompleteEvent(position);
-    }
-
-    public boolean stopMoatTrackingForVideoPlayer() {
-        return moatModule == null || moatModule.stopMoatTrackingForVideoPlayer();
-    }
-
-    public void disableMoatLimiting () {
-        if (moatModule != null) {
-            moatModule.disableMoatLimiting();
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -308,10 +199,6 @@ public class SAEvents {
 
     public SAVASTModule getVastModule() {
         return vastModule;
-    }
-
-    public SAMoatModule getMoatModule() {
-        return moatModule;
     }
 
     public SAViewableModule getViewableModule() {

@@ -110,7 +110,7 @@ class VideoActivity : FullScreenActivity() {
             it.vast?.let { _ ->
                 videoEvents = get(
                     clazz = VideoEvents::class.java,
-                    parameters = { parametersOf(it, config.moatLimiting) }
+                    parameters = { parametersOf(it) }
                 )
                 videoEvents?.listener = object : VideoEvents.Listener {
                     override fun hasBeenVisible() {

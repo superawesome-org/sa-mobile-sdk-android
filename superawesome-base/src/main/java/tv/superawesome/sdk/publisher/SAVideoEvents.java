@@ -26,20 +26,13 @@ public class SAVideoEvents {
     this.listener = listener;
   }
 
-  public void prepare(IVideoPlayer videoPlayer, int time, int duration) {
-    if (videoPlayer != null && videoPlayer.getSurface() != null) {
-      events.startMoatTrackingForVideoPlayer(videoPlayer.getSurface(), duration);
-    }
-  }
+  public void prepare(IVideoPlayer videoPlayer, int time, int duration) {}
 
   public void complete(IVideoPlayer videoPlayer, int time, int duration) {
-    events.sendMoatCompleteEvent(duration);
     events.triggerVASTCompleteEvent();
-    events.stopMoatTrackingForVideoPlayer();
   }
 
   public void error(IVideoPlayer videoPlayer, int time, int duration) {
-    events.stopMoatTrackingForVideoPlayer();
     events.triggerVASTErrorEvent();
   }
 
@@ -63,10 +56,6 @@ public class SAVideoEvents {
       events.triggerVASTImpressionEvent();
       events.triggerVASTStartEvent();
       events.triggerVASTCreativeViewEvent();
-
-      // moat
-      events.sendMoatPlayingEvent(time);
-      events.sendMoatStartEvent(time);
     }
     // 2 second (viewability)
     if (time >= 2000 && !is2SHandled) {
@@ -92,7 +81,6 @@ public class SAVideoEvents {
       isFirstQuartileHandled = true;
 
       // send events
-      events.sendMoatFirstQuartileEvent(time);
       events.triggerVASTFirstQuartileEvent();
     }
     // 1/2
@@ -100,7 +88,6 @@ public class SAVideoEvents {
       isMidpointHandled = true;
 
       // send events
-      events.sendMoatMidpointEvent(time);
       events.triggerVASTMidpointEvent();
     }
     // 3/4
@@ -108,7 +95,6 @@ public class SAVideoEvents {
       isThirdQuartileHandled = true;
 
       // send events
-      events.sendMoatThirdQuartileEvent(time);
       events.triggerVASTThirdQuartileEvent();
     }
   }

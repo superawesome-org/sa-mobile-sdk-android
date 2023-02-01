@@ -36,7 +36,6 @@ public class TestSAAd_8 {
         int expected_lineItemId = 1143;
         int expected_campaignId = 1270;
         int expected_placementId = 100;
-        double expected_moat = 0.2;
         SACampaignType expected_campaignType = SACampaignType.CPI;
         String expected_device = "phone";
         boolean expected_isTest = false;
@@ -51,7 +50,6 @@ public class TestSAAd_8 {
         assertEquals(result.advertiserId, expected_advertiserId);
         assertEquals(result.publisherId, expected_publisherId);
         assertEquals(result.appId, expected_appId);
-        assertEquals(result.moat, expected_moat, 0.01);
         assertEquals(result.lineItemId, expected_lineItemId);
         assertEquals(result.campaignId, expected_campaignId);
         assertEquals(result.placementId, expected_placementId);

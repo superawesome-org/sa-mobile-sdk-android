@@ -34,10 +34,6 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
         adView.setBumperPage(config.isBumperPageEnabled)
         adView.setParentalGate(config.isParentalGateEnabled)
 
-        if (!config.moatLimiting) {
-            adView.disableMoatLimiting()
-        }
-
         parentLayout.addView(adView)
     }
 

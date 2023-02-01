@@ -61,7 +61,6 @@ class VideoAdUITest {
         CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
-        verifyUrlPathCalled("/moat")
     }
 
     @Test
@@ -75,7 +74,6 @@ class VideoAdUITest {
         CommonInteraction.waitForCloseButtonWithDelayThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
-        verifyUrlPathCalled("/moat")
         verifyUrlPathCalled("/event")
     }
 

@@ -11,7 +11,6 @@ import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
-import tv.superawesome.sdk.publisher.common.repositories.MoatRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
@@ -19,7 +18,6 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 
 public class VideoEvents(
     private val adResponse: AdResponse,
-    private val moatLimiting: Boolean,
     private val eventRepository: EventRepositoryType
 ) {
     interface Listener {
@@ -28,11 +26,6 @@ public class VideoEvents(
 
     private val vastEventRepository: VastEventRepositoryType by inject(VastEventRepositoryType::class.java) {
         parametersOf(adResponse.vast)
-    }
-    private val moatRepository: MoatRepositoryType by inject(MoatRepositoryType::class.java) {
-        parametersOf(
-            moatLimiting
-        )
     }
 
     private val scope = CoroutineScope(Dispatchers.Main)
@@ -45,24 +38,13 @@ public class VideoEvents(
     private var isThirdQuartileHandled = false
     private var viewableDetector: ViewableDetectorType? = null
 
-    public fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-        if (videoPlayer?.surface != null) {
-            moatRepository.startMoatTrackingForVideoPlayer(
-                videoPlayer.surface,
-                duration,
-                adResponse
-            )
-        }
-    }
+    public fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {}
 
     public fun complete(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-        moatRepository.sendCompleteEvent(duration)
         scope.launch { vastEventRepository.complete() }
-        moatRepository.stopMoatTrackingForVideoPlayer()
     }
 
     public fun error(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-        moatRepository.stopMoatTrackingForVideoPlayer()
         scope.launch { vastEventRepository.error() }
     }
 
@@ -84,10 +66,6 @@ public class VideoEvents(
                 vastEventRepository.start()
                 vastEventRepository.creativeView()
             }
-
-            // moat
-            moatRepository.sendPlayingEvent(time)
-            moatRepository.sendStartEvent(time)
         }
         // 2 second (of viewing)
         if (time >= 2000 && !is2SHandled) {
@@ -106,7 +84,6 @@ public class VideoEvents(
             isFirstQuartileHandled = true
 
             // send events
-            moatRepository.sendFirstQuartileEvent(time)
             scope.launch { vastEventRepository.firstQuartile() }
         }
         // 1/2
@@ -114,7 +91,6 @@ public class VideoEvents(
             isMidpointHandled = true
 
             // send events
-            moatRepository.sendMidpointEvent(time)
             scope.launch { vastEventRepository.midPoint() }
         }
         // 3/4
@@ -123,7 +99,6 @@ public class VideoEvents(
 
             // send events
             scope.launch { vastEventRepository.thirdQuartile() }
-            moatRepository.sendThirdQuartileEvent(time)
         }
     }
 }

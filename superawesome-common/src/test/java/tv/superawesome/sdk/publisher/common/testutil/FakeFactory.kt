@@ -12,7 +12,6 @@ object FakeFactory {
     fun makeFakeAd(type: CreativeFormatType, vastUrl: String = exampleVastUrl) = Ad(
         advertiserId = null,
         publisherId = 123,
-        moat = 10.0f,
         isFill = false,
         isFallback = false,
         campaignType = 123,

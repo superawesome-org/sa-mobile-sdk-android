@@ -8,7 +8,6 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 
 open class Config : Parcelable {
-    var moatLimiting: Boolean
     var testEnabled: Boolean
     var isParentalGateEnabled: Boolean
     var isBumperPageEnabled: Boolean
@@ -22,7 +21,6 @@ open class Config : Parcelable {
     var shouldMuteOnStart: Boolean
 
     constructor(
-        moatLimiting: Boolean,
         testEnabled: Boolean,
         isParentalGateEnabled: Boolean,
         isBumperPageEnabled: Boolean,
@@ -35,7 +33,6 @@ open class Config : Parcelable {
         startDelay: AdRequest.StartDelay,
         shouldMuteOnStart: Boolean,
     ) {
-        this.moatLimiting = moatLimiting
         this.testEnabled = testEnabled
         this.isParentalGateEnabled = isParentalGateEnabled
         this.isBumperPageEnabled = isBumperPageEnabled
@@ -50,7 +47,6 @@ open class Config : Parcelable {
     }
 
     protected constructor(parcel: Parcel) {
-        moatLimiting = parcel.readByte().toInt() != 0
         testEnabled = parcel.readByte().toInt() != 0
         isParentalGateEnabled = parcel.readByte().toInt() != 0
         isBumperPageEnabled = parcel.readByte().toInt() != 0
@@ -67,7 +63,6 @@ open class Config : Parcelable {
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(parcel: Parcel, i: Int) {
-        parcel.writeByte((if (moatLimiting) 1 else 0).toByte())
         parcel.writeByte((if (testEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
@@ -87,7 +82,6 @@ open class Config : Parcelable {
         override fun newArray(size: Int): Array<Config?> = arrayOfNulls(size)
 
         val default = Config(
-            moatLimiting = Constants.defaultMoatLimitingState,
             testEnabled = Constants.defaultTestMode,
             isParentalGateEnabled = Constants.defaultParentalGate,
             isBumperPageEnabled = Constants.defaultBumperPage,

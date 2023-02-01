@@ -65,7 +65,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static boolean          isBackButtonEnabled = SADefaults.defaultBackButton();
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
-    private static boolean          isMoatLimitingEnabled = SADefaults.defaultMoatLimitingState();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -83,7 +82,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         boolean isBumperPageEnabledL = getIsBumperPageEnabled();
         SAOrientation orientationL = getOrientation();
         SAInterface listenerL = getListener();
-        boolean isMoatLimitingEnabledL = getMoatLimitingState();
         Bundle bundle = getIntent().getExtras();
         String adStr = bundle.getString("ad");
         ad = new SAAd(SAJsonParser.newObject(adStr));
@@ -123,9 +121,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         interstitialBanner.setBumperPage(isBumperPageEnabledL);
         interstitialBanner.setParentalGate(isParentalGateEnabledL);
         interstitialBanner.setContentDescription("Ad content");
-        if (!isMoatLimitingEnabledL) {
-            interstitialBanner.disableMoatLimiting();
-        }
 
         // create the close button
         float fp = SAUtils.getScaleFactor(this);
@@ -581,12 +576,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     public static void setOrientation (SAOrientation value) {
         orientation = value;
     }
-
-    public static void disableMoatLimiting () {
-        isMoatLimitingEnabled = false;
-    }
-
-    private static boolean getMoatLimitingState () { return isMoatLimitingEnabled; }
 
     @Override
     public void hasBeenVisible() {
