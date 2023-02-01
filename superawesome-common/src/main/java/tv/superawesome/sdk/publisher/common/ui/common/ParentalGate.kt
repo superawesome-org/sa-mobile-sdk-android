@@ -68,7 +68,7 @@ class ParentalGate(
                 // go on error way
                 val errorDialog = AlertDialog.Builder(context)
                 errorDialog.setTitle(R.string.parental_gate_error_title)
-                errorDialog.setMessage(R.string.parental_gate_message)
+                errorDialog.setMessage(R.string.parental_gate_error_message)
 
                 // set button action
                 errorDialog.setPositiveButton(context.getString(android.R.string.ok)) { innerDialog, _ ->
