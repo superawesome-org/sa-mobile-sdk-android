@@ -19,7 +19,6 @@
             android:theme="@style/Theme.Samobilesdkandroid">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,5 +26,4 @@
             android:name=".activities.FeatureDetailActivity"
             android:theme="@style/Theme.Samobilesdkandroid" />
     </application>
-
 </manifest>
