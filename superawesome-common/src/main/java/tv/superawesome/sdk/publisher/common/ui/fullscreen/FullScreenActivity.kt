@@ -31,7 +31,7 @@ open class FullScreenActivity : Activity() {
     }
 
     internal val config: Config by lazy {
-        intent?.getParcelableExtra(Constants.Keys.config) ?: Config.default
+        intent?.getParcelableExtra(Constants.Keys.config) ?: Config()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
