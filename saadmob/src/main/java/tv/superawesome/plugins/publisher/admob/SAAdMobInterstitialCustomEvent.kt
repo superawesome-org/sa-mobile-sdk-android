@@ -74,6 +74,7 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
                     listener.onAdLeftApplication()
                 }
                 SAEvent.AdClosed -> listener.onAdClosed()
+                null -> return@SAInterface
             }
         })
         try {
