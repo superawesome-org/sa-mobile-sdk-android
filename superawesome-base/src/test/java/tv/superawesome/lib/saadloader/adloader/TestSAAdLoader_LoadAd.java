@@ -84,7 +84,6 @@ public class TestSAAdLoader_LoadAd {
             assertEquals(4, ad.publisherId);
             assertFalse(ad.isFill);
             assertFalse(ad.isFallback);
-            assertEquals(0.2, ad.moat, 0.05);
             assertFalse(ad.isHouse);
             assertTrue(ad.isSafeAdApproved);
             assertTrue(ad.isPadlockVisible);
@@ -144,7 +143,6 @@ public class TestSAAdLoader_LoadAd {
             assertEquals(4, ad.publisherId);
             assertFalse(ad.isFill);
             assertFalse(ad.isFallback);
-            assertEquals(0.2, ad.moat, 0.05);
             assertFalse(ad.isHouse);
             assertTrue(ad.isSafeAdApproved);
             assertTrue(ad.isPadlockVisible);
@@ -214,7 +212,6 @@ public class TestSAAdLoader_LoadAd {
             assertEquals(4, ad.publisherId);
             assertFalse(ad.isFill);
             assertFalse(ad.isFallback);
-            assertEquals(0.2, ad.moat, 0.05);
             assertFalse(ad.isHouse);
             assertTrue(ad.isSafeAdApproved);
             assertTrue(ad.isPadlockVisible);

@@ -6,7 +6,6 @@ import android.util.Log;
 
 import java.util.Map;
 
-import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
@@ -27,7 +26,6 @@ public class AwesomeAds {
     public static void init(Application application, boolean loggingEnabled) {
         if (!isInitialised) {
             Log.d("SuperAwesome", "Initialising AwesomeAds!");
-            SAEvents.initMoat(application, loggingEnabled);
             SAFileDownloader.cleanup(application);
             isInitialised = true;
         } else {
@@ -38,7 +36,6 @@ public class AwesomeAds {
     public static void init(Context context, boolean loggingEnabled) {
         if (!isInitialised) {
             Log.d("SuperAwesome", "Initialising AwesomeAds!");
-            //SAEvents.initMoat(application, loggingEnabled);
             SAFileDownloader.cleanup(context);
             isInitialised = true;
         } else {

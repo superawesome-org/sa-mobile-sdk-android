@@ -12,7 +12,6 @@ const val CPI_CAMPAIGN_ID = 1
 data class Ad(
     val advertiserId: Int? = null,
     val publisherId: Int,
-    val moat: Float,
     @SerialName("is_fill") val isFill: Boolean,
     @SerialName("is_fallback") val isFallback: Boolean,
     @SerialName("campaign_type") val campaignType: Int,

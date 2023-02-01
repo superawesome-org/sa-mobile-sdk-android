@@ -62,7 +62,6 @@ public class SABannerAd extends FrameLayout {
     private boolean canPlay = true;
     private boolean firstPlay = true;
     private boolean isClosed = false;
-    private boolean moatLimiting;
 
     private Long currentClickThreshold = 0L;
 
@@ -114,7 +113,6 @@ public class SABannerAd extends FrameLayout {
         setBumperPage(SADefaults.defaultBumperPage());
         setConfiguration(SADefaults.defaultConfiguration());
         setTestMode(SADefaults.defaultTestMode());
-        moatLimiting = SADefaults.defaultMoatLimitingState();
     }
 
     /**
@@ -257,10 +255,6 @@ public class SABannerAd extends FrameLayout {
      */
     public void play(final Context context) {
 
-        if (!moatLimiting && events != null) {
-            events.disableMoatLimiting();
-        }
-
         // if the banner ad has a valid ad loaded then play it
         if (ad != null && ad.creative.format != SACreativeFormat.video && canPlay && !isClosed) {
 
@@ -282,17 +276,11 @@ public class SABannerAd extends FrameLayout {
                         // trigger impression
                         events.triggerImpressionEvent();
 
-                        // prepare moat tracking
-                        String moatString = events.startMoatTrackingForDisplay(webPlayer.getWebView());
                         String fullHTML = ad.creative
                                 .details
                                 .media
                                 .html
-                                .replace("_MOAT_", moatString)
                                 .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
-                        if (moatString != null && !moatString.isEmpty()) {
-                            events.triggerMoatAttemptEvent();
-                        }
                         // load the HTML
                         Log.d("SADefaults", "Full HTML is " + fullHTML);
                         webPlayer.loadHTML(ad.creative.details.base, fullHTML);
@@ -398,16 +386,6 @@ public class SABannerAd extends FrameLayout {
 
                         break;
                     }
-                    // this in case the script tag in moat loaded correctly
-                    case Moat_Success: {
-                        events.triggerMoatSuccessEvent();
-                        break;
-                    }
-                    // this in case the script tag in moat did not load correctly
-                    case Moat_Error: {
-                        events.triggerMoatErrorEvent();
-                        break;
-                    }
                 }
             });
 
@@ -505,9 +483,6 @@ public class SABannerAd extends FrameLayout {
         } else {
             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClosed");
         }
-
-        // unregister moat events
-        events.stopMoatTrackingForDisplay();
 
         // reset any ad that might be in here
         setAd(null);
@@ -681,13 +656,5 @@ public class SABannerAd extends FrameLayout {
         } else {
             setBackgroundColor(BANNER_BACKGROUND);
         }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // SABannerAd.VisibilityListener
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public void disableMoatLimiting() {
-        moatLimiting = false;
     }
 }

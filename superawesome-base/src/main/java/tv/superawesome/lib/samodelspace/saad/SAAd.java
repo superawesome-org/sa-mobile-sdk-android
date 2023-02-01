@@ -19,9 +19,6 @@ import tv.superawesome.lib.samodelspace.referral.SAReferral;
  * - error (not really used)
  * - advertiser, publisher, app, line item, campaign, placement IDs
  * - campaign type (CPM or CPI)
- * - moat - a float value that tells the SDK when to fire Moat tracking (if available); This value
- * is compared to a randomly generated int between 0 and 1; if the int is less than the moat
- * value, then the whole additional tracking happens
  * - test, is fallback, is fill, is house, safe ad approved, show padlock - flags that determine
  * whether the SDK should show the "Safe Ad Padlock" over an ad or not
  * - device
@@ -40,8 +37,6 @@ public class SAAd extends SABaseObject implements Parcelable {
     public int configuration = 0;
 
     public SACampaignType campaignType = SACampaignType.CPM;
-
-    public double moat = 0.2;
 
     public boolean isTest = false;
     public boolean isFallback = false;
@@ -128,7 +123,6 @@ public class SAAd extends SABaseObject implements Parcelable {
         campaignId = in.readInt();
         placementId = in.readInt();
         configuration = in.readInt();
-        moat = in.readDouble();
         campaignType = in.readParcelable(SACampaignType.class.getClassLoader());
         isTest = in.readByte() != 0;
         isFallback = in.readByte() != 0;
@@ -193,11 +187,6 @@ public class SAAd extends SABaseObject implements Parcelable {
         publisherId = SAJsonParser.getInt(jsonObject, "publisherId", publisherId);
         appId = SAJsonParser.getInt(jsonObject, "app", appId);
 
-        int val1 = SAJsonParser.getInt(jsonObject, "moat", (int) moat * 100);
-        double val2 = SAJsonParser.getDouble(jsonObject, "moat", moat);
-        moat = Math.max(val2, val1);
-        moat = moat > 1 ? 1 : moat;
-
         lineItemId = SAJsonParser.getInt(jsonObject, "line_item_id", lineItemId);
         campaignId = SAJsonParser.getInt(jsonObject, "campaign_id", campaignId);
         placementId = SAJsonParser.getInt(jsonObject, "placementId", placementId);
@@ -240,7 +229,6 @@ public class SAAd extends SABaseObject implements Parcelable {
                 "advertiserId", advertiserId,
                 "publisherId", publisherId,
                 "app", appId,
-                "moat", moat,
                 "line_item_id", lineItemId,
                 "campaign_id", campaignId,
                 "placementId", placementId,
@@ -298,7 +286,6 @@ public class SAAd extends SABaseObject implements Parcelable {
         dest.writeInt(campaignId);
         dest.writeInt(placementId);
         dest.writeInt(configuration);
-        dest.writeDouble(moat);
         dest.writeParcelable(campaignType, flags);
         dest.writeByte((byte) (isTest ? 1 : 0));
         dest.writeByte((byte) (isFallback ? 1 : 0));

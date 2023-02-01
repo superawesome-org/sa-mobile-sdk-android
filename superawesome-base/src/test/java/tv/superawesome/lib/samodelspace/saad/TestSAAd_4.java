@@ -37,7 +37,6 @@ public class TestSAAd_4 {
         int expected_publisherId = 1;
         int expected_appId = 105;
         int expected_lineItemId = 141;
-        double expected_moat = 0.5;
         int expected_campaignId = 117;
         int expected_placementId = 100;
         SACampaignType expected_campaignType = SACampaignType.CPM;
@@ -54,7 +53,6 @@ public class TestSAAd_4 {
         assertEquals(result.advertiserId, expected_advertiserId);
         assertEquals(result.publisherId, expected_publisherId);
         assertEquals(result.appId, expected_appId);
-        assertEquals(result.moat, expected_moat, 0.01);
         assertEquals(result.lineItemId, expected_lineItemId);
         assertEquals(result.campaignId, expected_campaignId);
         assertEquals(result.placementId, expected_placementId);

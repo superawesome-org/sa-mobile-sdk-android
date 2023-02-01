@@ -20,9 +20,6 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
         Web_Started,
         Web_Layout,
         Web_Empty,
-        Moat_Attempt,
-        Moat_Success,
-        Moat_Error
     }
 
     // boolean holding whether the web view has finished loading or not
@@ -60,7 +57,6 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
 
         webView = new SAWebView(context);
         webView.setWebViewClient(new SAWebClient(this));
-        webView.addJavascriptInterface(new MoatInterface(eventListener), "Android");
     }
 
     public void setup() {
@@ -157,23 +153,5 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
 
     public interface Listener {
         void saWebPlayerDidReceiveEvent(Event event, String destination);
-    }
-
-    private static class MoatInterface {
-        protected final Listener eventListener;
-
-        public MoatInterface(Listener eventListener) {
-            this.eventListener = eventListener;
-        }
-
-        @JavascriptInterface
-        public void moatSuccess() {
-            eventListener.saWebPlayerDidReceiveEvent(Event.Moat_Success, null);
-        }
-
-        @JavascriptInterface
-        public void moatError() {
-            eventListener.saWebPlayerDidReceiveEvent(Event.Moat_Error, null);
-        }
     }
 }
