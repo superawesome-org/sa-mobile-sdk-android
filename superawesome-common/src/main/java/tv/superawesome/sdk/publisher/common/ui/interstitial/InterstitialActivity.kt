@@ -34,10 +34,6 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
         interstitialBanner.setParentalGate(SAInterstitialAd.isParentalGateEnabled())
         interstitialBanner.setListener(this)
 
-        if (!SAInterstitialAd.isMoatLimiting()) {
-            interstitialBanner.disableMoatLimiting()
-        }
-
         parentLayout.addView(interstitialBanner)
 
         closeButton.visibility =

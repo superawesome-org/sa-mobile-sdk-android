@@ -13,11 +13,11 @@ import android.widget.FrameLayout;
 
 import java.util.HashMap;
 
-import tv.superawesome.lib.sasession.defines.SAConfiguration;
-import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.publisher.SABannerAd;
-import tv.superawesome.sdk.publisher.SAEvent;
-import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.plugins.publisher.unity.util.SAScreenUtil;
+import tv.superawesome.sdk.publisher.common.components.NumberGenerator;
+import tv.superawesome.sdk.publisher.common.models.SAEvent;
+import tv.superawesome.sdk.publisher.common.ui.banner.BannerView;
+
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -25,28 +25,46 @@ import tv.superawesome.sdk.publisher.SAInterface;
 public class SAUnityBannerAd {
 
     // hash map containing banner ads
-    private static final HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
+    private static final HashMap<String, BannerView> bannerAdHashMap = new HashMap<>();
 
     /**
      * Method that creates a new banner ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdCreate (Context context, final String unityName) {
-
+    public static void SuperAwesomeUnitySABannerAdCreate(Context context, final String unityName) {
         // create the banner
-        SABannerAd bannerAd = new SABannerAd(context);
-        bannerAd.setId(SAUtils.randomNumberBetween(1000000, 1500000));
+        BannerView bannerAd = new BannerView(context);
+        NumberGenerator numberGenerator = new NumberGenerator();
+        bannerAd.setId(numberGenerator.nextIntForCache());
 
-        bannerAd.setListener((SAInterface) (placementId, event) -> {
+        bannerAd.setListener((placementId, event) -> {
             switch (event) {
-                case adLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString()); break;
-                case adEmpty: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString()); break;
-                case adFailedToLoad: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString()); break;
-                case adAlreadyLoaded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString()); break;
-                case adShown: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString()); break;
-                case adFailedToShow: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString()); break;
-                case adClicked: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString()); break;
-                case adEnded: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString()); break;
-                case adClosed: SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString()); break;
+                case AdLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdLoaded.getValue());
+                    break;
+                case AdEmpty:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEmpty.getValue());
+                    break;
+                case AdFailedToLoad:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToLoad.getValue());
+                    break;
+                case AdAlreadyLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdAlreadyLoaded.getValue());
+                    break;
+                case AdShown:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdShown.getValue());
+                    break;
+                case AdFailedToShow:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToShow.getValue());
+                    break;
+                case AdClicked:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClicked.getValue());
+                    break;
+                case AdEnded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEnded.getValue());
+                    break;
+                case AdClosed:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClosed.getValue());
+                    break;
             }
         });
 
@@ -58,8 +76,7 @@ public class SAUnityBannerAd {
      */
     public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
         if (bannerAdHashMap.containsKey(unityName)) {
-            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
-            bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
+            BannerView bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setTestMode(test);
             bannerAd.load(placementId);
         }
@@ -68,9 +85,9 @@ public class SAUnityBannerAd {
     /**
      * Method that checks to see if an ad is available for a banner ad (from Unity)
      */
-    public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable (Context context, String unityName) {
+    public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable(Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
-            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
+            BannerView bannerAd = bannerAdHashMap.get(unityName);
             return bannerAd.hasAdAvailable();
         }
         return false;
@@ -79,7 +96,7 @@ public class SAUnityBannerAd {
     /**
      * Method that plays a new Banner ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdPlay (Context context, String unityName, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int position, int width, int height, boolean color) {
+    public static void SuperAwesomeUnitySABannerAdPlay(Context context, String unityName, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int position, int width, int height, boolean color) {
 
         if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
 
@@ -87,20 +104,20 @@ public class SAUnityBannerAd {
             Activity activity = (Activity) context;
 
             // get banner ad
-            final SABannerAd bannerAd = bannerAdHashMap.get(unityName);
+            final BannerView bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setParentalGate(isParentalGateEnabled);
             bannerAd.setBumperPage(isBumperPageEnabled);
             bannerAd.setColor(color);
 
             // get screen size
-            SAUtils.SASize screenSize = SAUtils.getRealScreenSize(activity, false);
+            SAScreenUtil.SASize screenSize = SAScreenUtil.getRealScreenSize(activity, false);
 
             // get scale factor
-            float factor = SAUtils.getScaleFactor(activity);
+            float factor = SAScreenUtil.getScaleFactor(activity);
 
             // scale it according to the factor
-            int scaledWidth = (int)(factor * width);
-            int scaledHeight = (int)(factor * height);
+            int scaledWidth = (int) (factor * width);
+            int scaledHeight = (int) (factor * height);
 
             // make sure it's not bigger than the screen
             if (scaledWidth > screenSize.width) {
@@ -109,7 +126,7 @@ public class SAUnityBannerAd {
 
             // but not bigger than 15% of the screen's height
             if (scaledHeight > 0.15 * screenSize.height) {
-                scaledHeight = (int)(0.15 * screenSize.height);
+                scaledHeight = (int) (0.15 * screenSize.height);
             }
 
             FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(screenSize.width, scaledHeight);
@@ -117,7 +134,7 @@ public class SAUnityBannerAd {
 
             try {
                 activity.addContentView(bannerAd, layout);
-                bannerAd.play(context);
+                bannerAd.play();
             } catch (Exception e) {
                 Log.e("SuperAwesome", "Failed to add banner to Unity activity! " + e.getMessage());
             }
@@ -127,12 +144,14 @@ public class SAUnityBannerAd {
     /**
      * Method that closes a banner ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdClose (Context context, String unityName) {
+    public static void SuperAwesomeUnitySABannerAdClose(Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
             // close the banner
-            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
-            bannerAd.close();
-            bannerAd.setVisibility(View.GONE);
+            BannerView bannerAd = bannerAdHashMap.get(unityName);
+            if (bannerAd != null) {
+                bannerAd.close();
+                bannerAd.setVisibility(View.GONE);
+            }
         }
     }
 }

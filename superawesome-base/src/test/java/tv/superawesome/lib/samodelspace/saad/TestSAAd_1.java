@@ -37,7 +37,6 @@ public class TestSAAd_1 {
         int expected_lineItemId = 0;
         int expected_campaignId = 0;
         int expected_placementId = 0;
-        double expected_moat = 0.2;
         SACampaignType expected_campaignType = SACampaignType.CPM;
         boolean expected_isTest = false;
         boolean expected_isFallback = false;
@@ -51,7 +50,6 @@ public class TestSAAd_1 {
         assertEquals(result.error, expected_error);
         assertEquals(result.advertiserId, expected_advertiserId);
         assertEquals(result.publisherId, expected_publisherId);
-        assertEquals(result.moat, expected_moat, 0.01);
         assertEquals(result.appId, expected_appId);
         assertEquals(result.lineItemId, expected_lineItemId);
         assertEquals(result.campaignId, expected_campaignId);

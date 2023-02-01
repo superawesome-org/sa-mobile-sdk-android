@@ -63,15 +63,13 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     factory<ViewableDetectorType> { ViewableDetector(get()) }
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
-    factory { (adResponse: AdResponse, moatLimiting: Boolean) ->
+    factory { (adResponse: AdResponse) ->
         VideoEvents(
             adResponse,
-            moatLimiting,
             get()
         )
     }
 
-    single<MoatRepositoryType> { MoatRepository(true, get(), get()) }
     single<AdRepositoryType> { AdRepository(get(), get(), get()) }
     single<EventRepositoryType> { EventRepository(get(), get()) }
     factory<VastEventRepositoryType> { (vastAd: VastAd) ->

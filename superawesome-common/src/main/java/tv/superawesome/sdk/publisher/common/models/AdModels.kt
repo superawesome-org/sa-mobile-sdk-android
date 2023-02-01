@@ -12,7 +12,6 @@ const val CPI_CAMPAIGN_ID = 1
 data class Ad(
     val advertiserId: Int? = null,
     val publisherId: Int,
-    val moat: Float,
     @SerialName("is_fill") val isFill: Boolean,
     @SerialName("is_fallback") val isFallback: Boolean,
     @SerialName("campaign_type") val campaignType: Int,
@@ -150,27 +149,27 @@ data class AdRequest(
  *  - adClosed:         triggered once when the ad is closed;
  */
 
-enum class SAEvent {
+enum class SAEvent(val value: String) {
     /** ad was loaded successfully and is ready to be displayed */
-    AdLoaded,
-    AdEmpty,
+    AdLoaded("adLoaded"),
+    AdEmpty("adEmpty"),
 
     /** ad was not loaded successfully and will not be able to play */
-    AdFailedToLoad,
+    AdFailedToLoad("adFailedToLoad"),
 
     /** ad was previously loaded in an interstitial, video or app wall queue */
-    AdAlreadyLoaded,
+    AdAlreadyLoaded("adAlreadyLoaded"),
 
     /** triggered once when the ad first displays */
-    AdShown,
-    AdFailedToShow,
+    AdShown("adShown"),
+    AdFailedToShow("adFailedToShow"),
 
     /**  triggered every time the ad gets clicked */
-    AdClicked,
-    AdEnded,
+    AdClicked("adClicked"),
+    AdEnded("adEnded"),
 
     /** triggered once when the ad is closed */
-    AdClosed
+    AdClosed("adClosed")
 }
 
 public fun interface SAInterface {

@@ -16,7 +16,6 @@ import tv.superawesome.lib.saevents.events.setup.TestViewableImpressionEventSetu
 import tv.superawesome.lib.saevents.events.trigger.TestSAClickEventTrigger;
 import tv.superawesome.lib.saevents.events.trigger.TestSAImpressionEventTrigger;
 import tv.superawesome.lib.saevents.events.trigger.TestViewableImpressionEventTrigger;
-import tv.superawesome.lib.saevents.modules.TestMoatModule;
 import tv.superawesome.lib.saevents.modules.TestSAVASTModule;
 import tv.superawesome.lib.sagdprisminorsdk.isMinor.models.TestGetIsMinorMapping;
 import tv.superawesome.lib.sagdprisminorsdk.isMinor.requests.TestGetIsMinorRequest;
@@ -99,9 +98,7 @@ import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests7;
         TestSAURLEventSetup.class,
 
         // modules
-        TestMoatModule.class,
         TestSAVASTModule.class,
-        TestMoatModule.class,
 
         ////////////////////////////////
         // json parser

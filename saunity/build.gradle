@@ -24,6 +24,6 @@ android {
 }
 
 dependencies {
-    implementation project(':superawesome-base')
+    implementation project(':superawesome-common')
     api files('libs/unity-classes.jar')
 }

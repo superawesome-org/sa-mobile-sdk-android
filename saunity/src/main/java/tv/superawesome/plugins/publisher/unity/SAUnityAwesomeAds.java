@@ -1,12 +1,10 @@
 package tv.superawesome.plugins.publisher.unity;
 
 import android.app.Activity;
-import android.content.Context;
 
-import org.json.JSONObject;
-
-import tv.superawesome.lib.sagdprisminorsdk.minor.models.GetIsMinorModel;
-import tv.superawesome.sdk.publisher.AwesomeAds;
+import tv.superawesome.sdk.publisher.common.models.Configuration;
+import tv.superawesome.sdk.publisher.common.network.Environment;
+import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk;
 
 /**
  * Created by gabriel.coman on 13/05/2018.
@@ -15,21 +13,6 @@ import tv.superawesome.sdk.publisher.AwesomeAds;
 public class SAUnityAwesomeAds {
 
     public static void SuperAwesomeUnityAwesomeAdsInit(Activity activity, boolean loggingEnabled) {
-        AwesomeAds.init(activity.getApplication(), loggingEnabled);
-    }
-
-    public static void SuperAwesomeUnityAwesomeAdsTriggerAgeCheck(Context context, String dateOfBirth) {
-        AwesomeAds.triggerAgeCheck(context, dateOfBirth, getIsMinorModel -> {
-
-            GetIsMinorModel model = getIsMinorModel != null ? getIsMinorModel : new GetIsMinorModel();
-
-            try {
-                JSONObject jsonObject = model.writeToJson();
-                SAUnityCallback.sendToUnity("AwesomeAds", jsonObject);
-            } catch (Exception e) {
-                e.printStackTrace();
-                SAUnityCallback.sendToUnity("AwesomeAds", new JSONObject());
-            }
-        });
+        AwesomeAdsSdk.init(activity.getApplication(), new Configuration(Environment.Production, loggingEnabled));
     }
 }

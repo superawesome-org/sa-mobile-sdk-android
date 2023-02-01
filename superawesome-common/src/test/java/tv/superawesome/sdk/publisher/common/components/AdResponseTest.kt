@@ -50,7 +50,6 @@ class AdResponseTest {
     private fun buildAd(showPadlock: Boolean, isKSF: Boolean = false) = Ad(
         advertiserId = null,
         publisherId = 123,
-        moat = 10.0f,
         isFill = false,
         isFallback = false,
         campaignType = 123,

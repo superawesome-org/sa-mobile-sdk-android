@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.common.components
 
 import android.content.Context
 import android.content.pm.PackageManager
+import tv.superawesome.sdk.publisher.common.models.Platform
 import java.util.*
 
 interface SdkInfoType {
@@ -31,7 +32,6 @@ class SdkInfo(
 ) : SdkInfoType {
     private object Keys {
         const val Unknown = "unknown"
-        const val Platform = "android"
         const val VersionFile = "version.properties"
         const val VersionName = "version.name"
 
@@ -42,7 +42,7 @@ class SdkInfo(
          *
          * @return the stored string representing the current version
          */
-        fun loadVersion(): String {
+        private fun loadVersion(): String {
             val inputStream = javaClass.classLoader?.getResourceAsStream(VersionFile) ?: return ""
             val properties = Properties()
             properties.load(inputStream)
@@ -51,9 +51,11 @@ class SdkInfo(
     }
 
     override val version: String
-        get() = overrideVersion ?: "${Keys.Platform}_${Keys.storedVersion}"
+        get() = overrideVersion ?: "${Platform.Android.value}_${Keys.storedVersion}"
+
     override val versionNumber: String
-        get() = overrideVersion ?: Keys.storedVersion
+        get() = overrideVersionNumber ?: Keys.storedVersion
+
     override val bundle: String = context.packageName ?: Keys.Unknown
     override val name: String by lazy { findAppName() }
     override val lang: String = locale.toString()
@@ -66,6 +68,17 @@ class SdkInfo(
     }
 
     companion object {
-        var overrideVersion: String? = null
+        private var overrideVersion: String? = null
+        private var overrideVersionNumber: String? = null
+
+        fun overrideVersionPlatform(version: String?, platform: Platform?) {
+            if (version != null && platform != null) {
+                overrideVersion = "${platform.value}_$version"
+                overrideVersionNumber = version
+            } else {
+                overrideVersion = null
+                overrideVersionNumber = null
+            }
+        }
     }
 }

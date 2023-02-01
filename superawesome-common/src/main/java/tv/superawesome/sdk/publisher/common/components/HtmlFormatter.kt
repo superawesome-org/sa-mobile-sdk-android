@@ -17,15 +17,15 @@ class HtmlFormatter(
         val img = "<img src='${ad.creative.details.image ?: ""}' width='100%' height='100%' style='object-fit: contain;'/>"
 
         if (ad.creative.clickUrl != null) {
-            return "<a href='${ad.creative.clickUrl}' target='_blank'>$img</a>_MOAT_"
+            return "<a href='${ad.creative.clickUrl}' target='_blank'>$img</a>"
         }
 
-        return "${img}_MOAT_"
+        return "${img}"
     }
 
     override fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String {
         val url = "${ad.creative.details.url}?placement=$placementId&line_item=${ad.lineItemId}&creative=${ad.creative.id}&rnd=${numberGenerator.nextIntForCache()}"
-        return "<iframe style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>_MOAT_"
+        return "<iframe style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>"
     }
 
     override fun formatTagIntoHtml(ad: Ad): String {
@@ -47,6 +47,6 @@ class HtmlFormatter(
             .replace("\\n", "")
             .replace("\t", "")
 
-        return "${tag}_MOAT_"
+        return "${tag}"
     }
 }

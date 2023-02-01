@@ -91,11 +91,7 @@ public class MockEventsServer extends MockAbstractWebServer {
             } else {
                 return ResponseFactory.timeoutResponse();
             }
-        }
-        else if(line.contains("/moat")) {
-            return ResponseFactory.successResponse();
-        }
-        else {
+        } else {
             return ResponseFactory.timeoutResponse();
         }
     }
