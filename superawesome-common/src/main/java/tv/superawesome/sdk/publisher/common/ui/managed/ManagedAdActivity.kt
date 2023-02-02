@@ -29,6 +29,7 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+        adView.setConfig(config)
         adView.setColor(false)
         adView.setTestMode(config.testEnabled)
         adView.setBumperPage(config.isBumperPageEnabled)

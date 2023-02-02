@@ -25,6 +25,7 @@ import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
+import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
 
@@ -83,6 +84,10 @@ public class ManagedAdView @JvmOverloads constructor(
 
     public fun setListener(delegate: SAInterface) {
         controller.delegate = delegate
+    }
+
+    public fun setConfig(config: Config) {
+        controller.config = config
     }
 
     /**

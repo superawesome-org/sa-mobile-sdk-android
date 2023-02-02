@@ -45,6 +45,7 @@ class VideoActivity : FullScreenActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         logger.info("onCreate")
         super.onCreate(savedInstanceState)
+        controller.config = config
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 

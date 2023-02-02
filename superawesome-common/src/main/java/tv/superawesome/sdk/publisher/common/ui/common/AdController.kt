@@ -142,13 +142,9 @@ class AdController(
 
         if (isClickTooFast()) return
 
-        if (config.isParentalGateEnabled) {
-            showParentalGateIfNeeded(context, completion = {
-                showBannerIfNeeded(url, context)
-            })
-        } else {
+        showParentalGateIfNeeded(context, completion = {
             showBannerIfNeeded(url, context)
-        }
+        })
     }
 
     private fun showBannerIfNeeded(url: String, context: Context) {
