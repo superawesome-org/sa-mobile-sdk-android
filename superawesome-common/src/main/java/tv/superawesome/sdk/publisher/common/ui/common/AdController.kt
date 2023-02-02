@@ -142,6 +142,12 @@ class AdController(
 
         if (isClickTooFast()) return
 
+        showParentalGateIfNeeded(context, completion = {
+            showBannerIfNeeded(url, context)
+        })
+    }
+
+    private fun showBannerIfNeeded(url: String, context: Context) {
         if (config.isBumperPageEnabled || currentAdResponse?.ad?.creative?.bumper == true) {
             playBumperPage(url, context)
         } else {
