@@ -3,26 +3,16 @@ package tv.superawesome.sdk.publisher.common.testutil
 import tv.superawesome.sdk.publisher.common.models.*
 
 object FakeFactory {
-
     const val exampleUrl = "https://www.superAwesome.com"
     const val exampleHtml = "<test></test>"
     const val exampleParamString = "id=12&name=tester"
     const val exampleVastUrl = "https://www.superAwesome.com"
 
     fun makeFakeAd(type: CreativeFormatType, vastUrl: String = exampleVastUrl) = Ad(
-        advertiserId = null,
-        publisherId = 123,
-        isFill = false,
-        isFallback = false,
         campaignType = 123,
-        campaignId = 123,
-        isHouse = false,
-        safeAdApproved = false,
         showPadlock = false,
         lineItemId = 123,
         test = false,
-        app = 123,
-        device = "android",
         creative = Creative(
             id = 10,
             format = type,
