@@ -10,19 +10,10 @@ const val CPI_CAMPAIGN_ID = 1
 
 @Serializable
 data class Ad(
-    val advertiserId: Int? = null,
-    val publisherId: Int,
-    @SerialName("is_fill") val isFill: Boolean,
-    @SerialName("is_fallback") val isFallback: Boolean,
     @SerialName("campaign_type") val campaignType: Int,
-    @SerialName("campaign_id") val campaignId: Int,
-    @SerialName("is_house") val isHouse: Boolean,
-    @SerialName("safe_ad_approved") val safeAdApproved: Boolean,
     @SerialName("show_padlock") val showPadlock: Boolean,
     @SerialName("line_item_id") val lineItemId: Int,
     val test: Boolean,
-    val app: Int,
-    val device: String,
     val creative: Creative,
     @SerialName("is_vpaid") val isVpaid: Boolean = false
 ) {
