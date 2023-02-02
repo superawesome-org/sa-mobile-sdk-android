@@ -16,5 +16,6 @@ class ComposeApp: Application() {
             configuration = Configuration(environment = Environment.Production, logging = true),
         )
         BumperPageActivity.overrideName(resources.getString(R.string.app_name))
+        BumperPageActivity.overrideLogo(resources.getDrawable(R.mipmap.ic_launcher))
     }
 }
