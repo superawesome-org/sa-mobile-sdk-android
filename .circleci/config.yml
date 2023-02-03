@@ -37,7 +37,7 @@ references:
       command: |
         git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
 
-  bootstrap_android: &bootstrap
+  bootstrap_android: &bootstrap_android
     run:
       name: Bootstrap
       command: |
