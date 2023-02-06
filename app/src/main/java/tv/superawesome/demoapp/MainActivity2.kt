@@ -15,13 +15,13 @@ import kotlinx.android.synthetic.main.activity_main_2.listView
 import kotlinx.android.synthetic.main.activity_main_2.titleTextView
 import tv.superawesome.sdk.publisher.SAVersion
 import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.ui.common.BumperPageActivity
 import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 import tv.superawesome.demoapp.adapter.*
 import tv.superawesome.demoapp.adapter.CustomListAdapter
 import tv.superawesome.demoapp.model.Constants
+import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
 
 class MainActivity2 : FragmentActivity() {
 
@@ -32,7 +32,7 @@ class MainActivity2 : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_2)
 
-        BumperPageActivity.overrideName("AwesomeAds SDK Demo")
+        BumperPage.overrideName("AwesomeAds SDK Demo")
 
         initUI()
 
@@ -100,8 +100,8 @@ class MainActivity2 : FragmentActivity() {
                     }
                 }
 
-                adapter?.updateData(data)
-                adapter?.reloadList()
+                adapter.updateData(data)
+                adapter.reloadList()
             }
 
             override fun onCancelled(error: DatabaseError) {

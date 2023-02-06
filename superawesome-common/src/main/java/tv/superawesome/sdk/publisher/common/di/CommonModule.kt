@@ -60,6 +60,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
 
     factory<AdControllerType> { AdController(get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
+    factory { BumperPage() }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }

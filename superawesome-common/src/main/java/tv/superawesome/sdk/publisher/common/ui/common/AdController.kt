@@ -66,6 +66,8 @@ class AdController(
     private val placementId: Int
         get() = currentAdResponse?.placementId ?: 0
 
+    private var bumperPage: BumperPage? = null
+
     override fun handleAdTap(url: String, context: Context) {
         onAdClicked(url, context)
     }
@@ -157,12 +159,12 @@ class AdController(
 
     private fun playBumperPage(url: String, context: Context) {
         if (context is Activity) {
-            BumperPageActivity.setListener(object : BumperPageActivity.Interface {
-                override fun didEndBumper() {
-                    navigateToUrl(url, context)
-                }
-            })
-            BumperPageActivity.play(context)
+            bumperPage?.stop()
+            bumperPage = get(BumperPage::class.java)
+            bumperPage?.onFinish = {
+                navigateToUrl(url, context)
+            }
+            bumperPage?.show(context)
         }
     }
 
@@ -198,6 +200,7 @@ class AdController(
     override fun close() = try {
         closed = true
         parentalGate?.stop()
+        bumperPage?.stop()
         scope.cancel()
     } catch (exception: IllegalStateException) {
         logger.error("Exception while closing the ad", exception)
