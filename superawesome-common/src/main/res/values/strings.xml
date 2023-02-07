@@ -8,4 +8,5 @@
     <string name="proceed">Continue</string>
     <string name="bumper_page_time_left">A new site will open in %1$d seconds. Remember to stay safe online and don’t share your username or password with anyone!</string>
     <string name="bumper_page_leaving"> Bye! You’re now leaving %1$s</string>
+    <string name="bumper_app_name_default">this app</string>
 </resources>
