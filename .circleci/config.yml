@@ -241,7 +241,8 @@ workflows:
   android_sdk_workflow:
     jobs:
       - checkout_code:
-        context: MOBILE_ANDROID_SDKS
+          context: MOBILE_ANDROID_SDKS
+
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -249,6 +250,7 @@ workflows:
           filters:
             tags:
               ignore: /^v.*/
+
       - semantic_release_dry_run:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -256,6 +258,7 @@ workflows:
           filters:
             branches:
               only: develop
+
       - approve_dry_run_and_release:
           type: approval
           requires:
@@ -263,6 +266,7 @@ workflows:
           filters:
             branches:
               only: develop
+
       - auto_update_release_version:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -270,6 +274,7 @@ workflows:
           filters:
             branches:
               only: develop
+
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -277,6 +282,7 @@ workflows:
           filters:
             branches:
               only: develop
+
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -286,6 +292,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
       - sdk_push_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -295,6 +302,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -304,6 +312,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
       - sdk_push_superawesome_unity:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -313,6 +322,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
       - publish_docs:
           context: MOBILE_ANDROID_SDKS
           requires:
