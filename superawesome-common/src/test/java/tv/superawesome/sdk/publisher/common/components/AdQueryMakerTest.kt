@@ -76,26 +76,26 @@ class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request).parameters }
+        val baseQuery = runBlocking { queryMaker.makeAdQuery(request).parameters }
 
         // Then
-        assertEquals(false, query.test)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals("sdk_name", query.name)
-        assertEquals(99, query.dauId)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("en_en", query.lang)
-        assertEquals(DeviceCategory.tablet.name, query.device)
-        assertEquals(10, query.pos)
-        assertEquals(20, query.skip)
-        assertEquals(30, query.playbackMethod)
-        assertEquals(40, query.startDelay)
-        assertEquals(50, query.install)
-        assertEquals(60, query.w)
-        assertEquals(70, query.h)
-        assertEquals(12345678912345, query.timestamp)
+        assertEquals(false, baseQuery.test)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals("sdk_name", baseQuery.name)
+        assertEquals(99, baseQuery.dauId)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("en_en", baseQuery.lang)
+        assertEquals(DeviceCategory.tablet.name, baseQuery.device)
+        assertEquals(10, baseQuery.pos)
+        assertEquals(20, baseQuery.skip)
+        assertEquals(30, baseQuery.playbackMethod)
+        assertEquals(40, baseQuery.startDelay)
+        assertEquals(50, baseQuery.install)
+        assertEquals(60, baseQuery.w)
+        assertEquals(70, baseQuery.h)
+        assertEquals(12345678912345, baseQuery.timestamp)
     }
 
     @Test
@@ -112,19 +112,19 @@ class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeClickQuery(request).parameters
+        val baseQuery = queryMaker.makeClickQuery(request).parameters
 
         // Then
-        assertEquals(10, query.placement)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals(20, query.creative)
-        assertEquals(30, query.lineItem)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals(EventType.ImpressionDownloaded, query.type)
-        assertEquals(true, query.noImage)
-        assertEquals(null, query.data)
+        assertEquals(10, baseQuery.placement)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals(20, baseQuery.creative)
+        assertEquals(30, baseQuery.lineItem)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals(EventType.ImpressionDownloaded, baseQuery.type)
+        assertEquals(true, baseQuery.noImage)
+        assertEquals(null, baseQuery.data)
     }
 
     @Test
@@ -141,19 +141,19 @@ class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeVideoClickQuery(request).parameters
+        val baseQuery = queryMaker.makeVideoClickQuery(request).parameters
 
         // Then
-        assertEquals(10, query.placement)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals(20, query.creative)
-        assertEquals(30, query.lineItem)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals(null, query.type)
-        assertEquals(null, query.noImage)
-        assertEquals(null, query.data)
+        assertEquals(10, baseQuery.placement)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals(20, baseQuery.creative)
+        assertEquals(30, baseQuery.lineItem)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals(null, baseQuery.type)
+        assertEquals(null, baseQuery.noImage)
+        assertEquals(null, baseQuery.data)
     }
 
     @Test
@@ -172,18 +172,18 @@ class AdQueryMakerTest : BaseTest() {
         every { encoderType.encodeUri(any()) } returns "encoded_uri"
 
         // When
-        val query = queryMaker.makeEventQuery(request, data).parameters
+        val baseQuery = queryMaker.makeEventQuery(request, data).parameters
 
         // Then
-        assertEquals(10, query.placement)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals(20, query.creative)
-        assertEquals(30, query.lineItem)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals(null, query.noImage)
-        assertEquals("encoded_uri", query.data)
+        assertEquals(10, baseQuery.placement)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals(20, baseQuery.creative)
+        assertEquals(30, baseQuery.lineItem)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals(null, baseQuery.noImage)
+        assertEquals("encoded_uri", baseQuery.data)
     }
 
     @Test
