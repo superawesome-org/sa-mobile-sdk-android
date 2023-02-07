@@ -47,7 +47,7 @@ jobs:
 
   checkout_code:
     <<: *android_config
-    steps
+    steps:
       - checkout
       - persist_to_workspace:
           root: "."
