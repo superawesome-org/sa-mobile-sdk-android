@@ -21,7 +21,7 @@ class AdQueryMaker(
     private val encoder: EncoderType,
     private val json: Json,
     private val locale: Locale,
-    private val timeProvider: TimeProviderType,
+    private val timeProvider: TimeProviderType
 ) : AdQueryMakerType {
 
     override suspend fun makeAdQuery(request: AdRequest): AdQuery = AdQuery(
@@ -41,7 +41,8 @@ class AdQueryMaker(
         install = request.install,
         w = request.w,
         h = request.h,
-        timestamp = timeProvider.millis()
+        timestamp = timeProvider.millis(),
+        options = buildOptions(requestOptions = request.options)
     )
 
     override fun makeImpressionQuery(adResponse: AdResponse): EventQuery = EventQuery(
@@ -54,7 +55,8 @@ class AdQueryMaker(
         rnd = numberGenerator.nextIntForCache(),
         type = null,
         noImage = null,
-        data = null
+        data = null,
+        options = buildOptions(requestOptions = adResponse.requestOptions)
     )
 
     override fun makeClickQuery(adResponse: AdResponse): EventQuery = EventQuery(
@@ -67,7 +69,8 @@ class AdQueryMaker(
         rnd = numberGenerator.nextIntForCache(),
         type = EventType.ImpressionDownloaded,
         noImage = true,
-        data = null
+        data = null,
+        options = buildOptions(requestOptions = adResponse.requestOptions)
     )
 
     override fun makeVideoClickQuery(adResponse: AdResponse): EventQuery = EventQuery(
@@ -80,7 +83,8 @@ class AdQueryMaker(
         rnd = numberGenerator.nextIntForCache(),
         type = null,
         noImage = null,
-        data = null
+        data = null,
+        options = buildOptions(requestOptions = adResponse.requestOptions)
     )
 
     override fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQuery {
@@ -94,12 +98,37 @@ class AdQueryMaker(
             rnd = numberGenerator.nextIntForCache(),
             type = eventData.type,
             noImage = null,
-            data = encodeData(eventData)
+            data = encodeData(eventData),
+            options = buildOptions(requestOptions = adResponse.requestOptions)
         )
     }
 
     private fun encodeData(eventData: EventData): String {
         val dataAsJson = json.encodeToString(EventData.serializer(), eventData)
         return encoder.encodeUri(dataAsJson)
+    }
+
+    private fun buildOptions(requestOptions: Map<String, Any>?): Map<String, Any> {
+
+        var optionsDict = mutableMapOf<String, Any>()
+
+        QueryAdditionalOptions.instance?.options?.let {
+            merge(new = it, original = optionsDict)
+        }
+
+        requestOptions?.let {
+            merge(new = it, original = optionsDict)
+        }
+
+        return optionsDict
+    }
+
+    private fun merge(new: Map<String, Any>, original: MutableMap<String, Any>) {
+        new.forEach { (key, value) ->
+            when (value){
+                is String -> original[key] = value
+                is Int -> original[key] = value
+            }
+        }
     }
 }

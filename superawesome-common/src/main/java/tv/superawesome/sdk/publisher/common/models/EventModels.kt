@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.common.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class EventQuery(
@@ -14,7 +15,9 @@ data class EventQuery(
     val rnd: Int,
     val type: EventType?,
     @SerialName("no_image") val noImage: Boolean?,
-    val data: String?
+    val data: String?,
+    @Transient
+    val options: Map<String, Any>? = null
 )
 
 @Serializable

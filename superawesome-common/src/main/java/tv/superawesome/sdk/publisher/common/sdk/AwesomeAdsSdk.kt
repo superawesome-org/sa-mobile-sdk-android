@@ -23,7 +23,7 @@ object AwesomeAdsSdk {
     fun init(
         applicationContext: Context,
         configuration: Configuration,
-        options: Map<String, String>
+        options: Map<String, Any>
     ) {
         if (app == null) {
             QueryAdditionalOptions.instance = QueryAdditionalOptions(options)

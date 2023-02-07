@@ -39,12 +39,15 @@ data class AdQuery(
     @SerialName("instl") val install: Int,
     val w: Int,
     val h: Int,
-    val timestamp: Long
+    val timestamp: Long,
+    @Transient
+    val options: Map<String, Any>? = null
 )
 
 data class AdResponse(
     val placementId: Int,
     val ad: Ad,
+    val requestOptions: Map<String, Any>? = null,
     var html: String? = null,
     var vast: VastAd? = null,
     var baseUrl: String? = null,
@@ -74,6 +77,8 @@ data class AdRequest(
     @SerialName("instl") val install: Int,
     val w: Int,
     val h: Int,
+    @Transient
+    val options: Map<String, Any>? = null
 ) {
 
     @Transient
