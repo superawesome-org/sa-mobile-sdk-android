@@ -36,7 +36,7 @@ class AdRepositoryTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true)
         val adResponse = AdResponse(1, ad)
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
-        coEvery { adProcessorType.process(any(), any()) } returns DataResult.Success(adResponse)
+        coEvery { adProcessorType.process(any(), any(), any()) } returns DataResult.Success(adResponse)
         coEvery { adDataSourceType.getAd(any(), any()) } returns DataResult.Success(ad)
 
         // When
@@ -66,7 +66,7 @@ class AdRepositoryTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true)
         val adResponse = AdResponse(1, ad)
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
-        coEvery { adProcessorType.process(any(), any()) } returns DataResult.Success(adResponse)
+        coEvery { adProcessorType.process(any(), any(), any()) } returns DataResult.Success(adResponse)
         coEvery { adDataSourceType.getAd(any(), any(), any(), any()) } returns DataResult.Success(ad)
 
         // When

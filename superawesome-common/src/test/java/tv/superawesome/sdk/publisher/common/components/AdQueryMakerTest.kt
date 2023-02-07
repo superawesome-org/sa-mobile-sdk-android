@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import android.app.Activity
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -15,6 +16,7 @@ import tv.superawesome.sdk.publisher.common.models.*
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.BeforeTest
 
 class AdQueryMakerTest : BaseTest() {
     @MockK
@@ -46,6 +48,20 @@ class AdQueryMakerTest : BaseTest() {
 
     @InjectMockKs
     lateinit var queryMaker: AdQueryMaker
+
+    private val initialOptions = mapOf("key1" to "value1", "key2" to 2)
+    private val additionalOptions = mapOf("key3" to "value3", "key4" to 4)
+    private val expectedOptions = mapOf(
+        "key1" to "value1",
+        "key2" to 2,
+        "key3" to "value3",
+        "key4" to 4
+    )
+
+    @BeforeTest
+    fun prepare() {
+        QueryAdditionalOptions.Companion.instance = null
+    }
 
     @Test
     fun test_adQuery() {
@@ -173,7 +189,162 @@ class AdQueryMakerTest : BaseTest() {
     }
 
     @Test
-    fun test_encoded_adQuery_with_QueryAdditionalOptions_includes_additional_values() {
+    fun test_adQuery_with_no_options() {
+        // Given
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            null
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        assertTrue(query.options.isNullOrEmpty())
+    }
+
+    @Test
+    fun test_adQuery_with_initial_options_only() {
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            null
+        )
+
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        verifyOptions(query.options!!, initialOptions)
+    }
+
+    @Test
+    fun test_adQuery_with_additional_options_only() {
+        // Given
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        verifyOptions(query.options!!, additionalOptions)
+    }
+
+    @Test
+    fun test_adQuery_with_initial_options_and_additional_options() {
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        verifyOptions(query.options!!, expectedOptions)
+    }
+
+    @Test
+    fun test_adQuery_additional_options_can_override_initial_options_when_keys_conflict() {
+
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val additionalOptions = mapOf("key1" to "x")
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        val expectedOptions = mapOf("key1" to "x", "key2" to 2)
+        verifyOptions(query.options!!, expectedOptions)
+    }
+
+    @Test
+    fun test_adQuery_unsuitable_types_are_not_included() {
+
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val additionalOptions = mapOf("key3" to Activity(), "key4" to 4)
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        val expectedOptions = mapOf("key1" to "value1", "key2" to 2, "key4" to 4)
+        verifyOptions(query.options!!, expectedOptions)
+    }
+    
+    @Test
+    fun test_encoded_adQuery_with_includes_additional_values() {
         // Given
         val request = AdRequest(
             false,
@@ -238,5 +409,14 @@ class AdQueryMakerTest : BaseTest() {
             "timestamp=0}",
             encoded.toString()
         )
+    }
+
+    private fun verifyOptions(options: Map<String, Any>, expectedOptions: Map<String, Any>) {
+
+        assertEquals(options.size, expectedOptions.size)
+
+        expectedOptions.forEach { (key, value) ->
+            assertEquals(value, options[key])
+        }
     }
 }
