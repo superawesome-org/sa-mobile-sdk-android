@@ -8,10 +8,8 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.properties.Properties
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.extensions.mergeToMap
 import tv.superawesome.sdk.publisher.common.models.*
 import java.util.*
 import kotlin.test.assertEquals
@@ -78,7 +76,7 @@ class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val query = runBlocking { queryMaker.makeAdQuery(request).parameters }
 
         // Then
         assertEquals(false, query.test)
@@ -114,7 +112,7 @@ class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeClickQuery(request)
+        val query = queryMaker.makeClickQuery(request).parameters
 
         // Then
         assertEquals(10, query.placement)
@@ -143,7 +141,7 @@ class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeVideoClickQuery(request)
+        val query = queryMaker.makeVideoClickQuery(request).parameters
 
         // Then
         assertEquals(10, query.placement)
@@ -174,7 +172,7 @@ class AdQueryMakerTest : BaseTest() {
         every { encoderType.encodeUri(any()) } returns "encoded_uri"
 
         // When
-        val query = queryMaker.makeEventQuery(request, data)
+        val query = queryMaker.makeEventQuery(request, data).parameters
 
         // Then
         assertEquals(10, query.placement)
@@ -342,34 +340,9 @@ class AdQueryMakerTest : BaseTest() {
         val expectedOptions = mapOf("key1" to "value1", "key2" to 2, "key4" to 4)
         verifyOptions(query.options!!, expectedOptions)
     }
-    
-    @Test
-    fun test_encoded_adQuery_with_includes_additional_values() {
-        // Given
-        val request = AdRequest(
-            false,
-            10,
-            20,
-            30,
-            40,
-            50,
-            60,
-            70
-        )
-        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
-
-        // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
-        val options = mapOf("key1" to "value1", "key2" to "value2")
-        QueryAdditionalOptions.instance = QueryAdditionalOptions(options)
-        val encoded = Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
-
-        // Then
-        assertTrue(encoded.entries.containsAll(options.entries))
-    }
 
     @Test
-    fun test_encoded_adQuery_without_additional_options_encodes_original_adQuery_only() {
+    fun test_built_adQuery_without_additional_options_builds_original_adQuery_only() {
         // Given
         val request = AdRequest(
             false,
@@ -385,8 +358,7 @@ class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
-        val encoded = Properties.mergeToMap(query, null)
+        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
 
         // Then
         assertEquals("" +
@@ -407,7 +379,100 @@ class AdQueryMakerTest : BaseTest() {
             "w=60, " +
             "h=70, " +
             "timestamp=0}",
-            encoded.toString()
+            query.toString()
+        )
+    }
+
+    @Test
+    fun test_built_adQuery_with_additional_options_builds_original_adQuery_with_additional_options() {
+        // Given
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            options = additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
+
+        // Then
+        assertEquals("" +
+            "{test=false, " +
+            "sdkVersion=, " +
+            "rnd=0, " +
+            "bundle=, " +
+            "name=, " +
+            "dauid=0, " +
+            "ct=Cellular4g, " +
+            "lang=en_en, " +
+            "device=, " +
+            "pos=10, " +
+            "skip=20, " +
+            "playbackmethod=30, " +
+            "startdelay=40, " +
+            "instl=50, " +
+            "w=60, " +
+            "h=70, " +
+            "timestamp=0, " +
+            "key3=value3, " +
+            "key4=4}",
+            query.toString()
+        )
+    }
+
+    @Test
+    fun test_built_adQuery_with_initial_and_additional_options_builds_original_adQuery_with_initial_and_additional_options() {
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            options = additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
+
+        // Then
+        assertEquals("" +
+            "{test=false, " +
+            "sdkVersion=, " +
+            "rnd=0, " +
+            "bundle=, " +
+            "name=, " +
+            "dauid=0, " +
+            "ct=Cellular4g, " +
+            "lang=en_en, " +
+            "device=, " +
+            "pos=10, " +
+            "skip=20, " +
+            "playbackmethod=30, " +
+            "startdelay=40, " +
+            "instl=50, " +
+            "w=60, " +
+            "h=70, " +
+            "timestamp=0, " +
+            "key1=value1, " +
+            "key2=2, " +
+            "key3=value3, " +
+            "key4=4}",
+            query.toString()
         )
     }
 
