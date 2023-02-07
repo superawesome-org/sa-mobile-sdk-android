@@ -2,7 +2,7 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.sdk.publisher.common.ui.common.BumperPageActivity;
+import tv.superawesome.sdk.publisher.common.ui.common.BumperPage;
 
 public class SAUnityBumperPage {
 
@@ -13,6 +13,6 @@ public class SAUnityBumperPage {
      * @param name    new bumper page name
      */
     public static void SuperAwesomeUnityBumperOverrideName(Context context, String name) {
-        BumperPageActivity.Companion.overrideName(name);
+        BumperPage.Companion.overrideName(name);
     }
 }
