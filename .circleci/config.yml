@@ -45,11 +45,21 @@ references:
 
 jobs:
 
+  checkout_code:
+    <<: *android_config
+    steps
+      - checkout
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - "."
+
   ## Run unit tests
   test_superawesome_base:
     <<: *android_config
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
@@ -73,7 +83,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - checkout
       - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
@@ -91,7 +100,8 @@ jobs:
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - *generate_github_token
       - *configure_google_services
       - attach_workspace:
@@ -126,7 +136,8 @@ jobs:
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
@@ -136,21 +147,12 @@ jobs:
             git pull origin develop
             ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/semantic-release/semantic-release.sh
 
-  #Await for all running builds to finish
-  prep_deploy:
-    <<: *android_config
-    steps:
-      - checkout
-      - *configure_google_services
-      - run:
-          name: Preping deploy
-          command: echo "Preping deploy"
-
   ## Run sdk push
   sdk_push_superawesome:
     <<: *android_config
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
@@ -162,7 +164,8 @@ jobs:
   sdk_push_superawesome_base:
     <<: *android_config
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
@@ -174,7 +177,8 @@ jobs:
   sdk_push_superawesome_admob:
     <<: *android_config
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
@@ -186,7 +190,8 @@ jobs:
   sdk_push_superawesome_unity:
     <<: *android_config
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
@@ -204,7 +209,8 @@ jobs:
       - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
       - BUNDLE_PATH: ~/repo/docs/vendor/bundle
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - restore_cache:
           keys:
           - rubygems-v1
@@ -234,8 +240,12 @@ workflows:
   version: 2.1
   android_sdk_workflow:
     jobs:
+      - checkout_code:
+        context: MOBILE_ANDROID_SDKS
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
           filters:
             tags:
               ignore: /^v.*/
@@ -267,17 +277,10 @@ workflows:
           filters:
             branches:
               only: develop
-      - prep_deploy:
-          context: MOBILE_ANDROID_APPS
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - prep_deploy
+            - checkout_code
           filters:
             tags:
               only: /^v.*/
@@ -286,7 +289,7 @@ workflows:
       - sdk_push_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - prep_deploy
+            - checkout_code
           filters:
             tags:
               only: /^v.*/
@@ -295,7 +298,7 @@ workflows:
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - prep_deploy
+            - checkout_code
           filters:
             tags:
               only: /^v.*/
@@ -304,7 +307,7 @@ workflows:
       - sdk_push_superawesome_unity:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - prep_deploy
+            - checkout_code
           filters:
             tags:
               only: /^v.*/
