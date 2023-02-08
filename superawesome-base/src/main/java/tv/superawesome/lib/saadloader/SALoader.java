@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -50,6 +52,7 @@ public class SALoader {
     SAClock clock;
     private final boolean isDebug;
     private final int timeout;
+    private final QueryBuilder queryBuilder = new QueryBuilder();
 
     public SALoader(@NonNull Context context) {
         this(context, Executors.newSingleThreadExecutor(), false, 15000, new SAClock());
@@ -212,7 +215,10 @@ public class SALoader {
                 };
 
         SANetwork network = new SANetwork(executor, timeout);
-        mergeQueryOptions(options, query);
+
+        Map<String, Object> requestOptions = buildRequestOptions(options);
+        queryBuilder.merge(requestOptions, query);
+
         network.sendGET(
                 endpoint,
                 query,
@@ -231,18 +237,18 @@ public class SALoader {
                                         + SAUtils.formGetQueryFromDict(query));
                     }
 
-                    processAd(placementId, data, status, configuration, localListener);
+                    processAd(placementId, data, status, configuration, requestOptions, localListener);
                 });
     }
 
-    private JSONObject mergeQueryOptions(Map<String, Object> requestOptions, JSONObject original) {
+    private Map<String, Object> buildRequestOptions(Map<String, Object> requestOptions) {
 
-        QueryBuilder queryBuilder = new QueryBuilder();
+        Map<String, Object> optionsMap = new HashMap<>();
 
-        queryBuilder.merge(QueryAdditionalOptions.Companion.getInstance().getOptions(), original);
-        queryBuilder.merge(requestOptions, original);
+        queryBuilder.merge(QueryAdditionalOptions.Companion.getInstance().getOptions(), optionsMap);
+        queryBuilder.merge(requestOptions, optionsMap);
 
-        return original;
+        return optionsMap;
     }
 
     public void processAd(
@@ -250,6 +256,7 @@ public class SALoader {
             String data,
             int status,
             SAConfiguration configuration,
+            Map<String, Object> requestOptions,
             SALoaderInterface listener) {
 
         // create a local listener to avoid null pointer exceptions
@@ -284,7 +291,7 @@ public class SALoader {
             // Normal Ad case
 
             // parse the final ad
-            final SAAd ad = new SAAd(placementId, configuration.ordinal(), jsonObject);
+            final SAAd ad = new SAAd(placementId, configuration.ordinal(), requestOptions, jsonObject);
 
             // update type in response as well
             response.format = ad.creative.format;

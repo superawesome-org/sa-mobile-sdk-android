@@ -6,7 +6,7 @@ package tv.superawesome.lib.samodelspace.saad;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
+import java.util.Map;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sajsonparser.SABaseObject;
@@ -51,6 +51,7 @@ public class SAAd extends SABaseObject implements Parcelable {
     public SACreative creative = new SACreative();
 
     public long loadTime;
+    public Map<String, Object> requestOptions;
 
     /**
      * Basic constructor
@@ -106,6 +107,22 @@ public class SAAd extends SABaseObject implements Parcelable {
         this();
         this.placementId = placementId;
         this.configuration = configuration;
+        readFromJson(jsonObject);
+    }
+
+    /**
+     * Constructor with placement id, configuration (as an integer), request options and json
+     *
+     * @param placementId   placement id of the ad (this *should* be returned by the ad response)
+     * @param configuration configuration (STAGING or PRODUCTION) as an integer
+     * @param requestOptions a dictionary of additional data sent with the ad's request. Used for events.
+     * @param jsonObject    a valid JSON object
+     */
+    public SAAd(int placementId, int configuration, Map<String, Object> requestOptions, JSONObject jsonObject) {
+        this();
+        this.placementId = placementId;
+        this.configuration = configuration;
+        this.requestOptions = requestOptions;
         readFromJson(jsonObject);
     }
 
