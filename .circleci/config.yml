@@ -2,7 +2,7 @@ version: 2.1
 references:
   android_config: &android_config
     docker:
-      - image: circleci/android:api-30
+      - image: cimg/android:2022.12
     resource_class: medium
     environment:
       FL_OUTPUT_DIR: output
@@ -84,7 +84,6 @@ jobs:
       - attach_workspace:
           at: .
       - *generate_github_token
-      - *configure_google_services
       - *clone_scripts_repo
       - run:
           name: Check semantic release version
@@ -103,7 +102,6 @@ jobs:
       - attach_workspace:
           at: .
       - *generate_github_token
-      - *configure_google_services
       - attach_workspace:
           at: .
       - run:
@@ -138,7 +136,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
       - run:
