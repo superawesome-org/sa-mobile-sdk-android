@@ -22,6 +22,7 @@ public class SAServerEvent {
   protected final ISASession session;
   private final SANetwork network;
   private final boolean isDebug;
+  private final QueryBuilder queryBuilder = new QueryBuilder();
 
   public SAServerEvent(SAAd ad, ISASession session) {
     this(ad, session, Executors.newSingleThreadExecutor(), 15000, false);
@@ -61,7 +62,6 @@ public class SAServerEvent {
   }
 
   public void triggerEvent(final Listener listener) {
-    QueryBuilder queryBuilder = new QueryBuilder();
     JSONObject query = getQuery();
     queryBuilder.merge(ad.requestOptions, query);
     network.sendGET(
