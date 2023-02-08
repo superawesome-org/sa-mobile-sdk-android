@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tv.superawesome.lib.saevents.events.SAClickEvent;
-import tv.superawesome.lib.saevents.events.SAServerEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.sdk.publisher.QueryAdditionalOptions;

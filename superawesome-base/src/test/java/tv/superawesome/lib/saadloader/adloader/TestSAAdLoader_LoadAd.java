@@ -10,6 +10,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -18,6 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import tv.superawesome.lib.saadloader.SALoader;
@@ -32,6 +35,7 @@ import tv.superawesome.lib.samodelspace.saad.SADetails;
 import tv.superawesome.lib.samodelspace.saad.SAMedia;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAClock;
+import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
 
 /**
  * Created by gabriel.coman on 03/05/2018.
@@ -42,6 +46,22 @@ public class TestSAAdLoader_LoadAd {
     private Executor executor = null;
     private ISASession session = null;
     private MockAdsServer server = null;
+    private Map<String, Object> initialOptions = new HashMap<String, Object>() {{
+        put("key1", "value1");
+        put("key2", 2);
+    }};
+
+    private Map<String, Object> additionalOptions = new HashMap<String, Object>() {{
+        put("key3", "value3");
+        put("key4", 4);
+    }};
+
+    private Map<String, Object> combinedOptions = new HashMap<String, Object>() {{
+        put("key1", "value1");
+        put("key2", 2);
+        put("key3", "value3");
+        put("key4", 4);
+    }};
 
     @Before
     public void setUp () throws Throwable {
@@ -51,6 +71,7 @@ public class TestSAAdLoader_LoadAd {
         server.start();
 
         session = new MockSession(server.url());
+        QueryAdditionalOptions.Companion.setInstance(null);
     }
 
     @After
@@ -68,7 +89,7 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1000, session, response -> {
+        loader.loadAd(1000, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -127,7 +148,7 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1001, session, response -> {
+        loader.loadAd(1001, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -196,7 +217,7 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1002, session, response -> {
+        loader.loadAd(1002, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -263,7 +284,7 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1005, session, response -> {
+        loader.loadAd(1005, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -291,7 +312,7 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1006, session, response -> {
+        loader.loadAd(1006, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -319,7 +340,7 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1003, session, response -> {
+        loader.loadAd(1003, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -347,7 +368,7 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1004, session, response -> {
+        loader.loadAd(1004, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -375,11 +396,165 @@ public class TestSAAdLoader_LoadAd {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(50000, session, response -> {
+        loader.loadAd(50000, session, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
             assertEquals(0, response.ads.size());
+        });
+    }
+
+    @Test
+    public void test_SAAdLoader_LoadAd_With_No_Options() {
+        // given
+        Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
+
+        // when
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
+
+        // then
+        loader.loadAd(1006, session, null, response -> {
+
+            assertNotNull(response);
+            assertNotNull(response.ads);
+            assertEquals(1, response.ads.size());
+
+            SAAd ad = response.ads.get(0);
+
+            assertTrue(ad.getRequestOptions().isEmpty());
+        });
+    }
+
+    @Test
+    public void test_SAAdLoader_LoadAd_With_Initial_Options_Only() {
+        // given
+        Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(initialOptions));
+
+        // when
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
+
+        // then
+        loader.loadAd(1006, session, null, response -> {
+
+            assertNotNull(response);
+            assertNotNull(response.ads);
+            assertEquals(1, response.ads.size());
+
+            SAAd ad = response.ads.get(0);
+
+            assertEquals(ad.getRequestOptions(), initialOptions);
+        });
+    }
+
+    @Test
+    public void test_SAAdLoader_LoadAd_With_Additional_Options_Only() {
+        // given
+        Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
+
+        // when
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
+
+        // then
+        loader.loadAd(1006, session, additionalOptions, response -> {
+
+            assertNotNull(response);
+            assertNotNull(response.ads);
+            assertEquals(1, response.ads.size());
+
+            SAAd ad = response.ads.get(0);
+
+            assertEquals(ad.getRequestOptions(), additionalOptions);
+        });
+    }
+
+    @Test
+    public void test_SAAdLoader_LoadAd_With_Initial_Options_And_Additional_Options() {
+        // given
+        Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(initialOptions));
+
+        // when
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
+
+        // then
+        loader.loadAd(1006, session, additionalOptions, response -> {
+
+            assertNotNull(response);
+            assertNotNull(response.ads);
+            assertEquals(1, response.ads.size());
+
+            SAAd ad = response.ads.get(0);
+
+            assertEquals(ad.getRequestOptions(), combinedOptions);
+        });
+    }
+
+    @Test
+    public void test_SAAdLoader_Additional_Options_Can_Override_Initial_Options_When_Keys_Conflict() {
+        // given
+        Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(initialOptions));
+
+        // when
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
+        Map<String, Object> additionalOptions = new HashMap<String, Object>() {{
+            put("key1", "x");
+        }};
+
+        // then
+        loader.loadAd(1006, session, additionalOptions, response -> {
+
+            assertNotNull(response);
+            assertNotNull(response.ads);
+            assertEquals(1, response.ads.size());
+
+            SAAd ad = response.ads.get(0);
+
+            Map<String, Object> expectedOptions = new HashMap<String, Object>() {{
+                put("key1", "x");
+                put("key2", 2);
+            }};
+
+            assertEquals(ad.getRequestOptions(), expectedOptions);
+        });
+    }
+
+    @Test
+    public void test_SAAdLoader_Unsuitable_Types_Are_Not_Included() {
+        // given
+        Context context = mock(Context.class);
+        SAClock clockMock = mock(SAClock.class);
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(initialOptions));
+
+        // when
+        SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
+        Map<String, Object> additionalOptions = new HashMap<String, Object>() {{
+            put("key3", new Activity());
+            put("key4", 4);
+        }};
+
+        // then
+        loader.loadAd(1006, session, additionalOptions, response -> {
+
+            assertNotNull(response);
+            assertNotNull(response.ads);
+            assertEquals(1, response.ads.size());
+
+            SAAd ad = response.ads.get(0);
+
+            Map<String, Object> expectedOptions = new HashMap<String, Object>() {{
+                put("key1", "value1");
+                put("key2", 2);
+                put("key4", 4);
+            }};
+
+            assertEquals(ad.getRequestOptions(), expectedOptions);
         });
     }
 }
