@@ -66,11 +66,13 @@ public class BannerView @JvmOverloads constructor(
      * corresponding to a given placement Id.
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
+     * @param options: an optional dictionary of data to send with an ad's requests and events.
+     * Supports String or Int values.
      */
-    public fun load(placementId: Int) {
+    public fun load(placementId: Int, options: Map<String, Any>? = null) {
         logger.info("load($placementId)")
         this.placementId = placementId
-        controller.load(placementId, makeAdRequest())
+        controller.load(placementId, makeAdRequest(options))
     }
 
     /**
@@ -80,10 +82,12 @@ public class BannerView @JvmOverloads constructor(
      * @param placementId the Ad placement id to load data for
      * @param lineItemId
      * @param creativeId id of the Creative
+     * @param options: an optional dictionary of data to send with an ad's requests and events.
+     * Supports String or Int values.
      */
-    public fun load(placementId: Int, lineItemId: Int, creativeId: Int) {
+    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, options: Map<String, Any>? = null) {
         this.placementId = placementId
-        controller.load(placementId, lineItemId, creativeId, makeAdRequest())
+        controller.load(placementId, lineItemId, creativeId, makeAdRequest(options))
     }
 
     /**
@@ -241,7 +245,7 @@ public class BannerView @JvmOverloads constructor(
         logger.info("BannerView.onDetachedFromWindow")
     }
 
-    private fun makeAdRequest(): AdRequest = AdRequest(
+    private fun makeAdRequest(options: Map<String, Any>?): AdRequest = AdRequest(
         test = controller.config.testEnabled,
         pos = AdRequest.Position.AboveTheFold.value,
         skip = AdRequest.Skip.No.value,
@@ -249,7 +253,8 @@ public class BannerView @JvmOverloads constructor(
         startDelay = AdRequest.StartDelay.PreRoll.value,
         install = AdRequest.FullScreen.Off.value,
         w = width,
-        h = height
+        h = height,
+        options = options
     )
 
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {

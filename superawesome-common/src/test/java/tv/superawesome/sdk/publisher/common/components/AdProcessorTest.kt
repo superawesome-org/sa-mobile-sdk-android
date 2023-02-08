@@ -50,7 +50,7 @@ class AdProcessorTest {
         coEvery { htmlFormatter.formatImageIntoHtml(any()) } returns exampleHtml
 
         // When
-        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.ImageWithLink))
+        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.ImageWithLink), null)
 
         // Then
         assertEquals(response.isSuccess, true)
@@ -65,7 +65,7 @@ class AdProcessorTest {
         coEvery { htmlFormatter.formatRichMediaIntoHtml(99, any()) } returns exampleHtml
 
         // When
-        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.RichMedia))
+        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.RichMedia), null)
 
         // Then
         assertEquals(response.isSuccess, true)
@@ -80,7 +80,7 @@ class AdProcessorTest {
         coEvery { htmlFormatter.formatTagIntoHtml(any()) } returns exampleHtml
 
         // When
-        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Tag))
+        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Tag), null)
 
         // Then
         assertEquals(response.isSuccess, true)
@@ -97,7 +97,7 @@ class AdProcessorTest {
         coEvery { vastParser.parse(any()) } returns makeVastAd(exampleUrl)
 
         // When
-        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Video))
+        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Video), null)
 
         // Then
         assertTrue(response.isSuccess)
@@ -112,7 +112,7 @@ class AdProcessorTest {
         coEvery { vastParser.parse(any()) } returns makeVastAd(null)
 
         // When
-        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Video))
+        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Video), null)
 
         // Then
         assertTrue(response.isFailure)
@@ -127,7 +127,7 @@ class AdProcessorTest {
         coEvery { networkDataSource.getData(any()) } returns DataResult.Failure(Exception())
 
         // When
-        val result = adProcessor.process(1, ad)
+        val result = adProcessor.process(1, ad, null)
 
         // Then
         assertTrue(result.isFailure)
@@ -146,7 +146,7 @@ class AdProcessorTest {
         coEvery { vastParser.parse(any()) } returns passedVastAd
 
         // When
-        val result = adProcessor.process(1, ad)
+        val result = adProcessor.process(1, ad, null)
 
         // Then
         assertTrue(result.isSuccess)
@@ -171,7 +171,7 @@ class AdProcessorTest {
         coEvery { vastParser.parse(redirectUrl) } returns redirectVast
 
         // When
-        adProcessor.process(1, ad)
+        adProcessor.process(1, ad, null)
 
         // Then
         coVerify { vastParser.parse(redirectUrl) }
@@ -198,7 +198,7 @@ class AdProcessorTest {
         coEvery { vastParser.parse(redirectUrl) } returns redirectVast
 
         // When
-        adProcessor.process(1, ad)
+        adProcessor.process(1, ad, null)
 
         // Then
         coVerify(exactly = 0) { vastParser.parse(redirectUrl) }

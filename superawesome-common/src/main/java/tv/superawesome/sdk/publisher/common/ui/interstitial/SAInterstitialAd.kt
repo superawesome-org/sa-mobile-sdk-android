@@ -25,9 +25,11 @@ public object SAInterstitialAd {
      *
      * @param placementId the Ad placement id to load data for
      * @param context the current context
+     * @param options: an optional dictionary of data to send with an ad's requests and events.
+     * Supports String or Int values.
      */
-    public fun load(placementId: Int, context: Context) {
-        controller.load(placementId, makeAdRequest(context))
+    public fun load(placementId: Int, context: Context, options: Map<String, Any>? = null) {
+        controller.load(placementId, makeAdRequest(context, options))
     }
 
     /**
@@ -38,9 +40,11 @@ public object SAInterstitialAd {
      * @param lineItemId
      * @param creativeId id of the Creative
      * @param context the current context
+     * @param options: an optional dictionary of data to send with an ad's requests and events.
+     * Supports String or Int values.
      */
-    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context) {
-        controller.load(placementId, lineItemId, creativeId, makeAdRequest(context))
+    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context, options: Map<String, Any>? = null) {
+        controller.load(placementId, lineItemId, creativeId, makeAdRequest(context, options))
     }
 
     /**
@@ -153,7 +157,7 @@ public object SAInterstitialAd {
         controller.config.closeButtonState = CloseButtonState.VisibleWithDelay
     }
 
-    private fun makeAdRequest(context: Context): AdRequest {
+    private fun makeAdRequest(context: Context, options: Map<String, Any>?): AdRequest {
         val width: Int
         val height: Int
 
@@ -174,7 +178,8 @@ public object SAInterstitialAd {
             startDelay = AdRequest.StartDelay.PreRoll.value,
             install = AdRequest.FullScreen.On.value,
             w = width,
-            h = height
+            h = height,
+            options = options
         )
     }
 

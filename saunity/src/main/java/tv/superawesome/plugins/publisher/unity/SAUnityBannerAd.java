@@ -78,7 +78,7 @@ public class SAUnityBannerAd {
         if (bannerAdHashMap.containsKey(unityName)) {
             BannerView bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setTestMode(test);
-            bannerAd.load(placementId);
+            bannerAd.load(placementId, null);
         }
     }
 

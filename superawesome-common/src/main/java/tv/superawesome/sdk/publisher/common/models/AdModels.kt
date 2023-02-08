@@ -5,6 +5,8 @@ package tv.superawesome.sdk.publisher.common.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.properties.Properties
+import tv.superawesome.sdk.publisher.common.extensions.mergeToMap
 
 const val CPI_CAMPAIGN_ID = 1
 
@@ -19,6 +21,11 @@ data class Ad(
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
     fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF
+}
+data class AdQueryBundle(
+    val parameters: AdQuery,
+    val options: Map<String, Any>?) {
+    fun build(): Map<String, Any> = Properties.mergeToMap(parameters, options)
 }
 
 @Serializable
@@ -45,6 +52,7 @@ data class AdQuery(
 data class AdResponse(
     val placementId: Int,
     val ad: Ad,
+    val requestOptions: Map<String, Any>? = null,
     var html: String? = null,
     var vast: VastAd? = null,
     var baseUrl: String? = null,
@@ -74,6 +82,8 @@ data class AdRequest(
     @SerialName("instl") val install: Int,
     val w: Int,
     val h: Int,
+    @Transient
+    val options: Map<String, Any>? = null
 ) {
 
     @Transient
