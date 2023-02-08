@@ -1,7 +1,5 @@
 package tv.superawesome.lib.saevents.mocks.models;
 
-import org.mockito.internal.matchers.Any;
-
 import java.util.Map;
 
 import tv.superawesome.lib.samodelspace.saad.SAAd;
