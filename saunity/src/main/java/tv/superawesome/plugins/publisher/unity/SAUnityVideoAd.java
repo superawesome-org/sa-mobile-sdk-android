@@ -65,7 +65,7 @@ public class SAUnityVideoAd {
                                                       int playback) {
         SAVideoAd.INSTANCE.setTestMode(test);
         setStartDelay(playback);
-        SAVideoAd.INSTANCE.load(placementId, context);
+        SAVideoAd.INSTANCE.load(placementId, context, null);
     }
 
     /**

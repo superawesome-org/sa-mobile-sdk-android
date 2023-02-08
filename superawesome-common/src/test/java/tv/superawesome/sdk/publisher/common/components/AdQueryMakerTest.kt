@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import android.app.Activity
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -7,14 +8,13 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.properties.Properties
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.extensions.mergeToMap
 import tv.superawesome.sdk.publisher.common.models.*
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.BeforeTest
 
 class AdQueryMakerTest : BaseTest() {
     @MockK
@@ -47,6 +47,20 @@ class AdQueryMakerTest : BaseTest() {
     @InjectMockKs
     lateinit var queryMaker: AdQueryMaker
 
+    private val initialOptions = mapOf("key1" to "value1", "key2" to 2)
+    private val additionalOptions = mapOf("key3" to "value3", "key4" to 4)
+    private val expectedOptions = mapOf(
+        "key1" to "value1",
+        "key2" to 2,
+        "key3" to "value3",
+        "key4" to 4
+    )
+
+    @BeforeTest
+    fun prepare() {
+        QueryAdditionalOptions.Companion.instance = null
+    }
+
     @Test
     fun test_adQuery() {
         // Given
@@ -62,26 +76,26 @@ class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val baseQuery = runBlocking { queryMaker.makeAdQuery(request).parameters }
 
         // Then
-        assertEquals(false, query.test)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals("sdk_name", query.name)
-        assertEquals(99, query.dauId)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("en_en", query.lang)
-        assertEquals(DeviceCategory.tablet.name, query.device)
-        assertEquals(10, query.pos)
-        assertEquals(20, query.skip)
-        assertEquals(30, query.playbackMethod)
-        assertEquals(40, query.startDelay)
-        assertEquals(50, query.install)
-        assertEquals(60, query.w)
-        assertEquals(70, query.h)
-        assertEquals(12345678912345, query.timestamp)
+        assertEquals(false, baseQuery.test)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals("sdk_name", baseQuery.name)
+        assertEquals(99, baseQuery.dauId)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("en_en", baseQuery.lang)
+        assertEquals(DeviceCategory.tablet.name, baseQuery.device)
+        assertEquals(10, baseQuery.pos)
+        assertEquals(20, baseQuery.skip)
+        assertEquals(30, baseQuery.playbackMethod)
+        assertEquals(40, baseQuery.startDelay)
+        assertEquals(50, baseQuery.install)
+        assertEquals(60, baseQuery.w)
+        assertEquals(70, baseQuery.h)
+        assertEquals(12345678912345, baseQuery.timestamp)
     }
 
     @Test
@@ -98,19 +112,19 @@ class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeClickQuery(request)
+        val baseQuery = queryMaker.makeClickQuery(request).parameters
 
         // Then
-        assertEquals(10, query.placement)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals(20, query.creative)
-        assertEquals(30, query.lineItem)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals(EventType.ImpressionDownloaded, query.type)
-        assertEquals(true, query.noImage)
-        assertEquals(null, query.data)
+        assertEquals(10, baseQuery.placement)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals(20, baseQuery.creative)
+        assertEquals(30, baseQuery.lineItem)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals(EventType.ImpressionDownloaded, baseQuery.type)
+        assertEquals(true, baseQuery.noImage)
+        assertEquals(null, baseQuery.data)
     }
 
     @Test
@@ -127,19 +141,19 @@ class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeVideoClickQuery(request)
+        val baseQuery = queryMaker.makeVideoClickQuery(request).parameters
 
         // Then
-        assertEquals(10, query.placement)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals(20, query.creative)
-        assertEquals(30, query.lineItem)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals(null, query.type)
-        assertEquals(null, query.noImage)
-        assertEquals(null, query.data)
+        assertEquals(10, baseQuery.placement)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals(20, baseQuery.creative)
+        assertEquals(30, baseQuery.lineItem)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals(null, baseQuery.type)
+        assertEquals(null, baseQuery.noImage)
+        assertEquals(null, baseQuery.data)
     }
 
     @Test
@@ -158,22 +172,22 @@ class AdQueryMakerTest : BaseTest() {
         every { encoderType.encodeUri(any()) } returns "encoded_uri"
 
         // When
-        val query = queryMaker.makeEventQuery(request, data)
+        val baseQuery = queryMaker.makeEventQuery(request, data).parameters
 
         // Then
-        assertEquals(10, query.placement)
-        assertEquals("sdk_bundle", query.bundle)
-        assertEquals(20, query.creative)
-        assertEquals(30, query.lineItem)
-        assertEquals(ConnectionType.Cellular4g, query.ct)
-        assertEquals("sdk_version", query.sdkVersion)
-        assertEquals(33, query.rnd)
-        assertEquals(null, query.noImage)
-        assertEquals("encoded_uri", query.data)
+        assertEquals(10, baseQuery.placement)
+        assertEquals("sdk_bundle", baseQuery.bundle)
+        assertEquals(20, baseQuery.creative)
+        assertEquals(30, baseQuery.lineItem)
+        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
+        assertEquals(null, baseQuery.noImage)
+        assertEquals("encoded_uri", baseQuery.data)
     }
 
     @Test
-    fun test_encoded_adQuery_with_QueryAdditionalOptions_includes_additional_values() {
+    fun test_adQuery_with_no_options() {
         // Given
         val request = AdRequest(
             false,
@@ -183,22 +197,152 @@ class AdQueryMakerTest : BaseTest() {
             40,
             50,
             60,
-            70
+            70,
+            null
         )
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
         val query = runBlocking { queryMaker.makeAdQuery(request) }
-        val options = mapOf("key1" to "value1", "key2" to "value2")
-        QueryAdditionalOptions.instance = QueryAdditionalOptions(options)
-        val encoded = Properties.mergeToMap(query, QueryAdditionalOptions.instance?.options)
 
         // Then
-        assertTrue(encoded.entries.containsAll(options.entries))
+        assertTrue(query.options.isNullOrEmpty())
     }
 
     @Test
-    fun test_encoded_adQuery_without_additional_options_encodes_original_adQuery_only() {
+    fun test_adQuery_with_initial_options_only() {
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            null
+        )
+
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        verifyOptions(query.options!!, initialOptions)
+    }
+
+    @Test
+    fun test_adQuery_with_additional_options_only() {
+        // Given
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        verifyOptions(query.options!!, additionalOptions)
+    }
+
+    @Test
+    fun test_adQuery_with_initial_options_and_additional_options() {
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        verifyOptions(query.options!!, expectedOptions)
+    }
+
+    @Test
+    fun test_adQuery_additional_options_can_override_initial_options_when_keys_conflict() {
+
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val additionalOptions = mapOf("key1" to "x")
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        val expectedOptions = mapOf("key1" to "x", "key2" to 2)
+        verifyOptions(query.options!!, expectedOptions)
+    }
+
+    @Test
+    fun test_adQuery_unsuitable_types_are_not_included() {
+
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+
+        val additionalOptions = mapOf("key3" to Activity(), "key4" to 4)
+
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request) }
+
+        // Then
+        val expectedOptions = mapOf("key1" to "value1", "key2" to 2, "key4" to 4)
+        verifyOptions(query.options!!, expectedOptions)
+    }
+
+    @Test
+    fun test_built_adQuery_without_additional_options_builds_original_adQuery_only() {
         // Given
         val request = AdRequest(
             false,
@@ -214,8 +358,7 @@ class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
-        val encoded = Properties.mergeToMap(query, null)
+        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
 
         // Then
         assertEquals("" +
@@ -236,7 +379,109 @@ class AdQueryMakerTest : BaseTest() {
             "w=60, " +
             "h=70, " +
             "timestamp=0}",
-            encoded.toString()
+            query.toString()
         )
+    }
+
+    @Test
+    fun test_built_adQuery_with_additional_options_builds_original_adQuery_with_additional_options() {
+        // Given
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            options = additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
+
+        // Then
+        assertEquals("" +
+            "{test=false, " +
+            "sdkVersion=, " +
+            "rnd=0, " +
+            "bundle=, " +
+            "name=, " +
+            "dauid=0, " +
+            "ct=Cellular4g, " +
+            "lang=en_en, " +
+            "device=, " +
+            "pos=10, " +
+            "skip=20, " +
+            "playbackmethod=30, " +
+            "startdelay=40, " +
+            "instl=50, " +
+            "w=60, " +
+            "h=70, " +
+            "timestamp=0, " +
+            "key3=value3, " +
+            "key4=4}",
+            query.toString()
+        )
+    }
+
+    @Test
+    fun test_built_adQuery_with_initial_and_additional_options_builds_original_adQuery_with_initial_and_additional_options() {
+        // Given
+        QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
+        val request = AdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            options = additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
+
+        // Then
+        assertEquals("" +
+            "{test=false, " +
+            "sdkVersion=, " +
+            "rnd=0, " +
+            "bundle=, " +
+            "name=, " +
+            "dauid=0, " +
+            "ct=Cellular4g, " +
+            "lang=en_en, " +
+            "device=, " +
+            "pos=10, " +
+            "skip=20, " +
+            "playbackmethod=30, " +
+            "startdelay=40, " +
+            "instl=50, " +
+            "w=60, " +
+            "h=70, " +
+            "timestamp=0, " +
+            "key1=value1, " +
+            "key2=2, " +
+            "key3=value3, " +
+            "key4=4}",
+            query.toString()
+        )
+    }
+
+    private fun verifyOptions(options: Map<String, Any>, expectedOptions: Map<String, Any>) {
+
+        assertEquals(options.size, expectedOptions.size)
+
+        expectedOptions.forEach { (key, value) ->
+            assertEquals(value, options[key])
+        }
     }
 }

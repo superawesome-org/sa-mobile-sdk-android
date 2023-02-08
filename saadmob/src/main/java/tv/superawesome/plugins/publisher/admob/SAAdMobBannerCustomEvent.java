@@ -108,7 +108,7 @@ public class SAAdMobBannerCustomEvent implements CustomEventBanner {
                         }
                     });
             int placementId = s != null ? Integer.parseInt(s) : 0;
-            bannerAd.load(placementId);
+            bannerAd.load(placementId, null);
         } catch (NumberFormatException e) {
             customEventBannerListener.onAdFailedToLoad(new AdError(AdRequest.ERROR_CODE_INVALID_REQUEST, "", ""));
         }

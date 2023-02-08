@@ -6,7 +6,7 @@ import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 interface AdProcessorType {
-    suspend fun process(placementId: Int, ad: Ad): DataResult<AdResponse>
+    suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse>
 }
 
 class AdProcessor(
@@ -15,8 +15,8 @@ class AdProcessor(
     private val networkDataSource: NetworkDataSourceType,
     private val encoder: EncoderType,
 ) : AdProcessorType {
-    override suspend fun process(placementId: Int, ad: Ad): DataResult<AdResponse> {
-        val response = AdResponse(placementId, ad)
+    override suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse> {
+        val response = AdResponse(placementId, ad, requestOptions)
 
         when (ad.creative.format) {
             CreativeFormatType.ImageWithLink -> {
