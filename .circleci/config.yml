@@ -104,12 +104,10 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android
-      - run:
-          name: Build Android App for testing
-          command: ./gradlew app:assembleDebugAndroidTest
       - android/start-emulator-and-run-tests:
           system-image: system-images;android-30;default;x86_64
           memory: 4096
+          post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
           test-command: ./gradlew app:connectedDebugAndroidTest
       - run:
           name: Copy test results to temp folder
