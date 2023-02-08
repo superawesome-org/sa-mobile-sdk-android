@@ -23,7 +23,7 @@ references:
       name: Generate & store Github Token
       command: |
         curl -L https://github.com/SuperAwesomeLTD/gha-token-generator/releases/download/v1.0.3/gha-token-generator_1.0.3_Linux_x86_64.tar.gz | tar xz
-        GENERATED_APP_TOKEN=$( ./gha-token-generator -app-id ${SA_GITHUB_CIRCLECI_DOWNLOAD_TOOLS_APP_ID} -org-name SuperAwesomeLTD -pem-key ${SA_GITHUB_CIRCLECI_DOWNLOAD_TOOLS_APP_PEM} )
+        GENERATED_APP_TOKEN=$( ./gha-token-generator -app-id ${SA_RELEASE_BOT_GITHUB_APP_ID} -org-name SuperAwesomeLTD -pem-key ${SA_RELEASE_BOT_GITHUB_PEM} )
         echo "export GITHUB_TOKEN=${GENERATED_APP_TOKEN}" >> $BASH_ENV
         echo "export GIT_COMMITTER_NAME=sa-release-bot" >> $BASH_ENV
         echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
@@ -136,7 +136,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - *configure_google_services
+      - *generate_github_token
       - *clone_scripts_repo
       - run:
           name: Run semantic release
@@ -235,16 +235,43 @@ jobs:
 
 workflows:
   version: 2.1
-  android_sdk_workflow:
+  pull_request:
     jobs:
       - checkout_code:
           context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
 
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
           filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+  develop:
+    jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - test_superawesome_base:
+          context: WEB_NODE_LIBRARY
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: develop
             tags:
               ignore: /^v.*/
 
@@ -255,6 +282,8 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
 
       - approve_dry_run_and_release:
           type: approval
@@ -263,6 +292,8 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
 
       - auto_update_release_version:
           context: MOBILE_ANDROID_SDKS
@@ -271,6 +302,8 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
 
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
@@ -279,6 +312,18 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
+
+  release:
+    jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: /^v.*/
+            tags:
+              ignore: /.*/
 
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
