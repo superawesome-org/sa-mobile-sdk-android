@@ -74,7 +74,7 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
         // Given
         Map<String, String> options = new HashMap<>();
         options.put("openRtbPartnerId", "xyz");
-        QueryAdditionalOptions.Companion.setDefault(new QueryAdditionalOptions(options));
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(options));
 
         SAAd ad = ModelFactory.createVideoAd(1000);
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);

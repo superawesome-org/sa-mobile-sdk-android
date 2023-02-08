@@ -245,8 +245,13 @@ public class SALoader {
 
         Map<String, Object> optionsMap = new HashMap<>();
 
-        queryBuilder.merge(QueryAdditionalOptions.Companion.getInstance().getOptions(), optionsMap);
-        queryBuilder.merge(requestOptions, optionsMap);
+        if (QueryAdditionalOptions.Companion.getInstance() != null) {
+            queryBuilder.merge(QueryAdditionalOptions.Companion.getInstance().getOptions(), optionsMap);
+        }
+
+        if (requestOptions != null) {
+            queryBuilder.merge(requestOptions, optionsMap);
+        }
 
         return optionsMap;
     }
