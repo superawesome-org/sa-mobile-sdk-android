@@ -172,7 +172,7 @@ public class SABannerAd extends FrameLayout {
         session.prepareSession(() -> {
 
             // after session is OK, prepare
-            loader.loadAd(placementId, session, response -> {
+            loader.loadAd(placementId, session, options, response -> {
 
                 if (response.status != 200) {
                     if (listener != null) {
@@ -258,7 +258,7 @@ public class SABannerAd extends FrameLayout {
         session.prepareSession(() ->
 
                 // after session is OK, prepare
-                loader.loadAd(placementId, lineItemId, creativeId, session, response -> {
+                loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
 
                     if (response.status != 200) {
                         if (listener != null) {

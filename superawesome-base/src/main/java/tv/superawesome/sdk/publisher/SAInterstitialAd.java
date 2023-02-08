@@ -240,7 +240,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             session.prepareSession(() -> {
 
                 // after session is prepared, start loading
-                loader.loadAd(placementId, session, response -> {
+                loader.loadAd(placementId, session, options, response -> {
 
                     if (response.status != 200) {
                         //
@@ -360,7 +360,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             session.prepareSession(() -> {
 
                 // after session is prepared, start loading
-                loader.loadAd(placementId, lineItemId, creativeId,session, response -> {
+                loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
 
                     if (response.status != 200) {
                         //

@@ -14,6 +14,7 @@ import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
+import tv.superawesome.sdk.publisher.QueryBuilder;
 
 public class SAServerEvent {
 
@@ -60,8 +61,9 @@ public class SAServerEvent {
   }
 
   public void triggerEvent(final Listener listener) {
+    QueryBuilder queryBuilder = new QueryBuilder();
     JSONObject query = getQuery();
-    QueryAdditionalOptions.Companion.appendTo(query);
+    queryBuilder.merge(QueryAdditionalOptions.Companion.getInstance().getOptions(), query);
     network.sendGET(
         getUrl() + getEndpoint(),
             query,
