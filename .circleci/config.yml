@@ -104,6 +104,9 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android
+      - run:
+          name: Build Android App for testing
+          command: ./gradlew app:assembleDebugAndroidTest
       - android/start-emulator-and-run-tests:
           system-image: system-images;android-30;default;x86_64
           memory: 4096
