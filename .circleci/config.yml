@@ -241,7 +241,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
 
       - test_superawesome_base:
-          context: MOBILE_ANDROID_SDKS
+          context: BUILD
           requires:
             - checkout_code
           filters:
