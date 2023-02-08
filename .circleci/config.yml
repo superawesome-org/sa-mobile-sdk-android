@@ -235,16 +235,43 @@ jobs:
 
 workflows:
   version: 2.1
-  android_sdk_workflow:
+  pull_request:
     jobs:
       - checkout_code:
           context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
 
       - test_superawesome_base:
           context: WEB_NODE_LIBRARY
           requires:
             - checkout_code
           filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+  develop:
+    jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - test_superawesome_base:
+          context: WEB_NODE_LIBRARY
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: develop
             tags:
               ignore: /^v.*/
 
@@ -255,6 +282,8 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
 
       - approve_dry_run_and_release:
           type: approval
@@ -263,6 +292,8 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
 
       - auto_update_release_version:
           context: MOBILE_ANDROID_SDKS
@@ -271,6 +302,8 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
 
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
@@ -279,6 +312,18 @@ workflows:
           filters:
             branches:
               only: develop
+            tags:
+              ignore: /^v.*/
+
+  release:
+    jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: /^v.*/
+            tags:
+              ignore: /.*/
 
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
