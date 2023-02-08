@@ -33,6 +33,11 @@ public class AwesomeAds {
         }
     }
 
+    public static void init(Context context, boolean loggingEnabled, Map<String, Object> options) {
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(options));
+        init(context, loggingEnabled);
+    }
+
     public static void init(Context context, boolean loggingEnabled) {
         if (!isInitialised) {
             Log.d("SuperAwesome", "Initialising AwesomeAds!");
