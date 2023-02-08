@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -107,8 +108,12 @@ public class SALoader {
     }
 
     public JSONObject getAwesomeAdsQuery(ISASession session) {
+        return getAwesomeAdsQuery(session, Collections.emptyMap());
+    }
+
+    public JSONObject getAwesomeAdsQuery(ISASession session, Map<String, Object> requestOptions) {
         try {
-            return SAJsonParser.newObject(
+            JSONObject query = SAJsonParser.newObject(
                     "test", session.getTestMode(),
                     "sdkVersion", session.getVersion(),
                     "rnd", session.getCachebuster(),
@@ -128,6 +133,8 @@ public class SALoader {
                     "timestamp", clock.getTimestamp()
                     // "preload", true
             );
+            queryBuilder.merge(requestOptions, query);
+            return query;
         } catch (Exception e) {
             return new JSONObject();
         }
@@ -155,12 +162,13 @@ public class SALoader {
                        final SALoaderInterface listener) {
 
         // get connection things to AwesomeAds
+        Map<String, Object> requestOptions = buildRequestOptions(options);
         String endpoint = getAwesomeAdsEndpoint(session, placementId);
-        JSONObject query = getAwesomeAdsQuery(session);
+        JSONObject query = getAwesomeAdsQuery(session, requestOptions);
         JSONObject header = getAwesomeAdsHeader(session);
 
         // call to the load ad method
-        loadAd(endpoint, query, header, placementId, session.getConfiguration(), options, listener);
+        loadAd(endpoint, query, header, placementId, session.getConfiguration(), requestOptions, listener);
     }
 
     /**
@@ -181,12 +189,13 @@ public class SALoader {
             final SALoaderInterface listener) {
 
         // get connection things to AwesomeAds
+        Map<String, Object> requestOptions = buildRequestOptions(options);
         String endpoint = getAwesomeAdsEndpoint(session, placementId, lineItemId, creativeId);
-        JSONObject query = getAwesomeAdsQuery(session);
+        JSONObject query = getAwesomeAdsQuery(session, requestOptions);
         JSONObject header = getAwesomeAdsHeader(session);
 
         // call to the load ad method
-        loadAd(endpoint, query, header, placementId, session.getConfiguration(), options, listener);
+        loadAd(endpoint, query, header, placementId, session.getConfiguration(), requestOptions, listener);
     }
 
     /**
@@ -204,7 +213,7 @@ public class SALoader {
             JSONObject header,
             final int placementId,
             final SAConfiguration configuration,
-            final Map<String, Object> options,
+            final Map<String, Object> requestOptions,
             final SALoaderInterface listener) {
 
         // create a local listener to avoid null pointer exceptions
@@ -215,9 +224,6 @@ public class SALoader {
                 };
 
         SANetwork network = new SANetwork(executor, timeout);
-
-        Map<String, Object> requestOptions = buildRequestOptions(options);
-        queryBuilder.merge(requestOptions, query);
 
         network.sendGET(
                 endpoint,
