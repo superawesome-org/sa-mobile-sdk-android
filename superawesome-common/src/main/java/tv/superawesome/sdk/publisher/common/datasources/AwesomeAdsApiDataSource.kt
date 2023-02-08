@@ -1,6 +1,8 @@
 package tv.superawesome.sdk.publisher.common.datasources
 
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.AdQueryBundle
+import tv.superawesome.sdk.publisher.common.models.EventQueryBundle
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 interface AwesomeAdsApiDataSourceType {
