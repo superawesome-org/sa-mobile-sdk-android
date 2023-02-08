@@ -246,7 +246,7 @@ workflows:
               ignore: /^v.*/
 
       - test_superawesome_base:
-          context: WEB_NODE_LIBRARY
+          context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
           filters:
