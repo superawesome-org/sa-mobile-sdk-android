@@ -203,7 +203,9 @@ public class SABannerAd extends FrameLayout {
      * @param lineItemId    The id of the lineItem
      * @param creativeId    The id of the creative
      */
-    public void load(final int placementId, final int lineItemId, final int creativeId) {
+    public void load(final int placementId,
+                     final int lineItemId,
+                     final int creativeId) {
         load(placementId, lineItemId, creativeId, Collections.emptyMap());
     }
 
@@ -217,7 +219,10 @@ public class SABannerAd extends FrameLayout {
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
      */
-    public void load(final int placementId, final int lineItemId, final int creativeId, final Map<String, Object> options) {
+    public void load(final int placementId,
+                     final int lineItemId,
+                     final int creativeId,
+                     final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {

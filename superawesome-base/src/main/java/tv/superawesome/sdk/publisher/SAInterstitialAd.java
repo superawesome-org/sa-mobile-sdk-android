@@ -198,7 +198,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
      */
-    public static void load(final int placementId, Context context, final Map<String, Object> options) {
+    public static void load(final int placementId,
+                            Context context,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -263,7 +265,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                             ads.remove(placementId);
                         }
 
-
                         // call listener
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
@@ -297,7 +298,10 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param creativeId    The id of the creative
      * @param context       the current context
      */
-    public static void load(final int placementId, final int lineItemId, final int creativeId, Context context) {
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            Context context) {
         load(placementId, lineItemId, creativeId, context, Collections.emptyMap());
     }
 
@@ -312,7 +316,11 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
      */
-    public static void load(final int placementId, final int lineItemId, final int creativeId, Context context, final Map<String, Object> options) {
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            Context context,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {

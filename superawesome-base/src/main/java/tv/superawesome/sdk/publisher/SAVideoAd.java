@@ -69,7 +69,9 @@ public class SAVideoAd {
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
      */
-    public static void load(final int placementId, final Context context, final Map<String, Object> options) {
+    public static void load(final int placementId,
+                            final Context context,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -157,7 +159,10 @@ public class SAVideoAd {
      * @param creativeId    The id of the creative
      * @param context       the current context
      */
-    public static void load(final int placementId, final int lineItemId, final int creativeId, final Context context) {
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            final Context context) {
         load(placementId, lineItemId, creativeId, context, Collections.emptyMap());
     }
 
@@ -172,7 +177,11 @@ public class SAVideoAd {
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
      */
-    public static void load(final int placementId, final int lineItemId, final int creativeId, final Context context, final Map<String, Object> options) {
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            final Context context,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
