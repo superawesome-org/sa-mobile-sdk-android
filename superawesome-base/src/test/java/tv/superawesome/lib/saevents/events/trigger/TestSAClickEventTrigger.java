@@ -12,7 +12,6 @@ import java.util.Map;
 import tv.superawesome.lib.saevents.events.SAClickEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
-import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
 
 /**
  * Created by gabriel.coman on 09/05/2018.
@@ -71,11 +70,10 @@ public class TestSAClickEventTrigger extends TestEventTrigger {
     @Test
     public void test_givenQueryOptions_thenFilled() {
         // Given
-        Map<String, String> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>();
         options.put("openRtbPartnerId", "xyz");
-        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(options));
 
-        SAAd ad = ModelFactory.createVideoAd(1000);
+        SAAd ad = ModelFactory.createVideoAd(1000, options);
         SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
 
         // When

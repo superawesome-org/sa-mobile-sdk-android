@@ -422,7 +422,7 @@ public class TestSAAdLoader_LoadAd {
 
             SAAd ad = response.ads.get(0);
 
-            assertTrue(ad.getRequestOptions().isEmpty());
+            assertTrue(ad.requestOptions.isEmpty());
         });
     }
 
@@ -445,7 +445,7 @@ public class TestSAAdLoader_LoadAd {
 
             SAAd ad = response.ads.get(0);
 
-            assertEquals(ad.getRequestOptions(), initialOptions);
+            assertEquals(ad.requestOptions, initialOptions);
         });
     }
 
@@ -467,7 +467,7 @@ public class TestSAAdLoader_LoadAd {
 
             SAAd ad = response.ads.get(0);
 
-            assertEquals(ad.getRequestOptions(), additionalOptions);
+            assertEquals(ad.requestOptions, additionalOptions);
         });
     }
 
@@ -490,7 +490,7 @@ public class TestSAAdLoader_LoadAd {
 
             SAAd ad = response.ads.get(0);
 
-            assertEquals(ad.getRequestOptions(), combinedOptions);
+            assertEquals(ad.requestOptions, combinedOptions);
         });
     }
 
@@ -521,7 +521,7 @@ public class TestSAAdLoader_LoadAd {
                 put("key2", 2);
             }};
 
-            assertEquals(ad.getRequestOptions(), expectedOptions);
+            assertEquals(ad.requestOptions, expectedOptions);
         });
     }
 
@@ -554,7 +554,7 @@ public class TestSAAdLoader_LoadAd {
                 put("key4", 4);
             }};
 
-            assertEquals(ad.getRequestOptions(), expectedOptions);
+            assertEquals(ad.requestOptions, expectedOptions);
         });
     }
 }

@@ -53,7 +53,7 @@ public class SAAd extends SABaseObject implements Parcelable {
     public SACreative creative = new SACreative();
 
     public long loadTime;
-    private Map<String, Object> requestOptions = new HashMap<>();
+    public Map<String, Object> requestOptions = new HashMap<>();
 
     /**
      * Basic constructor
@@ -315,10 +315,6 @@ public class SAAd extends SABaseObject implements Parcelable {
         dest.writeString(device);
         dest.writeParcelable(creative, flags);
         dest.writeLong(loadTime);
-    }
-
-    public Map<String, Object> getRequestOptions() {
-        return requestOptions;
     }
 
     private boolean isTagValid(SACreative creative) {
