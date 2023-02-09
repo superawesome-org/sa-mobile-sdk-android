@@ -109,7 +109,6 @@ jobs:
           memory: 4096
           post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
           test-command: ./gradlew app:connectedDebugAndroidTest
-          no-window: false
       - run:
           name: Copy test results to temp folder
           command: find $PWD/app/build/outputs/androidTest-results/connected -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
