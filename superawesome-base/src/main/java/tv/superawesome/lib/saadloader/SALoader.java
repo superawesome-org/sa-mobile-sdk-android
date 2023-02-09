@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -27,6 +30,7 @@ import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTParser;
 import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
+import tv.superawesome.sdk.publisher.QueryBuilder;
 
 /**
  * This class abstracts away the loading of a SuperAwesome ad server by the server. It tries to
@@ -49,6 +53,7 @@ public class SALoader {
     SAClock clock;
     private final boolean isDebug;
     private final int timeout;
+    private final QueryBuilder queryBuilder = new QueryBuilder();
 
     public SALoader(@NonNull Context context) {
         this(context, Executors.newSingleThreadExecutor(), false, 15000, new SAClock());
@@ -103,8 +108,12 @@ public class SALoader {
     }
 
     public JSONObject getAwesomeAdsQuery(ISASession session) {
+        return getAwesomeAdsQuery(session, Collections.emptyMap());
+    }
+
+    public JSONObject getAwesomeAdsQuery(ISASession session, Map<String, Object> requestOptions) {
         try {
-            return SAJsonParser.newObject(
+            JSONObject query = SAJsonParser.newObject(
                     "test", session.getTestMode(),
                     "sdkVersion", session.getVersion(),
                     "rnd", session.getCachebuster(),
@@ -124,6 +133,10 @@ public class SALoader {
                     "timestamp", clock.getTimestamp()
                     // "preload", true
             );
+            if (requestOptions != null) {
+                queryBuilder.merge(requestOptions, query);
+            }
+            return query;
         } catch (Exception e) {
             return new JSONObject();
         }
@@ -145,16 +158,19 @@ public class SALoader {
      * @param session     the current session to load the placement Id for
      * @param listener    listener copy so that the loader can return the response to the library user
      */
-    public void loadAd(
-            final int placementId, final ISASession session, final SALoaderInterface listener) {
+    public void loadAd(final int placementId,
+                       final ISASession session,
+                       final Map<String, Object> options,
+                       final SALoaderInterface listener) {
 
         // get connection things to AwesomeAds
+        Map<String, Object> requestOptions = buildRequestOptions(options);
         String endpoint = getAwesomeAdsEndpoint(session, placementId);
-        JSONObject query = getAwesomeAdsQuery(session);
+        JSONObject query = getAwesomeAdsQuery(session, requestOptions);
         JSONObject header = getAwesomeAdsHeader(session);
 
         // call to the load ad method
-        loadAd(endpoint, query, header, placementId, session.getConfiguration(), listener);
+        loadAd(endpoint, query, header, placementId, session.getConfiguration(), requestOptions, listener);
     }
 
     /**
@@ -171,15 +187,17 @@ public class SALoader {
             int lineItemId,
             int creativeId,
             final ISASession session,
+            final Map<String, Object> options,
             final SALoaderInterface listener) {
 
         // get connection things to AwesomeAds
+        Map<String, Object> requestOptions = buildRequestOptions(options);
         String endpoint = getAwesomeAdsEndpoint(session, placementId, lineItemId, creativeId);
-        JSONObject query = getAwesomeAdsQuery(session);
+        JSONObject query = getAwesomeAdsQuery(session, requestOptions);
         JSONObject header = getAwesomeAdsHeader(session);
 
         // call to the load ad method
-        loadAd(endpoint, query, header, placementId, session.getConfiguration(), listener);
+        loadAd(endpoint, query, header, placementId, session.getConfiguration(), requestOptions, listener);
     }
 
     /**
@@ -197,6 +215,7 @@ public class SALoader {
             JSONObject header,
             final int placementId,
             final SAConfiguration configuration,
+            final Map<String, Object> requestOptions,
             final SALoaderInterface listener) {
 
         // create a local listener to avoid null pointer exceptions
@@ -207,7 +226,7 @@ public class SALoader {
                 };
 
         SANetwork network = new SANetwork(executor, timeout);
-        QueryAdditionalOptions.Companion.appendTo(query);
+
         network.sendGET(
                 endpoint,
                 query,
@@ -226,8 +245,23 @@ public class SALoader {
                                         + SAUtils.formGetQueryFromDict(query));
                     }
 
-                    processAd(placementId, data, status, configuration, localListener);
+                    processAd(placementId, data, status, configuration, requestOptions, localListener);
                 });
+    }
+
+    private Map<String, Object> buildRequestOptions(Map<String, Object> requestOptions) {
+
+        Map<String, Object> optionsMap = new HashMap<>();
+
+        if (QueryAdditionalOptions.Companion.getInstance() != null) {
+            queryBuilder.merge(QueryAdditionalOptions.Companion.getInstance().getOptions(), optionsMap);
+        }
+
+        if (requestOptions != null) {
+            queryBuilder.merge(requestOptions, optionsMap);
+        }
+
+        return optionsMap;
     }
 
     public void processAd(
@@ -235,6 +269,7 @@ public class SALoader {
             String data,
             int status,
             SAConfiguration configuration,
+            Map<String, Object> requestOptions,
             SALoaderInterface listener) {
 
         // create a local listener to avoid null pointer exceptions
@@ -269,7 +304,7 @@ public class SALoader {
             // Normal Ad case
 
             // parse the final ad
-            final SAAd ad = new SAAd(placementId, configuration.ordinal(), jsonObject);
+            final SAAd ad = new SAAd(placementId, configuration.ordinal(), requestOptions, jsonObject);
 
             // update type in response as well
             response.format = ad.creative.format;

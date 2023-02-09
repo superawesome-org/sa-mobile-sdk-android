@@ -22,7 +22,7 @@ public class TestEventTrigger extends TestEvent {
         server = new MockEventsServer();
         server.start();
         super.session = new MockSession(server.url());
-        QueryAdditionalOptions.Companion.setDefault(null);
+        QueryAdditionalOptions.Companion.setInstance(null);
     }
 
     @After

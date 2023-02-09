@@ -18,8 +18,8 @@ public class AwesomeAds {
 
     private static boolean isInitialised = false;
 
-    public static void init(Application application, boolean loggingEnabled, Map<String, String> options) {
-        QueryAdditionalOptions.Companion.setDefault(new QueryAdditionalOptions(options));
+    public static void init(Application application, boolean loggingEnabled, Map<String, Object> options) {
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(options));
         init(application, loggingEnabled);
     }
 
@@ -31,6 +31,11 @@ public class AwesomeAds {
         } else {
             Log.d("SuperAwesome", "Already initialised AwesomeAds!");
         }
+    }
+
+    public static void init(Context context, boolean loggingEnabled, Map<String, Object> options) {
+        QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(options));
+        init(context, loggingEnabled);
     }
 
     public static void init(Context context, boolean loggingEnabled) {

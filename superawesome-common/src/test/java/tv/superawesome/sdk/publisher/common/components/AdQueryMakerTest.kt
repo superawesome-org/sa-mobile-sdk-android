@@ -49,7 +49,7 @@ class AdQueryMakerTest : BaseTest() {
 
     private val initialOptions = mapOf("key1" to "value1", "key2" to 2)
     private val additionalOptions = mapOf("key3" to "value3", "key4" to 4)
-    private val expectedOptions = mapOf(
+    private val combinedOptions = mapOf(
         "key1" to "value1",
         "key2" to 2,
         "key3" to "value3",
@@ -280,7 +280,7 @@ class AdQueryMakerTest : BaseTest() {
         val query = runBlocking { queryMaker.makeAdQuery(request) }
 
         // Then
-        verifyOptions(query.options!!, expectedOptions)
+        verifyOptions(query.options!!, combinedOptions)
     }
 
     @Test
