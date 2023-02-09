@@ -35,7 +35,7 @@ import tv.superawesome.sdk.publisher.SAInterstitialAd
 @SmallTest
 class InterstitialUITest {
     @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
+    var wireMockRule = WireMockRule(wireMockConfig().port(9090), false)
 
     @Before
     fun setup() {
