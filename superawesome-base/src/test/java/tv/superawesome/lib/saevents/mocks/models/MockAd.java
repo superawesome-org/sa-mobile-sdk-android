@@ -1,5 +1,7 @@
 package tv.superawesome.lib.saevents.mocks.models;
 
+import java.util.Map;
+
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreative;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
@@ -28,5 +30,10 @@ public class MockAd extends SAAd {
         this.device = "phone";
         this.loadTime = 0;
         this.creative = creative;
+    }
+
+    public MockAd(int placementId, SACreative creative, Map<String, Object> requestOptions) {
+        this(placementId, creative);
+        this.requestOptions = requestOptions;
     }
 }
