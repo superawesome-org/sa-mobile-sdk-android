@@ -133,7 +133,7 @@ public class SALoader {
                     "timestamp", clock.getTimestamp()
                     // "preload", true
             );
-            if(requestOptions != null) {
+            if (requestOptions != null) {
                 queryBuilder.merge(requestOptions, query);
             }
             return query;
