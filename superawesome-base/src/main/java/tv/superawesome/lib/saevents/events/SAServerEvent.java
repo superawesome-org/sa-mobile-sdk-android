@@ -63,7 +63,7 @@ public class SAServerEvent {
 
   public void triggerEvent(final Listener listener) {
     JSONObject query = getQuery();
-    if(ad != null) {
+    if (ad != null) {
       queryBuilder.merge(ad.requestOptions, query);
     }
     network.sendGET(
