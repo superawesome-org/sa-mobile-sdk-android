@@ -34,7 +34,7 @@ import tv.superawesome.sdk.publisher.SAVideoAd
 @SmallTest
 class VideoAdUITest {
     @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(9090), false)
+    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @Before
     fun setup() {

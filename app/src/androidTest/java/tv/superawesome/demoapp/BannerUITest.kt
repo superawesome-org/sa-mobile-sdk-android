@@ -32,7 +32,7 @@ import tv.superawesome.demoapp.util.waitUntil
 @SmallTest
 class BannerUITest {
     @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(9090), false)
+    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @Before
     fun setup() {
