@@ -110,6 +110,7 @@ jobs:
           memory: 4096
           post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
           test-command: ./gradlew app:connectedDebugAndroidTest
+          no-window: false
           run-logcat: true
           run-tests-working-directory: ./
       - run:
