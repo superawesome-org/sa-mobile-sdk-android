@@ -63,7 +63,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_core_version"
 
     // Mock Server
-    androidTestImplementation("com.github.tomakehurst:wiremock:2.26.3") {
+    androidTestImplementation("com.github.tomakehurst:wiremock:2.18.0") {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
