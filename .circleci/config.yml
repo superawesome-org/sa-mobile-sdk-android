@@ -104,11 +104,14 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android
+      - android/accept-licenses
       - android/start-emulator-and-run-tests:
-          system-image: system-images;android-29;default;x86_64
+          system-image: system-images;android-31;default;x86_64
           memory: 4096
           post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
           test-command: ./gradlew app:connectedDebugAndroidTest
+          run-logcat: true
+          run-tests-working-directory: ./
       - run:
           name: Copy test results to temp folder
           command: find $PWD/app/build/outputs/androidTest-results/connected -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
