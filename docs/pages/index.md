@@ -11,7 +11,7 @@ The {{ site.title }} (Software Development Kit) lets you to easily add COPPA com
 | Info    | Contents  |
 |---------|-----------|
 | Version   |   ![Version](https://img.shields.io/github/v/tag/SuperAwesomeLTD/sa-mobile-sdk-android) ([Changelog]({{ site.changelog_url }}))   |
-| Support   |   Android 4.1+ (API 16) (Video) | Android 6+ (Insterstitial)
+| Support   |   Android 4.1+ (API 16) |
 | GitHub    |   [{{ site.repo }}]({{ site.repo }})         |
 | Contact   |   [{{ site.email }}]({{ site.email }})        |
 
