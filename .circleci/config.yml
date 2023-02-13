@@ -106,9 +106,11 @@ jobs:
       - *bootstrap_android
       - android/accept-licenses
       - android/start-emulator-and-run-tests:
-          system-image: system-images;android-29;default;x86_64
+          system-image: system-images;android-31;default;x86_64
           memory: 4096
-          post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
+          post-emulator-launch-assemble-command: |
+            ./gradlew app:assembleDebugAndroidTest
+            adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
           test-command: ./gradlew app:connectedDebugAndroidTest
           run-logcat: true
       - run:

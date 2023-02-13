@@ -61,6 +61,7 @@ dependencies {
     androidTestImplementation "androidx.test:core-ktx:1.4.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_core_version"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
 
     // Mock Server
     androidTestImplementation("com.github.tomakehurst:wiremock:2.26.3") {
