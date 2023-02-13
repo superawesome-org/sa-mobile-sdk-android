@@ -26,14 +26,14 @@ object CommonInteraction {
 
         launchActivity<MainActivity>()
 
-//        settings?.let {
-//            SettingsInteraction.openSettings()
-//            SettingsInteraction.commonSettings()
-//            settings.invoke()
-//            SettingsInteraction.closeSettings()
-//        } ?: run {
-//            SettingsInteraction.applyCommonSettings()
-//        }
+        settings?.let {
+            SettingsInteraction.openSettings()
+            SettingsInteraction.commonSettings()
+            settings.invoke()
+            SettingsInteraction.closeSettings()
+        } ?: run {
+            SettingsInteraction.applyCommonSettings()
+        }
     }
 
     fun launchActivityWithSuccessStub(testData: TestData, settings: (() -> Unit)? = null) {
@@ -64,9 +64,8 @@ object CommonInteraction {
 
     fun checkSubtitleContains(text: String) {
         onView(withId(R.id.subtitleTextView))
-            .check(matches(withSubstring(text)))
-//            .perform(waitUntil(isDisplayed()))
-//            .perform(waitUntil(withSubstring(text)))
+            .perform(waitUntil(isDisplayed()))
+            .perform(waitUntil(withSubstring(text)))
     }
 
     fun waitForCloseButtonThenClick() {
