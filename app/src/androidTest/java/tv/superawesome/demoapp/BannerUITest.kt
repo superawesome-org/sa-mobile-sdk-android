@@ -192,13 +192,13 @@ class BannerUITest {
         CommonInteraction.clickItemAt(testData)
 
         // When
-//        ViewTester()
-//            .waitForView(withId(R.id.bannerView))
-//            .perform(click())
+        ViewTester()
+            .waitForView(withId(R.id.bannerView))
+            .perform(click())
 
         // Then
-//        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
-//        verifyUrlPathCalled("/click")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+        verifyUrlPathCalled("/click")
     }
 
 //    @Test

@@ -9,8 +9,8 @@ import tv.superawesome.demoapp.util.waitUntil
 
 object SettingsInteraction {
     fun openSettings() {
-        onView(withId(R.id.settingsButton))
-            .perform(waitUntil(isCompletelyDisplayed()), click())
+        onView(withId(R.id.settingsButton)).perform(click())
+//            .perform(waitUntil(isCompletelyDisplayed()), click())
     }
 
     private fun resetSettings() {
