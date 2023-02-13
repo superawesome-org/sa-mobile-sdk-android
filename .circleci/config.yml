@@ -116,10 +116,10 @@ jobs:
           test-command: ./gradlew app:connectedDebugAndroidTest
           post-run-tests-steps:
             - run:
-              name: Download video
-              command: |
-                adb pull /sdcard/example.mp4
-                adb shell rm /sdcard/video.mp4
+                name: Download video
+                command: |
+                  adb pull /sdcard/example.mp4
+                  adb shell rm /sdcard/video.mp4
           run-logcat: true
       - run:
           name: Copy test results to temp folder
