@@ -5,10 +5,12 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.util.UIAwait
 import tv.superawesome.demoapp.util.waitUntil
 
 object SettingsInteraction {
     fun openSettings() {
+        UIAwait().await(9000)
         onView(withId(R.id.settingsButton)).perform(click())
 //            .perform(waitUntil(isCompletelyDisplayed()), click())
     }
