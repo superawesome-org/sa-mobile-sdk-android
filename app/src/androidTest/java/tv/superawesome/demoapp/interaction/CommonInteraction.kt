@@ -5,6 +5,7 @@ import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import tv.superawesome.demoapp.MainActivity
 import tv.superawesome.demoapp.R
@@ -63,8 +64,9 @@ object CommonInteraction {
 
     fun checkSubtitleContains(text: String) {
         onView(withId(R.id.subtitleTextView))
-            .perform(waitUntil(isDisplayed()))
-            .perform(waitUntil(withSubstring(text)))
+            .check(matches(withSubstring(text)))
+//            .perform(waitUntil(isDisplayed()))
+//            .perform(waitUntil(withSubstring(text)))
     }
 
     fun waitForCloseButtonThenClick() {
