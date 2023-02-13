@@ -111,15 +111,24 @@ jobs:
           post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
           pre-run-tests-steps:
             - run:
-                name: Unlock emulator
-                command: adb shell input keyevent 82
+                name: Start recording
+                command: adb shell screenrecord --time-limit=180 /sdcard/example.mp4
           test-command: ./gradlew app:connectedDebugAndroidTest
+          post-run-tests-steps:
+            - run:
+              name: Download video
+              command: |
+                adb pull /sdcard/example.mp4
+                adb shell rm /sdcard/video.mp4
           run-logcat: true
       - run:
           name: Copy test results to temp folder
           command: find $PWD/app/build/outputs/androidTest-results/connected -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
+      - store_artifacts:
+          path: "./video.mp4"
+          destination: videos
 
   semantic_release_dry_run:
     <<: *android_config
