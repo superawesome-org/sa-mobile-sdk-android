@@ -394,6 +394,10 @@ public class SAUtils {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
 
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        tm.getNetworkCountryIso();
+
+
         // unknown case
         if(info == null || !info.isConnected()) {
             return SAConnectionType.unknown;

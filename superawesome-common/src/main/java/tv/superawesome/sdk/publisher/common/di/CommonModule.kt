@@ -35,7 +35,6 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single { environment }
     single { Locale.getDefault() }
     single { Resources.getSystem().displayMetrics }
-    factory<GoogleAdvertisingProxyType> { GoogleAdvertisingProxy(get()) }
     single<SdkInfoType> { SdkInfo(get(), get(), get()) }
     single<NumberGeneratorType> { NumberGenerator() }
     single<DeviceType> { Device(get()) }
@@ -44,6 +43,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single<UserAgentProviderType> { UserAgentProvider(get()) }
     single<ConnectionProviderType> { ConnectionProvider(get()) }
     single<TimeProviderType> { TimeProvider() }
+    single<DateProviderType> { DateProvider() }
     single<AdQueryMakerType> {
         AdQueryMaker(
             get(),
