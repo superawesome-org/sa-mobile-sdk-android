@@ -25,6 +25,7 @@ object CommonInteraction {
         stubSuccess(placement, fileName)
 
         launchActivity<MainActivity>()
+        waitForActivity<MainActivity>()
 
         settings?.let {
             SettingsInteraction.openSettings()

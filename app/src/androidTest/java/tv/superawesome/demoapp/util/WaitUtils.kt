@@ -1,14 +1,17 @@
 package tv.superawesome.demoapp.util
 
+import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.espresso.util.TreeIterables
+import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matcher
 import org.hamcrest.StringDescription
@@ -36,7 +39,24 @@ private class ViewPropertyChangeCallback(
     }
 }
 
-fun waitUntil(matcher: Matcher<View>, timeout: Int = 600): ViewAction = object : ViewAction {
+inline fun <reified T : Activity> isActivityVisible() : Boolean {
+    val context = InstrumentationRegistry.getInstrumentation().targetContext
+    val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val visibleActivityName = am.getRunningTasks(1)[0].topActivity?.className
+    return visibleActivityName == T::class.java.name
+}
+
+inline fun <reified T : Activity> waitForActivity() {
+    val startTime = System.currentTimeMillis()
+    while (!isActivityVisible<T>()) {
+        Thread.sleep(CONDITION_CHECK_INTERVAL)
+        if (System.currentTimeMillis() - startTime >= WAIT_TIMEOUT) {
+            throw AssertionError("Activity ${T::class.java.simpleName} not visible after $WAIT_TIMEOUT milliseconds")
+        }
+    }
+}
+
+fun waitUntil(matcher: Matcher<View>): ViewAction = object : ViewAction {
     override fun getConstraints(): Matcher<View> = CoreMatchers.any(View::class.java)
 
     override fun getDescription(): String = StringDescription().let {
@@ -44,44 +64,20 @@ fun waitUntil(matcher: Matcher<View>, timeout: Int = 600): ViewAction = object :
         "wait until: $it"
     }
 
-    override fun perform(uiController: UiController, rootView: View) {
-        uiController.loopMainThreadUntilIdle()
-        val startTime = System.currentTimeMillis()
-        val endTime = startTime + timeout
-
-        do {
-            // Iterate through all views on the screen and see if the view we are looking for is there already
-            for (child in TreeIterables.breadthFirstViewTraversal(rootView)) {
-                // found view with required ID
-                if (matcher.matches(child)) {
-                    return
+    override fun perform(uiController: UiController, view: View) {
+        if (!matcher.matches(view)) {
+            ViewPropertyChangeCallback(matcher, view).run {
+                try {
+                    IdlingRegistry.getInstance().register(this)
+                    view.viewTreeObserver.addOnDrawListener(this)
+                    uiController.loopMainThreadUntilIdle()
+                } finally {
+                    view.viewTreeObserver.removeOnDrawListener(this)
+                    IdlingRegistry.getInstance().unregister(this)
                 }
             }
-            // Loops the main thread for a specified period of time.
-            // Control may not return immediately, instead it'll return after the provided delay has passed and the queue is in an idle state again.
-            uiController.loopMainThreadForAtLeast(100)
-        } while (System.currentTimeMillis() < endTime) // in case of a timeout we throw an exception -> test fails
-        throw PerformException.Builder()
-            .withCause(TimeoutException())
-            .withActionDescription(this.description)
-            .withViewDescription(HumanReadables.describe(rootView))
-            .build()
+        }
     }
-
-//    override fun perform(uiController: UiController, view: View) {
-//        if (!matcher.matches(view)) {
-//            ViewPropertyChangeCallback(matcher, view).run {
-//                try {
-//                    IdlingRegistry.getInstance().register(this)
-//                    view.viewTreeObserver.addOnDrawListener(this)
-//                    uiController.loopMainThreadUntilIdle()
-//                } finally {
-//                    view.viewTreeObserver.removeOnDrawListener(this)
-//                    IdlingRegistry.getInstance().unregister(this)
-//                }
-//            }
-//        }
-//    }
 }
 
 fun waitForViewMatcherOneTime(viewMatcher: Matcher<View>): ViewAction {
@@ -112,7 +108,7 @@ fun waitForViewMatcherOneTime(viewMatcher: Matcher<View>): ViewAction {
 open class ViewTester {
     fun waitForView(
         viewMatcher: Matcher<View>,
-        waitMillis: Int = 90000,
+        waitMillis: Int = 15000,
         waitMillisPerTry: Long = 100
     ): ViewInteraction {
         val maxTries = waitMillis / waitMillisPerTry.toInt()
@@ -139,7 +135,7 @@ open class ViewTester {
     ) {
         val maxTries = waitMillis / waitMillisPerTry.toInt()
         var tries = 0
-        var lastColor:Color? = null
+        var lastColor: Color? = null
 
         for (i in 0..maxTries)
             try {
@@ -158,3 +154,6 @@ open class ViewTester {
         throw Exception("Could not find color $color but last color was $lastColor")
     }
 }
+
+const val WAIT_TIMEOUT = 10000L
+const val CONDITION_CHECK_INTERVAL = 500L
