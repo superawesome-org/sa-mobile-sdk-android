@@ -105,8 +105,12 @@ jobs:
       - *clone_scripts_repo
       - *bootstrap_android
       - android/accept-licenses
+      - run:
+          name: Update build tools
+          command: |
+            echo yes | android update sdk --all --filter build-tools-33.0.2 --no-ui --force
       - android/start-emulator-and-run-tests:
-          system-image: system-images;android-31;google_apis;x86_64
+          system-image: system-images;android-31;default;x86_64
           memory: 4096
           post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
           pre-run-tests-steps:
@@ -114,7 +118,6 @@ jobs:
                 name: Start recording
                 command: |
                   adb shell screenrecord --time-limit=170 /sdcard/video.mp4 &
-                  adb shell input keyevent 82
           test-command: ./gradlew app:connectedDebugAndroidTest
           run-logcat: true
       - run:
