@@ -65,8 +65,9 @@ object CommonInteraction {
 
     fun checkSubtitleContains(text: String) {
         onView(withId(R.id.subtitleTextView))
-            .perform(waitUntil(isDisplayed()))
-            .perform(waitUntil(withSubstring(text)))
+            .check(matches(withSubstring(text)))
+//            .perform(waitUntil(isDisplayed()))
+//            .perform(waitUntil(withSubstring(text)))
     }
 
     fun waitForCloseButtonThenClick() {
