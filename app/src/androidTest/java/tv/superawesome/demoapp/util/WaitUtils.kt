@@ -6,6 +6,7 @@ import android.view.ViewTreeObserver
 import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.espresso.util.TreeIterables
 import org.hamcrest.CoreMatchers
@@ -35,7 +36,7 @@ private class ViewPropertyChangeCallback(
     }
 }
 
-fun waitUntil(matcher: Matcher<View>): ViewAction = object : ViewAction {
+fun waitUntil(matcher: Matcher<View>, timeout: Int = 600): ViewAction = object : ViewAction {
     override fun getConstraints(): Matcher<View> = CoreMatchers.any(View::class.java)
 
     override fun getDescription(): String = StringDescription().let {
@@ -43,20 +44,44 @@ fun waitUntil(matcher: Matcher<View>): ViewAction = object : ViewAction {
         "wait until: $it"
     }
 
-    override fun perform(uiController: UiController, view: View) {
-        if (!matcher.matches(view)) {
-            ViewPropertyChangeCallback(matcher, view).run {
-                try {
-                    IdlingRegistry.getInstance().register(this)
-                    view.viewTreeObserver.addOnDrawListener(this)
-                    uiController.loopMainThreadUntilIdle()
-                } finally {
-                    view.viewTreeObserver.removeOnDrawListener(this)
-                    IdlingRegistry.getInstance().unregister(this)
+    override fun perform(uiController: UiController, rootView: View) {
+        uiController.loopMainThreadUntilIdle()
+        val startTime = System.currentTimeMillis()
+        val endTime = startTime + timeout
+
+        do {
+            // Iterate through all views on the screen and see if the view we are looking for is there already
+            for (child in TreeIterables.breadthFirstViewTraversal(rootView)) {
+                // found view with required ID
+                if (matcher.matches(child)) {
+                    return
                 }
             }
-        }
+            // Loops the main thread for a specified period of time.
+            // Control may not return immediately, instead it'll return after the provided delay has passed and the queue is in an idle state again.
+            uiController.loopMainThreadForAtLeast(100)
+        } while (System.currentTimeMillis() < endTime) // in case of a timeout we throw an exception -> test fails
+        throw PerformException.Builder()
+            .withCause(TimeoutException())
+            .withActionDescription(this.description)
+            .withViewDescription(HumanReadables.describe(rootView))
+            .build()
     }
+
+//    override fun perform(uiController: UiController, view: View) {
+//        if (!matcher.matches(view)) {
+//            ViewPropertyChangeCallback(matcher, view).run {
+//                try {
+//                    IdlingRegistry.getInstance().register(this)
+//                    view.viewTreeObserver.addOnDrawListener(this)
+//                    uiController.loopMainThreadUntilIdle()
+//                } finally {
+//                    view.viewTreeObserver.removeOnDrawListener(this)
+//                    IdlingRegistry.getInstance().unregister(this)
+//                }
+//            }
+//        }
+//    }
 }
 
 fun waitForViewMatcherOneTime(viewMatcher: Matcher<View>): ViewAction {
