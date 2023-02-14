@@ -111,13 +111,13 @@ jobs:
           pre-run-tests-steps:
             - run:
                 name: Start recording
-                command: adb shell screenrecord --time-limit=80 /sdcard/example.mp4
+                command: adb shell screenrecord --time-limit=80 /sdcard/video.mp4
           test-command: ./gradlew app:connectedDebugAndroidTest            
           run-logcat: true
       - run:
           name: Download video
           command: |
-            adb pull /sdcard/example.mp4
+            adb pull /sdcard/video.mp4
             adb shell rm /sdcard/video.mp4
       - run:
           name: Copy test results to temp folder
