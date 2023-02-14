@@ -68,7 +68,7 @@ Notice that the custom event class name and parameter should be following:
 
 You should now have at least two different `Ad Sources`.
 
-Finally, save your changes. This will register `BannerCustomEvent` as a custom event running on your ad units from now on. You’ll have to repeat the same process for interstitial(`SAAdMobInterstitialCustomEvent`) and rewarded video ads(`SAAdMobVideoMediationAdapter`).
+Finally, save your changes. This will register a custom banner event. You’ll have to repeat the same process for interstitial and rewarded video ads.
 
 ## Implement Ads
 
