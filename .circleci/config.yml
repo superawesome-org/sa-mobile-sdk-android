@@ -112,7 +112,7 @@ jobs:
           pre-run-tests-steps:
             - run:
                 name: Start recording
-                command: adb shell screenrecord --time-limit=180 /sdcard/example.mp4
+                command: adb shell screenrecord --time-limit=80 /sdcard/example.mp4
           test-command: ./gradlew app:connectedDebugAndroidTest
           post-run-tests-steps:
             - run:
