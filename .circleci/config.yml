@@ -112,14 +112,13 @@ jobs:
             - run:
                 name: Start recording
                 command: adb shell screenrecord --time-limit=80 /sdcard/example.mp4
-          test-command: ./gradlew app:connectedDebugAndroidTest
-          post-run-tests-steps:
-            - run:
-                name: Download video
-                command: |
-                  adb pull /sdcard/example.mp4
-                  adb shell rm /sdcard/video.mp4
+          test-command: ./gradlew app:connectedDebugAndroidTest            
           run-logcat: true
+      - run:
+          name: Download video
+          command: |
+            adb pull /sdcard/example.mp4
+            adb shell rm /sdcard/video.mp4
       - run:
           name: Copy test results to temp folder
           command: find $PWD/app/build/outputs/androidTest-results/connected -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
