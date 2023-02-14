@@ -114,6 +114,7 @@ jobs:
                 name: Start recording
                 command: |
                   adb shell screenrecord --time-limit=170 /sdcard/video.mp4 &
+                  adb shell input keyevent 82
           test-command: ./gradlew app:connectedDebugAndroidTest
           run-logcat: true
       - run:
