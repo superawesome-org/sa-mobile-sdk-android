@@ -30,6 +30,7 @@ references:
         echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
         echo "export GIT_AUTHOR_NAME=sa-release-bot" >> $BASH_ENV
         echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
+        source "$BASH_ENV"
 
     # clone some scripts
   clone_scripts_repo: &clone_scripts_repo
@@ -113,8 +114,6 @@ jobs:
                 name: Start recording
                 command: |
                   adb shell screenrecord --time-limit=170 /sdcard/video.mp4 &
-                  adb pull /sdcard/video.mp4
-                  adb shell rm /sdcard/video.mp4
           test-command: ./gradlew app:connectedDebugAndroidTest
           run-logcat: true
       - run:
