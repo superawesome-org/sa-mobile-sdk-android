@@ -16,21 +16,22 @@ interface RetrofitAwesomeAdsApi {
         @Path("placementId") placementId: Int,
         @Path("lineItemId") lineItemId: Int,
         @Path("creativeId") creativeId: Int,
-        @QueryMap query: Map<String, Any>): Ad
+        @QueryMap query: Map<String, Any>
+    ): Ad
 
     @GET("impression")
     @JvmSuppressWildcards
-    suspend fun impression(@QueryMap query: Map<String, Any>): Void
+    suspend fun impression(@QueryMap query: Map<String, Any>)
 
     @GET("click")
     @JvmSuppressWildcards
-    suspend fun click(@QueryMap query: Map<String, Any>): Void
+    suspend fun click(@QueryMap query: Map<String, Any>)
 
     @GET("video/click")
     @JvmSuppressWildcards
-    suspend fun videoClick(@QueryMap query: Map<String, Any>): Void
+    suspend fun videoClick(@QueryMap query: Map<String, Any>)
 
     @GET("event")
     @JvmSuppressWildcards
-    suspend fun event(@QueryMap query: Map<String, Any>): Void
+    suspend fun event(@QueryMap query: Map<String, Any>)
 }

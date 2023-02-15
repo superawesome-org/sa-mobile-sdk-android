@@ -16,6 +16,7 @@ import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AdRepositoryTest : BaseTest() {
     @MockK
     lateinit var adDataSourceType: AwesomeAdsApiDataSourceType
@@ -29,18 +30,19 @@ class AdRepositoryTest : BaseTest() {
     @InjectMockKs
     lateinit var adRepository: AdRepository
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun test_getAdCalled_validResponse_success() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val adResponse = AdResponse(1, ad)
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
-        coEvery { adProcessorType.process(any(), any(), any()) } returns DataResult.Success(adResponse)
+        coEvery { adProcessorType.process(any(), any(), any()) } returns DataResult.Success(
+            adResponse
+        )
         coEvery { adDataSourceType.getAd(any(), any()) } returns DataResult.Success(ad)
 
         // When
-        val result = adRepository.getAd(1, mockk())
+        val result = adRepository.getAd(1, mockk(relaxed = true))
 
         // Then
         assertEquals(true, result.isSuccess)
@@ -59,18 +61,23 @@ class AdRepositoryTest : BaseTest() {
         assertEquals(true, result.isFailure)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun test_getAdMultiIdCalled_validResponse_success() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val adResponse = AdResponse(1, ad)
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
-        coEvery { adProcessorType.process(any(), any(), any()) } returns DataResult.Success(adResponse)
-        coEvery { adDataSourceType.getAd(any(), any(), any(), any()) } returns DataResult.Success(ad)
+        coEvery { adProcessorType.process(any(), any(), any()) } returns DataResult.Success(
+            adResponse
+        )
+        coEvery {
+            adDataSourceType.getAd(
+                any(), any(), any(), any()
+            )
+        } returns DataResult.Success(ad)
 
         // When
-        val result = adRepository.getAd(1, 2, 3, mockk())
+        val result = adRepository.getAd(1, 2, 3, mockk(relaxed = true))
 
         // Then
         assertEquals(true, result.isSuccess)
@@ -79,7 +86,8 @@ class AdRepositoryTest : BaseTest() {
     @Test
     fun test_getAdMultiIdCalled_invalidResponse_failure() = runTest {
         // Given
-        coEvery { adDataSourceType.getAd(any(), any(), any(), any()) } returns DataResult.Failure(mockk())
+        coEvery { adDataSourceType.getAd(any(), any(), any(), any()) } returns
+                DataResult.Failure(mockk())
         coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk()
 
         // When
