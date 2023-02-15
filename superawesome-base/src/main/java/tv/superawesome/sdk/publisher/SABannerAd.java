@@ -12,6 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import java.util.Collections;
+import java.util.Map;
+
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
@@ -119,9 +122,21 @@ public class SABannerAd extends FrameLayout {
      * One of the main public methods of the SABannerAd class. This will load a new SAAd object
      * corresponding to a given placement Id.
      *
-     * @param placementId Awesome Ads ID for ad data to be loaded
+     * @param placementId   Awesome Ads ID for ad data to be loaded
      */
     public void load(final int placementId) {
+        load(placementId, Collections.emptyMap());
+    }
+
+    /**
+     * One of the main public methods of the SABannerAd class. This will load a new SAAd object
+     * corresponding to a given placement Id.
+     *
+     * @param placementId   Awesome Ads ID for ad data to be loaded
+     * @param options       a dictionary of data to send with an ad's requests and events.
+     *                      Supports String or Int values.
+     */
+    public void load(final int placementId, final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -157,7 +172,7 @@ public class SABannerAd extends FrameLayout {
         session.prepareSession(() -> {
 
             // after session is OK, prepare
-            loader.loadAd(placementId, session, response -> {
+            loader.loadAd(placementId, session, options, response -> {
 
                 if (response.status != 200) {
                     if (listener != null) {
@@ -184,11 +199,30 @@ public class SABannerAd extends FrameLayout {
      * One of the main public methods of the SABannerAd class. This will load a new SAAd object
      * corresponding to a given placement Id.
      *
-     * @param placementId Awesome Ads ID for ad data to be loaded
-     * @param lineItemId  The id of the lineItem
-     * @param creativeId  The id of the creative
+     * @param placementId   Awesome Ads ID for ad data to be loaded
+     * @param lineItemId    The id of the lineItem
+     * @param creativeId    The id of the creative
      */
-    public void load(final int placementId, final int lineItemId, final int creativeId) {
+    public void load(final int placementId,
+                     final int lineItemId,
+                     final int creativeId) {
+        load(placementId, lineItemId, creativeId, Collections.emptyMap());
+    }
+
+    /**
+     * One of the main public methods of the SABannerAd class. This will load a new SAAd object
+     * corresponding to a given placement Id.
+     *
+     * @param placementId   Awesome Ads ID for ad data to be loaded
+     * @param lineItemId    The id of the lineItem
+     * @param creativeId    The id of the creative
+     * @param options       a dictionary of data to send with an ad's requests and events.
+     *                      Supports String or Int values.
+     */
+    public void load(final int placementId,
+                     final int lineItemId,
+                     final int creativeId,
+                     final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -224,7 +258,7 @@ public class SABannerAd extends FrameLayout {
         session.prepareSession(() ->
 
                 // after session is OK, prepare
-                loader.loadAd(placementId, lineItemId, creativeId, session, response -> {
+                loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
 
                     if (response.status != 200) {
                         if (listener != null) {

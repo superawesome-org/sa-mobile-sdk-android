@@ -10,7 +10,9 @@ import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saevents.SAEvents;
@@ -47,7 +49,29 @@ public class SAVideoAd {
     private static SARTBStartDelay playback = SADefaults.defaultPlaybackMode();
     private static boolean shouldMuteOnStart = SADefaults.defaultMuteOnStart();
 
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     */
     public static void load(final int placementId, final Context context) {
+        load(placementId, context, Collections.emptyMap());
+    }
+
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     * @param options       a dictionary of data to send with an ad's requests and events.
+     *                      Supports String or Int values.
+     */
+    public static void load(final int placementId,
+                            final Context context,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -72,7 +96,7 @@ public class SAVideoAd {
             session.prepareSession(() -> {
 
                 // after session is OK - start loading
-                loader.loadAd(placementId, session, response -> {
+                loader.loadAd(placementId, session, options, response -> {
 
                     if (response.status != 200) {
                         //
@@ -126,7 +150,38 @@ public class SAVideoAd {
         }
     }
 
-    public static void load(final int placementId, final int lineItemId, final int creativeId, final Context context) {
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param lineItemId    The id of the lineItem
+     * @param creativeId    The id of the creative
+     * @param context       the current context
+     */
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            final Context context) {
+        load(placementId, lineItemId, creativeId, context, Collections.emptyMap());
+    }
+
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param lineItemId    The id of the lineItem
+     * @param creativeId    The id of the creative
+     * @param context       the current context
+     * @param options       a dictionary of data to send with an ad's requests and events.
+     *                      Supports String or Int values.
+     */
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            final Context context,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -151,7 +206,7 @@ public class SAVideoAd {
             session.prepareSession(() -> {
 
                 // after session is OK - start loading
-                loader.loadAd(placementId, lineItemId, creativeId, session, response -> {
+                loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
 
                     if (response.status != 200) {
                         //
