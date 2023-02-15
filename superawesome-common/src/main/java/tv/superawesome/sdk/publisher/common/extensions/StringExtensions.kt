@@ -15,4 +15,7 @@ val String.baseUrl: String?
 
 fun String.toMD5(): String = MessageDigest.getInstance("MD5").digest(toByteArray()).toHex()
 
-fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it) }
+/**
+ * Converts String to Hexadecimal format
+ */
+private fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it) }

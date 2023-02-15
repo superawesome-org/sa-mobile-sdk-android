@@ -11,32 +11,18 @@ import kotlin.math.abs
  * each hashed and then XOR-ed together
  */
 interface IdGeneratorType {
-    suspend fun findDauId(): Int
+    fun findDauId(): Int
 }
 
 class IdGenerator(
-    private val googleAdvertisingProxy: GoogleAdvertisingProxyType,
+    private val dateProvider: DateProviderType,
     private val preferencesRepository: PreferencesRepositoryType,
     private val sdkInfo: SdkInfoType,
     private val numberGenerator: NumberGeneratorType
 ) : IdGeneratorType {
-    object Keys {
-        const val initial = -1
-        const val noTracking = 0
-        const val dauLength = 32
-    }
 
-    private var dauId: Int = Keys.initial
-
-    override suspend fun findDauId(): Int {
-        if (dauId == Keys.initial) {
-            dauId = composeDauId()
-        }
-        return dauId
-    }
-
-    private suspend fun composeDauId(): Int {
-        val firstPart = googleAdvertisingProxy.findAdvertisingId() ?: return Keys.noTracking
+    override fun findDauId(): Int {
+        val firstPart = dateProvider.nowAsMonthYear()
         val secondPart = preferencesRepository.dauUniquePart ?: generateAndSavePartOfDau()
         val thirdPart = sdkInfo.bundle
 
@@ -44,8 +30,10 @@ class IdGenerator(
     }
 
     private fun generateAndSavePartOfDau(): String {
-        val generatedNumber = numberGenerator.nextAlphanumericString(length = Keys.dauLength)
+        val generatedNumber = numberGenerator.nextAlphanumericString(length = DAU_KEY_LENGTH)
         preferencesRepository.dauUniquePart = generatedNumber
         return generatedNumber
     }
 }
+
+private const val DAU_KEY_LENGTH = 32

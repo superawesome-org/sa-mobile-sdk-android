@@ -10,37 +10,37 @@ import tv.superawesome.sdk.publisher.common.models.EventType
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 interface EventRepositoryType {
-    suspend fun impression(adResponse: AdResponse): DataResult<Void>
-    suspend fun click(adResponse: AdResponse): DataResult<Void>
-    suspend fun videoClick(adResponse: AdResponse): DataResult<Void>
-    suspend fun parentalGateOpen(adResponse: AdResponse): DataResult<Void>
-    suspend fun parentalGateClose(adResponse: AdResponse): DataResult<Void>
-    suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Void>
-    suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Void>
-    suspend fun viewableImpression(adResponse: AdResponse): DataResult<Void>
-    suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void>
+    suspend fun impression(adResponse: AdResponse): DataResult<Unit>
+    suspend fun click(adResponse: AdResponse): DataResult<Unit>
+    suspend fun videoClick(adResponse: AdResponse): DataResult<Unit>
+    suspend fun parentalGateOpen(adResponse: AdResponse): DataResult<Unit>
+    suspend fun parentalGateClose(adResponse: AdResponse): DataResult<Unit>
+    suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Unit>
+    suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Unit>
+    suspend fun viewableImpression(adResponse: AdResponse): DataResult<Unit>
+    suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Unit>
 }
 
 class EventRepository(
     private val dataSource: AwesomeAdsApiDataSourceType,
     private val adQueryMaker: AdQueryMakerType
 ) : EventRepositoryType {
-    override suspend fun impression(adResponse: AdResponse): DataResult<Void> =
+    override suspend fun impression(adResponse: AdResponse): DataResult<Unit> =
         withContext(Dispatchers.IO) {
             dataSource.impression(adQueryMaker.makeImpressionQuery(adResponse))
         }
 
-    override suspend fun click(adResponse: AdResponse): DataResult<Void> =
+    override suspend fun click(adResponse: AdResponse): DataResult<Unit> =
         withContext(Dispatchers.IO) {
             dataSource.click(adQueryMaker.makeClickQuery(adResponse))
         }
 
-    override suspend fun videoClick(adResponse: AdResponse): DataResult<Void> =
+    override suspend fun videoClick(adResponse: AdResponse): DataResult<Unit> =
         withContext(Dispatchers.IO) {
             dataSource.videoClick(adQueryMaker.makeVideoClickQuery(adResponse))
         }
 
-    private suspend fun customEvent(type: EventType, adResponse: AdResponse): DataResult<Void> =
+    private suspend fun customEvent(type: EventType, adResponse: AdResponse): DataResult<Unit> =
         withContext(Dispatchers.IO) {
             val data = EventData(
                 adResponse.placementId,
@@ -51,21 +51,21 @@ class EventRepository(
             dataSource.event(adQueryMaker.makeEventQuery(adResponse, data))
         }
 
-    override suspend fun parentalGateOpen(adResponse: AdResponse): DataResult<Void> =
+    override suspend fun parentalGateOpen(adResponse: AdResponse): DataResult<Unit> =
         customEvent(EventType.ParentalGateOpen, adResponse)
 
-    override suspend fun parentalGateClose(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.ParentalGateOpen, adResponse)
+    override suspend fun parentalGateClose(adResponse: AdResponse): DataResult<Unit> =
+        customEvent(EventType.ParentalGateClose, adResponse)
 
-    override suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.ParentalGateOpen, adResponse)
+    override suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Unit> =
+        customEvent(EventType.ParentalGateSuccess, adResponse)
 
-    override suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.ParentalGateOpen, adResponse)
+    override suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Unit> =
+        customEvent(EventType.ParentalGateFail, adResponse)
 
-    override suspend fun viewableImpression(adResponse: AdResponse): DataResult<Void> =
-        customEvent(EventType.ParentalGateOpen, adResponse)
+    override suspend fun viewableImpression(adResponse: AdResponse): DataResult<Unit> =
+        customEvent(EventType.ViewableImpression, adResponse)
 
-    override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Void> =
+    override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Unit> =
         customEvent(EventType.DwellTime, adResponse)
 }
