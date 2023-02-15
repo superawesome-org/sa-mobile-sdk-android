@@ -159,7 +159,8 @@ class BannerUITest {
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
-     Events
+    // Events
+    
     @Test
     fun test_banner_impression_events() {
         // Given
