@@ -318,56 +318,56 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           filters:
             branches:
-              only: /^v.*/
-            tags:
               ignore: /.*/
+            tags:
+              only: /^v.*/
 
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
           filters:
-            tags:
-              only: /^v.*/
             branches:
               ignore: /.*/
+            tags:
+              only: /^v.*/
 
       - sdk_push_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
           filters:
-            tags:
-              only: /^v.*/
             branches:
               ignore: /.*/
+            tags:
+              only: /^v.*/
 
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
           filters:
-            tags:
-              only: /^v.*/
             branches:
               ignore: /.*/
+            tags:
+              only: /^v.*/
 
       - sdk_push_superawesome_unity:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
           filters:
-            tags:
-              only: /^v.*/
             branches:
               ignore: /.*/
+            tags:
+              only: /^v.*/
 
       - publish_docs:
           context: MOBILE_ANDROID_SDKS
           requires:
             - sdk_push_superawesome
           filters:
-            tags:
-              only: /^v.*/
             branches:
               ignore: /.*/
+            tags:
+              only: /^v.*/
