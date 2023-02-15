@@ -2,9 +2,7 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.app.Activity;
 
-import tv.superawesome.sdk.publisher.common.models.Configuration;
-import tv.superawesome.sdk.publisher.common.network.Environment;
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk;
+import tv.superawesome.sdk.publisher.AwesomeAds;
 
 /**
  * Created by gabriel.coman on 13/05/2018.
@@ -13,6 +11,6 @@ import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk;
 public class SAUnityAwesomeAds {
 
     public static void SuperAwesomeUnityAwesomeAdsInit(Activity activity, boolean loggingEnabled) {
-        AwesomeAdsSdk.init(activity.getApplication(), new Configuration(Environment.Production, loggingEnabled));
+        AwesomeAds.init(activity.getApplication(), loggingEnabled);
     }
 }

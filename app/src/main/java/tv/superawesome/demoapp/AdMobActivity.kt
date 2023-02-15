@@ -15,6 +15,7 @@ import tv.superawesome.plugins.publisher.admob.SAAdMobAdapter
 import tv.superawesome.plugins.publisher.admob.SAAdMobBannerCustomEvent
 import tv.superawesome.plugins.publisher.admob.SAAdMobExtras
 import tv.superawesome.plugins.publisher.admob.SAAdMobInterstitialCustomEvent
+import tv.superawesome.sdk.publisher.SAOrientation
 import tv.superawesome.sdk.publisher.common.models.Orientation
 
 class AdMobActivity : Activity() {
@@ -60,7 +61,7 @@ class AdMobActivity : Activity() {
     private fun requestInterstitialAd() {
         val bundle = SAAdMobExtras.extras()
             .setTestMode(false)
-            .setOrientation(Orientation.Portrait)
+            .setOrientation(SAOrientation.PORTRAIT)
             .setParentalGate(true)
             .build()
         AdManagerInterstitialAd.load(
@@ -86,7 +87,7 @@ class AdMobActivity : Activity() {
         val videoBundle = SAAdMobExtras.extras()
             .setTestMode(false)
             .setParentalGate(false)
-            .setOrientation(Orientation.Portrait)
+            .setOrientation(SAOrientation.PORTRAIT)
             .setSmallClick(true)
             .setCloseAtEnd(true)
             .setCloseButton(true)
