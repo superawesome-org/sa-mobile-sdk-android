@@ -36,7 +36,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
             DataResult.Failure(exception)
         }
 
-    override suspend fun impression(query: EventQueryBundle): DataResult<Void> = try {
+    override suspend fun impression(query: EventQueryBundle): DataResult<Unit> = try {
         DataResult.Success(
             awesomeAdsApi.impression(
                 query.build()
@@ -46,7 +46,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
         DataResult.Failure(exception)
     }
 
-    override suspend fun click(query: EventQueryBundle): DataResult<Void> = try {
+    override suspend fun click(query: EventQueryBundle): DataResult<Unit> = try {
         DataResult.Success(
             awesomeAdsApi.click(
                 query.build()
@@ -56,7 +56,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
         DataResult.Failure(exception)
     }
 
-    override suspend fun videoClick(query: EventQueryBundle): DataResult<Void> = try {
+    override suspend fun videoClick(query: EventQueryBundle): DataResult<Unit> = try {
         DataResult.Success(
             awesomeAdsApi.videoClick(
                 query.build()
@@ -66,7 +66,7 @@ class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
         DataResult.Failure(exception)
     }
 
-    override suspend fun event(query: EventQueryBundle): DataResult<Void> = try {
+    override suspend fun event(query: EventQueryBundle): DataResult<Unit> = try {
         DataResult.Success(
             awesomeAdsApi.event(
                 query.build()
