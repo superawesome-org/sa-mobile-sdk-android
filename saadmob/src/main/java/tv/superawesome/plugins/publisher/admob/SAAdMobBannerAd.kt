@@ -8,16 +8,18 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback
 import com.google.android.gms.ads.mediation.MediationBannerAd
 import com.google.android.gms.ads.mediation.MediationBannerAdCallback
 import com.google.android.gms.ads.mediation.MediationBannerAdConfiguration
-import tv.superawesome.sdk.publisher.common.components.NumberGenerator
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.lib.sautils.SAUtils
+import tv.superawesome.sdk.publisher.SABannerAd
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
 
 class SAAdMobBannerAd(
     private val adConfiguration: MediationBannerAdConfiguration,
     private var mediationAdLoadCallback: MediationAdLoadCallback<MediationBannerAd, MediationBannerAdCallback>
 ) : MediationBannerAd, SAInterface {
-    private var bannerAd: BannerView? = null
+    private var bannerAd: SABannerAd? = null
+    private val ID = SAUtils.randomNumberBetween(1000000, 1500000)
     private var adCallback: MediationBannerAdCallback? = null
     private var loadedPlacementId = 0
     private var adLoaded = false
@@ -29,12 +31,13 @@ class SAAdMobBannerAd(
         loadedPlacementId =
             adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
-        bannerAd = BannerView(context)
-        bannerAd?.id = NumberGenerator().nextIntForCache()
+        bannerAd = SABannerAd(context)
+        bannerAd?.id = ID
 
         val extras = adConfiguration.mediationExtras
 
         if (extras.size() > 0) {
+            bannerAd?.setConfiguration(SAConfiguration.fromOrdinal(extras.getInt(SAAdMobExtras.kKEY_CONFIGURATION)))
             bannerAd?.setTestMode(extras.getBoolean(SAAdMobExtras.kKEY_TEST))
             bannerAd?.setParentalGate(extras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
             bannerAd?.setBumperPage(extras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
@@ -42,16 +45,16 @@ class SAAdMobBannerAd(
         }
 
         val adSize = adConfiguration.adSize
-        val widthInPixels: Int = adSize.getWidthInPixels(context)
-        val heightInPixels: Int = adSize.getHeightInPixels(context)
+        val widthInPixels: Int = adSize?.getWidthInPixels(context) ?: 0
+        val heightInPixels: Int = adSize?.getHeightInPixels(context) ?: 0
 
         bannerAd?.layoutParams = ViewGroup.LayoutParams(widthInPixels, heightInPixels)
 
         bannerAd?.setListener(this)
-        bannerAd?.addOnLayoutChangeListener { _: View?, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int, _: Int ->
+        bannerAd?.addOnLayoutChangeListener { v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int ->
             layoutChanged = true
             if (adLoaded && !setupCompleted) {
-                bannerAd?.play()
+                bannerAd?.play(context)
             }
         }
         bannerAd?.load(loadedPlacementId)
@@ -61,17 +64,17 @@ class SAAdMobBannerAd(
         return bannerAd ?: View(adConfiguration.context)
     }
 
-    override fun onEvent(placementId: Int, event: SAEvent) {
+    override fun onEvent(placementId: Int, event: SAEvent?) {
         when (event) {
-            SAEvent.AdLoaded -> adLoaded()
-            SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> adFailedToLoad()
-            SAEvent.AdAlreadyLoaded -> {
+            SAEvent.adLoaded -> adLoaded()
+            SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
+            SAEvent.adAlreadyLoaded -> {
                 // do nothing
             }
-            SAEvent.AdShown -> adCallback?.onAdOpened()
-            SAEvent.AdFailedToShow -> adFailedToLoad()
-            SAEvent.AdClicked -> adCallback?.reportAdClicked()
-            SAEvent.AdClosed -> adCallback?.onAdClosed()
+            SAEvent.adShown -> adCallback?.onAdOpened()
+            SAEvent.adFailedToShow -> adFailedToLoad()
+            SAEvent.adClicked -> adCallback?.reportAdClicked()
+            SAEvent.adClosed -> adCallback?.onAdClosed()
             else -> {}
         }
     }
@@ -80,7 +83,7 @@ class SAAdMobBannerAd(
         adLoaded = true
 
         if (layoutChanged && bannerAd != null && !setupCompleted) {
-            bannerAd?.play()
+            bannerAd?.play(bannerAd?.context)
             setupCompleted = true
         }
         adCallback = mediationAdLoadCallback.onSuccess(this)
