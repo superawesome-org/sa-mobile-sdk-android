@@ -2,8 +2,8 @@ package tv.superawesome.plugins.publisher.admob
 
 import android.content.Context
 import com.google.android.gms.ads.mediation.*
-import tv.superawesome.sdk.publisher.common.models.Configuration
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk
+import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.SAVersion
 
 /**
  * AdMob mediation adapter for AwesomeAds
@@ -19,7 +19,7 @@ open class SAAdMobAdapter : Adapter() {
         initializationCompleteCallback: InitializationCompleteCallback,
         mediationConfigurations: MutableList<MediationConfiguration>
     ) {
-        AwesomeAdsSdk.init(context, Configuration())
+        AwesomeAds.init(context, false)
         initializationCompleteCallback.onInitializationSucceeded()
     }
 
@@ -48,7 +48,7 @@ open class SAAdMobAdapter : Adapter() {
     }
 
     override fun getSDKVersionInfo(): VersionInfo {
-        val splits = AwesomeAdsSdk.info()?.versionNumber?.split(".") ?: emptyList()
+        val splits = SAVersion.getSDKVersionNumber().split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt())
         } else {
@@ -57,7 +57,7 @@ open class SAAdMobAdapter : Adapter() {
     }
 
     override fun getVersionInfo(): VersionInfo {
-        val splits = AwesomeAdsSdk.info()?.versionNumber?.split(".") ?: emptyList()
+        val splits = SAVersion.getSDKVersionNumber().split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt() * 100)
         } else {

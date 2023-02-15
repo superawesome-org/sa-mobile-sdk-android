@@ -6,9 +6,11 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.sdk.publisher.common.models.Orientation;
-import tv.superawesome.sdk.publisher.common.models.SAEvent;
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.sdk.publisher.SAEvent;
+import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SAInterstitialAd;
+import tv.superawesome.sdk.publisher.SAOrientation;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -21,34 +23,34 @@ public class SAUnityInterstitialAd {
      * Method that creates a new Interstitial Ad (from Unity)
      */
     public static void SuperAwesomeUnitySAInterstitialAdCreate(Context context) {
-        SAInterstitialAd.INSTANCE.setListener((placementId, event) -> {
+        SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
             switch (event) {
-                case AdLoaded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdLoaded.getValue());
+                case adLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adLoaded.toString());
                     break;
-                case AdEmpty:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEmpty.getValue());
+                case adEmpty:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEmpty.toString());
                     break;
-                case AdFailedToLoad:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToLoad.getValue());
+                case adFailedToLoad:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToLoad.toString());
                     break;
-                case AdAlreadyLoaded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdAlreadyLoaded.getValue());
+                case adAlreadyLoaded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adAlreadyLoaded.toString());
                     break;
-                case AdShown:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdShown.getValue());
+                case adShown:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adShown.toString());
                     break;
-                case AdFailedToShow:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdFailedToShow.getValue());
+                case adFailedToShow:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adFailedToShow.toString());
                     break;
-                case AdClicked:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClicked.getValue());
+                case adClicked:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClicked.toString());
                     break;
-                case AdEnded:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdEnded.getValue());
+                case adEnded:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adEnded.toString());
                     break;
-                case AdClosed:
-                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.AdClosed.getValue());
+                case adClosed:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
                     break;
             }
         });
@@ -59,31 +61,27 @@ public class SAUnityInterstitialAd {
      * Method that loads a new Interstitial AD (from Unity)
      */
     public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test) {
-        SAInterstitialAd.INSTANCE.setTestMode(test);
-        SAInterstitialAd.INSTANCE.load(placementId, context, null);
+        SAInterstitialAd.setTestMode(test);
+        SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
+        SAInterstitialAd.load(placementId, context);
     }
 
     /**
      * Method that checks to see if an ad is available for an interstitial ad (from Unity)
      */
     public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable(Context context, int placementId) {
-        return SAInterstitialAd.INSTANCE.hasAdAvailable(placementId);
+        return SAInterstitialAd.hasAdAvailable(placementId);
     }
 
     /**
      * Method that plays a new Interstitial Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdPlay(Context context,
-                                                             int placementId,
-                                                             boolean isParentalGateEnabled,
-                                                             boolean isBumperPageEnabled,
-                                                             int orientation,
-                                                             boolean isBackButtonEnabled) {
-        SAInterstitialAd.INSTANCE.setParentalGate(isParentalGateEnabled);
-        SAInterstitialAd.INSTANCE.setBumperPage(isBumperPageEnabled);
-        setOrientation(orientation);
-        SAInterstitialAd.INSTANCE.setBackButton(isBackButtonEnabled);
-        SAInterstitialAd.INSTANCE.play(placementId, context);
+    public static void SuperAwesomeUnitySAInterstitialAdPlay(Context context, int placementId, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int orientation, boolean isBackButtonEnabled) {
+        SAInterstitialAd.setParentalGate(isParentalGateEnabled);
+        SAInterstitialAd.setBumperPage(isBumperPageEnabled);
+        SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
+        SAInterstitialAd.setBackButton(isBackButtonEnabled);
+        SAInterstitialAd.play(placementId, context);
     }
 
     /**
@@ -95,17 +93,10 @@ public class SAUnityInterstitialAd {
             int orientation,
             boolean isBackButtonEnabled,
             boolean testModeEnabled) {
-        SAInterstitialAd.INSTANCE.setParentalGate(isParentalGateEnabled);
-        SAInterstitialAd.INSTANCE.setBumperPage(isBumperPageEnabled);
-        SAInterstitialAd.INSTANCE.setBackButton(isBackButtonEnabled);
-        setOrientation(orientation);
-        SAInterstitialAd.INSTANCE.setTestMode(testModeEnabled);
-    }
-
-    private static void setOrientation(int orientation) {
-        Orientation orientationInstance = Orientation.Companion.fromValue(orientation);
-        if (orientationInstance != null) {
-            SAInterstitialAd.INSTANCE.setOrientation(orientationInstance);
-        }
+        SAInterstitialAd.setParentalGate(isParentalGateEnabled);
+        SAInterstitialAd.setBumperPage(isBumperPageEnabled);
+        SAInterstitialAd.setBackButton(isBackButtonEnabled);
+        SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
+        SAInterstitialAd.setTestMode(testModeEnabled);
     }
 }

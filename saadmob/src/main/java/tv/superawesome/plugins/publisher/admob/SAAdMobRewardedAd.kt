@@ -6,8 +6,12 @@ import com.google.android.gms.ads.mediation.MediationRewardedAd
 import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
 import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
 import com.google.android.gms.ads.rewarded.RewardItem
-import tv.superawesome.sdk.publisher.common.models.*
-import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
+import tv.superawesome.sdk.publisher.SAOrientation
+import tv.superawesome.sdk.publisher.SAVideoAd
 
 class SAAdMobRewardedAd(
     private val adConfiguration: MediationRewardedAdConfiguration,
@@ -23,21 +27,16 @@ class SAAdMobRewardedAd(
         val extras = adConfiguration.mediationExtras
 
         if (extras.size() > 0) {
+            SAVideoAd.setConfiguration(SAConfiguration.fromOrdinal(extras.getInt(SAAdMobExtras.kKEY_CONFIGURATION)))
             SAVideoAd.setTestMode(extras.getBoolean(SAAdMobExtras.kKEY_TEST))
-            SAVideoAd.setOrientation(
-                Orientation.fromValue(extras.getInt(SAAdMobExtras.kKEY_ORIENTATION))
-                    ?: Constants.defaultOrientation
-            )
+            SAVideoAd.setOrientation(SAOrientation.fromValue(extras.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
             SAVideoAd.setParentalGate(extras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
             SAVideoAd.setBumperPage(extras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
             SAVideoAd.setSmallClick(extras.getBoolean(SAAdMobExtras.kKEY_SMALL_CLICK))
             SAVideoAd.setCloseButton(extras.getBoolean(SAAdMobExtras.kKEY_CLOSE_BUTTON))
             SAVideoAd.setCloseAtEnd(extras.getBoolean(SAAdMobExtras.kKEY_CLOSE_AT_END))
             SAVideoAd.setBackButton(extras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
-            SAVideoAd.setPlaybackMode(
-                AdRequest.StartDelay.fromValue(extras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE))
-                    ?: Constants.defaultStartDelay
-            )
+            SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(extras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE)))
         }
 
         loadedPlacementId =
@@ -64,18 +63,18 @@ class SAAdMobRewardedAd(
     }
 
     // SAVideoAd Listener Event
-    override fun onEvent(placementId: Int, event: SAEvent) {
+    override fun onEvent(placementId: Int, event: SAEvent?) {
         when (event) {
-            SAEvent.AdLoaded -> adLoaded()
-            SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> adFailedToLoad()
-            SAEvent.AdAlreadyLoaded -> {
+            SAEvent.adLoaded -> adLoaded()
+            SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
+            SAEvent.adAlreadyLoaded -> {
                 // do nothing
             }
-            SAEvent.AdShown -> rewardedAdCallback?.onAdOpened()
-            SAEvent.AdFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
-            SAEvent.AdClicked -> rewardedAdCallback?.reportAdClicked()
-            SAEvent.AdEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
-            SAEvent.AdClosed -> rewardedAdCallback?.onAdClosed()
+            SAEvent.adShown -> rewardedAdCallback?.onAdOpened()
+            SAEvent.adFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
+            SAEvent.adClicked -> rewardedAdCallback?.reportAdClicked()
+            SAEvent.adEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
+            SAEvent.adClosed -> rewardedAdCallback?.onAdClosed()
             else -> {}
         }
     }

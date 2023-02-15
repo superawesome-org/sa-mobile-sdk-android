@@ -1,7 +1,6 @@
 package tv.superawesome.plugins.publisher.admob
 
-@Deprecated(
-    "Kept for backward compatibility reasons",
-    ReplaceWith("SAAdMobAdapter")
-)
+/**
+ * This adapter will be retired and instead use `SAAdMobAdapter` for all ad types
+ */
 class SAAdMobVideoMediationAdapter : SAAdMobAdapter()
