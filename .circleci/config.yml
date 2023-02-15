@@ -134,6 +134,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *generate_github_token
       - *clone_scripts_repo
       - run:
           name: Run semantic release
