@@ -23,6 +23,7 @@ import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.UIAwait
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
@@ -109,7 +110,7 @@ class BannerUITest {
         BumperInteraction.waitUntilBumper()
 
         // And view URL is redirected to browser
-        Thread.sleep(4500)
+        UIAwait().await(5000)
         Intents.intended(hasAction(Intent.ACTION_VIEW))
         verifyUrlPathCalled("/click")
     }
@@ -207,6 +208,7 @@ class BannerUITest {
         stubIntents()
         openParentalGate()
         ParentalGateInteraction.testSuccess()
+        UIAwait().await(5000)
         Intents.intended(hasAction(Intent.ACTION_VIEW))
     }
 
@@ -235,6 +237,7 @@ class BannerUITest {
             .perform(click())
 
         // Then view URL is redirected to browser
+        UIAwait().await(5000)
         Intents.intended(hasAction(Intent.ACTION_VIEW))
         verifyUrlPathCalled("/click")
     }

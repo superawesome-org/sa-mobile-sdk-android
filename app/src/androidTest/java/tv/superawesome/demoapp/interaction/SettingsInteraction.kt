@@ -16,42 +16,50 @@ object SettingsInteraction {
 
     private fun resetSettings() {
         onView(withId(R.id.resetButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     private fun enableUITesting() {
         onView(withId(R.id.uiTestingButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     fun closeDelayed() {
         onView(withId(R.id.closeDelayedButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     fun closeNoDelay() {
         onView(withId(R.id.closeImmediatelyButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     fun enableBumper() {
         onView(withId(R.id.bumperEnableButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     fun enableParentalGate() {
         onView(withId(R.id.parentalEnableButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     fun disablePlay() {
         onView(withId(R.id.playbackDisableButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     fun closeSettings() {
         onView(withId(R.id.closeButton))
-            .perform(click())
+            .perform(waitUntil(isCompletelyDisplayed()), click())
+//            .perform(click())
     }
 
     fun commonSettings() {

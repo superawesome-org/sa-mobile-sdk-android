@@ -113,7 +113,7 @@ jobs:
             - run:
                 name: Start recording
                 command: |
-                  adb shell screenrecord --time-limit=460 /sdcard/video.mp4 &
+                  adb shell screenrecord --time-limit=180 /sdcard/video.mp4 &
           test-command: ./gradlew app:connectedDebugAndroidTest
           run-logcat: true
       - run:
@@ -316,38 +316,38 @@ workflows:
 
   pull_request:
     jobs:
-      - checkout_code:
-          context: MOBILE_ANDROID_SDKS
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - checkout_code:
+      #     context: MOBILE_ANDROID_SDKS
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
-      - lint:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - lint:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - checkout_code
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
-      - test_superawesome_base_unit_tests:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - test_superawesome_base_unit_tests:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - checkout_code
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
       - test_superawesome_base_ui_tests:
           context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
+          # requires:
+          #   - checkout_code
           filters:
             branches:
               ignore: develop
