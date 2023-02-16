@@ -1,3 +1,13 @@
+## [8.5.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.1...v8.5.2) (2023-02-16)
+
+
+### Bug Fixes
+
+* Added a new placement to support further VPAID testing ([#241](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/241)) ([d94440d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d94440d6a5703d2e89e6487aad5a1bb03b9d918f))
+* **Bumper:** AAG-2795: Added missing theme to Bumper ([#255](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/255)) ([e2124bf](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e2124bf3b094ec4fd4a3b06c4b3c7d0bc1c549d0))
+* **Version:** Reverted version and corrected circle ci script to run release tag phase ([#274](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/274)) ([2c33a38](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2c33a3811a530e856fe6d5e9a3f4ef6975f2592b))
+* **Version:** Reverted version to 8.5.1 ([#275](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/275)) ([73efaa2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/73efaa2567dc17d6638710f2d37dcf0dd2efd709))
+
 ## [8.5.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.0...v8.5.1) (2022-12-07)
 
 
