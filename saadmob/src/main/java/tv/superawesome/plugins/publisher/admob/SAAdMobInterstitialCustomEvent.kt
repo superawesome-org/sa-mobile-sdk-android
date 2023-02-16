@@ -7,17 +7,10 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.mediation.MediationAdRequest
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitial
 import com.google.android.gms.ads.mediation.customevent.CustomEventInterstitialListener
-import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.models.Orientation.Companion.fromValue
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd.load
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd.play
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd.setBackButton
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd.setBumperPage
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd.setListener
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd.setOrientation
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd.setParentalGate
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
+import tv.superawesome.sdk.publisher.SAInterstitialAd.*
+import tv.superawesome.sdk.publisher.SAOrientation
 
 @Deprecated(
     "Kept for backward compatibility reasons",
@@ -42,38 +35,35 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
             setParentalGate(bundle.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
             setBumperPage(bundle.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
             setBackButton(bundle.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
-            setOrientation(
-                fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION))
-                    ?: Constants.defaultOrientation
-            )
+            setOrientation(SAOrientation.fromValue(bundle.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
         }
         setListener(SAInterface { placementId: Int, event: SAEvent? ->
             when (event) {
-                SAEvent.AdLoaded -> {
+                SAEvent.adLoaded -> {
                     loadedPlacementId = placementId
                     listener.onAdLoaded()
                 }
-                SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> listener.onAdFailedToLoad(
+                SAEvent.adEmpty, SAEvent.adFailedToLoad -> listener.onAdFailedToLoad(
                     AdError(
                         AdRequest.ERROR_CODE_NO_FILL,
                         "",
                         ""
                     )
                 )
-                SAEvent.AdAlreadyLoaded, SAEvent.AdEnded -> {}
-                SAEvent.AdShown -> listener.onAdOpened()
-                SAEvent.AdFailedToShow -> listener.onAdFailedToLoad(
+                SAEvent.adAlreadyLoaded, SAEvent.adEnded -> {}
+                SAEvent.adShown -> listener.onAdOpened()
+                SAEvent.adFailedToShow -> listener.onAdFailedToLoad(
                     AdError(
                         AdRequest.ERROR_CODE_INTERNAL_ERROR,
                         "",
                         ""
                     )
                 )
-                SAEvent.AdClicked -> {
+                SAEvent.adClicked -> {
                     listener.onAdClicked()
                     listener.onAdLeftApplication()
                 }
-                SAEvent.AdClosed -> listener.onAdClosed()
+                SAEvent.adClosed -> listener.onAdClosed()
                 null -> return@SAInterface
             }
         })

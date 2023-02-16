@@ -5,11 +5,11 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback
 import com.google.android.gms.ads.mediation.MediationInterstitialAd
 import com.google.android.gms.ads.mediation.MediationInterstitialAdCallback
 import com.google.android.gms.ads.mediation.MediationInterstitialAdConfiguration
-import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.models.Orientation
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
+import tv.superawesome.sdk.publisher.SAInterstitialAd
+import tv.superawesome.sdk.publisher.SAOrientation
 
 class SAAdMobInterstitialAd(
     private val adConfiguration: MediationInterstitialAdConfiguration,
@@ -25,11 +25,11 @@ class SAAdMobInterstitialAd(
         val extras = adConfiguration.mediationExtras
 
         if (extras.size() > 0) {
-            SAInterstitialAd.setTestMode(extras.getBoolean(SAAdMobExtras.kKEY_TEST))
-            SAInterstitialAd.setOrientation(
-                Orientation.fromValue(extras.getInt(SAAdMobExtras.kKEY_ORIENTATION))
-                    ?: Constants.defaultOrientation
+            SAInterstitialAd.setConfiguration(
+                SAConfiguration.fromOrdinal(extras.getInt(SAAdMobExtras.kKEY_CONFIGURATION))
             )
+            SAInterstitialAd.setTestMode(extras.getBoolean(SAAdMobExtras.kKEY_TEST))
+            SAInterstitialAd.setOrientation(SAOrientation.fromValue(extras.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
             SAInterstitialAd.setParentalGate(extras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
             SAInterstitialAd.setBumperPage(extras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
             SAInterstitialAd.setBackButton(extras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
@@ -57,17 +57,17 @@ class SAAdMobInterstitialAd(
     }
 
     // SAInterstitialAd Listener Event
-    override fun onEvent(placementId: Int, event: SAEvent) {
+    override fun onEvent(placementId: Int, event: SAEvent?) {
         when (event) {
-            SAEvent.AdLoaded -> adLoaded()
-            SAEvent.AdEmpty, SAEvent.AdFailedToLoad -> adFailedToLoad()
-            SAEvent.AdAlreadyLoaded -> {
+            SAEvent.adLoaded -> adLoaded()
+            SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
+            SAEvent.adAlreadyLoaded -> {
                 // do nothing
             }
-            SAEvent.AdShown -> adCallback?.onAdOpened()
-            SAEvent.AdFailedToShow -> adCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
-            SAEvent.AdClicked -> adCallback?.reportAdClicked()
-            SAEvent.AdClosed -> adCallback?.onAdClosed()
+            SAEvent.adShown -> adCallback?.onAdOpened()
+            SAEvent.adFailedToShow -> adCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
+            SAEvent.adClicked -> adCallback?.reportAdClicked()
+            SAEvent.adClosed -> adCallback?.onAdClosed()
             else -> {}
         }
     }

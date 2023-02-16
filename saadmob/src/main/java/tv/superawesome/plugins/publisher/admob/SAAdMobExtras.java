@@ -2,14 +2,17 @@ package tv.superawesome.plugins.publisher.admob;
 
 import android.os.Bundle;
 
-import tv.superawesome.sdk.publisher.common.models.AdRequest;
-import tv.superawesome.sdk.publisher.common.models.Constants;
-import tv.superawesome.sdk.publisher.common.models.Orientation;
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.sdk.publisher.SADefaults;
+import tv.superawesome.sdk.publisher.SAOrientation;
 
 public class SAAdMobExtras {
+
     static final String kKEY_TEST = "SA_TEST_MODE";
     static final String kKEY_TRANSPARENT = "SA_TRANSPARENT";
     static final String kKEY_ORIENTATION = "SA_ORIENTATION";
+    static final String kKEY_CONFIGURATION = "SA_CONFIGURATION";
     static final String kKEY_PARENTAL_GATE = "SA_PG";
     static final String kKEY_BUMPER_PAGE = "SA_BUMPER";
     static final String kKEY_BACK_BUTTON = "SA_BACK_BUTTON";
@@ -19,16 +22,17 @@ public class SAAdMobExtras {
     static final String kKEY_PLAYBACK_MODE = "SA_PLAYBACK_MODE";
     static final String PARAMETER = "parameter";
 
-    private boolean transparent = Constants.defaultBackgroundColorEnabled;
-    private boolean testMode = Constants.defaultTestMode;
-    private Orientation orientation = Constants.INSTANCE.getDefaultOrientation();
-    private AdRequest.StartDelay playback = Constants.INSTANCE.getDefaultStartDelay();
-    private boolean parentalGate = Constants.defaultParentalGate;
-    private boolean bumperPage = Constants.defaultBumperPage;
-    private boolean backButton = Constants.defaultBackButtonEnabled;
-    private boolean closeButton = false;
-    private boolean closeAtEnd = Constants.defaultCloseAtEnd;
-    private boolean smallClick = Constants.defaultSmallClick;
+    private boolean transparent = SADefaults.defaultBgColor();
+    private boolean testMode = SADefaults.defaultTestMode();
+    private SAOrientation orientation = SADefaults.defaultOrientation();
+    private SAConfiguration configuration = SADefaults.defaultConfiguration();
+    private SARTBStartDelay playback = SADefaults.defaultPlaybackMode();
+    private boolean parentalGate = SADefaults.defaultParentalGate();
+    private boolean bumperPage = SADefaults.defaultBumperPage();
+    private boolean backButton = SADefaults.defaultBackButton();
+    private boolean closeButton = SADefaults.defaultCloseButton();
+    private boolean closeAtEnd = SADefaults.defaultCloseAtEnd();
+    private boolean smallClick = SADefaults.defaultSmallClick();
 
     private SAAdMobExtras() {
         //
@@ -48,8 +52,13 @@ public class SAAdMobExtras {
         return this;
     }
 
-    public SAAdMobExtras setOrientation(Orientation value) {
+    public SAAdMobExtras setOrientation(SAOrientation value) {
         orientation = value;
+        return this;
+    }
+
+    public SAAdMobExtras setConfiguration(SAConfiguration value) {
+        configuration = value;
         return this;
     }
 
@@ -83,7 +92,7 @@ public class SAAdMobExtras {
         return this;
     }
 
-    public SAAdMobExtras setPlaybackMode(AdRequest.StartDelay mode) {
+    public SAAdMobExtras setPlayabckMode(SARTBStartDelay mode) {
         playback = mode;
         return this;
     }
@@ -93,6 +102,7 @@ public class SAAdMobExtras {
         bundle.putBoolean(kKEY_TEST, testMode);
         bundle.putBoolean(kKEY_TRANSPARENT, transparent);
         bundle.putInt(kKEY_ORIENTATION, orientation.ordinal());
+        bundle.putInt(kKEY_CONFIGURATION, configuration.ordinal());
         bundle.putInt(kKEY_PLAYBACK_MODE, playback.ordinal());
         bundle.putBoolean(kKEY_PARENTAL_GATE, parentalGate);
         bundle.putBoolean(kKEY_BUMPER_PAGE, bumperPage);
