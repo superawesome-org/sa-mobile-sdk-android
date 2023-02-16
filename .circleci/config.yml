@@ -1,4 +1,5 @@
 version: 2.1
+
 references:
   android_config: &android_config
     docker:
@@ -16,7 +17,7 @@ references:
       command: |
         echo "Google Services"
         echo 'export SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC="$SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC"' >> $BASH_ENV
-        echo $SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC | base64 -di > app/${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_NAME}.json
+        echo $SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC | base64 -di > $PWD/app/${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_NAME}.json
 
   generate_github_token: &generate_github_token
     run:
@@ -29,6 +30,7 @@ references:
         echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
         echo "export GIT_AUTHOR_NAME=sa-release-bot" >> $BASH_ENV
         echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
+        source "$BASH_ENV"
 
     # clone some scripts
   clone_scripts_repo: &clone_scripts_repo
@@ -43,6 +45,9 @@ references:
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
 
+orbs:
+  android: circleci/android@2.1.2
+
 jobs:
 
   checkout_code:
@@ -55,7 +60,7 @@ jobs:
             - "."
 
   ## Run unit tests
-  test_superawesome_base:
+  lint:
     <<: *android_config
     steps:
       - attach_workspace:
@@ -67,6 +72,17 @@ jobs:
       - run:
           name: Lint Code
           command: ./gradlew lint
+
+  ## Run unit tests
+  test_superawesome_base_unit_tests:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *generate_github_token
+      - *configure_google_services
+      - *clone_scripts_repo
+      - *bootstrap_android
       - run:
           name: Run unit tests for superawesome_base
           command: bundle exec fastlane run_all_tests module:superawesome-base
@@ -75,7 +91,46 @@ jobs:
           command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
-  
+
+  ## Run unit tests
+  test_superawesome_base_ui_tests:
+    executor:
+      name: android/android-machine
+      tag: 2022.12.1
+      resource-class: large
+    steps:
+      - checkout
+      - *generate_github_token
+      - *configure_google_services
+      - *clone_scripts_repo
+      - *bootstrap_android
+      - android/accept-licenses
+      - android/start-emulator-and-run-tests:
+          system-image: system-images;android-30;default;x86_64
+          memory: 4096
+          post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
+          pre-run-tests-steps:
+            - run:
+                name: Start recording
+                command: |
+                  adb shell screenrecord --time-limit=180 /sdcard/video.mp4 &
+          test-command: ./gradlew app:connectedDebugAndroidTest
+          run-logcat: true
+      - run:
+          name: Download video
+          when: always
+          command: |
+            adb pull /sdcard/video.mp4
+            adb shell rm /sdcard/video.mp4
+      - run:
+          name: Copy test results to temp folder
+          command: find $PWD/app/build/outputs/androidTest-results/connected -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+      - store_test_results:
+          path: temp_files/test-results
+      - store_artifacts:
+          path: "./video.mp4"
+          destination: videos
+
   semantic_release_dry_run:
     <<: *android_config
     environment:
@@ -232,21 +287,67 @@ jobs:
           destination: docsy-jekyll
 
 workflows:
-  version: 2.1
-  pull_request:
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 7 * * 1-5"
+          filters:
+            branches:
+              only:
+                - develop
     jobs:
       - checkout_code:
           context: MOBILE_ANDROID_SDKS
           filters:
-            branches:
-              ignore: develop
             tags:
               ignore: /^v.*/
+            branches:
+              only: develop
 
-      - test_superawesome_base:
+      - test_superawesome_base_ui_tests:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+          filters:
+            tags:
+              ignore: /^v.*/
+            branches:
+              only: develop
+
+  pull_request:
+    jobs:
+      # - checkout_code:
+      #     context: MOBILE_ANDROID_SDKS
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
+
+      # - lint:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - checkout_code
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
+
+      # - test_superawesome_base_unit_tests:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - checkout_code
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
+
+      - test_superawesome_base_ui_tests:
+          context: MOBILE_ANDROID_SDKS
+          # requires:
+          #   - checkout_code
           filters:
             branches:
               ignore: develop
@@ -263,7 +364,7 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - test_superawesome_base:
+      - test_superawesome_base_unit_tests:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
@@ -276,7 +377,7 @@ workflows:
       - semantic_release_dry_run:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base
+            - test_superawesome_base_unit_tests
           filters:
             branches:
               only: develop
