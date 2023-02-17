@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
         SAVideoAd.disableCloseAtEnd ();
 
         // make the whole video surface area clickable
-        SAVideoAd.disableSmallClick ();
+        SAVideoAd.disableSmallClickButton ();
         
         // mute the video on start
         SAVideoAd.enableMuteOnStart ();
