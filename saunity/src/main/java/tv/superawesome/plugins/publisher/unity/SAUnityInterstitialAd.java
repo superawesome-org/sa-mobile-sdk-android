@@ -63,7 +63,13 @@ public class SAUnityInterstitialAd {
     /**
      * Method that loads a new Interstitial AD (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test, String encodedOptions) {
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(
+            Context context,
+            int placementId,
+            int configuration,
+            boolean test,
+            String encodedOptions)
+    {
         SAInterstitialAd.setTestMode(test);
         SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
 

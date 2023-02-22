@@ -78,7 +78,14 @@ public class SAUnityBannerAd {
      * Method that loads a new Banner Ad (from Unity)
      */
 
-    public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test, String encodedOptions) {
+    public static void SuperAwesomeUnitySABannerAdLoad(
+            Context context,
+            String unityName,
+            int placementId,
+            int configuration,
+            boolean test,
+            String encodedOptions)
+    {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
