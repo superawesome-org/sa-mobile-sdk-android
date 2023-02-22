@@ -18,7 +18,7 @@ class SAAdMobRewardedAd(
     private var mediationAdLoadCallback: MediationAdLoadCallback<MediationRewardedAd, MediationRewardedAdCallback>
 ) : MediationRewardedAd, SAInterface {
 
-    private var rewardedAdCallback: MediationRewardedAdCallback? = null
+    private var adCallback: MediationRewardedAdCallback? = null
     private var loadedPlacementId = 0
 
     fun load() {
@@ -43,7 +43,9 @@ class SAAdMobRewardedAd(
             adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
         if (loadedPlacementId == 0) {
-            mediationAdLoadCallback.onFailure("Failed to request ad, placementID is null or empty.")
+            mediationAdLoadCallback.onFailure(
+                SAAdMobError.adFailedToLoad("Failed to request ad, placementID is null or empty.")
+            )
             return
         }
 
@@ -55,35 +57,35 @@ class SAAdMobRewardedAd(
         if (SAVideoAd.hasAdAvailable(loadedPlacementId)) {
             SAVideoAd.play(loadedPlacementId, context)
 
-            rewardedAdCallback?.onVideoStart()
+            adCallback?.onVideoStart()
         } else {
-            mediationAdLoadCallback.onFailure("Ad is not ready")
-            rewardedAdCallback?.onAdFailedToShow("Ad is not ready")
+            adFailedToShow()
         }
     }
 
     // SAVideoAd Listener Event
-    override fun onEvent(placementId: Int, event: SAEvent?) {
+    override fun onEvent(placementId: Int, event: SAEvent) {
         when (event) {
-            SAEvent.adLoaded -> adLoaded()
+            SAEvent.adLoaded, SAEvent.adAlreadyLoaded -> adLoaded()
             SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
-            SAEvent.adAlreadyLoaded -> {
-                // do nothing
-            }
-            SAEvent.adShown -> rewardedAdCallback?.onAdOpened()
-            SAEvent.adFailedToShow -> rewardedAdCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
-            SAEvent.adClicked -> rewardedAdCallback?.reportAdClicked()
-            SAEvent.adEnded -> rewardedAdCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
-            SAEvent.adClosed -> rewardedAdCallback?.onAdClosed()
-            else -> {}
+            SAEvent.adShown -> adCallback?.onAdOpened()
+            SAEvent.adFailedToShow -> adFailedToShow()
+            SAEvent.adClicked -> adCallback?.reportAdClicked()
+            SAEvent.adEnded -> adCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
+            SAEvent.adClosed -> adCallback?.onAdClosed()
         }
     }
 
     private fun adLoaded() {
-        rewardedAdCallback = mediationAdLoadCallback.onSuccess(this)
+        adCallback = mediationAdLoadCallback.onSuccess(this)
     }
 
     private fun adFailedToLoad() {
-        mediationAdLoadCallback.onFailure("Ad failed to load for $loadedPlacementId")
+        mediationAdLoadCallback.onFailure(SAAdMobError.adFailedToLoad(loadedPlacementId))
+    }
+
+    private fun adFailedToShow() {
+        adCallback?.onAdFailedToShow(SAAdMobError.adFailedToShow(loadedPlacementId))
+        adFailedToLoad()
     }
 }

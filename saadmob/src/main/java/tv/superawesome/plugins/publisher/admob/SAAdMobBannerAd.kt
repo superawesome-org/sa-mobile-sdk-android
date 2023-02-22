@@ -2,8 +2,6 @@ package tv.superawesome.plugins.publisher.admob
 
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.mediation.MediationAdLoadCallback
 import com.google.android.gms.ads.mediation.MediationBannerAd
 import com.google.android.gms.ads.mediation.MediationBannerAdCallback
@@ -45,8 +43,8 @@ class SAAdMobBannerAd(
         }
 
         val adSize = adConfiguration.adSize
-        val widthInPixels: Int = adSize?.getWidthInPixels(context) ?: 0
-        val heightInPixels: Int = adSize?.getHeightInPixels(context) ?: 0
+        val widthInPixels: Int = adSize.getWidthInPixels(context)
+        val heightInPixels: Int = adSize.getHeightInPixels(context)
 
         bannerAd?.layoutParams = ViewGroup.LayoutParams(widthInPixels, heightInPixels)
 
@@ -64,18 +62,16 @@ class SAAdMobBannerAd(
         return bannerAd ?: View(adConfiguration.context)
     }
 
-    override fun onEvent(placementId: Int, event: SAEvent?) {
+    override fun onEvent(placementId: Int, event: SAEvent) {
         when (event) {
-            SAEvent.adLoaded -> adLoaded()
-            SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
-            SAEvent.adAlreadyLoaded -> {
-                // do nothing
-            }
+            SAEvent.adLoaded, SAEvent.adAlreadyLoaded -> adLoaded()
+            SAEvent.adEmpty, SAEvent.adFailedToLoad, SAEvent.adFailedToShow -> adFailedToLoad()
             SAEvent.adShown -> adCallback?.onAdOpened()
-            SAEvent.adFailedToShow -> adFailedToLoad()
             SAEvent.adClicked -> adCallback?.reportAdClicked()
             SAEvent.adClosed -> adCallback?.onAdClosed()
-            else -> {}
+            SAEvent.adEnded -> {
+                // This event is not used
+            }
         }
     }
 
@@ -90,12 +86,6 @@ class SAAdMobBannerAd(
     }
 
     private fun adFailedToLoad() {
-        mediationAdLoadCallback.onFailure(
-            AdError(
-                AdRequest.ERROR_CODE_NO_FILL,
-                "Ad failed to load for $loadedPlacementId",
-                ""
-            )
-        )
+        mediationAdLoadCallback.onFailure(SAAdMobError.adFailedToLoad(loadedPlacementId))
     }
 }
