@@ -4,13 +4,6 @@
  */
 package tv.superawesome.plugins.publisher.unity;
 
-import tv.superawesome.lib.sasession.defines.SAConfiguration;
-import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
-import tv.superawesome.sdk.publisher.SAEvent;
-import tv.superawesome.sdk.publisher.SAInterface;
-import tv.superawesome.sdk.publisher.SABannerAd;
-
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -21,6 +14,13 @@ import android.widget.FrameLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
+
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
+import tv.superawesome.sdk.publisher.SAEvent;
+import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SABannerAd;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -88,7 +88,7 @@ public class SAUnityBannerAd {
                 try {
                     bannerAd.load(
                             placementId,
-                            SAJsonUtil.toMap(new JSONObject(encodedOptions))
+                            SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                     );
                 } catch (JSONException e) {
                     e.printStackTrace();

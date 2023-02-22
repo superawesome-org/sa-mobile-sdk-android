@@ -82,7 +82,7 @@ public class SAJsonUtil {
         }
     }
 
-    public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+    public static Map<String, Object> JSONtoMap(JSONObject object) throws JSONException {
         Map<String, Object> map = new HashMap<String, Object>();
 
         Iterator<String> keysItr = object.keys();

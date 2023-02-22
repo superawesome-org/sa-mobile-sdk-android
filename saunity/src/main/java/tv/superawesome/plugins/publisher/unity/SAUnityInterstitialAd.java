@@ -72,7 +72,7 @@ public class SAUnityInterstitialAd {
                 SAInterstitialAd.load(
                         placementId,
                         context,
-                        SAJsonUtil.toMap(new JSONObject(encodedOptions))
+                        SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                 );
             } catch (JSONException e) {
                 e.printStackTrace();
