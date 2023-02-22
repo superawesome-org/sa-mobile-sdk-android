@@ -3,6 +3,10 @@ package tv.superawesome.plugins.publisher.unity.util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 public class SAJsonUtil {
 
     /**
@@ -76,5 +80,17 @@ public class SAJsonUtil {
                 // do nothing
             }
         }
+    }
+
+    public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        Iterator<String> keysItr = object.keys();
+        while(keysItr.hasNext()) {
+            String key = keysItr.next();
+            Object value = object.get(key);
+            map.put(key, value);
+        }
+        return map;
     }
 }

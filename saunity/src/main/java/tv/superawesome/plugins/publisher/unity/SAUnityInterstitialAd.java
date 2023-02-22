@@ -6,10 +6,11 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import java.util.Collections;
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
@@ -57,24 +58,30 @@ public class SAUnityInterstitialAd {
                     break;
             }
         });
-
     }
 
     /**
      * Method that loads a new Interstitial AD (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test) {
-        SuperAwesomeUnitySAInterstitialAdLoad(context, placementId, configuration, test, Collections.emptyMap());
-    }
-
-    /**
-     * Method that loads a new Interstitial AD (from Unity) with options
-     */
-    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test, Map<String, Object> options) {
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test, String encodedOptions) {
         SAInterstitialAd.setTestMode(test);
         SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
-        SAInterstitialAd.load(placementId, context, options);
+
+        if(encodedOptions != null && !encodedOptions.isEmpty()) {
+            try {
+                SAInterstitialAd.load(
+                        placementId,
+                        context,
+                        SAJsonUtil.toMap(new JSONObject(encodedOptions))
+                );
+            } catch (JSONException e) {
+                e.printStackTrace();
+                // Fallback to loading without options
+                SAInterstitialAd.load(placementId, context);
+            }
+        }
     }
+
     /**
      * Method that checks to see if an ad is available for an interstitial ad (from Unity)
      */
