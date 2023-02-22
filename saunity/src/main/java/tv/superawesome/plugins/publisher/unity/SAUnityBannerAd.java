@@ -4,6 +4,12 @@
  */
 package tv.superawesome.plugins.publisher.unity;
 
+import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.SAEvent;
+import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SABannerAd;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -11,13 +17,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import java.util.Collections;
 import java.util.HashMap;
-
-import tv.superawesome.lib.sasession.defines.SAConfiguration;
-import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.publisher.SABannerAd;
-import tv.superawesome.sdk.publisher.SAEvent;
-import tv.superawesome.sdk.publisher.SAInterface;
+import java.util.Map;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -74,12 +76,21 @@ public class SAUnityBannerAd {
     /**
      * Method that loads a new Banner Ad (from Unity)
      */
+
     public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
+        SuperAwesomeUnitySABannerAdLoad(context, unityName, placementId, configuration, test, Collections.emptyMap());
+    }
+
+    /**
+     * Method that loads a new Banner Ad (from Unity) with options
+     */
+
+    public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test, Map<String, Object> options) {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
             bannerAd.setTestMode(test);
-            bannerAd.load(placementId);
+            bannerAd.load(placementId, options);
         }
     }
 

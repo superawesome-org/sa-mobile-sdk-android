@@ -6,6 +6,9 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
+import java.util.Collections;
+import java.util.Map;
+
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.sdk.publisher.SAEvent;
@@ -65,10 +68,30 @@ public class SAUnityVideoAd {
                                                       int configuration,
                                                       boolean test,
                                                       int playback) {
+        SuperAwesomeUnitySAVideoAdLoad(
+                context,
+                placementId,
+                configuration,
+                test,
+                playback,
+                Collections.emptyMap()
+        );
+    }
+
+    /**
+     * Method that loads a new Video Ad (from Unity) with options
+     */
+
+    public static void SuperAwesomeUnitySAVideoAdLoad(Context context,
+                                                      int placementId,
+                                                      int configuration,
+                                                      boolean test,
+                                                      int playback,
+                                                      Map<String, Object> options) {
         SAVideoAd.setTestMode(test);
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
-        SAVideoAd.load(placementId, context);
+        SAVideoAd.load(placementId, context, options);
     }
 
     /**

@@ -6,6 +6,9 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
+import java.util.Collections;
+import java.util.Map;
+
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
@@ -61,11 +64,17 @@ public class SAUnityInterstitialAd {
      * Method that loads a new Interstitial AD (from Unity)
      */
     public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test) {
-        SAInterstitialAd.setTestMode(test);
-        SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
-        SAInterstitialAd.load(placementId, context);
+        SuperAwesomeUnitySAInterstitialAdLoad(context, placementId, configuration, test, Collections.emptyMap());
     }
 
+    /**
+     * Method that loads a new Interstitial AD (from Unity) with options
+     */
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test, Map<String, Object> options) {
+        SAInterstitialAd.setTestMode(test);
+        SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
+        SAInterstitialAd.load(placementId, context, options);
+    }
     /**
      * Method that checks to see if an ad is available for an interstitial ad (from Unity)
      */
