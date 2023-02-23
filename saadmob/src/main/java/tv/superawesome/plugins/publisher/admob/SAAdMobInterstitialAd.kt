@@ -39,7 +39,9 @@ class SAAdMobInterstitialAd(
             adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
         if (loadedPlacementId == 0) {
-            mediationAdLoadCallback.onFailure("Failed to request ad, placementID is null or empty.")
+            mediationAdLoadCallback.onFailure(
+                SAAdMobError.adFailedToLoad("Failed to request ad, placementID is null or empty.")
+            )
             return
         }
 
@@ -51,24 +53,22 @@ class SAAdMobInterstitialAd(
         if (SAInterstitialAd.hasAdAvailable(loadedPlacementId)) {
             SAInterstitialAd.play(loadedPlacementId, context)
         } else {
-            mediationAdLoadCallback.onFailure("Ad is not ready")
-            adCallback?.onAdFailedToShow("Ad is not ready")
+            adFailedToShown()
         }
     }
 
     // SAInterstitialAd Listener Event
-    override fun onEvent(placementId: Int, event: SAEvent?) {
+    override fun onEvent(placementId: Int, event: SAEvent) {
         when (event) {
-            SAEvent.adLoaded -> adLoaded()
+            SAEvent.adLoaded, SAEvent.adAlreadyLoaded -> adLoaded()
             SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
-            SAEvent.adAlreadyLoaded -> {
-                // do nothing
-            }
             SAEvent.adShown -> adCallback?.onAdOpened()
-            SAEvent.adFailedToShow -> adCallback?.onAdFailedToShow("Ad failed to show for $loadedPlacementId")
+            SAEvent.adFailedToShow -> adFailedToShown()
             SAEvent.adClicked -> adCallback?.reportAdClicked()
             SAEvent.adClosed -> adCallback?.onAdClosed()
-            else -> {}
+            SAEvent.adEnded -> {
+                // This event is not used
+            }
         }
     }
 
@@ -77,6 +77,11 @@ class SAAdMobInterstitialAd(
     }
 
     private fun adFailedToLoad() {
-        mediationAdLoadCallback.onFailure("Ad failed to load for $loadedPlacementId")
+        mediationAdLoadCallback.onFailure(SAAdMobError.adFailedToLoad(loadedPlacementId))
+    }
+
+    private fun adFailedToShown() {
+        adCallback?.onAdFailedToShow(SAAdMobError.adFailedToShow(loadedPlacementId))
+        adFailedToLoad()
     }
 }
