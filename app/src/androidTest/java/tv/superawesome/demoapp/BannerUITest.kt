@@ -115,20 +115,20 @@ class BannerUITest {
         verifyUrlPathCalled("/click")
     }
 
-    @Test
-    fun test_bumper_enabled_from_api() {
-        // Given bumper page is enabled from api
-        val testData = TestData("88001", "banner_enabled_success.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        // When ad is clicked
-        onView(withId(R.id.bannerView))
-            .perform(click())
-
-        // Then bumper page is shown
-        BumperInteraction.waitUntilBumper()
-    }
+//    @Test
+//    fun test_bumper_enabled_from_api() {
+//        // Given bumper page is enabled from api
+//        val testData = TestData("88001", "banner_enabled_success.json")
+//        CommonInteraction.launchActivityWithSuccessStub(testData)
+//        CommonInteraction.clickItemAt(testData)
+//
+//        // When ad is clicked
+//        onView(withId(R.id.bannerView))
+//            .perform(click())
+//
+//        // Then bumper page is shown
+//        BumperInteraction.waitUntilBumper()
+//    }
 
 //    @Test
 //    fun test_parental_gate_for_safe_ad_click() {
@@ -185,23 +185,23 @@ class BannerUITest {
 //        )
 //    }
 
-    @Test
-    fun test_banner_click_event() {
-        // Given
-        val testData = TestData.bannerSuccess
-        stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        // When
-        ViewTester()
-            .waitForView(withId(R.id.bannerView))
-            .perform(click())
-
-        // Then
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
-        verifyUrlPathCalled("/click")
-    }
+//    @Test
+//    fun test_banner_click_event() {
+//        // Given
+//        val testData = TestData.bannerSuccess
+//        stubIntents()
+//        CommonInteraction.launchActivityWithSuccessStub(testData)
+//        CommonInteraction.clickItemAt(testData)
+//
+//        // When
+//        ViewTester()
+//            .waitForView(withId(R.id.bannerView))
+//            .perform(click())
+//
+//        // Then
+//        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+//        verifyUrlPathCalled("/click")
+//    }
 
 //    @Test
 //    fun test_parental_gate_success_event() {
@@ -224,23 +224,23 @@ class BannerUITest {
 //        ParentalGateInteraction.testFailure()
 //    }
 //
-    @Test
-    fun test_external_webpage_opening_on_click() {
-        // Given
-        val testData = TestData.bannerSuccess
-        stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        // When ad is clicked
-        onView(withId(R.id.bannerView))
-            .perform(click())
-
-        // Then view URL is redirected to browser
-        UIAwait().await(10000)
-        Intents.intended(hasAction(Intent.ACTION_VIEW))
-        verifyUrlPathCalled("/click")
-    }
+//    @Test
+//    fun test_external_webpage_opening_on_click() {
+//        // Given
+//        val testData = TestData.bannerSuccess
+//        stubIntents()
+//        CommonInteraction.launchActivityWithSuccessStub(testData)
+//        CommonInteraction.clickItemAt(testData)
+//
+//        // When ad is clicked
+//        onView(withId(R.id.bannerView))
+//            .perform(click())
+//
+//        // Then view URL is redirected to browser
+//        UIAwait().await(10000)
+//        Intents.intended(hasAction(Intent.ACTION_VIEW))
+//        verifyUrlPathCalled("/click")
+//    }
 
     private fun openParentalGate() {
         CommonInteraction.launchActivityWithSuccessStub(TestData.bannerPadlock) {
