@@ -4,17 +4,23 @@ package tv.superawesome.sdk.publisher.common.ui.managed
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
+import java.lang.ref.WeakReference
 
 public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Listener {
     private var listener: SAInterface? = null
+    private var timeOutRunnable: Runnable? = null
+    private var timeOutHandler = Handler(Looper.getMainLooper())
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
@@ -38,10 +44,35 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
         parentLayout.addView(adView)
     }
 
+    override fun onStop() {
+        super.onStop()
+        cancelCloseButtonTimeoutRunnable()
+    }
+
+    private fun setUpCloseButtonTimeoutRunnable() {
+        cancelCloseButtonTimeoutRunnable()
+        val weak = WeakReference(this)
+        timeOutRunnable = Runnable {
+            val weakThis = weak.get() ?: return@Runnable
+            weakThis.hasBeenVisibleForRequiredTimeoutTime()
+        }
+        timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
+    }
+
+    private fun cancelCloseButtonTimeoutRunnable() {
+        timeOutRunnable?.let { timeOutHandler.removeCallbacks(it) }
+        timeOutRunnable = null
+    }
+
     public override fun playContent() {
         listener = SAVideoAd.getDelegate()
+        val weak = WeakReference(this)
         adView.configure(placementId, listener) {
-            closeButton.visibility = View.VISIBLE
+            val weakThis = weak.get() ?: return@configure
+            weakThis.cancelCloseButtonTimeoutRunnable()
+            weakThis.closeButton.visibility =
+                if (weakThis.config.closeButtonState == CloseButtonState.VisibleWithDelay)
+                    View.VISIBLE else weakThis.closeButton.visibility
         }
         adView.load(placementId, html, this)
     }
@@ -92,7 +123,13 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
         close()
     }
 
+    private fun hasBeenVisibleForRequiredTimeoutTime() {
+        closeButton.visibility = View.VISIBLE
+    }
+
     companion object {
+        private const val CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL = 12000L
+
         @JvmStatic
         fun newInstance(context: Context, placementId: Int, config: Config, html: String): Intent =
             Intent(context, ManagedAdActivity::class.java).apply {

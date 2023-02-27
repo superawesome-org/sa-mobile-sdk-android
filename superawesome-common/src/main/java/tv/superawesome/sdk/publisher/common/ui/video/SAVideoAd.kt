@@ -43,7 +43,13 @@ public object SAVideoAd {
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
-    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context, options: Map<String, Any>? = null) {
+    public fun load(
+        placementId: Int,
+        lineItemId: Int,
+        creativeId: Int,
+        context: Context,
+        options: Map<String, Any>? = null,
+    ) {
         controller.load(placementId, lineItemId, creativeId, makeAdRequest(context, options))
     }
 
@@ -61,7 +67,7 @@ public object SAVideoAd {
                 context,
                 placementId,
                 controller.config,
-                adResponse.html ?: ""
+                adResponse.html ?: "",
             )
         } else {
             VideoActivity.newInstance(context, placementId, controller.config)
