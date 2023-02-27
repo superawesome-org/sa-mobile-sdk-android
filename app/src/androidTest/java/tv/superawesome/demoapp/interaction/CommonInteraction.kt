@@ -6,8 +6,8 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
-import tv.superawesome.demoapp.MainActivity
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.main.MainActivity
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
