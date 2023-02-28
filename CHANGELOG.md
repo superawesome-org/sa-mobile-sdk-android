@@ -1,3 +1,10 @@
+## [8.5.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.3...v8.5.4) (2023-02-28)
+
+
+### Bug Fixes
+
+* **Syntax:** Improved the syntax of some of the video files ([#285](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/285)) ([b9961f0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b9961f05dc20279e704869877a584c3df92a6506))
+
 ## [8.5.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.2...v8.5.3) (2023-02-23)
 
 
