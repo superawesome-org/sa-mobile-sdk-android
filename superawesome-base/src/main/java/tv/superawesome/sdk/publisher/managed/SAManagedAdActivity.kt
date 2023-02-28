@@ -68,8 +68,7 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
         super.onCreate(savedInstanceState)
 
         // get values from the intent
-        val myIntent = intent
-        config = myIntent.getParcelableExtra(CONFIG_KEY)
+        config = intent.getParcelableExtra(CONFIG_KEY)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(adView)
@@ -113,7 +112,7 @@ class SAManagedAdActivity : Activity(), AdViewJavaScriptBridge.Listener {
     }
 
     private fun cancelCloseButtonShownRunnable() {
-        timeOutRunnable?.let { timeOutHandler.removeCallbacks(it) }
+        timeOutRunnable?.let { shownHandler.removeCallbacks(it) }
         timeOutRunnable = null
     }
 
