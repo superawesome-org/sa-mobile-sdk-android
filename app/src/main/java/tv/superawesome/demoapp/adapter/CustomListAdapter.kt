@@ -6,35 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.model.FeatureType
+import tv.superawesome.demoapp.model.PlacementItem
 
-enum class Type {
-    BANNER, INTERSTITIAL, VIDEO
-}
+internal class CustomListAdapter(context: Context?) :
+    ArrayAdapter<PlacementItem>(context!!, 0) {
 
-enum class RowStyle {
-    HEADER, ITEM
-}
-
-open class AdapterItem
-
-data class ListItem(var rowStyle: RowStyle = RowStyle.ITEM)
-data class HeaderItem(var name: String = "") : AdapterItem()
-data class PlacementItem(
-    var name: String = "",
-    var placementId: Int = 0,
-    var lineItemId: Int? = null,
-    var creativeId: Int? = null,
-    var type: Type = Type.BANNER
-) : AdapterItem() {
-    fun isFull(): Boolean = lineItemId != null && creativeId != null
-}
-
-internal class CustomListAdapter<T : AdapterItem?>(context: Context?) :
-    ArrayAdapter<T?>(context!!, 0) {
-    private var data: List<T> = emptyList()
-    fun updateData(newData: List<T>) {
+    private var data: List<PlacementItem> = emptyList()
+    fun updateData(newData: List<PlacementItem>) {
         data = newData
     }
 
@@ -42,11 +24,11 @@ internal class CustomListAdapter<T : AdapterItem?>(context: Context?) :
         notifyDataSetChanged()
     }
 
-    override fun getItem(i: Int): T? = data[i]
+    override fun getItem(i: Int): PlacementItem = data[i]
 
-    override fun getViewTypeCount(): Int = 2
+    override fun getViewTypeCount(): Int = 1
 
-    override fun getItemViewType(i: Int): Int = if (getItem(i) is HeaderItem) 0 else 1
+    override fun getItemViewType(i: Int): Int = 0
 
     override fun getCount(): Int = data.size
 
@@ -55,21 +37,25 @@ internal class CustomListAdapter<T : AdapterItem?>(context: Context?) :
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.row_placement, parent, false)
         }
-        val title = view!!.findViewById<TextView>(R.id.RowTitle)
-        when (val item = getItem(position)) {
-            is HeaderItem -> {
-                title.text = item.name
-                view.setBackgroundColor(Color.LTGRAY)
-            }
-            is PlacementItem -> {
-                val titleText = if (item.lineItemId != null && item.creativeId != null)
-                    "${item.placementId} - ${item.lineItemId} - ${item.creativeId}  | ${item.name}" else
-                    "${item.placementId} | ${item.name}"
-                title.text = titleText
-                title.setBackgroundColor(Color.WHITE)
-                view.contentDescription = titleText
-            }
-        }
+        val title = view!!.findViewById<TextView>(R.id.labelTextView)
+        val icon = view.findViewById<ImageView>(R.id.typeIcon)
+
+        val item = getItem(position)
+        val titleText = if (item.lineItemId != null && item.creativeId != null)
+            "${item.placementId} - ${item.lineItemId} - ${item.creativeId}  | ${item.name}" else
+            "${item.placementId} | ${item.name}"
+        title.text = titleText
+        title.setBackgroundColor(Color.WHITE)
+
+        icon.setImageResource(typeToResource(item.type))
+        view.contentDescription = titleText
+
         return view
+    }
+
+    private fun typeToResource(type: FeatureType): Int = when (type) {
+        FeatureType.BANNER -> R.drawable.ic_banner
+        FeatureType.INTERSTITIAL -> R.drawable.ic_interstitial
+        FeatureType.VIDEO -> R.drawable.ic_video
     }
 }
