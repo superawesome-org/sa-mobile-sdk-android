@@ -68,7 +68,9 @@ class VideoActivity : FullScreenActivity() {
         parentLayout.addView(videoPlayer)
 
         closeButton.visibility =
-            if (config.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
+            if (config.closeButtonState == CloseButtonState.VisibleImmediately)
+                View.VISIBLE else View.GONE
+
         closeButton.setOnClickListener { onCloseAction() }
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
@@ -96,7 +98,7 @@ class VideoActivity : FullScreenActivity() {
                 player: IVideoPlayer,
                 error: Throwable,
                 time: Int,
-                duration: Int
+                duration: Int,
             ) {
                 videoEvents?.error(player, time, duration)
                 controller.adFailedToShow()
