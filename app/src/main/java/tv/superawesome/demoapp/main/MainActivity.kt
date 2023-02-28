@@ -1,15 +1,16 @@
-package tv.superawesome.demoapp
+package tv.superawesome.demoapp.main
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
-import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.database.ktx.database
 import kotlinx.android.synthetic.main.activity_main.*
-import tv.superawesome.demoapp.adapter.*
-import tv.superawesome.demoapp.model.Constants
+import tv.superawesome.demoapp.MyApplication
+import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.SettingsDialogFragment
+import tv.superawesome.demoapp.adapter.CustomListAdapter
+import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.SettingsData
 import tv.superawesome.lib.sabumperpage.SABumperPage
 import tv.superawesome.lib.sasession.defines.SAConfiguration
@@ -19,12 +20,9 @@ import tv.superawesome.sdk.publisher.SAVersion
 import tv.superawesome.sdk.publisher.SAVideoAd
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
-var data: List<AdapterItem> = listOf()
-
 class MainActivity : FragmentActivity() {
-
-    private lateinit var database: DatabaseReference
-    private lateinit var adapter: CustomListAdapter<AdapterItem>
+    private lateinit var adapter: CustomListAdapter
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +38,7 @@ class MainActivity : FragmentActivity() {
         configureVideoAd()
 
         initButtons()
+        updateSettings()
     }
 
     private fun initButtons() {
@@ -65,29 +64,10 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun configureDataSource() {
-        database = Firebase.database(Constants.FIREBASE_DATABASE_URL).reference
-
-        database.child("list-items").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                data = dataSnapshot.children.mapNotNull { item ->
-
-                    val rowStyle = item.getValue(ListItem::class.java)?.rowStyle
-
-                    if(rowStyle == RowStyle.HEADER) {
-                        item.getValue(HeaderItem::class.java)
-                    } else {
-                        item.getValue(PlacementItem::class.java)
-                    }
-                }
-
-                adapter?.updateData(data)
-                adapter?.reloadList()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to load list items.", error.toException())
-            }
-        })
+        viewModel.items.observe(this) {
+            adapter.updateData(it)
+            adapter.reloadList()
+        }
     }
 
     private fun configureListView() {
@@ -95,42 +75,41 @@ class MainActivity : FragmentActivity() {
         listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            (data[position] as? PlacementItem)?.let { item ->
-                when (item.type) {
-                    Type.BANNER -> {
-                        if (item.isFull()) {
-                            bannerView.load(
-                                item.placementId,
-                                item.lineItemId ?: 0,
-                                item.creativeId ?: 0
-                            )
-                        } else {
-                            bannerView.load(item.placementId)
-                        }
+            val item = adapter.getItem(position)
+            when (item.type) {
+                FeatureType.BANNER -> {
+                    if (item.isFull()) {
+                        bannerView.load(
+                            item.placementId,
+                            item.lineItemId ?: 0,
+                            item.creativeId ?: 0
+                        )
+                    } else {
+                        bannerView.load(item.placementId)
                     }
-                    Type.INTERSTITIAL -> {
-                        if (item.isFull()) {
-                            SAInterstitialAd.load(
-                                item.placementId,
-                                item.lineItemId ?: 0,
-                                item.creativeId ?: 0,
-                                this@MainActivity
-                            )
-                        } else {
-                            SAInterstitialAd.load(item.placementId, this@MainActivity)
-                        }
+                }
+                FeatureType.INTERSTITIAL -> {
+                    if (item.isFull()) {
+                        SAInterstitialAd.load(
+                            item.placementId,
+                            item.lineItemId ?: 0,
+                            item.creativeId ?: 0,
+                            this@MainActivity
+                        )
+                    } else {
+                        SAInterstitialAd.load(item.placementId, this@MainActivity)
                     }
-                    Type.VIDEO -> {
-                        if (item.isFull()) {
-                            SAVideoAd.load(
-                                item.placementId,
-                                item.lineItemId ?: 0,
-                                item.creativeId ?: 0,
-                                this@MainActivity
-                            )
-                        } else {
-                            SAVideoAd.load(item.placementId, this@MainActivity)
-                        }
+                }
+                FeatureType.VIDEO -> {
+                    if (item.isFull()) {
+                        SAVideoAd.load(
+                            item.placementId,
+                            item.lineItemId ?: 0,
+                            item.creativeId ?: 0,
+                            this@MainActivity
+                        )
+                    } else {
+                        SAVideoAd.load(item.placementId, this@MainActivity)
                     }
                 }
             }
@@ -204,7 +183,7 @@ class MainActivity : FragmentActivity() {
     private fun updateMessage(placementId: Int, event: SAEvent) {
         val settings = getSettings() ?: return
 
-        if(settings.environment == SAConfiguration.UITESTING) {
+        if (settings.environment == SAConfiguration.UITESTING) {
             val originalMessage = subtitleTextView.text
             val message = "$originalMessage $placementId $event"
             subtitleTextView.text = message
