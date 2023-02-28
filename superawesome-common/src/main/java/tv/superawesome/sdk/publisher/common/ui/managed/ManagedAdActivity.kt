@@ -42,6 +42,8 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
         adView.setParentalGate(config.isParentalGateEnabled)
 
         parentLayout.addView(adView)
+
+        setUpCloseButtonTimeoutRunnable()
     }
 
     override fun onStop() {
@@ -78,8 +80,11 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
     }
 
     public override fun close() {
-        adView.close()
+        if (!isFinishing) {
+            listener?.onEvent(this.placementId, SAEvent.AdClosed)
+        }
         super.close()
+        adView.close()
     }
 
     override fun adLoaded() {
@@ -119,7 +124,6 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
     }
 
     override fun adClosed() {
-        listener?.onEvent(this.placementId, SAEvent.AdClosed)
         close()
     }
 

@@ -229,7 +229,6 @@ public class ManagedAdView @JvmOverloads constructor(
 
         webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
-                controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
                 viewableDetector.start(this@ManagedAdView, videoMaxTickCount) {
