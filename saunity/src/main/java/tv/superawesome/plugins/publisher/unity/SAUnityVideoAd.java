@@ -12,6 +12,7 @@ import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
 import tv.superawesome.sdk.publisher.SAVideoAd;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -86,7 +87,7 @@ public class SAUnityVideoAd {
                                                       int placementId,
                                                       boolean isParentalGateEnabled,
                                                       boolean isBumperPageEnabled,
-                                                      boolean shouldShowCloseButton,
+                                                      int closeButtonState,
                                                       boolean shouldShowSmallClickButton,
                                                       boolean shouldAutomaticallyCloseAtEnd,
                                                       int orientation,
@@ -95,12 +96,20 @@ public class SAUnityVideoAd {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setCloseButton(shouldShowCloseButton);
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         SAVideoAd.play(placementId, context);
+
+        switch (CloseButtonState.fromInt(closeButtonState)) {
+            case Hidden:
+                SAVideoAd.disableCloseButton();
+            case VisibleImmediately:
+                SAVideoAd.enableCloseButtonNoDelay();
+            case VisibleWithDelay:
+                SAVideoAd.enableCloseButton();
+        }
     }
 
     /**
@@ -109,7 +118,7 @@ public class SAUnityVideoAd {
     public static void SuperAwesomeUnitySAVideoAdApplySettings(
             boolean isParentalGateEnabled,
             boolean isBumperPageEnabled,
-            boolean shouldShowCloseButton,
+            int closeButtonState,
             boolean shouldShowSmallClickButton,
             boolean shouldAutomaticallyCloseAtEnd,
             int orientation,
@@ -119,11 +128,19 @@ public class SAUnityVideoAd {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setCloseButton(shouldShowCloseButton);
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         SAVideoAd.setTestMode(testModeEnabled);
+
+        switch (CloseButtonState.fromInt(closeButtonState)) {
+            case Hidden:
+                SAVideoAd.disableCloseButton();
+            case VisibleImmediately:
+                SAVideoAd.enableCloseButtonNoDelay();
+            case VisibleWithDelay:
+                SAVideoAd.enableCloseButton();
+        }
     }
 }
