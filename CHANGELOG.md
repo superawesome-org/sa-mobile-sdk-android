@@ -1,3 +1,17 @@
+## [8.5.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.3...v8.5.4) (2023-02-28)
+
+
+### Bug Fixes
+
+* **Syntax:** Improved the syntax of some of the video files ([#285](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/285)) ([b9961f0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b9961f05dc20279e704869877a584c3df92a6506))
+
+## [8.5.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.2...v8.5.3) (2023-02-23)
+
+
+### Bug Fixes
+
+* AdMob custom adapters so that the correct events are passed through the admob plugin from the awesome ads sdk ([#280](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/280)) ([3cfeee8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3cfeee8865b2ba9b9a417b6a9c32a746b71f97c0))
+
 ## [8.5.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.1...v8.5.2) (2023-02-16)
 
 

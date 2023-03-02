@@ -43,7 +43,13 @@ public object SAVideoAd {
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
-    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context, options: Map<String, Any>? = null) {
+    public fun load(
+        placementId: Int,
+        lineItemId: Int,
+        creativeId: Int,
+        context: Context,
+        options: Map<String, Any>? = null,
+    ) {
         controller.load(placementId, lineItemId, creativeId, makeAdRequest(context, options))
     }
 
@@ -61,7 +67,7 @@ public object SAVideoAd {
                 context,
                 placementId,
                 controller.config,
-                adResponse.html ?: ""
+                adResponse.html ?: "",
             )
         } else {
             VideoActivity.newInstance(context, placementId, controller.config)
@@ -225,16 +231,22 @@ public object SAVideoAd {
             height = 0
         }
 
+        val skip = if (controller.config.closeButtonState.isVisible())
+            AdRequest.Skip.Yes.value else AdRequest.Skip.No.value
+
+        val playbackMethod = if (controller.config.shouldMuteOnStart)
+            AdRequest.PlaybackSoundOffScreen else AdRequest.PlaybackSoundOnScreen
+
         return AdRequest(
             test = isTestEnabled(),
             pos = AdRequest.Position.FullScreen.value,
-            skip = if (controller.config.closeButtonState.isVisible()) AdRequest.Skip.Yes.value else AdRequest.Skip.No.value,
-            playbackMethod = if (controller.config.shouldMuteOnStart) AdRequest.PlaybackSoundOffScreen else AdRequest.PlaybackSoundOnScreen,
+            skip = skip,
+            playbackMethod = playbackMethod,
             startDelay = AdRequest.StartDelay.PreRoll.value,
             install = AdRequest.FullScreen.On.value,
             w = width,
             h = height,
-            options = options
+            options = options,
         )
     }
 
