@@ -100,8 +100,6 @@ public class SAUnityVideoAd {
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
-        SAVideoAd.play(placementId, context);
-
         switch (CloseButtonState.fromInt(closeButtonState)) {
             case Hidden:
                 SAVideoAd.disableCloseButton();
@@ -110,6 +108,8 @@ public class SAUnityVideoAd {
             case VisibleWithDelay:
                 SAVideoAd.enableCloseButton();
         }
+
+        SAVideoAd.play(placementId, context);
     }
 
     /**
