@@ -100,14 +100,7 @@ public class SAUnityVideoAd {
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
-        switch (CloseButtonState.fromInt(closeButtonState)) {
-            case Hidden:
-                SAVideoAd.disableCloseButton();
-            case VisibleImmediately:
-                SAVideoAd.enableCloseButtonNoDelay();
-            case VisibleWithDelay:
-                SAVideoAd.enableCloseButton();
-        }
+        setCloseButtonState(closeButtonState);
 
         SAVideoAd.play(placementId, context);
     }
@@ -133,14 +126,20 @@ public class SAUnityVideoAd {
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         SAVideoAd.setTestMode(testModeEnabled);
+        setCloseButtonState(closeButtonState);
+    }
 
+    private static void setCloseButtonState(int closeButtonState) {
         switch (CloseButtonState.fromInt(closeButtonState)) {
             case Hidden:
                 SAVideoAd.disableCloseButton();
+                break;
             case VisibleImmediately:
                 SAVideoAd.enableCloseButtonNoDelay();
+                break;
             case VisibleWithDelay:
                 SAVideoAd.enableCloseButton();
+                break;
         }
     }
 }
