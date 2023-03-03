@@ -24,15 +24,6 @@ dependencies {
 }
 {% endhighlight %}
 
-{% include alert.html type="warning" title="Warning" content="Please remember to also add <strong>Google Play Services</strong> and an <strong>App Compat</strong> library. These are needed for correct viewability metrics." %}
-
-{% highlight gradle %}
-dependencies {
-    implementation 'com.android.support:appcompat-v7:+'
-    implementation 'com.google.android.gms:play-services-ads:+'
-}
-{% endhighlight %}
-
 Once you’ve added the Android Publisher SDK, you can access all functionality by including:
 
 {% highlight java %}
