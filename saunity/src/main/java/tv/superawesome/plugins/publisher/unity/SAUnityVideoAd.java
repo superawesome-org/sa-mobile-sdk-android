@@ -87,6 +87,8 @@ public class SAUnityVideoAd {
                 // Fallback to loading without options
                 SAVideoAd.load(placementId, context);
             }
+        } else {
+            SAVideoAd.load(placementId, context);
         }
     }
 

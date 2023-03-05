@@ -85,6 +85,8 @@ public class SAUnityInterstitialAd {
                 // Fallback to loading without options
                 SAInterstitialAd.load(placementId, context);
             }
+        } else {
+            SAInterstitialAd.load(placementId, context);
         }
     }
 

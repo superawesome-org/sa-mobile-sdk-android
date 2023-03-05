@@ -102,6 +102,8 @@ public class SAUnityBannerAd {
                     // Fallback to loading without options
                     bannerAd.load(placementId);
                 }
+            } else {
+                bannerAd.load(placementId);
             }
         }
     }
