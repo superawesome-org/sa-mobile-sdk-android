@@ -75,7 +75,7 @@ public class SAUnityVideoAd {
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
 
-        if(encodedOptions != null && !encodedOptions.isEmpty()) {
+        if (encodedOptions != null && !encodedOptions.isEmpty()) {
             try {
                 SAVideoAd.load(
                         placementId,
