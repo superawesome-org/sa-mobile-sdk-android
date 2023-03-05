@@ -91,7 +91,7 @@ public class SAUnityBannerAd {
             bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
             bannerAd.setTestMode(test);
 
-            if(encodedOptions != null && !encodedOptions.isEmpty()) {
+            if (encodedOptions != null && !encodedOptions.isEmpty()) {
                 try {
                     bannerAd.load(
                             placementId,
