@@ -86,7 +86,7 @@ public class SAJsonUtil {
         Map<String, Object> map = new HashMap<>();
 
         Iterator<String> keysItr = object.keys();
-        while(keysItr.hasNext()) {
+        while (keysItr.hasNext()) {
             String key = keysItr.next();
             Object value = object.get(key);
             map.put(key, value);
