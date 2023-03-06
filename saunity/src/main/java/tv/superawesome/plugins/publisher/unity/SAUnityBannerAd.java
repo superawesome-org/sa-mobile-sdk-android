@@ -11,11 +11,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.util.HashMap;
 
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.SABannerAd;
+import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 
@@ -74,12 +77,34 @@ public class SAUnityBannerAd {
     /**
      * Method that loads a new Banner Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdLoad(Context context, String unityName, int placementId, int configuration, boolean test) {
+
+    public static void SuperAwesomeUnitySABannerAdLoad(
+            Context context,
+            String unityName,
+            int placementId,
+            int configuration,
+            boolean test,
+            String encodedOptions)
+    {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
             bannerAd.setTestMode(test);
-            bannerAd.load(placementId);
+
+            if (encodedOptions != null && !encodedOptions.isEmpty()) {
+                try {
+                    bannerAd.load(
+                            placementId,
+                            SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    // Fallback to loading without options
+                    bannerAd.load(placementId);
+                }
+            } else {
+                bannerAd.load(placementId);
+            }
         }
     }
 
