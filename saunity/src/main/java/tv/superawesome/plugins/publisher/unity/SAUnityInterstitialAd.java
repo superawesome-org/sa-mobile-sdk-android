@@ -6,7 +6,11 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
+import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
@@ -54,16 +58,36 @@ public class SAUnityInterstitialAd {
                     break;
             }
         });
-
     }
 
     /**
      * Method that loads a new Interstitial AD (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context, int placementId, int configuration, boolean test) {
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(
+            Context context,
+            int placementId,
+            int configuration,
+            boolean test,
+            String encodedOptions)
+    {
         SAInterstitialAd.setTestMode(test);
         SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
-        SAInterstitialAd.load(placementId, context);
+
+        if(encodedOptions != null && !encodedOptions.isEmpty()) {
+            try {
+                SAInterstitialAd.load(
+                        placementId,
+                        context,
+                        SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
+                );
+            } catch (JSONException e) {
+                e.printStackTrace();
+                // Fallback to loading without options
+                SAInterstitialAd.load(placementId, context);
+            }
+        } else {
+            SAInterstitialAd.load(placementId, context);
+        }
     }
 
     /**

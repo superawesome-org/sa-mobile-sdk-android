@@ -6,8 +6,12 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
@@ -65,11 +69,27 @@ public class SAUnityVideoAd {
                                                       int placementId,
                                                       int configuration,
                                                       boolean test,
-                                                      int playback) {
+                                                      int playback,
+                                                      String encodedOptions) {
         SAVideoAd.setTestMode(test);
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
-        SAVideoAd.load(placementId, context);
+
+        if (encodedOptions != null && !encodedOptions.isEmpty()) {
+            try {
+                SAVideoAd.load(
+                        placementId,
+                        context,
+                        SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
+                );
+            } catch (JSONException e) {
+                e.printStackTrace();
+                // Fallback to loading without options
+                SAVideoAd.load(placementId, context);
+            }
+        } else {
+            SAVideoAd.load(placementId, context);
+        }
     }
 
     /**
