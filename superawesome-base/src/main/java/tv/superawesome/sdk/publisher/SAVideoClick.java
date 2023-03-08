@@ -44,19 +44,24 @@ public class SAVideoClick {
         try {
             String PADLOCK_URL = "https://ads.superawesome.tv/v2/safead";
             uri = Uri.parse(PADLOCK_URL);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         if (context != null && uri != null) {
             final Uri safeUri = uri;
 
             SABumperPage.Interface bumperCallback = () -> {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, safeUri);
-                context.startActivity(browserIntent);
+                try {
+                    context.startActivity(browserIntent);
+                } catch (Exception e) {
+                    Log.d("SuperAwesome", "Couldn't start browser in SAVideoClick: " + e.getMessage());
+                }
             };
 
             if (isBumperPageEnabled) {
                 SABumperPage.setListener(bumperCallback);
-                SABumperPage.play((Activity)context);
+                SABumperPage.play((Activity) context);
             } else {
                 bumperCallback.didEndBumper();
             }
@@ -127,7 +132,7 @@ public class SAVideoClick {
             SABumperPage.setListener(() -> handleUrl(context, destination));
 
             if (context instanceof Activity) {
-                SABumperPage.play((Activity)context);
+                SABumperPage.play((Activity) context);
             } else {
                 handleUrl(context, destination);
             }
@@ -136,9 +141,9 @@ public class SAVideoClick {
         }
     }
 
-    private void handleUrl (Context context, String destination) {
+    private void handleUrl(Context context, String destination) {
 
-        Long currentTime = System.currentTimeMillis()/1000;
+        Long currentTime = System.currentTimeMillis() / 1000;
         long diff = Math.abs(currentTime - currentClickThreshold);
 
         if (diff < SADefaults.defaultClickThreshold()) {

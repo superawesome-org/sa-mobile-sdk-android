@@ -594,10 +594,13 @@ public class SABannerAd extends FrameLayout {
     }
 
     private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
-
         SABumperPage.Interface bumperCallback = () -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
-            context.startActivity(browserIntent);
+            try {
+                context.startActivity(browserIntent);
+            } catch (Exception e) {
+                Log.d("SuperAwesome", "Couldn't start browser in SABannerAd: " + e.getMessage());
+            }
         };
 
         if (isBumperPageEnabled) {
