@@ -21,6 +21,11 @@ class SAAdMobRewardedAd(
     private var adCallback: MediationRewardedAdCallback? = null
     private var loadedPlacementId = 0
 
+    init {
+        SAVideoAd.setListener(EventListener.videoEvents)
+        EventListener.videoEvents.subscribe(this)
+    }
+
     fun load() {
         val context = adConfiguration.context
 
@@ -48,8 +53,6 @@ class SAAdMobRewardedAd(
             )
             return
         }
-
-        SAVideoAd.setListener(this)
         SAVideoAd.load(loadedPlacementId, context)
     }
 
@@ -65,6 +68,7 @@ class SAAdMobRewardedAd(
 
     // SAVideoAd Listener Event
     override fun onEvent(placementId: Int, event: SAEvent) {
+        if (loadedPlacementId != placementId) return
         when (event) {
             SAEvent.adLoaded, SAEvent.adAlreadyLoaded -> adLoaded()
             SAEvent.adEmpty, SAEvent.adFailedToLoad -> adFailedToLoad()
@@ -72,7 +76,7 @@ class SAAdMobRewardedAd(
             SAEvent.adFailedToShow -> adFailedToShow()
             SAEvent.adClicked -> adCallback?.reportAdClicked()
             SAEvent.adEnded -> adCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
-            SAEvent.adClosed -> adCallback?.onAdClosed()
+            SAEvent.adClosed -> adClosed()
         }
     }
 
@@ -87,5 +91,10 @@ class SAAdMobRewardedAd(
     private fun adFailedToShow() {
         adCallback?.onAdFailedToShow(SAAdMobError.adFailedToShow(loadedPlacementId))
         adFailedToLoad()
+    }
+
+    private fun adClosed() {
+        adCallback?.onAdClosed()
+        EventListener.videoEvents.unsubscribe(this)
     }
 }
