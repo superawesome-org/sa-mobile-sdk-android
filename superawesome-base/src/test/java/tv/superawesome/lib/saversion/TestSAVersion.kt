@@ -111,7 +111,9 @@ class TestSAVersion {
     fun test_getSDKVersionNumber_defaults() {
         testVersionNumber(SAVersion.getSDKVersionNumber(), true)
         testVersionNumber("1.2.3", true)
+        testVersionNumber("1.2.3-RC", true)
         testVersionNumber("a.b.c", false)
+        testVersionNumber("a.b.c-12", false)
     }
 
     private fun testVersionNumber(versionNumber: String, isNumeric: Boolean) {
@@ -120,10 +122,8 @@ class TestSAVersion {
             .split("-")
             .first()
 
-
         // when
         val isVersionNumeric = firstPart
-            .replace(".", "")
             .all { char -> char.isDigit() }
 
         // then
