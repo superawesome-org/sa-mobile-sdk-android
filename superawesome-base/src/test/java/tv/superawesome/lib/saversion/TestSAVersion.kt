@@ -109,16 +109,24 @@ class TestSAVersion {
 
     @Test
     fun test_getSDKVersionNumber_defaults() {
+        testVersionNumber(SAVersion.getSDKVersionNumber(), true)
+        testVersionNumber("1.2.3", true)
+        testVersionNumber("1.2.3-RC", true)
+        testVersionNumber("a.b.c", false)
+        testVersionNumber("a.b.c-12", false)
+    }
 
-        // given
-        val sdkVersionNumber = SAVersion.getSDKVersionNumber()
+    private fun testVersionNumber(versionNumber: String, isNumeric: Boolean) {
+        val firstPart = versionNumber
+            .replace(".", "")
+            .split("-")
+            .first()
 
         // when
-        val isVersionNumeric = sdkVersionNumber
-            .replace(".", "")
+        val isVersionNumeric = firstPart
             .all { char -> char.isDigit() }
 
         // then
-        Assert.assertTrue(isVersionNumeric)
+        Assert.assertEquals(isVersionNumeric, isNumeric)
     }
 }

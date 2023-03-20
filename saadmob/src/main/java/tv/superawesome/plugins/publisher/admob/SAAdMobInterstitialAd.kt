@@ -19,6 +19,11 @@ class SAAdMobInterstitialAd(
     private var adCallback: MediationInterstitialAdCallback? = null
     private var loadedPlacementId = 0
 
+    init {
+        SAInterstitialAd.setListener(EventListener.interstitialEvents)
+        EventListener.interstitialEvents.subscribe(this)
+    }
+
     fun load() {
         val context = adConfiguration.context
 
@@ -45,7 +50,6 @@ class SAAdMobInterstitialAd(
             return
         }
 
-        SAInterstitialAd.setListener(this)
         SAInterstitialAd.load(loadedPlacementId, context)
     }
 
@@ -65,7 +69,7 @@ class SAAdMobInterstitialAd(
             SAEvent.adShown -> adCallback?.onAdOpened()
             SAEvent.adFailedToShow -> adFailedToShown()
             SAEvent.adClicked -> adCallback?.reportAdClicked()
-            SAEvent.adClosed -> adCallback?.onAdClosed()
+            SAEvent.adClosed -> adClosed()
             SAEvent.adEnded -> {
                 // This event is not used
             }
@@ -83,5 +87,10 @@ class SAAdMobInterstitialAd(
     private fun adFailedToShown() {
         adCallback?.onAdFailedToShow(SAAdMobError.adFailedToShow(loadedPlacementId))
         adFailedToLoad()
+    }
+
+    private fun adClosed() {
+        adCallback?.onAdClosed()
+        EventListener.interstitialEvents.unsubscribe(this)
     }
 }
