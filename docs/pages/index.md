@@ -6,5 +6,5 @@ permalink: /
 
 # {{ site.title }}
 
-AwesomeAds Publisher SDK documentation has been moved to https://dev.superawesome.com/docs/awesomeads/sdks/publisher
+AwesomeAds Publisher SDK documentation has been moved to [https://dev.superawesome.com/docs/awesomeads/sdks/publisher](https://dev.superawesome.com/docs/awesomeads/sdks/publisher)
 
