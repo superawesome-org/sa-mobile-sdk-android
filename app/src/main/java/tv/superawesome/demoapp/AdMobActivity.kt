@@ -5,18 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.admanager.AdManagerAdRequest
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import tv.superawesome.plugins.publisher.admob.SAAdMobAdapter
-import tv.superawesome.plugins.publisher.admob.SAAdMobBannerCustomEvent
 import tv.superawesome.plugins.publisher.admob.SAAdMobExtras
-import tv.superawesome.plugins.publisher.admob.SAAdMobInterstitialCustomEvent
 import tv.superawesome.sdk.publisher.SAOrientation
-import tv.superawesome.sdk.publisher.common.models.Orientation
 
 class AdMobActivity : Activity() {
     private val tag = "SADefaults/AdMob"
@@ -52,9 +48,11 @@ class AdMobActivity : Activity() {
             .setParentalGate(false)
             .setTransparent(true)
             .build()
+
         adView.loadAd(
             AdRequest.Builder()
-                .addCustomEventExtrasBundle(SAAdMobBannerCustomEvent::class.java, bundle).build()
+                .addNetworkExtrasBundle(SAAdMobAdapter::class.java, bundle)
+                .build()
         )
     }
 
@@ -62,29 +60,30 @@ class AdMobActivity : Activity() {
         val bundle = SAAdMobExtras.extras()
             .setTestMode(false)
             .setOrientation(SAOrientation.PORTRAIT)
-            .setParentalGate(true)
+            .setParentalGate(false)
             .build()
+
         AdManagerInterstitialAd.load(
             this,
             getString(R.string.admob_interstitial_ad_id),
-            AdManagerAdRequest.Builder().addCustomEventExtrasBundle(
-                SAAdMobInterstitialCustomEvent::class.java, bundle
-            ).build(),
+            AdRequest.Builder()
+                .addNetworkExtrasBundle(SAAdMobAdapter::class.java, bundle)
+                .build(),
             object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(p0: InterstitialAd) {
-                    super.onAdLoaded(p0)
-                    interstitialAd = p0
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    super.onAdLoaded(ad)
+                    interstitialAd = ad
                     interstitialAd?.show(this@AdMobActivity)
                 }
 
-                override fun onAdFailedToLoad(p0: LoadAdError) {
-                    super.onAdFailedToLoad(p0)
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    super.onAdFailedToLoad(error)
                 }
             })
     }
 
     private fun requestVideoAd() {
-        val videoBundle = SAAdMobExtras.extras()
+        val bundle = SAAdMobExtras.extras()
             .setTestMode(false)
             .setParentalGate(false)
             .setOrientation(SAOrientation.PORTRAIT)
@@ -92,10 +91,11 @@ class AdMobActivity : Activity() {
             .setCloseAtEnd(true)
             .setCloseButton(true)
             .build()
+
         RewardedAd.load(this,
             getString(R.string.admob_video_ad_id),
-            AdManagerAdRequest.Builder()
-                .addNetworkExtrasBundle(SAAdMobAdapter::class.java, videoBundle)
+            AdRequest.Builder()
+                .addNetworkExtrasBundle(SAAdMobAdapter::class.java, bundle)
                 .build(),
             object : RewardedAdLoadCallback() {
                 override fun onAdFailedToLoad(error: LoadAdError) {
@@ -103,9 +103,9 @@ class AdMobActivity : Activity() {
                     Log.e(tag, error.message)
                 }
 
-                override fun onAdLoaded(p0: RewardedAd) {
-                    super.onAdLoaded(p0)
-                    rewardedAd = p0
+                override fun onAdLoaded(ad: RewardedAd) {
+                    super.onAdLoaded(ad)
+                    rewardedAd = ad
                     rewardedAd?.show(this@AdMobActivity) {
                         Log.e(tag, it.amount.toString())
                     }
