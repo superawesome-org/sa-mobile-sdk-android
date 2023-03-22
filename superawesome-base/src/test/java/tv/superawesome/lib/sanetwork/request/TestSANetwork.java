@@ -64,7 +64,9 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
+        assertEquals(1, numberOfRequests);
     }
 
     @Test
@@ -347,5 +349,27 @@ public class TestSANetwork {
             assertFalse(success);
             assertNull(payload);
         });
+    }
+
+    @Test
+    public void test_SANetwork_SendGET_Retries_5_Times_On_Server_Error() {
+        // given
+        String url = server.url("/some/url").toString();
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(500)
+                .setBody(responseBody);
+
+        // when
+        server.enqueue(mockResponse);
+
+        network.sendGET(url, null, null, (status, payload, success) -> {
+            // then
+            assertFalse(success);
+            assertNull(payload);
+        });
+
+        //then
+        int numberOfRequests = server.getRequestCount();
+        assertEquals(5, numberOfRequests);
     }
 }
