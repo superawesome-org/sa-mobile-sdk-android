@@ -431,6 +431,8 @@ public class TestSANetwork {
         server.enqueue(mockErrorResponse);
         server.enqueue(mockErrorResponse);
         server.enqueue(mockSuccessResponse);
+        server.enqueue(mockSuccessResponse);
+        server.enqueue(mockSuccessResponse);
 
         network.sendGET(url, null, null, (status, payload, success) -> {
             // then
