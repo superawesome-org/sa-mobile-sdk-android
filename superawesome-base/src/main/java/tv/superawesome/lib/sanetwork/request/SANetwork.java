@@ -6,8 +6,6 @@ package tv.superawesome.lib.sanetwork.request;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-
 import org.json.JSONObject;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
