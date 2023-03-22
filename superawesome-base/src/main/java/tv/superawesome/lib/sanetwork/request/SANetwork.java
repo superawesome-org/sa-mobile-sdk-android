@@ -108,9 +108,11 @@ public class SANetwork {
 
             int retries = 0;
             boolean delayRequest = false;
-            boolean isFinalRetry = retries == maxRetries -1;
 
             do {
+
+                boolean isFinalRetry = retries == maxRetries -1;
+
                 // Delay on a retried request
                 if(delayRequest) {
                     try {
