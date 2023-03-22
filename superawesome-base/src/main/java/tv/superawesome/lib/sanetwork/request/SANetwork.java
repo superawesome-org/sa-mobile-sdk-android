@@ -268,17 +268,17 @@ public class SANetwork {
 
                     if (statusCode < HttpsURLConnection.HTTP_BAD_REQUEST && response != null) {
                         sendBack(listener, statusCode, response.toString(), true);
-                        // Success, exit the retry loop
+                        // Success, exit the retry loop and call back
                         break;
                     } else if (isFinalRetry) {
                         sendBack(listener, statusCode, null, false);
-                        // Error on final retry, exit the retry loop
+                        // Error on final retry, exit the retry loop and call back
                         break;
                     }
                 } catch (Exception e) {
                     if (isFinalRetry) {
                         sendBack(listener, 0, null, false);
-                        // Error on final retry, exit the retry loop
+                        // Error on final retry, exit the retry loop and call back
                         break;
                     }
                 } finally {
