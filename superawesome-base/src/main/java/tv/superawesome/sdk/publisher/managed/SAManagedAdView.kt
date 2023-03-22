@@ -35,9 +35,15 @@ constructor(
     private var isParentalGateEnabled: Boolean = false
     private var isBumperPageEnabled: Boolean = false
 
-    private val webView: WebView by lazy {
-        WebView(ctx).apply {
-            this.setupWebView()
+    var listener: SACustomWebView.Listener? = null
+        set(value) {
+            webView.listener = value
+            field = value
+        }
+
+    private val webView: SACustomWebView by lazy {
+        SACustomWebView(ctx).apply {
+            setupWebView()
             this@SAManagedAdView.addView(this)
         }
     }

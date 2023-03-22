@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tv.superawesome.demoapp.model.FeatureItem
+import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.repository.FeaturesRepository
 
