@@ -104,12 +104,12 @@ public class SANetwork {
 
             final String finalEndpoint = endpoint + (!utils.isJSONEmpty(query) ? "?" + utils.formGetQueryFromDict(query) : "");
 
-            int retry = 0;
+            int retries = 0;
 
             do {
                 boolean connectionFailed = false;
+                int statusCode = 0;
                 try {
-                    int statusCode;
                     StringBuilder response;
                     InputStreamReader in;
                     OutputStream os = null;
@@ -259,27 +259,29 @@ public class SANetwork {
                     if (statusCode < HttpsURLConnection.HTTP_BAD_REQUEST && response != null) {
                         sendBack(listener, statusCode, response.toString(), true);
                     } else {
-                        sendBack(listener, statusCode, null, false);
                         connectionFailed = true;
                     }
 
                 } catch (Exception e) {
-                    sendBack(listener, 0, null, false);
                     connectionFailed = true;
                 } finally {
                     if (connectionFailed) {
-                        retry++;
-                        try {
-                            Thread.sleep(retryDelay);
-                        } catch (InterruptedException ie) {
-                            Thread.currentThread().interrupt();
+                        if (retries < maxRetries) {
+                            retries++;
+                            try {
+                                Thread.sleep(retryDelay);
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                            }
+                        } else {
+                            sendBack(listener, statusCode, null, false);
                         }
                     } else {
                         // Succeeded, exit the while loop
                         break;
                     }
                 }
-            } while (retry < maxRetries);
+            } while (retries < maxRetries);
         });
     }
 

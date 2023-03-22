@@ -92,7 +92,9 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url?limit=10&userId=50 HTTP/1.1", record.getRequestLine());
+        assertEquals(1, numberOfRequests);
     }
 
     @Test
@@ -118,9 +120,11 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
         assertEquals("application/json", record.getHeader("Content-Type"));
         assertEquals("ios-1.0.0", record.getHeader("X-Version"));
+        assertEquals(1, numberOfRequests);
     }
 
     @Test
@@ -150,10 +154,12 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("POST /some/url HTTP/1.1", record.getRequestLine());
         assertEquals("application/json", record.getHeader("Content-Type"));
         assertEquals("ios-1.0.0", record.getHeader("X-Version"));
         assertEquals(body.toString(), record.getBody().readUtf8());
+        assertEquals(1, numberOfRequests);
     }
 
     @Test
@@ -176,7 +182,9 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
+        assertEquals(1, numberOfRequests);
     }
 
     @Test
@@ -202,7 +210,9 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
+        assertEquals(1, numberOfRequests);
     }
 
     @Test
@@ -226,7 +236,9 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
+        assertEquals(5, numberOfRequests);
     }
 
     @Test
@@ -251,7 +263,9 @@ public class TestSANetwork {
 
         //then
         RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
+        assertEquals(5, numberOfRequests);
     }
 
     @Test
@@ -284,6 +298,10 @@ public class TestSANetwork {
             assertFalse(success);
             assertNull(payload);
         });
+
+        // then
+        int numberOfRequests = server.getRequestCount();
+        assertEquals(5, numberOfRequests);
     }
 
     @Test
@@ -304,6 +322,10 @@ public class TestSANetwork {
             assertFalse(success);
             assertNull(payload);
         });
+
+        // then
+        int numberOfRequests = server.getRequestCount();
+        assertEquals(6, numberOfRequests);
     }
 
     @Test
@@ -329,6 +351,10 @@ public class TestSANetwork {
             assertFalse(success);
             assertNull(payload);
         });
+
+        // then
+        int numberOfRequests = server.getRequestCount();
+        assertEquals(6, numberOfRequests);
     }
 
     @Test
@@ -349,6 +375,10 @@ public class TestSANetwork {
             assertFalse(success);
             assertNull(payload);
         });
+
+        // then
+        int numberOfRequests = server.getRequestCount();
+        assertEquals(6, numberOfRequests);
     }
 
     @Test
@@ -368,7 +398,7 @@ public class TestSANetwork {
             assertNull(payload);
         });
 
-        //then
+        // then
         int numberOfRequests = server.getRequestCount();
         assertEquals(5, numberOfRequests);
     }
