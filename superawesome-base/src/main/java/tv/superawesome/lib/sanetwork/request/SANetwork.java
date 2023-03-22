@@ -275,7 +275,7 @@ public class SANetwork {
                             Thread.currentThread().interrupt();
                         }
                     } else {
-                        // Succeeded, exit the while loop without retrying
+                        // Succeeded, exit the while loop
                         break;
                     }
                 }
