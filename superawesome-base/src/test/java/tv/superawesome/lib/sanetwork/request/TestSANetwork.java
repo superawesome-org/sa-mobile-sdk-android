@@ -465,7 +465,6 @@ public class TestSANetwork {
         server.enqueue(mockSuccessResponse);
 
         network.sendGET(url, null, null, (status, payload, success) -> {
-
             // then
             if(status == 200) {
                 assertTrue(success);
