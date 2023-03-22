@@ -225,6 +225,10 @@ public class TestSANetwork {
 
         // when
         server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
 
         network.sendGET(url, null, null, (status, payload, success) -> {
 
@@ -251,6 +255,10 @@ public class TestSANetwork {
                 .setBody(responseBody);
 
         // when
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
         server.enqueue(mockResponse);
 
         network.sendGET(url, null, null, (status, payload, success) -> {
@@ -391,15 +399,55 @@ public class TestSANetwork {
 
         // when
         server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
 
         network.sendGET(url, null, null, (status, payload, success) -> {
             // then
+            assertEquals(500, status);
             assertFalse(success);
             assertNull(payload);
         });
 
         // then
         int numberOfRequests = server.getRequestCount();
+        assertEquals(5, numberOfRequests);
+    }
+
+    @Test
+    public void test_SANetwork_SendGET_Retries_5_Times_And_Succeeds_On_Final_Retry() throws Exception {
+        // given
+        String url = server.url("/some/url").toString();
+        MockResponse mockSuccessResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(responseBody);
+        MockResponse mockErrorResponse = new MockResponse()
+                .setResponseCode(500)
+                .setBody(responseBody);
+
+        // when
+        server.enqueue(mockErrorResponse);
+        server.enqueue(mockErrorResponse);
+        server.enqueue(mockErrorResponse);
+        server.enqueue(mockErrorResponse);
+        server.enqueue(mockSuccessResponse);
+
+        network.sendGET(url, null, null, (status, payload, success) -> {
+
+            // then
+            if(status == 200) {
+                assertTrue(success);
+            } else {
+                assertFalse(success);
+            }
+        });
+
+        //then
+        RecordedRequest record = server.takeRequest();
+        int numberOfRequests = server.getRequestCount();
+        assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
         assertEquals(5, numberOfRequests);
     }
 }
