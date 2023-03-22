@@ -278,6 +278,7 @@ public class SANetwork {
                 } catch (Exception e) {
                     if (isFinalRetry) {
                         sendBack(listener, 0, null, false);
+                        // Error on final retry, exit the retry loop
                         break;
                     }
                 } finally {
