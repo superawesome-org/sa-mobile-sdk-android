@@ -13,7 +13,7 @@ class MyApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         AwesomeAds.init(this, true)
-        AwesomeAdsSdk.init(this, Configuration(logging = true, environment = Environment.Staging))
+        AwesomeAdsSdk.init(this, Configuration(logging = true))
     }
 
     fun resetSettings() {
