@@ -6,6 +6,8 @@ package tv.superawesome.lib.sanetwork.request;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import org.json.JSONObject;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -104,12 +106,22 @@ public class SANetwork {
 
             final String finalEndpoint = endpoint + (!utils.isJSONEmpty(query) ? "?" + utils.formGetQueryFromDict(query) : "");
 
-            int retries = 0;
+            int retry = 0;
+            boolean delay = false;
+            boolean isFinalRetry = retry == maxRetries -1;
 
             do {
-                boolean connectionFailed = false;
-                int statusCode = 0;
+                // Delay on a retried request
+                if(delay) {
+                    try {
+                        Thread.sleep(retryDelay);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+
                 try {
+                    int statusCode;
                     StringBuilder response;
                     InputStreamReader in;
                     OutputStream os = null;
@@ -164,7 +176,6 @@ public class SANetwork {
                         statusCode = conn.getResponseCode();
                         if (statusCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
                             in = new InputStreamReader(conn.getErrorStream());
-                            connectionFailed = true;
                         } else {
                             in = new InputStreamReader(conn.getInputStream());
                         }
@@ -231,7 +242,6 @@ public class SANetwork {
                         statusCode = conn.getResponseCode();
                         if (statusCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
                             in = new InputStreamReader(conn.getErrorStream());
-                            connectionFailed = true;
                         } else {
                             in = new InputStreamReader(conn.getInputStream());
                         }
@@ -258,30 +268,23 @@ public class SANetwork {
 
                     if (statusCode < HttpsURLConnection.HTTP_BAD_REQUEST && response != null) {
                         sendBack(listener, statusCode, response.toString(), true);
-                    } else {
-                        connectionFailed = true;
-                    }
-
-                } catch (Exception e) {
-                    connectionFailed = true;
-                } finally {
-                    if (connectionFailed) {
-                        if (retries < maxRetries) {
-                            retries++;
-                            try {
-                                Thread.sleep(retryDelay);
-                            } catch (InterruptedException ie) {
-                                Thread.currentThread().interrupt();
-                            }
-                        } else {
-                            sendBack(listener, statusCode, null, false);
-                        }
-                    } else {
-                        // Succeeded, exit the while loop
+                        // Success, exit the retry loop
+                        break;
+                    } else if (isFinalRetry) {
+                        sendBack(listener, statusCode, null, false);
+                        // Error on final retry, exit the retry loop
                         break;
                     }
+                } catch (Exception e) {
+                    if (isFinalRetry) {
+                        sendBack(listener, 0, null, false);
+                        break;
+                    }
+                } finally {
+                    delay = true;
+                    retry++;
                 }
-            } while (retries < maxRetries);
+            } while (retry < maxRetries);
         });
     }
 
