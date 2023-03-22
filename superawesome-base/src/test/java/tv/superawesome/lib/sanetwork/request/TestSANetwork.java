@@ -450,4 +450,34 @@ public class TestSANetwork {
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
         assertEquals(5, numberOfRequests);
     }
+
+    @Test
+    public void test_SANetwork_SendGET_Retries_Twice_Before_Succeeding() {
+        // given
+        String url = server.url("/some/url").toString();
+        MockResponse mockSuccessResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(responseBody);
+        MockResponse mockErrorResponse = new MockResponse()
+                .setResponseCode(500)
+                .setBody(responseBody);
+
+        // when
+        server.enqueue(mockErrorResponse);
+        server.enqueue(mockErrorResponse);
+        server.enqueue(mockSuccessResponse);
+
+        network.sendGET(url, null, null, (status, payload, success) -> {
+            // then
+            if(status == 200) {
+                assertTrue(success);
+            } else {
+                assertFalse(success);
+            }
+        });
+
+        // then
+        int numberOfRequests = server.getRequestCount();
+        assertEquals(3, numberOfRequests);
+    }
 }
