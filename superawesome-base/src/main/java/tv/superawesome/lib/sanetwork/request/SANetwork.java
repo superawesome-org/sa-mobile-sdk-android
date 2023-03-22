@@ -107,12 +107,12 @@ public class SANetwork {
             final String finalEndpoint = endpoint + (!utils.isJSONEmpty(query) ? "?" + utils.formGetQueryFromDict(query) : "");
 
             int retry = 0;
-            boolean delay = false;
+            boolean delayRequest = false;
             boolean isFinalRetry = retry == maxRetries -1;
 
             do {
                 // Delay on a retried request
-                if(delay) {
+                if(delayRequest) {
                     try {
                         Thread.sleep(retryDelay);
                     } catch (InterruptedException ie) {
@@ -281,7 +281,7 @@ public class SANetwork {
                         break;
                     }
                 } finally {
-                    delay = true;
+                    delayRequest = true;
                     retry++;
                 }
             } while (retry < maxRetries);
