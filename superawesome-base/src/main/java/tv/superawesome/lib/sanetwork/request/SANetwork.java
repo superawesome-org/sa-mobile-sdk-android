@@ -112,7 +112,7 @@ public class SANetwork {
                 boolean isFinalRetry = retries == maxRetries -1;
 
                 // Delay on a retried request
-                if(delayRequest) {
+                if (delayRequest) {
                     try {
                         Thread.sleep(retryDelay);
                     } catch (InterruptedException ie) {
