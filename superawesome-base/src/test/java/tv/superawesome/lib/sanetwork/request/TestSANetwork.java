@@ -500,7 +500,7 @@ public class TestSANetwork {
 
         network.sendGET(url, null, null, (status, payload, success) -> {
             // then
-            if(status == 200) {
+            if (status == 200) {
                 assertTrue(success);
                 assertNotNull(payload);
                 assertEquals(responseBody, payload);
