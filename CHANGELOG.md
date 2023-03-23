@@ -1,3 +1,10 @@
+## [8.5.6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.5...v8.5.6) (2023-03-23)
+
+
+### Bug Fixes
+
+* **admob:** Concurrency issue in `EventListener` is fixed ([#306](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/306)) ([2fb9d22](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2fb9d22bc6cd1843960426c7815b636a1f6fc9ff))
+
 ## [8.5.5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.4...v8.5.5) (2023-03-21)
 
 
