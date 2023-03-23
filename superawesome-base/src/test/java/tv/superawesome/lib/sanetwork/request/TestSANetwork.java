@@ -481,4 +481,38 @@ public class TestSANetwork {
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
         assertEquals(5, numberOfRequests);
     }
+
+    @Test
+    public void test_SANetwork_SendGET_First_Timesout_Then_Succeeds () throws Exception {
+        // given
+        String url = server.url("/some/url").toString();
+        int delay = 1500;
+        MockResponse mockTimeoutResponse = new MockResponse()
+                .setBodyDelay(delay, TimeUnit.MILLISECONDS)
+                .setBody(responseBody);
+        MockResponse mockSuccessResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(responseBody);
+
+        // when
+        server.enqueue(mockTimeoutResponse);
+        server.enqueue(mockSuccessResponse);
+
+        network.sendGET(url, null, null, (status, payload, success) -> {
+            // then
+            if(status == 200) {
+                assertTrue(success);
+                assertNotNull(payload);
+                assertEquals(responseBody, payload);
+            } else {
+                assertEquals(0, status);
+                assertFalse(success);
+                assertNull(payload);
+            }
+        });
+
+        // then
+        int numberOfRequests = server.getRequestCount();
+        assertEquals(2, numberOfRequests);
+    }
 }
