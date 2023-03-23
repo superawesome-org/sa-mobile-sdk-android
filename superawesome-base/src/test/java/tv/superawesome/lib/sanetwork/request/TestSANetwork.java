@@ -31,7 +31,7 @@ public class TestSANetwork {
     private MockWebServer server;
 
     @Before
-    public void setUp () throws Exception {
+    public void setUp() throws Exception {
         server = new MockWebServer();
         server.start();
 
@@ -40,12 +40,12 @@ public class TestSANetwork {
     }
 
     @After
-    public void tearDown () throws Exception {
+    public void tearDown() throws Exception {
         server.shutdown();
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithSuccess () throws Exception {
+    public void test_SANetwork_SendGET_WithSuccess() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse().setBody(responseBody);
@@ -70,7 +70,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithQueryAndSuccess () throws Exception {
+    public void test_SANetwork_SendGET_WithQueryAndSuccess() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         JSONObject query = new JSONObject();
@@ -98,7 +98,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithHeadersAndSuccess () throws Exception {
+    public void test_SANetwork_SendGET_WithHeadersAndSuccess() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         JSONObject header = new JSONObject();
@@ -128,7 +128,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendPOST_WithSuccess () throws Exception {
+    public void test_SANetwork_SendPOST_WithSuccess() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         JSONObject header = new JSONObject();
@@ -163,7 +163,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithEmptyResponse () throws Exception {
+    public void test_SANetwork_SendGET_WithEmptyResponse() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse().setResponseCode(204);
@@ -188,7 +188,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithSlowResponse () throws Exception {
+    public void test_SANetwork_SendGET_WithSlowResponse() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         int delay = 500;
@@ -216,7 +216,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_With404Resposne () throws Exception {
+    public void test_SANetwork_SendGET_With404Resposne() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse()
@@ -246,7 +246,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_With401Response () throws Exception {
+    public void test_SANetwork_SendGET_With401Response() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse()
@@ -277,7 +277,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithMalformedUrl () throws Exception {
+    public void test_SANetwork_SendGET_WithMalformedUrl() {
         // given
         network.sendGET("jsaksa\\\\s\\\\asasaasa", null, null, (status, payload, success) -> {
 
@@ -289,7 +289,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithResponseTimeout () throws Exception {
+    public void test_SANetwork_SendGET_WithResponseTimeout() {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse()
@@ -313,7 +313,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithDisconnectAfterRequest () throws Exception {
+    public void test_SANetwork_SendGET_WithDisconnectAfterRequest() {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse()
@@ -337,7 +337,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithRequestBodyDisconnected () throws Exception {
+    public void test_SANetwork_SendGET_WithRequestBodyDisconnected() throws Exception {
         // given
         String url = server.url("/some/url").toString();
 
@@ -366,7 +366,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_WithDisconnectAtStart () throws Exception {
+    public void test_SANetwork_SendGET_WithDisconnectAtStart() {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse()
@@ -483,7 +483,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_First_Timesout_Then_Succeeds() throws Exception {
+    public void test_SANetwork_SendGET_First_Timesout_Then_Succeeds() {
         // given
         String url = server.url("/some/url").toString();
         int delay = 1500;
