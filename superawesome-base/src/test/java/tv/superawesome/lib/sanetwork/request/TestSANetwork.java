@@ -483,7 +483,7 @@ public class TestSANetwork {
     }
 
     @Test
-    public void test_SANetwork_SendGET_First_Timesout_Then_Succeeds () throws Exception {
+    public void test_SANetwork_SendGET_First_Timesout_Then_Succeeds() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         int delay = 1500;
