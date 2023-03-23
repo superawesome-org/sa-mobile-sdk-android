@@ -6,9 +6,7 @@ package tv.superawesome.lib.sanetwork.request;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import org.json.JSONObject;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,7 +16,6 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -28,21 +25,25 @@ import javax.net.ssl.HttpsURLConnection;
 public class SANetwork {
 
     private int timeout = 15000;
+    private int maxRetries = 5;
+    private int retryDelay = 1000;
+
     private final Executor executor;
     private final SANetworkUtils utils = new SANetworkUtils();
 
     /**
      * Constructor without any executor, so choose a new single thread executor
      */
-    public SANetwork () {
+    public SANetwork() {
         this.executor = Executors.newSingleThreadExecutor();
     }
 
     /**
      * Constructor with executor
+     *
      * @param executor - the executor that may be passed in as param
      */
-    public SANetwork (Executor executor, int timeout) {
+    public SANetwork(Executor executor, int timeout) {
         this.executor = executor;
         this.timeout = timeout;
     }
@@ -79,18 +80,18 @@ public class SANetwork {
      * This method does not get exposed to the public; Rather, sister methods like sendPUT,
      * sendGET, etc, will be presented as public.
      *
-     * @param endpoint  URL to send the request to
-     * @param method    the HTTP method to be executed, as a string. Based on the methods possible
-     *                  with the HttpsURLConnection class (OPTIONS, GET, HEAD, POST, PUT,
-     *                  DELETE and TRACE)
-     * @param query     a JSON object containing all the query parameters to be added to an URL
-     *                  (mostly for a GET type request)
-     * @param header    a JSON object containing all the header parameters to be added
-     *                  to the request
-     * @param body      a JSON object containing all the body parameters to be added to
-     *                  a PUT or POST request
-     * @param listener  a listener of type SANetworkInterface to be used as a callback mechanism
-     *                  when the network operation finally succeeds
+     * @param endpoint URL to send the request to
+     * @param method   the HTTP method to be executed, as a string. Based on the methods possible
+     *                 with the HttpsURLConnection class (OPTIONS, GET, HEAD, POST, PUT,
+     *                 DELETE and TRACE)
+     * @param query    a JSON object containing all the query parameters to be added to an URL
+     *                 (mostly for a GET type request)
+     * @param header   a JSON object containing all the header parameters to be added
+     *                 to the request
+     * @param body     a JSON object containing all the body parameters to be added to
+     *                 a PUT or POST request
+     * @param listener a listener of type SANetworkInterface to be used as a callback mechanism
+     *                 when the network operation finally succeeds
      */
     private void sendRequest(final String endpoint,
                              final String method,
@@ -103,166 +104,192 @@ public class SANetwork {
 
             final String finalEndpoint = endpoint + (!utils.isJSONEmpty(query) ? "?" + utils.formGetQueryFromDict(query) : "");
 
-            try {
-                int statusCode;
-                StringBuilder response;
-                InputStreamReader in;
-                OutputStream os = null;
+            int retries = 0;
+            boolean delayRequest = false;
 
-                // create a new URL object from the final endpoint that's being supplied
-                URL Url = new URL(finalEndpoint);
+            do {
 
-                // ang get the protocol (hopefully it being HTTPS or HTTP)
-                String proto = Url.getProtocol();
+                boolean isFinalRetry = retries == maxRetries -1;
 
-                //
-                // Case 1: Protocol is HTTPS
-                if (proto.equals("https")) {
-
-                    // create a new HTTPS Connection
-                    HttpsURLConnection conn = (HttpsURLConnection) Url.openConnection();
-
-                    // set connection parameters
-                    conn.setReadTimeout(timeout);
-                    conn.setConnectTimeout(timeout);
-                    conn.setUseCaches(false);
-                    conn.setDoInput(true);
-                    conn.setRequestMethod(method);
-                    // and in the POST & PUT cases, make sure I can write to the request as well
-                    if (method.equals("POST") || method.equals("PUT")) {
-                        conn.setDoOutput(true);
+                // Delay on a retried request
+                if (delayRequest) {
+                    try {
+                        Thread.sleep(retryDelay);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
                     }
+                }
 
-                    // set headers
-                    if (header != null) {
-                        Iterator<String> keys = header.keys();
-                        while (keys.hasNext()) {
-                            String key = keys.next();
-                            String value = header.optString(key);
-                            conn.setRequestProperty(key, value);
+                try {
+                    int statusCode;
+                    StringBuilder response;
+                    InputStreamReader in;
+                    OutputStream os = null;
+
+                    // create a new URL object from the final endpoint that's being supplied
+                    URL Url = new URL(finalEndpoint);
+
+                    // ang get the protocol (hopefully it being HTTPS or HTTP)
+                    String proto = Url.getProtocol();
+
+                    //
+                    // Case 1: Protocol is HTTPS
+                    if (proto.equals("https")) {
+
+                        // create a new HTTPS Connection
+                        HttpsURLConnection conn = (HttpsURLConnection) Url.openConnection();
+
+                        // set connection parameters
+                        conn.setReadTimeout(timeout);
+                        conn.setConnectTimeout(timeout);
+                        conn.setUseCaches(false);
+                        conn.setDoInput(true);
+                        conn.setRequestMethod(method);
+                        // and in the POST & PUT cases, make sure I can write to the request as well
+                        if (method.equals("POST") || method.equals("PUT")) {
+                            conn.setDoOutput(true);
                         }
-                    }
 
-                    // once the headers have been set, finally open the connection
-                    conn.connect();
-
-                    // if it's POST & PUT, also write any existing found body
-                    if (body != null && (method.equals("POST") || method.equals("PUT"))) {
-                        String message = body.toString();
-                        os = new BufferedOutputStream(conn.getOutputStream());
-                        os.write(message.getBytes());
-                        os.flush();
-                    }
-
-                    // read the result
-                    // error cases are based on HTTP status codes greater than 400
-                    statusCode = conn.getResponseCode();
-                    if (statusCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
-                        in = new InputStreamReader(conn.getErrorStream());
-                    } else {
-                        in = new InputStreamReader(conn.getInputStream());
-                    }
-
-                    // read the saDidGetResponse from the server
-                    String line;
-                    response = new StringBuilder();
-                    BufferedReader reader = new BufferedReader(in);
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
-
-                    // close the body writer
-                    if (os != null) {
-                        os.close();
-                    }
-
-                    // close the reader
-                    in.close();
-
-                    // disconnect
-                    conn.disconnect();
-                }
-                //
-                // Case 2: Protocol is hopefully HTTP (or any other, in a worse case scenario)
-                else {
-                    // create a new HTTPS Connection
-                    HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
-
-                    // set connection parameters
-                    conn.setReadTimeout(timeout);
-                    conn.setConnectTimeout(timeout);
-                    conn.setUseCaches(false);
-                    conn.setDoInput(true);
-                    conn.setRequestMethod(method);
-                    // and in the POST & PUT cases, make sure I can write to the request as well
-                    if (method.equals("POST") || method.equals("PUT")) {
-                        conn.setDoOutput(true);
-                    }
-
-                    // set headers
-                    if (header != null) {
-                        Iterator<String> keys = header.keys();
-                        while (keys.hasNext()) {
-                            String key = keys.next();
-                            String value = header.optString(key);
-                            conn.setRequestProperty(key, value);
+                        // set headers
+                        if (header != null) {
+                            Iterator<String> keys = header.keys();
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                String value = header.optString(key);
+                                conn.setRequestProperty(key, value);
+                            }
                         }
+
+                        // once the headers have been set, finally open the connection
+                        conn.connect();
+
+                        // if it's POST & PUT, also write any existing found body
+                        if (body != null && (method.equals("POST") || method.equals("PUT"))) {
+                            String message = body.toString();
+                            os = new BufferedOutputStream(conn.getOutputStream());
+                            os.write(message.getBytes());
+                            os.flush();
+                        }
+
+                        // read the result
+                        // error cases are based on HTTP status codes greater than 400
+                        statusCode = conn.getResponseCode();
+                        if (statusCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
+                            in = new InputStreamReader(conn.getErrorStream());
+                        } else {
+                            in = new InputStreamReader(conn.getInputStream());
+                        }
+
+                        // read the saDidGetResponse from the server
+                        String line;
+                        response = new StringBuilder();
+                        BufferedReader reader = new BufferedReader(in);
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+
+                        // close the body writer
+                        if (os != null) {
+                            os.close();
+                        }
+
+                        // close the reader
+                        in.close();
+
+                        // disconnect
+                        conn.disconnect();
+                    }
+                    //
+                    // Case 2: Protocol is hopefully HTTP (or any other, in a worse case scenario)
+                    else {
+                        // create a new HTTPS Connection
+                        HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
+
+                        // set connection parameters
+                        conn.setReadTimeout(timeout);
+                        conn.setConnectTimeout(timeout);
+                        conn.setUseCaches(false);
+                        conn.setDoInput(true);
+                        conn.setRequestMethod(method);
+                        // and in the POST & PUT cases, make sure I can write to the request as well
+                        if (method.equals("POST") || method.equals("PUT")) {
+                            conn.setDoOutput(true);
+                        }
+
+                        // set headers
+                        if (header != null) {
+                            Iterator<String> keys = header.keys();
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                String value = header.optString(key);
+                                conn.setRequestProperty(key, value);
+                            }
+                        }
+
+                        // once the headers have been set, finally open the connection
+                        conn.connect();
+
+                        // if it's POST & PUT, also write any existing found body
+                        if (body != null && (method.equals("POST") || method.equals("PUT"))) {
+                            String message = body.toString();
+                            os = new BufferedOutputStream(conn.getOutputStream());
+                            os.write(message.getBytes());
+                            os.flush();
+                        }
+
+                        // read the result
+                        // error cases are based on HTTP status codes greater than 400
+                        statusCode = conn.getResponseCode();
+                        if (statusCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
+                            in = new InputStreamReader(conn.getErrorStream());
+                        } else {
+                            in = new InputStreamReader(conn.getInputStream());
+                        }
+
+                        // read the saDidGetResponse from the server
+                        String line;
+                        response = new StringBuilder();
+                        BufferedReader reader = new BufferedReader(in);
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+
+                        // close the body writer
+                        if (os != null) {
+                            os.close();
+                        }
+
+                        // close the reader
+                        in.close();
+
+                        // disconnect
+                        conn.disconnect();
                     }
 
-                    // once the headers have been set, finally open the connection
-                    conn.connect();
-
-                    // if it's POST & PUT, also write any existing found body
-                    if (body != null && (method.equals("POST") || method.equals("PUT"))) {
-                        String message = body.toString();
-                        os = new BufferedOutputStream(conn.getOutputStream());
-                        os.write(message.getBytes());
-                        os.flush();
+                    if (statusCode < HttpsURLConnection.HTTP_BAD_REQUEST && response != null) {
+                        sendBack(listener, statusCode, response.toString(), true);
+                        // Success, exit the retry loop and call back
+                        break;
+                    } else if (isFinalRetry) {
+                        sendBack(listener, statusCode, null, false);
+                        // Error on final retry, exit the retry loop and call back
+                        break;
                     }
-
-                    // read the result
-                    // error cases are based on HTTP status codes greater than 400
-                    statusCode = conn.getResponseCode();
-                    if (statusCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
-                        in = new InputStreamReader(conn.getErrorStream());
-                    } else {
-                        in = new InputStreamReader(conn.getInputStream());
+                } catch (Exception e) {
+                    if (isFinalRetry) {
+                        sendBack(listener, 0, null, false);
+                        // Error on final retry, exit the retry loop and call back
+                        break;
                     }
-
-                    // read the saDidGetResponse from the server
-                    String line;
-                    response = new StringBuilder();
-                    BufferedReader reader = new BufferedReader(in);
-                    while ((line = reader.readLine()) != null) {
-                        response.append(line);
-                    }
-
-                    // close the body writer
-                    if (os != null) {
-                        os.close();
-                    }
-
-                    // close the reader
-                    in.close();
-
-                    // disconnect
-                    conn.disconnect();
+                } finally {
+                    delayRequest = true;
+                    retries++;
                 }
-
-                if (statusCode < HttpsURLConnection.HTTP_BAD_REQUEST && response != null) {
-                    sendBack(listener, statusCode, response.toString(), true);
-                }
-                else {
-                    sendBack(listener, statusCode, null, false);
-                }
-
-            } catch (Exception e) {
-                sendBack(listener, 0, null, false);
-            }
+            } while (retries < maxRetries);
         });
     }
 
-    private void sendBack (final SANetworkInterface listener, final int status, final String response, final boolean success) {
+    private void sendBack(final SANetworkInterface listener, final int status, final String response, final boolean success) {
         /*
           And try to return it on the main thread
          */
@@ -276,8 +303,7 @@ public class SANetwork {
         /*
           If the Main Looper is not present, as in a testing environment, still
           return the callback, but on the same thread.
-         */
-        catch (Exception e) {
+         */ catch (Exception e) {
             if (listener != null) {
                 listener.saDidGetResponse(status, response, success);
             }
