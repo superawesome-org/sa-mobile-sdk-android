@@ -30,7 +30,7 @@ class SAManagedAdActivity : Activity(),
     SACustomWebView.Listener
 {
     private var listener: SAInterface? = null
-    private var config: ManangedAdConfig? = null
+    private var config: ManagedAdConfig? = null
     private var timeOutRunnable: Runnable? = null
     private var shownRunnable: Runnable? = null
     private var timeOutHandler = Handler(Looper.getMainLooper())
@@ -97,7 +97,7 @@ class SAManagedAdActivity : Activity(),
 
         videoClick = SAVideoClick(
             ad,
-            false, // TODO: Add in AAG-2900 config.isParentalGateEnabled,
+            config?.isParentalGateEnabled ?: false,
             config?.isBumperPageEnabled ?: false,
             events,
         )
