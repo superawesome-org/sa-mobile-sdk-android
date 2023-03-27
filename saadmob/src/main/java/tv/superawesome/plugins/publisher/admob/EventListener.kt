@@ -6,11 +6,14 @@ import tv.superawesome.sdk.publisher.SAInterface
 import java.lang.ref.WeakReference
 
 internal class EventListener : SAInterface {
-    private var observers: MutableList<WeakReference<SAInterface>> = mutableListOf()
+    private val observers: MutableList<WeakReference<SAInterface>> = mutableListOf()
 
+    @Synchronized
     fun subscribe(listener: SAInterface) {
-        observers.forEach {
-            val observer = it.get()
+        val iterator = observers.iterator()
+        while (iterator.hasNext()) {
+            val element = iterator.next()
+            val observer = element.get()
             if (observer == listener) {
                 Log.d(
                     "SuperAwesome",
@@ -26,28 +29,34 @@ internal class EventListener : SAInterface {
         )
     }
 
+    @Synchronized
     fun unsubscribe(listener: SAInterface) {
-        observers.forEach {
-            val observer = it.get()
-            if (observer == listener) {
-                observers.remove(it)
+        Log.d(
+            "SuperAwesome",
+            "EventListener unsubscribe -> Total: ${observers.count()}"
+        )
+        val iterator = observers.iterator()
+
+        while (iterator.hasNext()) {
+            val element = iterator.next()
+            val observer = element.get()
+            if (observer == null || observer == listener) {
+                iterator.remove()
                 Log.d(
                     "SuperAwesome",
                     "EventListener unsubscribe -> Unsubscribed Total: ${observers.count()}"
-                )
-                return
-            } else if (observer == null) {
-                observers.remove(it)
-                Log.d(
-                    "SuperAwesome",
-                    "EventListener unsubscribe -> Weak reference Total: ${observers.count()}"
                 )
             }
         }
     }
 
+    @Synchronized
     override fun onEvent(placementId: Int, event: SAEvent?) {
-        observers.forEach {
+        Log.d(
+            "SuperAwesome",
+            "EventListener onEvent -> placementId: $placementId event: $event"
+        )
+        observers.toList().forEach {
             val observer = it.get()
             observer?.onEvent(placementId, event)
         }

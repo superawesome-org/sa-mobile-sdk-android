@@ -25,7 +25,7 @@ import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.publisher.managed.ManangedAdConfig;
+import tv.superawesome.sdk.publisher.managed.ManagedAdConfig;
 import tv.superawesome.sdk.publisher.managed.SAManagedAdActivity;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
@@ -310,26 +310,28 @@ public class SAVideoAd {
             // try to get the ad that fits the placement id
             SAAd adL = (SAAd) generic;
 
+            // setup eventing
+            SASession session = getNewSession(context);
+            events.setAd(session, adL);
+
             // try to start the activity
             if (adL.creative.format == SACreativeFormat.video && context != null) {
                 if (adL.isVpaid) {
                     ads.remove(placementId);
-                    Intent intent = SAManagedAdActivity.newInstance(context, placementId, adL.creative.details.tag);
-                    ManangedAdConfig config = new ManangedAdConfig(
+                    Intent intent = SAManagedAdActivity.newInstance(context, placementId, adL, adL.creative.details.tag);
+                    ManagedAdConfig config = new ManagedAdConfig(
+                            isParentalGateEnabled,
+                            isBumperPageEnabled || adL.creative.bumper,
                             isBackButtonEnabled,
                             closeButtonState);
                     intent.putExtra(SAManagedAdActivity.CONFIG_KEY, config);
 
                     context.startActivity(intent);
                 } else {
-                    // setup eventing
-                    SASession session = getNewSession(context);
-                    events.setAd(session, adL);
-
                     // create intent
                     Intent intent = new Intent(context, SAVideoActivity.class);
 
-                    Config config = new Config(
+                    VideoConfig videoConfig = new VideoConfig(
                             adL.isPadlockVisible,
                             isParentalGateEnabled,
                             isBumperPageEnabled || adL.creative.bumper,
@@ -342,7 +344,7 @@ public class SAVideoAd {
                             orientation);
 
                     intent.putExtra("ad", adL);
-                    intent.putExtra("config", config);
+                    intent.putExtra("config", videoConfig);
 
                     // clear ad - meaning that it's been played
                     ads.remove(placementId);
