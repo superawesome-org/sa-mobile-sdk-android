@@ -7,7 +7,7 @@ import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayer;
 
 public class SAVideoEvents {
 
-  interface Listener {
+  public interface Listener {
     void hasBeenVisible();
   }
 

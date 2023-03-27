@@ -1,10 +1,7 @@
 package tv.superawesome.lib.saevents;
 
-import android.app.Application;
 import android.util.Log;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.VideoView;
 
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.ISASession;
