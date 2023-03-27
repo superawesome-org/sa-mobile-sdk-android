@@ -4,6 +4,7 @@ import androidx.multidex.MultiDexApplication
 import tv.superawesome.demoapp.model.SettingsData
 import tv.superawesome.sdk.publisher.AwesomeAds
 import tv.superawesome.sdk.publisher.common.models.Configuration
+import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk
 
 class MyApplication : MultiDexApplication() {
