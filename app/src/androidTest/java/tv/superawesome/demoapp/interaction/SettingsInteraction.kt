@@ -18,6 +18,11 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun disableCloseAtEnd() {
+        onView(withId(R.id.disableCloseAtEndButton))
+            .perform(click())
+    }
+
     private fun enableUITesting() {
         onView(withId(R.id.uiTestingButton))
             .perform(click())
@@ -30,6 +35,11 @@ object SettingsInteraction {
 
     fun closeNoDelay() {
         onView(withId(R.id.closeImmediatelyButton))
+            .perform(click())
+    }
+
+    fun closeHidden() {
+        onView(withId(R.id.closeHiddenButton))
             .perform(click())
     }
 
