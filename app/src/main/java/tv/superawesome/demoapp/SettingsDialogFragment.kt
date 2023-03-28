@@ -31,7 +31,7 @@ class SettingsDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? = inflater.inflate(R.layout.fragment_settings, null, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,6 +88,22 @@ class SettingsDialogFragment : DialogFragment() {
 
         muteDisableButton.setOnClickListener {
             app?.updateSettings { it.copy(muteOnStart = false) }
+        }
+
+        videoCloseDialogEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(videoWarnOnClose = true) }
+        }
+
+        videoCloseDialogDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(videoWarnOnClose = false) }
+        }
+
+        videoAutoCloseEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(videoAutoClose = true) }
+        }
+
+        videoAutoCloseDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(videoAutoClose = false) }
         }
     }
 

@@ -27,4 +27,6 @@
     <string name="settings_parental">Parental Gate</string>
     <string name="settings_playback">Playback</string>
     <string name="settings_mute">Mute on start</string>
+    <string name="settings_video_warn_dialog">Leave Video Warning</string>
+    <string name="settings_video_auto_close">Video Auto Close</string>
 </resources>

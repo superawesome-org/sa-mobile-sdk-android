@@ -15,11 +15,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.interaction.*
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
-import tv.superawesome.demoapp.interaction.BumperInteraction
-import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.ParentalGateInteraction
-import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
@@ -470,6 +467,56 @@ class VideoAdUITest {
         // Then view URL is redirected to browser
         intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
         verifyUrlPathCalled("/vast/clickthrough")
+    }
+
+    @Test
+    fun test_iv_video_warn_dialog_press_close() {
+        // Given VPAID Ad
+        val testData = TestData.videoVpaidPJ
+        stubIntents()
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.enableVideoWarnDialog()
+        }
+
+        CommonInteraction.clickItemAt(testData)
+
+        // When close is clicked
+        CommonInteraction.waitForCloseButtonThenClick()
+
+        VideoWarnInteraction.checkVisible()
+
+        VideoWarnInteraction.clickClose()
+
+        // Then
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+    }
+
+    @Test
+    fun test_iv_video_warn_dialog_press_resume() {
+        // Given VPAID Ad
+        val testData = TestData.videoVpaidPJ
+        stubIntents()
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.enableVideoWarnDialog()
+            SettingsInteraction.disableVideoAutoClose()
+        }
+
+        CommonInteraction.clickItemAt(testData)
+
+        // When close is clicked
+        CommonInteraction.waitForCloseButtonThenClick()
+
+        VideoWarnInteraction.checkVisible()
+
+        VideoWarnInteraction.clickResume()
+
+        Thread.sleep(20000)
+
+        CommonInteraction.waitForCloseButtonThenClick()
+
+        // Then
+        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     private fun openParentalGate() {

@@ -149,6 +149,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_disable" />
+
+            <TextView
+                android:text="@string/settings_video_warn_dialog"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/videoCloseDialogEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/videoCloseDialogDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
+            <TextView
+                android:text="@string/settings_video_auto_close"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/videoAutoCloseEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/videoAutoCloseDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

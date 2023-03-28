@@ -43,6 +43,16 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun enableVideoWarnDialog() {
+        onView(withId(R.id.videoCloseDialogEnableButton))
+            .perform(click())
+    }
+
+    fun disableVideoAutoClose() {
+        onView(withId(R.id.videoAutoCloseDisableButton))
+            .perform(click())
+    }
+
     fun disablePlay() {
         onView(withId(R.id.playbackDisableButton))
             .perform(click())

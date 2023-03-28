@@ -166,6 +166,8 @@ class MainActivity : FragmentActivity() {
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
         SAVideoAd.setMuteOnStart(settings.muteOnStart)
+        SAVideoAd.setCloseButtonWarning(settings.videoWarnOnClose)
+        SAVideoAd.setCloseAtEnd(settings.videoAutoClose)
 
         when (settings.closeButtonState) {
             CloseButtonState.VisibleImmediately -> {
