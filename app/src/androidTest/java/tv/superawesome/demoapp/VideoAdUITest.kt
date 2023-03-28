@@ -473,7 +473,7 @@ class VideoAdUITest {
     fun test_iv_video_warn_dialog_press_close() {
         // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
-        stubIntents()
+
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableVideoWarnDialog()
         }
@@ -495,7 +495,7 @@ class VideoAdUITest {
     fun test_iv_video_warn_dialog_press_resume() {
         // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
-        stubIntents()
+
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableVideoWarnDialog()
             SettingsInteraction.disableVideoAutoClose()
