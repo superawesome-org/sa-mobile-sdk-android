@@ -322,7 +322,9 @@ public class SAVideoAd {
                     ManagedAdConfig config = new ManagedAdConfig(
                             isParentalGateEnabled,
                             isBumperPageEnabled || adL.creative.bumper,
+                            shouldShowCloseWarning,
                             isBackButtonEnabled,
+                            shouldAutomaticallyCloseAtEnd,
                             closeButtonState);
                     intent.putExtra(SAManagedAdActivity.CONFIG_KEY, config);
 
