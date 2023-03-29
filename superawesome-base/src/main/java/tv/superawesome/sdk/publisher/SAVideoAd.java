@@ -34,8 +34,7 @@ public class SAVideoAd {
     // private vars w/ a public interface
     private static final SAEvents events = new SAEvents();
     public static final HashMap<Integer, Object> ads = new HashMap<>();
-    private static SAInterface listener = (placementId, event) -> {
-    };
+    private static SAInterface listener = (placementId, event) -> {};
 
     private static boolean shouldShowCloseWarning = SADefaults.defaultCloseWarning();
     private static boolean isParentalGateEnabled = SADefaults.defaultParentalGate();

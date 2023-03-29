@@ -235,7 +235,6 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         if (videoConfig.shouldCloseAtEnd) {
             close();
         }
-        removeListenerRef();
     }
 
     @Override

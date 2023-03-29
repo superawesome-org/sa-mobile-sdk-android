@@ -17,6 +17,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.*
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
+import tv.superawesome.demoapp.interaction.BumperInteraction
+import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.CommonInteraction.waitForCloseButtonThenClick
+import tv.superawesome.demoapp.interaction.ParentalGateInteraction
+import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
@@ -48,6 +53,35 @@ class VideoAdUITest {
     }
 
     @Test
+    fun test_closeAtEndEnabled_closeBeforeEnds_receiveOnlyAdClosedEvent() {
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.closeDelayed()
+        }
+        CommonInteraction.clickItemAt(testData)
+
+        waitForCloseButtonThenClick()
+
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+        CommonInteraction.checkSubtitleNotContains("${testData.placement} adEnded")
+    }
+
+    @Test
+    fun test_closeAtEndDisabled_waitVideoEnds_receiveAdClosedEvent() {
+        val testData = TestData.videoDirect
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.disableCloseAtEnd()
+            SettingsInteraction.closeHidden()
+        }
+        CommonInteraction.clickItemAt(testData)
+
+        waitForCloseButtonThenClick()
+
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
+    }
+
+    @Test
     fun test_standard_CloseButtonWithNoDelay() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
@@ -55,7 +89,7 @@ class VideoAdUITest {
         }
 
         CommonInteraction.clickItemAt(testData)
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
@@ -82,7 +116,7 @@ class VideoAdUITest {
         }
 
         CommonInteraction.clickItemAt(testData)
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
@@ -108,7 +142,7 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
@@ -140,7 +174,7 @@ class VideoAdUITest {
         val testData = TestData.videoVast
         testAdLoading(testData, TestColors.vastYellow)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
         CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
@@ -151,7 +185,7 @@ class VideoAdUITest {
         val testData = TestData.videoVpaid
         testAdLoading(testData, TestColors.vpaidYellow)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
     }
@@ -161,7 +195,7 @@ class VideoAdUITest {
         val testData = TestData.videoDirect
         testAdLoading(testData, TestColors.vastYellow)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
         CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
@@ -343,7 +377,7 @@ class VideoAdUITest {
         // When
         CommonInteraction.waitForAdContentThenClick()
 
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         // Then
         verifyUrlPathCalled("/vast/click")
@@ -397,7 +431,7 @@ class VideoAdUITest {
 
         // When
         CommonInteraction.waitForAdContentThenClick()
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         // Then
         verifyUrlPathCalled("/vast/click")
@@ -474,21 +508,21 @@ class VideoAdUITest {
         // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
 
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableVideoWarnDialog()
+        launchActivityWithSuccessStub(testData) {
+            enableVideoWarnDialog()
         }
 
-        CommonInteraction.clickItemAt(testData)
+        clickItemAt(testData)
 
         // When close is clicked
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         VideoWarnInteraction.checkVisible()
 
         VideoWarnInteraction.clickClose()
 
         // Then
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+        checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
@@ -496,15 +530,15 @@ class VideoAdUITest {
         // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
 
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableVideoWarnDialog()
-            SettingsInteraction.disableVideoAutoClose()
+        launchActivityWithSuccessStub(testData) {
+            enableVideoWarnDialog()
+            disableVideoAutoClose()
         }
 
-        CommonInteraction.clickItemAt(testData)
+        clickItemAt(testData)
 
         // When close is clicked
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         VideoWarnInteraction.checkVisible()
 
@@ -512,11 +546,11 @@ class VideoAdUITest {
 
         Thread.sleep(20000)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+        waitForCloseButtonThenClick()
 
         // Then
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+        checkSubtitleContains("${testData.placement} adEnded")
+        checkSubtitleContains("${testData.placement} adClosed")
     }
 
     private fun openParentalGate() {

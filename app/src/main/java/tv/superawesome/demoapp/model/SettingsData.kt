@@ -12,5 +12,5 @@ data class SettingsData(
     val playEnabled: Boolean = true,
     val muteOnStart: Boolean = false,
     val videoWarnOnClose: Boolean = false,
-    val videoAutoClose: Boolean = true,
+    val closeAtEnd: Boolean = Constants.defaultCloseAtEnd,
 )
