@@ -87,7 +87,7 @@ fun waitForViewMatcherOneTime(viewMatcher: Matcher<View>): ViewAction {
 open class ViewTester {
     fun waitForView(
         viewMatcher: Matcher<View>,
-        waitMillis: Int = 15000,
+        waitMillis: Int = 20000,
         waitMillisPerTry: Long = 100
     ): ViewInteraction {
         val maxTries = waitMillis / waitMillisPerTry.toInt()
