@@ -7,25 +7,33 @@ import tv.superawesome.sdk.publisher.state.CloseButtonState
 internal class ManagedAdConfig : Parcelable {
     val isParentalGateEnabled: Boolean
     val isBumperPageEnabled: Boolean
+    val shouldShowCloseWarning: Boolean
     val isBackButtonEnabled: Boolean
+    val autoCloseAtEnd: Boolean
     val closeButtonState: CloseButtonState
 
     constructor(
         isParentalGateEnabled: Boolean,
         isBumperPageEnabled: Boolean,
+        shouldShowCloseWarning: Boolean,
         isBackButtonEnabled: Boolean,
+        autoCloseAtEnd: Boolean,
         closeButtonState: CloseButtonState,
     ) {
         this.isParentalGateEnabled = isParentalGateEnabled
         this.isBumperPageEnabled = isBumperPageEnabled
+        this.shouldShowCloseWarning = shouldShowCloseWarning
         this.isBackButtonEnabled = isBackButtonEnabled
+        this.autoCloseAtEnd = autoCloseAtEnd
         this.closeButtonState = closeButtonState
     }
 
     constructor(input: Parcel) {
         isParentalGateEnabled = input.readByte().toInt() != 0
         isBumperPageEnabled = input.readByte().toInt() != 0
+        shouldShowCloseWarning = input.readByte().toInt() != 0
         isBackButtonEnabled = input.readByte().toInt() != 0
+        autoCloseAtEnd = input.readByte().toInt() != 0
         closeButtonState = CloseButtonState.fromInt(input.readInt())
     }
 
@@ -34,7 +42,9 @@ internal class ManagedAdConfig : Parcelable {
     override fun writeToParcel(parcel: Parcel, i: Int) {
         parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
+        parcel.writeByte((if (shouldShowCloseWarning) 1 else 0).toByte())
         parcel.writeByte((if (isBackButtonEnabled) 1 else 0).toByte())
+        parcel.writeByte((if (autoCloseAtEnd) 1 else 0).toByte())
         parcel.writeInt(closeButtonState.value)
     }
 

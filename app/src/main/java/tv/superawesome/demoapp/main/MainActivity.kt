@@ -8,10 +8,10 @@ import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
-import tv.superawesome.demoapp.SettingsDialogFragment
 import tv.superawesome.demoapp.adapter.CustomListAdapter
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.SettingsData
+import tv.superawesome.demoapp.settings.SettingsDialogFragment
 import tv.superawesome.lib.sabumperpage.SABumperPage
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.SAEvent
@@ -166,6 +166,8 @@ class MainActivity : FragmentActivity() {
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
         SAVideoAd.setMuteOnStart(settings.muteOnStart)
+        SAVideoAd.setCloseButtonWarning(settings.videoWarnOnClose)
+        SAVideoAd.setCloseAtEnd(settings.closeAtEnd)
 
         when (settings.closeButtonState) {
             CloseButtonState.VisibleImmediately -> {

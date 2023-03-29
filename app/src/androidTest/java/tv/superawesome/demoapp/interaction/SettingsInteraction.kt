@@ -18,6 +18,11 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun disableCloseAtEnd() {
+        onView(withId(R.id.videoCloseAtEndDisableButton))
+            .perform(click())
+    }
+
     private fun enableUITesting() {
         onView(withId(R.id.uiTestingButton))
             .perform(click())
@@ -33,6 +38,11 @@ object SettingsInteraction {
             .perform(click())
     }
 
+    fun closeHidden() {
+        onView(withId(R.id.closeHiddenButton))
+            .perform(click())
+    }
+
     fun enableBumper() {
         onView(withId(R.id.bumperEnableButton))
             .perform(click())
@@ -40,6 +50,11 @@ object SettingsInteraction {
 
     fun enableParentalGate() {
         onView(withId(R.id.parentalEnableButton))
+            .perform(click())
+    }
+
+    fun enableVideoWarnDialog() {
+        onView(withId(R.id.videoCloseDialogEnableButton))
             .perform(click())
     }
 

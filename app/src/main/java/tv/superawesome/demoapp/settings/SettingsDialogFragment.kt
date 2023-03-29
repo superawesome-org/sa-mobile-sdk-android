@@ -1,4 +1,4 @@
-package tv.superawesome.demoapp
+package tv.superawesome.demoapp.settings
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
+import tv.superawesome.demoapp.MyApplication
+import tv.superawesome.demoapp.R
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
@@ -31,7 +33,7 @@ class SettingsDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? = inflater.inflate(R.layout.fragment_settings, null, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,6 +58,10 @@ class SettingsDialogFragment : DialogFragment() {
 
         closeDelayedButton.setOnClickListener {
             app?.updateSettings { it.copy(closeButtonState = CloseButtonState.VisibleWithDelay) }
+        }
+
+        closeHiddenButton.setOnClickListener {
+            app?.updateSettings { it.copy(closeButtonState = CloseButtonState.Hidden) }
         }
 
         bumperEnableButton.setOnClickListener {
@@ -88,6 +94,22 @@ class SettingsDialogFragment : DialogFragment() {
 
         muteDisableButton.setOnClickListener {
             app?.updateSettings { it.copy(muteOnStart = false) }
+        }
+
+        videoCloseDialogEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(videoWarnOnClose = true) }
+        }
+
+        videoCloseDialogDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(videoWarnOnClose = false) }
+        }
+
+        videoCloseAtEndEnableButton.setOnClickListener {
+            app?.updateSettings { it.copy(closeAtEnd = true) }
+        }
+
+        videoCloseAtEndDisableButton.setOnClickListener {
+            app?.updateSettings { it.copy(closeAtEnd = false) }
         }
     }
 
