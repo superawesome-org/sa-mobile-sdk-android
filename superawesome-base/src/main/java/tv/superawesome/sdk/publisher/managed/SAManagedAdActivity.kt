@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.samodelspace.saad.SAAd
 import tv.superawesome.lib.sautils.SAImageUtils
@@ -36,6 +37,7 @@ class SAManagedAdActivity : Activity(),
     private var timeOutHandler = Handler(Looper.getMainLooper())
     private var shownHandler = Handler(Looper.getMainLooper())
     private var videoClick: SAVideoClick? = null
+    private var completed: Boolean = false
     private lateinit var events: SAEvents
     private lateinit var viewableDetector: SAViewableDetector
 
@@ -71,7 +73,7 @@ class SAManagedAdActivity : Activity(),
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
         closeButton.layoutParams = buttonLayout
         closeButton.setOnClickListener {
-            close()
+            onCloseAction()
         }
         closeButton.contentDescription = "Close"
 
@@ -177,11 +179,32 @@ class SAManagedAdActivity : Activity(),
     }
 
     override fun adEnded() {
+        completed = true
         listener?.onEvent(this.placementId, SAEvent.adEnded)
-        close()
+        if (config?.autoCloseAtEnd == true) {
+            close()
+        }
     }
 
     override fun adClosed() = close()
+
+    fun onCloseAction() {
+        if (config?.shouldShowCloseWarning == true && !completed) {
+//            control.pause() TODO: Add JS Pause function AAG-3023
+            SACloseWarning.setListener(object : SACloseWarning.Interface {
+                override fun onResumeSelected() {
+//                    control.start() TODO: Add JS Play function AAG-3023
+                }
+
+                override fun onCloseSelected() {
+                    close()
+                }
+            })
+            SACloseWarning.show(this)
+        } else {
+            close()
+        }
+    }
 
     private fun close() {
         if (!isFinishing) {
