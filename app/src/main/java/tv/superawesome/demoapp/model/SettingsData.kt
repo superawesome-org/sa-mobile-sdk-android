@@ -11,5 +11,6 @@ data class SettingsData(
     val parentalEnabled: Boolean = Constants.defaultParentalGate,
     val playEnabled: Boolean = true,
     val muteOnStart: Boolean = false,
+    val videoWarnOnClose: Boolean = false,
     val closeAtEnd: Boolean = Constants.defaultCloseAtEnd,
 )

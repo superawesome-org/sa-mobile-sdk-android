@@ -10,6 +10,7 @@ import tv.superawesome.demoapp.util.ViewTester
 object AdInteraction {
     fun testAdLoading(testData: TestData, color: Color) {
         CommonInteraction.launchActivityWithSuccessStub(testData)
+        Thread.sleep(200)
         assertColor(testData, color)
     }
 
