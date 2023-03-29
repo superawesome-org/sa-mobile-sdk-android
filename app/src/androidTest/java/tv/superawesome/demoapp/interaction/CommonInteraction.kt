@@ -55,6 +55,7 @@ object CommonInteraction {
     }
 
     private fun clickPlacementById(placementId: String) {
+        Thread.sleep(200)
         onData(AdapterUtil.withPlacementId(placementId)).inAdapterView(withId(R.id.listView))
             .perform(click())
     }

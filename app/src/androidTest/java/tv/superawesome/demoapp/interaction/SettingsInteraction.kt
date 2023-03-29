@@ -19,7 +19,7 @@ object SettingsInteraction {
     }
 
     fun disableCloseAtEnd() {
-        onView(withId(R.id.disableCloseAtEndButton))
+        onView(withId(R.id.videoCloseAtEndDisableButton))
             .perform(click())
     }
 
@@ -50,6 +50,11 @@ object SettingsInteraction {
 
     fun enableParentalGate() {
         onView(withId(R.id.parentalEnableButton))
+            .perform(click())
+    }
+
+    fun enableVideoWarnDialog() {
+        onView(withId(R.id.videoCloseDialogEnableButton))
             .perform(click())
     }
 

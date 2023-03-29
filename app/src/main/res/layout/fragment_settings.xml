@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="4"
-            android:padding="16dp"
+            android:padding="4dp"
             android:useDefaultMargins="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closeButton">
@@ -163,19 +163,39 @@
                 android:text="@string/settings_disable" />
 
             <TextView
-                android:text="@string/settings_close_end"
+                android:text="@string/settings_video_warn_dialog"
                 android:textSize="12sp" />
 
             <Button
-                android:id="@+id/enableCloseAtEndButton"
+                android:id="@+id/videoCloseDialogEnableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_enable" />
 
             <Button
-                android:id="@+id/disableCloseAtEndButton"
+                android:id="@+id/videoCloseDialogDisableButton"
                 style="@style/SettingsButtonStyle"
+                android:layout_columnSpan="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
+
+            <TextView
+                android:text="@string/settings_close_end"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/videoCloseAtEndEnableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/videoCloseAtEndDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_columnSpan="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_disable" />
