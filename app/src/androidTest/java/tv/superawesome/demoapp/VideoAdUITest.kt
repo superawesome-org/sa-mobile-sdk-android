@@ -52,7 +52,7 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_closeAtEndEnabled_closeBeforeEnds_receiveAdClosedEventOnly() {
+    fun test_closeAtEndEnabled_closeBeforeEnds_receiveOnlyAdClosedEvent() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeDelayed()
