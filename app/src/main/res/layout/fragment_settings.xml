@@ -36,7 +36,7 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="3"
+            android:columnCount="4"
             android:padding="16dp"
             android:useDefaultMargins="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +54,7 @@
                 android:text="@string/settings_ui_testing" />
 
             <Button
+                android:layout_columnSpan="2"
                 android:id="@+id/productionButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
@@ -78,6 +79,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_close_delay" />
 
+            <Button
+                android:id="@+id/closeHiddenButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_close_hidden" />
+
             <TextView
                 android:text="@string/settings_bumper"
                 android:textSize="12sp" />
@@ -90,6 +98,7 @@
                 android:text="@string/settings_enable" />
 
             <Button
+                android:layout_columnSpan="2"
                 android:id="@+id/bumperDisableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
@@ -108,6 +117,7 @@
                 android:text="@string/settings_enable" />
 
             <Button
+                android:layout_columnSpan="2"
                 android:id="@+id/parentalDisableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
@@ -126,6 +136,7 @@
                 android:text="@string/settings_enable" />
 
             <Button
+                android:layout_columnSpan="2"
                 android:id="@+id/playbackDisableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
@@ -144,7 +155,26 @@
                 android:text="@string/settings_enable" />
 
             <Button
+                android:layout_columnSpan="2"
                 android:id="@+id/muteDisableButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_disable" />
+
+            <TextView
+                android:text="@string/settings_close_end"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/enableCloseAtEndButton"
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_enable" />
+
+            <Button
+                android:id="@+id/disableCloseAtEndButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -21,10 +21,12 @@
     <string name="settings_close_button">Close button</string>
     <string name="settings_close_immediately">No delay</string>
     <string name="settings_close_delay">Delay</string>
+    <string name="settings_close_hidden">Hidden</string>
     <string name="settings_bumper">Bumper</string>
     <string name="settings_enable">Enable</string>
     <string name="settings_disable">Disable</string>
     <string name="settings_parental">Parental Gate</string>
     <string name="settings_playback">Playback</string>
     <string name="settings_mute">Mute on start</string>
+    <string name="settings_close_end">Close at the end</string>
 </resources>
