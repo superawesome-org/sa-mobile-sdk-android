@@ -19,7 +19,7 @@ object SettingsInteraction {
     }
 
     fun disableCloseAtEnd() {
-        onView(withId(R.id.disableCloseAtEndButton))
+        onView(withId(R.id.videoCloseAtEndDisableButton))
             .perform(click())
     }
 
@@ -55,11 +55,6 @@ object SettingsInteraction {
 
     fun enableVideoWarnDialog() {
         onView(withId(R.id.videoCloseDialogEnableButton))
-            .perform(click())
-    }
-
-    fun disableVideoAutoClose() {
-        onView(withId(R.id.videoAutoCloseDisableButton))
             .perform(click())
     }
 

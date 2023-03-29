@@ -29,5 +29,5 @@
     <string name="settings_playback">Playback</string>
     <string name="settings_mute">Mute on start</string>
     <string name="settings_video_warn_dialog">Leave Video Warning</string>
-    <string name="settings_close_end">Close at the end</string>
+    <string name="settings_close_end">Close At End</string>
 </resources>

@@ -508,11 +508,11 @@ class VideoAdUITest {
         // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
 
-        launchActivityWithSuccessStub(testData) {
-            enableVideoWarnDialog()
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.enableVideoWarnDialog()
         }
 
-        clickItemAt(testData)
+        CommonInteraction.clickItemAt(testData)
 
         // When close is clicked
         waitForCloseButtonThenClick()
@@ -522,7 +522,7 @@ class VideoAdUITest {
         VideoWarnInteraction.clickClose()
 
         // Then
-        checkSubtitleContains("${testData.placement} adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
@@ -530,12 +530,12 @@ class VideoAdUITest {
         // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
 
-        launchActivityWithSuccessStub(testData) {
-            enableVideoWarnDialog()
-            disableVideoAutoClose()
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.enableVideoWarnDialog()
+            SettingsInteraction.disableCloseAtEnd()
         }
 
-        clickItemAt(testData)
+        CommonInteraction.clickItemAt(testData)
 
         // When close is clicked
         waitForCloseButtonThenClick()
@@ -549,8 +549,8 @@ class VideoAdUITest {
         waitForCloseButtonThenClick()
 
         // Then
-        checkSubtitleContains("${testData.placement} adEnded")
-        checkSubtitleContains("${testData.placement} adClosed")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     private fun openParentalGate() {

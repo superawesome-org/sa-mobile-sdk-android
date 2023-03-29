@@ -104,11 +104,11 @@ class SettingsDialogFragment : DialogFragment() {
             app?.updateSettings { it.copy(videoWarnOnClose = false) }
         }
 
-        enableCloseAtEndButton.setOnClickListener {
+        videoCloseAtEndEnableButton.setOnClickListener {
             app?.updateSettings { it.copy(closeAtEnd = true) }
         }
 
-        disableCloseAtEndButton.setOnClickListener {
+        videoCloseAtEndDisableButton.setOnClickListener {
             app?.updateSettings { it.copy(closeAtEnd = false) }
         }
     }
