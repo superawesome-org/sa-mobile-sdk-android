@@ -134,7 +134,7 @@ class BannerUITest {
         UiDevice.getInstance(getInstrumentation()).click(0, 100)
 
         // Then bumper page title is still visible
-        BumperInteraction.checkBumperPageIsGone()
+        BumperInteraction.checkBumperPageIsVisible()
     }
 
     @Test

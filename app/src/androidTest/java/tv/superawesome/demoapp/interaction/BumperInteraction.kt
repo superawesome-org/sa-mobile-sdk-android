@@ -15,7 +15,7 @@ object BumperInteraction {
             .check(isVisible())
     }
 
-    fun checkBumperPageIsGone() {
+    fun checkBumperPageIsVisible() {
         onView(withText("Bye! You’re now leaving AwesomeAds Demo"))
             .check(isVisible())
     }
