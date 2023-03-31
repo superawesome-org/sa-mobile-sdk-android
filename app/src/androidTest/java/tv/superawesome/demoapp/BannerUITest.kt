@@ -8,6 +8,8 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.uiautomator.UiDevice
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
@@ -20,13 +22,11 @@ import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
-import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
-import tv.superawesome.demoapp.util.waitUntil
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -112,6 +112,29 @@ class BannerUITest {
         Thread.sleep(4500)
         Intents.intended(hasAction(Intent.ACTION_VIEW))
         verifyUrlPathCalled("/click")
+    }
+
+    @Test
+    fun test_bumper_outside_click_does_not_go_through() {
+        // Given bumper page is enabled from settings
+        val testData = TestData.bannerSuccess
+        stubIntents()
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.enableBumper()
+        }
+        CommonInteraction.clickItemAt(testData)
+
+        // When ad is clicked
+        onView(withId(R.id.bannerView))
+            .perform(click())
+
+        BumperInteraction.waitUntilBumper()
+
+        // And If outside the bumper page is clicked
+        UiDevice.getInstance(getInstrumentation()).click(0, 100)
+
+        // Then bumper page title is still visible
+        BumperInteraction.checkBumperPageIsGone()
     }
 
     @Test

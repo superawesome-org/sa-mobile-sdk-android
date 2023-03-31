@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -20,6 +19,8 @@ class SAVideoClick internal constructor(
     private val events: SAEvents,
 ) {
     private var currentClickThreshold = 0L
+    private var bumperPage: SABumperPage? = null
+
     fun handleSafeAdClick(view: View) {
         val context = view.context
         val clickRunner = Runnable { showSuperAwesomeWebViewInExternalBrowser(context) }
@@ -27,28 +28,31 @@ class SAVideoClick internal constructor(
     }
 
     private fun showSuperAwesomeWebViewInExternalBrowser(context: Context?) {
-        var uri: Uri? = null
-        try {
-            val PADLOCK_URL = "https://ads.superawesome.tv/v2/safead"
-            uri = Uri.parse(PADLOCK_URL)
-        } catch (ignored: Exception) {
+        if (context == null) {
+            Log.d("SuperAwesome", "Couldn't start browser in SAVideoClick: Context is null")
+            return
         }
-        if (context != null && uri != null) {
-            val safeUri: Uri = uri
-            val bumperCallback = SABumperPage.Interface {
-                val browserIntent = Intent(Intent.ACTION_VIEW, safeUri)
-                try {
-                    context.startActivity(browserIntent)
-                } catch (e: Exception) {
-                    Log.d("SuperAwesome", "Couldn't start browser in SAVideoClick: " + e.message)
-                }
+        if (isBumperPageEnabled) {
+            playBumperPage(context) {
+                navigateToUrl(PADLOCK_URL, context)
             }
-            if (isBumperPageEnabled) {
-                SABumperPage.setListener(bumperCallback)
-                SABumperPage.play(context as Activity?)
-            } else {
-                bumperCallback.didEndBumper()
-            }
+        } else {
+            navigateToUrl(PADLOCK_URL, context)
+        }
+    }
+
+    private fun playBumperPage(context: Context, onFinish: (() -> Unit)) {
+        bumperPage?.stop()
+        bumperPage = SABumperPage()
+        bumperPage?.onFinish = onFinish
+        bumperPage?.show(context)
+    }
+
+    private fun navigateToUrl(url: String, context: Context) {
+        try {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (e: Exception) {
+            Log.d("SuperAwesome", "Couldn't start browser in SAVideoClick: " + e.message)
         }
     }
 
@@ -67,6 +71,11 @@ class SAVideoClick internal constructor(
             val clickRunner = Runnable { click(context, destinationUrl) }
             showParentalGateIfNeededWithCompletion(context, clickRunner)
         }
+    }
+
+    fun close() {
+        bumperPage?.stop()
+        bumperPage = null
     }
 
     private fun showParentalGateIfNeededWithCompletion(
@@ -103,10 +112,7 @@ class SAVideoClick internal constructor(
      */
     private fun click(context: Context, destination: String) {
         if (isBumperPageEnabled) {
-            SABumperPage.setListener { handleUrl(context, destination) }
-            if (context is Activity) {
-                SABumperPage.play(context)
-            } else {
+            playBumperPage(context) {
                 handleUrl(context, destination)
             }
         } else {
@@ -119,11 +125,11 @@ class SAVideoClick internal constructor(
         val currentTime = System.currentTimeMillis() / 1000
         val diff = abs(currentTime - currentClickThreshold)
         if (diff < SADefaults.defaultClickThreshold()) {
-            Log.d("AwesomeAds-2", "Current diff is $diff")
+            Log.d("SuperAwesome", "Current diff is $diff")
             return
         }
         currentClickThreshold = currentTime
-        Log.d("AwesomeAds-2", "Going to $destination")
+        Log.d("SuperAwesome", "Going to $destination")
 
         // send vast click tracking events
         events.triggerVASTClickTrackingEvent()
@@ -140,7 +146,10 @@ class SAVideoClick internal constructor(
         try {
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(destination)))
         } catch (e: Exception) {
-            // do nothing
+            Log.d("SuperAwesome", "Couldn't start browser in SAVideoClick: " + e.message)
         }
     }
 }
+
+const val PADLOCK_URL = "https://ads.superawesome.tv/v2/safead"
+
