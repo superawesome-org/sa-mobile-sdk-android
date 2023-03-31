@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: '../publish.gradle'
+apply from: '../jacoco.gradle'
 
 ext.libraryDescription = 'SuperAwesome Full SDK'
 ext.libraryName = 'SuperAwesome'

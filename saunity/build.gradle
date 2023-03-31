@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: '../publish.gradle'
+apply from: '../jacoco.gradle'
 
 ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with Unity extension'
 ext.libraryName = 'SuperAwesome Unity'
