@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import java.util.Collections;
 import java.util.Map;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
@@ -122,7 +124,7 @@ public class SABannerAd extends FrameLayout {
      * One of the main public methods of the SABannerAd class. This will load a new SAAd object
      * corresponding to a given placement Id.
      *
-     * @param placementId   Awesome Ads ID for ad data to be loaded
+     * @param placementId Awesome Ads ID for ad data to be loaded
      */
     public void load(final int placementId) {
         load(placementId, Collections.emptyMap());
@@ -132,9 +134,9 @@ public class SABannerAd extends FrameLayout {
      * One of the main public methods of the SABannerAd class. This will load a new SAAd object
      * corresponding to a given placement Id.
      *
-     * @param placementId   Awesome Ads ID for ad data to be loaded
-     * @param options       a dictionary of data to send with an ad's requests and events.
-     *                      Supports String or Int values.
+     * @param placementId Awesome Ads ID for ad data to be loaded
+     * @param options     a dictionary of data to send with an ad's requests and events.
+     *                    Supports String or Int values.
      */
     public void load(final int placementId, final Map<String, Object> options) {
 
@@ -199,9 +201,9 @@ public class SABannerAd extends FrameLayout {
      * One of the main public methods of the SABannerAd class. This will load a new SAAd object
      * corresponding to a given placement Id.
      *
-     * @param placementId   Awesome Ads ID for ad data to be loaded
-     * @param lineItemId    The id of the lineItem
-     * @param creativeId    The id of the creative
+     * @param placementId Awesome Ads ID for ad data to be loaded
+     * @param lineItemId  The id of the lineItem
+     * @param creativeId  The id of the creative
      */
     public void load(final int placementId,
                      final int lineItemId,
@@ -213,11 +215,11 @@ public class SABannerAd extends FrameLayout {
      * One of the main public methods of the SABannerAd class. This will load a new SAAd object
      * corresponding to a given placement Id.
      *
-     * @param placementId   Awesome Ads ID for ad data to be loaded
-     * @param lineItemId    The id of the lineItem
-     * @param creativeId    The id of the creative
-     * @param options       a dictionary of data to send with an ad's requests and events.
-     *                      Supports String or Int values.
+     * @param placementId Awesome Ads ID for ad data to be loaded
+     * @param lineItemId  The id of the lineItem
+     * @param creativeId  The id of the creative
+     * @param options     a dictionary of data to send with an ad's requests and events.
+     *                    Supports String or Int values.
      */
     public void load(final int placementId,
                      final int lineItemId,
@@ -443,13 +445,25 @@ public class SABannerAd extends FrameLayout {
      * @param destination the destination url
      */
     public void click(final String destination) {
-
         if ((ad != null && ad.creative != null && ad.creative.bumper) || isBumperPageEnabled) {
-            SABumperPage.setListener(() -> handleUrl(destination));
-            SABumperPage.play((Activity) getContext());
+            playBumperPage(getContext(), () -> {
+                handleUrl(destination);
+                return null;
+            });
         } else {
             handleUrl(destination);
         }
+    }
+
+    private SABumperPage bumperPage = null;
+
+    private void playBumperPage(Context context, Function0<Unit> onFinish) {
+        if (bumperPage != null) {
+            bumperPage.stop();
+        }
+        bumperPage = new SABumperPage();
+        bumperPage.setOnFinish(onFinish);
+        bumperPage.show(context);
     }
 
     private void handleUrl(String destination) {
@@ -533,6 +547,11 @@ public class SABannerAd extends FrameLayout {
             padlock.setVisibility(GONE);
         }
 
+        if (bumperPage != null) {
+            bumperPage.stop();
+            bumperPage = null;
+        }
+
         // close ad
         isClosed = true;
     }
@@ -594,20 +613,20 @@ public class SABannerAd extends FrameLayout {
     }
 
     private void showSuperAwesomeWebViewInExternalBrowser(final Context context) {
-        SABumperPage.Interface bumperCallback = () -> {
+        Function0<Unit> bumperCallback = () -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ads.superawesome.tv/v2/safead"));
             try {
                 context.startActivity(browserIntent);
             } catch (Exception e) {
                 Log.d("SuperAwesome", "Couldn't start browser in SABannerAd: " + e.getMessage());
             }
+            return null;
         };
 
         if (isBumperPageEnabled) {
-            SABumperPage.setListener(bumperCallback);
-            SABumperPage.play((Activity) getContext());
+            playBumperPage(getContext(), bumperCallback);
         } else {
-            bumperCallback.didEndBumper();
+            bumperCallback.invoke();
         }
     }
 

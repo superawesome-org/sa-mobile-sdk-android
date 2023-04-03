@@ -25,13 +25,5 @@
             android:exported="false"
             android:label="SAManagedInterstitialAd"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-
-        <activity
-            android:name="tv.superawesome.lib.sabumperpage.SABumperPage"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:label="SABumperPage"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
     </application>
 </manifest>

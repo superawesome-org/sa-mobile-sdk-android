@@ -303,6 +303,10 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         // close the video player
         videoPlayer.destroy();
 
+        if (videoClick != null) {
+            videoClick.close();
+        }
+
         // close
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
