@@ -45,7 +45,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
     // fed-in data
     private SAAd ad = null;
-    private Config config = null;
+    private VideoConfig videoConfig = null;
     private SAInterface listenerRef = null;
     // derived objects
     private final IVideoPlayerController control = new VideoPlayerController();
@@ -72,7 +72,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         // get values from the intent
         Intent myIntent = getIntent();
         ad = myIntent.getParcelableExtra("ad");
-        config = myIntent.getParcelableExtra("config");
+        videoConfig = myIntent.getParcelableExtra("config");
 
         // get listener & events from static ad context
         listenerRef = SAVideoAd.getListener();
@@ -80,10 +80,10 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         // setup derived objects
         videoEvents = new SAVideoEvents(events, this);
-        videoClick = new SAVideoClick(ad, config.isParentalGateEnabled, config.isBumperPageEnabled, events);
+        videoClick = new SAVideoClick(ad, videoConfig.isParentalGateEnabled, videoConfig.isBumperPageEnabled, events);
 
         // make sure direction is locked
-        switch (config.orientation) {
+        switch (videoConfig.orientation) {
             case ANY:
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                 break;
@@ -105,10 +105,10 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         setContentView(parent);
 
         AdVideoPlayerControllerView chrome = new AdVideoPlayerControllerView(this);
-        chrome.shouldShowPadlock(config.shouldShowPadlock);
-        chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick);
+        chrome.shouldShowPadlock(videoConfig.shouldShowPadlock);
+        chrome.setShouldShowSmallClickButton(videoConfig.shouldShowSmallClick);
         chrome.setClickListener(view -> {
-            videoClick.handleAdClick(view);
+            videoClick.handleAdClick(view, null);
             if (listenerRef != null) {
                 listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
             }
@@ -132,7 +132,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         closeButton.setPadding(0, 0, 0, 0);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
-        closeButton.setVisibility(config.closeButtonState == CloseButtonState.VisibleImmediately ?
+        closeButton.setVisibility(videoConfig.closeButtonState == CloseButtonState.VisibleImmediately ?
                 View.VISIBLE : View.GONE);
         float scale = SAUtils.getScaleFactor(this);
         RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * scale), (int) (30 * scale));
@@ -145,11 +145,11 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
         // create volume button
         volumeButton = new ImageButton(this);
-        setMuted(config.shouldMuteOnStart);
+        setMuted(videoConfig.shouldMuteOnStart);
         volumeButton.setPadding(0, 0, 0, 0);
         volumeButton.setBackgroundColor(Color.TRANSPARENT);
         volumeButton.setScaleType(ImageView.ScaleType.FIT_XY);
-        volumeButton.setVisibility(config.shouldMuteOnStart ? View.VISIBLE : View.GONE);
+        volumeButton.setVisibility(videoConfig.shouldMuteOnStart ? View.VISIBLE : View.GONE);
         RelativeLayout.LayoutParams volumeLayout = new RelativeLayout.LayoutParams((int) (40 * scale), (int) (40 * scale));
         volumeLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         volumeLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -196,7 +196,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
      */
     @Override
     public void onBackPressed() {
-        if (config.isBackButtonEnabled) {
+        if (videoConfig.isBackButtonEnabled) {
             onCloseAction();
         }
     }
@@ -232,10 +232,9 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
         }
 
-        if (config.shouldCloseAtEnd) {
+        if (videoConfig.shouldCloseAtEnd) {
             close();
         }
-        removeListenerRef();
     }
 
     @Override
@@ -254,7 +253,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void onCloseAction() {
-        if (config.shouldShowCloseWarning && !completed) {
+        if (videoConfig.shouldShowCloseWarning && !completed) {
             control.pause();
             SACloseWarning.setListener(new SACloseWarning.Interface() {
                 @Override
@@ -304,6 +303,10 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         // close the video player
         videoPlayer.destroy();
 
+        if (videoClick != null) {
+            videoClick.close();
+        }
+
         // close
         this.finish();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
@@ -316,11 +319,11 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
 
     @Override
     public void hasBeenVisible() {
-        closeButton.setVisibility(config.closeButtonState.isVisible() ? View.VISIBLE : View.GONE);
+        closeButton.setVisibility(videoConfig.closeButtonState.isVisible() ? View.VISIBLE : View.GONE);
     }
 }
 
-class Config implements Parcelable {
+class VideoConfig implements Parcelable {
 
     final boolean shouldShowPadlock;
     final boolean isParentalGateEnabled;
@@ -333,16 +336,16 @@ class Config implements Parcelable {
     final boolean shouldShowCloseWarning;
     final SAOrientation orientation;
 
-    Config(boolean shouldShowPadlock,
-           boolean isParentalGateEnabled,
-           boolean isBumperPageEnabled,
-           boolean shouldShowSmallClick,
-           boolean isBackButtonEnabled,
-           boolean shouldCloseAtEnd,
-           boolean shouldMuteOnStart,
-           CloseButtonState closeButtonState,
-           boolean shouldShowCloseWarning,
-           SAOrientation orientation) {
+    VideoConfig(boolean shouldShowPadlock,
+                boolean isParentalGateEnabled,
+                boolean isBumperPageEnabled,
+                boolean shouldShowSmallClick,
+                boolean isBackButtonEnabled,
+                boolean shouldCloseAtEnd,
+                boolean shouldMuteOnStart,
+                CloseButtonState closeButtonState,
+                boolean shouldShowCloseWarning,
+                SAOrientation orientation) {
         this.shouldShowPadlock = shouldShowPadlock;
         this.isParentalGateEnabled = isParentalGateEnabled;
         this.isBumperPageEnabled = isBumperPageEnabled;
@@ -355,7 +358,7 @@ class Config implements Parcelable {
         this.orientation = orientation;
     }
 
-    protected Config(Parcel in) {
+    protected VideoConfig(Parcel in) {
         shouldShowPadlock = in.readByte() != 0;
         isParentalGateEnabled = in.readByte() != 0;
         isBumperPageEnabled = in.readByte() != 0;
@@ -368,15 +371,15 @@ class Config implements Parcelable {
         orientation = SAOrientation.fromValue(in.readInt());
     }
 
-    public static final Creator<Config> CREATOR = new Creator<Config>() {
+    public static final Creator<VideoConfig> CREATOR = new Creator<VideoConfig>() {
         @Override
-        public Config createFromParcel(Parcel in) {
-            return new Config(in);
+        public VideoConfig createFromParcel(Parcel in) {
+            return new VideoConfig(in);
         }
 
         @Override
-        public Config[] newArray(int size) {
-            return new Config[size];
+        public VideoConfig[] newArray(int size) {
+            return new VideoConfig[size];
         }
     };
 

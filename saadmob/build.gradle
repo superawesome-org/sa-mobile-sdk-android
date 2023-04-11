@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: '../publish.gradle'
+apply from: '../jacoco.gradle'
 
 ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with AdMob extension'
 ext.libraryName = 'SuperAwesome AdMob'
@@ -30,8 +31,6 @@ repositories {
 }
 
 dependencies {
-    api project(':superawesome-base')
+    implementation project(':superawesome-base')
     implementation 'com.google.android.gms:play-services-ads:21.5.0'
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

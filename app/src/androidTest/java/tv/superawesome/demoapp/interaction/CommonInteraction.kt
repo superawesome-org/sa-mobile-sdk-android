@@ -7,8 +7,9 @@ import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import tv.superawesome.demoapp.MainActivity
+import org.hamcrest.CoreMatchers.not
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.main.MainActivity
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.*
 import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
@@ -55,6 +56,7 @@ object CommonInteraction {
     }
 
     private fun clickPlacementById(placementId: String) {
+        Thread.sleep(200)
         onData(AdapterUtil.withPlacementId(placementId)).inAdapterView(withId(R.id.listView))
             .perform(click())
     }
@@ -67,6 +69,11 @@ object CommonInteraction {
         onView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
             .perform(waitUntil(withSubstring(text)))
+    }
+
+    fun checkSubtitleNotContains(text: String) {
+        onView(withId(R.id.subtitleTextView))
+            .check(matches(not(withSubstring(text))))
     }
 
     fun waitForCloseButtonThenClick() {

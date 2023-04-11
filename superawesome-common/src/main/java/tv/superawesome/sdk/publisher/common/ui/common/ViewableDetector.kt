@@ -21,7 +21,7 @@ class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
     private var runnable: Runnable? = null
     private var handler = Handler(Looper.getMainLooper())
 
-    override fun start(view: View,  targetTickCount: Int, hasBeenVisible: VoidBlock) {
+    override fun start(view: View, targetTickCount: Int, hasBeenVisible: VoidBlock) {
         logger.info("start")
         val weak = WeakReference(view)
         viewableCounter = 0

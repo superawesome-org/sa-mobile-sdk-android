@@ -6,12 +6,17 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAOrientation;
 import tv.superawesome.sdk.publisher.SAVideoAd;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -64,11 +69,27 @@ public class SAUnityVideoAd {
                                                       int placementId,
                                                       int configuration,
                                                       boolean test,
-                                                      int playback) {
+                                                      int playback,
+                                                      String encodedOptions) {
         SAVideoAd.setTestMode(test);
         SAVideoAd.setConfiguration(SAConfiguration.fromValue(configuration));
         SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(playback));
-        SAVideoAd.load(placementId, context);
+
+        if (encodedOptions != null && !encodedOptions.isEmpty()) {
+            try {
+                SAVideoAd.load(
+                        placementId,
+                        context,
+                        SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
+                );
+            } catch (JSONException e) {
+                e.printStackTrace();
+                // Fallback to loading without options
+                SAVideoAd.load(placementId, context);
+            }
+        } else {
+            SAVideoAd.load(placementId, context);
+        }
     }
 
     /**
@@ -86,7 +107,7 @@ public class SAUnityVideoAd {
                                                       int placementId,
                                                       boolean isParentalGateEnabled,
                                                       boolean isBumperPageEnabled,
-                                                      boolean shouldShowCloseButton,
+                                                      int closeButtonState,
                                                       boolean shouldShowSmallClickButton,
                                                       boolean shouldAutomaticallyCloseAtEnd,
                                                       int orientation,
@@ -95,11 +116,12 @@ public class SAUnityVideoAd {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setCloseButton(shouldShowCloseButton);
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
+        setCloseButtonState(closeButtonState);
+
         SAVideoAd.play(placementId, context);
     }
 
@@ -109,7 +131,7 @@ public class SAUnityVideoAd {
     public static void SuperAwesomeUnitySAVideoAdApplySettings(
             boolean isParentalGateEnabled,
             boolean isBumperPageEnabled,
-            boolean shouldShowCloseButton,
+            int closeButtonState,
             boolean shouldShowSmallClickButton,
             boolean shouldAutomaticallyCloseAtEnd,
             int orientation,
@@ -119,11 +141,25 @@ public class SAUnityVideoAd {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setCloseButton(shouldShowCloseButton);
         SAVideoAd.setSmallClick(shouldShowSmallClickButton);
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         SAVideoAd.setTestMode(testModeEnabled);
+        setCloseButtonState(closeButtonState);
+    }
+
+    private static void setCloseButtonState(int closeButtonState) {
+        switch (CloseButtonState.fromInt(closeButtonState)) {
+            case Hidden:
+                SAVideoAd.disableCloseButton();
+                break;
+            case VisibleImmediately:
+                SAVideoAd.enableCloseButtonNoDelay();
+                break;
+            case VisibleWithDelay:
+                SAVideoAd.enableCloseButton();
+                break;
+        }
     }
 }

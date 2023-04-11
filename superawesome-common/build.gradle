@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlinx-serialization'
 }
+apply from: '../jacoco.gradle'
 
 android {
     compileSdkVersion compile_sdk_version

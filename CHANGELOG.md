@@ -1,3 +1,27 @@
+## [8.5.6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.5...v8.5.6) (2023-03-23)
+
+
+### Bug Fixes
+
+* **admob:** Concurrency issue in `EventListener` is fixed ([#306](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/306)) ([2fb9d22](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2fb9d22bc6cd1843960426c7815b636a1f6fc9ff))
+
+## [8.5.5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.4...v8.5.5) (2023-03-21)
+
+
+### Bug Fixes
+
+* **admob:** Allow event listener to listen multiple ad loads ([#299](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/299)) ([706d239](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/706d2397cc03aa4498d1a3ca9a50b5626ad07bf7))
+* **Dependencies:** Removed dependencies that cause conflicts when consuming the jar files in Unity. ([#296](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/296)) ([308d4ea](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/308d4eaf120a493d02ea38fe88922a8a3ab44c71))
+* Handles the case where the device doesn't have any browser to open web URLs ([#295](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/295)) ([1cfcfa7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1cfcfa7d3200fcaac3ce807e0f2930de22ced1f7))
+* **Unity:** Removed the Unity-Classes.jar from the SAUnity module ([#298](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/298)) ([968da70](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/968da708dcaf4820e8e3895640ce10d8f8209746))
+
+## [8.5.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.3...v8.5.4) (2023-02-28)
+
+
+### Bug Fixes
+
+* **Syntax:** Improved the syntax of some of the video files ([#285](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/285)) ([b9961f0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b9961f05dc20279e704869877a584c3df92a6506))
+
 ## [8.5.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.2...v8.5.3) (2023-02-23)
 
 

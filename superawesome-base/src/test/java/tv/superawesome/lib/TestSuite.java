@@ -3,65 +3,65 @@ package tv.superawesome.lib;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import tv.superawesome.lib.saadloader.adloader.TestSAAdLoader_LoadAd;
-import tv.superawesome.lib.saadloader.postprocessor.TestSAProcessHTML;
-import tv.superawesome.lib.saadloader.query.TestSAAdLoader_GetAwesomeAdsEndpoint;
-import tv.superawesome.lib.saadloader.query.TestSAAdLoader_GetAwesomeAdsHeader;
-import tv.superawesome.lib.saadloader.query.TestSAAdLoader_GetAwesomeAdsQuery;
-import tv.superawesome.lib.saevents.events.setup.TestSAClickEventSetup;
-import tv.superawesome.lib.saevents.events.setup.TestSAImpressionEventSetup;
-import tv.superawesome.lib.saevents.events.setup.TestSAServerEventSetup;
-import tv.superawesome.lib.saevents.events.setup.TestSAURLEventSetup;
-import tv.superawesome.lib.saevents.events.setup.TestViewableImpressionEventSetup;
-import tv.superawesome.lib.saevents.events.trigger.TestSAClickEventTrigger;
-import tv.superawesome.lib.saevents.events.trigger.TestSAImpressionEventTrigger;
-import tv.superawesome.lib.saevents.events.trigger.TestViewableImpressionEventTrigger;
-import tv.superawesome.lib.saevents.modules.TestSAVASTModule;
-import tv.superawesome.lib.sagdprisminorsdk.isMinor.models.TestGetIsMinorMapping;
-import tv.superawesome.lib.sagdprisminorsdk.isMinor.requests.TestGetIsMinorRequest;
-import tv.superawesome.lib.sajsonparser.TestSAJsonParser_ParseArray;
-import tv.superawesome.lib.sajsonparser.TestSAJsonParser_ParseDictionary;
-import tv.superawesome.lib.sajsonparser.TestSAJsonParser_ParseObject;
-import tv.superawesome.lib.sajsonparser.TestSAJsonParser_WriteArray;
-import tv.superawesome.lib.sajsonparser.TestSAJsonParser_WriteDictionary;
-import tv.superawesome.lib.sajsonparser.TestSAJsonParser_WriteObject;
-import tv.superawesome.lib.samodelspace.referral.TestSAReferral;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_1;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_2;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_3;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_4;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_5;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_6;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_7;
-import tv.superawesome.lib.samodelspace.saad.TestSAAd_8;
-import tv.superawesome.lib.samodelspace.vastad.TestSAVAST_1;
-import tv.superawesome.lib.samodelspace.vastad.TestSAVAST_2;
-import tv.superawesome.lib.sanetwork.file.TestSAFileDownloader;
-import tv.superawesome.lib.sanetwork.file.TestSAFileItem;
-import tv.superawesome.lib.sanetwork.request.TestSANetwork;
-import tv.superawesome.lib.sanetwork.request.TestSANetworkUtils;
-import tv.superawesome.lib.sautils.array.TestSAUtils_RemoveAllButFirstElement;
-import tv.superawesome.lib.sautils.aux.TestSAUtils_GenerateUniqueKey;
-import tv.superawesome.lib.sautils.aux.TestSAUtils_MapSourceSizeIntoBoundingSize;
-import tv.superawesome.lib.sautils.aux.TestSAUtils_RandomNumberBetween;
-import tv.superawesome.lib.sautils.network.TestSAUtils_EncodeDictAsJsonDict;
-import tv.superawesome.lib.sautils.network.TestSAUtils_EncodeURL;
-import tv.superawesome.lib.sautils.network.TestSAUtils_FindBaseURLFromResourceURL;
-import tv.superawesome.lib.sautils.network.TestSAUtils_FormGetQueryFromDict;
-import tv.superawesome.lib.sautils.network.TestSAUtils_GetCachebuster;
-import tv.superawesome.lib.sautils.network.TestSAUtils_IsJSONEmpty;
-import tv.superawesome.lib.sautils.network.TestSAUtils_IsValidEmail;
-import tv.superawesome.lib.sautils.network.TestSAUtils_IsValidURL;
+import tv.superawesome.lib.saadloader.adloader.SAAdLoader_LoadAd_Test;
+import tv.superawesome.lib.saadloader.postprocessor.SAProcessHTML_Test;
+import tv.superawesome.lib.saadloader.query.SAAdLoader_GetAwesomeAdsEndpoint_Test;
+import tv.superawesome.lib.saadloader.query.SAAdLoader_GetAwesomeAdsHeader_Test;
+import tv.superawesome.lib.saadloader.query.SAAdLoader_GetAwesomeAdsQuery_Test;
+import tv.superawesome.lib.saevents.events.setup.SAClickEventSetup_Test;
+import tv.superawesome.lib.saevents.events.setup.SAImpressionEventSetup_Test;
+import tv.superawesome.lib.saevents.events.setup.SAServerEventSetup_Test;
+import tv.superawesome.lib.saevents.events.setup.SAURLEventSetup_Test;
+import tv.superawesome.lib.saevents.events.setup.ViewableImpressionEventSetup_Test;
+import tv.superawesome.lib.saevents.events.trigger.SAClickEventTrigger_Test;
+import tv.superawesome.lib.saevents.events.trigger.SAImpressionEventTrigger_Test;
+import tv.superawesome.lib.saevents.events.trigger.ViewableImpressionEventTrigger_Test;
+import tv.superawesome.lib.saevents.modules.SAVASTModule_Test;
+import tv.superawesome.lib.sagdprisminorsdk.isMinor.models.GetIsMinorMapping_Test;
+import tv.superawesome.lib.sagdprisminorsdk.isMinor.requests.GetIsMinorRequest_Test;
+import tv.superawesome.lib.sajsonparser.SAJsonParser_ParseArray_Test;
+import tv.superawesome.lib.sajsonparser.SAJsonParser_ParseDictionary_Test;
+import tv.superawesome.lib.sajsonparser.SAJsonParser_ParseObject_Test;
+import tv.superawesome.lib.sajsonparser.SAJsonParser_WriteArray_Test;
+import tv.superawesome.lib.sajsonparser.SAJsonParser_WriteDictionary_Test;
+import tv.superawesome.lib.sajsonparser.SAJsonParser_WriteObject_Test;
+import tv.superawesome.lib.samodelspace.referral.SAReferral_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_1_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_2_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_3_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_4_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_5_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_6_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_7_Test;
+import tv.superawesome.lib.samodelspace.saad.SAAd_8_Test;
+import tv.superawesome.lib.samodelspace.vastad.SAVAST_1_Test;
+import tv.superawesome.lib.samodelspace.vastad.SAVAST_2_Test;
+import tv.superawesome.lib.sanetwork.file.SAFileDownloader_Test;
+import tv.superawesome.lib.sanetwork.file.SAFileItem_Test;
+import tv.superawesome.lib.sanetwork.request.SANetwork_Test;
+import tv.superawesome.lib.sanetwork.request.SANetworkUtils_Test;
+import tv.superawesome.lib.sautils.array.SAUtils_RemoveAllButFirstElement_Test;
+import tv.superawesome.lib.sautils.aux.SAUtils_GenerateUniqueKey_Test;
+import tv.superawesome.lib.sautils.aux.SAUtils_MapSourceSizeIntoBoundingSize_Test;
+import tv.superawesome.lib.sautils.aux.SAUtils_RandomNumberBetween_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_EncodeDictAsJsonDict_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_EncodeURL_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_FindBaseURLFromResourceURL_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_FormGetQueryFromDict_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_GetCachebuster_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_IsJSONEmpty_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_IsValidEmail_Test;
+import tv.superawesome.lib.sautils.network.SAUtils_IsValidURL_Test;
 import tv.superawesome.lib.savastparser.vastparser.SAVASTParser_Async_Test;
-import tv.superawesome.lib.savastparser.vastparser.SAVASTParser_Local_Tests1;
-import tv.superawesome.lib.savastparser.vastparser.SAVASTParser_Local_Tests2;
-import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests1;
-import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests2;
-import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests3;
-import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests4;
-import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests5;
-import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests6;
-import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests7;
+import tv.superawesome.lib.savastparser.vastparser.SAVASTParser_Local_1_Tests;
+import tv.superawesome.lib.savastparser.vastparser.SAVASTParser_Local_2_Tests;
+import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_1_Tests;
+import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_2_Tests;
+import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_3_Tests;
+import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_4_Tests;
+import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_5_Tests;
+import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_6_Tests;
+import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_7_Tests;
 
 /**
  * Created by gabriel.coman on 03/05/2018.
@@ -71,91 +71,91 @@ import tv.superawesome.lib.savastparser.xmlparser.SAXMLParser_Tests7;
 
         ////////////////////////////////
         // is minor
-        TestGetIsMinorMapping.class,
-        TestGetIsMinorRequest.class,
+        GetIsMinorMapping_Test.class,
+        GetIsMinorRequest_Test.class,
 
         ////////////////////////////////
         // ad loader
-        TestSAProcessHTML.class,
-        TestSAAdLoader_GetAwesomeAdsQuery.class,
-        TestSAAdLoader_GetAwesomeAdsEndpoint.class,
-        TestSAAdLoader_GetAwesomeAdsHeader.class,
-        TestSAAdLoader_LoadAd.class,
+        SAProcessHTML_Test.class,
+        SAAdLoader_GetAwesomeAdsQuery_Test.class,
+        SAAdLoader_GetAwesomeAdsEndpoint_Test.class,
+        SAAdLoader_GetAwesomeAdsHeader_Test.class,
+        SAAdLoader_LoadAd_Test.class,
 
         ////////////////////////////////
         // events
         // setup
-        TestSAClickEventSetup.class,
-        TestSAImpressionEventSetup.class,
-        TestSAServerEventSetup.class,
-        TestSAURLEventSetup.class,
-        TestViewableImpressionEventSetup.class,
+        SAClickEventSetup_Test.class,
+        SAImpressionEventSetup_Test.class,
+        SAServerEventSetup_Test.class,
+        SAURLEventSetup_Test.class,
+        ViewableImpressionEventSetup_Test.class,
 
         // triggers
-        TestSAClickEventTrigger.class,
-        TestSAImpressionEventTrigger.class,
-        TestViewableImpressionEventTrigger.class,
-        TestSAURLEventSetup.class,
+        SAClickEventTrigger_Test.class,
+        SAImpressionEventTrigger_Test.class,
+        ViewableImpressionEventTrigger_Test.class,
+        SAURLEventSetup_Test.class,
 
         // modules
-        TestSAVASTModule.class,
+        SAVASTModule_Test.class,
 
         ////////////////////////////////
         // json parser
-        TestSAJsonParser_ParseArray.class,
-        TestSAJsonParser_WriteArray.class,
-        TestSAJsonParser_WriteDictionary.class,
-        TestSAJsonParser_ParseDictionary.class,
-        TestSAJsonParser_ParseObject.class,
-        TestSAJsonParser_WriteObject.class,
+        SAJsonParser_ParseArray_Test.class,
+        SAJsonParser_WriteArray_Test.class,
+        SAJsonParser_WriteDictionary_Test.class,
+        SAJsonParser_ParseDictionary_Test.class,
+        SAJsonParser_ParseObject_Test.class,
+        SAJsonParser_WriteObject_Test.class,
 
         ////////////////////////////////
         // models
-        TestSAReferral.class,
-        TestSAAd_1.class,
-        TestSAAd_2.class,
-        TestSAAd_3.class,
-        TestSAAd_4.class,
-        TestSAAd_5.class,
-        TestSAAd_6.class,
-        TestSAAd_7.class,
-        TestSAAd_8.class,
-        TestSAVAST_1.class,
-        TestSAVAST_2.class,
+        SAReferral_Test.class,
+        SAAd_1_Test.class,
+        SAAd_2_Test.class,
+        SAAd_3_Test.class,
+        SAAd_4_Test.class,
+        SAAd_5_Test.class,
+        SAAd_6_Test.class,
+        SAAd_7_Test.class,
+        SAAd_8_Test.class,
+        SAVAST_1_Test.class,
+        SAVAST_2_Test.class,
 
         ////////////////////////////////
         // networking
-        TestSAFileItem.class,
-        TestSANetwork.class,
-        TestSAFileDownloader.class,
-        TestSANetworkUtils.class,
+        SAFileItem_Test.class,
+        SANetwork_Test.class,
+        SAFileDownloader_Test.class,
+        SANetworkUtils_Test.class,
 
         ////////////////////////////////
         // sautils
-        TestSAUtils_RemoveAllButFirstElement.class,
-        TestSAUtils_GenerateUniqueKey.class,
-        TestSAUtils_MapSourceSizeIntoBoundingSize.class,
-        TestSAUtils_RandomNumberBetween.class,
-        TestSAUtils_EncodeDictAsJsonDict.class,
-        TestSAUtils_EncodeURL.class,
-        TestSAUtils_FindBaseURLFromResourceURL.class,
-        TestSAUtils_FormGetQueryFromDict.class,
-        TestSAUtils_GetCachebuster.class,
-        TestSAUtils_IsJSONEmpty.class,
-        TestSAUtils_IsValidEmail.class,
-        TestSAUtils_IsValidURL.class,
+        SAUtils_RemoveAllButFirstElement_Test.class,
+        SAUtils_GenerateUniqueKey_Test.class,
+        SAUtils_MapSourceSizeIntoBoundingSize_Test.class,
+        SAUtils_RandomNumberBetween_Test.class,
+        SAUtils_EncodeDictAsJsonDict_Test.class,
+        SAUtils_EncodeURL_Test.class,
+        SAUtils_FindBaseURLFromResourceURL_Test.class,
+        SAUtils_FormGetQueryFromDict_Test.class,
+        SAUtils_GetCachebuster_Test.class,
+        SAUtils_IsJSONEmpty_Test.class,
+        SAUtils_IsValidEmail_Test.class,
+        SAUtils_IsValidURL_Test.class,
 
         ////////////////////////////////
         // xml parser
-        SAXMLParser_Tests1.class,
-        SAXMLParser_Tests2.class,
-        SAXMLParser_Tests3.class,
-        SAXMLParser_Tests4.class,
-        SAXMLParser_Tests5.class,
-        SAXMLParser_Tests6.class,
-        SAXMLParser_Tests7.class,
-        SAVASTParser_Local_Tests1.class,
-        SAVASTParser_Local_Tests2.class,
+        SAXMLParser_1_Tests.class,
+        SAXMLParser_2_Tests.class,
+        SAXMLParser_3_Tests.class,
+        SAXMLParser_4_Tests.class,
+        SAXMLParser_5_Tests.class,
+        SAXMLParser_6_Tests.class,
+        SAXMLParser_7_Tests.class,
+        SAVASTParser_Local_1_Tests.class,
+        SAVASTParser_Local_2_Tests.class,
         SAVASTParser_Async_Test.class
 })
 public class TestSuite {

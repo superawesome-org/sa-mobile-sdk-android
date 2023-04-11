@@ -32,7 +32,7 @@ class SdkInfo(
 ) : SdkInfoType {
     private object Keys {
         const val Unknown = "unknown"
-        const val VersionFile = "version.properties"
+        const val VersionFile = "newVersion.properties"
         const val VersionName = "version.name"
 
         val storedVersion = loadVersion()

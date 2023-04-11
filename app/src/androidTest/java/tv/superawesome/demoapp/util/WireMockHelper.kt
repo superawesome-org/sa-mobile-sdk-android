@@ -33,6 +33,18 @@ object WireMockHelper {
 
         stubVASTPaths()
         stubAssets()
+        stubPlacements()
+    }
+
+    private fun stubPlacements() {
+        stubFor(
+            get(urlPathMatching("/placements.json"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readBytes("placements.json"))
+                )
+        )
     }
 
     private fun stubAssets() {

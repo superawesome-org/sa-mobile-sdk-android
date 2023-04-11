@@ -23,6 +23,7 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.network.Environment
+import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
@@ -65,6 +66,7 @@ public class ManagedAdView @JvmOverloads constructor(
         webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener), JS_BRIDGE_NAME)
         val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
         webView?.loadDataWithBaseURL(environment.baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
+        controller.play(placementId)
     }
 
     override fun onSaveInstanceState(): Parcelable = Bundle().apply {
@@ -141,6 +143,18 @@ public class ManagedAdView @JvmOverloads constructor(
         setColor(false)
     }
 
+    public fun setBackButton(value: Boolean) {
+        controller.config.isBackButtonEnabled = value
+    }
+
+    public fun enableBackButton() {
+        setBackButton(true)
+    }
+
+    public fun disableBackButton() {
+        setBackButton(false)
+    }
+
     public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
@@ -151,6 +165,19 @@ public class ManagedAdView @JvmOverloads constructor(
 
     public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
+    }
+
+    public fun setCloseButton(value: Boolean) {
+        controller.config.closeButtonState =
+            if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
+    }
+
+    public fun enableCloseButton() {
+        setCloseButton(true)
+    }
+
+    public fun disableCloseButton() {
+        setCloseButton(false)
     }
 
     public fun setColor(value: Boolean) {
@@ -203,7 +230,6 @@ public class ManagedAdView @JvmOverloads constructor(
 
         webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
-                controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
                 viewableDetector.start(this@ManagedAdView, videoMaxTickCount) {

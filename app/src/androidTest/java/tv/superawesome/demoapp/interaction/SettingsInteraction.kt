@@ -20,6 +20,11 @@ object SettingsInteraction {
 //            .perform(click())
     }
 
+    fun disableCloseAtEnd() {
+        onView(withId(R.id.videoCloseAtEndDisableButton))
+            .perform(click())
+    }
+
     private fun enableUITesting() {
         onView(withId(R.id.uiTestingButton))
             .perform(waitUntil(isCompletelyDisplayed()), click())
@@ -38,6 +43,11 @@ object SettingsInteraction {
 //            .perform(click())
     }
 
+    fun closeHidden() {
+        onView(withId(R.id.closeHiddenButton))
+            .perform(click())
+    }
+
     fun enableBumper() {
         onView(withId(R.id.bumperEnableButton))
             .perform(waitUntil(isCompletelyDisplayed()), click())
@@ -48,6 +58,11 @@ object SettingsInteraction {
         onView(withId(R.id.parentalEnableButton))
             .perform(waitUntil(isCompletelyDisplayed()), click())
 //            .perform(click())
+    }
+
+    fun enableVideoWarnDialog() {
+        onView(withId(R.id.videoCloseDialogEnableButton))
+            .perform(click())
     }
 
     fun disablePlay() {

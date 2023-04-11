@@ -48,17 +48,13 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         smallShowMore.setOnClickListener(listener)
     }
 
-    override fun setPlaying() { /* N/A */
-    }
+    override fun setPlaying()  = Unit
 
-    override fun setPaused() { /* N/A */
-    }
+    override fun setPaused() = Unit
 
-    override fun setCompleted() { /* N/A */
-    }
+    override fun setCompleted() = Unit
 
-    override fun setError(error: Throwable?) { /* N/A */
-    }
+    override fun setError(error: Throwable?) = Unit
 
     public override fun setTime(time: Int, duration: Int) {
         val remaining = (duration - time) / 1000
@@ -68,23 +64,17 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         }
     }
 
-    override fun show() { /* N/A */
-    }
+    override fun show() = Unit
 
-    override fun hide() { /* N/A */
-    }
+    override fun hide() = Unit
 
-    override fun setMinimised() { /* N/A */
-    }
+    override fun setMinimised() = Unit
 
-    override fun setMaximised() { /* N/A */
-    }
+    override fun setMaximised() = Unit
 
-    override fun close() { /* N/A */
-    }
+    override fun close() = Unit
 
-    override fun setListener(listener: IVideoPlayerControllerView.Listener?) {
-    }
+    override fun setListener(listener: IVideoPlayerControllerView.Listener?) = Unit
 
     override val isPlaying: Boolean
         get() = true
