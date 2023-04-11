@@ -32,6 +32,7 @@ class AdViewJavaScriptBridge(private val listener: Listener) {
 
     @JavascriptInterface
     fun adPlaying() = listener.adPlaying()
+
     @JavascriptInterface
     fun adPaused() = listener.adPaused()
 
