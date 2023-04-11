@@ -70,5 +70,13 @@ public enum SAEvent {
         public String toString() {
             return "adClosed";
         }
+    },
+    adPlaying {
+        @Override
+        public String toString() { return "adPlaying"; }
+    },
+    adPaused {
+        @Override
+        public String toString() { return "adPaused"; }
     }
 }

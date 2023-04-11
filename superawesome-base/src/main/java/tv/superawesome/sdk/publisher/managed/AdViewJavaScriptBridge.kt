@@ -30,6 +30,11 @@ class AdViewJavaScriptBridge(private val listener: Listener) {
     @JavascriptInterface
     fun adClosed() = listener.adClosed()
 
+    @JavascriptInterface
+    fun adPlaying() = listener.adPlaying()
+    @JavascriptInterface
+    fun adPaused() = listener.adPaused()
+
     interface Listener {
         fun adLoaded()
 
@@ -48,5 +53,9 @@ class AdViewJavaScriptBridge(private val listener: Listener) {
         fun adEnded()
 
         fun adClosed()
+
+        fun adPlaying()
+
+        fun adPaused()
     }
 }
