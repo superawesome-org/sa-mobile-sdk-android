@@ -17,9 +17,9 @@ import tv.superawesome.sdk.publisher.SADefaults
 class SAManagedAdView
 @JvmOverloads
 constructor(
-    ctx: Context,
-    attrs: AttributeSet? = null,
-    private val clock: SAClock = SAClock()
+        ctx: Context,
+        attrs: AttributeSet? = null,
+        private val clock: SAClock = SAClock()
 ) : RelativeLayout(ctx, attrs) {
 
     companion object {
@@ -125,19 +125,19 @@ constructor(
     }
 
     fun playVideo() {
-        webView.evaluateJavascript("$JS_BRIDGE_NAME.appRequestedPlay();", null)
+        webView.evaluateJavascript("window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));", null)
     }
 
     fun pauseVideo() {
-        webView.evaluateJavascript("$JS_BRIDGE_NAME.appRequestedPause();", null)
+        webView.evaluateJavascript("window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));", null)
     }
 }
 
 @SuppressLint("SetJavaScriptEnabled")
 internal fun WebView.setupWebView() {
     layoutParams = ViewGroup.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
     )
     setBackgroundColor(Color.TRANSPARENT)
     isVerticalScrollBarEnabled = false
