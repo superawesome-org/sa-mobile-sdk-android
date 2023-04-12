@@ -103,6 +103,18 @@ class SAManagedAdActivity : Activity(),
             config?.isBumperPageEnabled ?: false,
             events,
         )
+
+        videoClick?.apply {
+            listener = object : SAVideoClick.Listener {
+                override fun didRequestPlaybackPause() {
+                    adView.pauseVideo()
+                }
+
+                override fun didRequestPlaybackResume() {
+                    adView.playVideo()
+                }
+            }
+        }
     }
 
     override fun onStop() {
