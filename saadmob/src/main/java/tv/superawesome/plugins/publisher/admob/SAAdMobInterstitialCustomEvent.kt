@@ -50,7 +50,7 @@ class SAAdMobInterstitialCustomEvent : CustomEventInterstitial {
                         ""
                     )
                 )
-                SAEvent.adAlreadyLoaded, SAEvent.adEnded, SAEvent.adPaused, SAEvent.adPlaying -> Unit // Unused
+                SAEvent.adAlreadyLoaded, SAEvent.adEnded, SAEvent.adPlaying, SAEvent.adPaused -> Unit // Unused
                 SAEvent.adShown -> listener.onAdOpened()
                 SAEvent.adFailedToShow -> listener.onAdFailedToLoad(
                     AdError(

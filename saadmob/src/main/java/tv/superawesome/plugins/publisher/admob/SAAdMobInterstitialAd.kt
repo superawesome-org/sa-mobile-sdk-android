@@ -70,7 +70,7 @@ class SAAdMobInterstitialAd(
             SAEvent.adFailedToShow -> adFailedToShown()
             SAEvent.adClicked -> adCallback?.reportAdClicked()
             SAEvent.adClosed -> adClosed()
-            SAEvent.adEnded, SAEvent.adPaused, SAEvent.adPlaying -> Unit // Unused
+            SAEvent.adEnded, SAEvent.adPlaying, SAEvent.adPaused -> Unit // Unused
         }
     }
 
