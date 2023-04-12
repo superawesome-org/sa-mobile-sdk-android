@@ -41,7 +41,6 @@ class SAVideoClick internal constructor(
         }
         if (isBumperPageEnabled) {
             playBumperPage(context) {
-                listener?.didRequestPlaybackResume()
                 navigateToUrl(PADLOCK_URL, context)
             }
         } else {
@@ -126,7 +125,6 @@ class SAVideoClick internal constructor(
     private fun click(context: Context, destination: String) {
         if (isBumperPageEnabled) {
             playBumperPage(context) {
-                listener?.didRequestPlaybackResume()
                 handleUrl(context, destination)
             }
         } else {
