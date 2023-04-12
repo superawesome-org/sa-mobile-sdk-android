@@ -15,6 +15,7 @@ import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
 import tv.superawesome.sdk.publisher.SAInterstitialAd;
 import tv.superawesome.sdk.publisher.SAOrientation;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -68,12 +69,11 @@ public class SAUnityInterstitialAd {
             int placementId,
             int configuration,
             boolean test,
-            String encodedOptions)
-    {
+            String encodedOptions) {
         SAInterstitialAd.setTestMode(test);
         SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
 
-        if(encodedOptions != null && !encodedOptions.isEmpty()) {
+        if (encodedOptions != null && !encodedOptions.isEmpty()) {
             try {
                 SAInterstitialAd.load(
                         placementId,
@@ -100,7 +100,12 @@ public class SAUnityInterstitialAd {
     /**
      * Method that plays a new Interstitial Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdPlay(Context context, int placementId, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int orientation, boolean isBackButtonEnabled) {
+    public static void SuperAwesomeUnitySAInterstitialAdPlay(Context context,
+                                                             int placementId,
+                                                             boolean isParentalGateEnabled,
+                                                             boolean isBumperPageEnabled,
+                                                             int orientation,
+                                                             boolean isBackButtonEnabled) {
         SAInterstitialAd.setParentalGate(isParentalGateEnabled);
         SAInterstitialAd.setBumperPage(isBumperPageEnabled);
         SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
@@ -116,11 +121,27 @@ public class SAUnityInterstitialAd {
             boolean isBumperPageEnabled,
             int orientation,
             boolean isBackButtonEnabled,
-            boolean testModeEnabled) {
+            boolean testModeEnabled,
+            int closeButtonState) {
         SAInterstitialAd.setParentalGate(isParentalGateEnabled);
         SAInterstitialAd.setBumperPage(isBumperPageEnabled);
         SAInterstitialAd.setBackButton(isBackButtonEnabled);
         SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
         SAInterstitialAd.setTestMode(testModeEnabled);
+        setCloseButtonState(closeButtonState);
+    }
+
+    private static void setCloseButtonState(int closeButtonState) {
+        switch (CloseButtonState.fromInt(closeButtonState)) {
+            case Hidden:
+                // Do nothing as Interstitial does not support hidden close button
+                break;
+            case VisibleImmediately:
+                SAInterstitialAd.enableCloseButtonNoDelay();
+                break;
+            case VisibleWithDelay:
+                SAInterstitialAd.enableCloseButton();
+                break;
+        }
     }
 }
