@@ -112,7 +112,8 @@ public class SAUnityVideoAd {
                                                       boolean shouldAutomaticallyCloseAtEnd,
                                                       int orientation,
                                                       boolean isBackButtonEnabled,
-                                                      boolean shouldShowCloseWarning) {
+                                                      boolean shouldShowCloseWarning,
+                                                      boolean muteOnStart) {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
@@ -121,6 +122,7 @@ public class SAUnityVideoAd {
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         setCloseButtonState(closeButtonState);
+        SAVideoAd.setMuteOnStart(muteOnStart);
 
         SAVideoAd.play(placementId, context);
     }
@@ -137,7 +139,8 @@ public class SAUnityVideoAd {
             int orientation,
             boolean isBackButtonEnabled,
             boolean shouldShowCloseWarning,
-            boolean testModeEnabled) {
+            boolean testModeEnabled,
+            boolean muteOnStart) {
         SAVideoAd.setParentalGate(isParentalGateEnabled);
         SAVideoAd.setBumperPage(isBumperPageEnabled);
         SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
@@ -147,6 +150,7 @@ public class SAUnityVideoAd {
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         SAVideoAd.setTestMode(testModeEnabled);
         setCloseButtonState(closeButtonState);
+        SAVideoAd.setMuteOnStart(muteOnStart);
     }
 
     private static void setCloseButtonState(int closeButtonState) {
