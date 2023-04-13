@@ -117,18 +117,14 @@ class SAManagedAdActivity : Activity(),
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        adView.pauseVideo()
-    }
-
-    override fun onResume() {
-        super.onResume()
+    override fun onRestart() {
+        super.onRestart()
         adView.playVideo()
     }
 
     override fun onStop() {
         super.onStop()
+        adView.pauseVideo()
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
     }
