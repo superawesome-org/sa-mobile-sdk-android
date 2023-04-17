@@ -123,6 +123,14 @@ constructor(
     fun setBumperPage(value: Boolean) {
         isBumperPageEnabled = value
     }
+
+    fun playVideo() {
+        webView.evaluateJavascript("window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));", null)
+    }
+
+    fun pauseVideo() {
+        webView.evaluateJavascript("window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));", null)
+    }
 }
 
 @SuppressLint("SetJavaScriptEnabled")

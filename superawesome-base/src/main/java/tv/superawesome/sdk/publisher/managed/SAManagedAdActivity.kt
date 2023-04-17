@@ -103,10 +103,28 @@ class SAManagedAdActivity : Activity(),
             config?.isBumperPageEnabled ?: false,
             events,
         )
+
+        videoClick?.apply {
+            listener = object : SAVideoClick.Listener {
+                override fun didRequestPlaybackPause() {
+                    adView.pauseVideo()
+                }
+
+                override fun didRequestPlaybackResume() {
+                    adView.playVideo()
+                }
+            }
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        adView.playVideo()
     }
 
     override fun onStop() {
         super.onStop()
+        adView.pauseVideo()
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
     }
@@ -188,14 +206,21 @@ class SAManagedAdActivity : Activity(),
 
     override fun adClosed() = close()
 
+    override fun adPlaying() {
+        listener?.onEvent(this.placementId, SAEvent.adPlaying)
+    }
+
+    override fun adPaused() {
+        listener?.onEvent(this.placementId, SAEvent.adPaused)
+    }
+
     fun onCloseAction() {
         if (config?.shouldShowCloseWarning == true && !completed) {
-//            control.pause() TODO: Add JS Pause function AAG-3023
+            adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
                 override fun onResumeSelected() {
-//                    control.start() TODO: Add JS Play function AAG-3023
+                    adView.playVideo()
                 }
-
                 override fun onCloseSelected() {
                     close()
                 }

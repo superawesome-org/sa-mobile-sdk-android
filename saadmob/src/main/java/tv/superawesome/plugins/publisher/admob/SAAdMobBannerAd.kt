@@ -69,9 +69,7 @@ class SAAdMobBannerAd(
             SAEvent.adShown -> adCallback?.onAdOpened()
             SAEvent.adClicked -> adCallback?.reportAdClicked()
             SAEvent.adClosed -> adCallback?.onAdClosed()
-            SAEvent.adEnded -> {
-                // This event is not used
-            }
+            else -> Unit // Unused
         }
     }
 
