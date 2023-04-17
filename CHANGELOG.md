@@ -1,3 +1,11 @@
+## [8.5.8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.7...v8.5.8) (2023-04-14)
+
+
+### Bug Fixes
+
+* **Bumper Page:** Prevent clicks from registering ([#314](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/314)) ([a10e6b7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/a10e6b73d5b4fed44e8f8bdfa96e9d2fae62291b))
+* **Unity plugin:** Adds missing settings to the unity plugin for Interstitial and Video ads ([#316](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/316)) ([bea0207](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/bea020703e422087fd2e61adfef624117fcf6014))
+
 ## [8.5.6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.5...v8.5.6) (2023-03-23)
 
 
