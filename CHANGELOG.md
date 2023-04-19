@@ -1,3 +1,15 @@
+# [9.0.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.8...v9.0.0) (2023-04-19)
+
+
+* Feat/ag 3023 play pause js bridge (#315) ([5760456](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/5760456014cfc73545eb76617eac5d307fe7eb38)), closes [#315](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/315)
+
+
+### BREAKING CHANGES
+
+* The minimum supported android version increased to 19
+
+* chore(): formatting
+
 ## [8.5.8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.7...v8.5.8) (2023-04-14)
 
 
