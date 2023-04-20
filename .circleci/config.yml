@@ -155,6 +155,32 @@ jobs:
       - run:
           name: Push Superawesome-All to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
+      - run:
+          name: Update Release page in docs
+          command: |
+            # get previous release tag
+            export CURRENT_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 1p`
+            export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
+            export AWK_PATTERN="/^([#]+ \[${CURRENT_VERSION:1}\])/{flag=1;next}/^([#]+ \[${PREVIOUS_VERSION:1}\])/{flag=0}flag"
+
+            # get release notes from semantic-release
+            export CHANGES=`awk $AWK_PATTERN CHANGELOG.md`
+            export CHANGES=`sed -E 's/ \(\[([^\[]+)\](\(.*\))//g' \<<< $CHANGES`
+
+            # checkout docs repo
+            git pull https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git main
+
+            # Update releases
+            echo "export RELEASE_DOC_PATH=sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md" >> $BASH_ENV
+            source $BASH_ENV
+
+            # insert new release and change log
+            perl -i -pe '$_ = "\n## $ENV{CURRENT_VERSION}$ENV{CHANGES}\n$_" if $. == 7' $RELEASE_DOC_PATH
+
+            # commit and push
+            git add $RELEASE_DOC_PATH
+            git commit -m "Add iOS release version $RELEASE_NUMBER via Circle CI"
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git -q main
 
   sdk_push_superawesome_base:
     <<: *android_config
