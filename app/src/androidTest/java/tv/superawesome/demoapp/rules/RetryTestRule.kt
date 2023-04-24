@@ -19,7 +19,6 @@ class RetryTestRule(val retryCount: Int = 3) : TestRule {
       override fun evaluate() {
         var caughtThrowable: Throwable? = null
 
-        // implement retry logic here
         for (i in 0 until retryCount) {
           try {
             base.evaluate()
