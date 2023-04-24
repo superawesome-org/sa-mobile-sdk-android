@@ -14,7 +14,9 @@ package tv.superawesome.sdk.publisher;
  *  - adFailedToShow:   for some reason the ad failed to show; technically this should
  *                      never happen nowadays
  *  - adClicked:        triggered every time the ad gets clicked
- *  - adClosed:         triggered once when the ad is closed;
+ *  - adClosed:         triggered once when the ad is closed
+ *  - adPlaying:        triggered when the ad is playing or resumes
+ *  - adPaused:         triggered when the ad is paused
  */
 public enum SAEvent {
     adLoaded {

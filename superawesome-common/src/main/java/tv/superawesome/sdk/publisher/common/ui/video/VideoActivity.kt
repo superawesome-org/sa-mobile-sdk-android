@@ -33,7 +33,7 @@ import java.io.File
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-class VideoActivity : FullScreenActivity() {
+class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val control: IVideoPlayerController by inject(IVideoPlayerController::class.java)
     private var videoEvents: VideoEvents? = null
@@ -56,7 +56,7 @@ class VideoActivity : FullScreenActivity() {
 
     override fun initChildUI() {
         controller.delegate = SAVideoAd.getDelegate()
-
+        controller.videoListener = this
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
         val params = RelativeLayout.LayoutParams(size, size)
 
@@ -192,6 +192,8 @@ class VideoActivity : FullScreenActivity() {
         CloseWarning.close()
         controller.adClosed()
         controller.close()
+        controller.videoListener = null
+        controller.delegate = null
         videoPlayer.destroy()
         super.close()
     }
@@ -221,6 +223,16 @@ class VideoActivity : FullScreenActivity() {
         }
         chrome.padlock.setOnClickListener { controller.handleSafeAdTap(this) }
         videoPlayer.setControllerView(chrome)
+    }
+
+    // AdControllerType.VideoPlayerListener
+
+    override fun didRequestVideoPause() {
+        control.pause()
+    }
+
+    override fun didRequestVideoPlay() {
+        control.start()
     }
 
     companion object {
