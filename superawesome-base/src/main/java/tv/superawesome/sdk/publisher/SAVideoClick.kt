@@ -98,9 +98,6 @@ class SAVideoClick internal constructor(
                 }
 
                 override fun parentalGateSuccess() {
-                    if (!isBumperPageEnabled) {
-                        listener?.didRequestPlaybackResume()
-                    }
                     events.triggerPgSuccessEvent()
                     completion.run()
                 }
