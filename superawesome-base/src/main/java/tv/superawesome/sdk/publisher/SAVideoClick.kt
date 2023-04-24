@@ -98,7 +98,9 @@ class SAVideoClick internal constructor(
                 }
 
                 override fun parentalGateSuccess() {
-                    listener?.didRequestPlaybackResume()
+                    if (!isBumperPageEnabled) {
+                        listener?.didRequestPlaybackResume()
+                    }
                     events.triggerPgSuccessEvent()
                     completion.run()
                 }
@@ -164,4 +166,3 @@ class SAVideoClick internal constructor(
 }
 
 const val PADLOCK_URL = "https://ads.superawesome.tv/v2/safead"
-
