@@ -23,6 +23,7 @@ import tv.superawesome.demoapp.interaction.CommonInteraction.waitForCloseButtonT
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
@@ -38,6 +39,9 @@ class VideoAdUITest {
     @get:Rule
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
+    @get:Rule
+    val retryTestRule = RetryTestRule()
+
     @Before
     fun setup() {
         Intents.init()
@@ -45,6 +49,8 @@ class VideoAdUITest {
         val ads = SAVideoAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
         ads.invoke(null)
+
+        wireMockRule.resetAll()
     }
 
     @After
