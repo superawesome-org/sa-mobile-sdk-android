@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+
 package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.content.Context
@@ -18,7 +19,6 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
     private val videoComponentFactory: VideoComponentFactory by inject(VideoComponentFactory::class.java)
 
     // mask, chronograph & the "show more" button
-    private val mask: ImageView = videoComponentFactory.getMask(MASK_ID, context)
     private var chronoBg: ImageView
     private var chronograph: TextView?
     private var showMore: Button
@@ -48,7 +48,7 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         smallShowMore.setOnClickListener(listener)
     }
 
-    override fun setPlaying()  = Unit
+    override fun setPlaying() = Unit
 
     override fun setPaused() = Unit
 
@@ -86,21 +86,14 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         private const val CRONO_DEF_TXT = "Ad: "
         private const val CRONO_INIT_TXT = CRONO_DEF_TXT + "0"
         private const val FIND_OUT_MORE_TXT = "Find out more »"
-        const val MASK_ID = 0x1110
         const val CRONO_BG_ID = 0x1111
         const val CRONO_ID = 0x1112
         const val SHOW_MORE_ID = 0x1113
         const val SMALL_SHOW_MORE_ID = 0x1114
-        const val CLOSE_ID = 0x1115
         const val PADLOCK_ID = 0x1116
     }
 
     init {
-        // call to super
-
-        // create the background image
-        addView(mask)
-
         // create the chronograph Bg
         chronoBg = videoComponentFactory.getChronographBackground(CRONO_BG_ID, context)
         addView(chronoBg)

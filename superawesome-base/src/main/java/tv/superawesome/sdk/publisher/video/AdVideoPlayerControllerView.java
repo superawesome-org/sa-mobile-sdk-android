@@ -26,12 +26,10 @@ public class AdVideoPlayerControllerView extends RelativeLayout implements IVide
     public final Button smallShowMore;
     public final ImageButton padlock;
 
-    public static final int MASK_ID = 0x1110;
     public static final int CRONO_BG_ID = 0x1111;
     public static final int CRONO_ID = 0x1112;
     public static final int SHOW_MORE_ID = 0x1113;
     public static final int SMALL_SHOW_MORE_ID = 0x1114;
-    public static final int CLOSE_ID = 0x1115;
     public static final int PADLOCK_ID = 0x1116;
 
     public AdVideoPlayerControllerView(Context context) {
@@ -45,11 +43,6 @@ public class AdVideoPlayerControllerView extends RelativeLayout implements IVide
     public AdVideoPlayerControllerView(Context context, AttributeSet attrs, int defStyleAttr) {
         // call to super
         super(context, attrs, defStyleAttr);
-
-        // create the background image
-        // mask, chronograph & the "show more" button
-        ImageView mask = VideoComponentFactory.getMask(MASK_ID, this.getContext());
-        addView(mask);
 
         // create the chronograph Bg
         chronoBg = VideoComponentFactory.getChronographBackground(CRONO_BG_ID, this.getContext());
