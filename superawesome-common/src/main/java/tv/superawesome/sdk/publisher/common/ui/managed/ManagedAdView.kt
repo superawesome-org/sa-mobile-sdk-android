@@ -100,6 +100,8 @@ public class ManagedAdView @JvmOverloads constructor(
         viewableDetector.cancel()
         removeWebView()
         controller.close()
+        controller.videoListener = null
+        controller.delegate = null
     }
 
     /**
@@ -186,6 +188,20 @@ public class ManagedAdView @JvmOverloads constructor(
         } else {
             setBackgroundColor(Constants.backgroundColorGray)
         }
+    }
+
+    fun playVideo() {
+        webView?.evaluateJavascript(
+            "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));",
+            null,
+        )
+    }
+
+    fun pauseVideo() {
+        webView?.evaluateJavascript(
+            "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));",
+            null,
+        )
     }
 
     private fun showPadlockIfNeeded() {

@@ -92,6 +92,7 @@ class FeatureDetailActivity : ComponentActivity() {
             val isCloseButtonEnabled = remember { mutableStateOf(false) }
             val isCloseButtonDelayEnabled = remember { mutableStateOf(false) }
             val isVideoMuteStartEnabled = remember { mutableStateOf(false) }
+            val isVideoLeaveWarningEnabled = remember { mutableStateOf(false) }
 
             SamobilesdkandroidTheme {
                 Surface(
@@ -137,6 +138,7 @@ class FeatureDetailActivity : ComponentActivity() {
                                     isCloseButtonEnabled = isCloseButtonEnabled,
                                     isCloseButtonDelayEnabled = isCloseButtonDelayEnabled,
                                     isVideoMuteStartEnabled = isVideoMuteStartEnabled,
+                                    isVideoLeaveWarningEnabled = isVideoLeaveWarningEnabled,
                                     modifier = Modifier
                                         .padding(start = 16.dp, end = 10.dp, bottom = 10.dp)
                                 )
