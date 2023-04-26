@@ -147,7 +147,9 @@ data class AdRequest(
  *  - adFailedToShow:   for some reason the ad failed to show; technically this should
  *                      never happen nowadays
  *  - adClicked:        triggered every time the ad gets clicked
- *  - adClosed:         triggered once when the ad is closed;
+ *  - adClosed:         triggered once when the ad is closed
+ *  - adPaused:         triggered when the ad is paused
+ *  - adPlaying:        triggered when the ad is playing or resumes
  */
 
 enum class SAEvent(val value: String) {
@@ -170,7 +172,13 @@ enum class SAEvent(val value: String) {
     AdEnded("adEnded"),
 
     /** triggered once when the ad is closed */
-    AdClosed("adClosed")
+    AdClosed("adClosed"),
+
+    /** triggered once when the video ad is paused */
+    AdPaused("adPaused"),
+
+    /** triggered once when the video ad is playing or resumes */
+    AdPlaying("adPlaying"),
 }
 
 public fun interface SAInterface {
