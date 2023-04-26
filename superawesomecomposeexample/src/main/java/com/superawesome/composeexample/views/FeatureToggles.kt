@@ -117,9 +117,7 @@ fun FeatureToggles(
                     name = stringResource(id = R.string.options_video_close_warning_title),
                     value = isVideoLeaveWarningEnabled,
                     onChange = { value ->
-                        if (isCloseButtonEnabled.value) {
-                            if (value) SAVideoAd.enableCloseButtonWithWarning() else SAVideoAd.enableCloseButton()
-                        }
+                        SAVideoAd.setCloseButtonWarning(value)
                     }
                 )
             }

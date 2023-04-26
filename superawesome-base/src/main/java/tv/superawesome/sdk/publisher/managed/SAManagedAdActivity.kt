@@ -214,7 +214,7 @@ class SAManagedAdActivity : Activity(),
         listener?.onEvent(this.placementId, SAEvent.adPaused)
     }
 
-    fun onCloseAction() {
+    private fun onCloseAction() {
         if (config?.shouldShowCloseWarning == true && !completed) {
             adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
