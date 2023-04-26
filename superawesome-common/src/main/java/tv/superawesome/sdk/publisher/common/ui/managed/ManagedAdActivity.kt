@@ -14,6 +14,7 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
+import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import java.lang.ref.WeakReference
@@ -26,6 +27,7 @@ public class ManagedAdActivity :
     private var listener: SAInterface? = null
     private var timeOutRunnable: Runnable? = null
     private var timeOutHandler = Handler(Looper.getMainLooper())
+    private var completed: Boolean = false
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
@@ -91,6 +93,24 @@ public class ManagedAdActivity :
     }
 
     public override fun close() {
+        if (config.shouldShowCloseWarning && !completed) {
+            adView.pauseVideo()
+            CloseWarning.setListener(object : CloseWarning.Interface {
+                override fun onResumeSelected() {
+                    adView.playVideo()
+                }
+
+                override fun onCloseSelected() {
+                    closeActivity()
+                }
+            })
+            CloseWarning.show(this)
+        } else {
+            closeActivity()
+        }
+    }
+
+    private fun closeActivity() {
         if (!isFinishing) {
             listener?.onEvent(this.placementId, SAEvent.AdClosed)
         }
@@ -132,6 +152,7 @@ public class ManagedAdActivity :
     }
 
     override fun adEnded() {
+        completed = true
         listener?.onEvent(this.placementId, SAEvent.AdEnded)
         close()
     }
