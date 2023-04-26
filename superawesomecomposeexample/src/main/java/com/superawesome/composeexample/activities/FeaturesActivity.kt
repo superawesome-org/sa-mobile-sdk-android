@@ -23,7 +23,7 @@ import com.superawesome.composeexample.R
 import com.superawesome.composeexample.enums.FeatureType
 import com.superawesome.composeexample.models.FeatureItem
 import com.superawesome.composeexample.models.PlacementItem
-import com.superawesome.composeexample.ui.theme.SamobilesdkandroidTheme
+import com.superawesome.composeexample.ui.theme.SAMobileSDKAndroidTheme
 import com.superawesome.composeexample.views.FeaturesList
 import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk
 
@@ -33,7 +33,7 @@ class FeaturesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SamobilesdkandroidTheme {
+            SAMobileSDKAndroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -189,7 +189,7 @@ class FeaturesActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    SamobilesdkandroidTheme {
+    SAMobileSDKAndroidTheme {
         FeaturesList(features = FeaturesActivity.features, onTapFeature = {})
     }
 }
