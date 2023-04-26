@@ -21,7 +21,11 @@ import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import java.lang.ref.WeakReference
 
-public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Listener {
+public class ManagedAdActivity :
+    FullScreenActivity(),
+    AdViewJavaScriptBridge.Listener,
+    AdControllerType.VideoPlayerListener
+{
     private var listener: SAInterface? = null
     private var timeOutRunnable: Runnable? = null
     private var timeOutHandler = Handler(Looper.getMainLooper())
@@ -40,6 +44,7 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
 
     override fun initChildUI() {
         adView = ManagedAdView(this)
+        adView.controller.videoListener = this
         adView.id = numberGenerator.nextIntForCache()
         adView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -58,6 +63,11 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
                 View.VISIBLE else View.GONE
 
         setUpCloseButtonTimeoutRunnable()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        adView.playVideo()
     }
 
     override fun onStop() {
@@ -133,7 +143,9 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
     }
 
     override fun adClicked() {
+        adView.pauseVideo()
         listener?.onEvent(this.placementId, SAEvent.AdClicked)
+        adPaused()
     }
 
     override fun adEnded() {
@@ -145,8 +157,26 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
         close()
     }
 
+    override fun adPlaying() {
+        listener?.onEvent(this.placementId, SAEvent.AdPlaying)
+    }
+
+    override fun adPaused() {
+        listener?.onEvent(this.placementId, SAEvent.AdPaused)
+    }
+
     private fun hasBeenVisibleForRequiredTimeoutTime() {
         closeButton.visibility = View.VISIBLE
+    }
+
+    // AdControllerType.VideoPlayerListener
+
+    override fun didRequestVideoPause() {
+        adView.pauseVideo()
+    }
+
+    override fun didRequestVideoPlay() {
+        adView.playVideo()
     }
 
     companion object {

@@ -41,7 +41,10 @@ import tv.superawesome.sdk.publisher.videoPlayer.VideoPlayerController;
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, SAVideoEvents.Listener {
+public class SAVideoActivity extends Activity implements
+        IVideoPlayer.Listener,
+        SAVideoEvents.Listener,
+        SAVideoClick.Listener {
 
     // fed-in data
     private SAAd ad = null;
@@ -81,7 +84,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         // setup derived objects
         videoEvents = new SAVideoEvents(events, this);
         videoClick = new SAVideoClick(ad, videoConfig.isParentalGateEnabled, videoConfig.isBumperPageEnabled, events);
-
+        videoClick.setListener(this);
         // make sure direction is locked
         switch (videoConfig.orientation) {
             case ANY:
@@ -108,6 +111,7 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
         chrome.shouldShowPadlock(videoConfig.shouldShowPadlock);
         chrome.setShouldShowSmallClickButton(videoConfig.shouldShowSmallClick);
         chrome.setClickListener(view -> {
+            control.pause();
             videoClick.handleAdClick(view, null);
             if (listenerRef != null) {
                 listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
@@ -162,6 +166,14 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
             control.playAsync(this, fileUri);
         } catch (Exception ignored) {
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (control.getCurrentIVideoPosition() > 0) {
+            control.start();
         }
     }
 
@@ -320,6 +332,16 @@ public class SAVideoActivity extends Activity implements IVideoPlayer.Listener, 
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(videoConfig.closeButtonState.isVisible() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void didRequestPlaybackPause() {
+        control.pause();
+    }
+
+    @Override
+    public void didRequestPlaybackResume() {
+        control.start();
     }
 }
 

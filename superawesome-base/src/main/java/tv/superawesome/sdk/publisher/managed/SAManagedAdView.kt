@@ -125,11 +125,17 @@ constructor(
     }
 
     fun playVideo() {
-        webView.evaluateJavascript("window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));", null)
+        webView.evaluateJavascript(
+            "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));",
+            null,
+        )
     }
 
     fun pauseVideo() {
-        webView.evaluateJavascript("window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));", null)
+        webView.evaluateJavascript(
+            "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));",
+            null,
+        )
     }
 }
 

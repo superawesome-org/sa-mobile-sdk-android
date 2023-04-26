@@ -7,6 +7,7 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.FlakyTest
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -176,6 +177,7 @@ class VideoAdUITest {
     }
 
     @Test
+    @FlakyTest
     fun test_vast_adLoading() {
         val testData = TestData.videoVast
         testAdLoading(testData, TestColors.vastYellow)

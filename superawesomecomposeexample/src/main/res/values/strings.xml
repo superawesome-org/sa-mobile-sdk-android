@@ -12,4 +12,5 @@
     <string name="options_close_button_title">Close Button</string>
     <string name="options_close_button_delay_title">Close Button with Delay</string>
     <string name="options_mute_video_start_title">Mute video on start</string>
+    <string name="options_video_close_warning_title">Video Close Warning</string>
 </resources>
