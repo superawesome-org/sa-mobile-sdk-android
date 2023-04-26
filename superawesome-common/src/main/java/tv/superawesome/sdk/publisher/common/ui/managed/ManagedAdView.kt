@@ -5,7 +5,6 @@ package tv.superawesome.sdk.publisher.common.ui.managed
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -21,14 +20,11 @@ import tv.superawesome.sdk.publisher.common.components.TimeProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
-import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
-import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
 
 @SuppressLint("AddJavascriptInterface")
 public class ManagedAdView @JvmOverloads constructor(
@@ -46,10 +42,6 @@ public class ManagedAdView @JvmOverloads constructor(
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
-    private val viewableDetector: ViewableDetectorType by KoinJavaComponent.inject(
-        ViewableDetectorType::class.java
-    )
-    private var hasBeenVisible: VoidBlock? = null
 
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
@@ -96,8 +88,6 @@ public class ManagedAdView @JvmOverloads constructor(
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
     public fun close() {
-        hasBeenVisible = null
-        viewableDetector.cancel()
         removeWebView()
         controller.close()
     }
@@ -219,25 +209,12 @@ public class ManagedAdView @JvmOverloads constructor(
         webView.isHorizontalScrollBarEnabled = false
         webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
         webView.isFocusableInTouchMode = false
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            webView.settings.mediaPlaybackRequiresUserGesture = false
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true)
-        }
+        webView.settings.mediaPlaybackRequiresUserGesture = false
+        WebView.setWebContentsDebuggingEnabled(true)
         webView.settings.javaScriptEnabled = true
 
         webView.listener = object : CustomWebView.Listener {
-            override fun webViewOnStart() {
-                viewableDetector.cancel()
-                controller.triggerImpressionEvent(placementId)
-                viewableDetector.start(this@ManagedAdView, videoMaxTickCount) {
-                    controller.triggerViewableImpression(placementId)
-                    hasBeenVisible?.let { it() }
-                }
-            }
-
+            override fun webViewOnStart() = controller.triggerImpressionEvent(placementId)
             override fun webViewOnError() = controller.adFailedToShow()
             override fun webViewOnClick(url: String) = controller.handleAdTap(url, context)
         }
@@ -255,10 +232,9 @@ public class ManagedAdView @JvmOverloads constructor(
         }
     }
 
-    internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
+    internal fun configure(placementId: Int, delegate: SAInterface?) {
         this.placementId = placementId
         delegate?.let { setListener(it) }
-        this.hasBeenVisible = hasBeenVisible
     }
 }
 
