@@ -4,11 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
@@ -22,8 +18,6 @@ class VideoComponentFactory {
     fun getChronograph(id: Int, context: Context?): TextView =
         chronoCreator.createComponent(id, context)
 
-    fun getMask(id: Int, context: Context?): ImageView = maskCreator.createComponent(id, context)
-
     fun getClick(id: Int, context: Context?): Button = clickCreator.createComponent(id, context)
 
     fun getSmallClick(id: Int, context: Context?): Button =
@@ -35,9 +29,9 @@ class VideoComponentFactory {
         val scale: Float = VideoUtils.getScale(context)
         val view = ImageView(context)
         view.id = id
-        view.setImageBitmap(imageProvider.createBitmap(100, 52, -0x1, 10.0f))
+        view.setImageBitmap(imageProvider.createBitmap(100, 52, 0xFF4D4D4D.toInt(), 10.0f))
         view.scaleType = ImageView.ScaleType.FIT_XY
-        view.alpha = 0.3f
+        view.alpha = 0.7f
         val layout = RelativeLayout.LayoutParams((50 * scale).toInt(), (26 * scale).toInt())
         layout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         layout.setMargins((5 * scale).toInt(), 0, 0, (5 * scale).toInt())
@@ -55,20 +49,6 @@ class VideoComponentFactory {
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         layoutParams.setMargins((5 * scale).toInt(), 0, 0, (5 * scale).toInt())
         view.layoutParams = layoutParams
-        view
-    }
-    private val maskCreator: ComponentCreator<ImageView> = ComponentCreator { id, context ->
-        val scale: Float = VideoUtils.getScale(context)
-        val view = ImageView(context)
-        view.id = id
-        view.setImageBitmap(imageProvider.videoGradientBitmap())
-        view.scaleType = ImageView.ScaleType.FIT_XY
-        val layout = RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            (31 * scale).toInt()
-        )
-        layout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        view.layoutParams = layout
         view
     }
     private val clickCreator: ComponentCreator<Button> = ComponentCreator { id, context ->
