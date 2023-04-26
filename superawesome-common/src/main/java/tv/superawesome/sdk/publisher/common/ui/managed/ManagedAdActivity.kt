@@ -129,9 +129,8 @@ public class ManagedAdActivity :
         viewableDetector.start(adView, videoMaxTickCount) {
             val weakThis = weak.get()
             weakThis?.cancelCloseButtonTimeoutRunnable()
-            weakThis?.closeButton?.visibility =
-                if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
-                    View.VISIBLE else closeButton.visibility
+            if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
+                weakThis?.closeButton?.visibility = View.VISIBLE
         }
 
         listener?.onEvent(this.placementId, SAEvent.AdShown)
