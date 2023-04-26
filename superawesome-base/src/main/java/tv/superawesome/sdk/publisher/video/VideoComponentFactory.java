@@ -24,10 +24,6 @@ class VideoComponentFactory {
         return chronoCreator.createComponent(id, context);
     }
 
-    static ImageView getMask(int id, Context context) {
-        return maskCreator.createComponent(id, context);
-    }
-
     static Button getClick(int id, Context context) {
         return clickCreator.createComponent(id, context);
     }
@@ -45,9 +41,9 @@ class VideoComponentFactory {
 
         ImageView view = new ImageView(context);
         view.setId(id);
-        view.setImageBitmap(SAImageUtils.createBitmap(100, 52, 0xFFFFFFFF, 10.0f));
+        view.setImageBitmap(SAImageUtils.createBitmap(100, 52, 0xFF4D4D4D, 10.0f));
         view.setScaleType(ImageView.ScaleType.FIT_XY);
-        view.setAlpha(0.3f);
+        view.setAlpha(0.7f);
 
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams((int)(50*scale), (int)(26*scale));
         layout.addRule(ALIGN_PARENT_BOTTOM);
@@ -72,24 +68,6 @@ class VideoComponentFactory {
         layoutParams.setMargins((int)(5*scale), 0, 0, (int)(5*scale));
 
         view.setLayoutParams(layoutParams);
-
-        return view;
-    };
-
-    private static final ComponentCreator<ImageView> maskCreator = (id, context) -> {
-        float scale = new VideoUtils().getScale(context);
-
-        ImageView view = new ImageView(context);
-        view.setId(id);
-        view.setImageBitmap(SAImageUtils.createVideoGradientBitmap());
-        view.setScaleType(ImageView.ScaleType.FIT_XY);
-
-        RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (int)(31 * scale));
-        layout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
-        view.setLayoutParams(layout);
 
         return view;
     };
