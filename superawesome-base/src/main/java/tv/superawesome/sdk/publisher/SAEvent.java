@@ -15,8 +15,8 @@ package tv.superawesome.sdk.publisher;
  *                      never happen nowadays
  *  - adClicked:        triggered every time the ad gets clicked
  *  - adClosed:         triggered once when the ad is closed
- *  - adPlaying:        triggered when the ad is playing or resumes
  *  - adPaused:         triggered when the ad is paused
+ *  - adPlaying:        triggered when the ad is playing or resumes
  */
 public enum SAEvent {
     adLoaded {
@@ -73,12 +73,12 @@ public enum SAEvent {
             return "adClosed";
         }
     },
-    adPlaying {
-        @Override
-        public String toString() { return "adPlaying"; }
-    },
     adPaused {
         @Override
         public String toString() { return "adPaused"; }
+    },
+    adPlaying {
+        @Override
+        public String toString() { return "adPlaying"; }
     }
 }
