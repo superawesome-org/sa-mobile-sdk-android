@@ -22,6 +22,7 @@ interface AdControllerType {
     var closed: Boolean
     var currentAdResponse: AdResponse?
     var delegate: SAInterface?
+    var videoListener: VideoPlayerListener?
     val shouldShowPadlock: Boolean
 
     fun triggerImpressionEvent(placementId: Int)
@@ -42,8 +43,15 @@ interface AdControllerType {
     fun adClicked()
     fun adEnded()
     fun adClosed()
+    fun adPlaying()
+    fun adPaused()
 
     fun peekAdResponse(placementId: Int): AdResponse?
+
+    interface VideoPlayerListener {
+        fun didRequestVideoPause()
+        fun didRequestVideoPlay()
+    }
 }
 
 class AdController(
@@ -56,6 +64,7 @@ class AdController(
     override var closed: Boolean = false
     override var currentAdResponse: AdResponse? = null
     override var delegate: SAInterface? = null
+    override var videoListener: AdControllerType.VideoPlayerListener? = null
     override val shouldShowPadlock: Boolean
         get() = currentAdResponse?.shouldShowPadlock() ?: false
 
@@ -97,26 +106,36 @@ class AdController(
                 newQuestion()
                 listener = object : ParentalGate.Listener {
                     override fun parentalGateOpen() {
-                        scope.launch { currentAdResponse?.let { eventRepository.parentalGateOpen(it) } }
+                        scope.launch {
+                            videoListener?.didRequestVideoPause()
+                            adPaused()
+                            currentAdResponse?.let { eventRepository.parentalGateOpen(it) }
+                        }
                     }
 
                     override fun parentalGateCancel() {
-                        scope.launch { currentAdResponse?.let { eventRepository.parentalGateClose(it) } }
+                        scope.launch {
+                            videoListener?.didRequestVideoPlay()
+                            adPlaying()
+                            currentAdResponse?.let { eventRepository.parentalGateClose(it) }
+                        }
                     }
 
                     override fun parentalGateSuccess() {
                         scope.launch {
                             currentAdResponse?.let {
-                                eventRepository.parentalGateSuccess(
-                                    it
-                                )
+                                eventRepository.parentalGateSuccess(it)
                             }
                         }
                         completion()
                     }
 
                     override fun parentalGateFail() {
-                        scope.launch { currentAdResponse?.let { eventRepository.parentalGateFail(it) } }
+                        scope.launch {
+                            videoListener?.didRequestVideoPlay()
+                            adPlaying()
+                            currentAdResponse?.let { eventRepository.parentalGateFail(it) }
+                        }
                     }
                 }
                 parentalGate?.show(context)
@@ -159,6 +178,8 @@ class AdController(
 
     private fun playBumperPage(url: String, context: Context) {
         if (context is Activity) {
+            videoListener?.didRequestVideoPause()
+            adPaused()
             bumperPage?.stop()
             bumperPage = get(BumperPage::class.java)
             bumperPage?.onFinish = {
@@ -185,8 +206,11 @@ class AdController(
         }
 
         // append CPI data to it
-        val referrer =
-            if (currentAdResponse?.ad?.isCPICampaign() == true) "&referrer=" + currentAdResponse?.referral else ""
+        val referrer = if (currentAdResponse?.ad?.isCPICampaign() == true) {
+            "&referrer=" + currentAdResponse?.referral
+        } else {
+            ""
+        }
         val destination = "$url$referrer"
 
         // start browser
@@ -228,6 +252,14 @@ class AdController(
 
     override fun adClosed() {
         delegate?.onEvent(placementId, SAEvent.AdClosed)
+    }
+
+    override fun adPlaying() {
+        delegate?.onEvent(placementId, SAEvent.AdPlaying)
+    }
+
+    override fun adPaused() {
+        delegate?.onEvent(placementId, SAEvent.AdPaused)
     }
 
     override fun peekAdResponse(placementId: Int): AdResponse? = adStore.peek(placementId)
