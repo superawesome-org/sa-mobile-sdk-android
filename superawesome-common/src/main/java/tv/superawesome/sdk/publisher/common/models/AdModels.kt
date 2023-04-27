@@ -152,33 +152,34 @@ data class AdRequest(
  *  - adPlaying:        triggered when the ad is playing or resumes
  */
 
+@Suppress("EnumEntryName")
 enum class SAEvent(val value: String) {
     /** ad was loaded successfully and is ready to be displayed */
-    AdLoaded("adLoaded"),
-    AdEmpty("adEmpty"),
+    adLoaded("adLoaded"),
+    adEmpty("adEmpty"),
 
     /** ad was not loaded successfully and will not be able to play */
-    AdFailedToLoad("adFailedToLoad"),
+    adFailedToLoad("adFailedToLoad"),
 
     /** ad was previously loaded in an interstitial, video or app wall queue */
-    AdAlreadyLoaded("adAlreadyLoaded"),
+    adAlreadyLoaded("adAlreadyLoaded"),
 
     /** triggered once when the ad first displays */
-    AdShown("adShown"),
-    AdFailedToShow("adFailedToShow"),
+    adShown("adShown"),
+    adFailedToShow("adFailedToShow"),
 
     /**  triggered every time the ad gets clicked */
-    AdClicked("adClicked"),
-    AdEnded("adEnded"),
+    adClicked("adClicked"),
+    adEnded("adEnded"),
 
     /** triggered once when the ad is closed */
-    AdClosed("adClosed"),
+    adClosed("adClosed"),
 
     /** triggered once when the video ad is paused */
-    AdPaused("adPaused"),
+    adPaused("adPaused"),
 
     /** triggered once when the video ad is playing or resumes */
-    AdPlaying("adPlaying"),
+    adPlaying("adPlaying"),
 }
 
 public fun interface SAInterface {

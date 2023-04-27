@@ -118,7 +118,7 @@ public class ManagedAdActivity :
 
     private fun closeActivity() {
         if (!isFinishing) {
-            listener?.onEvent(this.placementId, SAEvent.AdClosed)
+            listener?.onEvent(this.placementId, SAEvent.adClosed)
         }
         super.close()
         viewableDetector.cancel()
@@ -126,21 +126,21 @@ public class ManagedAdActivity :
     }
 
     override fun adLoaded() {
-        listener?.onEvent(this.placementId, SAEvent.AdLoaded)
+        listener?.onEvent(this.placementId, SAEvent.adLoaded)
     }
 
     override fun adEmpty() {
-        listener?.onEvent(this.placementId, SAEvent.AdEmpty)
+        listener?.onEvent(this.placementId, SAEvent.adEmpty)
         close()
     }
 
     override fun adFailedToLoad() {
-        listener?.onEvent(this.placementId, SAEvent.AdFailedToLoad)
+        listener?.onEvent(this.placementId, SAEvent.adFailedToLoad)
         close()
     }
 
     override fun adAlreadyLoaded() {
-        listener?.onEvent(this.placementId, SAEvent.AdAlreadyLoaded)
+        listener?.onEvent(this.placementId, SAEvent.adAlreadyLoaded)
     }
 
     override fun adShown() {
@@ -151,25 +151,25 @@ public class ManagedAdActivity :
             weakThis?.cancelCloseButtonTimeoutRunnable()
             weakThis?.controller?.triggerViewableImpression(placementId)
             if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
-                weakThis?.closeButton?.visibility = View.VISIBLE
+                weakThis.closeButton.visibility = View.VISIBLE
         }
-        listener?.onEvent(this.placementId, SAEvent.AdShown)
+        listener?.onEvent(this.placementId, SAEvent.adShown)
     }
 
     override fun adFailedToShow() {
-        listener?.onEvent(this.placementId, SAEvent.AdFailedToShow)
+        listener?.onEvent(this.placementId, SAEvent.adFailedToShow)
         close()
     }
 
     override fun adClicked() {
         adView.pauseVideo()
-        listener?.onEvent(this.placementId, SAEvent.AdClicked)
+        listener?.onEvent(this.placementId, SAEvent.adClicked)
         adPaused()
     }
 
     override fun adEnded() {
         completed = true
-        listener?.onEvent(this.placementId, SAEvent.AdEnded)
+        listener?.onEvent(this.placementId, SAEvent.adEnded)
         close()
     }
 
@@ -178,11 +178,11 @@ public class ManagedAdActivity :
     }
 
     override fun adPlaying() {
-        listener?.onEvent(this.placementId, SAEvent.AdPlaying)
+        listener?.onEvent(this.placementId, SAEvent.adPlaying)
     }
 
     override fun adPaused() {
-        listener?.onEvent(this.placementId, SAEvent.AdPaused)
+        listener?.onEvent(this.placementId, SAEvent.adPaused)
     }
 
     private fun hasBeenVisibleForRequiredTimeoutTime() {
