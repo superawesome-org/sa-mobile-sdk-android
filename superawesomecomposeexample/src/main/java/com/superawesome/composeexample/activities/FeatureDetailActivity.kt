@@ -154,7 +154,7 @@ class FeatureDetailActivity : ComponentActivity() {
         SAInterstitialAd.setConfigurationProduction()
         SAInterstitialAd.setListener { placementId, event ->
             when (event) {
-                SAEvent.AdLoaded -> SAInterstitialAd.play(placementId, this)
+                SAEvent.adLoaded -> SAInterstitialAd.play(placementId, this)
                 else -> Unit
             }
         }
@@ -164,7 +164,7 @@ class FeatureDetailActivity : ComponentActivity() {
         SAVideoAd.setConfigurationProduction()
         SAVideoAd.setListener { placementId, event ->
             when (event) {
-                SAEvent.AdLoaded -> SAVideoAd.play(placementId, this)
+                SAEvent.adLoaded -> SAVideoAd.play(placementId, this)
                 else -> Unit
             }
         }

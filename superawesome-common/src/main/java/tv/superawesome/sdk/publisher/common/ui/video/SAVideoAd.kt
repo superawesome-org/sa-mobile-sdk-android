@@ -107,10 +107,16 @@ public object SAVideoAd {
         setTestMode(false)
     }
 
+    /**
+     * Enables the back button to close the ad.
+     */
     public fun enableBackButton() {
         setBackButton(true)
     }
 
+    /**
+     * Disables the back button to close the ad.
+     */
     public fun disableBackButton() {
         setBackButton(false)
     }
@@ -128,10 +134,16 @@ public object SAVideoAd {
             if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
     }
 
+    /**
+     * Enables close button to be displayed after a delay.
+     */
     public fun enableCloseButton() {
         setCloseButton(true)
     }
 
+    /**
+     * Disables the close button and makes it hidden until the ad ends.
+     */
     public fun disableCloseButton() {
         setCloseButton(false)
     }

@@ -197,7 +197,7 @@ class AdController(
             return
         }
 
-        delegate?.onEvent(placementId, SAEvent.AdClicked)
+        delegate?.onEvent(placementId, SAEvent.adClicked)
 
         if (currentAdResponse?.isVideo() == true) {
             scope.launch { currentAdResponse?.let { eventRepository.videoClick(it) } }
@@ -235,31 +235,31 @@ class AdController(
     }
 
     override fun adFailedToShow() {
-        delegate?.onEvent(placementId, SAEvent.AdFailedToShow)
+        delegate?.onEvent(placementId, SAEvent.adFailedToShow)
     }
 
     override fun adShown() {
-        delegate?.onEvent(placementId, SAEvent.AdShown)
+        delegate?.onEvent(placementId, SAEvent.adShown)
     }
 
     override fun adClicked() {
-        delegate?.onEvent(placementId, SAEvent.AdClicked)
+        delegate?.onEvent(placementId, SAEvent.adClicked)
     }
 
     override fun adEnded() {
-        delegate?.onEvent(placementId, SAEvent.AdEnded)
+        delegate?.onEvent(placementId, SAEvent.adEnded)
     }
 
     override fun adClosed() {
-        delegate?.onEvent(placementId, SAEvent.AdClosed)
+        delegate?.onEvent(placementId, SAEvent.adClosed)
     }
 
     override fun adPlaying() {
-        delegate?.onEvent(placementId, SAEvent.AdPlaying)
+        delegate?.onEvent(placementId, SAEvent.adPlaying)
     }
 
     override fun adPaused() {
-        delegate?.onEvent(placementId, SAEvent.AdPaused)
+        delegate?.onEvent(placementId, SAEvent.adPaused)
     }
 
     override fun peekAdResponse(placementId: Int): AdResponse? = adStore.peek(placementId)
@@ -315,11 +315,11 @@ class AdController(
     private fun onSuccess(response: AdResponse) {
         logger.success("onSuccess thread:${Thread.currentThread()} adResponse:$response")
         adStore.put(response)
-        delegate?.onEvent(response.placementId, SAEvent.AdLoaded)
+        delegate?.onEvent(response.placementId, SAEvent.adLoaded)
     }
 
     private fun onFailure(placementId: Int, error: Throwable) {
         logger.error("onFailure for $placementId", error)
-        delegate?.onEvent(placementId, SAEvent.AdFailedToLoad)
+        delegate?.onEvent(placementId, SAEvent.adFailedToLoad)
     }
 }

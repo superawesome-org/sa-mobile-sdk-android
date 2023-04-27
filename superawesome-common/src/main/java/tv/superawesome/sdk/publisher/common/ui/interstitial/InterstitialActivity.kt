@@ -54,7 +54,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
 
     override fun onEvent(placementId: Int, event: SAEvent) {
         SAInterstitialAd.getDelegate()?.onEvent(placementId, event)
-        if (event == SAEvent.AdFailedToShow) {
+        if (event == SAEvent.adFailedToShow) {
             close()
         }
     }
