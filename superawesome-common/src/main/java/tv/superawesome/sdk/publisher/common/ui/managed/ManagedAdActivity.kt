@@ -8,12 +8,15 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import org.koin.java.KoinJavaComponent
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
 import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
@@ -28,6 +31,12 @@ public class ManagedAdActivity :
     private var timeOutRunnable: Runnable? = null
     private var timeOutHandler = Handler(Looper.getMainLooper())
     private var completed: Boolean = false
+
+    private val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
+
+    private val viewableDetector: ViewableDetectorType by KoinJavaComponent.inject(
+        ViewableDetectorType::class.java
+    )
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
@@ -50,6 +59,10 @@ public class ManagedAdActivity :
         adView.setParentalGate(config.isParentalGateEnabled)
 
         parentLayout.addView(adView)
+
+        closeButton.visibility =
+            if (config.closeButtonState == CloseButtonState.VisibleImmediately)
+                View.VISIBLE else View.GONE
 
         setUpCloseButtonTimeoutRunnable()
     }
@@ -81,14 +94,7 @@ public class ManagedAdActivity :
 
     public override fun playContent() {
         listener = SAVideoAd.getDelegate()
-        val weak = WeakReference(this)
-        adView.configure(placementId, listener) {
-            val weakThis = weak.get() ?: return@configure
-            weakThis.cancelCloseButtonTimeoutRunnable()
-            weakThis.closeButton.visibility =
-                if (weakThis.config.closeButtonState == CloseButtonState.VisibleWithDelay)
-                    View.VISIBLE else weakThis.closeButton.visibility
-        }
+        adView.configure(placementId, listener)
         adView.load(placementId, html, this)
     }
 
@@ -115,6 +121,7 @@ public class ManagedAdActivity :
             listener?.onEvent(this.placementId, SAEvent.AdClosed)
         }
         super.close()
+        viewableDetector.cancel()
         adView.close()
     }
 
@@ -137,6 +144,15 @@ public class ManagedAdActivity :
     }
 
     override fun adShown() {
+        val weak = WeakReference(this)
+        viewableDetector.cancel()
+        viewableDetector.start(adView, videoMaxTickCount) {
+            val weakThis = weak.get()
+            weakThis?.cancelCloseButtonTimeoutRunnable()
+            weakThis?.controller?.triggerViewableImpression(placementId)
+            if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
+                weakThis?.closeButton?.visibility = View.VISIBLE
+        }
         listener?.onEvent(this.placementId, SAEvent.AdShown)
     }
 
