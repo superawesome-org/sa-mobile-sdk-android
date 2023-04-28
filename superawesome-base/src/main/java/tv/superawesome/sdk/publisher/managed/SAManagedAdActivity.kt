@@ -127,6 +127,9 @@ class SAManagedAdActivity : Activity(),
         adView.pauseVideo()
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
+        listener = null
+        config = null
+        videoClick = null
     }
 
     private fun setUpCloseButtonTimeoutRunnable() {
@@ -214,7 +217,7 @@ class SAManagedAdActivity : Activity(),
         listener?.onEvent(this.placementId, SAEvent.adPaused)
     }
 
-    fun onCloseAction() {
+    private fun onCloseAction() {
         if (config?.shouldShowCloseWarning == true && !completed) {
             adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
@@ -222,7 +225,7 @@ class SAManagedAdActivity : Activity(),
                     adView.playVideo()
                 }
                 override fun onCloseSelected() {
-                    close()
+                    this@SAManagedAdActivity.close()
                 }
             })
             SACloseWarning.show(this)

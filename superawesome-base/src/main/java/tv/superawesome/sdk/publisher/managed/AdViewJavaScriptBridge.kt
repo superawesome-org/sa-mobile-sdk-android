@@ -1,40 +1,49 @@
 package tv.superawesome.sdk.publisher.managed
 
+import android.util.Log
 import android.webkit.JavascriptInterface
 
 class AdViewJavaScriptBridge(private val listener: Listener) {
     @JavascriptInterface
-    fun adLoaded() = listener.adLoaded()
+    fun adLoaded() = tryListener { listener.adLoaded() }
 
     @JavascriptInterface
-    fun adEmpty() = listener.adEmpty()
+    fun adEmpty() = tryListener { listener.adEmpty() }
 
     @JavascriptInterface
-    fun adFailedToLoad() = listener.adFailedToLoad()
+    fun adFailedToLoad() = tryListener { listener.adFailedToLoad() }
 
     @JavascriptInterface
-    fun adAlreadyLoaded() = listener.adAlreadyLoaded()
+    fun adAlreadyLoaded() = tryListener { listener.adAlreadyLoaded() }
 
     @JavascriptInterface
-    fun adShown() = listener.adShown()
+    fun adShown() = tryListener { listener.adShown() }
 
     @JavascriptInterface
-    fun adFailedToShow() = listener.adFailedToShow()
+    fun adFailedToShow() = tryListener { listener.adFailedToShow() }
 
     @JavascriptInterface
-    fun adClicked() = listener.adClicked()
+    fun adClicked() = tryListener { listener.adClicked() }
 
     @JavascriptInterface
-    fun adEnded() = listener.adEnded()
+    fun adEnded() = tryListener { listener.adEnded() }
 
     @JavascriptInterface
-    fun adClosed() = listener.adClosed()
+    fun adClosed() = tryListener { listener.adClosed() }
 
     @JavascriptInterface
-    fun adPlaying() = listener.adPlaying()
+    fun adPlaying() = tryListener { listener.adPlaying() }
 
     @JavascriptInterface
-    fun adPaused() = listener.adPaused()
+    fun adPaused() = tryListener { listener.adPaused() }
+
+    private fun tryListener(block: () -> Unit) {
+        try {
+            block()
+        } catch (e: Exception) {
+            Log.d("SuperAwesome", "JSBridge Error ${e.message}")
+        }
+    }
 
     interface Listener {
         fun adLoaded()

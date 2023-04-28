@@ -1,10 +1,8 @@
 package tv.superawesome.demoapp
 
-import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
@@ -19,9 +17,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
+import tv.superawesome.demoapp.interaction.IntentInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
@@ -36,9 +36,13 @@ class BannerUITest {
     @get:Rule
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
+    @get:Rule
+    val retryTestRule = RetryTestRule()
+
     @Before
     fun setup() {
         Intents.init()
+        wireMockRule.resetAll()
     }
 
     @After
@@ -112,8 +116,10 @@ class BannerUITest {
 
         // And view URL is redirected to browser
         Thread.sleep(4500)
-        Intents.intended(hasAction(Intent.ACTION_VIEW))
+        IntentInteraction.checkUrlIsOpenInBrowser("https://www.popjam.com/")
+        CommonInteraction.pressDeviceBackButton()
         verifyUrlPathCalled("/click")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
 
     @Test
@@ -219,11 +225,13 @@ class BannerUITest {
         // When
         ViewTester()
             .waitForView(withId(R.id.bannerView))
+            .perform(waitUntil(matchesColor(TestColors.bannerYellow)))
             .perform(click())
 
         // Then
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+        IntentInteraction.checkUrlIsOpenInBrowser("https://www.popjam.com/")
         verifyUrlPathCalled("/click")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
 
     @Test
@@ -231,7 +239,6 @@ class BannerUITest {
         stubIntents()
         openParentalGate()
         ParentalGateInteraction.testSuccess()
-        Intents.intended(hasAction(Intent.ACTION_VIEW))
     }
 
     @Test
@@ -259,8 +266,9 @@ class BannerUITest {
             .perform(click())
 
         // Then view URL is redirected to browser
-        Intents.intended(hasAction(Intent.ACTION_VIEW))
+        IntentInteraction.checkUrlIsOpenInBrowser("https://www.popjam.com/")
         verifyUrlPathCalled("/click")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
 
     private fun openParentalGate() {
