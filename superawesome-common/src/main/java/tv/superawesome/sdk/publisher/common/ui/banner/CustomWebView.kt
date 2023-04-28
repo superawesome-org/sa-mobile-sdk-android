@@ -15,7 +15,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 
 @SuppressLint("SetJavaScriptEnabled")
-public class CustomWebView @JvmOverloads constructor(
+internal class CustomWebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

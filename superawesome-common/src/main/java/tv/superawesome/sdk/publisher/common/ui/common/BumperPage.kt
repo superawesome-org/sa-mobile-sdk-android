@@ -49,10 +49,12 @@ class BumperPage {
         var appIcon: Drawable? = null
             private set
 
+        @JvmStatic
         fun overrideName(name: String?) {
             appName = name
         }
 
+        @JvmStatic
         fun overrideLogo(drawable: Drawable?) {
             appIcon = drawable
         }

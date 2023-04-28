@@ -10,7 +10,7 @@ import android.widget.RelativeLayout
 import android.widget.VideoView
 import java.lang.ref.WeakReference
 
-class VideoPlayer @JvmOverloads constructor(
+internal class VideoPlayer @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

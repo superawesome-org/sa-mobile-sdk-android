@@ -5,7 +5,7 @@ import kotlinx.coroutines.withContext
 import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.VastAd
 
-interface VastEventRepositoryType {
+internal interface VastEventRepositoryType {
     suspend fun clickThrough()
     suspend fun error()
     suspend fun impression()
@@ -18,7 +18,7 @@ interface VastEventRepositoryType {
     suspend fun clickTracking()
 }
 
-class VastEventRepository(
+internal class VastEventRepository(
     private val vastAd: VastAd,
     private val dataSource: NetworkDataSourceType
 ) : VastEventRepositoryType {

@@ -4,7 +4,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import tv.superawesome.sdk.publisher.common.components.UserAgentProviderType
 
-class RetrofitHeaderInterceptor(userAgentProviderType: UserAgentProviderType) : Interceptor {
+internal class RetrofitHeaderInterceptor(userAgentProviderType: UserAgentProviderType) : Interceptor {
     private val userAgent: String = userAgentProviderType.name
 
     override fun intercept(chain: Interceptor.Chain): Response {

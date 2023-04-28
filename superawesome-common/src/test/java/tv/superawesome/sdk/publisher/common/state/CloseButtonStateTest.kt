@@ -2,11 +2,12 @@ package tv.superawesome.sdk.publisher.common.state
 
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class CloseButtonStateTest {
+internal class CloseButtonStateTest {
 
     @Test
     fun test_closeButtonState_isVisible() = runTest {
@@ -30,8 +31,8 @@ class CloseButtonStateTest {
         val visibleImmediatelyState = CloseButtonState.fromInt(1)
 
         // Then
-        assertEquals(0, hiddenState.value)
-        assertEquals(1, visibleWithDelayState.value)
-        assertEquals(2, visibleImmediatelyState.value)
+        assertEquals(CloseButtonState.Hidden.value, hiddenState.value)
+        assertEquals(CloseButtonState.VisibleWithDelay.value, visibleWithDelayState.value)
+        assertEquals(CloseButtonState.VisibleImmediately.value, visibleImmediatelyState.value)
     }
 }

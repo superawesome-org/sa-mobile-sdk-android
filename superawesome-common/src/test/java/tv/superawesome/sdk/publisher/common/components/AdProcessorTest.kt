@@ -21,7 +21,7 @@ import tv.superawesome.sdk.publisher.common.testutil.FakeFactory.makeFakeAd
 import tv.superawesome.sdk.publisher.common.testutil.FakeFactory.makeVastAd
 import kotlin.test.assertTrue
 
-class AdProcessorTest {
+internal class AdProcessorTest {
 
     @MockK
     private lateinit var htmlFormatter: HtmlFormatterType

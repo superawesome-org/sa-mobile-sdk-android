@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.common.network
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class EnvironmentTest {
+internal class EnvironmentTest {
     @Test
     fun test_baseUrl() {
         checkBaseUrl(Environment.UITesting, "localhost")

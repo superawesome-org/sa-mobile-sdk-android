@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 

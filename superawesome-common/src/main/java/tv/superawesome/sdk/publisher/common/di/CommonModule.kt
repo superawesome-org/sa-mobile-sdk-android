@@ -31,7 +31,7 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerControlle
 import java.util.*
 
 @OptIn(ExperimentalSerializationApi::class)
-fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
+internal fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
     single { environment }
     single { Locale.getDefault() }
     single { Resources.getSystem().displayMetrics }
@@ -43,7 +43,7 @@ fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = modu
     single<UserAgentProviderType> { UserAgentProvider(get()) }
     single<ConnectionProviderType> { ConnectionProvider(get()) }
     single<TimeProviderType> { TimeProvider() }
-    single<DateProviderType> { DateProvider() }
+    single<DateProviderType> { DateProvider(Calendar.getInstance()) }
     single<AdQueryMakerType> {
         AdQueryMaker(
             get(),

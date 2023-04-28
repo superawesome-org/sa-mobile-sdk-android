@@ -12,7 +12,7 @@ import java.util.ArrayList
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
-interface XmlParserType {
+internal interface XmlParserType {
     /**
      * Function that parses a XML document
      *
@@ -58,7 +58,7 @@ interface XmlParserType {
 /**
  * Class that abstracts away the complexities of XML parsing into a series of utility methods
  */
-class XmlParser : XmlParserType {
+internal class XmlParser : XmlParserType {
 
     @Throws(ParserConfigurationException::class, IOException::class, SAXException::class)
     override fun parse(xml: String): Document {

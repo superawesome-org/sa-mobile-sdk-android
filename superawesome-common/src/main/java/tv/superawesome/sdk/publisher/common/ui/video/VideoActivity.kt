@@ -18,7 +18,7 @@ import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
@@ -33,7 +33,7 @@ import java.io.File
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener {
+internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val control: IVideoPlayerController by inject(IVideoPlayerController::class.java)
     private var videoEvents: VideoEvents? = null

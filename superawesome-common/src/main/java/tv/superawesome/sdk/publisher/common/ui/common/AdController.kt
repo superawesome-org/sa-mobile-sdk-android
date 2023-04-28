@@ -17,7 +17,7 @@ import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import kotlin.math.abs
 
-interface AdControllerType {
+internal interface AdControllerType {
     var config: Config
     var closed: Boolean
     var currentAdResponse: AdResponse?
@@ -54,7 +54,7 @@ interface AdControllerType {
     }
 }
 
-class AdController(
+internal class AdController(
     private val adRepository: AdRepositoryType,
     private val eventRepository: EventRepositoryType,
     private val logger: Logger,

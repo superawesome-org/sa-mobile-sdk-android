@@ -4,7 +4,7 @@ import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.common.models.*
 import java.util.*
 
-interface AdQueryMakerType {
+internal interface AdQueryMakerType {
     suspend fun makeAdQuery(request: AdRequest): AdQueryBundle
     fun makeImpressionQuery(adResponse: AdResponse): EventQueryBundle
     fun makeClickQuery(adResponse: AdResponse): EventQueryBundle
@@ -12,7 +12,7 @@ interface AdQueryMakerType {
     fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle
 }
 
-class AdQueryMaker(
+internal class AdQueryMaker(
     private val device: DeviceType,
     private val sdkInfoType: SdkInfoType,
     private val connectionProvider: ConnectionProviderType,
@@ -109,8 +109,7 @@ class AdQueryMaker(
     }
 
     private fun buildOptions(requestOptions: Map<String, Any>?): Map<String, Any> {
-
-        var optionsDict = mutableMapOf<String, Any>()
+        val optionsDict = mutableMapOf<String, Any>()
 
         QueryAdditionalOptions.instance?.options?.let {
             merge(new = it, original = optionsDict)

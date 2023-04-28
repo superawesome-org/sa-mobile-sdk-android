@@ -5,11 +5,11 @@ import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.models.VastMedia
 import tv.superawesome.sdk.publisher.common.models.VastType
 
-interface VastParserType {
+internal interface VastParserType {
     fun parse(data: String): VastAd?
 }
 
-class VastParser(
+internal class VastParser(
     private val parser: XmlParserType,
     private val connectionProvider: ConnectionProviderType
 ) : VastParserType {

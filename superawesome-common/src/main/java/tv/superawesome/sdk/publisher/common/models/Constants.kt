@@ -2,7 +2,6 @@ package tv.superawesome.sdk.publisher.common.models
 
 import android.graphics.Color
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 
 object Constants {
     const val defaultSuperAwesomeUrl = "https://ads.superawesome.tv"
