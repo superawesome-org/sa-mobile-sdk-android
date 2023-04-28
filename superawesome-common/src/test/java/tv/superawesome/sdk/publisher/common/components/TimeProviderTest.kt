@@ -7,7 +7,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.*
 
-class TimeProviderTest {
+internal class TimeProviderTest {
     private val timeProvider = TimeProvider()
 
     @Test

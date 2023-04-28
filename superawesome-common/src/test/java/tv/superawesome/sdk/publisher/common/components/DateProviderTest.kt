@@ -5,15 +5,15 @@ import org.junit.Test
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DateProviderTest {
-    private val dateProvider = DateProvider()
+internal class DateProviderTest {
+    private val calendar = Calendar.getInstance()
+    private val dateProvider = DateProvider(calendar)
 
     private val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
 
     @Test
     fun test_nowAsMonthYear() {
         // Given
-        val calendar = Calendar.getInstance()
         calendar.time = formatter.parse("01-02-2023")!!
 
         // When

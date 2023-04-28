@@ -11,7 +11,7 @@ import kotlinx.serialization.properties.encodeToMap
  * @return the encoded map merged with an additional map if one is passed.
  */
 @ExperimentalSerializationApi
-inline fun <reified T> Properties.mergeToMap(value: T,
+internal inline fun <reified T> Properties.mergeToMap(value: T,
                                              additionalMap: Map<String, Any>?): Map<String, Any> {
     val map = encodeToMap(value)
     val additionalMap = additionalMap ?: return map

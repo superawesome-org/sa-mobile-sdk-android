@@ -4,7 +4,7 @@ import android.graphics.*
 import android.util.Base64
 import androidx.annotation.ColorInt
 
-interface ImageProviderType {
+internal interface ImageProviderType {
     fun bumperPoweredByImage(): Bitmap
     fun bumperBackgroundImage(): Bitmap
 
@@ -16,7 +16,7 @@ interface ImageProviderType {
     fun createBitmap(width: Int, height: Int, @ColorInt color: Int, radius: Float): Bitmap
 }
 
-class ImageProvider : ImageProviderType {
+internal class ImageProvider : ImageProviderType {
     override fun bumperPoweredByImage(): Bitmap = createImageBitmap(bumperPoweredByImage)
 
     override fun bumperBackgroundImage(): Bitmap = createImageBitmap(bumperBackgroundImage)

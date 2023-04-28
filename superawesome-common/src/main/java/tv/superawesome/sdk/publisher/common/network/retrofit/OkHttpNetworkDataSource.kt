@@ -11,7 +11,7 @@ import tv.superawesome.sdk.publisher.common.models.UrlFileItem
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import java.io.File
 
-class OkHttpNetworkDataSource(
+internal class OkHttpNetworkDataSource(
     private val client: OkHttpClient,
     private val applicationContext: Context,
     private val logger: Logger,

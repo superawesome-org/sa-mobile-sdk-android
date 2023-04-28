@@ -5,11 +5,11 @@ import android.net.ConnectivityManager
 import android.telephony.TelephonyManager
 import tv.superawesome.sdk.publisher.common.models.ConnectionType
 
-interface ConnectionProviderType {
+internal interface ConnectionProviderType {
     fun findConnectionType(): ConnectionType
 }
 
-class ConnectionProvider(private val context: Context) : ConnectionProviderType {
+internal class ConnectionProvider(private val context: Context) : ConnectionProviderType {
     override fun findConnectionType(): ConnectionType {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager

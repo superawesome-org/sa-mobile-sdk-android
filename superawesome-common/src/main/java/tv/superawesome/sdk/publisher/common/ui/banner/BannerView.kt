@@ -30,7 +30,7 @@ public class BannerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    val controller: AdControllerType by inject(AdControllerType::class.java)
+    internal val controller: AdControllerType by inject(AdControllerType::class.java)
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)

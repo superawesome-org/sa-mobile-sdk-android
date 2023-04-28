@@ -9,7 +9,7 @@ import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.repositories.PreferencesRepositoryType
 import kotlin.test.assertEquals
 
-class IdGeneratorTest : BaseTest() {
+internal class IdGeneratorTest : BaseTest() {
     @MockK
     lateinit var preferencesRepositoryType: PreferencesRepositoryType
 

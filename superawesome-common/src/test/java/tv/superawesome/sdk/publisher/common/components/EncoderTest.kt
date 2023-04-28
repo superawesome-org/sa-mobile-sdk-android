@@ -4,8 +4,7 @@ import org.junit.Test
 import tv.superawesome.sdk.publisher.common.models.CreativeReferral
 import kotlin.test.assertEquals
 
-
-class EncoderTest {
+internal class EncoderTest {
     private val encoder = Encoder()
 
     @Test

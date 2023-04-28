@@ -9,7 +9,7 @@ import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
-interface AdRepositoryType {
+internal interface AdRepositoryType {
     suspend fun getAd(placementId: Int, request: AdRequest): DataResult<AdResponse>
     suspend fun getAd(
         placementId: Int,
@@ -19,7 +19,7 @@ interface AdRepositoryType {
     ): DataResult<AdResponse>
 }
 
-class AdRepository(
+internal class AdRepository(
     private val dataSource: AwesomeAdsApiDataSourceType,
     private val adQueryMaker: AdQueryMakerType,
     private val adProcessor: AdProcessorType

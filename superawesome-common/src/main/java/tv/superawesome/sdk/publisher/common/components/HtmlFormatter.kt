@@ -2,13 +2,13 @@ package tv.superawesome.sdk.publisher.common.components
 
 import tv.superawesome.sdk.publisher.common.models.Ad
 
-interface HtmlFormatterType {
+internal interface HtmlFormatterType {
     fun formatImageIntoHtml(ad: Ad): String
     fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String
     fun formatTagIntoHtml(ad: Ad): String
 }
 
-class HtmlFormatter(
+internal class HtmlFormatter(
     private val numberGenerator: NumberGeneratorType,
     private val encoder: EncoderType
 ) : HtmlFormatterType {

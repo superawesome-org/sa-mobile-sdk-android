@@ -10,11 +10,11 @@ import kotlin.math.abs
  *  - the package name
  * each hashed and then XOR-ed together
  */
-interface IdGeneratorType {
+internal interface IdGeneratorType {
     fun findDauId(): Int
 }
 
-class IdGenerator(
+internal class IdGenerator(
     private val dateProvider: DateProviderType,
     private val preferencesRepository: PreferencesRepositoryType,
     private val sdkInfo: SdkInfoType,

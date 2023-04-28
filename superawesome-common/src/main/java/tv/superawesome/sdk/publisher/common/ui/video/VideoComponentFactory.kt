@@ -9,7 +9,7 @@ import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 
-class VideoComponentFactory {
+internal class VideoComponentFactory {
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
 
     fun getChronographBackground(id: Int, context: Context?): ImageView =

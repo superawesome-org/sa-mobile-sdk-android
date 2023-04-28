@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.BeforeTest
 
-class AdQueryMakerTest : BaseTest() {
+internal class AdQueryMakerTest : BaseTest() {
     @MockK
     lateinit var timeProvider: TimeProviderType
 

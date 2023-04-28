@@ -21,7 +21,7 @@ import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
@@ -33,7 +33,7 @@ public class ManagedAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
+    internal val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
     private val imageProvider: ImageProviderType by KoinJavaComponent.inject(ImageProviderType::class.java)
     private val timeProvider: TimeProviderType by KoinJavaComponent.inject(TimeProviderType::class.java)
     private val logger: Logger by KoinJavaComponent.inject(Logger::class.java)

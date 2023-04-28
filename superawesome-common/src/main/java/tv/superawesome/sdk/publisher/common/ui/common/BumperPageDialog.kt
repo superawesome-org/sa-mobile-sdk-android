@@ -19,7 +19,7 @@ import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
 
-class BumperPageDialog(context: Context) : Dialog(context) {
+internal class BumperPageDialog(context: Context) : Dialog(context) {
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private var smallText: TextView? = null
 

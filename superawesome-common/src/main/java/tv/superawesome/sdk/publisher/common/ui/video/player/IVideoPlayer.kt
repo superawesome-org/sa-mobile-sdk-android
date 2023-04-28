@@ -10,7 +10,7 @@ import android.widget.VideoView
  * - video surfaces
  * to play local or remote videos
  */
-interface IVideoPlayer : IVideoPlayerController.Listener, IVideoPlayerControllerView.Listener {
+internal interface IVideoPlayer : IVideoPlayerController.Listener, IVideoPlayerControllerView.Listener {
     /**
      * Sets the media control for the video player
      * @param control - an instance of an object that implements the IVideoPlayerController protocol
