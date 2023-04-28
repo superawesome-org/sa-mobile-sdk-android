@@ -2,13 +2,13 @@ package tv.superawesome.sdk.publisher.common.components
 
 import android.util.Log
 
-interface Logger {
+internal interface Logger {
     fun info(message: String)
     fun success(message: String)
     fun error(message: String, error: Throwable? = null)
 }
 
-class DefaultLogger(private val loggingEnabled: Boolean) : Logger {
+internal class DefaultLogger(private val loggingEnabled: Boolean) : Logger {
 
     override fun info(message: String) {
         if (!loggingEnabled) return

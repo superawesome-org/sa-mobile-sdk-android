@@ -15,7 +15,7 @@ import tv.superawesome.sdk.publisher.common.models.ConnectionType
 import tv.superawesome.sdk.publisher.common.testutil.BuildUtil
 import kotlin.test.assertEquals
 
-class ConnectionProviderTest : BaseTest() {
+internal class ConnectionProviderTest : BaseTest() {
     @MockK
     lateinit var context: Context
 

@@ -1,7 +1,12 @@
-package tv.superawesome.sdk.publisher.common.state
+package tv.superawesome.sdk.publisher.common.models
 
 enum class CloseButtonState(val value: Int) {
-    VisibleWithDelay(0), VisibleImmediately(1), Hidden(2);
+    /*
+
+     */
+    VisibleWithDelay(0),
+    VisibleImmediately(1),
+    Hidden(2);
 
     fun isVisible(): Boolean =
         this == VisibleWithDelay || this == VisibleImmediately

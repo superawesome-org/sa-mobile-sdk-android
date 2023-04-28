@@ -6,7 +6,7 @@ import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import kotlin.test.assertEquals
 
-class AdStoreTest : BaseTest() {
+internal class AdStoreTest : BaseTest() {
     @Test
     fun test_nonExist_returnNull() {
         // Given

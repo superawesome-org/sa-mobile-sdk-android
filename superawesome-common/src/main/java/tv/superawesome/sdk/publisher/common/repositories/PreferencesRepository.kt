@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 
-interface PreferencesRepositoryType {
+internal interface PreferencesRepositoryType {
     var userAgent: String?
     var dauUniquePart: String?
 }
@@ -15,7 +15,7 @@ private object Keys {
     const val dauUniquePart = "dauUniquePart"
 }
 
-class PreferencesRepository(private val context: Context) : PreferencesRepositoryType {
+internal class PreferencesRepository(private val context: Context) : PreferencesRepositoryType {
     override var userAgent: String?
         get() = preferences?.getString(Keys.userAgent, null)
         set(value) {

@@ -17,7 +17,7 @@ import tv.superawesome.sdk.publisher.common.network.DataResult
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AdRepositoryTest : BaseTest() {
+internal class AdRepositoryTest : BaseTest() {
     @MockK
     lateinit var adDataSourceType: AwesomeAdsApiDataSourceType
 

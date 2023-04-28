@@ -9,7 +9,7 @@ import android.view.OrientationEventListener
 import android.widget.RelativeLayout
 import tv.superawesome.sdk.publisher.common.ui.video.player.FullscreenMode.Companion.fromValue
 
-class VideoPlayerActivity : Activity() {
+internal class VideoPlayerActivity : Activity() {
     private var videoPlayer: VideoPlayer? = null
     private var canDismissOnRotateToPortrait = false
     var minimisedByButton = false

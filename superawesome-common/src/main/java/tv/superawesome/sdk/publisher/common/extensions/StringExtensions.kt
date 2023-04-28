@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.common.extensions
 import java.net.URL
 import java.security.MessageDigest
 
-val String.baseUrl: String?
+internal val String.baseUrl: String?
     get() {
         return try {
             val url = URL(this)
@@ -13,7 +13,7 @@ val String.baseUrl: String?
         }
     }
 
-fun String.toMD5(): String = MessageDigest.getInstance("MD5").digest(toByteArray()).toHex()
+internal fun String.toMD5(): String = MessageDigest.getInstance("MD5").digest(toByteArray()).toHex()
 
 /**
  * Converts String to Hexadecimal format

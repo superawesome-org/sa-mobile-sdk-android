@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.util.DisplayMetrics
 
-object VideoUtils {
+internal object VideoUtils {
     /**
      * @return the current scale
      */

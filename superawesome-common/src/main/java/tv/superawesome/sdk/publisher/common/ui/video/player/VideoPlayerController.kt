@@ -6,7 +6,7 @@ import android.media.MediaPlayer.*
 import android.net.Uri
 import android.os.CountDownTimer
 
-class VideoPlayerController :
+internal class VideoPlayerController :
     MediaPlayer(),
     IVideoPlayerController,
     OnPreparedListener,

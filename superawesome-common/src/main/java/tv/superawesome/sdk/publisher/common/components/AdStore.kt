@@ -2,7 +2,7 @@ package tv.superawesome.sdk.publisher.common.components
 
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 
-interface AdStoreType {
+internal interface AdStoreType {
     fun put(adResponse: AdResponse)
     fun consume(placementId: Int): AdResponse?
 
@@ -10,7 +10,7 @@ interface AdStoreType {
     fun peek(placementId: Int): AdResponse?
 }
 
-class AdStore : AdStoreType {
+internal class AdStore : AdStoreType {
     private val data = HashMap<Int, AdResponse>()
 
     override fun put(adResponse: AdResponse) {

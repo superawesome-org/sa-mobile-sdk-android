@@ -2,7 +2,7 @@ package tv.superawesome.sdk.publisher.common.datasources
 
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
-interface NetworkDataSourceType {
+internal interface NetworkDataSourceType {
     /**
      * Returns the response body from the network request from the given [url]
      * @param [url] The URL address of the requested resource

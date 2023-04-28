@@ -12,7 +12,7 @@ import org.koin.java.KoinJavaComponent
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
@@ -22,7 +22,7 @@ import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import java.lang.ref.WeakReference
 
-public class ManagedAdActivity :
+internal class ManagedAdActivity :
     FullScreenActivity(),
     AdViewJavaScriptBridge.Listener,
     AdControllerType.VideoPlayerListener

@@ -7,7 +7,7 @@ import android.content.DialogInterface
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 
-object CloseWarning {
+internal object CloseWarning {
     private const val CloseButtonTitle = "Close Video"
     private const val ResumeButtonTitle = "Resume Video"
     private const val AlertTitle = "Close Video?"
@@ -39,7 +39,7 @@ object CloseWarning {
 
     fun close() {
         if (dialog?.isShowing == true) {
-            dialog?.cancel();
+            dialog?.cancel()
         }
         dialog = null
     }

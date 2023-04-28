@@ -9,13 +9,13 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import java.lang.ref.WeakReference
 
-interface ViewableDetectorType {
+internal interface ViewableDetectorType {
     var isVisible: VoidBlock?
     fun start(view: View, targetTickCount: Int, hasBeenVisible: VoidBlock)
     fun cancel()
 }
 
-class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
+internal class ViewableDetector(private val logger: Logger) : ViewableDetectorType {
     override var isVisible: VoidBlock? = null
     private var viewableCounter = 0
     private var runnable: Runnable? = null

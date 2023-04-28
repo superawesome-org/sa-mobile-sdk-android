@@ -4,15 +4,15 @@ import android.util.DisplayMetrics
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-interface DeviceType {
+internal interface DeviceType {
     var genericType: DeviceCategory
 }
 
-enum class DeviceCategory {
+internal enum class DeviceCategory {
     phone, tablet;
 }
 
-class Device(private val displayMetrics: DisplayMetrics) : DeviceType {
+internal class Device(private val displayMetrics: DisplayMetrics) : DeviceType {
 
     override var genericType: DeviceCategory = deviceCategory
 
