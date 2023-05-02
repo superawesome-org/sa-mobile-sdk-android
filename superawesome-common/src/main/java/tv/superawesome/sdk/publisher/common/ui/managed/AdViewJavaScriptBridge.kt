@@ -1,40 +1,49 @@
 package tv.superawesome.sdk.publisher.common.ui.managed
 
 import android.webkit.JavascriptInterface
+import tv.superawesome.sdk.publisher.common.components.Logger
 
-class AdViewJavaScriptBridge(private val listener: Listener) {
+class AdViewJavaScriptBridge(private val listener: Listener, private val logger: Logger) {
     @JavascriptInterface
-    fun adLoaded() = listener.adLoaded()
-
-    @JavascriptInterface
-    fun adEmpty() = listener.adEmpty()
+    fun adLoaded() = tryListener { listener.adLoaded() }
 
     @JavascriptInterface
-    fun adFailedToLoad() = listener.adFailedToLoad()
+    fun adEmpty() = tryListener { listener.adEmpty() }
 
     @JavascriptInterface
-    fun adAlreadyLoaded() = listener.adAlreadyLoaded()
+    fun adFailedToLoad() = tryListener { listener.adFailedToLoad() }
 
     @JavascriptInterface
-    fun adShown() = listener.adShown()
+    fun adAlreadyLoaded() = tryListener { listener.adAlreadyLoaded() }
 
     @JavascriptInterface
-    fun adFailedToShow() = listener.adFailedToShow()
+    fun adShown() = tryListener { listener.adShown() }
 
     @JavascriptInterface
-    fun adClicked() = listener.adClicked()
+    fun adFailedToShow() = tryListener { listener.adFailedToShow() }
 
     @JavascriptInterface
-    fun adEnded() = listener.adEnded()
+    fun adClicked() = tryListener { listener.adClicked() }
 
     @JavascriptInterface
-    fun adClosed() = listener.adClosed()
+    fun adEnded() = tryListener { listener.adEnded() }
 
     @JavascriptInterface
-    fun adPlaying() = listener.adPlaying()
+    fun adClosed() = tryListener { listener.adClosed() }
 
     @JavascriptInterface
-    fun adPaused() = listener.adPaused()
+    fun adPlaying() = tryListener { listener.adPlaying() }
+
+    @JavascriptInterface
+    fun adPaused() = tryListener { listener.adPaused() }
+
+    private fun tryListener(block: () -> Unit) {
+        try {
+            block()
+        } catch (error: Exception) {
+            logger.error("JSBridge Error", error)
+        }
+    }
 
     interface Listener {
         fun adLoaded()

@@ -63,7 +63,7 @@ public class ManagedAdView @JvmOverloads constructor(
         showPadlockIfNeeded()
 
         webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
-        webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener), JS_BRIDGE_NAME)
+        webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener, logger), JS_BRIDGE_NAME)
         val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
         webView?.loadDataWithBaseURL(environment.baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
         controller.play(placementId)

@@ -125,9 +125,17 @@ class SAManagedAdActivity : Activity(),
     override fun onStop() {
         super.onStop()
         adView.pauseVideo()
+    }
+
+    override fun finish() {
+        super.finish()
+        listener = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
-        listener = null
         config = null
         videoClick = null
     }
