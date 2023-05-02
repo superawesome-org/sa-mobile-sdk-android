@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.superawesome.composeexample.enums.FeatureType
 import com.superawesome.composeexample.models.FeatureItem
 import com.superawesome.composeexample.models.PlacementItem
-import com.superawesome.composeexample.ui.theme.SamobilesdkandroidTheme
+import com.superawesome.composeexample.ui.theme.SAMobileSDKAndroidTheme
 import com.superawesome.composeexample.views.AdBannerView
 import com.superawesome.composeexample.views.FeatureToggles
 import com.superawesome.composeexample.views.PlacementsList
@@ -92,9 +92,9 @@ class FeatureDetailActivity : ComponentActivity() {
             val isCloseButtonEnabled = remember { mutableStateOf(false) }
             val isCloseButtonDelayEnabled = remember { mutableStateOf(false) }
             val isVideoMuteStartEnabled = remember { mutableStateOf(false) }
-            val isVideoLeaveWarningEnabled = remember { mutableStateOf(false) }
+            val isLeaveWarningEnabled = remember { mutableStateOf(false) }
 
-            SamobilesdkandroidTheme {
+            SAMobileSDKAndroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -138,7 +138,7 @@ class FeatureDetailActivity : ComponentActivity() {
                                     isCloseButtonEnabled = isCloseButtonEnabled,
                                     isCloseButtonDelayEnabled = isCloseButtonDelayEnabled,
                                     isVideoMuteStartEnabled = isVideoMuteStartEnabled,
-                                    isVideoLeaveWarningEnabled = isVideoLeaveWarningEnabled,
+                                    isVideoLeaveWarningEnabled = isLeaveWarningEnabled,
                                     modifier = Modifier
                                         .padding(start = 16.dp, end = 10.dp, bottom = 10.dp)
                                 )
@@ -154,7 +154,7 @@ class FeatureDetailActivity : ComponentActivity() {
         SAInterstitialAd.setConfigurationProduction()
         SAInterstitialAd.setListener { placementId, event ->
             when (event) {
-                SAEvent.AdLoaded -> SAInterstitialAd.play(placementId, this)
+                SAEvent.adLoaded -> SAInterstitialAd.play(placementId, this)
                 else -> Unit
             }
         }
@@ -164,7 +164,7 @@ class FeatureDetailActivity : ComponentActivity() {
         SAVideoAd.setConfigurationProduction()
         SAVideoAd.setListener { placementId, event ->
             when (event) {
-                SAEvent.AdLoaded -> SAVideoAd.play(placementId, this)
+                SAEvent.adLoaded -> SAVideoAd.play(placementId, this)
                 else -> Unit
             }
         }

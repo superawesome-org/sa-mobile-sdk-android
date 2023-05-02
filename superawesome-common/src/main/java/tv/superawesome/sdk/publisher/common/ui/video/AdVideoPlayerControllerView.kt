@@ -12,7 +12,7 @@ import android.widget.TextView
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerControllerView
 
-public class AdVideoPlayerControllerView
+internal class AdVideoPlayerControllerView
 @JvmOverloads
 constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     RelativeLayout(context, attrs, defStyleAttr), IVideoPlayerControllerView {

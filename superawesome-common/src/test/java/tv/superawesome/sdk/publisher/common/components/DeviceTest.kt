@@ -6,7 +6,7 @@ import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import kotlin.test.assertEquals
 
-class DeviceTest : BaseTest() {
+internal class DeviceTest : BaseTest() {
     @Test
     fun testDeviceCategory_phone() {
         // Given

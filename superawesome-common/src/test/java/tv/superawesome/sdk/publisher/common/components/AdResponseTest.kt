@@ -5,7 +5,7 @@ import tv.superawesome.sdk.publisher.common.models.*
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class AdResponseTest {
+internal class AdResponseTest {
     @Test
     fun test_standard_shouldShowPadlock_true() {
         val ad = buildAd(showPadlock = true, isKSF = false)

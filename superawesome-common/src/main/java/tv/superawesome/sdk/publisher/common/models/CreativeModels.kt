@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Creative(
+internal data class Creative(
     val id: Int,
     val name: String? = null,
     val format: CreativeFormatType,
@@ -16,7 +16,7 @@ data class Creative(
 )
 
 @Serializable
-data class CreativeReferral(
+internal data class CreativeReferral(
     @SerialName("utm_source") val utmSource: Int = -1,
     @SerialName("utm_campaign") val utmCampaign: Int = -1,
     @SerialName("utm_term") val utmTerm: Int = -1,
@@ -35,7 +35,7 @@ data class CreativeReferral(
 }
 
 @Serializable
-data class CreativeDetail(
+internal data class CreativeDetail(
     val url: String? = null,
     val image: String? = null,
     val video: String? = null,
@@ -48,7 +48,7 @@ data class CreativeDetail(
 )
 
 @Serializable
-enum class CreativeFormatType {
+internal enum class CreativeFormatType {
     @SerialName("video")
     Video,
 

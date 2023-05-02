@@ -8,7 +8,7 @@ interface EncoderType {
     fun encodeUrlParamsFromObject(map: Map<String, Any?>): String
 }
 
-class Encoder : EncoderType {
+internal class Encoder : EncoderType {
     companion object {
         const val utf8 = "UTF-8"
     }

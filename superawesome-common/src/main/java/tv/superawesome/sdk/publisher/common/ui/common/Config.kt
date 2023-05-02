@@ -5,7 +5,7 @@ import android.os.Parcelable
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 
 open class Config : Parcelable {
     var testEnabled: Boolean
@@ -15,13 +15,13 @@ open class Config : Parcelable {
     var shouldShowCloseWarning: Boolean
     var isBackButtonEnabled: Boolean
     var shouldCloseAtEnd: Boolean
-    var closeButtonState: CloseButtonState
-    var orientation: Orientation
-    var startDelay: AdRequest.StartDelay
+    internal var closeButtonState: CloseButtonState
+    internal var orientation: Orientation
+    internal var startDelay: AdRequest.StartDelay
     var shouldMuteOnStart: Boolean
 
     @Suppress("LongParameterList")
-    constructor(
+    internal constructor(
         testEnabled: Boolean = Constants.defaultTestMode,
         isParentalGateEnabled: Boolean = Constants.defaultParentalGate,
         isBumperPageEnabled: Boolean = Constants.defaultBumperPage,

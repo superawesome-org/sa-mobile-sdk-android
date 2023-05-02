@@ -10,7 +10,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.managed.ManagedAdActivity
 
@@ -107,10 +107,16 @@ public object SAVideoAd {
         setTestMode(false)
     }
 
+    /**
+     * Enables the back button to close the ad.
+     */
     public fun enableBackButton() {
         setBackButton(true)
     }
 
+    /**
+     * Disables the back button to close the ad.
+     */
     public fun disableBackButton() {
         setBackButton(false)
     }
@@ -128,10 +134,16 @@ public object SAVideoAd {
             if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
     }
 
+    /**
+     * Enables close button to be displayed after a delay.
+     */
     public fun enableCloseButton() {
         setCloseButton(true)
     }
 
+    /**
+     * Disables the close button and makes it hidden until the ad ends.
+     */
     public fun disableCloseButton() {
         setCloseButton(false)
     }

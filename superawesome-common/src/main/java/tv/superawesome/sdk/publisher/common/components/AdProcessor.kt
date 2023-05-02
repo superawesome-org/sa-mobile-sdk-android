@@ -5,11 +5,11 @@ import tv.superawesome.sdk.publisher.common.extensions.baseUrl
 import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
-interface AdProcessorType {
+internal interface AdProcessorType {
     suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse>
 }
 
-class AdProcessor(
+internal class AdProcessor(
     private val htmlFormatter: HtmlFormatterType,
     private val vastParser: VastParserType,
     private val networkDataSource: NetworkDataSourceType,

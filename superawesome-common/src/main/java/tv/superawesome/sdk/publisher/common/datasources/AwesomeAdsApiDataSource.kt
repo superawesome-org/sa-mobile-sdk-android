@@ -5,7 +5,7 @@ import tv.superawesome.sdk.publisher.common.models.AdQueryBundle
 import tv.superawesome.sdk.publisher.common.models.EventQueryBundle
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
-interface AwesomeAdsApiDataSourceType {
+internal interface AwesomeAdsApiDataSourceType {
 
     suspend fun getAd(placementId: Int, query: AdQueryBundle): DataResult<Ad>
 

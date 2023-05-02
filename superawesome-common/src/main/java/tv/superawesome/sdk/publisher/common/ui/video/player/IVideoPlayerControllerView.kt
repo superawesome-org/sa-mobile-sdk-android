@@ -4,7 +4,7 @@ package tv.superawesome.sdk.publisher.common.ui.video.player
  * This interface defines the public interface of a video's chrome
  * (that is also used to control the video from the user's perspective)
  */
-interface IVideoPlayerControllerView {
+internal interface IVideoPlayerControllerView {
     /**
      * Method that sets the chrome in the playing state
      */

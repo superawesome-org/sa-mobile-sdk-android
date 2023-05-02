@@ -14,7 +14,7 @@ import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.testutil.FakeFactory
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class VastEventRepositoryTest : BaseTest() {
+internal class VastEventRepositoryTest : BaseTest() {
     @MockK
     lateinit var vastAd: VastAd
 

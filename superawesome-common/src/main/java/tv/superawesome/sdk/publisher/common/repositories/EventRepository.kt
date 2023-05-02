@@ -9,7 +9,7 @@ import tv.superawesome.sdk.publisher.common.models.EventData
 import tv.superawesome.sdk.publisher.common.models.EventType
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
-interface EventRepositoryType {
+internal interface EventRepositoryType {
     suspend fun impression(adResponse: AdResponse): DataResult<Unit>
     suspend fun click(adResponse: AdResponse): DataResult<Unit>
     suspend fun videoClick(adResponse: AdResponse): DataResult<Unit>
@@ -21,7 +21,7 @@ interface EventRepositoryType {
     suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Unit>
 }
 
-class EventRepository(
+internal class EventRepository(
     private val dataSource: AwesomeAdsApiDataSourceType,
     private val adQueryMaker: AdQueryMakerType
 ) : EventRepositoryType {

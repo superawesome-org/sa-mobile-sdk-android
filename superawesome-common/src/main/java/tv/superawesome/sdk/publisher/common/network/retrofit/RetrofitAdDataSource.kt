@@ -8,7 +8,7 @@ import tv.superawesome.sdk.publisher.common.models.EventQueryBundle
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 @ExperimentalSerializationApi
-class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
+internal class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
     AwesomeAdsApiDataSourceType {
 
     override suspend fun getAd(placementId: Int, query: AdQueryBundle): DataResult<Ad> = try {

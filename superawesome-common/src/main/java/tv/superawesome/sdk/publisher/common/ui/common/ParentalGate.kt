@@ -7,7 +7,7 @@ import android.widget.EditText
 import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
 
-class ParentalGate(
+internal class ParentalGate(
     private val numberGenerator: NumberGeneratorType
 ) {
     interface Listener {

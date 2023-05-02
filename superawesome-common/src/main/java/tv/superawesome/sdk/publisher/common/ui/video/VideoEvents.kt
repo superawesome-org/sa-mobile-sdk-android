@@ -16,7 +16,7 @@ import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 
-public class VideoEvents(
+internal class VideoEvents(
     private val adResponse: AdResponse,
     private val eventRepository: EventRepositoryType
 ) {
