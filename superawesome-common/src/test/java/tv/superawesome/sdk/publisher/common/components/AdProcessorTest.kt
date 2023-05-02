@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.common.models.VastType

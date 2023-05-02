@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.testutil.FakeFactory

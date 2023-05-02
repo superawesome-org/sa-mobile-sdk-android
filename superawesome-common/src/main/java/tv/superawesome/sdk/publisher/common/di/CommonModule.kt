@@ -13,15 +13,16 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import tv.superawesome.sdk.publisher.common.components.*
-import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
-import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.network.retrofit.OkHttpNetworkDataSource
-import tv.superawesome.sdk.publisher.common.network.retrofit.RetrofitAdDataSource
-import tv.superawesome.sdk.publisher.common.network.retrofit.RetrofitAwesomeAdsApi
-import tv.superawesome.sdk.publisher.common.network.retrofit.RetrofitHeaderInterceptor
+import tv.superawesome.sdk.publisher.common.network.datasources.OkHttpNetworkDataSource
+import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSource
+import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
+import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
+import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
 import tv.superawesome.sdk.publisher.common.repositories.*
 import tv.superawesome.sdk.publisher.common.ui.common.*
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
@@ -81,16 +82,18 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
 
-    single<AwesomeAdsApiDataSourceType> { RetrofitAdDataSource(get()) }
-    single { RetrofitHeaderInterceptor(get()) }
+    single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get()) }
+    single { HeaderInterceptor(get()) }
+    single { RetryInterceptor(maxRetries = 5, get()) }
     single {
-        val interceptor: RetrofitHeaderInterceptor = get()
-        val readerInterceptor = HttpLoggingInterceptor()
-        readerInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder()
-            .addInterceptor(interceptor).build()
+        val retryInterceptor: RetryInterceptor = get()
+        val headerInterceptor: HeaderInterceptor = get()
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
         OkHttpClient().newBuilder()
-            .addInterceptor(interceptor)
+            .addNetworkInterceptor(retryInterceptor)
+            .addInterceptor(headerInterceptor)
             .addInterceptor(
                 ChuckerInterceptor.Builder(androidContext())
                     .collector(ChuckerCollector(androidContext()))
@@ -99,7 +102,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
                     .alwaysReadResponseBody(false)
                     .build()
             )
-            .addInterceptor(readerInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
     }
     single {
@@ -118,7 +121,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     }
     single {
         val retrofit: Retrofit = get()
-        retrofit.create(RetrofitAwesomeAdsApi::class.java)
+        retrofit.create(AwesomeAdsApi::class.java)
     }
     single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get(), get()) }
 
