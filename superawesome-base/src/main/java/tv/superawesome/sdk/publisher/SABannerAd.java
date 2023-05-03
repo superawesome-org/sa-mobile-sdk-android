@@ -414,7 +414,6 @@ public class SABannerAd extends FrameLayout {
                     case Web_Click: {
 
                         if (destination != null) {
-
                             Runnable runner = () -> click(destination);
                             runner.run();
                             // showParentalGateIfNeededWithCompletion(context, runner);
@@ -467,7 +466,6 @@ public class SABannerAd extends FrameLayout {
     }
 
     private void handleUrl(String destination) {
-
         // if someone's closed this thing
         if (ad == null || ad.creative == null) {
             return;

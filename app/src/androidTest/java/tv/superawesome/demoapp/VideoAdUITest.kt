@@ -1,10 +1,7 @@
 package tv.superawesome.demoapp
 
-import android.content.Intent
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.FlakyTest
@@ -18,11 +15,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.*
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
-import tv.superawesome.demoapp.interaction.BumperInteraction
-import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.CommonInteraction.waitForCloseButtonThenClick
-import tv.superawesome.demoapp.interaction.ParentalGateInteraction
-import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
@@ -34,9 +26,11 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryP
 import tv.superawesome.demoapp.util.waitUntil
 import tv.superawesome.sdk.publisher.SAVideoAd
 
+
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class VideoAdUITest {
+
     @get:Rule
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
@@ -67,7 +61,7 @@ class VideoAdUITest {
         }
         CommonInteraction.clickItemAt(testData)
 
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
         CommonInteraction.checkSubtitleNotContains("${testData.placement} adEnded")
@@ -82,7 +76,7 @@ class VideoAdUITest {
         }
         CommonInteraction.clickItemAt(testData)
 
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
         CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
@@ -96,7 +90,7 @@ class VideoAdUITest {
         }
 
         CommonInteraction.clickItemAt(testData)
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
@@ -123,7 +117,7 @@ class VideoAdUITest {
         }
 
         CommonInteraction.clickItemAt(testData)
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
@@ -149,7 +143,7 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(testData)
 
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
@@ -182,7 +176,7 @@ class VideoAdUITest {
         val testData = TestData.videoVast
         testAdLoading(testData, TestColors.vastYellow)
 
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
         CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
@@ -193,7 +187,7 @@ class VideoAdUITest {
         val testData = TestData.videoVpaid
         testAdLoading(testData, TestColors.vpaidYellow)
 
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
     }
@@ -203,7 +197,7 @@ class VideoAdUITest {
         val testData = TestData.videoDirect
         testAdLoading(testData, TestColors.vastYellow)
 
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
         CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
@@ -264,7 +258,12 @@ class VideoAdUITest {
 
         // And view URL is redirected to browser
         Thread.sleep(4500)
-        intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
+        IntentInteraction.checkVastClickIsOpenInBrowser()
+        CommonInteraction.pressDeviceBackButton()
+
+        // When close is tapped and app returns to list view
+        CommonInteraction.waitForCloseButtonWithDelayThenClick()
+        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
     }
 
     @Test
@@ -279,6 +278,15 @@ class VideoAdUITest {
 
         // Then bumper page is shown
         BumperInteraction.waitUntilBumper()
+
+        // And view URL is redirected to browser
+        Thread.sleep(4500)
+        IntentInteraction.checkVastClickIsOpenInBrowser()
+        CommonInteraction.pressDeviceBackButton()
+
+        // When close is tapped and app returns to list view
+        CommonInteraction.waitForCloseButtonWithDelayThenClick()
+        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
     }
 
     @Test
@@ -385,11 +393,14 @@ class VideoAdUITest {
         // When
         CommonInteraction.waitForAdContentThenClick()
 
-        waitForCloseButtonThenClick()
-
         // Then
         verifyUrlPathCalled("/vast/click")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+        IntentInteraction.checkVastClickIsOpenInBrowser()
+        CommonInteraction.pressDeviceBackButton()
+
+        // When close is tapped and app returns to list view
+        CommonInteraction.waitForCloseButtonThenClick()
+        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
     }
 
     @Test
@@ -439,11 +450,15 @@ class VideoAdUITest {
 
         // When
         CommonInteraction.waitForAdContentThenClick()
-        waitForCloseButtonThenClick()
 
         // Then
         verifyUrlPathCalled("/vast/click")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+        IntentInteraction.checkVastClickIsOpenInBrowser()
+        CommonInteraction.pressDeviceBackButton()
+
+        // When close is tapped and app returns to list view
+        CommonInteraction.waitForCloseButtonThenClick()
+        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
     }
 
     @Test
@@ -467,6 +482,12 @@ class VideoAdUITest {
     fun test_parental_gate_success_event() {
         openParentalGate()
         ParentalGateInteraction.testSuccess()
+        IntentInteraction.checkVastClickIsOpenInBrowser()
+        CommonInteraction.pressDeviceBackButton()
+
+        // When close is tapped and app returns to list view
+        CommonInteraction.waitForCloseButtonWithDelayThenClick()
+        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed("87969")
     }
 
     @Test
@@ -485,14 +506,21 @@ class VideoAdUITest {
     fun test_external_webpage_opening_on_click() {
         // Given
         stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect)
+        CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect) {
+            SettingsInteraction.closeNoDelay()
+        }
         CommonInteraction.clickItemAt(TestData.videoDirect)
 
         // When ad is clicked
         CommonInteraction.waitForAdContentThenClick()
 
         // Then view URL is redirected to browser
-        intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
+        IntentInteraction.checkVastClickIsOpenInBrowser()
+
+        // Then go back and check ad is loaded
+        CommonInteraction.pressDeviceBackButton()
+        CommonInteraction.waitForCloseButtonThenClick()
+        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed("87969")
     }
 
     @Test
@@ -507,7 +535,7 @@ class VideoAdUITest {
         CommonInteraction.waitForAdContentThenClick()
 
         // Then view URL is redirected to browser
-        intended(IntentMatchers.hasAction(Intent.ACTION_VIEW))
+        // NOTE: this doesn't open the browser, but fires the event.
         verifyUrlPathCalled("/vast/clickthrough")
     }
 
@@ -523,13 +551,16 @@ class VideoAdUITest {
         CommonInteraction.clickItemAt(testData)
 
         // When close is clicked
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         VideoWarnInteraction.checkVisible()
 
         VideoWarnInteraction.clickClose()
 
         // Then
+        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adPaused")
         CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
@@ -546,7 +577,7 @@ class VideoAdUITest {
         CommonInteraction.clickItemAt(testData)
 
         // When close is clicked
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
 
         VideoWarnInteraction.checkVisible()
 
@@ -554,7 +585,59 @@ class VideoAdUITest {
 
         Thread.sleep(20000)
 
-        waitForCloseButtonThenClick()
+        CommonInteraction.waitForCloseButtonThenClick()
+
+        // Then
+        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+    }
+
+    @Test
+    fun test_direct_video_warn_dialog_press_close() {
+        // Given a direct Ad
+        val testData = TestData.videoDirect
+
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.enableVideoWarnDialog()
+        }
+
+        CommonInteraction.clickItemAt(testData)
+
+        // When close is clicked
+        CommonInteraction.waitForCloseButtonThenClick()
+
+        VideoWarnInteraction.checkVisible()
+
+        VideoWarnInteraction.clickClose()
+
+        // Then check correct events were called
+        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+    }
+
+    @Test
+    fun test_direct_video_warn_dialog_press_resume() {
+        // Given a direct Ad
+        val testData = TestData.videoDirect
+
+        CommonInteraction.launchActivityWithSuccessStub(testData) {
+            SettingsInteraction.enableVideoWarnDialog()
+            SettingsInteraction.disableCloseAtEnd()
+        }
+
+        CommonInteraction.clickItemAt(testData)
+
+        // When close is clicked
+        CommonInteraction.waitForCloseButtonThenClick()
+
+        VideoWarnInteraction.checkVisible()
+
+        VideoWarnInteraction.clickResume()
+
+        Thread.sleep(20000)
+
+        CommonInteraction.waitForCloseButtonThenClick()
 
         // Then
         CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
