@@ -32,6 +32,7 @@ public class SACloseWarning {
                 listener.onResumeSelected();
             }
             dialog.dismiss();
+            cleanUp();
         });
 
         alert.setNegativeButton(CloseButtonTitle, (dialog, which) -> {
@@ -39,10 +40,16 @@ public class SACloseWarning {
                 listener.onCloseSelected();
             }
             dialog.dismiss();
+            cleanUp();
         });
 
         dialog = alert.create();
         dialog.show();
+    }
+
+    private static void cleanUp() {
+        listener = null;
+        dialog = null;
     }
 
     public static void close() {
