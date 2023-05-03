@@ -7,6 +7,8 @@ import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import org.hamcrest.CoreMatchers.not
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.main.MainActivity
@@ -112,5 +114,17 @@ object CommonInteraction {
         ViewTester()
             .waitForView(withContentDescription("Safe Ad Logo"))
             .check(isVisible())
+    }
+
+    fun checkAdHasBeenLoadedShownClickedClosed(placementId: String) {
+        checkSubtitleContains("$placementId adLoaded")
+        checkSubtitleContains("$placementId adShown")
+        checkSubtitleContains("$placementId adClicked")
+        checkSubtitleContains("$placementId adClosed")
+    }
+
+    fun pressDeviceBackButton() {
+        val mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        mDevice.pressBack()
     }
 }

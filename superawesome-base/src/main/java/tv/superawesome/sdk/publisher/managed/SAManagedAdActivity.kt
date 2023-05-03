@@ -90,7 +90,6 @@ class SAManagedAdActivity : Activity(),
         viewableDetector = SAViewableDetector()
         setContentView(adView)
         adView.load(placementId, html, this)
-        listener = SAVideoAd.getListener()
 
         adView.addView(closeButton)
         setUpCloseButtonTimeoutRunnable()
@@ -117,6 +116,11 @@ class SAManagedAdActivity : Activity(),
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        listener = SAVideoAd.getListener()
+    }
+
     override fun onRestart() {
         super.onRestart()
         adView.playVideo()
@@ -125,8 +129,15 @@ class SAManagedAdActivity : Activity(),
     override fun onStop() {
         super.onStop()
         adView.pauseVideo()
+        listener = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
+        config = null
+        videoClick = null
     }
 
     private fun setUpCloseButtonTimeoutRunnable() {
@@ -222,7 +233,7 @@ class SAManagedAdActivity : Activity(),
                     adView.playVideo()
                 }
                 override fun onCloseSelected() {
-                    close()
+                    this@SAManagedAdActivity.close()
                 }
             })
             SACloseWarning.show(this)
