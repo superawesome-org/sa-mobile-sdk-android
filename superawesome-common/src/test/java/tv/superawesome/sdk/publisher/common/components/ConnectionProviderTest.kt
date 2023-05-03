@@ -12,7 +12,6 @@ import io.mockk.impl.annotations.MockK
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.models.ConnectionType
-import tv.superawesome.sdk.publisher.common.testutil.BuildUtil
 import kotlin.test.assertEquals
 
 internal class ConnectionProviderTest : BaseTest() {
@@ -73,7 +72,6 @@ internal class ConnectionProviderTest : BaseTest() {
         every { networkInfo.type } returns networkCapability
         every { networkInfo.subtype } returns networkCapability
         every { networkCapabilities.hasTransport(networkCapability) } returns true
-        BuildUtil.mockSdkInt(30)
 
         // When
         val result = connectionProvider.findConnectionType()
@@ -93,7 +91,6 @@ internal class ConnectionProviderTest : BaseTest() {
         every { networkInfo.isConnected } returns true
         every { networkInfo.type } returns ConnectivityManager.TYPE_MOBILE
         every { networkInfo.subtype } returns networkType
-        BuildUtil.mockSdkInt(30)
 
         // When
         val result = connectionProvider.findConnectionType()

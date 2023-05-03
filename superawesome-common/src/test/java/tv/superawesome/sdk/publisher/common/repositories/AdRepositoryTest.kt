@@ -10,7 +10,7 @@ import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.components.AdProcessorType
 import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.Ad
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.network.DataResult

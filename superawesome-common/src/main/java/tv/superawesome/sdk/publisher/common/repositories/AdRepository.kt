@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tv.superawesome.sdk.publisher.common.components.AdProcessorType
 import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.network.DataResult

@@ -13,9 +13,12 @@ internal class VideoPlayerController :
     OnErrorListener,
     OnCompletionListener,
     OnSeekCompleteListener {
+
     private var listener: IVideoPlayerController.Listener? = null
     private var countDownTimer: CountDownTimer? = null
     private var completed: Boolean = false
+    private var prepared: Boolean = false
+
     override val isIVideoPlaying: Boolean = false
     override val iVideoDuration: Int = 10
     override val currentIVideoPosition: Int = 0
@@ -59,7 +62,9 @@ internal class VideoPlayerController :
     }
 
     override fun pause() {
-        super.pause()
+        if (prepared) {
+            super.pause()
+        }
         removeTimer()
     }
 
@@ -81,9 +86,12 @@ internal class VideoPlayerController :
 
         try {
             removeTimer()
-            super.reset()
+            if (prepared) {
+                super.reset()
+            }
         } catch (ignored: Exception) {
         }
+        prepared = false
     }
 
     override fun seekTo(position: Int) {
@@ -111,6 +119,7 @@ internal class VideoPlayerController :
     // Media Player listeners
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun onPrepared(mediaPlayer: MediaPlayer) {
+        prepared = true
         createTimer()
         listener?.onPrepared(this)
     }
@@ -130,7 +139,7 @@ internal class VideoPlayerController :
     override fun onError(mediaPlayer: MediaPlayer, error: Int, payload: Int): Boolean {
         removeTimer()
         reset()
-        listener?.onError(this, Throwable(), 0, 0)
+        listener?.onError(this, Throwable("Error: $error payload: $payload"), 0, 0)
         return false
     }
 
