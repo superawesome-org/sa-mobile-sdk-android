@@ -1,40 +1,55 @@
-package tv.superawesome.sdk.publisher.common.network.retrofit
+package tv.superawesome.sdk.publisher.common.network.datasources
 
 import kotlinx.serialization.ExperimentalSerializationApi
-import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.Ad
 import tv.superawesome.sdk.publisher.common.models.AdQueryBundle
 import tv.superawesome.sdk.publisher.common.models.EventQueryBundle
+import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
+internal interface AwesomeAdsApiDataSourceType {
+
+    suspend fun getAd(placementId: Int, query: AdQueryBundle): DataResult<Ad>
+
+    suspend fun getAd(
+        placementId: Int, lineItemId: Int, creativeId: Int, query: AdQueryBundle
+    ): DataResult<Ad>
+
+    suspend fun impression(query: EventQueryBundle): DataResult<Unit>
+
+    suspend fun click(query: EventQueryBundle): DataResult<Unit>
+
+    suspend fun videoClick(query: EventQueryBundle): DataResult<Unit>
+
+    suspend fun event(query: EventQueryBundle): DataResult<Unit>
+}
+
+
 @ExperimentalSerializationApi
-internal class RetrofitAdDataSource(private val awesomeAdsApi: RetrofitAwesomeAdsApi) :
+internal class AwesomeAdsApiDataSource(private val awesomeAdsApi: AwesomeAdsApi) :
     AwesomeAdsApiDataSourceType {
 
     override suspend fun getAd(placementId: Int, query: AdQueryBundle): DataResult<Ad> = try {
         DataResult.Success(
             awesomeAdsApi.ad(
-                placementId,
-                query.build()
+                placementId, query.build()
             )
         )
     } catch (exception: Exception) {
         DataResult.Failure(exception)
     }
 
-    override suspend fun getAd(placementId: Int, lineItemId: Int, creativeId: Int, query: AdQueryBundle): DataResult<Ad> =
-        try {
-            DataResult.Success(
-                awesomeAdsApi.ad(
-                    placementId,
-                    lineItemId,
-                    creativeId,
-                    query.build()
-                )
+    override suspend fun getAd(
+        placementId: Int, lineItemId: Int, creativeId: Int, query: AdQueryBundle
+    ): DataResult<Ad> = try {
+        DataResult.Success(
+            awesomeAdsApi.ad(
+                placementId, lineItemId, creativeId, query.build()
             )
-        } catch (exception: Exception) {
-            DataResult.Failure(exception)
-        }
+        )
+    } catch (exception: Exception) {
+        DataResult.Failure(exception)
+    }
 
     override suspend fun impression(query: EventQueryBundle): DataResult<Unit> = try {
         DataResult.Success(

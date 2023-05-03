@@ -1,11 +1,11 @@
-package tv.superawesome.sdk.publisher.common.network.retrofit
+package tv.superawesome.sdk.publisher.common.network
 
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
 import tv.superawesome.sdk.publisher.common.models.Ad
 
-internal interface RetrofitAwesomeAdsApi {
+internal interface AwesomeAdsApi {
     @GET("ad/{placementId}")
     @JvmSuppressWildcards
     suspend fun ad(@Path("placementId") placementId: Int, @QueryMap query: Map<String, Any>): Ad

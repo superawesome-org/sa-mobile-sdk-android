@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.common.repositories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.common.datasources.AwesomeAdsApiDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.EventData
 import tv.superawesome.sdk.publisher.common.models.EventType

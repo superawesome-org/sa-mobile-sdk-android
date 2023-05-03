@@ -2,7 +2,7 @@ package tv.superawesome.sdk.publisher.common.repositories
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import tv.superawesome.sdk.publisher.common.datasources.NetworkDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.VastAd
 
 internal interface VastEventRepositoryType {
