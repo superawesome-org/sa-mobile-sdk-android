@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.common.ui.managed
 import android.webkit.JavascriptInterface
 import tv.superawesome.sdk.publisher.common.components.Logger
 
-class AdViewJavaScriptBridge(private val listener: Listener, private val logger: Logger) {
+internal class AdViewJavaScriptBridge(private val listener: Listener, private val logger: Logger) {
     @JavascriptInterface
     fun adLoaded() = tryListener { listener.adLoaded() }
 

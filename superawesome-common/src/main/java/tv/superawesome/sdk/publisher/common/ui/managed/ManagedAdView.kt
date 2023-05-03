@@ -49,7 +49,7 @@ public class ManagedAdView @JvmOverloads constructor(
         addWebView()
     }
 
-    public fun load(placementId: Int, html: String, listener: AdViewJavaScriptBridge.Listener) {
+    internal fun load(placementId: Int, html: String, listener: AdViewJavaScriptBridge.Listener) {
         logger.info("load($placementId)")
         this.placementId = placementId
         showPadlockIfNeeded()
