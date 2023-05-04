@@ -75,6 +75,27 @@ jobs:
           command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
+
+  test_superawesome_common:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *generate_github_token
+      - *configure_google_services
+      - *clone_scripts_repo
+      - *bootstrap_android
+      - run:
+          name: Lint Code
+          command: ./gradlew lint
+      - run:
+          name: Run unit tests for superawesome_common
+          command: bundle exec fastlane run_all_tests module:superawesome-common
+      - run:
+          name: Copy test results to temp folder
+          command: find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+      - store_test_results:
+          path: temp_files/test-results
   
   semantic_release_dry_run:
     <<: *android_config
@@ -195,6 +216,19 @@ jobs:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
 
+  sdk_push_superawesome_common:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *configure_google_services
+      - *generate_github_token
+      - *clone_scripts_repo
+      - *bootstrap_android
+      - run:
+          name: Push Superawesome-Base to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
+
   sdk_push_superawesome_admob:
     <<: *android_config
     steps:
@@ -279,6 +313,16 @@ workflows:
             tags:
               ignore: /^v.*/
 
+      - test_superawesome_common:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
   develop:
     jobs:
       - checkout_code:
@@ -290,6 +334,16 @@ workflows:
               ignore: /^v.*/
 
       - test_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - test_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
@@ -360,6 +414,16 @@ workflows:
               only: /^v.*/
 
       - sdk_push_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+      - sdk_push_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
