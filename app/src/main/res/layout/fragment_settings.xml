@@ -11,6 +11,17 @@
         android:layout_margin="16dp"
         android:background="@android:color/white">
 
+        <Button
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/adMobButton"
+            style="@style/SettingsButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="?selectableItemBackground"
+            android:text="@string/admob_button"
+            app:layout_constraintBottom_toBottomOf="@+id/resetButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageButton
             android:id="@+id/resetButton"
             android:layout_width="wrap_content"
@@ -54,11 +65,11 @@
                 android:text="@string/settings_ui_testing" />
 
             <Button
-                android:layout_columnSpan="2"
                 android:id="@+id/productionButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
                 android:text="@string/settings_production" />
 
             <TextView
@@ -98,11 +109,11 @@
                 android:text="@string/settings_enable" />
 
             <Button
-                android:layout_columnSpan="2"
                 android:id="@+id/bumperDisableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
                 android:text="@string/settings_disable" />
 
             <TextView
@@ -117,11 +128,11 @@
                 android:text="@string/settings_enable" />
 
             <Button
-                android:layout_columnSpan="2"
                 android:id="@+id/parentalDisableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
                 android:text="@string/settings_disable" />
 
             <TextView
@@ -136,11 +147,11 @@
                 android:text="@string/settings_enable" />
 
             <Button
-                android:layout_columnSpan="2"
                 android:id="@+id/playbackDisableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
                 android:text="@string/settings_disable" />
 
             <TextView
@@ -155,11 +166,11 @@
                 android:text="@string/settings_enable" />
 
             <Button
-                android:layout_columnSpan="2"
                 android:id="@+id/muteDisableButton"
                 style="@style/SettingsButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
                 android:text="@string/settings_disable" />
 
             <TextView
@@ -176,9 +187,9 @@
             <Button
                 android:id="@+id/videoCloseDialogDisableButton"
                 style="@style/SettingsButtonStyle"
-                android:layout_columnSpan="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
                 android:text="@string/settings_disable" />
 
             <TextView
@@ -195,9 +206,9 @@
             <Button
                 android:id="@+id/videoCloseAtEndDisableButton"
                 style="@style/SettingsButtonStyle"
-                android:layout_columnSpan="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
                 android:text="@string/settings_disable" />
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
