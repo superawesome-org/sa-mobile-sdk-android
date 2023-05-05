@@ -3,6 +3,7 @@ package tv.superawesome.demoapp.settings
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.admob.AdMobActivity
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
@@ -36,8 +38,17 @@ class SettingsDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?,
     ): View? = inflater.inflate(R.layout.fragment_settings, null, false)
 
+    private fun onTapAdMob() {
+        startActivity(Intent(context, AdMobActivity::class.java))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adMobButton.setOnClickListener {
+            dismiss()
+            onTapAdMob()
+        }
 
         resetButton.setOnClickListener {
             app?.resetSettings()

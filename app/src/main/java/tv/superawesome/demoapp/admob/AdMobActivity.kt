@@ -1,4 +1,4 @@
-package tv.superawesome.demoapp
+package tv.superawesome.demoapp.admob
 
 import android.app.Activity
 import android.os.Bundle
@@ -10,9 +10,10 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import tv.superawesome.demoapp.R
 import tv.superawesome.plugins.publisher.admob.SAAdMobAdapter
 import tv.superawesome.plugins.publisher.admob.SAAdMobExtras
-import tv.superawesome.sdk.publisher.SAOrientation
+import tv.superawesome.sdk.publisher.common.models.Orientation
 
 class AdMobActivity : Activity() {
     private val tag = "SADefaults/AdMob"
@@ -59,7 +60,7 @@ class AdMobActivity : Activity() {
     private fun requestInterstitialAd() {
         val bundle = SAAdMobExtras.extras()
             .setTestMode(false)
-            .setOrientation(SAOrientation.PORTRAIT)
+            .setOrientation(Orientation.Portrait)
             .setParentalGate(false)
             .build()
 
@@ -86,7 +87,7 @@ class AdMobActivity : Activity() {
         val bundle = SAAdMobExtras.extras()
             .setTestMode(false)
             .setParentalGate(false)
-            .setOrientation(SAOrientation.PORTRAIT)
+            .setOrientation(Orientation.Portrait)
             .setSmallClick(true)
             .setCloseAtEnd(true)
             .setCloseButton(true)
