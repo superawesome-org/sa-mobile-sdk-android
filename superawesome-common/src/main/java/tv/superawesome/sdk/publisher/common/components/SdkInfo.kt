@@ -3,8 +3,12 @@ package tv.superawesome.sdk.publisher.common.components
 import android.content.Context
 import android.content.pm.PackageManager
 import tv.superawesome.sdk.publisher.common.models.Platform
-import java.util.*
+import java.util.Locale
+import java.util.Properties
 
+/**
+ * Technical information about the AwesomeAds Publisher SDK, such as name and version number
+ */
 interface SdkInfoType {
     /** Returns the combined version information platform + version number
      * e.g. android_x.y.z */

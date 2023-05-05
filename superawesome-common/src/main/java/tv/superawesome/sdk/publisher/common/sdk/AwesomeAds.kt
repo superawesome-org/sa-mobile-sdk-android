@@ -9,9 +9,16 @@ import tv.superawesome.sdk.publisher.common.di.createCommonModule
 import tv.superawesome.sdk.publisher.common.models.Configuration
 import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
 
-object AwesomeAdsSdk {
+/**
+ * The AwesomeAds Publisher SDK (Software Development Kit) enables you to add COPPA-compliant
+ * banner, interstitial, and video advertisements easily to your apps.
+ */
+object AwesomeAds {
     private var app: KoinApplication? = null
 
+    /**
+     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings
+     * */
     @JvmStatic
     fun init(applicationContext: Context, configuration: Configuration) {
         if (app == null) {
@@ -19,6 +26,11 @@ object AwesomeAdsSdk {
         }
     }
 
+    /**
+     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings
+     * @param options The options dictionary is used to set additional tracking information in the
+     * form of key-value pairs. This information is sent when events are fired from the SDK
+     * */
     @JvmStatic
     fun init(
         applicationContext: Context,
