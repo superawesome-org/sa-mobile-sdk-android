@@ -170,7 +170,9 @@ internal class ManagedAdActivity :
     override fun adEnded() {
         completed = true
         listener?.onEvent(this.placementId, SAEvent.adEnded)
-        close()
+        if (config.shouldCloseAtEnd) {
+            close()
+        }
     }
 
     override fun adClosed() {
