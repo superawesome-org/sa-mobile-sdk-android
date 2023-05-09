@@ -77,7 +77,7 @@ class SettingsDialogFragment : DialogFragment() {
             app?.updateSettings { it.copy(closeButtonState = CloseButtonState.VisibleImmediately) }
         }
 
-        closeDelayedButton.contentDescription = "SettingsItem.Buttons.CloseDelay"
+        closeDelayedButton.contentDescription = "SettingsItem.Buttons.CloseDelayed"
         closeDelayedButton.setOnClickListener {
             app?.updateSettings { it.copy(closeButtonState = CloseButtonState.VisibleWithDelay) }
         }
