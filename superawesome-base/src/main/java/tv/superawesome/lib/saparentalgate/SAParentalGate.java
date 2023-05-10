@@ -63,32 +63,45 @@ public class SAParentalGate {
         // create positive dialog
         alert.setPositiveButton(SA_CHALLANGE_ALERTVIEW_CONTINUEBUTTON_TITLE, (dialog, whichButton) -> {
 
-            String inputStr = input.getText().toString();
-            String validatedInputStr = (inputStr.isEmpty()) ?  "0" : inputStr;
+            int userValue;
 
-            int userValue = Integer.parseInt(validatedInputStr);
+            // try parsing the result and check for mathematical correctness
+            try {
 
-            if (userValue == (startNum + endNum)) {
+                String inputStr = input.getText().toString();
+                String validatedInputStr = (inputStr.isEmpty()) ?  "0" : inputStr;
 
-                listener.parentalGateSuccess();
+                userValue = Integer.parseInt(validatedInputStr);
 
-            } else {
+                if (userValue == (startNum + endNum)) {
 
-                // go on error way
-                AlertDialog.Builder erroralert = new AlertDialog.Builder(c);
-                erroralert.setTitle(SA_ERROR_ALERTVIEW_TITLE);
-                erroralert.setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
+                    listener.parentalGateSuccess();
 
-                // set button action
-                erroralert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, (dialog1, whichButton1) -> {
+                } else {
 
-                    listener.parentalGateFailure();
+                    // go on error way
+                    AlertDialog.Builder erroralert = new AlertDialog.Builder(c);
+                    erroralert.setTitle(SA_ERROR_ALERTVIEW_TITLE);
+                    erroralert.setMessage(SA_ERROR_ALERTVIEW_MESSAGE);
 
-                    // dismiss this
-                    dialog1.dismiss();
+                    // set button action
+                    erroralert.setPositiveButton(SA_ERROR_ALERTVIEW_CANCELBUTTON_TITLE, (dialog1, whichButton1) -> {
 
-                });
-                erroralert.show();
+                        listener.parentalGateFailure();
+
+                        // dismiss this
+                        dialog1.dismiss();
+
+                    });
+                    erroralert.show();
+                }
+
+            }
+            // catch the number format error and cancel the parental gate
+            catch (Exception e) {
+
+                listener.parentalGateCancel();
+
             }
 
             // dismiss
@@ -102,6 +115,7 @@ public class SAParentalGate {
             dialog.dismiss();
 
             listener.parentalGateCancel();
+
         });
 
         dialog = alert.create();
