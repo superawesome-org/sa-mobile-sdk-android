@@ -49,6 +49,7 @@ class MainActivity : FragmentActivity() {
                 updateSettings()
             }
         }
+        settingsButton.contentDescription = "AdList.Buttons.Settings"
     }
 
     private fun initUI() {
