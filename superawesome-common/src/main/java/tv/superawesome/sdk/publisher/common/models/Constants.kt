@@ -37,5 +37,6 @@ internal object Constants {
         const val placementId = "placementId"
         const val config = "config"
         const val html = "html"
+        const val baseUrl = "baseUrl"
     }
 }
