@@ -19,11 +19,11 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.IntentInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.rules.RetryTestRule
+import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
@@ -31,7 +31,6 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
-import tv.superawesome.sdk.publisher.SAInterstitialAd
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -46,9 +45,9 @@ class InterstitialUITest {
     fun setup() {
         Intents.init()
 
-        val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
-        ads.isAccessible = true
-        ads.invoke(null)
+//        val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
+//        ads.isAccessible = true
+//        ads.invoke(null)
     }
 
     @After
@@ -136,6 +135,7 @@ class InterstitialUITest {
     @Test
     fun test_bumper_enabled_from_settings() {
         // Given bumper page is enabled from settings
+        IntentsHelper.stubIntentsForUrl()
         val testData = TestData.interstitialStandard
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableBumper()
@@ -149,7 +149,7 @@ class InterstitialUITest {
         BumperInteraction.waitUntilBumper()
 
         // And view URL is redirected to browser
-        IntentInteraction.checkUrlIsOpenInBrowser("https://www.popjam.com/")
+        IntentsHelper.checkIntentsForUrl()
         CommonInteraction.pressDeviceBackButton()
         verifyUrlPathCalled("/click")
         CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
@@ -253,8 +253,9 @@ class InterstitialUITest {
     @Test
     fun test_standard_ad_click_event() {
         // Given
+        val url = "http://localhost:8080/clickthrough"
+        IntentsHelper.stubIntentsForUrl(url)
         val testData = TestData.interstitialStandard
-        stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(testData)
         CommonInteraction.clickItemAt(testData)
 
@@ -263,7 +264,7 @@ class InterstitialUITest {
             .perform(click())
 
         // And view URL is redirected to browser
-        IntentInteraction.checkUrlIsOpenInBrowser("http://localhost:8080/clickthrough")
+        IntentsHelper.checkIntentsForUrl(url)
         CommonInteraction.pressDeviceBackButton()
         CommonInteraction.waitForCloseButtonThenClick()
 

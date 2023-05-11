@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
@@ -46,7 +46,6 @@ internal interface AdControllerType {
     fun adShown()
     fun adClicked()
     fun adEnded()
-    fun adClosed()
     fun adPlaying()
     fun adPaused()
 
@@ -226,11 +225,12 @@ internal class AdController(
     }
 
     override fun close() = try {
+        adClosed()
         closed = true
         currentAdResponse = null
         parentalGate?.stop()
         bumperPage?.stop()
-        scope.cancel()
+        scope.coroutineContext.cancelChildren()
     } catch (exception: IllegalStateException) {
         logger.error("Exception while closing the ad", exception)
     }
@@ -253,7 +253,7 @@ internal class AdController(
         delegate?.onEvent(placementId, SAEvent.adEnded)
     }
 
-    override fun adClosed() {
+    fun adClosed() {
         delegate?.onEvent(placementId, SAEvent.adClosed)
     }
 

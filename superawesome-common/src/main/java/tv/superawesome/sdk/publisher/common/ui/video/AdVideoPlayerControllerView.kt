@@ -111,6 +111,7 @@ constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 
         smallShowMore.visibility = GONE
         addView(smallShowMore)
         padlock = videoComponentFactory.getPadlock(PADLOCK_ID, context)
+        padlock.contentDescription = "Safe Ad Logo"
         addView(padlock)
     }
 }

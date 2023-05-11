@@ -38,7 +38,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(':superawesome')
     implementation project(':saadmob')
     implementation project(':superawesome-common')
 
@@ -48,8 +47,6 @@ dependencies {
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation 'androidx.test.ext:junit-ktx:1.1.3'
-
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
@@ -59,9 +56,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
     implementation "androidx.activity:activity-ktx:1.6.1"
 
+    // Testing
     testImplementation "junit:junit:$junit_version"
 
-    // Testing
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
     androidTestImplementation "androidx.test:runner:1.4.0"
     androidTestImplementation "androidx.test:core:1.4.0"
     androidTestImplementation "androidx.test:core-ktx:1.4.0"

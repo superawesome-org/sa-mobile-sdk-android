@@ -190,7 +190,6 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
 
     override fun close() {
         CloseWarning.close()
-        controller.adClosed()
         controller.close()
         controller.videoListener = null
         controller.delegate = null

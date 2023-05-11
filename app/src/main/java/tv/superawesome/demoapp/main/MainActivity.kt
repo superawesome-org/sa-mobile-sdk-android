@@ -5,20 +5,23 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.bannerView
+import kotlinx.android.synthetic.main.activity_main.listView
+import kotlinx.android.synthetic.main.activity_main.settingsButton
+import kotlinx.android.synthetic.main.activity_main.subtitleTextView
+import kotlinx.android.synthetic.main.activity_main.titleTextView
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.adapter.CustomListAdapter
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.SettingsData
 import tv.superawesome.demoapp.settings.SettingsDialogFragment
-import tv.superawesome.lib.sabumperpage.SABumperPage
-import tv.superawesome.lib.sasession.defines.SAConfiguration
-import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.SAInterstitialAd
-import tv.superawesome.sdk.publisher.SAVersion
-import tv.superawesome.sdk.publisher.SAVideoAd
-import tv.superawesome.sdk.publisher.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
+import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
+import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
+import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 
 class MainActivity : FragmentActivity() {
     private lateinit var adapter: CustomListAdapter
@@ -28,7 +31,7 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        SABumperPage.overrideName("AwesomeAds Demo")
+        BumperPage.overrideName("AwesomeAds Demo")
 
         initUI()
 
@@ -53,7 +56,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initUI() {
-        val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()}"
+        val title = "AwesomeAds: v${AwesomeAds.info()?.versionNumber}"
         titleTextView.text = title
         configureListView()
     }
@@ -89,6 +92,7 @@ class MainActivity : FragmentActivity() {
                         bannerView.load(item.placementId)
                     }
                 }
+
                 FeatureType.INTERSTITIAL -> {
                     if (item.isFull()) {
                         SAInterstitialAd.load(
@@ -101,6 +105,7 @@ class MainActivity : FragmentActivity() {
                         SAInterstitialAd.load(item.placementId, this@MainActivity)
                     }
                 }
+
                 FeatureType.VIDEO -> {
                     if (item.isFull()) {
                         SAVideoAd.load(
@@ -146,24 +151,20 @@ class MainActivity : FragmentActivity() {
             updateMessage(placementId, event)
 
             if (event == SAEvent.adLoaded && isPlayEnabled()) {
-                bannerView.play(this@MainActivity)
+                bannerView.play()
             }
         }
     }
 
     private fun updateSettings() {
         val settings = getSettings() ?: return
-        val config = settings.environment
 
-        bannerView.setConfiguration(config)
         bannerView.setBumperPage(settings.bumperEnabled)
         bannerView.setParentalGate(settings.parentalEnabled)
 
-        SAInterstitialAd.setConfiguration(config)
         SAInterstitialAd.setBumperPage(settings.bumperEnabled)
         SAInterstitialAd.setParentalGate(settings.parentalEnabled)
 
-        SAVideoAd.setConfiguration(config)
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
         SAVideoAd.setMuteOnStart(settings.muteOnStart)
@@ -175,22 +176,20 @@ class MainActivity : FragmentActivity() {
                 SAVideoAd.enableCloseButtonNoDelay()
                 SAInterstitialAd.enableCloseButtonNoDelay()
             }
+
             CloseButtonState.VisibleWithDelay -> {
                 SAVideoAd.enableCloseButton()
                 SAInterstitialAd.enableCloseButton()
             }
+
             CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
         }
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val settings = getSettings() ?: return
-
-        if (settings.environment == SAConfiguration.UITESTING) {
-            val originalMessage = subtitleTextView.text
-            val message = "$originalMessage $placementId $event"
-            subtitleTextView.text = message
-        }
+        val originalMessage = subtitleTextView.text
+        val message = "$originalMessage $placementId $event"
+        subtitleTextView.text = message
     }
 }
 

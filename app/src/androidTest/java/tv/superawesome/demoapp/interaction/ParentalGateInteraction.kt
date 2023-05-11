@@ -21,7 +21,7 @@ object ParentalGateInteraction {
             .check(matches(isDisplayed()))
             .perform(click())
 
-        onView(withText("Ok"))
+        onView(withText("OK"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
             .perform(click())

@@ -17,12 +17,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.IntentInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
+import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
@@ -37,7 +37,7 @@ class BannerUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule()
+    val retryTestRule = RetryTestRule(1)
 
     @Before
     fun setup() {
@@ -81,7 +81,7 @@ class BannerUITest {
 
         CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEmpty")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
     }
 
     @Test
@@ -101,7 +101,7 @@ class BannerUITest {
     fun test_bumper_enabled_from_settings() {
         // Given bumper page is enabled from settings
         val testData = TestData.bannerSuccess
-        stubIntents()
+        IntentsHelper.stubIntentsForUrl()
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableBumper()
         }
@@ -116,8 +116,7 @@ class BannerUITest {
 
         // And view URL is redirected to browser
         Thread.sleep(4500)
-        IntentInteraction.checkUrlIsOpenInBrowser("https://www.popjam.com/")
-        CommonInteraction.pressDeviceBackButton()
+        IntentsHelper.checkIntentsForUrl()
         verifyUrlPathCalled("/click")
         CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
@@ -218,7 +217,7 @@ class BannerUITest {
     fun test_banner_click_event() {
         // Given
         val testData = TestData.bannerSuccess
-        stubIntents()
+        IntentsHelper.stubIntentsForUrl()
         CommonInteraction.launchActivityWithSuccessStub(testData)
         CommonInteraction.clickItemAt(testData)
 
@@ -229,7 +228,7 @@ class BannerUITest {
             .perform(click())
 
         // Then
-        IntentInteraction.checkUrlIsOpenInBrowser("https://www.popjam.com/")
+        IntentsHelper.checkIntentsForUrl()
         verifyUrlPathCalled("/click")
         CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
@@ -257,6 +256,7 @@ class BannerUITest {
     fun test_external_webpage_opening_on_click() {
         // Given
         val testData = TestData.bannerSuccess
+        IntentsHelper.stubIntentsForUrl()
         stubIntents()
         CommonInteraction.launchActivityWithSuccessStub(testData)
         CommonInteraction.clickItemAt(testData)
@@ -266,7 +266,7 @@ class BannerUITest {
             .perform(click())
 
         // Then view URL is redirected to browser
-        IntentInteraction.checkUrlIsOpenInBrowser("https://www.popjam.com/")
+        IntentsHelper.checkIntentsForUrl()
         verifyUrlPathCalled("/click")
         CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }

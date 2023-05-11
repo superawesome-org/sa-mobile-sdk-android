@@ -3,6 +3,7 @@ package tv.superawesome.demoapp.runner
 import android.app.Application
 import android.os.Bundle
 import androidx.test.runner.AndroidJUnitRunner
+import tv.superawesome.demoapp.MyApplication
 
 
 /**
@@ -13,6 +14,9 @@ class UITestRunner(
 ) : AndroidJUnitRunner() {
 
     override fun callApplicationOnCreate(application: Application) {
+        if (application is MyApplication) {
+            application.setupUITest()
+        }
         super.callApplicationOnCreate(application)
         delegates.forEach { it.onCreate() }
     }

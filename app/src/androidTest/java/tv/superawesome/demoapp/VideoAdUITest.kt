@@ -17,6 +17,7 @@ import tv.superawesome.demoapp.interaction.*
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.rules.RetryTestRule
+import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
@@ -24,8 +25,7 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.waitUntil
-import tv.superawesome.sdk.publisher.SAVideoAd
-
+import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -244,6 +244,7 @@ class VideoAdUITest {
     @Test
     fun test_bumper_enabled_from_settings() {
         // Given bumper page is enabled from settings
+        IntentsHelper.stubIntentsForVast()
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.enableBumper()
@@ -258,7 +259,7 @@ class VideoAdUITest {
 
         // And view URL is redirected to browser
         Thread.sleep(4500)
-        IntentInteraction.checkVastClickIsOpenInBrowser()
+        IntentsHelper.checkIntentsForVast()
         CommonInteraction.pressDeviceBackButton()
 
         // When close is tapped and app returns to list view
@@ -269,6 +270,7 @@ class VideoAdUITest {
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
+        IntentsHelper.stubIntentsForVast()
         val testData = TestData("87969", "video_direct_enabled_success.json")
         CommonInteraction.launchActivityWithSuccessStub(testData)
         CommonInteraction.clickItemAt(testData)
@@ -281,7 +283,7 @@ class VideoAdUITest {
 
         // And view URL is redirected to browser
         Thread.sleep(4500)
-        IntentInteraction.checkVastClickIsOpenInBrowser()
+        IntentsHelper.checkIntentsForVast()
         CommonInteraction.pressDeviceBackButton()
 
         // When close is tapped and app returns to list view
@@ -384,7 +386,7 @@ class VideoAdUITest {
     fun test_direct_ad_click_event() {
         // Given
         val testData = TestData.videoDirect
-        stubIntents()
+        IntentsHelper.stubIntentsForVast()
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeNoDelay()
         }
@@ -395,7 +397,7 @@ class VideoAdUITest {
 
         // Then
         verifyUrlPathCalled("/vast/click")
-        IntentInteraction.checkVastClickIsOpenInBrowser()
+        IntentsHelper.checkIntentsForVast()
         CommonInteraction.pressDeviceBackButton()
 
         // When close is tapped and app returns to list view
@@ -442,7 +444,7 @@ class VideoAdUITest {
     fun test_vast_ad_click_event() {
         // Given
         val testData = TestData.videoVast
-        stubIntents()
+        IntentsHelper.stubIntentsForVast()
         CommonInteraction.launchActivityWithSuccessStub(testData) {
             SettingsInteraction.closeNoDelay()
         }
@@ -453,7 +455,7 @@ class VideoAdUITest {
 
         // Then
         verifyUrlPathCalled("/vast/click")
-        IntentInteraction.checkVastClickIsOpenInBrowser()
+        IntentsHelper.checkIntentsForVast()
         CommonInteraction.pressDeviceBackButton()
 
         // When close is tapped and app returns to list view
@@ -482,7 +484,8 @@ class VideoAdUITest {
     fun test_parental_gate_success_event() {
         openParentalGate()
         ParentalGateInteraction.testSuccess()
-        IntentInteraction.checkVastClickIsOpenInBrowser()
+
+        IntentsHelper.checkIntentsForVast()
         CommonInteraction.pressDeviceBackButton()
 
         // When close is tapped and app returns to list view
@@ -505,7 +508,7 @@ class VideoAdUITest {
     @Test
     fun test_external_webpage_opening_on_click() {
         // Given
-        stubIntents()
+        IntentsHelper.stubIntentsForVast()
         CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect) {
             SettingsInteraction.closeNoDelay()
         }
@@ -515,7 +518,7 @@ class VideoAdUITest {
         CommonInteraction.waitForAdContentThenClick()
 
         // Then view URL is redirected to browser
-        IntentInteraction.checkVastClickIsOpenInBrowser()
+        IntentsHelper.checkIntentsForVast()
 
         // Then go back and check ad is loaded
         CommonInteraction.pressDeviceBackButton()
@@ -645,6 +648,7 @@ class VideoAdUITest {
     }
 
     private fun openParentalGate() {
+        IntentsHelper.stubIntentsForVast()
         CommonInteraction.launchActivityWithSuccessStub(TestData.videoPadlock) {
             SettingsInteraction.enableParentalGate()
         }
