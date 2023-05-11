@@ -1,8 +1,6 @@
 package tv.superawesome.demoapp
 
 import android.content.Intent
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -17,11 +15,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
-import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.robot.bumperPageRobot
+import tv.superawesome.demoapp.robot.interstitialScreenRobot
+import tv.superawesome.demoapp.robot.listScreenRobot
+import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
@@ -31,6 +32,7 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
+import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -39,11 +41,15 @@ class InterstitialUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule()
+    val retryTestRule = RetryTestRule(1)
 
     @Before
     fun setup() {
         Intents.init()
+
+        val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
+        ads.isAccessible = true
+        ads.invoke(null)
     }
 
     @After
@@ -90,7 +96,7 @@ class InterstitialUITest {
 
         CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEmpty")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
     }
 
     @Test
@@ -131,39 +137,64 @@ class InterstitialUITest {
     @Test
     fun test_bumper_enabled_from_settings() {
         // Given bumper page is enabled from settings
-        IntentsHelper.stubIntentsForUrl()
+        IntentsHelper.stubIntentsForVast()
         val testData = TestData.interstitialStandard
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableBumper()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                SettingsInteraction.enableBumper()
+            }
+
+            tapOnPlacement(testData)
         }
-        CommonInteraction.clickItemAt(testData)
 
-        // When ad is clicked
-        CommonInteraction.waitForAdContentThenClick()
+        interstitialScreenRobot {
+            tapOnAdDelayed()
+        }
 
-        // Then bumper page is shown
-        BumperInteraction.waitUntilBumper()
+        bumperPageRobot {
+            waitForDisplay()
 
-        // And view URL is redirected to browser
-        IntentsHelper.checkIntentsForUrl()
-        CommonInteraction.pressDeviceBackButton()
-        verifyUrlPathCalled("/click")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+            // Then view URL is redirected to browser
+            Thread.sleep(4000)
+            IntentsHelper.checkIntentsForVast()
+            verifyUrlPathCalled("/click")
+        }
+
+        interstitialScreenRobot {
+            tapOnClose()
+        }
+
+        listScreenRobot {
+            checkSubtitleContains("${testData.placement} adClicked")
+        }
     }
 
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
         val testData = TestData("87892", "interstitial_standard_enabled_success.json")
-        stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
+        IntentsHelper.stubIntentsForUrl()
 
-        // When ad is clicked
-        onView(withContentDescription("Ad content")).perform(click())
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+        }
 
-        // Then bumper page is shown
-        BumperInteraction.waitUntilBumper()
+        interstitialScreenRobot {
+            tapOnAd()
+        }
+
+        bumperPageRobot {
+            waitForDisplay()
+        }
+
+        Thread.sleep(4000)
+        IntentsHelper.checkIntentsForUrl()
+
+        interstitialScreenRobot {
+            waitForDisplay()
+        }
     }
 
     @Test
@@ -249,33 +280,36 @@ class InterstitialUITest {
     @Test
     fun test_standard_ad_click_event() {
         // Given
-        val url = "http://localhost:8080/clickthrough"
-        IntentsHelper.stubIntentsForUrl(url)
+        IntentsHelper.stubIntentsForVast()
         val testData = TestData.interstitialStandard
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        // When
-        onView(withContentDescription("Ad content"))
-            .perform(click())
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+        }
 
-        // And view URL is redirected to browser
-        IntentsHelper.checkIntentsForUrl(url)
-        CommonInteraction.pressDeviceBackButton()
-        CommonInteraction.waitForCloseButtonThenClick()
+        interstitialScreenRobot {
+            tapOnAd()
 
-        // Then
-        // Not working
-//        verifyUrlPathCalled("/click")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+            IntentsHelper.checkIntentsForVast()
+            waitAndTapOnClose()
+        }
+
+        listScreenRobot {
+            verifyUrlPathCalled("/click")
+            checkSubtitleContains("${testData.placement} adClicked")
+        }
     }
 
     @Test
     fun test_parental_gate_success_event() {
-        stubIntents()
+        IntentsHelper.stubIntentsForUrl()
         openParentalGate()
-        ParentalGateInteraction.testSuccess()
-        Intents.intended(hasAction(Intent.ACTION_VIEW))
+        parentalGateRobot {
+            solve()
+            checkEventForSuccess()
+        }
+        IntentsHelper.checkIntentsForUrl()
     }
 
     @Test
@@ -324,26 +358,37 @@ class InterstitialUITest {
     @Test
     fun test_standard_CloseButtonWithDelay() {
         val testData = TestData.interstitialStandard
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeDelayed()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                SettingsInteraction.closeDelayed()
+            }
+
+            tapOnPlacement(testData)
         }
 
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForCloseButtonWithDelay()
+        interstitialScreenRobot {
+            tapOnCloseDelayed()
+        }
     }
 
     private fun openParentalGate() {
         val testData =
             TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableParentalGate()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                SettingsInteraction.enableParentalGate()
+            }
+            tapOnPlacement(testData)
         }
-        CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.waitForSafeAdLogoThenClick()
+        interstitialScreenRobot {
+            tapOnAd()
+        }
 
-        // Then parental gate open event is triggered
-        ParentalGateInteraction.testOpen()
+        parentalGateRobot {
+            checkEventForOpen()
+        }
     }
 }

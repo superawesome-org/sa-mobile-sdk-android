@@ -41,7 +41,6 @@ internal interface AdControllerType {
     fun handleAdTapForVast(context: Context)
     fun close()
     fun hasAdAvailable(placementId: Int): Boolean
-
     fun adFailedToShow()
     fun adShown()
     fun adClicked()
@@ -50,6 +49,8 @@ internal interface AdControllerType {
     fun adPaused()
 
     fun peekAdResponse(placementId: Int): AdResponse?
+
+    fun clearCache()
 
     interface VideoPlayerListener {
         fun didRequestVideoPause()
@@ -237,6 +238,10 @@ internal class AdController(
 
     override fun hasAdAvailable(placementId: Int): Boolean = adStore.peek(placementId) != null
 
+    private fun adAlreadyLoaded(placementId: Int) {
+        delegate?.onEvent(placementId, SAEvent.adAlreadyLoaded)
+    }
+
     override fun adFailedToShow() {
         delegate?.onEvent(placementId, SAEvent.adFailedToShow)
     }
@@ -269,6 +274,12 @@ internal class AdController(
 
     override fun load(placementId: Int, request: AdRequest) {
         logger.info("load($placementId) thread:${Thread.currentThread()}")
+
+        if (hasAdAvailable(placementId)) {
+            adAlreadyLoaded(placementId)
+            return
+        }
+
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -278,6 +289,13 @@ internal class AdController(
     }
 
     override fun load(placementId: Int, lineItemId: Int, creativeId: Int, request: AdRequest) {
+        logger.info("load($placementId, $lineItemId, $creativeId) thread:${Thread.currentThread()}")
+
+        if (hasAdAvailable(placementId)) {
+            adAlreadyLoaded(placementId)
+            return
+        }
+
         scope.launch {
             when (val result = adRepository.getAd(placementId, lineItemId, creativeId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -313,6 +331,10 @@ internal class AdController(
 
     override fun triggerViewableImpression(placementId: Int) {
         scope.launch { currentAdResponse?.let { eventRepository.viewableImpression(it) } }
+    }
+
+    override fun clearCache() {
+        adStore.clear()
     }
 
     private fun onSuccess(response: AdResponse) {
