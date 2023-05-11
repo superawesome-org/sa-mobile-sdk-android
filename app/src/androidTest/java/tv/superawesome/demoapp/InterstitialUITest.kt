@@ -44,10 +44,6 @@ class InterstitialUITest {
     @Before
     fun setup() {
         Intents.init()
-
-//        val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
-//        ads.isAccessible = true
-//        ads.invoke(null)
     }
 
     @After

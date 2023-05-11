@@ -37,7 +37,7 @@ class BannerUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule(1)
+    val retryTestRule = RetryTestRule()
 
     @Before
     fun setup() {
