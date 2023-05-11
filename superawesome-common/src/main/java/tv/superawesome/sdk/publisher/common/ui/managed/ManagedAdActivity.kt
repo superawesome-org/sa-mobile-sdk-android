@@ -13,6 +13,7 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
+import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
@@ -33,6 +34,7 @@ internal class ManagedAdActivity :
     private var completed: Boolean = false
 
     private val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
+    private val environment: Environment by KoinJavaComponent.inject(Environment::class.java)
 
     private val viewableDetector: ViewableDetectorType by KoinJavaComponent.inject(
         ViewableDetectorType::class.java
@@ -40,6 +42,10 @@ internal class ManagedAdActivity :
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
+    }
+
+    private val baseUrl by lazy {
+        intent.getStringExtra(Constants.Keys.baseUrl) ?: environment.baseUrl
     }
 
     private lateinit var adView: ManagedAdView
@@ -95,7 +101,7 @@ internal class ManagedAdActivity :
     public override fun playContent() {
         listener = SAVideoAd.getDelegate()
         adView.configure(placementId, listener)
-        adView.load(placementId, html, this)
+        adView.load(placementId, html, baseUrl, this)
     }
 
     public override fun close() {
@@ -205,11 +211,19 @@ internal class ManagedAdActivity :
         private const val CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL = 12000L
 
         @JvmStatic
-        fun newInstance(context: Context, placementId: Int, config: Config, html: String): Intent =
+        fun newInstance(
+            context: Context,
+            placementId: Int,
+            config: Config,
+            html: String,
+            baseUrl: String?): Intent =
             Intent(context, ManagedAdActivity::class.java).apply {
                 putExtra(Constants.Keys.placementId, placementId)
                 putExtra(Constants.Keys.config, config)
                 putExtra(Constants.Keys.html, html)
+                baseUrl?.let {
+                    putExtra(Constants.Keys.baseUrl, it)
+                }
             }
     }
 }

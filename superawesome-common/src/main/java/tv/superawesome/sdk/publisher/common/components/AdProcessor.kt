@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.common.components
 
 import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.extensions.baseUrl
+import tv.superawesome.sdk.publisher.common.extensions.extractURLs
 import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
@@ -33,6 +34,11 @@ internal class AdProcessor(
             }
             CreativeFormatType.Video -> {
                 if (ad.isVpaid) {
+                    ad.creative.details.tag?.let { tag ->
+                        tag.extractURLs().firstOrNull()?.let {
+                            response.baseUrl = it.baseUrl
+                        }
+                    }
                     response.html = ad.creative.details.tag
                 } else {
                     ad.creative.details.vast?.let { url ->
