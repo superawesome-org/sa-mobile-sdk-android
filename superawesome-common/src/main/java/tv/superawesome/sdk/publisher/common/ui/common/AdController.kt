@@ -14,6 +14,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.DataResult
@@ -316,6 +317,13 @@ internal class AdController(
     }
 
     private fun onSuccess(response: AdResponse) {
+        if (response.ad.creative.format == CreativeFormatType.Video &&
+            response.ad.creative.details.tag == null &&
+            response.ad.creative.details.vast == null)  {
+            onFailure(placementId, MissingVastTagError())
+            return
+        }
+
         logger.success("onSuccess thread:${Thread.currentThread()} adResponse:$response")
         adStore.put(response)
         delegate?.onEvent(response.placementId, SAEvent.adLoaded)
