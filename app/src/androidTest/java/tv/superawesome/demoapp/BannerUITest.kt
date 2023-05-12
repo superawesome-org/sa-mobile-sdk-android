@@ -6,8 +6,6 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import androidx.test.uiautomator.UiDevice
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
@@ -15,11 +13,15 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import tv.superawesome.demoapp.interaction.BumperInteraction
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.robot.bannerRobot
+import tv.superawesome.demoapp.robot.bumperPageRobot
+import tv.superawesome.demoapp.robot.deviceRobot
+import tv.superawesome.demoapp.robot.listScreenRobot
+import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.IntentsHelper
@@ -37,7 +39,7 @@ class BannerUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule()
+    val retryTestRule = RetryTestRule(1)
 
     @Before
     fun setup() {
@@ -99,64 +101,92 @@ class BannerUITest {
 
     @Test
     fun test_bumper_enabled_from_settings() {
-        // Given bumper page is enabled from settings
         val testData = TestData.bannerSuccess
         IntentsHelper.stubIntentsForUrl()
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableBumper()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumper()
+                }
+            }
+            tapOnPlacement(testData)
         }
-        CommonInteraction.clickItemAt(testData)
 
-        // When ad is clicked
-        onView(withId(R.id.bannerView))
-            .perform(click())
+        bannerRobot {
+            tapOnAd()
+        }
 
-        // Then bumper page is shown
-        BumperInteraction.waitUntilBumper()
+        bumperPageRobot {
+            waitForDisplay()
+        }
 
-        // And view URL is redirected to browser
-        Thread.sleep(4500)
+        listScreenRobot {
+            waitForDisplay()
+            checkSubtitleContains("${testData.placement} adClicked")
+        }
+
         IntentsHelper.checkIntentsForUrl()
         verifyUrlPathCalled("/click")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
     }
 
     @Test
     fun test_bumper_outside_click_does_not_go_through() {
         // Given bumper page is enabled from settings
         val testData = TestData.bannerSuccess
-        stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableBumper()
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumper()
+                }
+            }
+            tapOnPlacement(testData)
         }
-        CommonInteraction.clickItemAt(testData)
 
-        // When ad is clicked
-        onView(withId(R.id.bannerView))
-            .perform(click())
+        bannerRobot {
+            tapOnAd()
+        }
 
-        BumperInteraction.waitUntilBumper()
+        bumperPageRobot {
+            waitForDisplay()
 
-        // And If outside the bumper page is clicked
-        UiDevice.getInstance(getInstrumentation()).click(0, 100)
+            deviceRobot {
+                // And If outside the bumper page is clicked
+                clickOnScreen(0, 100)
+            }
 
-        // Then bumper page title is still visible
-        BumperInteraction.checkBumperPageIsVisible()
+            // Then bumper page title is still visible
+            checkIsVisible()
+        }
+
+        listScreenRobot {
+            waitForDisplay()
+        }
     }
 
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
         val testData = TestData("88001", "banner_enabled_success.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        // When ad is clicked
-        onView(withId(R.id.bannerView))
-            .perform(click())
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+        }
 
-        // Then bumper page is shown
-        BumperInteraction.waitUntilBumper()
+        bannerRobot {
+            tapOnAd()
+        }
+
+        bumperPageRobot {
+            waitForDisplay()
+        }
+
+        listScreenRobot {
+            waitForDisplay()
+        }
     }
 
     @Test
@@ -257,7 +287,7 @@ class BannerUITest {
         // Given
         val testData = TestData.bannerSuccess
         IntentsHelper.stubIntentsForUrl()
-        stubIntents()
+
         CommonInteraction.launchActivityWithSuccessStub(testData)
         CommonInteraction.clickItemAt(testData)
 

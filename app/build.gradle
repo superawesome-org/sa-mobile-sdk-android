@@ -11,6 +11,7 @@ android {
         targetSdkVersion target_sdk_version
         versionCode 1
         testInstrumentationRunner "tv.superawesome.demoapp.runner.UITestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true
     }
     buildTypes {
