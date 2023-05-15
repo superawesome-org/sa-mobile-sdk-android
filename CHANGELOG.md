@@ -1,3 +1,16 @@
+## [9.0.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.0...v9.0.1) (2023-05-15)
+
+
+### Bug Fixes
+
+* **CI:** Added release and unit test step for the common module ([#329](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/329)) ([e5be15a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e5be15a83bc9ed31b53db99c837a5087d377e334))
+* **ManagedAd:** Changed how adEnded behaves to bring it into line with iOS and Base ([#331](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/331)) ([8f5cd5a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/8f5cd5adddec9bc9a16890fceb220a473eb70d41))
+* **ParentalGate:** added validation for an empty string to the parental gate ([#333](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/333)) ([cf4b11b](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/cf4b11b3240631635015f01de139975fab4b3495))
+* **UITesting:** Adding a test rule to retry the tests in order to reduce flakiness ([#318](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/318)) ([f03d712](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f03d712d09d2ee23083f084ac148da31dde07453))
+* **Video:** Added Play Pause for Videos in the Base module ([#320](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/320)) ([4cea1ad](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/4cea1adc8840c0443055354e3593f7f81390286d))
+* **Video:** Added Video Play and Pause functionality to Direct and managed videos in Common ([#321](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/321)) ([c37f163](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/c37f1632b59920d8b7ecbfb0aeb915b8382b8867))
+* **Video:** Remove the gradient from video ads and make the timer background darker ([#322](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/322)) ([fc3c583](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fc3c58367d8a3d5276dc2af15f0899287e69a7d3))
+
 # [9.0.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.8...v9.0.0) (2023-04-19)
 
 
