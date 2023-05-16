@@ -64,10 +64,11 @@ public object SAVideoAd {
         val adResponse = controller.peekAdResponse(placementId)
         val intent = if (adResponse?.ad?.isVpaid == true) {
             ManagedAdActivity.newInstance(
-                context,
-                placementId,
-                controller.config,
-                adResponse.html ?: "",
+                context = context,
+                placementId = placementId,
+                config = controller.config,
+                html = adResponse.html ?: "",
+                baseUrl = adResponse.baseUrl,
             )
         } else {
             VideoActivity.newInstance(context, placementId, controller.config)

@@ -20,7 +20,6 @@ import tv.superawesome.sdk.publisher.common.components.TimeProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
@@ -37,7 +36,6 @@ public class ManagedAdView @JvmOverloads constructor(
     private val imageProvider: ImageProviderType by KoinJavaComponent.inject(ImageProviderType::class.java)
     private val timeProvider: TimeProviderType by KoinJavaComponent.inject(TimeProviderType::class.java)
     private val logger: Logger by KoinJavaComponent.inject(Logger::class.java)
-    private val environment: Environment by KoinJavaComponent.inject(Environment::class.java)
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
@@ -49,7 +47,12 @@ public class ManagedAdView @JvmOverloads constructor(
         addWebView()
     }
 
-    internal fun load(placementId: Int, html: String, listener: AdViewJavaScriptBridge.Listener) {
+    internal fun load(
+        placementId: Int,
+        html: String,
+        baseUrl: String?,
+        listener: AdViewJavaScriptBridge.Listener,
+    ) {
         logger.info("load($placementId)")
         this.placementId = placementId
         showPadlockIfNeeded()
@@ -57,7 +60,7 @@ public class ManagedAdView @JvmOverloads constructor(
         webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
         webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener, logger), JS_BRIDGE_NAME)
         val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
-        webView?.loadDataWithBaseURL(environment.baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
+        webView?.loadDataWithBaseURL(baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
         controller.play(placementId)
     }
 

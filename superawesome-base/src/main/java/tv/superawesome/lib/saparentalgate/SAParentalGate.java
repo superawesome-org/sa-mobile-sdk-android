@@ -67,7 +67,11 @@ public class SAParentalGate {
 
             // try parsing the result and check for mathematical correctness
             try {
-                userValue = Integer.parseInt(input.getText().toString());
+
+                String inputStr = input.getText().toString();
+                String validatedInputStr = (inputStr.isEmpty()) ?  "0" : inputStr;
+
+                userValue = Integer.parseInt(validatedInputStr);
 
                 if (userValue == (startNum + endNum)) {
 
@@ -93,7 +97,7 @@ public class SAParentalGate {
                 }
 
             }
-            // catch the number format error and calce the parental gate
+            // catch the number format error and cancel the parental gate
             catch (Exception e) {
 
                 listener.parentalGateCancel();
