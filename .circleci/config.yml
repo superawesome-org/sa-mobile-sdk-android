@@ -270,6 +270,8 @@ jobs:
             export CURRENT_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 1p`
             export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
 
+            echo `ls -l`
+
             # get release notes from semantic-release
             export CHANGES=`awk -v cver="${CURRENT_VERSION:1}" -v pver="${PREVIOUS_VERSION:1}" "/^([#]+ \[cver\])/{flag=1;next}/^([#]+ \[pver\])/{flag=0}flag" CHANGELOG.md`
             export CHANGES=`sed -E 's/ \(\[([^\[]+)\](\(.*\))//g' \<<< $CHANGES`
@@ -291,7 +293,7 @@ jobs:
             # commit and push
             git add $RELEASE_DOC_PATH
             git add $CONFIG_PATH
-            git commit -m "Add iOS release version $RELEASE_NUMBER via Circle CI" --no-rebase
+            git commit -m "Add iOS release version $RELEASE_NUMBER via Circle CI"
             git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git -q main --no-rebase
 
   publish_docs:
