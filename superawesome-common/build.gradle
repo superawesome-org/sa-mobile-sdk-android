@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlinx-serialization'
 }
+
+apply from: '../publish.gradle'
 apply from: '../jacoco.gradle'
 
 android {
