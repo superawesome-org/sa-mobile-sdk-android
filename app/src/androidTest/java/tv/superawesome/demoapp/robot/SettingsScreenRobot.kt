@@ -10,6 +10,16 @@ class SettingsScreenRobot {
         onView(withId(R.id.bumperEnableButton))
             .perform(click())
     }
+
+    fun tapOnCloseNoDelay() {
+        onView(withId(R.id.closeImmediatelyButton))
+            .perform(click())
+    }
+
+    fun tapOnEnableParentalGate() {
+        onView(withId(R.id.parentalEnableButton))
+            .perform(click())
+    }
 }
 
 fun settingsScreenRobot(func: SettingsScreenRobot.() -> Unit) =
