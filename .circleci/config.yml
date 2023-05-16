@@ -263,7 +263,12 @@ jobs:
   update_docs:
     <<: *android_config
     steps:
+      - attach_workspace:
+          at: .
+      - *configure_google_services
       - *generate_github_token
+      - *clone_scripts_repo
+      - *bootstrap_android
       - run:
           name: Update Release page in docs
           command: |
