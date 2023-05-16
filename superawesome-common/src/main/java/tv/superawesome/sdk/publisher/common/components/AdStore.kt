@@ -8,6 +8,9 @@ internal interface AdStoreType {
 
     /** Peeks the content inside the store without consuming it */
     fun peek(placementId: Int): AdResponse?
+
+    /** Clears cache */
+    fun clear()
 }
 
 internal class AdStore : AdStoreType {
@@ -26,4 +29,8 @@ internal class AdStore : AdStoreType {
     }
 
     override fun peek(placementId: Int): AdResponse? = data[placementId]
+
+    override fun clear() {
+        data.clear()
+    }
 }

@@ -6,8 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
 import tv.superawesome.sdk.publisher.common.components.Logger
@@ -20,6 +21,7 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import kotlin.math.abs
 
 internal interface AdControllerType {
@@ -42,16 +44,15 @@ internal interface AdControllerType {
     fun handleAdTapForVast(context: Context)
     fun close()
     fun hasAdAvailable(placementId: Int): Boolean
-
     fun adFailedToShow()
     fun adShown()
-    fun adClicked()
     fun adEnded()
-    fun adClosed()
     fun adPlaying()
     fun adPaused()
 
     fun peekAdResponse(placementId: Int): AdResponse?
+
+    fun clearCache()
 
     interface VideoPlayerListener {
         fun didRequestVideoPause()
@@ -93,14 +94,21 @@ internal class AdController(
     }
 
     override fun handleAdTapForVast(context: Context) {
-        val clickThroughUrl = currentAdResponse?.vast?.clickThroughUrl
+        // if the campaign is a CPI one, get the normal CPI url so that
+        // we can append the "referrer data" to it (since most likely
+        // "click_through" will have a redirect)
+        val destinationUrl = if (currentAdResponse?.ad?.isCPICampaign() == true) {
+            currentAdResponse?.ad?.creative?.clickUrl
+        } else {
+            currentAdResponse?.vast?.clickThroughUrl
+        }
 
-        if (clickThroughUrl == null) {
-            logger.info("Click through URL is not found")
+        if (destinationUrl == null) {
+            logger.info("Destination URL is not found")
             return
         }
 
-        handleAdTap(clickThroughUrl, context)
+        handleAdTap(destinationUrl, context)
     }
 
     private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) =
@@ -169,11 +177,11 @@ internal class AdController(
         if (isClickTooFast()) return
 
         showParentalGateIfNeeded(context, completion = {
-            showBannerIfNeeded(url, context)
+            showBumperIfNeeded(url, context)
         })
     }
 
-    private fun showBannerIfNeeded(url: String, context: Context) {
+    private fun showBumperIfNeeded(url: String, context: Context) {
         if (config.isBumperPageEnabled || currentAdResponse?.ad?.creative?.bumper == true) {
             playBumperPage(url, context)
         } else {
@@ -202,10 +210,11 @@ internal class AdController(
             return
         }
 
-        delegate?.onEvent(placementId, SAEvent.adClicked)
+        adClicked()
 
         if (currentAdResponse?.isVideo() == true) {
             scope.launch { currentAdResponse?.let { eventRepository.videoClick(it) } }
+            triggerVastClickEvents()
         } else {
             scope.launch { currentAdResponse?.let { eventRepository.click(it) } }
         }
@@ -216,27 +225,45 @@ internal class AdController(
         } else {
             ""
         }
+
         val destination = "$url$referrer"
 
-        // start browser
         try {
+            // start browser
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(destination)))
         } catch (exception: Exception) {
             logger.error("Exception while navigating to url", exception)
         }
     }
 
+    private fun triggerVastClickEvents() {
+        val vast = currentAdResponse?.vast ?: return
+        val vastEventRepository: VastEventRepositoryType = get(
+            clazz = VastEventRepositoryType::class.java,
+            parameters = { parametersOf(vast) }
+        )
+
+        scope.launch {
+            vastEventRepository.clickTracking()
+        }
+    }
+
     override fun close() = try {
+        adClosed()
         closed = true
         currentAdResponse = null
         parentalGate?.stop()
         bumperPage?.stop()
-        scope.cancel()
+        scope.coroutineContext.cancelChildren()
     } catch (exception: IllegalStateException) {
         logger.error("Exception while closing the ad", exception)
     }
 
     override fun hasAdAvailable(placementId: Int): Boolean = adStore.peek(placementId) != null
+
+    private fun adAlreadyLoaded(placementId: Int) {
+        delegate?.onEvent(placementId, SAEvent.adAlreadyLoaded)
+    }
 
     override fun adFailedToShow() {
         delegate?.onEvent(placementId, SAEvent.adFailedToShow)
@@ -246,7 +273,7 @@ internal class AdController(
         delegate?.onEvent(placementId, SAEvent.adShown)
     }
 
-    override fun adClicked() {
+    fun adClicked() {
         delegate?.onEvent(placementId, SAEvent.adClicked)
     }
 
@@ -254,7 +281,7 @@ internal class AdController(
         delegate?.onEvent(placementId, SAEvent.adEnded)
     }
 
-    override fun adClosed() {
+    fun adClosed() {
         delegate?.onEvent(placementId, SAEvent.adClosed)
     }
 
@@ -270,6 +297,12 @@ internal class AdController(
 
     override fun load(placementId: Int, request: AdRequest) {
         logger.info("load($placementId) thread:${Thread.currentThread()}")
+
+        if (hasAdAvailable(placementId)) {
+            adAlreadyLoaded(placementId)
+            return
+        }
+
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -279,6 +312,13 @@ internal class AdController(
     }
 
     override fun load(placementId: Int, lineItemId: Int, creativeId: Int, request: AdRequest) {
+        logger.info("load($placementId, $lineItemId, $creativeId) thread:${Thread.currentThread()}")
+
+        if (hasAdAvailable(placementId)) {
+            adAlreadyLoaded(placementId)
+            return
+        }
+
         scope.launch {
             when (val result = adRepository.getAd(placementId, lineItemId, creativeId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -314,6 +354,10 @@ internal class AdController(
 
     override fun triggerViewableImpression(placementId: Int) {
         scope.launch { currentAdResponse?.let { eventRepository.viewableImpression(it) } }
+    }
+
+    override fun clearCache() {
+        adStore.clear()
     }
 
     private fun onSuccess(response: AdResponse) {

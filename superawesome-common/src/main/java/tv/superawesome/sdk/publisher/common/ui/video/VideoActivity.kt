@@ -17,8 +17,8 @@ import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.extensions.toPx
-import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
@@ -65,6 +65,7 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
         videoPlayer.layoutParams = params
         videoPlayer.setController(control)
         videoPlayer.setBackgroundColor(Color.BLACK)
+        videoPlayer.contentDescription = "Ad content"
         parentLayout.addView(videoPlayer)
 
         closeButton.visibility =
@@ -86,6 +87,7 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
             override fun onComplete(player: IVideoPlayer, time: Int, duration: Int) {
                 completed = true
                 videoEvents?.complete(player, time, duration)
+                closeButton.visibility = View.VISIBLE
 
                 controller.adEnded()
 
@@ -190,7 +192,6 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
 
     override fun close() {
         CloseWarning.close()
-        controller.adClosed()
         controller.close()
         controller.videoListener = null
         controller.delegate = null
@@ -218,7 +219,6 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
         chrome.shouldShowPadlock(controller.shouldShowPadlock)
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick)
         chrome.setClickListener {
-            controller.adClicked()
             controller.handleAdTapForVast(this)
         }
         chrome.padlock.setOnClickListener { controller.handleSafeAdTap(this) }

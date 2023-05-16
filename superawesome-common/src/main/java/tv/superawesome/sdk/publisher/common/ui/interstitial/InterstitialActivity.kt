@@ -33,6 +33,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
         interstitialBanner.setBumperPage(SAInterstitialAd.isBumperPageEnabled())
         interstitialBanner.setParentalGate(SAInterstitialAd.isParentalGateEnabled())
         interstitialBanner.setListener(this)
+        interstitialBanner.contentDescription = "Ad content"
 
         parentLayout.addView(interstitialBanner)
 
