@@ -182,10 +182,9 @@ jobs:
             # get previous release tag
             export CURRENT_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 1p`
             export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
-            export AWK_PATTERN="\"/^([#]+ \[${CURRENT_VERSION:1}\])/{flag=1;next}/^([#]+ \[${PREVIOUS_VERSION:1}\])/{flag=0}flag\""
 
             # get release notes from semantic-release
-            export CHANGES=`awk $AWK_PATTERN CHANGELOG.md`
+            export CHANGES=`awk -v cver="${CURRENT_VERSION:1}" -v pver="${PREVIOUS_VERSION:1}" "/^([#]+ \[cver\])/{flag=1;next}/^([#]+ \[pver\])/{flag=0}flag" CHANGELOG.md`
             export CHANGES=`sed -E 's/ \(\[([^\[]+)\](\(.*\))//g' \<<< $CHANGES`
 
             # checkout docs repo
@@ -205,8 +204,8 @@ jobs:
             # commit and push
             git add $RELEASE_DOC_PATH
             git add $CONFIG_PATH
-            git commit -m "Add iOS release version $RELEASE_NUMBER via Circle CI"
-            git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git -q main
+            git commit -m "Add iOS release version $RELEASE_NUMBER via Circle CI" --no-rebase
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git -q main --no-rebase
 
   sdk_push_superawesome_base:
     <<: *android_config
@@ -259,6 +258,41 @@ jobs:
       - run:
           name: Push Superawesome-Unity to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
+
+## Run sdk push
+  update_docs:
+    <<: *android_config
+    steps:
+      - run:
+          name: Update Release page in docs
+          command: |
+            # get previous release tag
+            export CURRENT_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 1p`
+            export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
+
+            # get release notes from semantic-release
+            export CHANGES=`awk -v cver="${CURRENT_VERSION:1}" -v pver="${PREVIOUS_VERSION:1}" "/^([#]+ \[cver\])/{flag=1;next}/^([#]+ \[pver\])/{flag=0}flag" CHANGELOG.md`
+            export CHANGES=`sed -E 's/ \(\[([^\[]+)\](\(.*\))//g' \<<< $CHANGES`
+
+            # checkout docs repo
+            git pull https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git main
+
+            # Update releases
+            echo "export RELEASE_DOC_PATH=sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md" >> $BASH_ENV
+            source $BASH_ENV
+
+            # insert new release and change log
+            perl -i -pe '$_ = "\n## $ENV{CURRENT_VERSION}$ENV{CHANGES}\n$_" if $. == 7' $RELEASE_DOC_PATH
+
+            # update config file release version
+            echo "export CONFIG_PATH=sa-mobile-sdk-publisher-docs/docs/_config.yml" >> $BASH_ENV
+            sed -i '' "s/android_latest_version: ${PREVIOUS_VERSION:1}/android_latest_version: ${CURRENT_VERSION:1}/g" $CONFIG_PATH
+
+            # commit and push
+            git add $RELEASE_DOC_PATH
+            git add $CONFIG_PATH
+            git commit -m "Add iOS release version $RELEASE_NUMBER via Circle CI" --no-rebase
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git -q main --no-rebase
 
   publish_docs:
     docker:
@@ -319,6 +353,16 @@ workflows:
               ignore: /^v.*/
 
       - test_superawesome_common:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+      - update_docs:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
