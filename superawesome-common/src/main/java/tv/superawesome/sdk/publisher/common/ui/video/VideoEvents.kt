@@ -2,7 +2,6 @@
 
 package tv.superawesome.sdk.publisher.common.ui.video
 
-import android.util.Log
 import android.view.ViewGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,12 +49,9 @@ internal class VideoEvents(
     }
 
     public fun time(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-        Log.i("gunhanx","time update: time: $time duration: $duration")
         if (viewableDetector?.isVisible == null) {
             viewableDetector?.isVisible = {
                 scope.launch {
-                    Log.i("gunhanx","time update: time: $time oneSecondDwellTime")
-
                     eventRepository.oneSecondDwellTime(adResponse)
                 }
             }
