@@ -1,3 +1,10 @@
+## [9.0.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.1...v9.0.2) (2023-05-16)
+
+
+### Bug Fixes
+
+* **CI:** Tweaks to the CI to fix issues around publishing ([#342](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/342)) ([fdeedb4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fdeedb4d32e0f2ce05ee0edb42cc58fcddf61832))
+
 ## [9.0.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.0...v9.0.1) (2023-05-15)
 
 
