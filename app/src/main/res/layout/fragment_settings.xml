@@ -8,11 +8,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:padding="16dp"
         android:background="@android:color/white">
 
         <Button
-            app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/adMobButton"
             style="@style/SettingsButtonStyle"
             android:layout_width="wrap_content"
@@ -20,6 +19,7 @@
             android:background="?selectableItemBackground"
             android:text="@string/admob_button"
             app:layout_constraintBottom_toBottomOf="@+id/resetButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -48,29 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="4"
-            android:padding="4dp"
-            android:useDefaultMargins="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closeButton">
-
-            <TextView
-                android:text="@string/settings_configuration"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/uiTestingButton"
-                style="@style/SettingsButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_ui_testing" />
-
-            <Button
-                android:id="@+id/productionButton"
-                style="@style/SettingsButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:text="@string/settings_production" />
 
             <TextView
                 android:text="@string/settings_close_button"

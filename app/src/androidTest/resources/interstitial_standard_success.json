@@ -48,7 +48,7 @@
     "bumper":false,
     "attributionType":1,
     "vpaid":false,
-    "click_url": "http://localhost:8080/clickthrough"
+    "click_url": "http://localhost:8080/vast/clickthrough"
   },
   "is_fill":false,
   "is_fallback":false,

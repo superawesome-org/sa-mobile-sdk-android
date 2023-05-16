@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.admob.AdMobActivity
-import tv.superawesome.lib.sasession.defines.SAConfiguration
-import tv.superawesome.sdk.publisher.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 
 class SettingsDialogFragment : DialogFragment() {
     var onDismissListener: (() -> Unit)? = null
@@ -60,16 +59,6 @@ class SettingsDialogFragment : DialogFragment() {
         closeButton.contentDescription = "Settings.Buttons.Close"
         closeButton.setOnClickListener {
             dismiss()
-        }
-
-        uiTestingButton.contentDescription = "SettingsItem.Buttons.UITesting"
-        uiTestingButton.setOnClickListener {
-            app?.updateSettings { it.copy(environment = SAConfiguration.UITESTING) }
-        }
-
-        productionButton.contentDescription = "SettingsItem.Buttons.Production"
-        productionButton.setOnClickListener {
-            app?.updateSettings { it.copy(environment = SAConfiguration.PRODUCTION) }
         }
 
         closeImmediatelyButton.contentDescription = "SettingsItem.Buttons.CloseImmediately"

@@ -5,12 +5,13 @@ package tv.superawesome.sdk.publisher.common.ui.video
 import android.app.Activity
 import android.content.Context
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.managed.ManagedAdActivity
 
@@ -270,4 +271,10 @@ public object SAVideoAd {
     internal fun isParentalGateEnabled(): Boolean = controller.config.isParentalGateEnabled
 
     internal fun getDelegate(): SAInterface? = controller.delegate
+
+    @VisibleForTesting
+    @JvmStatic
+    private fun clearCache() {
+        controller.clearCache()
+    }
 }

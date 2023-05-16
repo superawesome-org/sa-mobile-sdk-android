@@ -31,7 +31,7 @@
       "duration": 10,
       "vast": "http://localhost:8080/vast/tag"
     },
-    "click_url": "https://www.popjam.com/"
+    "click_url": "https://www.superawesome.com/"
   },
   "advertiserId": 4,
   "publisherId": 4,

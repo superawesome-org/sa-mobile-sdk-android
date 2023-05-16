@@ -47,7 +47,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitleTextView" />
 
-    <tv.superawesome.sdk.publisher.SABannerAd
+    <tv.superawesome.sdk.publisher.common.ui.banner.BannerView
         android:id="@+id/bannerView"
         android:layout_width="0dp"
         android:layout_height="70dp"
