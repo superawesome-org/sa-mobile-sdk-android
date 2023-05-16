@@ -279,6 +279,8 @@ jobs:
             export CHANGES=`awk -v cver="${CURRENT_VERSION:1}" -v pver="${PREVIOUS_VERSION:1}" "/^([#]+ \[cver\])/{flag=1;next}/^([#]+ \[pver\])/{flag=0}flag" CHANGELOG.md`
             export CHANGES=`sed -E 's/ \(\[([^\[]+)\](\(.*\))//g' \<<< $CHANGES`
 
+            echo "Changes Found ${CHANGES}"
+
             # checkout docs repo
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git
 
@@ -292,7 +294,7 @@ jobs:
             # update config file release version
             echo "export CONFIG_PATH=sa-mobile-sdk-publisher-docs/docs/_config.yml" >> $BASH_ENV
 
-            echo $CONFIG_PATH
+            echo "Mylo ${CONFIG_PATH}"
             sed -i "s/android_latest_version: ${PREVIOUS_VERSION:1}/android_latest_version: ${CURRENT_VERSION:1}/g" $CONFIG_PATH
 
             cat $CONFIG_PATH
