@@ -1,23 +1,9 @@
 package tv.superawesome.plugins.publisher.admob
 
 import android.content.Context
-import com.google.android.gms.ads.mediation.Adapter
-import com.google.android.gms.ads.mediation.InitializationCompleteCallback
-import com.google.android.gms.ads.mediation.MediationAdLoadCallback
-import com.google.android.gms.ads.mediation.MediationBannerAd
-import com.google.android.gms.ads.mediation.MediationBannerAdCallback
-import com.google.android.gms.ads.mediation.MediationBannerAdConfiguration
-import com.google.android.gms.ads.mediation.MediationConfiguration
-import com.google.android.gms.ads.mediation.MediationInterstitialAd
-import com.google.android.gms.ads.mediation.MediationInterstitialAdCallback
-import com.google.android.gms.ads.mediation.MediationInterstitialAdConfiguration
-import com.google.android.gms.ads.mediation.MediationRewardedAd
-import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
-import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
-import com.google.android.gms.ads.mediation.VersionInfo
-import tv.superawesome.sdk.publisher.common.models.Configuration
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
-
+import com.google.android.gms.ads.mediation.*
+import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.SAVersion
 
 /**
  * AdMob mediation adapter for AwesomeAds
@@ -33,7 +19,7 @@ open class SAAdMobAdapter : Adapter() {
         initializationCompleteCallback: InitializationCompleteCallback,
         mediationConfigurations: MutableList<MediationConfiguration>
     ) {
-        AwesomeAds.init(context, Configuration(logging = false))
+        AwesomeAds.init(context, false)
         initializationCompleteCallback.onInitializationSucceeded()
     }
 
@@ -62,7 +48,7 @@ open class SAAdMobAdapter : Adapter() {
     }
 
     override fun getSDKVersionInfo(): VersionInfo {
-        val splits = AwesomeAds.info()?.versionNumber?.split(".") ?: emptyList()
+        val splits = SAVersion.getSDKVersionNumber().split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt())
         } else {
@@ -71,7 +57,7 @@ open class SAAdMobAdapter : Adapter() {
     }
 
     override fun getVersionInfo(): VersionInfo {
-        val splits = AwesomeAds.info()?.versionNumber?.split(".") ?: emptyList()
+        val splits = SAVersion.getSDKVersionNumber().split(".")
         return if (splits.size >= 3) {
             VersionInfo(splits[0].toInt(), splits[1].toInt(), splits[2].toInt() * 100)
         } else {

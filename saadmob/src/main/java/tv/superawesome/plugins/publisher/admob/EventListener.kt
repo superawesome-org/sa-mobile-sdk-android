@@ -1,9 +1,8 @@
 package tv.superawesome.plugins.publisher.admob
 
 import android.util.Log
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
 import java.lang.ref.WeakReference
 
 internal class EventListener : SAInterface {
@@ -52,7 +51,7 @@ internal class EventListener : SAInterface {
     }
 
     @Synchronized
-    override fun onEvent(placementId: Int, event: SAEvent) {
+    override fun onEvent(placementId: Int, event: SAEvent?) {
         Log.d(
             "SuperAwesome",
             "EventListener onEvent -> placementId: $placementId event: $event"

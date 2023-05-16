@@ -5,9 +5,11 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback
 import com.google.android.gms.ads.mediation.MediationInterstitialAd
 import com.google.android.gms.ads.mediation.MediationInterstitialAdCallback
 import com.google.android.gms.ads.mediation.MediationInterstitialAdConfiguration
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
+import tv.superawesome.sdk.publisher.SAInterstitialAd
+import tv.superawesome.sdk.publisher.SAOrientation
 
 class SAAdMobInterstitialAd(
     private val adConfiguration: MediationInterstitialAdConfiguration,
@@ -24,14 +26,18 @@ class SAAdMobInterstitialAd(
 
     fun load() {
         val context = adConfiguration.context
-        val extras = SAAdMobExtras.readBundle(adConfiguration.mediationExtras)
 
-        if (extras != null) {
-            SAInterstitialAd.setTestMode(extras.testMode)
-            SAInterstitialAd.setOrientation(extras.orientation)
-            SAInterstitialAd.setParentalGate(extras.parentalGate)
-            SAInterstitialAd.setBumperPage(extras.bumperPage)
-            SAInterstitialAd.setBackButton(extras.backButton)
+        val extras = adConfiguration.mediationExtras
+
+        if (extras.size() > 0) {
+            SAInterstitialAd.setConfiguration(
+                SAConfiguration.fromOrdinal(extras.getInt(SAAdMobExtras.kKEY_CONFIGURATION))
+            )
+            SAInterstitialAd.setTestMode(extras.getBoolean(SAAdMobExtras.kKEY_TEST))
+            SAInterstitialAd.setOrientation(SAOrientation.fromValue(extras.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
+            SAInterstitialAd.setParentalGate(extras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
+            SAInterstitialAd.setBumperPage(extras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
+            SAInterstitialAd.setBackButton(extras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
         }
 
         loadedPlacementId =

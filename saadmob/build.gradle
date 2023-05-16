@@ -31,6 +31,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(':superawesome-common')
+    implementation project(':superawesome-base')
     implementation 'com.google.android.gms:play-services-ads:21.5.0'
 }

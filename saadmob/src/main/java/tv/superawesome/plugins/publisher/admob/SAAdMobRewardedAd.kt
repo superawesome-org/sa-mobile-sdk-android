@@ -6,9 +6,12 @@ import com.google.android.gms.ads.mediation.MediationRewardedAd
 import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
 import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
 import com.google.android.gms.ads.rewarded.RewardItem
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAInterface
+import tv.superawesome.sdk.publisher.SAOrientation
+import tv.superawesome.sdk.publisher.SAVideoAd
 
 class SAAdMobRewardedAd(
     private val adConfiguration: MediationRewardedAdConfiguration,
@@ -25,18 +28,20 @@ class SAAdMobRewardedAd(
 
     fun load() {
         val context = adConfiguration.context
-        val extras = SAAdMobExtras.readBundle(adConfiguration.mediationExtras)
 
-        if (extras != null) {
-            SAVideoAd.setTestMode(extras.testMode)
-            SAVideoAd.setOrientation(extras.orientation)
-            SAVideoAd.setParentalGate(extras.parentalGate)
-            SAVideoAd.setBumperPage(extras.bumperPage)
-            SAVideoAd.setSmallClick(extras.smallClick)
-            SAVideoAd.setCloseButton(extras.closeButton)
-            SAVideoAd.setCloseAtEnd(extras.closeAtEnd)
-            SAVideoAd.setBackButton(extras.backButton)
-            SAVideoAd.setPlaybackMode(extras.playback)
+        val extras = adConfiguration.mediationExtras
+
+        if (extras.size() > 0) {
+            SAVideoAd.setConfiguration(SAConfiguration.fromOrdinal(extras.getInt(SAAdMobExtras.kKEY_CONFIGURATION)))
+            SAVideoAd.setTestMode(extras.getBoolean(SAAdMobExtras.kKEY_TEST))
+            SAVideoAd.setOrientation(SAOrientation.fromValue(extras.getInt(SAAdMobExtras.kKEY_ORIENTATION)))
+            SAVideoAd.setParentalGate(extras.getBoolean(SAAdMobExtras.kKEY_PARENTAL_GATE))
+            SAVideoAd.setBumperPage(extras.getBoolean(SAAdMobExtras.kKEY_BUMPER_PAGE))
+            SAVideoAd.setSmallClick(extras.getBoolean(SAAdMobExtras.kKEY_SMALL_CLICK))
+            SAVideoAd.setCloseButton(extras.getBoolean(SAAdMobExtras.kKEY_CLOSE_BUTTON))
+            SAVideoAd.setCloseAtEnd(extras.getBoolean(SAAdMobExtras.kKEY_CLOSE_AT_END))
+            SAVideoAd.setBackButton(extras.getBoolean(SAAdMobExtras.kKEY_BACK_BUTTON))
+            SAVideoAd.setPlaybackMode(SARTBStartDelay.fromValue(extras.getInt(SAAdMobExtras.kKEY_PLAYBACK_MODE)))
         }
 
         loadedPlacementId =
