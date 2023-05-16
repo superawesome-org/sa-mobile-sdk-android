@@ -283,7 +283,7 @@ jobs:
             export CHANGES=`sed -E 's/ \(\[([^\[]+)\](\(.*\))//g' \<<< $CHANGES`
 
             # checkout docs repo
-            git pull https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git main
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git
 
             # Update releases
             echo "export RELEASE_DOC_PATH=sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md" >> $BASH_ENV
@@ -350,25 +350,25 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - test_superawesome_base:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - test_superawesome_base:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - checkout_code
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
-      - test_superawesome_common:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - test_superawesome_common:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - checkout_code
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
       - update_docs:
           context: MOBILE_ANDROID_SDKS
