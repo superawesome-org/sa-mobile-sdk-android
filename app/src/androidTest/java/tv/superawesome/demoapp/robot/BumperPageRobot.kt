@@ -14,6 +14,10 @@ class BumperPageRobot {
             .check(isVisible())
     }
 
+    fun waitForFinish() {
+        Thread.sleep(5000)
+    }
+
     fun checkIsVisible() {
         Espresso.onView(ViewMatchers.withText("Bye! You’re now leaving AwesomeAds Demo"))
             .check(isVisible())
