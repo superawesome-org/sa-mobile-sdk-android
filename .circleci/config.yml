@@ -291,7 +291,7 @@ jobs:
 
             # update config file release version
             echo "export CONFIG_PATH=sa-mobile-sdk-publisher-docs/docs/_config.yml" >> $BASH_ENV
-            sed -i "s/android_latest_version: ${PREVIOUS_VERSION:1}/android_latest_version: ${CURRENT_VERSION:1}/g" $CONFIG_PATH > $CONFIG_PATH
+            sed -i "s/android_latest_version: ${PREVIOUS_VERSION:1}/android_latest_version: ${CURRENT_VERSION:1}/g" "${CONFIG_PATH}"
 
             cat $CONFIG_PATH
 
