@@ -8,6 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.main.MainActivity
 import tv.superawesome.demoapp.model.TestData
@@ -69,6 +70,13 @@ class ListScreenRobot : BaseRobot() {
         onView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
             .perform(waitUntil(withSubstring(text)))
+    }
+
+    fun checkAdHasBeenLoadedShownClickedClosed(placementId: String) {
+        checkSubtitleContains("$placementId adLoaded")
+        checkSubtitleContains("$placementId adShown")
+        checkSubtitleContains("$placementId adClicked")
+        checkSubtitleContains("$placementId adClosed")
     }
 
     fun waitForDisplay() {

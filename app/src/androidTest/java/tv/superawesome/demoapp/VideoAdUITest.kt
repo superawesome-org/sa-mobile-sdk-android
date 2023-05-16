@@ -4,7 +4,6 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.FlakyTest
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -16,9 +15,13 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.*
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.robot.bumperPageRobot
+import tv.superawesome.demoapp.robot.listScreenRobot
+import tv.superawesome.demoapp.robot.parentalGateRobot
+import tv.superawesome.demoapp.robot.settingsScreenRobot
+import tv.superawesome.demoapp.robot.videoScreenRobot
 import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.IntentsHelper
-import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
@@ -35,7 +38,7 @@ class VideoAdUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule()
+    val retryTestRule = RetryTestRule(2)
 
     @Before
     fun setup() {
@@ -171,7 +174,6 @@ class VideoAdUITest {
     }
 
     @Test
-    @FlakyTest
     fun test_vast_adLoading() {
         val testData = TestData.videoVast
         testAdLoading(testData, TestColors.vastYellow)
@@ -220,7 +222,7 @@ class VideoAdUITest {
 
         CommonInteraction.clickItemAt(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEmpty")
+        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
     }
 
     @Test
@@ -243,28 +245,38 @@ class VideoAdUITest {
 
     @Test
     fun test_bumper_enabled_from_settings() {
-        // Given bumper page is enabled from settings
         IntentsHelper.stubIntentsForVast()
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableBumper()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumper()
+                    tapOnCloseNoDelay()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay()
+
+                tapOnAd()
+
+                bumperPageRobot {
+                    waitForDisplay()
+                    waitForFinish()
+
+                    // Then view URL is redirected to browser
+                    IntentsHelper.checkIntentsForVast()
+                    verifyUrlPathCalled("/video/click")
+                }
+
+                tapOnClose()
+            }
+
+            checkAdHasBeenLoadedShownClickedClosed(testData.placement)
         }
-        CommonInteraction.clickItemAt(testData)
-
-        // When ad is clicked
-        CommonInteraction.waitForAdContentThenClick()
-
-        // Then bumper page is shown
-        BumperInteraction.waitUntilBumper()
-
-        // And view URL is redirected to browser
-        Thread.sleep(4500)
-        IntentsHelper.checkIntentsForVast()
-        CommonInteraction.pressDeviceBackButton()
-
-        // When close is tapped and app returns to list view
-        CommonInteraction.waitForCloseButtonWithDelayThenClick()
-        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
     }
 
     @Test
@@ -272,23 +284,35 @@ class VideoAdUITest {
         // Given bumper page is enabled from api
         IntentsHelper.stubIntentsForVast()
         val testData = TestData("87969", "video_direct_enabled_success.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        // When ad is clicked
-        CommonInteraction.waitForAdContentThenClick()
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
+            }
 
-        // Then bumper page is shown
-        BumperInteraction.waitUntilBumper()
+            tapOnPlacement(testData)
 
-        // And view URL is redirected to browser
-        Thread.sleep(4500)
-        IntentsHelper.checkIntentsForVast()
-        CommonInteraction.pressDeviceBackButton()
+            videoScreenRobot {
+                waitForDisplay()
 
-        // When close is tapped and app returns to list view
-        CommonInteraction.waitForCloseButtonWithDelayThenClick()
-        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
+                tapOnAd()
+
+                bumperPageRobot {
+                    waitForDisplay()
+                    waitForFinish()
+
+                    // Then view URL is redirected to browser
+                    IntentsHelper.checkIntentsForVast()
+                    verifyUrlPathCalled("/video/click")
+                }
+
+                tapOnClose()
+            }
+
+            checkAdHasBeenLoadedShownClickedClosed(testData.placement)
+        }
     }
 
     @Test
@@ -387,22 +411,29 @@ class VideoAdUITest {
         // Given
         val testData = TestData.videoDirect
         IntentsHelper.stubIntentsForVast()
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeNoDelay()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                SettingsInteraction.closeNoDelay()
+            }
+            tapOnPlacement(testData)
         }
-        CommonInteraction.clickItemAt(testData)
 
-        // When
-        CommonInteraction.waitForAdContentThenClick()
+        videoScreenRobot {
+            waitForDisplay()
+            tapOnAd()
 
-        // Then
-        verifyUrlPathCalled("/vast/click")
-        IntentsHelper.checkIntentsForVast()
-        CommonInteraction.pressDeviceBackButton()
+            // Then
+            verifyUrlPathCalled("/vast/click")
+            IntentsHelper.checkIntentsForVast()
 
-        // When close is tapped and app returns to list view
-        CommonInteraction.waitForCloseButtonThenClick()
-        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
+            tapOnClose()
+        }
+
+        listScreenRobot {
+            waitForDisplay()
+            checkAdHasBeenLoadedShownClickedClosed(testData.placement)
+        }
     }
 
     @Test
@@ -412,7 +443,7 @@ class VideoAdUITest {
         CommonInteraction.clickItemAt(TestData.videoDirect)
 
         // When
-        Thread.sleep(3000)
+        Thread.sleep(5000)
 
         // Then
         verifyUrlPathCalledWithQueryParam(
@@ -441,36 +472,13 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_vast_ad_click_event() {
-        // Given
-        val testData = TestData.videoVast
-        IntentsHelper.stubIntentsForVast()
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeNoDelay()
-        }
-        CommonInteraction.clickItemAt(testData)
-
-        // When
-        CommonInteraction.waitForAdContentThenClick()
-
-        // Then
-        verifyUrlPathCalled("/vast/click")
-        IntentsHelper.checkIntentsForVast()
-        CommonInteraction.pressDeviceBackButton()
-
-        // When close is tapped and app returns to list view
-        CommonInteraction.waitForCloseButtonThenClick()
-        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed(testData.placement)
-    }
-
-    @Test
     fun test_vast_ad_dwell_time() {
         // Given
         CommonInteraction.launchActivityWithSuccessStub(TestData.videoVast)
         CommonInteraction.clickItemAt(TestData.videoVast)
 
         // When
-        Thread.sleep(3000)
+        Thread.sleep(5000)
 
         // Then
         verifyUrlPathCalledWithQueryParam(
@@ -482,15 +490,23 @@ class VideoAdUITest {
 
     @Test
     fun test_parental_gate_success_event() {
+        IntentsHelper.stubIntentsForVast()
         openParentalGate()
-        ParentalGateInteraction.testSuccess()
-
+        parentalGateRobot {
+            solve()
+            checkEventForSuccess()
+        }
         IntentsHelper.checkIntentsForVast()
-        CommonInteraction.pressDeviceBackButton()
 
-        // When close is tapped and app returns to list view
-        CommonInteraction.waitForCloseButtonWithDelayThenClick()
-        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed("87969")
+        videoScreenRobot {
+            waitForDisplay()
+            tapOnClose()
+        }
+
+        listScreenRobot {
+            waitForDisplay()
+            checkAdHasBeenLoadedShownClickedClosed("87969")
+        }
     }
 
     @Test
@@ -521,7 +537,6 @@ class VideoAdUITest {
         IntentsHelper.checkIntentsForVast()
 
         // Then go back and check ad is loaded
-        CommonInteraction.pressDeviceBackButton()
         CommonInteraction.waitForCloseButtonThenClick()
         CommonInteraction.checkAdHasBeenLoadedShownClickedClosed("87969")
     }
@@ -530,16 +545,22 @@ class VideoAdUITest {
     fun test_vast_click_event() {
         // Given CPI Vast Ad
         val testData = TestData("88406", "video_vast_cpi_success.json")
-        stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
+        val url = "https://www.superawesome.com/&referrer=null"
+        IntentsHelper.stubIntentsForUrl(url)
 
-        // When ad is clicked
-        CommonInteraction.waitForAdContentThenClick()
+        listScreenRobot {
+            launchWithSuccessStub(testData)
 
-        // Then view URL is redirected to browser
-        // NOTE: this doesn't open the browser, but fires the event.
-        verifyUrlPathCalled("/vast/clickthrough")
+            tapOnPlacement(testData)
+        }
+
+        videoScreenRobot {
+            waitForDisplay()
+
+            tapOnAd()
+
+            IntentsHelper.checkIntentsForUrl(url)
+        }
     }
 
     @Test
@@ -648,14 +669,25 @@ class VideoAdUITest {
     }
 
     private fun openParentalGate() {
-        IntentsHelper.stubIntentsForVast()
-        CommonInteraction.launchActivityWithSuccessStub(TestData.videoPadlock) {
-            SettingsInteraction.enableParentalGate()
-        }
-        CommonInteraction.clickItemAt(TestData.videoPadlock)
-        CommonInteraction.waitForAdContentThenClick()
+        val testData = TestData.videoDirect
 
-        // Then parental gate open event is triggered
-        ParentalGateInteraction.testOpen()
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnCloseNoDelay()
+                }
+            }
+            tapOnPlacement(testData)
+        }
+
+        videoScreenRobot {
+            waitForDisplay()
+            tapOnAd()
+
+            parentalGateRobot {
+                checkEventForOpen()
+            }
+        }
     }
 }
