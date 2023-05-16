@@ -263,6 +263,7 @@ jobs:
   update_docs:
     <<: *android_config
     steps:
+      - *generate_github_token
       - run:
           name: Update Release page in docs
           command: |
