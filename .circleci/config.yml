@@ -199,7 +199,7 @@ jobs:
             export RELEASE_DOC_PATH="sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md"
 
             # insert new release and change log
-            perl -i -pe '$_ = "\n## $ENV{CURRENT_VERSION}$ENV{CHANGES}\n$_" if $. == 7' $RELEASE_DOC_PATH
+            perl -i -pe '$_ = "\n## $ENV{CURRENT_VERSION:1}$ENV{CHANGES}\n$_" if $. == 7' $RELEASE_DOC_PATH
 
             # update config file release version
             export CONFIG_PATH="sa-mobile-sdk-publisher-docs/docs/_config.yml"
