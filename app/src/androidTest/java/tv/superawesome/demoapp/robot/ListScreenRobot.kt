@@ -8,8 +8,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import tv.superawesome.demoapp.R
-import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.main.MainActivity
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.AdapterUtil.withPlacementId
@@ -30,12 +28,18 @@ class ListScreenRobot : BaseRobot() {
         launchActivity<MainActivity>()
 
         settings?.let {
-            SettingsInteraction.openSettings()
-            SettingsInteraction.commonSettings()
-            settings.invoke()
-            SettingsInteraction.closeSettings()
+            settingsScreenRobot {
+                openSettings()
+                commonSettings()
+
+                settings.invoke()
+
+                closeSettings()
+            }
         } ?: run {
-            SettingsInteraction.applyCommonSettings()
+            settingsScreenRobot {
+                applyCommonSettings()
+            }
         }
     }
 
@@ -53,7 +57,9 @@ class ListScreenRobot : BaseRobot() {
 
         launchActivity<MainActivity>()
 
-        SettingsInteraction.applyCommonSettings()
+        settingsScreenRobot {
+            applyCommonSettings()
+        }
     }
 
     private fun clickPlacementById(placementId: String) {

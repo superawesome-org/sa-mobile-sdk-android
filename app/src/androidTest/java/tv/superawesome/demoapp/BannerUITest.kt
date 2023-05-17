@@ -15,7 +15,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
-import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bannerRobot
 import tv.superawesome.demoapp.robot.bumperPageRobot
@@ -39,7 +38,7 @@ class BannerUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule(1)
+    val retryTestRule = RetryTestRule()
 
     @Before
     fun setup() {
@@ -107,7 +106,7 @@ class BannerUITest {
         listScreenRobot {
             launchWithSuccessStub(testData) {
                 settingsScreenRobot {
-                    tapOnEnableBumper()
+                    tapOnEnableBumperPage()
                 }
             }
             tapOnPlacement(testData)
@@ -139,7 +138,7 @@ class BannerUITest {
         listScreenRobot {
             launchWithSuccessStub(testData) {
                 settingsScreenRobot {
-                    tapOnEnableBumper()
+                    tapOnEnableBumperPage()
                 }
             }
             tapOnPlacement(testData)
@@ -193,7 +192,9 @@ class BannerUITest {
     fun test_parental_gate_for_safe_ad_click() {
         val testData = TestData.bannerPadlock
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableParentalGate()
+            settingsScreenRobot {
+                tapOnEnableParentalGate()
+            }
         }
         CommonInteraction.clickItemAt(testData)
 
@@ -303,7 +304,9 @@ class BannerUITest {
 
     private fun openParentalGate() {
         CommonInteraction.launchActivityWithSuccessStub(TestData.bannerPadlock) {
-            SettingsInteraction.enableParentalGate()
+            settingsScreenRobot {
+                tapOnEnableParentalGate()
+            }
         }
         CommonInteraction.clickItemAt(TestData.bannerPadlock)
 
