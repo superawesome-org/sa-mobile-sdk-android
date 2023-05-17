@@ -273,8 +273,6 @@ jobs:
             export CURRENT_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 1p`
             export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
 
-            echo `ls`
-
             # get release notes from semantic-release
             export CHANGES=`awk -v cver="${CURRENT_VERSION:1}" -v pver="${PREVIOUS_VERSION:1}" "/^([#]+ \[cver\])/{flag=1;next}/^([#]+ \[pver\])/{flag=0}flag" CHANGELOG.md`
             
@@ -290,15 +288,17 @@ jobs:
             # checkout docs repo
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git
 
+            echo `ls`
+
             # Update releases
-            echo "export RELEASE_DOC_PATH=sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md" >> $BASH_ENV
+            export RELEASE_DOC_PATH="sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md"
             source $BASH_ENV
 
             # insert new release and change log
             perl -i -pe '$_ = "\n## $ENV{CURRENT_VERSION}$ENV{CHANGES}\n$_" if $. == 7' $RELEASE_DOC_PATH
 
             # update config file release version
-            echo "export CONFIG_PATH=sa-mobile-sdk-publisher-docs/docs/_config.yml" >> $BASH_ENV
+            export CONFIG_PATH="sa-mobile-sdk-publisher-docs/docs/_config.yml"
 
             echo "Mylo ${CONFIG_PATH}"
             sed -i "s/android_latest_version: ${PREVIOUS_VERSION:1}/android_latest_version: ${CURRENT_VERSION:1}/g" $CONFIG_PATH
