@@ -5,12 +5,13 @@ package tv.superawesome.sdk.publisher.common.ui.interstitial
 import android.app.Activity
 import android.content.Context
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 
 public object SAInterstitialAd {
@@ -43,7 +44,13 @@ public object SAInterstitialAd {
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
-    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, context: Context, options: Map<String, Any>? = null) {
+    public fun load(
+        placementId: Int,
+        lineItemId: Int,
+        creativeId: Int,
+        context: Context,
+        options: Map<String, Any>? = null
+    ) {
         controller.load(placementId, lineItemId, creativeId, makeAdRequest(context, options))
     }
 
@@ -190,4 +197,10 @@ public object SAInterstitialAd {
     internal fun isParentalGateEnabled(): Boolean = controller.config.isParentalGateEnabled
 
     internal fun getDelegate(): SAInterface? = controller.delegate
+
+    @VisibleForTesting
+    @JvmStatic
+    private fun clearCache() {
+        controller.clearCache()
+    }
 }

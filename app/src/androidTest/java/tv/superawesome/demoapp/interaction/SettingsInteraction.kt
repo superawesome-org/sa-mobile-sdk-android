@@ -23,11 +23,6 @@ object SettingsInteraction {
             .perform(click())
     }
 
-    private fun enableUITesting() {
-        onView(withId(R.id.uiTestingButton))
-            .perform(click())
-    }
-
     fun closeDelayed() {
         onView(withId(R.id.closeDelayedButton))
             .perform(click())
@@ -70,7 +65,6 @@ object SettingsInteraction {
 
     fun commonSettings() {
         resetSettings()
-        enableUITesting()
     }
 
     fun applyCommonSettings() {

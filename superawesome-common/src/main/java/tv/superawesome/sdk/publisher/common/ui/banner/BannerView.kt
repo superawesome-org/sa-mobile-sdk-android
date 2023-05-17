@@ -72,6 +72,9 @@ public class BannerView @JvmOverloads constructor(
     public fun load(placementId: Int, options: Map<String, Any>? = null) {
         logger.info("load($placementId)")
         this.placementId = placementId
+        if (isAdPlayedBefore()) {
+            close()
+        }
         controller.load(placementId, makeAdRequest(options))
     }
 
@@ -85,8 +88,17 @@ public class BannerView @JvmOverloads constructor(
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
-    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, options: Map<String, Any>? = null) {
+    public fun load(
+        placementId: Int,
+        lineItemId: Int,
+        creativeId: Int,
+        options: Map<String, Any>? = null
+    ) {
+        logger.info("load($placementId, $lineItemId, $creativeId)")
         this.placementId = placementId
+        if (isAdPlayedBefore()) {
+            close()
+        }
         controller.load(placementId, lineItemId, creativeId, makeAdRequest(options))
     }
 
@@ -196,6 +208,7 @@ public class BannerView @JvmOverloads constructor(
         padlockButton.scaleType = ImageView.ScaleType.FIT_XY
         padlockButton.setPadding(0, 2.toPx, 0, 0)
         padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
+        padlockButton.contentDescription = "Safe Ad Logo"
 
         padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
 
@@ -238,6 +251,10 @@ public class BannerView @JvmOverloads constructor(
             removeView(webView)
             webView = null
         }
+    }
+
+    private fun isAdPlayedBefore(): Boolean {
+        return webView != null
     }
 
     override fun onDetachedFromWindow() {

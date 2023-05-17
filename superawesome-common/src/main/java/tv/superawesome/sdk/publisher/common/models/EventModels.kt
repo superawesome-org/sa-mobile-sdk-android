@@ -44,7 +44,7 @@ internal enum class EventType {
     @SerialName("parentalGateOpen")
     ParentalGateOpen,
 
-    @SerialName("parentalGateClos")
+    @SerialName("parentalGateClose")
     ParentalGateClose,
 
     @SerialName("parentalGateFail")
