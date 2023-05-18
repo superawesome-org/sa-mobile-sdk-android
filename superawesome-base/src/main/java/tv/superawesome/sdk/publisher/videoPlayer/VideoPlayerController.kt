@@ -2,7 +2,10 @@ package tv.superawesome.sdk.publisher.videoPlayer
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.media.MediaPlayer.*
+import android.media.MediaPlayer.OnCompletionListener
+import android.media.MediaPlayer.OnErrorListener
+import android.media.MediaPlayer.OnPreparedListener
+import android.media.MediaPlayer.OnSeekCompleteListener
 import android.net.Uri
 import android.os.CountDownTimer
 
@@ -52,6 +55,10 @@ class VideoPlayerController :
     }
 
     override fun start() {
+        if (!prepared) {
+            // If the video is not ready, skip the "start" function call.
+            return
+        }
         if (completed) {
             // if the video is completed then show the last frame only
             seekTo(currentPosition)
