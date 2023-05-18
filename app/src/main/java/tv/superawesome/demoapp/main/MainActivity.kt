@@ -10,11 +10,9 @@ import kotlinx.android.synthetic.main.activity_main.listView
 import kotlinx.android.synthetic.main.activity_main.settingsButton
 import kotlinx.android.synthetic.main.activity_main.subtitleTextView
 import kotlinx.android.synthetic.main.activity_main.titleTextView
-import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
-import tv.superawesome.demoapp.adapter.CustomListAdapter
 import tv.superawesome.demoapp.model.FeatureType
-import tv.superawesome.demoapp.model.SettingsData
+import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.settings.SettingsDialogFragment
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.SAEvent
@@ -61,10 +59,8 @@ class MainActivity : FragmentActivity() {
         configureListView()
     }
 
-    private fun getSettings(): SettingsData? = (application as? MyApplication)?.settings
-
     private fun isPlayEnabled(): Boolean {
-        return getSettings()?.playEnabled == true
+        return DataStore.data.playEnabled
     }
 
     private fun configureDataSource() {
@@ -123,7 +119,6 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun configureVideoAd() {
-        SAVideoAd.enableCloseButton()
         SAVideoAd.setListener { placementId, event ->
             updateMessage(placementId, event)
             Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
@@ -157,7 +152,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun updateSettings() {
-        val settings = getSettings() ?: return
+        val settings = DataStore.data
 
         bannerView.setBumperPage(settings.bumperEnabled)
         bannerView.setParentalGate(settings.parentalEnabled)

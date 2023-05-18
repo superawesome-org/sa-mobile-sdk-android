@@ -6,17 +6,25 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import org.hamcrest.CoreMatchers.not
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.main.MainActivity
 import tv.superawesome.demoapp.model.TestData
-import tv.superawesome.demoapp.util.*
+import tv.superawesome.demoapp.robot.settingsScreenRobot
+import tv.superawesome.demoapp.util.AdapterUtil
+import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.stubCommonPaths
 import tv.superawesome.demoapp.util.WireMockHelper.stubFailure
 import tv.superawesome.demoapp.util.WireMockHelper.stubSuccess
+import tv.superawesome.demoapp.util.isGone
+import tv.superawesome.demoapp.util.isVisible
+import tv.superawesome.demoapp.util.waitUntil
 
 object CommonInteraction {
     private fun launchActivityWithSuccessStub(
@@ -30,12 +38,18 @@ object CommonInteraction {
         launchActivity<MainActivity>()
 
         settings?.let {
-            SettingsInteraction.openSettings()
-            SettingsInteraction.commonSettings()
-            settings.invoke()
-            SettingsInteraction.closeSettings()
+            settingsScreenRobot {
+                openSettings()
+                commonSettings()
+
+                settings.invoke()
+
+                closeSettings()
+            }
         } ?: run {
-            SettingsInteraction.applyCommonSettings()
+            settingsScreenRobot {
+                applyCommonSettings()
+            }
         }
     }
 
@@ -53,7 +67,9 @@ object CommonInteraction {
 
         launchActivity<MainActivity>()
 
-        SettingsInteraction.applyCommonSettings()
+        settingsScreenRobot {
+            applyCommonSettings()
+        }
     }
 
     private fun clickPlacementById(placementId: String) {

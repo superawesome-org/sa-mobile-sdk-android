@@ -1,4 +1,4 @@
-package tv.superawesome.demoapp.adapter
+package tv.superawesome.demoapp.main
 
 import android.content.Context
 import android.graphics.Color
