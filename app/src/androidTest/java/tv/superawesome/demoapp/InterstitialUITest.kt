@@ -17,12 +17,12 @@ import org.junit.runner.RunWith
 import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.interaction.CommonInteraction
 import tv.superawesome.demoapp.interaction.ParentalGateInteraction
-import tv.superawesome.demoapp.interaction.SettingsInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
+import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
@@ -41,7 +41,7 @@ class InterstitialUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule(1)
+    val retryTestRule = RetryTestRule()
 
     @Before
     fun setup() {
@@ -142,7 +142,9 @@ class InterstitialUITest {
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
-                SettingsInteraction.enableBumper()
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
             }
 
             tapOnPlacement(testData)
@@ -202,7 +204,9 @@ class InterstitialUITest {
         val testData =
             TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableParentalGate()
+            settingsScreenRobot {
+                tapOnEnableParentalGate()
+            }
         }
         CommonInteraction.clickItemAt(testData)
 
@@ -215,7 +219,9 @@ class InterstitialUITest {
     fun test_standard_adAlreadyLoaded_callback() {
         val testData = TestData.interstitialStandard
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.disablePlay()
+            settingsScreenRobot {
+                tapOnDisablePlay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -228,7 +234,9 @@ class InterstitialUITest {
     fun test_ksf_adAlreadyLoaded_callback() {
         val testData = TestData.interstitialKsf
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.disablePlay()
+            settingsScreenRobot {
+                tapOnDisablePlay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -344,7 +352,9 @@ class InterstitialUITest {
     fun test_standard_CloseButtonWithNoDelay() {
         val testData = TestData.interstitialStandard
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeNoDelay()
+            settingsScreenRobot {
+                tapOnCloseNoDelay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -361,7 +371,9 @@ class InterstitialUITest {
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
-                SettingsInteraction.closeDelayed()
+                settingsScreenRobot {
+                    tapOnCloseDelayed()
+                }
             }
 
             tapOnPlacement(testData)
@@ -378,7 +390,9 @@ class InterstitialUITest {
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
-                SettingsInteraction.enableParentalGate()
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
             }
             tapOnPlacement(testData)
         }

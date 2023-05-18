@@ -38,7 +38,7 @@ class VideoAdUITest {
     var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
 
     @get:Rule
-    val retryTestRule = RetryTestRule(2)
+    val retryTestRule = RetryTestRule()
 
     @Before
     fun setup() {
@@ -60,7 +60,9 @@ class VideoAdUITest {
     fun test_closeAtEndEnabled_closeBeforeEnds_receiveOnlyAdClosedEvent() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeDelayed()
+            settingsScreenRobot {
+                tapOnCloseDelayed()
+            }
         }
         CommonInteraction.clickItemAt(testData)
 
@@ -74,8 +76,10 @@ class VideoAdUITest {
     fun test_closeAtEndDisabled_waitVideoEnds_receiveAdClosedEvent() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.disableCloseAtEnd()
-            SettingsInteraction.closeHidden()
+            settingsScreenRobot {
+                tapOnDisableCloseAtEnd()
+                tapOnCloseHidden()
+            }
         }
         CommonInteraction.clickItemAt(testData)
 
@@ -89,7 +93,9 @@ class VideoAdUITest {
     fun test_standard_CloseButtonWithNoDelay() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeNoDelay()
+            settingsScreenRobot {
+                tapOnCloseNoDelay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -102,7 +108,9 @@ class VideoAdUITest {
     fun test_standard_CloseButtonWithDelay() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeDelayed()
+            settingsScreenRobot {
+                tapOnCloseDelayed()
+            }
         }
         CommonInteraction.clickItemAt(testData)
 
@@ -116,7 +124,9 @@ class VideoAdUITest {
     fun test_vast_CloseButtonWithNoDelay() {
         val testData = TestData.videoVast
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeNoDelay()
+            settingsScreenRobot {
+                tapOnCloseNoDelay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -129,7 +139,9 @@ class VideoAdUITest {
     fun test_vast_CloseButtonWithDelay() {
         val testData = TestData.videoVast
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.closeDelayed()
+            settingsScreenRobot {
+                tapOnCloseDelayed()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -251,7 +263,7 @@ class VideoAdUITest {
         listScreenRobot {
             launchWithSuccessStub(testData) {
                 settingsScreenRobot {
-                    tapOnEnableBumper()
+                    tapOnEnableBumperPage()
                     tapOnCloseNoDelay()
                 }
             }
@@ -319,7 +331,9 @@ class VideoAdUITest {
     fun test_parental_gate_for_safe_ad_click() {
         val testData = TestData.videoPadlock
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableParentalGate()
+            settingsScreenRobot {
+                tapOnEnableParentalGate()
+            }
         }
         CommonInteraction.clickItemAt(testData)
 
@@ -332,7 +346,9 @@ class VideoAdUITest {
     fun test_parental_gate_for_ad_click() {
         val testData = TestData("87969", "padlock/video_direct_success_padlock_enabled.json")
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableParentalGate()
+            settingsScreenRobot {
+                tapOnEnableParentalGate()
+            }
         }
         CommonInteraction.clickItemAt(testData)
 
@@ -347,7 +363,9 @@ class VideoAdUITest {
     fun test_direct_adAlreadyLoaded_callback() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.disablePlay()
+            settingsScreenRobot {
+                tapOnDisablePlay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -360,7 +378,9 @@ class VideoAdUITest {
     fun test_vast_adAlreadyLoaded_callback() {
         val testData = TestData.videoVast
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.disablePlay()
+            settingsScreenRobot {
+                tapOnDisablePlay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -373,7 +393,9 @@ class VideoAdUITest {
     fun test_vpaid_adAlreadyLoaded_callback() {
         val testData = TestData.videoVpaid
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.disablePlay()
+            settingsScreenRobot {
+                tapOnDisablePlay()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -414,7 +436,9 @@ class VideoAdUITest {
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
-                SettingsInteraction.closeNoDelay()
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
             }
             tapOnPlacement(testData)
         }
@@ -526,7 +550,9 @@ class VideoAdUITest {
         // Given
         IntentsHelper.stubIntentsForVast()
         CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect) {
-            SettingsInteraction.closeNoDelay()
+            settingsScreenRobot {
+                tapOnCloseNoDelay()
+            }
         }
         CommonInteraction.clickItemAt(TestData.videoDirect)
 
@@ -569,7 +595,9 @@ class VideoAdUITest {
         val testData = TestData.videoVpaidPJ
 
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableVideoWarnDialog()
+            settingsScreenRobot {
+                tapOnEnableVideoWarnDialog()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -594,8 +622,10 @@ class VideoAdUITest {
         val testData = TestData.videoVpaidPJ
 
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableVideoWarnDialog()
-            SettingsInteraction.disableCloseAtEnd()
+            settingsScreenRobot {
+                tapOnDisableCloseAtEnd()
+                tapOnEnableVideoWarnDialog()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -622,7 +652,9 @@ class VideoAdUITest {
         val testData = TestData.videoDirect
 
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableVideoWarnDialog()
+            settingsScreenRobot {
+                tapOnEnableVideoWarnDialog()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
@@ -646,8 +678,10 @@ class VideoAdUITest {
         val testData = TestData.videoDirect
 
         CommonInteraction.launchActivityWithSuccessStub(testData) {
-            SettingsInteraction.enableVideoWarnDialog()
-            SettingsInteraction.disableCloseAtEnd()
+            settingsScreenRobot {
+                tapOnDisableCloseAtEnd()
+                tapOnEnableVideoWarnDialog()
+            }
         }
 
         CommonInteraction.clickItemAt(testData)
