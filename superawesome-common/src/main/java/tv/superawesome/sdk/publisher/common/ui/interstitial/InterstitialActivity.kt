@@ -56,7 +56,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     override fun onEvent(placementId: Int, event: SAEvent) {
         SAInterstitialAd.getDelegate()?.onEvent(placementId, event)
         when (event) {
-            SAEvent.adShown -> interstitialBanner.setCloseButtonView(closeButton)
+            SAEvent.adShown -> interstitialBanner.omSessionManager.addCloseButton(closeButton)
             SAEvent.adFailedToShow -> close()
             else -> {}
         }

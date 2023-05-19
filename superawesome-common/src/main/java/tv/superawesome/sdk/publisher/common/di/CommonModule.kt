@@ -28,6 +28,8 @@ import tv.superawesome.sdk.publisher.common.openmeasurement.OMAdSessionBuilder
 import tv.superawesome.sdk.publisher.common.openmeasurement.OMAdSessionBuilderType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjector
 import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjectorType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMSessionManager
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMSessionManagerType
 import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurement
 import tv.superawesome.sdk.publisher.common.repositories.*
 import tv.superawesome.sdk.publisher.common.ui.common.*
@@ -136,6 +138,8 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<ImageProviderType> { ImageProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
     single<AdStoreType> { AdStore() }
+
+    // Open Measurement
     single<OMAdSessionBuilderType> {
         if (environment == Environment.Production) {
             SAOpenMeasurement.initializeOmsdk(androidApplication())
@@ -144,6 +148,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     }
 
     single<OMSDKJSInjectorType> { OMSDKJSInjector() }
+    factory<OMSessionManagerType> { OMSessionManager(get(), get()) }
 
     // Vast
     single<VastParserType> { VastParser(get(), get()) }
