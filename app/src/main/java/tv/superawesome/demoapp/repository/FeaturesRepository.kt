@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp.repository
 
+import android.util.Log
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
@@ -15,13 +16,17 @@ class FeaturesRepository {
 
     fun fetchAllFeatures(): DataResult<List<FeatureItem>> {
         val request = Request.Builder().url(FEATURES_JSON_URL).build()
-        val response = okHttpClient.newCall(request).execute()
-
-        return if (response.isSuccessful) {
-            val features = Json.decodeFromString<Features>(response.body?.string() ?: "")
-            DataResult.Success(features.features)
-        } else {
-            DataResult.Failure(Error("Could not GET data from $FEATURES_JSON_URL"))
+        try {
+            val response = okHttpClient.newCall(request).execute()
+            return if (response.isSuccessful) {
+                val features = Json.decodeFromString<Features>(response.body?.string() ?: "")
+                DataResult.Success(features.features)
+            } else {
+                DataResult.Failure(Error("Could not GET data from $FEATURES_JSON_URL"))
+            }
+        } catch (error: Throwable) {
+            Log.d("NETWORKING", "Failed to connect: ${error.message}")
+            return DataResult.Failure(Error("Failed to connect to: $FEATURES_JSON_URL"))
         }
     }
 }

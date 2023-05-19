@@ -5,12 +5,18 @@ package tv.superawesome.sdk.publisher.common.ui.banner
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import com.iab.omid.library.superawesome.adsession.AdEvents
+import com.iab.omid.library.superawesome.adsession.AdSession
+import com.iab.omid.library.superawesome.adsession.FriendlyObstructionPurpose
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
@@ -20,26 +26,33 @@ import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMAdSessionBuilderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjectorType
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.common.interstitialMaxTickCount
+import java.lang.Exception
 
 public class BannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     internal val controller: AdControllerType by inject(AdControllerType::class.java)
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
+    private val sessionBuilder: OMAdSessionBuilderType by inject(OMAdSessionBuilderType::class.java)
+    private val omsdkInjector: OMSDKJSInjectorType by inject(OMSDKJSInjectorType::class.java)
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
     private val viewableDetector: ViewableDetectorType by inject(ViewableDetectorType::class.java)
     private var hasBeenVisible: VoidBlock? = null
+    private var adSession: AdSession? = null
+    private var adEvents: AdEvents? = null
 
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
@@ -119,8 +132,18 @@ public class BannerView @JvmOverloads constructor(
         addWebView()
         showPadlockIfNeeded()
 
-        val bodyHtml = data.second
+        var bodyHtml = data.second
             .replace("_TIMESTAMP_", timeProvider.millis().toString())
+
+        // load the HTML
+        try {
+            bodyHtml = omsdkInjector.injectOmsdkJavascript(
+                context,
+                bodyHtml,
+            ) ?: bodyHtml
+        } catch (error: Exception) {
+            logger.error("Failed to inject Open Measurement SDK", error)
+        }
         webView?.loadHTML(data.first, bodyHtml)
     }
 
@@ -134,7 +157,7 @@ public class BannerView @JvmOverloads constructor(
     public fun close() {
         hasBeenVisible = null
         viewableDetector.cancel()
-        removeWebView()
+        removeWebView(delayed = true)
         controller.close()
     }
 
@@ -199,6 +222,10 @@ public class BannerView @JvmOverloads constructor(
         }
     }
 
+    fun setCloseButtonView(closeButton: View) {
+        adSession?.addFriendlyObstruction(closeButton, FriendlyObstructionPurpose.CLOSE_AD, null)
+    }
+
     private fun showPadlockIfNeeded() {
         if (!controller.shouldShowPadlock || webView == null) return
 
@@ -233,7 +260,13 @@ public class BannerView @JvmOverloads constructor(
                 viewableDetector.start(this@BannerView, interstitialMaxTickCount) {
                     controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
+                    try {
+                        adEvents?.impressionOccurred()
+                    } catch (error: Throwable) {
+                        logger.error("Unable to log Open Measurement impression", error)
+                    }
                 }
+                setupAdSession()
             }
 
             override fun webViewOnError() = controller.adFailedToShow()
@@ -245,17 +278,28 @@ public class BannerView @JvmOverloads constructor(
         this.webView = webView
     }
 
-    private fun removeWebView() {
-        if (webView != null) {
-            webView?.destroy()
+    private fun removeWebView(delayed: Boolean = false) {
+        webView?.let {
             removeView(webView)
-            webView = null
+            if (delayed) {
+                removeWebViewWithDelay()
+            } else {
+                webView?.destroy()
+                webView = null
+            }
         }
     }
 
-    private fun isAdPlayedBefore(): Boolean {
-        return webView != null
+    private fun removeWebViewWithDelay() {
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            webView?.loadUrl("about:blank")
+            webView?.destroy()
+            webView = null
+        }, 1000)
     }
+
+    private fun isAdPlayedBefore(): Boolean = webView != null
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
@@ -271,8 +315,33 @@ public class BannerView @JvmOverloads constructor(
         install = AdRequest.FullScreen.Off.value,
         w = width,
         h = height,
-        options = options
+        options = options,
     )
+
+    private fun setupAdSession() {
+        try {
+            adSession = sessionBuilder.getHtmlAdSession(
+                context,
+                webView,
+                null,
+            )
+            padlockButton?.let {
+                adSession?.addFriendlyObstruction(it, FriendlyObstructionPurpose.OTHER, null)
+            }
+            adSession?.start()
+        } catch (error: IllegalArgumentException) {
+            logger.error("Failed to setup ad session for open measurement", error)
+            return
+        }
+        try {
+            adEvents = AdEvents.createAdEvents(adSession)
+            adEvents?.loaded()
+        } catch (error: IllegalArgumentException) {
+            logger.error("Failed to setup ad events for open measurement", error)
+            return
+        }
+
+    }
 
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
         this.placementId = placementId

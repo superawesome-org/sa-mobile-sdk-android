@@ -42,7 +42,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     }
 
     public override fun playContent() {
-        interstitialBanner.configure(placementId, SAInterstitialAd.getDelegate()) {
+        interstitialBanner.configure(placementId, this) {
             closeButton.visibility = View.VISIBLE
         }
         interstitialBanner.play()
@@ -55,8 +55,10 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
 
     override fun onEvent(placementId: Int, event: SAEvent) {
         SAInterstitialAd.getDelegate()?.onEvent(placementId, event)
-        if (event == SAEvent.adFailedToShow) {
-            close()
+        when (event) {
+            SAEvent.adShown -> interstitialBanner.setCloseButtonView(closeButton)
+            SAEvent.adFailedToShow -> close()
+            else -> {}
         }
     }
 

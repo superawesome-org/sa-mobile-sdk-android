@@ -9,6 +9,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -23,6 +24,11 @@ import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDat
 import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMAdSessionBuilder
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMAdSessionBuilderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjector
+import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjectorType
+import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurement
 import tv.superawesome.sdk.publisher.common.repositories.*
 import tv.superawesome.sdk.publisher.common.ui.common.*
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
@@ -130,6 +136,14 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<ImageProviderType> { ImageProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
     single<AdStoreType> { AdStore() }
+    single<OMAdSessionBuilderType> {
+        if (environment == Environment.Production) {
+            SAOpenMeasurement.initializeOmsdk(androidApplication())
+        }
+        return@single OMAdSessionBuilder(get())
+    }
+
+    single<OMSDKJSInjectorType> { OMSDKJSInjector() }
 
     // Vast
     single<VastParserType> { VastParser(get(), get()) }

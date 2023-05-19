@@ -5,12 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.iab.omid.library.superawesome.adsession.AdEvents;
+import com.iab.omid.library.superawesome.adsession.AdSession;
+import com.iab.omid.library.superawesome.adsession.CreativeType;
+import com.iab.omid.library.superawesome.adsession.FriendlyObstructionPurpose;
 
 import java.util.Collections;
 import java.util.Map;
@@ -23,6 +31,8 @@ import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
+import tv.superawesome.lib.saopenmeasurement.OMAdSessionBuilder;
+import tv.superawesome.lib.saopenmeasurement.SAOpenMeasurement;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
@@ -39,6 +49,7 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 public class SABannerAd extends FrameLayout {
 
     interface SABannerAdListener {
+        void hasLoaded();
         void hasBeenVisible();
 
         void failedToShow();
@@ -51,6 +62,8 @@ public class SABannerAd extends FrameLayout {
     private boolean isParentalGateEnabled = false;
     private boolean isBumperPageEnabled = false;
     private SAAd ad;
+    private AdSession adSession;
+    private AdEvents adEvents;
     private SAInterface listener = (placementId, event) -> {
     };
 
@@ -302,6 +315,7 @@ public class SABannerAd extends FrameLayout {
             webPlayer = new SAWebPlayer(context);
             webPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             // and set it's event listener
+
             webPlayer.setEventListener((event, destination) -> {
 
                 switch (event) {
@@ -317,7 +331,13 @@ public class SABannerAd extends FrameLayout {
                                 .media
                                 .html
                                 .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
+
                         // load the HTML
+                        try {
+                            fullHTML = SAOpenMeasurement.INSTANCE.injectOmsdkJavascript(context, fullHTML);
+                        } catch (IllegalArgumentException | IllegalStateException error) {
+                            error.printStackTrace();
+                        }
                         Log.d("SADefaults", "Full HTML is " + fullHTML);
                         webPlayer.loadHTML(ad.creative.details.base, fullHTML);
 
@@ -331,6 +351,9 @@ public class SABannerAd extends FrameLayout {
                         events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
                             if (success) {
                                 events.triggerViewableImpressionEvent();
+                                if (adEvents != null) {
+                                    adEvents.impressionOccurred();
+                                }
                                 if (bannerListener != null) {
                                     bannerListener.hasBeenVisible();
                                 }
@@ -344,12 +367,19 @@ public class SABannerAd extends FrameLayout {
                             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
                         }
 
+                        try {
+                            if (adEvents != null) {
+                                adEvents.loaded();
+                            }
+                        } catch (IllegalArgumentException | IllegalStateException error) {
+                            error.printStackTrace();
+                        }
+
                         break;
                     }
                     // this is actually a fragment event notifying the banner class that
                     // the fragment has started
                     case Web_Started: {
-
                         float sf = SAUtils.getScaleFactor((Activity) context);
                         padlock = new ImageButton(context);
                         padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
@@ -377,7 +407,8 @@ public class SABannerAd extends FrameLayout {
                         webPlayer.getHolder().addView(padlock);
                         padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
                         padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
-
+                        setupAdSession();
+                        bannerListener.hasLoaded();
                         break;
                     }
                     // this is called when the fragment & web view have all been laid out
@@ -416,7 +447,6 @@ public class SABannerAd extends FrameLayout {
                         if (destination != null) {
                             Runnable runner = () -> click(destination);
                             runner.run();
-                            // showParentalGateIfNeededWithCompletion(context, runner);
                         }
 
                         break;
@@ -451,6 +481,22 @@ public class SABannerAd extends FrameLayout {
             });
         } else {
             handleUrl(destination);
+        }
+    }
+
+    private void setupAdSession() {
+        try {
+            adSession = OMAdSessionBuilder.INSTANCE.getHtmlAdSession(
+                    getContext(),
+                    webPlayer.getWebView(),
+                    null);
+            if (padlock != null && padlock.getVisibility() == VISIBLE) {
+                adSession.addFriendlyObstruction(padlock, FriendlyObstructionPurpose.OTHER, null);
+            }
+            adSession.start();
+            adEvents = AdEvents.createAdEvents(adSession);
+        } catch (IllegalArgumentException error) {
+            error.printStackTrace();
         }
     }
 
@@ -533,12 +579,13 @@ public class SABannerAd extends FrameLayout {
         // reset any ad that might be in here
         setAd(null);
 
+        adSession.finish();
+        adEvents = null;
+        adSession = null;
+
         // remove the web player
-        if (webPlayer != null) {
-            this.removeView(webPlayer);
-            webPlayer.destroy();
-            webPlayer = null;
-        }
+
+        destroyWebViewDelayed();
 
         // make padlock invisible
         if (padlock != null) {
@@ -552,6 +599,16 @@ public class SABannerAd extends FrameLayout {
 
         // close ad
         isClosed = true;
+    }
+
+    private void destroyWebViewDelayed() {
+        this.removeView(webPlayer);
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            webPlayer.getWebView().loadUrl("about:blank");
+            webPlayer.destroy();
+        }, 1000);
     }
 
     /**
@@ -575,6 +632,11 @@ public class SABannerAd extends FrameLayout {
 
     public SAAd getAd() {
         return ad;
+    }
+
+    public void addFab(View fabView, FriendlyObstructionPurpose purpose) {
+        if (adSession == null) return;
+        adSession.addFriendlyObstruction(fabView, purpose, null);
     }
 
     private void showParentalGateIfNeededWithCompletion(final Context context,

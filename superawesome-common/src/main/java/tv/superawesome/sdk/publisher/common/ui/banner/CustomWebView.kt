@@ -69,7 +69,7 @@ internal class CustomWebView @JvmOverloads constructor(
                 view: WebView?,
                 errorCode: Int,
                 description: String?,
-                failingUrl: String?
+                failingUrl: String?,
             ) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
                 handleError(errorCode)

@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.iab.omid.library.superawesome.adsession.FriendlyObstructionPurpose;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -615,6 +617,11 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
 
     public static void setOrientation (SAOrientation value) {
         orientation = value;
+    }
+
+    @Override
+    public void hasLoaded() {
+        interstitialBanner.addFab(closeButton, FriendlyObstructionPurpose.CLOSE_AD);
     }
 
     @Override

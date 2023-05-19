@@ -59,4 +59,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
     androidTestImplementation 'com.squareup.okhttp3:mockwebserver:5.0.0-alpha.2'
     implementation "androidx.annotation:annotation:1.4.0"
+    implementation fileTree(include: ['omsdk-android-1.4.4-release.aar'], dir: 'jni')
 }
