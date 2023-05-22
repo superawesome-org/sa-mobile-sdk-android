@@ -75,6 +75,7 @@ class SdkInfo(
         private var overrideVersion: String? = null
         private var overrideVersionNumber: String? = null
 
+        @JvmStatic
         fun overrideVersionPlatform(version: String?, platform: Platform?) {
             if (version != null && platform != null) {
                 overrideVersion = "${platform.value}_$version"
