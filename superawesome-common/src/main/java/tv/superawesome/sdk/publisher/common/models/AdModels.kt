@@ -119,6 +119,8 @@ data class AdRequest(
 
         companion object {
             private val values = values()
+
+            @JvmStatic
             fun fromValue(value: Int) = values.firstOrNull { it.value == value }
         }
     }

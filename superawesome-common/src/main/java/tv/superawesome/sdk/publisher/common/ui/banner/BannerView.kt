@@ -69,6 +69,7 @@ public class BannerView @JvmOverloads constructor(
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
+    @JvmOverloads
     public fun load(placementId: Int, options: Map<String, Any>? = null) {
         logger.info("load($placementId)")
         this.placementId = placementId
@@ -88,6 +89,7 @@ public class BannerView @JvmOverloads constructor(
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
+    @JvmOverloads
     public fun load(
         placementId: Int,
         lineItemId: Int,
