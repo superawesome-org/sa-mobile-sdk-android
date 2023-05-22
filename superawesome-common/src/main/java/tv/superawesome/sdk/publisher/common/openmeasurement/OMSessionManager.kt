@@ -38,7 +38,6 @@ internal class OMSessionManager(
         }
         try {
             adEvents = AdEvents.createAdEvents(adSession)
-            adEvents?.loaded()
         } catch (error: IllegalArgumentException) {
             logger.error("Failed to setup ad events for open measurement", error)
             return
@@ -47,9 +46,9 @@ internal class OMSessionManager(
 
     override fun sendLoadEvent() {
         try {
-            adEvents?.impressionOccurred()
+            adEvents?.loaded()
         } catch (error: Throwable) {
-            logger.error("Unable to log Open Measurement impression", error)
+            logger.error("Unable to log Open Measurement event loading", error)
         }
     }
 
@@ -57,7 +56,7 @@ internal class OMSessionManager(
         try {
             adEvents?.impressionOccurred()
         } catch (error: Throwable) {
-            logger.error("Unable to log Open Measurement impression", error)
+            logger.error("Unable to log Open Measurement event impression", error)
         }
     }
 

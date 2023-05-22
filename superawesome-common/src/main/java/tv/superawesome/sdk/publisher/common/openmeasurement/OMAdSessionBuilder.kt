@@ -10,8 +10,6 @@ import com.iab.omid.library.superawesome.adsession.CreativeType
 import com.iab.omid.library.superawesome.adsession.ImpressionType
 import com.iab.omid.library.superawesome.adsession.Owner
 import com.iab.omid.library.superawesome.adsession.Partner
-import org.koin.java.KoinJavaComponent
-import tv.superawesome.sdk.publisher.common.components.SdkInfo
 import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 
 interface OMAdSessionBuilderType {

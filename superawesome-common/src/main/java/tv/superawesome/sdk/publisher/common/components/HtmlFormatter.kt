@@ -21,13 +21,13 @@ internal class HtmlFormatter(
             return "<a href='${ad.creative.clickUrl}' target='_blank'>$img</a>"
         }
 
-        return img
+        return "<html><head></head><body>$img</body></html>"
     }
 
     override fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String {
         val url =
             "${ad.creative.details.url}?placement=$placementId&line_item=${ad.lineItemId}&creative=${ad.creative.id}&rnd=${numberGenerator.nextIntForCache()}"
-        return "<iframe style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>"
+        return "<html><head></head><body><iframe style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe></body></html>"
     }
 
     override fun formatTagIntoHtml(ad: Ad): String {

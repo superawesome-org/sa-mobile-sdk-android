@@ -9,7 +9,6 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -30,7 +29,6 @@ import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjector
 import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjectorType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OMSessionManager
 import tv.superawesome.sdk.publisher.common.openmeasurement.OMSessionManagerType
-import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurement
 import tv.superawesome.sdk.publisher.common.repositories.*
 import tv.superawesome.sdk.publisher.common.ui.common.*
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
@@ -140,12 +138,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<AdStoreType> { AdStore() }
 
     // Open Measurement
-    single<OMAdSessionBuilderType> {
-        if (environment == Environment.Production) {
-            SAOpenMeasurement.initializeOmsdk(androidApplication())
-        }
-        return@single OMAdSessionBuilder(get())
-    }
+    single<OMAdSessionBuilderType> { OMAdSessionBuilder(get()) }
 
     single<OMSDKJSInjectorType> { OMSDKJSInjector() }
     factory<OMSessionManagerType> { OMSessionManager(get(), get()) }

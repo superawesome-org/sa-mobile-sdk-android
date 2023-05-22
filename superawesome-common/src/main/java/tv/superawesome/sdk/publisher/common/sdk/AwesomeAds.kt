@@ -8,6 +8,8 @@ import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 import tv.superawesome.sdk.publisher.common.di.createCommonModule
 import tv.superawesome.sdk.publisher.common.models.Configuration
 import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
+import tv.superawesome.sdk.publisher.common.network.Environment
+import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurement
 
 /**
  * The AwesomeAds Publisher SDK (Software Development Kit) enables you to add COPPA-compliant
@@ -35,7 +37,7 @@ object AwesomeAds {
     fun init(
         applicationContext: Context,
         configuration: Configuration,
-        options: Map<String, Any>
+        options: Map<String, Any>,
     ) {
         if (app == null) {
             QueryAdditionalOptions.instance = QueryAdditionalOptions(options)
@@ -51,15 +53,19 @@ object AwesomeAds {
 
     private fun buildKoinApplication(
         applicationContext: Context,
-        configuration: Configuration
-    ): KoinApplication =
-        startKoin {
+        configuration: Configuration,
+    ): KoinApplication {
+        if (configuration.environment != Environment.Production) {
+            SAOpenMeasurement.initializeOmsdk(applicationContext)
+        }
+        return startKoin {
             androidContext(applicationContext)
             modules(
                 createCommonModule(
                     configuration.environment,
-                    configuration.logging
+                    configuration.logging,
                 )
             )
         }
+    }
 }
