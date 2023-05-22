@@ -42,9 +42,11 @@ class FeatureDetailActivity : ComponentActivity() {
             FeatureType.Interstitial -> {
                 loadInterstitial(placement = placement)
             }
+
             FeatureType.Video -> {
                 loadVideo(placement = placement)
             }
+
             else -> Unit
         }
     }
@@ -151,7 +153,6 @@ class FeatureDetailActivity : ComponentActivity() {
     }
 
     private fun setUpInterstitials() {
-        SAInterstitialAd.setConfigurationProduction()
         SAInterstitialAd.setListener { placementId, event ->
             when (event) {
                 SAEvent.adLoaded -> SAInterstitialAd.play(placementId, this)
@@ -161,7 +162,6 @@ class FeatureDetailActivity : ComponentActivity() {
     }
 
     private fun setUpVideos() {
-        SAVideoAd.setConfigurationProduction()
         SAVideoAd.setListener { placementId, event ->
             when (event) {
                 SAEvent.adLoaded -> SAVideoAd.play(placementId, this)

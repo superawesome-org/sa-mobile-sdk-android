@@ -15,6 +15,7 @@ enum class CloseButtonState(val value: Int) {
         this == VisibleWithDelay || this == VisibleImmediately
 
     companion object {
+        @JvmStatic
         fun fromInt(value: Int): CloseButtonState =
             values().firstOrNull { it.value == value } ?: Hidden
     }

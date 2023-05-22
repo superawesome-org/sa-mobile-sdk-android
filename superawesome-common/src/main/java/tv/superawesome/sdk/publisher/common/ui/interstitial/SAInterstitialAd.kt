@@ -29,6 +29,8 @@ public object SAInterstitialAd {
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
+    @JvmStatic
+    @JvmOverloads
     public fun load(placementId: Int, context: Context, options: Map<String, Any>? = null) {
         controller.load(placementId, makeAdRequest(context, options))
     }
@@ -44,6 +46,8 @@ public object SAInterstitialAd {
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
+    @JvmStatic
+    @JvmOverloads
     public fun load(
         placementId: Int,
         lineItemId: Int,
@@ -60,82 +64,93 @@ public object SAInterstitialAd {
      * @param placementId the Ad placement id to play an ad for
      * @param context the current context (activity or fragment)
      */
+    @JvmStatic
     public fun play(placementId: Int, context: Context) {
         InterstitialActivity.start(placementId, context)
     }
 
+    @JvmStatic
     public fun setListener(value: SAInterface) {
         controller.delegate = value
     }
+
+    @JvmStatic
 
     public fun enableParentalGate() {
         setParentalGate(true)
     }
 
+    @JvmStatic
     public fun disableParentalGate() {
         setParentalGate(false)
     }
 
+    @JvmStatic
     public fun enableBumperPage() {
         setBumperPage(true)
     }
 
+    @JvmStatic
     public fun disableBumperPage() {
         setBumperPage(false)
     }
 
+    @JvmStatic
     public fun enableTestMode() {
         setTestMode(true)
     }
 
+    @JvmStatic
     public fun disableTestMode() {
         setTestMode(false)
     }
 
+    @JvmStatic
     public fun enableBackButton() {
         setBackButton(true)
     }
 
+    @JvmStatic
     public fun disableBackButton() {
         setBackButton(false)
     }
 
-    fun setConfigurationProduction() {
-    }
-
-    fun setConfigurationStaging() {
-    }
-
+    @JvmStatic
     public fun setOrientationAny() {
         setOrientation(Orientation.Any)
     }
 
+    @JvmStatic
     public fun setOrientationPortrait() {
         setOrientation(Orientation.Portrait)
     }
 
+    @JvmStatic
     public fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
     }
 
-    public fun getIsBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
-
+    @JvmStatic
     public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
+    @JvmStatic
     public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
+    @JvmStatic
     public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
+    @JvmStatic
     public fun setBackButton(value: Boolean) {
         backButtonEnabled = value
     }
 
+    @JvmStatic
     public fun setOrientation(value: Orientation) {
         orientation = value
     }
@@ -146,6 +161,7 @@ public object SAInterstitialAd {
      * @param placementId the Ad placement id to check for
      * @return true or false
      */
+    @JvmStatic
     public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
 
     /**
@@ -153,6 +169,7 @@ public object SAInterstitialAd {
      * WARNING: this will allow users to close the ad before the viewable tracking event is fired
      * and should only be used if you explicitly want this behaviour over consistent tracking.
      */
+    @JvmStatic
     public fun enableCloseButtonNoDelay() {
         controller.config.closeButtonState = CloseButtonState.VisibleImmediately
     }
@@ -160,6 +177,7 @@ public object SAInterstitialAd {
     /**
      * Method that enables the close button to display with a delay.
      */
+    @JvmStatic
     fun enableCloseButton() {
         controller.config.closeButtonState = CloseButtonState.VisibleWithDelay
     }

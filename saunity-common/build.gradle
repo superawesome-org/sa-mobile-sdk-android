@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+apply from: '../publish.gradle'
+apply from: '../jacoco.gradle'
+
+ext.libraryDescription = 'SuperAwesome Mobile SDK for Android with Unity extension'
+ext.libraryName = 'SuperAwesome Unity'
+
+android {
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':superawesome-common')
+}
