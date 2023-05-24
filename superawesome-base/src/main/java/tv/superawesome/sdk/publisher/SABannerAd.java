@@ -333,11 +333,11 @@ public class SABannerAd extends FrameLayout {
                                 .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
 
                         // load the HTML
-                        try {
-                            fullHTML = SAOpenMeasurement.INSTANCE.injectOmsdkJavascript(context, fullHTML);
-                        } catch (IllegalArgumentException | IllegalStateException error) {
-                            error.printStackTrace();
-                        }
+//                        try {
+//                            fullHTML = SAOpenMeasurement.INSTANCE.injectOmsdkJavascript(context, fullHTML);
+//                        } catch (IllegalArgumentException | IllegalStateException error) {
+//                            error.printStackTrace();
+//                        }
                         Log.d("SADefaults", "Full HTML is " + fullHTML);
                         webPlayer.loadHTML(ad.creative.details.base, fullHTML);
 

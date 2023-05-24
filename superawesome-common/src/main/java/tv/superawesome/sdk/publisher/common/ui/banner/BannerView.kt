@@ -22,12 +22,11 @@ import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjectorType
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMSessionManagerType
+import tv.superawesome.sdk.publisher.common.openmeasurement.FriendlyObstructionType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.ui.common.interstitialMaxTickCount
-import java.lang.Exception
 
 public class BannerView @JvmOverloads constructor(
     context: Context,
@@ -39,8 +38,7 @@ public class BannerView @JvmOverloads constructor(
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
-    private val omsdkInjector: OMSDKJSInjectorType by inject(OMSDKJSInjectorType::class.java)
-    internal val omSessionManager: OMSessionManagerType by inject(OMSessionManagerType::class.java)
+    internal val omSessionManager: OpenMeasurementSessionManagerType by inject(OpenMeasurementSessionManagerType::class.java)
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
@@ -130,14 +128,7 @@ public class BannerView @JvmOverloads constructor(
             .replace("_TIMESTAMP_", timeProvider.millis().toString())
 
         // load the HTML
-        try {
-            bodyHtml = omsdkInjector.injectOmsdkJavascript(
-                context,
-                bodyHtml,
-            ) ?: bodyHtml
-        } catch (error: Exception) {
-            logger.error("Failed to inject Open Measurement SDK", error)
-        }
+        bodyHtml = omSessionManager.injectJS(context, bodyHtml)
         webView?.loadHTML(data.first, bodyHtml)
     }
 
@@ -151,7 +142,7 @@ public class BannerView @JvmOverloads constructor(
     public fun close() {
         hasBeenVisible = null
         viewableDetector.cancel()
-        omSessionManager.cleanUp()
+        omSessionManager.finish()
         removeWebView(delayed = true)
         controller.close()
     }
@@ -245,16 +236,23 @@ public class BannerView @JvmOverloads constructor(
         )
         webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
-                omSessionManager.setUpSessionWithWebView(context, webView)
+                omSessionManager.start(context, webView)
                 controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
                 viewableDetector.start(this@BannerView, interstitialMaxTickCount) {
                     controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
-                    omSessionManager.sendImpressionEvent()
+                    omSessionManager.sendAdImpression()
                 }
-                omSessionManager.addOtherFABView(padlockButton)
+                omSessionManager.sendAdLoaded()
+                padlockButton?.let {
+                    omSessionManager.addFriendlyObstruction(
+                        it,
+                        FriendlyObstructionType.Other,
+                        null,
+                    )
+                }
             }
 
             override fun webViewOnError() = controller.adFailedToShow()

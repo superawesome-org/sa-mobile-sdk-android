@@ -23,12 +23,17 @@ import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDat
 import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMAdSessionBuilder
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMAdSessionBuilderType
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjector
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMSDKJSInjectorType
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMSessionManager
-import tv.superawesome.sdk.publisher.common.openmeasurement.OMSessionManagerType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionBuilder
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionBuilderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextBuilder
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextBuilderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjector
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjectorType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoader
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoaderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManager
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
+import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurementModule
 import tv.superawesome.sdk.publisher.common.repositories.*
 import tv.superawesome.sdk.publisher.common.ui.common.*
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
@@ -138,10 +143,11 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<AdStoreType> { AdStore() }
 
     // Open Measurement
-    single<OMAdSessionBuilderType> { OMAdSessionBuilder(get()) }
-
-    single<OMSDKJSInjectorType> { OMSDKJSInjector() }
-    factory<OMSessionManagerType> { OMSessionManager(get(), get()) }
+    single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(get()) }
+    single<OpenMeasurementJSInjectorType> { OpenMeasurementJSInjector(get(), get()) }
+    single<OpenMeasurementContextBuilderType> { OpenMeasurementContextBuilder(get()) }
+    single<OpenMeasurementAdSessionBuilderType> { OpenMeasurementAdSessionBuilder(get(), get()) }
+    factory<OpenMeasurementSessionManagerType> { OpenMeasurementSessionManager(get(), get(), get()) }
 
     // Vast
     single<VastParserType> { VastParser(get(), get()) }

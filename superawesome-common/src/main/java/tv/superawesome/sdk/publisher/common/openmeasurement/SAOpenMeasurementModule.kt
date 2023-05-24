@@ -6,9 +6,9 @@ import android.os.Looper
 import android.util.Log
 import com.iab.omid.library.superawesome.Omid
 
-object SAOpenMeasurement {
+object SAOpenMeasurementModule {
 
-    fun initializeOmsdk(context: Context) {
+    fun activate(context: Context) {
         Handler(Looper.getMainLooper()).post {
             Omid.activate(context)
             if (!Omid.isActive()) {

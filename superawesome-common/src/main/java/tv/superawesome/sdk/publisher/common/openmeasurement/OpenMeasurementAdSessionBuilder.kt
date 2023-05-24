@@ -6,27 +6,21 @@ import com.iab.omid.library.superawesome.Omid
 import com.iab.omid.library.superawesome.adsession.AdSession
 import com.iab.omid.library.superawesome.adsession.AdSessionConfiguration
 import com.iab.omid.library.superawesome.adsession.AdSessionContext
+import com.iab.omid.library.superawesome.adsession.AdSessionContextType
 import com.iab.omid.library.superawesome.adsession.CreativeType
 import com.iab.omid.library.superawesome.adsession.ImpressionType
 import com.iab.omid.library.superawesome.adsession.Owner
 import com.iab.omid.library.superawesome.adsession.Partner
 import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 
-interface OMAdSessionBuilderType {
-    fun getHtmlAdSession(
-        context: Context,
-        webView: WebView?,
-        customReferenceData: String?,
-    ): AdSession
-}
-
-class OMAdSessionBuilder(
+internal class OpenMeasurementAdSessionBuilder(
     private val sdkInfo: SdkInfoType,
-): OMAdSessionBuilderType {
+    private val contextBuilder: OpenMeasurementContextBuilderType,
+): OpenMeasurementAdSessionBuilderType {
 
     override fun getHtmlAdSession(
         context: Context,
-        webView: WebView?,
+        webView: WebView,
         customReferenceData: String?,
     ): AdSession {
         ensureOmidActivated(context)
@@ -39,12 +33,13 @@ class OMAdSessionBuilder(
                 false,
             )
         val partner: Partner = getPartner()
-        val adSessionContext: AdSessionContext = AdSessionContext.createHtmlAdSessionContext(
-            partner,
+        val adSessionContext = contextBuilder.sessionContext(
             webView,
-            null,
+            OpenMeasurementAdType.HTMLDisplay,
+            partner,
             customReferenceData,
         )
+
         val adSession: AdSession = AdSession.createAdSession(adSessionConfiguration, adSessionContext)
         adSession.registerAdView(webView)
         return adSession

@@ -10,6 +10,7 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
+import tv.superawesome.sdk.publisher.common.openmeasurement.FriendlyObstructionType
 import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 
@@ -56,7 +57,10 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     override fun onEvent(placementId: Int, event: SAEvent) {
         SAInterstitialAd.getDelegate()?.onEvent(placementId, event)
         when (event) {
-            SAEvent.adShown -> interstitialBanner.omSessionManager.addCloseButton(closeButton)
+            SAEvent.adShown ->
+                interstitialBanner
+                    .omSessionManager
+                    .addFriendlyObstruction(closeButton, FriendlyObstructionType.CloseAd, null)
             SAEvent.adFailedToShow -> close()
             else -> {}
         }
