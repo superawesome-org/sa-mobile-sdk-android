@@ -1,6 +1,8 @@
 package tv.superawesome.sdk.publisher.common.components
 
 import tv.superawesome.sdk.publisher.common.models.Ad
+import java.util.Date
+import kotlin.random.Random
 
 internal interface HtmlFormatterType {
     fun formatImageIntoHtml(ad: Ad): String
@@ -20,12 +22,13 @@ internal class HtmlFormatter(
         if (ad.creative.clickUrl != null) {
             return "<a href='${ad.creative.clickUrl}' target='_blank'>$img</a>"
         }
-        return """<html><head></head><body>$img</body></html>""".trimMargin()
+        return "<html><head></head><body>$img</body></html>"
     }
 
     override fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String {
         var iasUrl = ""
-        if (ad.moat > 0) {
+        
+        if (ad.moat > 0 && numberGenerator.nextDoubleForMoat() < ad.moat) {
             iasUrl = "<script src=\"https://pixel.adsafeprotected.com/jload"
             iasUrl += "?anId=" + "931553"
             iasUrl += "&chanId=$placementId"
@@ -39,7 +42,7 @@ internal class HtmlFormatter(
 
         val url =
             "${ad.creative.details.url}?placement=$placementId&line_item=${ad.lineItemId}&creative=${ad.creative.id}&rnd=${numberGenerator.nextIntForCache()}"
-        return """<html><head>${iasUrl}</head><body><iframe class='omid-element' style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe></body></html>"""
+        return "<html><head>${iasUrl}</head><body><iframe class='omid-element' style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe></body></html>"
     }
 
     override fun formatTagIntoHtml(ad: Ad): String {
