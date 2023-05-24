@@ -177,7 +177,7 @@ class VideoAdUITest {
 
             tapOnPlacement(testData)
 
-            CommonInteraction.waitForCloseButtonThenClick()
+            CommonInteraction.waitForCloseButtonWithDelayThenClick()
 
             checkAdEnded(testData.placement)
         }
