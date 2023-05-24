@@ -164,6 +164,26 @@ class VideoAdUITest {
     }
 
     @Test
+    fun test_vpaid_hidden_CloseButton_is_hidden_until_video_ends() {
+        val testData = TestData.videoVpaidGreyBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseHidden()
+                    tapOnDisableCloseAtEnd()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            CommonInteraction.waitForCloseButtonThenClick()
+
+            checkAdEnded(testData.placement)
+        }
+    }
+
+    @Test
     fun test_auto_close_on_finish() {
         val testData = TestData.videoDirect
         CommonInteraction.launchActivityWithSuccessStub(testData)
