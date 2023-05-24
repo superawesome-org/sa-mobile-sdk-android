@@ -12,7 +12,7 @@ internal interface HtmlFormatterType {
 
 internal class HtmlFormatter(
     private val numberGenerator: NumberGeneratorType,
-    private val encoder: EncoderType
+    private val encoder: EncoderType,
 ) : HtmlFormatterType {
 
     override fun formatImageIntoHtml(ad: Ad): String {
@@ -27,7 +27,7 @@ internal class HtmlFormatter(
 
     override fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String {
         var iasUrl = ""
-        
+
         if (ad.moat > 0 && numberGenerator.nextDoubleForMoat() < ad.moat) {
             iasUrl = "<script src=\"https://pixel.adsafeprotected.com/jload"
             iasUrl += "?anId=" + "931553"
