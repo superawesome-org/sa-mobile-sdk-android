@@ -5,8 +5,6 @@ import android.webkit.WebView
 import com.iab.omid.library.superawesome.Omid
 import com.iab.omid.library.superawesome.adsession.AdSession
 import com.iab.omid.library.superawesome.adsession.AdSessionConfiguration
-import com.iab.omid.library.superawesome.adsession.AdSessionContext
-import com.iab.omid.library.superawesome.adsession.AdSessionContextType
 import com.iab.omid.library.superawesome.adsession.CreativeType
 import com.iab.omid.library.superawesome.adsession.ImpressionType
 import com.iab.omid.library.superawesome.adsession.Owner

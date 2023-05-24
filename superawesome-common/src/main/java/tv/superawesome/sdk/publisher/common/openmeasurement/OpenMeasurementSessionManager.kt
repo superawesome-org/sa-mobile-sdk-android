@@ -5,8 +5,6 @@ import android.view.View
 import android.webkit.WebView
 import com.iab.omid.library.superawesome.adsession.AdEvents
 import com.iab.omid.library.superawesome.adsession.AdSession
-import com.iab.omid.library.superawesome.adsession.AdSessionConfiguration
-import com.iab.omid.library.superawesome.adsession.AdSessionContext
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionCreationFailureThrowable
 import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionStartFailureThrowable
@@ -34,9 +32,18 @@ internal class OpenMeasurementSessionManager(
                 webView,
                 null,
             )
-            adSession?.start()
         } catch (error: IllegalArgumentException) {
             val throwable = AdSessionCreationFailureThrowable()
+            logger.error(throwable.message, throwable)
+            return
+        }
+    }
+
+    private fun startSession() {
+        try {
+            adSession?.start()
+        } catch (error: IllegalArgumentException) {
+            val throwable = AdSessionStartFailureThrowable()
             logger.error(throwable.message, throwable)
             return
         }
@@ -63,6 +70,7 @@ internal class OpenMeasurementSessionManager(
         webView: WebView,
     ) {
         createSession(context, webView)
+        startSession()
         setupAdEvents()
     }
 
