@@ -212,6 +212,8 @@ class SAManagedAdActivity : Activity(),
         listener?.onEvent(this.placementId, SAEvent.adEnded)
         if (config?.autoCloseAtEnd == true) {
             close()
+        } else {
+            showCloseButton()
         }
     }
 
@@ -223,6 +225,10 @@ class SAManagedAdActivity : Activity(),
 
     override fun adPaused() {
         listener?.onEvent(this.placementId, SAEvent.adPaused)
+    }
+
+    private fun showCloseButton() = runOnUiThread {
+        closeButton.visibility = View.VISIBLE
     }
 
     private fun onCloseAction() {
@@ -255,7 +261,7 @@ class SAManagedAdActivity : Activity(),
     }
 
     private fun hasBeenVisibleForRequiredTimeoutTime() {
-        closeButton.visibility = View.VISIBLE
+        showCloseButton()
     }
 
     /**
