@@ -85,6 +85,10 @@ class ListScreenRobot : BaseRobot() {
         checkSubtitleContains("$placementId adClosed")
     }
 
+    fun checkAdEnded(placementId: String) {
+        checkSubtitleContains("$placementId adEnded")
+    }
+
     fun waitForDisplay() {
         ViewTester()
             .waitForView(withId(R.id.subtitleTextView))

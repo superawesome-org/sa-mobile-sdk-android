@@ -131,6 +131,10 @@ internal class ManagedAdActivity :
         adView.close()
     }
 
+    private fun showCloseButton() = runOnUiThread {
+        closeButton.visibility = View.VISIBLE
+    }
+
     override fun adLoaded() {
         listener?.onEvent(this.placementId, SAEvent.adLoaded)
     }
@@ -157,7 +161,7 @@ internal class ManagedAdActivity :
             weakThis?.cancelCloseButtonTimeoutRunnable()
             weakThis?.controller?.triggerViewableImpression(placementId)
             if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
-                weakThis.closeButton.visibility = View.VISIBLE
+                weakThis.showCloseButton()
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
     }
@@ -178,6 +182,8 @@ internal class ManagedAdActivity :
         listener?.onEvent(this.placementId, SAEvent.adEnded)
         if (config.shouldCloseAtEnd) {
             close()
+        } else {
+            showCloseButton()
         }
     }
 
@@ -194,7 +200,7 @@ internal class ManagedAdActivity :
     }
 
     private fun hasBeenVisibleForRequiredTimeoutTime() {
-        closeButton.visibility = View.VISIBLE
+        showCloseButton()
     }
 
     // AdControllerType.VideoPlayerListener
