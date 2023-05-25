@@ -21,7 +21,7 @@ internal class AdProcessor(
 
         when (ad.creative.format) {
             CreativeFormatType.ImageWithLink -> {
-                response.html = htmlFormatter.formatImageIntoHtml(ad)
+                response.html = htmlFormatter.formatImageIntoHtml(ad, placementId)
                 response.baseUrl = ad.creative.details.image?.baseUrl
             }
             CreativeFormatType.RichMedia -> {
