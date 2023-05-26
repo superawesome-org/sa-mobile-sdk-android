@@ -4,6 +4,7 @@ package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.view.View
 import androidx.annotation.VisibleForTesting
 import org.koin.java.KoinJavaComponent.inject
@@ -11,9 +12,11 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Orientation
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.managed.ManagedAdActivity
+import java.io.File
 
 public object SAVideoAd {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
@@ -77,6 +80,19 @@ public object SAVideoAd {
                 baseUrl = adResponse.baseUrl,
             )
         } else {
+
+            if (adResponse?.filePath == null) {
+                getDelegate()?.onEvent(placementId, SAEvent.adFailedToShow)
+                return
+            }
+
+            try {
+                Uri.fromFile(File(adResponse.filePath))
+            } catch (error: Throwable) {
+                getDelegate()?.onEvent(placementId, SAEvent.adFailedToShow)
+                return
+            }
+
             VideoActivity.newInstance(context, placementId, controller.config)
         }
         context.startActivity(intent)
