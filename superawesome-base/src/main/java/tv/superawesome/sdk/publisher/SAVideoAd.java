@@ -6,7 +6,9 @@ import static tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod.WITH_SOU
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import java.io.File;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -329,6 +331,19 @@ public class SAVideoAd {
 
                     context.startActivity(intent);
                 } else {
+                    if (adL.creative.details.media.path == null || !adL.creative.details.media.isDownloaded) {
+                        sendAdFailedToShow(placementId);
+                        ads.remove(placementId);
+                        return;
+                    }
+
+                    try {
+                        Uri.fromFile(new File(adL.creative.details.media.path));
+                    } catch (Throwable error) {
+                        sendAdFailedToShow(placementId);
+                        return;
+                    }
+
                     // create intent
                     Intent intent = new Intent(context, SAVideoActivity.class);
 
@@ -354,18 +369,18 @@ public class SAVideoAd {
                     context.startActivity(intent);
                 }
             } else {
-                if (listener != null) {
-                    listener.onEvent(placementId, SAEvent.adFailedToShow);
-                } else {
-                    Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToShow");
-                }
+                sendAdFailedToShow(placementId);
             }
         } else {
-            if (listener != null) {
-                listener.onEvent(placementId, SAEvent.adFailedToShow);
-            } else {
-                Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToShow");
-            }
+            sendAdFailedToShow(placementId);
+        }
+    }
+
+    private static void sendAdFailedToShow(int placementId) {
+        if (listener != null) {
+            listener.onEvent(placementId, SAEvent.adFailedToShow);
+        } else {
+            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToShow");
         }
     }
 
