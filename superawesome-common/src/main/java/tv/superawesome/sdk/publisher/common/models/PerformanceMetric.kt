@@ -11,7 +11,7 @@ internal data class PerformanceMetric(val value: Double,
     )}
 }
 
-enum class PerformanceMetricName(val value: String) {
+internal enum class PerformanceMetricName(val value: String) {
   CloseButtonPressTime("sa.ad.sdk.close.button.press.time"),
 
   DwellTime("sa.ad.sdk.dwell.time"),
@@ -21,7 +21,7 @@ enum class PerformanceMetricName(val value: String) {
   RenderTime("sa.ad.sdk.performance.render.time")
 }
 
-enum class PerformanceMetricType(val value: String) {
+internal enum class PerformanceMetricType(val value: String) {
   Gauge( "gauge"),
 
   Increment("increment"),
