@@ -18,7 +18,7 @@ enum class PerformanceMetricName(val value: String) {
 
   LoadTime("sa.ad.sdk.performance.load.time"),
 
-  RenderTime("sa.ad.sdk.performance.load.time")
+  RenderTime("sa.ad.sdk.performance.render.time")
 }
 
 enum class PerformanceMetricType(val value: String) {
