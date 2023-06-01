@@ -34,4 +34,8 @@ internal interface AwesomeAdsApi {
     @GET("event")
     @JvmSuppressWildcards
     suspend fun event(@QueryMap query: Map<String, Any>)
+
+    @GET("sdk/performance")
+    @JvmSuppressWildcards
+    suspend fun performance(@QueryMap metric: Map<String, Any>)
 }
