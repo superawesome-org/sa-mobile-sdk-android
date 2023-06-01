@@ -1,20 +1,28 @@
 package tv.superawesome.demoapp.robot
 
+import android.graphics.Color
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
+import org.hamcrest.CoreMatchers.not
+import org.hamcrest.Matchers.anyOf
+import org.junit.Assert
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.main.MainActivity
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.util.AdapterUtil.withPlacementId
+import tv.superawesome.demoapp.util.ScreenshotUtil
+import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 
 class ListScreenRobot : BaseRobot() {
     private fun launchActivityWithSuccessStub(
@@ -72,21 +80,38 @@ class ListScreenRobot : BaseRobot() {
         clickPlacementById(testData.placement)
     }
 
-    fun checkSubtitleContains(text: String) {
+    fun checkAdHasBeenLoadedShownClickedClosed(placement: TestData) {
+        checkForEvent(placement, SAEvent.adLoaded)
+        checkForEvent(placement, SAEvent.adShown)
+        checkForEvent(placement, SAEvent.adClicked)
+        checkForEvent(placement, SAEvent.adClosed)
+    }
+
+    fun checkForEvent(placement: TestData, event: SAEvent) {
         onView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
-            .perform(waitUntil(withSubstring(text)))
+            .perform(waitUntil(withSubstring("${placement.placement} ${event.name}")))
     }
 
-    fun checkAdHasBeenLoadedShownClickedClosed(placementId: String) {
-        checkSubtitleContains("$placementId adLoaded")
-        checkSubtitleContains("$placementId adShown")
-        checkSubtitleContains("$placementId adClicked")
-        checkSubtitleContains("$placementId adClosed")
+    /**
+     * Checks if the event is not occurred
+     */
+    fun checkNotForEvent(placement: TestData, event: SAEvent) {
+        onView(withId(R.id.subtitleTextView))
+            .check(matches(not(withSubstring("${placement.placement} ${event.name}"))))
     }
 
-    fun checkAdEnded(placementId: String) {
-        checkSubtitleContains("$placementId adEnded")
+    fun checkForAnyEvent(placement: TestData, event: SAEvent, event2: SAEvent) {
+        onView(withId(R.id.subtitleTextView))
+            .perform(waitUntil(isDisplayed()))
+            .perform(
+                waitUntil(
+                    anyOf(
+                        withSubstring("${placement.placement} ${event.name}"),
+                        withSubstring("${placement.placement} ${event2.name}")
+                    )
+                )
+            )
     }
 
     fun waitForDisplay() {
@@ -94,6 +119,16 @@ class ListScreenRobot : BaseRobot() {
             .waitForView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
             .check(isVisible())
+    }
+
+    fun waitForDisplay(color: Color) {
+        ViewTester().waitForColorInCenter(color)
+        Assert.assertTrue(
+            TestColors.checkApproximatelyEqual(
+                ScreenshotUtil.captureColorInCenter(),
+                color
+            )
+        )
     }
 }
 

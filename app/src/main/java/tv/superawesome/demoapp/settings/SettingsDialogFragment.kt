@@ -46,7 +46,7 @@ class SettingsDialogFragment : DialogFragment() {
         closeButton.contentDescription = "Settings.Buttons.Close"
 
         adapter.onItemSelected = { item, option ->
-            DataStore.updateSettings(item, option)
+            DataStore.updateSettings(item.item, option)
         }
         updateAdapter()
 

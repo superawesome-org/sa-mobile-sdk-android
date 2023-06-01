@@ -1,9 +1,6 @@
 package tv.superawesome.demoapp
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
@@ -13,23 +10,20 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bannerRobot
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.deviceRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
+import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.rules.RetryTestRule
-import tv.superawesome.demoapp.util.ColorMatcher.matchesColor
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
-import tv.superawesome.demoapp.util.waitUntil
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -54,48 +48,56 @@ class BannerUITest {
     @Test
     fun test_adLoading() {
         val testData = TestData.bannerSuccess
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withId(R.id.bannerView))
-            .perform(waitUntil(matchesColor(TestColors.bannerYellow)))
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
+            bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+        }
     }
 
     @Test
     fun test_adFailure() {
         val testData = TestData.bannerSuccess
-        CommonInteraction.launchActivityWithFailureStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchActivityWithFailureStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
     }
 
     @Test
     fun test_adNotFound() {
         val testData = TestData("88001", "not_found.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
+            checkForAnyEvent(testData, SAEvent.adFailedToLoad, SAEvent.adEmpty)
+        }
     }
 
     @Test
     fun test_safeAdVisible() {
-        // Given
         val testData = TestData.bannerPadlock
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        // When
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // Then
-        CommonInteraction.waitAndCheckSafeAdLogo()
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+            }
+        }
     }
 
     @Test
@@ -110,23 +112,22 @@ class BannerUITest {
                 }
             }
             tapOnPlacement(testData)
-        }
 
-        bannerRobot {
-            tapOnAd()
-        }
 
-        bumperPageRobot {
+            bannerRobot {
+                tapOnAd()
+
+                bumperPageRobot {
+                    waitForDisplay()
+                }
+            }
+
             waitForDisplay()
-        }
 
-        listScreenRobot {
-            waitForDisplay()
-            checkSubtitleContains("${testData.placement} adClicked")
+            checkForEvent(testData, SAEvent.adClicked)
+            IntentsHelper.checkIntentsForUrl()
+            verifyUrlPathCalled("/click")
         }
-
-        IntentsHelper.checkIntentsForUrl()
-        verifyUrlPathCalled("/click")
     }
 
     @Test
@@ -142,25 +143,23 @@ class BannerUITest {
                 }
             }
             tapOnPlacement(testData)
-        }
 
-        bannerRobot {
-            tapOnAd()
-        }
+            bannerRobot {
+                tapOnAd()
 
-        bumperPageRobot {
-            waitForDisplay()
+                bumperPageRobot {
+                    waitForDisplay()
 
-            deviceRobot {
-                // And If outside the bumper page is clicked
-                clickOnScreen(0, 100)
+                    deviceRobot {
+                        // And If outside the bumper page is clicked
+                        clickOnScreen(0, 100)
+                    }
+
+                    // Then bumper page title is still visible
+                    checkIsVisible()
+                }
             }
 
-            // Then bumper page title is still visible
-            checkIsVisible()
-        }
-
-        listScreenRobot {
             waitForDisplay()
         }
     }
@@ -173,17 +172,15 @@ class BannerUITest {
         listScreenRobot {
             launchWithSuccessStub(testData)
             tapOnPlacement(testData)
-        }
 
-        bannerRobot {
-            tapOnAd()
-        }
+            bannerRobot {
+                tapOnAd()
 
-        bumperPageRobot {
-            waitForDisplay()
-        }
+                bumperPageRobot {
+                    waitForDisplay()
+                }
+            }
 
-        listScreenRobot {
             waitForDisplay()
         }
     }
@@ -191,33 +188,43 @@ class BannerUITest {
     @Test
     fun test_parental_gate_for_safe_ad_click() {
         val testData = TestData.bannerPadlock
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnEnableParentalGate()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                }
             }
         }
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForSafeAdLogoThenClick()
-
-        ParentalGateInteraction.checkVisible()
     }
 
     @Test
     fun test_adClosed_callback() {
         val testData = TestData.bannerSuccess
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        ViewTester()
-            .waitForView(withId(R.id.bannerView))
-            .perform(waitUntil(matchesColor(TestColors.bannerYellow)))
+            bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
+            }
 
-        CommonInteraction.clickItemAt(testData)
+            tapOnPlacement(testData)
 
-        // The banner is closed automatically when a new one is opened
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+            // The banner is closed automatically when a new one is opened
+            checkForEvent(testData, SAEvent.adClosed)
+        }
     }
 
     // Events
@@ -225,23 +232,26 @@ class BannerUITest {
     fun test_banner_impression_events() {
         // Given
         val testData = TestData.bannerSuccess
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        ViewTester()
-            .waitForView(withId(R.id.bannerView))
+            bannerRobot {
+                waitForDisplay()
 
-        // When
-        Thread.sleep(2500)
+                // When
+                Thread.sleep(2500)
 
-        // Then
-        verifyUrlPathCalled("/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
+                // Then
+                verifyUrlPathCalled("/impression")
+                verifyUrlPathCalledWithQueryParam(
+                    "/event",
+                    "data",
+                    ".*viewable_impression.*"
+                )
+            }
+        }
     }
 
     @Test
@@ -249,71 +259,92 @@ class BannerUITest {
         // Given
         val testData = TestData.bannerSuccess
         IntentsHelper.stubIntentsForUrl()
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        // When
-        ViewTester()
-            .waitForView(withId(R.id.bannerView))
-            .perform(waitUntil(matchesColor(TestColors.bannerYellow)))
-            .perform(click())
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // Then
-        IntentsHelper.checkIntentsForUrl()
-        verifyUrlPathCalled("/click")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+            bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
+
+                tapOnAd()
+            }
+
+            IntentsHelper.checkIntentsForUrl()
+            verifyUrlPathCalled("/click")
+            checkForEvent(testData, SAEvent.adClicked)
+        }
     }
 
     @Test
     fun test_parental_gate_success_event() {
         stubIntents()
         openParentalGate()
-        ParentalGateInteraction.testSuccess()
+
+        parentalGateRobot {
+            solve()
+            checkEventForSuccess()
+        }
     }
 
     @Test
     fun test_parental_gate_close_event() {
         openParentalGate()
-        ParentalGateInteraction.testClose()
+
+        parentalGateRobot {
+            tapOnCancel()
+            checkEventForClose()
+        }
     }
 
     @Test
     fun test_parental_gate_failure_event() {
         openParentalGate()
-        ParentalGateInteraction.testFailure()
+
+        parentalGateRobot {
+            solveForFailure()
+        }
     }
 
     @Test
     fun test_external_webpage_opening_on_click() {
-        // Given
         val testData = TestData.bannerSuccess
         IntentsHelper.stubIntentsForUrl()
 
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // When ad is clicked
-        onView(withId(R.id.bannerView))
-            .perform(click())
+            bannerRobot {
+                tapOnAd()
 
-        // Then view URL is redirected to browser
-        IntentsHelper.checkIntentsForUrl()
-        verifyUrlPathCalled("/click")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClicked")
+                IntentsHelper.checkIntentsForUrl()
+                verifyUrlPathCalled("/click")
+            }
+
+            checkForEvent(testData, SAEvent.adClicked)
+        }
     }
 
     private fun openParentalGate() {
-        CommonInteraction.launchActivityWithSuccessStub(TestData.bannerPadlock) {
-            settingsScreenRobot {
-                tapOnEnableParentalGate()
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkEventForOpen()
+                }
             }
         }
-        CommonInteraction.clickItemAt(TestData.bannerPadlock)
-
-        // When parental gate is shown
-        CommonInteraction.waitForSafeAdLogoThenClick()
-
-        // Then parental gate open event is triggered
-        ParentalGateInteraction.testOpen()
     }
 }
