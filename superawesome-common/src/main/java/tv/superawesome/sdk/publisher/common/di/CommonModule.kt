@@ -81,6 +81,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         )
     }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
+    single<PerformanceRepositoryType> { PerformanceRepository(get()) }
 
     single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get()) }
     single { HeaderInterceptor(get()) }
