@@ -1,6 +1,6 @@
 package tv.superawesome.lib.metrics.models;
 
-enum SAPerformanceMetricName {
+public enum SAPerformanceMetricName {
   CloseButtonPressTime("sa.ad.sdk.close.button.press.time"),
 
   DwellTime("sa.ad.sdk.dwell.time"),

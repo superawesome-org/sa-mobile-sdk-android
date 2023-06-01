@@ -1,6 +1,6 @@
 package tv.superawesome.lib.metrics.models;
 
-enum SAPerformanceMetricType {
+public enum SAPerformanceMetricType {
   Gauge( "gauge"),
 
   Increment("increment"),

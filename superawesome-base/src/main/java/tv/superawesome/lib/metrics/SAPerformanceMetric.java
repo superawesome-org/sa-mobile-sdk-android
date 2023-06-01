@@ -51,8 +51,8 @@ public class SAPerformanceMetric {
     try {
       return SAJsonParser.newObject(
           "value", metric.value,
-          "metricName", metric.metricName,
-          "metricType", metric.metricType
+          "metricName", metric.metricName.label,
+          "metricType", metric.metricType.label
       );
     } catch (Exception e) {
       return new JSONObject();
