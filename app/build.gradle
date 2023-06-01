@@ -41,6 +41,7 @@ repositories {
 dependencies {
     implementation project(':saadmob')
     implementation project(':superawesome-common')
+    implementation project(':superawesome-base')
 
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
     implementation 'com.google.android.material:material:1.9.0'

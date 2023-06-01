@@ -1,10 +1,9 @@
 package tv.superawesome.demoapp
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
@@ -14,9 +13,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
-import tv.superawesome.demoapp.interaction.CommonInteraction
-import tv.superawesome.demoapp.interaction.ParentalGateInteraction
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
@@ -24,14 +20,13 @@ import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.rules.RetryTestRule
+import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
-import tv.superawesome.demoapp.util.isVisible
-import tv.superawesome.demoapp.util.waitUntil
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
 
 @RunWith(AndroidJUnit4::class)
@@ -50,6 +45,13 @@ class InterstitialUITest {
         val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
         ads.invoke(null)
+
+        val base =
+            tv.superawesome.sdk.publisher.SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
+        base.isAccessible = true
+        base.invoke(null)
+
+        wireMockRule.resetAll()
     }
 
     @After
@@ -61,77 +63,98 @@ class InterstitialUITest {
     fun test_standard_adLoading() {
         val testData = TestData.interstitialStandard
         testAdLoading(testData, TestColors.bannerYellow)
-
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
     }
 
     @Test
     fun test_ksf_adLoading() {
         val testData = TestData.interstitialKsf
         testAdLoading(testData, TestColors.ksfYellow)
+    }
 
-        CommonInteraction.waitForCloseButtonThenClick()
+    private fun testAdLoading(testData: TestData, color: Color) {
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
+            interstitialScreenRobot {
+                waitForDisplay(color)
+                tapOnCloseDelayed()
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+        }
     }
 
     @Test
     fun test_adFailure() {
         val testData = TestData.interstitialKsf
-        CommonInteraction.launchActivityWithFailureStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchActivityWithFailureStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
     }
 
     @Test
     fun test_adNotFound() {
         val testData = TestData("87970", "not_found.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
+            checkForAnyEvent(testData, SAEvent.adFailedToLoad, SAEvent.adEmpty)
+        }
     }
 
     @Test
     fun test_standard_safeAdVisible() {
         val testData =
             TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.waitAndCheckSafeAdLogo()
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+            }
+        }
     }
 
     @Test
     fun test_standard_CloseButton() {
         val testData = TestData("87892", "interstitial_standard_success.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+            interstitialScreenRobot {
+                tapOnCloseDelayed()
+            }
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+            checkForEvent(testData, SAEvent.adClosed)
+        }
     }
 
     @Test
     fun test_ksf_CloseButton() {
         val testData = TestData.interstitialKsf
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+            interstitialScreenRobot {
+                tapOnCloseDelayed()
+            }
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+            checkForEvent(testData, SAEvent.adClosed)
+        }
     }
 
     @Test
@@ -148,27 +171,23 @@ class InterstitialUITest {
             }
 
             tapOnPlacement(testData)
-        }
 
-        interstitialScreenRobot {
-            tapOnAdDelayed()
-        }
+            interstitialScreenRobot {
+                tapOnAdDelayed()
 
-        bumperPageRobot {
-            waitForDisplay()
+                bumperPageRobot {
+                    waitForDisplay()
+                    waitForFinish()
 
-            // Then view URL is redirected to browser
-            Thread.sleep(4000)
-            IntentsHelper.checkIntentsForVast()
-            verifyUrlPathCalled("/click")
-        }
+                    // Then view URL is redirected to browser
+                    IntentsHelper.checkIntentsForVast()
+                    verifyUrlPathCalled("/click")
+                }
 
-        interstitialScreenRobot {
-            tapOnClose()
-        }
+                tapOnCloseDelayed()
+            }
 
-        listScreenRobot {
-            checkSubtitleContains("${testData.placement} adClicked")
+            checkForEvent(testData, SAEvent.adClicked)
         }
     }
 
@@ -181,21 +200,17 @@ class InterstitialUITest {
         listScreenRobot {
             launchWithSuccessStub(testData)
             tapOnPlacement(testData)
-        }
 
-        interstitialScreenRobot {
-            tapOnAd()
-        }
+            interstitialScreenRobot {
+                tapOnAd()
 
-        bumperPageRobot {
-            waitForDisplay()
-        }
-
-        Thread.sleep(4000)
-        IntentsHelper.checkIntentsForUrl()
-
-        interstitialScreenRobot {
-            waitForDisplay()
+                bumperPageRobot {
+                    waitForDisplay()
+                    waitForFinish()
+                }
+                IntentsHelper.checkIntentsForUrl()
+                waitForDisplay()
+            }
         }
     }
 
@@ -203,114 +218,128 @@ class InterstitialUITest {
     fun test_parental_gate_for_safe_ad_click() {
         val testData =
             TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnEnableParentalGate()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                }
             }
         }
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForSafeAdLogoThenClick()
-
-        ParentalGateInteraction.checkVisible()
     }
 
     @Test
     fun test_standard_adAlreadyLoaded_callback() {
         val testData = TestData.interstitialStandard
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisablePlay()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnDisablePlay()
+                }
             }
+
+            tapOnPlacement(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adAlreadyLoaded)
         }
-
-        CommonInteraction.clickItemAt(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
     }
 
     @Test
     fun test_ksf_adAlreadyLoaded_callback() {
         val testData = TestData.interstitialKsf
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisablePlay()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnDisablePlay()
+                }
             }
+
+            tapOnPlacement(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adAlreadyLoaded)
         }
-
-        CommonInteraction.clickItemAt(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
     }
 
     // Events
     @Test
     fun test_standard_ad_impression_events() {
-        //Given
         val testData = TestData.interstitialStandard
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        // When
-        Thread.sleep(2500)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // Then
-        verifyUrlPathCalled("/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
+            interstitialScreenRobot {
+                waitForImpression()
+
+                verifyUrlPathCalled("/impression")
+                verifyUrlPathCalledWithQueryParam(
+                    "/event",
+                    "data",
+                    ".*viewable_impression.*"
+                )
+            }
+        }
     }
 
     @Test
     fun test_ksf_ad_impression_events() {
-        //Given
         val testData = TestData.interstitialKsf
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // When
-        Thread.sleep(2500)
+            interstitialScreenRobot {
+                waitForImpression()
 
-        // Then
-        verifyUrlPathCalled("/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
+                verifyUrlPathCalled("/impression")
+                verifyUrlPathCalledWithQueryParam(
+                    "/event",
+                    "data",
+                    ".*viewable_impression.*"
+                )
+            }
+        }
     }
 
     @Test
     fun test_standard_ad_click_event() {
-        // Given
         IntentsHelper.stubIntentsForVast()
         val testData = TestData.interstitialStandard
 
         listScreenRobot {
             launchWithSuccessStub(testData)
             tapOnPlacement(testData)
-        }
 
-        interstitialScreenRobot {
-            tapOnAd()
+            interstitialScreenRobot {
+                tapOnAd()
 
-            IntentsHelper.checkIntentsForVast()
-            waitAndTapOnClose()
-        }
+                IntentsHelper.checkIntentsForVast()
+                waitAndTapOnClose()
+            }
 
-        listScreenRobot {
             verifyUrlPathCalled("/click")
-            checkSubtitleContains("${testData.placement} adClicked")
+            checkForEvent(testData, SAEvent.adClicked)
         }
     }
 
     @Test
     fun test_parental_gate_success_event() {
+        if (DataStore.data.useBaseModule) return
         IntentsHelper.stubIntentsForUrl()
         openParentalGate()
         parentalGateRobot {
@@ -322,47 +351,60 @@ class InterstitialUITest {
 
     @Test
     fun test_parental_gate_close_event() {
+        if (DataStore.data.useBaseModule) return
         openParentalGate()
-        ParentalGateInteraction.testClose()
+
+        parentalGateRobot {
+            tapOnCancel()
+            checkEventForClose()
+        }
     }
 
     @Test
     fun test_parental_gate_failure_event() {
+        if (DataStore.data.useBaseModule) return
         openParentalGate()
-        ParentalGateInteraction.testFailure()
+
+        parentalGateRobot {
+            solveForFailure()
+        }
     }
 
     @Test
     fun test_external_webpage_opening_on_click() {
-        // Given
         val testData = TestData.interstitialStandard
         stubIntents()
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        // When ad is clicked
-        CommonInteraction.waitForAdContentThenClick()
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // Then view URL is redirected to browser
-        Intents.intended(hasAction(Intent.ACTION_VIEW))
-        verifyUrlPathCalled("/click")
+            interstitialScreenRobot {
+                tapOnAdDelayed()
+            }
+
+            // Then view URL is redirected to browser
+            Intents.intended(hasAction(Intent.ACTION_VIEW))
+            verifyUrlPathCalled("/click")
+        }
     }
 
     @Test
     fun test_standard_CloseButtonWithNoDelay() {
         val testData = TestData.interstitialStandard
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnCloseNoDelay()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                checkCloseIsDisplayed()
             }
         }
-
-        CommonInteraction.clickItemAt(testData)
-
-        ViewTester()
-            .waitForView(withContentDescription("Close"))
-            .perform(waitUntil(isDisplayed()))
-            .check(isVisible())
     }
 
     @Test
@@ -377,10 +419,10 @@ class InterstitialUITest {
             }
 
             tapOnPlacement(testData)
-        }
 
-        interstitialScreenRobot {
-            tapOnCloseDelayed()
+            interstitialScreenRobot {
+                checkCloseAppearsDelayed()
+            }
         }
     }
 
@@ -395,14 +437,14 @@ class InterstitialUITest {
                 }
             }
             tapOnPlacement(testData)
-        }
 
-        interstitialScreenRobot {
-            tapOnAd()
-        }
+            interstitialScreenRobot {
+                tapOnAd()
 
-        parentalGateRobot {
-            checkEventForOpen()
+                parentalGateRobot {
+                    checkEventForOpen()
+                }
+            }
         }
     }
 }

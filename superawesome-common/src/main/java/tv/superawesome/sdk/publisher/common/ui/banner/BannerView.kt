@@ -44,6 +44,7 @@ public class BannerView @JvmOverloads constructor(
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
         isSaveEnabled = true
+        contentDescription = "Ad content"
     }
 
     override fun onSaveInstanceState(): Parcelable = Bundle().apply {
