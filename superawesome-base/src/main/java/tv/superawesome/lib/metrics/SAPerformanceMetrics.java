@@ -11,7 +11,7 @@ import tv.superawesome.lib.metrics.models.SAPerformanceMetricType;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAPerformanceMetrics {
-  private final Executor executor;
+  private Executor executor;
   private ISASession session;
 
   private long closeButtonPressedMetricStartTime = 0L;

@@ -1,9 +1,9 @@
 package tv.superawesome.lib.metrics.models;
 
 public class SAPerformanceMetricModel {
-  public Double value;
-  public SAPerformanceMetricName metricName;
-  public SAPerformanceMetricType metricType;
+  public final Double value;
+  public final SAPerformanceMetricName metricName;
+  public final SAPerformanceMetricType metricType;
 
   public SAPerformanceMetricModel(double value,
                                   SAPerformanceMetricName metricName,

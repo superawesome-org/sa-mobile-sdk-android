@@ -14,10 +14,10 @@ import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
 
 public class SAPerformanceMetricDispatcher {
-  protected final SAPerformanceMetricModel metric;
-  protected final ISASession session;
-  private final SANetwork network;
-  private final boolean isDebug;
+  private SAPerformanceMetricModel metric;
+  private ISASession session;
+  private SANetwork network;
+  private boolean isDebug;
 
   public SAPerformanceMetricDispatcher(SAPerformanceMetricModel metric,
                                        ISASession session) {
