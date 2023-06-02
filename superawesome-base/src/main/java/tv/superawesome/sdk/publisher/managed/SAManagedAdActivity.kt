@@ -75,6 +75,7 @@ class SAManagedAdActivity : Activity(),
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
         closeButton.layoutParams = buttonLayout
         closeButton.setOnClickListener {
+            performance.trackCloseButtonPressed()
             onCloseAction()
         }
         closeButton.contentDescription = "Close"
@@ -86,7 +87,6 @@ class SAManagedAdActivity : Activity(),
         super.onCreate(savedInstanceState)
         events = SAVideoAd.getEvents()
         performance = SAPerformanceMetrics(SAVideoAd.getNewSession(this))
-        performance.startTimingCloseButtonPressed()
 
         // get values from the intent
         config = intent.getParcelableExtra(CONFIG_KEY)
@@ -97,6 +97,10 @@ class SAManagedAdActivity : Activity(),
 
         adView.addView(closeButton)
         setUpCloseButtonTimeoutRunnable()
+
+        if(config?.closeButtonState == CloseButtonState.VisibleImmediately) {
+            performance.startTimingCloseButtonPressed()
+        }
 
         val ad: SAAd = intent.getParcelableExtra(AD_KEY) ?: return
 
@@ -217,6 +221,9 @@ class SAManagedAdActivity : Activity(),
         if (config?.autoCloseAtEnd == true) {
             close()
         } else {
+            if(config?.closeButtonState == CloseButtonState.Hidden) {
+                performance.startTimingCloseButtonPressed()
+            }
             showCloseButton()
         }
     }
@@ -254,7 +261,6 @@ class SAManagedAdActivity : Activity(),
 
     private fun close() {
         if (!isFinishing) {
-            performance.stopTimingCloseButtonPressed()
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
@@ -266,6 +272,9 @@ class SAManagedAdActivity : Activity(),
     }
 
     private fun hasBeenVisibleForRequiredTimeoutTime() {
+        if(config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
+            performance.startTimingCloseButtonPressed()
+        }
         showCloseButton()
     }
 

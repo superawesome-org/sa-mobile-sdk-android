@@ -34,7 +34,7 @@ public class SAPerformanceMetrics {
     closeButtonPressedMetricStartTime = new Date().getTime();
   }
 
-  public void stopTimingCloseButtonPressed() {
+  public void trackCloseButtonPressed() {
     if(closeButtonPressedMetricStartTime == 0L) { return; }
 
     long delta = new Date().getTime() - closeButtonPressedMetricStartTime;
@@ -46,7 +46,6 @@ public class SAPerformanceMetrics {
     );
 
     sendPerformanceMetric(model, session);
-    closeButtonPressedMetricStartTime = 0L;
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
