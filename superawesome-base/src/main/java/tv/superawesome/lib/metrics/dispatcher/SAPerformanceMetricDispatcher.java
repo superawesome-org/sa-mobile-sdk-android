@@ -20,8 +20,9 @@ public class SAPerformanceMetricDispatcher {
   private boolean isDebug;
 
   public SAPerformanceMetricDispatcher(SAPerformanceMetricModel metric,
-                                       ISASession session) {
-    this(metric, session, Executors.newSingleThreadExecutor(), 15000, false);
+                                       ISASession session,
+                                       boolean isDebug) {
+    this(metric, session, Executors.newSingleThreadExecutor(), 15000, isDebug);
   }
 
   public SAPerformanceMetricDispatcher(SAPerformanceMetricModel metric,
