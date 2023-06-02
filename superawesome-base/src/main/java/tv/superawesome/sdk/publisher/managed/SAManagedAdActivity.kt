@@ -147,7 +147,7 @@ class SAManagedAdActivity : Activity(),
         val weak = WeakReference(this)
         timeOutRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenHiddenForRequiredTimeoutTime()
+            weakThis.showCloseButton()
         }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
@@ -259,10 +259,6 @@ class SAManagedAdActivity : Activity(),
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
-    }
-
-    private fun hasBeenHiddenForRequiredTimeoutTime() {
-        showCloseButton()
     }
 
     /**
