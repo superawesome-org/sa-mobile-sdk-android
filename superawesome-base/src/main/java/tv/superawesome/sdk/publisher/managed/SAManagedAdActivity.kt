@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import tv.superawesome.lib.metrics.SAPerformanceMetrics
 import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.samodelspace.saad.SAAd
@@ -39,6 +40,7 @@ class SAManagedAdActivity : Activity(),
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
     private lateinit var events: SAEvents
+    private lateinit var performance: SAPerformanceMetrics
     private lateinit var viewableDetector: SAViewableDetector
 
     private val placementId by lazy {
@@ -83,6 +85,8 @@ class SAManagedAdActivity : Activity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         events = SAVideoAd.getEvents()
+        performance = SAPerformanceMetrics(SAVideoAd.getNewSession(this))
+        performance.startTimingCloseButtonPressed()
 
         // get values from the intent
         config = intent.getParcelableExtra(CONFIG_KEY)
@@ -250,6 +254,7 @@ class SAManagedAdActivity : Activity(),
 
     private fun close() {
         if (!isFinishing) {
+            performance.stopTimingCloseButtonPressed()
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }

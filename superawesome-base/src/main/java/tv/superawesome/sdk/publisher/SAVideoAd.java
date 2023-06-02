@@ -261,7 +261,7 @@ public class SAVideoAd {
         }
     }
 
-    private static SASession getNewSession(Context context) {
+    public static SASession getNewSession(Context context) {
         SASession session = new SASession(context);
         session.setTestMode(isTestingEnabled);
         session.setConfiguration(configuration);

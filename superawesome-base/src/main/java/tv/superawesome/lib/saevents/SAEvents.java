@@ -3,11 +3,6 @@ package tv.superawesome.lib.saevents;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import tv.superawesome.lib.metrics.dispatcher.SAPerformanceMetricDispatcher;
-import tv.superawesome.lib.metrics.module.SAPerformanceModule;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricModel;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricName;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricType;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.ISASession;
 
@@ -16,7 +11,6 @@ public class SAEvents {
     private SAServerModule              serverModule;
     private SAVASTModule                vastModule;
     private SAViewableModule            viewableModule;
-    private SAPerformanceModule         performanceModule;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Set & unset the ad needed for triggering events
@@ -26,14 +20,12 @@ public class SAEvents {
         serverModule = new SAServerModule(ad, session);
         vastModule = new SAVASTModule(ad);
         viewableModule = new SAViewableModule();
-        performanceModule = new SAPerformanceModule();
     }
 
     public void unsetAd () {
         serverModule = null;
         vastModule = null;
         viewableModule = null;
-        performanceModule = null;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,25 +183,6 @@ public class SAEvents {
     public void checkViewableStatusForVideo (ViewGroup layout, SAViewableModule.Listener listener) {
         if (viewableModule != null) {
             viewableModule.checkViewableStatusForVideo (layout, listener);
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Performance Metrics
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public void sendCloseButtonPressTimeMetric (Double time,
-                                                ISASession session,
-                                                SAPerformanceMetricDispatcher.Listener listener) {
-
-        SAPerformanceMetricModel model = new SAPerformanceMetricModel(
-            time,
-            SAPerformanceMetricName.CloseButtonPressTime,
-            SAPerformanceMetricType.Gauge
-        );
-
-        if (performanceModule != null) {
-            performanceModule.sendPerformanceMetric(model, session, listener);
         }
     }
 }

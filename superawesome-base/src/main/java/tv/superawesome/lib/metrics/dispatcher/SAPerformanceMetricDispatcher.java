@@ -68,7 +68,7 @@ public class SAPerformanceMetricDispatcher {
     }
   }
 
-  public void sendMetric(final Listener listener) {
+  public void sendMetric() {
     JSONObject query = getQuery();
     network.sendGET(
         getUrl() + getEndpoint(),
@@ -79,21 +79,7 @@ public class SAPerformanceMetricDispatcher {
             String url = getUrl() + getEndpoint() + "?" + SAUtils.formGetQueryFromDict(query);
             Log.d("SuperAwesome", success + " | " + status + " | " + url);
           }
-
-          if ((status == 200 || status == 302) && success) {
-            if (listener != null) {
-              listener.didSendMetric(true);
-            }
-          } else {
-            if (listener != null) {
-              listener.didSendMetric(false);
-            }
-          }
         });
-  }
-
-  public interface Listener {
-    void didSendMetric(boolean success);
   }
 }
 
