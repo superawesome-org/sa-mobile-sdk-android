@@ -3,14 +3,16 @@ package tv.superawesome.lib.saevents;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import tv.superawesome.lib.metrics.SAPerformanceMetrics;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAEvents {
-
     private SAServerModule              serverModule;
     private SAVASTModule                vastModule;
     private SAViewableModule            viewableModule;
+
+    private SAPerformanceMetrics        performanceMetrics;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Set & unset the ad needed for triggering events
@@ -20,6 +22,7 @@ public class SAEvents {
         serverModule = new SAServerModule(ad, session);
         vastModule = new SAVASTModule(ad);
         viewableModule = new SAViewableModule();
+        performanceMetrics = new SAPerformanceMetrics(session);
     }
 
     public void unsetAd () {
@@ -183,6 +186,22 @@ public class SAEvents {
     public void checkViewableStatusForVideo (ViewGroup layout, SAViewableModule.Listener listener) {
         if (viewableModule != null) {
             viewableModule.checkViewableStatusForVideo (layout, listener);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Performance Metrics
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void startTimingForCloseButtonPressed() {
+        if (performanceMetrics != null) {
+            performanceMetrics.startTimingForCloseButtonPressed();
+        }
+    }
+
+    public void trackCloseButtonPressed () {
+        if (performanceMetrics != null) {
+            performanceMetrics.trackCloseButtonPressed();
         }
     }
 }

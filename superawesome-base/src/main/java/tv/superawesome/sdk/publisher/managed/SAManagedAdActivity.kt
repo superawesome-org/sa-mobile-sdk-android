@@ -12,7 +12,6 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import tv.superawesome.lib.metrics.SAPerformanceMetrics
 import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.samodelspace.saad.SAAd
@@ -40,7 +39,6 @@ class SAManagedAdActivity : Activity(),
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
     private lateinit var events: SAEvents
-    private lateinit var performance: SAPerformanceMetrics
     private lateinit var viewableDetector: SAViewableDetector
 
     private val placementId by lazy {
@@ -66,16 +64,13 @@ class SAManagedAdActivity : Activity(),
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP)
 
         val closeButton = ImageButton(this)
-        closeButton.visibility =
-            if (config?.closeButtonState == CloseButtonState.VisibleImmediately)
-                View.VISIBLE else View.GONE
+        closeButton.visibility = View.GONE
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap())
         closeButton.setBackgroundColor(Color.TRANSPARENT)
         closeButton.setPadding(0, 0, 0, 0)
         closeButton.scaleType = ImageView.ScaleType.FIT_XY
         closeButton.layoutParams = buttonLayout
         closeButton.setOnClickListener {
-            performance.trackCloseButtonPressed()
             onCloseAction()
         }
         closeButton.contentDescription = "Close"
@@ -86,7 +81,6 @@ class SAManagedAdActivity : Activity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         events = SAVideoAd.getEvents()
-        performance = SAPerformanceMetrics(SAVideoAd.getNewSession(this))
 
         // get values from the intent
         config = intent.getParcelableExtra(CONFIG_KEY)
@@ -99,7 +93,7 @@ class SAManagedAdActivity : Activity(),
         setUpCloseButtonTimeoutRunnable()
 
         if(config?.closeButtonState == CloseButtonState.VisibleImmediately) {
-            performance.startTimingCloseButtonPressed()
+            showCloseButton()
         }
 
         val ad: SAAd = intent.getParcelableExtra(AD_KEY) ?: return
@@ -153,7 +147,7 @@ class SAManagedAdActivity : Activity(),
         val weak = WeakReference(this)
         timeOutRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTimeoutTime()
+            weakThis.hasBeenHiddenForRequiredTimeoutTime()
         }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
@@ -163,7 +157,7 @@ class SAManagedAdActivity : Activity(),
         val weak = WeakReference(this)
         shownRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTime()
+            weakThis.showCloseButton()
         }
         shownRunnable?.let { shownHandler.postDelayed(it, CLOSE_BUTTON_SHOWN_TIME_INTERVAL) }
     }
@@ -221,10 +215,9 @@ class SAManagedAdActivity : Activity(),
         if (config?.autoCloseAtEnd == true) {
             close()
         } else {
-            if(config?.closeButtonState == CloseButtonState.Hidden) {
-                performance.startTimingCloseButtonPressed()
+            if (config?.closeButtonState == CloseButtonState.Hidden) {
+                showCloseButton()
             }
-            showCloseButton()
         }
     }
 
@@ -240,9 +233,11 @@ class SAManagedAdActivity : Activity(),
 
     private fun showCloseButton() = runOnUiThread {
         closeButton.visibility = View.VISIBLE
+        events.startTimingForCloseButtonPressed()
     }
 
     private fun onCloseAction() {
+        events.trackCloseButtonPressed()
         if (config?.shouldShowCloseWarning == true && !completed) {
             adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
@@ -266,15 +261,7 @@ class SAManagedAdActivity : Activity(),
         }
     }
 
-    private fun hasBeenVisibleForRequiredTime() {
-        closeButton.visibility =
-            if (config?.closeButtonState?.isVisible() == true) View.VISIBLE else closeButton.visibility
-    }
-
-    private fun hasBeenVisibleForRequiredTimeoutTime() {
-        if(config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
-            performance.startTimingCloseButtonPressed()
-        }
+    private fun hasBeenHiddenForRequiredTimeoutTime() {
         showCloseButton()
     }
 

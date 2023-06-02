@@ -30,7 +30,7 @@ public class SAPerformanceMetrics {
   // Time Tracking
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  public void startTimingCloseButtonPressed() {
+  public void startTimingForCloseButtonPressed() {
     closeButtonPressedMetricStartTime = new Date().getTime();
   }
 
