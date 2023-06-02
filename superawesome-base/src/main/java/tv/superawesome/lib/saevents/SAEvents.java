@@ -4,7 +4,10 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import tv.superawesome.lib.metrics.SAPerformanceMetric;
+import tv.superawesome.lib.metrics.SAPerformanceModule;
 import tv.superawesome.lib.metrics.models.SAPerformanceMetricModel;
+import tv.superawesome.lib.metrics.models.SAPerformanceMetricName;
+import tv.superawesome.lib.metrics.models.SAPerformanceMetricType;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.ISASession;
 
@@ -23,7 +26,7 @@ public class SAEvents {
         serverModule = new SAServerModule(ad, session);
         vastModule = new SAVASTModule(ad);
         viewableModule = new SAViewableModule();
-        performanceModule = new SAPerformanceModule(session);
+        performanceModule = new SAPerformanceModule();
     }
 
     public void unsetAd () {
@@ -195,10 +198,18 @@ public class SAEvents {
     // Performance Metrics
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void sendPerformanceMetric (SAPerformanceMetricModel metric,
-                                       SAPerformanceMetric.Listener listener) {
+    public void sendCloseButtonPressTimeMetric (Double time,
+                                                ISASession session,
+                                                SAPerformanceMetric.Listener listener) {
+
+        SAPerformanceMetricModel model = new SAPerformanceMetricModel(
+            time,
+            SAPerformanceMetricName.CloseButtonPressTime,
+            SAPerformanceMetricType.Timing
+        );
+
         if (performanceModule != null) {
-            performanceModule.triggerPerformanceMetric(metric, listener, false);
+            performanceModule.sendPerformanceMetric(model, session, listener);
         }
     }
 }
