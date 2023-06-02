@@ -3,6 +3,8 @@ package tv.superawesome.lib.saevents;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import tv.superawesome.lib.metrics.SAPerformanceMetric;
+import tv.superawesome.lib.metrics.models.SAPerformanceMetricModel;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.ISASession;
 
@@ -11,6 +13,7 @@ public class SAEvents {
     private SAServerModule              serverModule;
     private SAVASTModule                vastModule;
     private SAViewableModule            viewableModule;
+    private SAPerformanceModule         performanceModule;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Set & unset the ad needed for triggering events
@@ -20,12 +23,14 @@ public class SAEvents {
         serverModule = new SAServerModule(ad, session);
         vastModule = new SAVASTModule(ad);
         viewableModule = new SAViewableModule();
+        performanceModule = new SAPerformanceModule(session);
     }
 
     public void unsetAd () {
         serverModule = null;
         vastModule = null;
         viewableModule = null;
+        performanceModule = null;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,18 +192,13 @@ public class SAEvents {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Getters
+    // Performance Metrics
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public SAServerModule getServerModule() {
-        return serverModule;
-    }
-
-    public SAVASTModule getVastModule() {
-        return vastModule;
-    }
-
-    public SAViewableModule getViewableModule() {
-        return viewableModule;
+    public void sendPerformanceMetric (SAPerformanceMetricModel metric,
+                                       SAPerformanceMetric.Listener listener) {
+        if (performanceModule != null) {
+            performanceModule.triggerPerformanceMetric(metric, listener, false);
+        }
     }
 }
