@@ -3,8 +3,8 @@ package tv.superawesome.lib.saevents;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import tv.superawesome.lib.metrics.SAPerformanceMetric;
-import tv.superawesome.lib.metrics.SAPerformanceModule;
+import tv.superawesome.lib.metrics.dispatcher.SAPerformanceMetricDispatcher;
+import tv.superawesome.lib.metrics.module.SAPerformanceModule;
 import tv.superawesome.lib.metrics.models.SAPerformanceMetricModel;
 import tv.superawesome.lib.metrics.models.SAPerformanceMetricName;
 import tv.superawesome.lib.metrics.models.SAPerformanceMetricType;
@@ -200,12 +200,12 @@ public class SAEvents {
 
     public void sendCloseButtonPressTimeMetric (Double time,
                                                 ISASession session,
-                                                SAPerformanceMetric.Listener listener) {
+                                                SAPerformanceMetricDispatcher.Listener listener) {
 
         SAPerformanceMetricModel model = new SAPerformanceMetricModel(
             time,
             SAPerformanceMetricName.CloseButtonPressTime,
-            SAPerformanceMetricType.Timing
+            SAPerformanceMetricType.Gauge
         );
 
         if (performanceModule != null) {

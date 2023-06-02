@@ -1,4 +1,4 @@
-package tv.superawesome.lib.metrics;
+package tv.superawesome.lib.metrics.dispatcher;
 
 import android.util.Log;
 
@@ -13,22 +13,22 @@ import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
 
-public class SAPerformanceMetric {
+public class SAPerformanceMetricDispatcher {
   protected final SAPerformanceMetricModel metric;
   protected final ISASession session;
   private final SANetwork network;
   private final boolean isDebug;
 
-  public SAPerformanceMetric(SAPerformanceMetricModel metric,
-                             ISASession session) {
+  public SAPerformanceMetricDispatcher(SAPerformanceMetricModel metric,
+                                       ISASession session) {
     this(metric, session, Executors.newSingleThreadExecutor(), 15000, false);
   }
 
-  public SAPerformanceMetric(SAPerformanceMetricModel metric,
-                             ISASession session,
-                             Executor executor,
-                             int timeout,
-                             boolean isDebug) {
+  public SAPerformanceMetricDispatcher(SAPerformanceMetricModel metric,
+                                       ISASession session,
+                                       Executor executor,
+                                       int timeout,
+                                       boolean isDebug) {
     this.metric = metric;
     this.session = session;
     this.isDebug = isDebug;

@@ -1,11 +1,10 @@
-package tv.superawesome.lib.metrics;
+package tv.superawesome.lib.metrics.module;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import tv.superawesome.lib.metrics.dispatcher.SAPerformanceMetricDispatcher;
 import tv.superawesome.lib.metrics.models.SAPerformanceMetricModel;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricName;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricType;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAPerformanceModule {
@@ -21,9 +20,9 @@ public class SAPerformanceModule {
 
   public void sendPerformanceMetric(SAPerformanceMetricModel model,
                                     ISASession session,
-                                    SAPerformanceMetric.Listener listener) {
+                                    SAPerformanceMetricDispatcher.Listener listener) {
 
-    final SAPerformanceMetric metric = new SAPerformanceMetric(
+    final SAPerformanceMetricDispatcher metric = new SAPerformanceMetricDispatcher(
         model, session, executor, 15000, false
     );
 
