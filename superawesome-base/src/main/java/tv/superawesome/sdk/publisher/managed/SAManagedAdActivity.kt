@@ -64,9 +64,7 @@ class SAManagedAdActivity : Activity(),
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP)
 
         val closeButton = ImageButton(this)
-        closeButton.visibility =
-            if (config?.closeButtonState == CloseButtonState.VisibleImmediately)
-                View.VISIBLE else View.GONE
+        closeButton.visibility = View.GONE
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap())
         closeButton.setBackgroundColor(Color.TRANSPARENT)
         closeButton.setPadding(0, 0, 0, 0)
@@ -93,6 +91,10 @@ class SAManagedAdActivity : Activity(),
 
         adView.addView(closeButton)
         setUpCloseButtonTimeoutRunnable()
+
+        if(config?.closeButtonState == CloseButtonState.VisibleImmediately) {
+            showCloseButton()
+        }
 
         val ad: SAAd = intent.getParcelableExtra(AD_KEY) ?: return
 
@@ -145,7 +147,7 @@ class SAManagedAdActivity : Activity(),
         val weak = WeakReference(this)
         timeOutRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTimeoutTime()
+            weakThis.showCloseButton()
         }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
@@ -155,7 +157,7 @@ class SAManagedAdActivity : Activity(),
         val weak = WeakReference(this)
         shownRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTime()
+            weakThis.showCloseButton()
         }
         shownRunnable?.let { shownHandler.postDelayed(it, CLOSE_BUTTON_SHOWN_TIME_INTERVAL) }
     }
@@ -213,7 +215,9 @@ class SAManagedAdActivity : Activity(),
         if (config?.autoCloseAtEnd == true) {
             close()
         } else {
-            showCloseButton()
+            if (config?.closeButtonState == CloseButtonState.Hidden) {
+                showCloseButton()
+            }
         }
     }
 
@@ -229,9 +233,11 @@ class SAManagedAdActivity : Activity(),
 
     private fun showCloseButton() = runOnUiThread {
         closeButton.visibility = View.VISIBLE
+        events.startTimingForCloseButtonPressed()
     }
 
     private fun onCloseAction() {
+        events.trackCloseButtonPressed()
         if (config?.shouldShowCloseWarning == true && !completed) {
             adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
@@ -253,15 +259,6 @@ class SAManagedAdActivity : Activity(),
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
-    }
-
-    private fun hasBeenVisibleForRequiredTime() {
-        closeButton.visibility =
-            if (config?.closeButtonState?.isVisible() == true) View.VISIBLE else closeButton.visibility
-    }
-
-    private fun hasBeenVisibleForRequiredTimeoutTime() {
-        showCloseButton()
     }
 
     /**
