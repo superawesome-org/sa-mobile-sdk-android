@@ -11,7 +11,6 @@ public class SAEvents {
     private SAServerModule              serverModule;
     private SAVASTModule                vastModule;
     private SAViewableModule            viewableModule;
-
     private SAPerformanceMetrics        performanceMetrics;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

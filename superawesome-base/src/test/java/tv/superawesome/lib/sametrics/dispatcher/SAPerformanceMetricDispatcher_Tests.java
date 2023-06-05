@@ -23,7 +23,7 @@ import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAPerformanceMetricDispatcher_Tests {
 
-  protected Context context   = null;
+  protected Context context = null;
   protected Executor executor = null;
   protected ISASession session = null;
 
@@ -45,7 +45,7 @@ public class SAPerformanceMetricDispatcher_Tests {
   public void test_SAPerformanceMetricDispatcher_Init () throws Throwable {
     // given
     SAPerformanceMetricModel model = new SAPerformanceMetricModel(
-        15.0,
+        15L,
         SAPerformanceMetricName.CloseButtonPressTime,
         SAPerformanceMetricType.Gauge
     );
@@ -78,7 +78,7 @@ public class SAPerformanceMetricDispatcher_Tests {
     JSONObject query = dispatcher.getQuery();
 
     assertNotNull(query.opt("value"));
-    assertEquals(15.0, query.opt("value"));
+    assertEquals(15L, query.opt("value"));
 
     assertNotNull(query.opt("metricName"));
     assertEquals("sa.ad.sdk.close.button.press.time", query.opt("metricName"));
