@@ -1,4 +1,4 @@
-package tv.superawesome.lib.metrics.models;
+package tv.superawesome.lib.sametrics.models;
 
 public class SAPerformanceMetricModel {
   public final Double value;

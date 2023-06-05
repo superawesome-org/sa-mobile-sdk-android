@@ -1,4 +1,4 @@
-package tv.superawesome.lib.metrics.dispatcher;
+package tv.superawesome.lib.sametrics.dispatcher;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricModel;
+import tv.superawesome.lib.sametrics.models.SAPerformanceMetricModel;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sasession.session.ISASession;

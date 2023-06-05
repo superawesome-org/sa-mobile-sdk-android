@@ -1,4 +1,4 @@
-package tv.superawesome.lib.metrics.models;
+package tv.superawesome.lib.sametrics.models;
 
 public enum SAPerformanceMetricType {
   Gauge( "gauge"),

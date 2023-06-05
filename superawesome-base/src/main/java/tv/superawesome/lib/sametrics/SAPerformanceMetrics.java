@@ -1,13 +1,13 @@
-package tv.superawesome.lib.metrics;
+package tv.superawesome.lib.sametrics;
 
 import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import tv.superawesome.lib.metrics.dispatcher.SAPerformanceMetricDispatcher;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricModel;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricName;
-import tv.superawesome.lib.metrics.models.SAPerformanceMetricType;
+import tv.superawesome.lib.sametrics.dispatcher.SAPerformanceMetricDispatcher;
+import tv.superawesome.lib.sametrics.models.SAPerformanceMetricModel;
+import tv.superawesome.lib.sametrics.models.SAPerformanceMetricName;
+import tv.superawesome.lib.sametrics.models.SAPerformanceMetricType;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAPerformanceMetrics {
