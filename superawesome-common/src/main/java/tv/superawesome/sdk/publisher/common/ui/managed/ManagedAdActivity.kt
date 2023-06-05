@@ -132,30 +132,30 @@ internal class ManagedAdActivity :
         adView.close()
     }
 
-    private fun showCloseButton() = runOnUiThread {
+    private fun showCloseButton() {
         closeButton.visibility = View.VISIBLE
         controller.startTimingForCloseButtonPressed()
     }
 
-    override fun adLoaded() {
+    override fun adLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adLoaded)
     }
 
-    override fun adEmpty() {
+    override fun adEmpty() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adEmpty)
         close()
     }
 
-    override fun adFailedToLoad() {
+    override fun adFailedToLoad() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToLoad)
         close()
     }
 
-    override fun adAlreadyLoaded() {
+    override fun adAlreadyLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adAlreadyLoaded)
     }
 
-    override fun adShown() {
+    override fun adShown() = runOnUiThread {
         val weak = WeakReference(this)
         viewableDetector.cancel()
         viewableDetector.start(adView, videoMaxTickCount) {
@@ -168,38 +168,36 @@ internal class ManagedAdActivity :
         listener?.onEvent(this.placementId, SAEvent.adShown)
     }
 
-    override fun adFailedToShow() {
+    override fun adFailedToShow() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToShow)
         close()
     }
 
-    override fun adClicked() {
+    override fun adClicked() = runOnUiThread {
         adView.pauseVideo()
         listener?.onEvent(this.placementId, SAEvent.adClicked)
         adPaused()
     }
 
-    override fun adEnded() {
+    override fun adEnded() = runOnUiThread {
         completed = true
         listener?.onEvent(this.placementId, SAEvent.adEnded)
         if (config.shouldCloseAtEnd) {
             close()
-        } else {
-            if(config.closeButtonState == CloseButtonState.Hidden) {
-                showCloseButton()
-            }
+        } else if(config.closeButtonState == CloseButtonState.Hidden) {
+            showCloseButton()
         }
     }
 
-    override fun adClosed() {
+    override fun adClosed() = runOnUiThread {
         close()
     }
 
-    override fun adPlaying() {
+    override fun adPlaying() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adPlaying)
     }
 
-    override fun adPaused() {
+    override fun adPaused() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adPaused)
     }
 
