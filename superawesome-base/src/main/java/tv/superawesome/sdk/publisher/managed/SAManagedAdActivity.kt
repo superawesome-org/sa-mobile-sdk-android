@@ -90,10 +90,11 @@ class SAManagedAdActivity : Activity(),
         adView.load(placementId, html, this)
 
         adView.addView(closeButton)
-        setUpCloseButtonTimeoutRunnable()
 
-        if(config?.closeButtonState == CloseButtonState.VisibleImmediately) {
-            showCloseButton()
+        when (config?.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> showCloseButton()
+            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            else -> Unit // Hidden by default
         }
 
         val ad: SAAd = intent.getParcelableExtra(AD_KEY) ?: return

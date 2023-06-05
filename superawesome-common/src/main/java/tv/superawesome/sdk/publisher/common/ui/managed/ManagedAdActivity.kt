@@ -66,11 +66,11 @@ internal class ManagedAdActivity :
 
         parentLayout.addView(adView)
 
-        closeButton.visibility =
-            if (config.closeButtonState == CloseButtonState.VisibleImmediately)
-                View.VISIBLE else View.GONE
-
-        setUpCloseButtonTimeoutRunnable()
+        when (config.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> showCloseButton()
+            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            CloseButtonState.Hidden -> Unit // Hidden by default
+        }
     }
 
     override fun onRestart() {
@@ -88,7 +88,7 @@ internal class ManagedAdActivity :
         val weak = WeakReference(this)
         timeOutRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTimeoutTime()
+            weakThis.showCloseButton()
         }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
@@ -105,6 +105,7 @@ internal class ManagedAdActivity :
     }
 
     public override fun close() {
+        controller.trackCloseButtonPressed()
         if (config.shouldShowCloseWarning && !completed) {
             adView.pauseVideo()
             CloseWarning.setListener(object : CloseWarning.Interface {
@@ -133,6 +134,7 @@ internal class ManagedAdActivity :
 
     private fun showCloseButton() = runOnUiThread {
         closeButton.visibility = View.VISIBLE
+        controller.startTimingForCloseButtonPressed()
     }
 
     override fun adLoaded() {
@@ -183,7 +185,9 @@ internal class ManagedAdActivity :
         if (config.shouldCloseAtEnd) {
             close()
         } else {
-            showCloseButton()
+            if(config.closeButtonState == CloseButtonState.Hidden) {
+                showCloseButton()
+            }
         }
     }
 
@@ -197,10 +201,6 @@ internal class ManagedAdActivity :
 
     override fun adPaused() {
         listener?.onEvent(this.placementId, SAEvent.adPaused)
-    }
-
-    private fun hasBeenVisibleForRequiredTimeoutTime() {
-        showCloseButton()
     }
 
     // AdControllerType.VideoPlayerListener
