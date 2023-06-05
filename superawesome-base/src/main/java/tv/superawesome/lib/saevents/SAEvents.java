@@ -29,6 +29,7 @@ public class SAEvents {
         serverModule = null;
         vastModule = null;
         viewableModule = null;
+        performanceMetrics = null;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

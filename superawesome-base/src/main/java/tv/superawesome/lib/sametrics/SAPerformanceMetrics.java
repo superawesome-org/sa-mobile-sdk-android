@@ -8,13 +8,14 @@ import tv.superawesome.lib.sametrics.dispatcher.SAPerformanceMetricDispatcher;
 import tv.superawesome.lib.sametrics.models.SAPerformanceMetricModel;
 import tv.superawesome.lib.sametrics.models.SAPerformanceMetricName;
 import tv.superawesome.lib.sametrics.models.SAPerformanceMetricType;
+import tv.superawesome.lib.sametrics.models.SAPerformanceTimer;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAPerformanceMetrics {
   private Executor executor;
   private ISASession session;
 
-  private long closeButtonPressedMetricStartTime = 0L;
+  private SAPerformanceTimer closeButtonPressedTimer = new SAPerformanceTimer();
 
   public SAPerformanceMetrics(ISASession session) {
     this(session, Executors.newSingleThreadExecutor());
@@ -31,13 +32,13 @@ public class SAPerformanceMetrics {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   public void startTimingForCloseButtonPressed() {
-    closeButtonPressedMetricStartTime = new Date().getTime();
+    closeButtonPressedTimer.start(new Date().getTime());
   }
 
   public void trackCloseButtonPressed() {
-    if(closeButtonPressedMetricStartTime == 0L) { return; }
+    if(closeButtonPressedTimer.getStartTime() == 0L) { return; }
 
-    long delta = new Date().getTime() - closeButtonPressedMetricStartTime;
+    long delta = closeButtonPressedTimer.delta(new Date().getTime());
 
     SAPerformanceMetricModel model = new SAPerformanceMetricModel(
         delta,
