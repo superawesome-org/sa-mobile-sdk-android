@@ -28,8 +28,8 @@ internal class PerformanceRepository(
     }
 
     override suspend fun trackCloseButtonPressed() {
-        if (closeButtonPressedTimer.startTime === 0L) { return }
-        val delta: Long = closeButtonPressedTimer.delta(timeProvider.millis())
+        if (closeButtonPressedTimer.startTime == 0L) { return }
+        val delta = closeButtonPressedTimer.delta(timeProvider.millis())
         val metric = PerformanceMetric(
             delta,
             PerformanceMetricName.CloseButtonPressTime,
