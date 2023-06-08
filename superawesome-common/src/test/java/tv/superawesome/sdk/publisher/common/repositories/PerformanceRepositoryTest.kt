@@ -7,6 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
+import tv.superawesome.sdk.publisher.common.components.TimeProviderType
 import tv.superawesome.sdk.publisher.common.models.*
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
@@ -18,6 +19,9 @@ internal class PerformanceRepositoryTest : BaseTest() {
   @MockK
   lateinit var adDataSourceType: AwesomeAdsApiDataSourceType
 
+  @MockK
+  lateinit var timeProviderType: TimeProviderType
+
   @InjectMockKs
   lateinit var repository: PerformanceRepository
 
@@ -25,7 +29,7 @@ internal class PerformanceRepositoryTest : BaseTest() {
   fun test_performance_metric_success() = runTest {
     // Given
     val metric = PerformanceMetric(
-        3.0,
+        3L,
         PerformanceMetricName.LoadTime,
         PerformanceMetricType.Gauge
     )

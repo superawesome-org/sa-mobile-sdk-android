@@ -21,6 +21,7 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import kotlin.math.abs
 
@@ -32,6 +33,8 @@ internal interface AdControllerType {
     var videoListener: VideoPlayerListener?
     val shouldShowPadlock: Boolean
 
+    fun startTimingForCloseButtonPressed()
+    fun trackCloseButtonPressed()
     fun triggerImpressionEvent(placementId: Int)
     fun triggerViewableImpression(placementId: Int)
 
@@ -63,6 +66,7 @@ internal interface AdControllerType {
 internal class AdController(
     private val adRepository: AdRepositoryType,
     private val eventRepository: EventRepositoryType,
+    private val performanceRepository: PerformanceRepositoryType,
     private val logger: Logger,
     private val adStore: AdStoreType
 ) : AdControllerType {
@@ -73,6 +77,16 @@ internal class AdController(
     override var videoListener: AdControllerType.VideoPlayerListener? = null
     override val shouldShowPadlock: Boolean
         get() = currentAdResponse?.shouldShowPadlock() ?: false
+
+    override fun startTimingForCloseButtonPressed() {
+        performanceRepository.startTimingForCloseButtonPressed()
+    }
+
+    override fun trackCloseButtonPressed() {
+        scope.launch {
+            performanceRepository.trackCloseButtonPressed()
+        }
+    }
 
     private val scope = CoroutineScope(Dispatchers.Main)
     private var parentalGate: ParentalGate? = null

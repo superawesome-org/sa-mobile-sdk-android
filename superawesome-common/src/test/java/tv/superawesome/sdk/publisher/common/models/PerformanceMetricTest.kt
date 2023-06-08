@@ -41,14 +41,14 @@ internal class PerformanceMetricTest : BaseTest() {
     @Test
     fun test_Build() {
         // Given
-        val value = 10.0
+        val value = 10L
         val metricName = PerformanceMetricName.LoadTime
         val metricType = PerformanceMetricType.Gauge
 
         // When
         val metric = PerformanceMetric(value, metricName, metricType)
         val expectedMap = mapOf(
-            "value" to 10.0,
+            "value" to 10L,
             "metricName" to "sa.ad.sdk.performance.load.time",
             "metricType" to "gauge"
         )

@@ -90,10 +90,11 @@ class SAManagedAdActivity : Activity(),
         adView.load(placementId, html, this)
 
         adView.addView(closeButton)
-        setUpCloseButtonTimeoutRunnable()
 
-        if(config?.closeButtonState == CloseButtonState.VisibleImmediately) {
-            showCloseButton()
+        when (config?.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> showCloseButton()
+            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            else -> Unit // Hidden by default
         }
 
         val ad: SAAd = intent.getParcelableExtra(AD_KEY) ?: return
@@ -174,25 +175,25 @@ class SAManagedAdActivity : Activity(),
 
     // AdViewJavaScriptBridge.Listener
 
-    override fun adLoaded() {
+    override fun adLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adLoaded)
     }
 
-    override fun adEmpty() {
+    override fun adEmpty() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adEmpty)
         close()
     }
 
-    override fun adFailedToLoad() {
+    override fun adFailedToLoad() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToLoad)
         close()
     }
 
-    override fun adAlreadyLoaded() {
+    override fun adAlreadyLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adAlreadyLoaded)
     }
 
-    override fun adShown() {
+    override fun adShown() = runOnUiThread {
         cancelCloseButtonTimeoutRunnable()
         if (config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
             setUpCloseButtonShownRunnable()
@@ -200,38 +201,36 @@ class SAManagedAdActivity : Activity(),
         listener?.onEvent(this.placementId, SAEvent.adShown)
     }
 
-    override fun adFailedToShow() {
+    override fun adFailedToShow() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToShow)
         close()
     }
 
-    override fun adClicked() {
+    override fun adClicked() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adClicked)
     }
 
-    override fun adEnded() {
+    override fun adEnded() = runOnUiThread {
         completed = true
         listener?.onEvent(this.placementId, SAEvent.adEnded)
         if (config?.autoCloseAtEnd == true) {
             close()
-        } else {
-            if (config?.closeButtonState == CloseButtonState.Hidden) {
-                showCloseButton()
-            }
+        } else if (config?.closeButtonState == CloseButtonState.Hidden) {
+            showCloseButton()
         }
     }
 
-    override fun adClosed() = close()
+    override fun adClosed() = runOnUiThread { close() }
 
-    override fun adPlaying() {
+    override fun adPlaying() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adPlaying)
     }
 
-    override fun adPaused() {
+    override fun adPaused() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adPaused)
     }
 
-    private fun showCloseButton() = runOnUiThread {
+    private fun showCloseButton() {
         closeButton.visibility = View.VISIBLE
         events.startTimingForCloseButtonPressed()
     }
