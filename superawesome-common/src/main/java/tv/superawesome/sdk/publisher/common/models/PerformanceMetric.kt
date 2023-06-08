@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.publisher.common.models
 
-internal data class PerformanceMetric(val value: Double,
+internal data class PerformanceMetric(val value: Long,
                                       val metricName: PerformanceMetricName,
                                       val metricType: PerformanceMetricType) {
   fun build(): Map<String, Any> {

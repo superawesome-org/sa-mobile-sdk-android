@@ -59,7 +59,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         )
     }
 
-    factory<AdControllerType> { AdController(get(), get(), get(), get()) }
+    factory<AdControllerType> { AdController(get(), get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
     factory { BumperPage() }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
@@ -81,7 +81,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         )
     }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
-    single<PerformanceRepositoryType> { PerformanceRepository(get()) }
+    single<PerformanceRepositoryType> { PerformanceRepository(get(), get()) }
 
     single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get()) }
     single { HeaderInterceptor(get()) }
