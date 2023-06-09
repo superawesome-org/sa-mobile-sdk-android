@@ -77,7 +77,10 @@ open class FullScreenActivity : Activity() {
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP)
         closeButton.layoutParams = buttonLayout
-        closeButton.setOnClickListener { close() }
+        closeButton.setOnClickListener {
+            onCloseButtonPressed()
+            close()
+        }
 
         // make sure direction is locked
         requestedOrientation = when (config.orientation) {
@@ -93,6 +96,9 @@ open class FullScreenActivity : Activity() {
             super.onBackPressed()
         }
     }
+
+    // Close button action specific, useful for tracking requirements
+    open fun onCloseButtonPressed() = Unit
 
     open fun close() {
         if (!isFinishing) {

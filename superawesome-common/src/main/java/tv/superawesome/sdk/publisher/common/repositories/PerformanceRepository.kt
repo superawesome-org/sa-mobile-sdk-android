@@ -11,6 +11,8 @@ import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 
 internal interface PerformanceRepositoryType {
+    fun startTimingForDwellTime()
+    suspend fun trackDwellTime()
     fun startTimingForCloseButtonPressed()
     suspend fun trackCloseButtonPressed()
     suspend fun sendMetric(metric: PerformanceMetric): DataResult<Unit>
@@ -22,6 +24,21 @@ internal class PerformanceRepository(
 ) : PerformanceRepositoryType {
 
     private val closeButtonPressedTimer = PerformanceTimer()
+    private val dwellTimeTimer = PerformanceTimer()
+    override fun startTimingForDwellTime() {
+        dwellTimeTimer.start(timeProvider.millis())
+    }
+
+    override suspend fun trackDwellTime() {
+        if (dwellTimeTimer.startTime == 0L) { return }
+
+        val metric = PerformanceMetric(
+            dwellTimeTimer.delta(timeProvider.millis()),
+            PerformanceMetricName.DwellTime,
+            PerformanceMetricType.Gauge
+        )
+        sendMetric(metric)
+    }
 
     override fun startTimingForCloseButtonPressed() {
         closeButtonPressedTimer.start(timeProvider.millis())
@@ -29,9 +46,9 @@ internal class PerformanceRepository(
 
     override suspend fun trackCloseButtonPressed() {
         if (closeButtonPressedTimer.startTime == 0L) { return }
-        val delta = closeButtonPressedTimer.delta(timeProvider.millis())
+
         val metric = PerformanceMetric(
-            delta,
+            closeButtonPressedTimer.delta(timeProvider.millis()),
             PerformanceMetricName.CloseButtonPressTime,
             PerformanceMetricType.Gauge
         )

@@ -33,6 +33,8 @@ internal interface AdControllerType {
     var videoListener: VideoPlayerListener?
     val shouldShowPadlock: Boolean
 
+    fun startTimingForDwellTime()
+    fun trackDwellTime()
     fun startTimingForCloseButtonPressed()
     fun trackCloseButtonPressed()
     fun triggerImpressionEvent(placementId: Int)
@@ -77,6 +79,16 @@ internal class AdController(
     override var videoListener: AdControllerType.VideoPlayerListener? = null
     override val shouldShowPadlock: Boolean
         get() = currentAdResponse?.shouldShowPadlock() ?: false
+
+    override fun startTimingForDwellTime() {
+        performanceRepository.startTimingForDwellTime()
+    }
+
+    override fun trackDwellTime() {
+        scope.launch {
+            performanceRepository.trackDwellTime()
+        }
+    }
 
     override fun startTimingForCloseButtonPressed() {
         performanceRepository.startTimingForCloseButtonPressed()
