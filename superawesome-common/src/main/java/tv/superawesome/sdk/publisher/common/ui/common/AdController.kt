@@ -12,12 +12,14 @@ import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.components.TimeProviderType
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
-import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.models.PerformanceTimer
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
@@ -70,7 +72,8 @@ internal class AdController(
     private val eventRepository: EventRepositoryType,
     private val performanceRepository: PerformanceRepositoryType,
     private val logger: Logger,
-    private val adStore: AdStoreType
+    private val adStore: AdStoreType,
+    private val timeProvider: TimeProviderType
 ) : AdControllerType {
     override var config: Config = Config()
     override var closed: Boolean = false
@@ -79,24 +82,32 @@ internal class AdController(
     override var videoListener: AdControllerType.VideoPlayerListener? = null
     override val shouldShowPadlock: Boolean
         get() = currentAdResponse?.shouldShowPadlock() ?: false
+    private val closeButtonPressedTimer = PerformanceTimer()
+    private val dwellTimeTimer = PerformanceTimer()
 
     override fun startTimingForDwellTime() {
-        performanceRepository.startTimingForDwellTime()
+        dwellTimeTimer.start(timeProvider.millis())
     }
 
     override fun trackDwellTime() {
+        if (dwellTimeTimer.startTime == 0L) { return }
         scope.launch {
-            performanceRepository.trackDwellTime()
+            performanceRepository.trackDwellTime(
+                dwellTimeTimer.delta(timeProvider.millis())
+            )
         }
     }
 
     override fun startTimingForCloseButtonPressed() {
-        performanceRepository.startTimingForCloseButtonPressed()
+        closeButtonPressedTimer.start(timeProvider.millis())
     }
 
     override fun trackCloseButtonPressed() {
+        if (closeButtonPressedTimer.startTime == 0L) { return }
         scope.launch {
-            performanceRepository.trackCloseButtonPressed()
+            performanceRepository.trackCloseButtonPressed(
+                closeButtonPressedTimer.delta(timeProvider.millis())
+            )
         }
     }
 
