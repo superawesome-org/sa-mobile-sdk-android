@@ -16,6 +16,7 @@ public class SAPerformanceMetrics {
   private ISASession session;
 
   private SAPerformanceTimer closeButtonPressedTimer = new SAPerformanceTimer();
+  private SAPerformanceTimer dwellTimeTimer = new SAPerformanceTimer();
 
   public SAPerformanceMetrics(ISASession session) {
     this(session, Executors.newSingleThreadExecutor());
@@ -31,6 +32,22 @@ public class SAPerformanceMetrics {
   // Time Tracking
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
+  public void startTimingForDwellTime() {
+    dwellTimeTimer.start(new Date().getTime());
+  }
+
+  public void trackDwellTime() {
+    if(dwellTimeTimer.getStartTime() == 0L) { return; }
+
+    SAPerformanceMetricModel model = new SAPerformanceMetricModel(
+        dwellTimeTimer.delta(new Date().getTime()),
+        SAPerformanceMetricName.DwellTime,
+        SAPerformanceMetricType.Gauge
+    );
+
+    sendPerformanceMetric(model, session);
+  }
+
   public void startTimingForCloseButtonPressed() {
     closeButtonPressedTimer.start(new Date().getTime());
   }
@@ -38,10 +55,8 @@ public class SAPerformanceMetrics {
   public void trackCloseButtonPressed() {
     if(closeButtonPressedTimer.getStartTime() == 0L) { return; }
 
-    long delta = closeButtonPressedTimer.delta(new Date().getTime());
-
     SAPerformanceMetricModel model = new SAPerformanceMetricModel(
-        delta,
+        closeButtonPressedTimer.delta(new Date().getTime()),
         SAPerformanceMetricName.CloseButtonPressTime,
         SAPerformanceMetricType.Gauge
     );
@@ -54,7 +69,7 @@ public class SAPerformanceMetrics {
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
   private void sendPerformanceMetric(SAPerformanceMetricModel model,
-                                    ISASession session) {
+                                     ISASession session) {
 
     final SAPerformanceMetricDispatcher metric = new SAPerformanceMetricDispatcher(
         model, session, executor, 15000, false

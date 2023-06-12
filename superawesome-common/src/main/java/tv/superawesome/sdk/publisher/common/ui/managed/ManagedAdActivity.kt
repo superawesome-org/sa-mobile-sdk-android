@@ -104,8 +104,9 @@ internal class ManagedAdActivity :
         adView.load(placementId, html, baseUrl, this)
     }
 
+    public override fun onCloseButtonPressed() = controller.trackCloseButtonPressed()
+
     public override fun close() {
-        controller.trackCloseButtonPressed()
         if (config.shouldShowCloseWarning && !completed) {
             adView.pauseVideo()
             CloseWarning.setListener(object : CloseWarning.Interface {
@@ -124,6 +125,7 @@ internal class ManagedAdActivity :
     }
 
     private fun closeActivity() {
+        controller.trackDwellTime()
         if (!isFinishing) {
             listener?.onEvent(this.placementId, SAEvent.adClosed)
         }
@@ -156,6 +158,7 @@ internal class ManagedAdActivity :
     }
 
     override fun adShown() = runOnUiThread {
+        controller.startTimingForDwellTime()
         val weak = WeakReference(this)
         viewableDetector.cancel()
         viewableDetector.start(adView, videoMaxTickCount) {
