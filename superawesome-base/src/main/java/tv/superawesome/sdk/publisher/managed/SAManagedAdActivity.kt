@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
+import tv.superawesome.lib.sametrics.SAPerformanceMetrics
 import tv.superawesome.lib.samodelspace.saad.SAAd
 import tv.superawesome.lib.sautils.SAImageUtils
 import tv.superawesome.lib.sautils.SAUtils
@@ -39,6 +40,7 @@ class SAManagedAdActivity : Activity(),
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
     private lateinit var events: SAEvents
+    private lateinit var performanceMetrics: SAPerformanceMetrics
     private lateinit var viewableDetector: SAViewableDetector
 
     private val placementId by lazy {
@@ -81,6 +83,7 @@ class SAManagedAdActivity : Activity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         events = SAVideoAd.getEvents()
+        performanceMetrics = SAVideoAd.getPerformanceMetrics()
 
         // get values from the intent
         config = intent.getParcelableExtra(CONFIG_KEY)
@@ -194,7 +197,7 @@ class SAManagedAdActivity : Activity(),
     }
 
     override fun adShown() = runOnUiThread {
-        events.startTimingForDwellTime()
+        performanceMetrics.startTimingForDwellTime()
         cancelCloseButtonTimeoutRunnable()
         if (config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
             setUpCloseButtonShownRunnable()
@@ -233,11 +236,11 @@ class SAManagedAdActivity : Activity(),
 
     private fun showCloseButton() {
         closeButton.visibility = View.VISIBLE
-        events.startTimingForCloseButtonPressed()
+        performanceMetrics.startTimingForCloseButtonPressed()
     }
 
     private fun onCloseAction() {
-        events.trackCloseButtonPressed()
+        performanceMetrics.trackCloseButtonPressed()
         if (config?.shouldShowCloseWarning == true && !completed) {
             adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
@@ -256,7 +259,7 @@ class SAManagedAdActivity : Activity(),
 
     private fun close() {
         if (!isFinishing) {
-            events.trackDwellTime()
+            performanceMetrics.trackDwellTime()
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
