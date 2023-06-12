@@ -193,6 +193,18 @@ public class SAEvents {
     // Performance Metrics
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public void startTimingForDwellTime() {
+        if (performanceMetrics != null) {
+            performanceMetrics.startTimingForDwellTime();
+        }
+    }
+
+    public void trackDwellTime () {
+        if (performanceMetrics != null) {
+            performanceMetrics.trackDwellTime();
+        }
+    }
+
     public void startTimingForCloseButtonPressed() {
         if (performanceMetrics != null) {
             performanceMetrics.startTimingForCloseButtonPressed();

@@ -194,6 +194,7 @@ class SAManagedAdActivity : Activity(),
     }
 
     override fun adShown() = runOnUiThread {
+        events.startTimingForDwellTime()
         cancelCloseButtonTimeoutRunnable()
         if (config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
             setUpCloseButtonShownRunnable()
@@ -255,6 +256,7 @@ class SAManagedAdActivity : Activity(),
 
     private fun close() {
         if (!isFinishing) {
+            events.trackDwellTime()
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
