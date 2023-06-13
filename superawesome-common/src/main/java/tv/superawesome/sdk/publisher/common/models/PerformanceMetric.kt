@@ -12,13 +12,13 @@ internal data class PerformanceMetric(val value: Long,
 }
 
 internal enum class PerformanceMetricName(val value: String) {
-  CloseButtonPressTime("sa.ad.sdk.close.button.press.time"),
+  CloseButtonPressTime("sa.ad.sdk.close.button.press.time.android"),
 
-  DwellTime("sa.ad.sdk.dwell.time"),
+  DwellTime("sa.ad.sdk.dwell.time.android"),
 
-  LoadTime("sa.ad.sdk.performance.load.time"),
+  LoadTime("sa.ad.sdk.performance.load.time.android"),
 
-  RenderTime("sa.ad.sdk.performance.render.time")
+  RenderTime("sa.ad.sdk.performance.render.time.android")
 }
 
 internal enum class PerformanceMetricType(val value: String) {

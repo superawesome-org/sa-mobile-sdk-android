@@ -13,10 +13,10 @@ internal class PerformanceMetricTest : BaseTest() {
         val loadTime = PerformanceMetricName.LoadTime
         val renderTime = PerformanceMetricName.RenderTime
 
-        assertEquals("sa.ad.sdk.close.button.press.time", closeButtonPressTime.value)
-        assertEquals("sa.ad.sdk.dwell.time", dwellTime.value)
-        assertEquals("sa.ad.sdk.performance.load.time", loadTime.value)
-        assertEquals("sa.ad.sdk.performance.render.time", renderTime.value)
+        assertEquals("sa.ad.sdk.close.button.press.time.android", closeButtonPressTime.value)
+        assertEquals("sa.ad.sdk.dwell.time.android", dwellTime.value)
+        assertEquals("sa.ad.sdk.performance.load.time.android", loadTime.value)
+        assertEquals("sa.ad.sdk.performance.render.time.android", renderTime.value)
     }
 
     @Test
@@ -49,7 +49,7 @@ internal class PerformanceMetricTest : BaseTest() {
         val metric = PerformanceMetric(value, metricName, metricType)
         val expectedMap = mapOf(
             "value" to 10L,
-            "metricName" to "sa.ad.sdk.performance.load.time",
+            "metricName" to "sa.ad.sdk.performance.load.time.android",
             "metricType" to "gauge"
         )
 
