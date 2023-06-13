@@ -1,3 +1,16 @@
+# [9.1.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.2...v9.1.0) (2023-06-13)
+
+
+### Bug Fixes
+
+* **Common:** Added missing CI code to fix version incrementing when releasing. ([#350](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/350)) ([ec9b3bc](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ec9b3bcaa36abb9afebebe0b7a075409ff03d5af))
+* **Video:** Added additional safe guards against empty Ads ([#352](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/352)) ([2801515](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/28015155e0c8cd0f4c5881c6d3297dd169bd666c))
+
+
+### Features
+
+* **CloseButton:** The close button is made visible when an ad ends if the ad is configured not to dismiss automatically ([#349](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/349)) ([318b260](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/318b260640eaee55cd55bde6578681baa3aa7975))
+
 ## [9.0.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.1...v9.0.2) (2023-05-16)
 
 
