@@ -39,7 +39,7 @@ public class SAPerformanceMetrics {
   }
 
   public void trackLoadTime() {
-    if(loadTimeTimer.getStartTime() == 0L) { return; }
+    if (loadTimeTimer.getStartTime() == 0L) { return; }
 
     SAPerformanceMetricModel model = new SAPerformanceMetricModel(
         loadTimeTimer.delta(new Date().getTime()),
