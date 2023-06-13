@@ -22,7 +22,7 @@ internal class PerformanceRepository(
         val metric = PerformanceMetric(
             duration,
             PerformanceMetricName.LoadTime,
-            PerformanceMetricType.Gauge
+            PerformanceMetricType.Gauge,
         )
         sendMetric(metric)
     }
