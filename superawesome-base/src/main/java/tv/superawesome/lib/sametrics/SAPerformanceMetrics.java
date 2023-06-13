@@ -87,7 +87,7 @@ public class SAPerformanceMetrics {
 
   private void sendPerformanceMetric(SAPerformanceMetricModel model,
                                      ISASession session) {
-    if(session == null) { return; }
+    if (session == null) { return; }
 
     final SAPerformanceMetricDispatcher metric = new SAPerformanceMetricDispatcher(
         model, session, executor, 15000, false
