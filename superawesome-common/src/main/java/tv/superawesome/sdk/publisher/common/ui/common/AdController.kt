@@ -430,7 +430,7 @@ internal class AdController(
         adStore.put(response)
         delegate?.onEvent(response.placementId, SAEvent.adLoaded)
         // Can be removed when we want to track this for all ad types
-        if(response.isVpaid()) {
+        if (response.isVpaid()) {
             trackLoadTime()
         }
     }
