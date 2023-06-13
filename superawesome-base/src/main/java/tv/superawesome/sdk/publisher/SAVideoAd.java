@@ -243,7 +243,7 @@ public class SAVideoAd {
                         // put the correct value
                         if (isValid) {
                             // Can be removed when we want to track this for all video ad types
-                            if(first.isVpaid) {
+                            if (first.isVpaid) {
                                 performanceMetrics.trackLoadTime();
                             }
                             ads.put(placementId, first);
