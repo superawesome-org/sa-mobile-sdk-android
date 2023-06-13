@@ -18,6 +18,7 @@ import java.util.Map;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.sametrics.SAPerformanceMetrics;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
@@ -35,6 +36,7 @@ public class SAVideoAd {
 
     // private vars w/ a public interface
     private static final SAEvents events = new SAEvents();
+    private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
     public static final HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = (placementId, event) -> {};
 
@@ -97,6 +99,9 @@ public class SAVideoAd {
 
             session.prepareSession(() -> {
 
+                performanceMetrics.setSession(session);
+                performanceMetrics.startTimingForLoadTime();
+
                 // after session is OK - start loading
                 loader.loadAd(placementId, session, options, response -> {
 
@@ -121,6 +126,10 @@ public class SAVideoAd {
 
                         // put the correct value
                         if (isValid) {
+                            // Can be removed when we want to track this for all video ad types
+                            if (first.isVpaid) {
+                                performanceMetrics.trackLoadTime();
+                            }
                             ads.put(placementId, first);
                         }
                         // remove existing
@@ -207,6 +216,9 @@ public class SAVideoAd {
 
             session.prepareSession(() -> {
 
+                performanceMetrics.setSession(session);
+                performanceMetrics.startTimingForLoadTime();
+
                 // after session is OK - start loading
                 loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
 
@@ -230,6 +242,10 @@ public class SAVideoAd {
 
                         // put the correct value
                         if (isValid) {
+                            // Can be removed when we want to track this for all video ad types
+                            if (first.isVpaid) {
+                                performanceMetrics.trackLoadTime();
+                            }
                             ads.put(placementId, first);
                         }
                         // remove existing
@@ -586,6 +602,10 @@ public class SAVideoAd {
 
     public static SAEvents getEvents() {
         return events;
+    }
+
+    public static SAPerformanceMetrics getPerformanceMetrics() {
+        return performanceMetrics;
     }
 
     public static void setMuteOnStart(boolean mute) {

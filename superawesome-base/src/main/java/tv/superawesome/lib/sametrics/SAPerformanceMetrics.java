@@ -17,21 +17,38 @@ public class SAPerformanceMetrics {
 
   private SAPerformanceTimer closeButtonPressedTimer = new SAPerformanceTimer();
   private SAPerformanceTimer dwellTimeTimer = new SAPerformanceTimer();
+  private SAPerformanceTimer loadTimeTimer = new SAPerformanceTimer();
 
-  public SAPerformanceMetrics(ISASession session) {
-    this(session, Executors.newSingleThreadExecutor());
+  public SAPerformanceMetrics() {
+    this(Executors.newSingleThreadExecutor());
   }
 
-  public SAPerformanceMetrics(ISASession session,
-                              Executor executor) {
-    this.session = session;
+  public SAPerformanceMetrics(Executor executor) {
     this.executor = executor;
+  }
+
+  public void setSession(ISASession session) {
+    this.session = session;
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Time Tracking
   ////////////////////////////////////////////////////////////////////////////////////////////////
+  public void startTimingForLoadTime() {
+    loadTimeTimer.start(new Date().getTime());
+  }
 
+  public void trackLoadTime() {
+    if (loadTimeTimer.getStartTime() == 0L) { return; }
+
+    SAPerformanceMetricModel model = new SAPerformanceMetricModel(
+        loadTimeTimer.delta(new Date().getTime()),
+        SAPerformanceMetricName.LoadTime,
+        SAPerformanceMetricType.Gauge
+    );
+
+    sendPerformanceMetric(model, session);
+  }
   public void startTimingForDwellTime() {
     dwellTimeTimer.start(new Date().getTime());
   }
@@ -70,6 +87,7 @@ public class SAPerformanceMetrics {
 
   private void sendPerformanceMetric(SAPerformanceMetricModel model,
                                      ISASession session) {
+    if (session == null) { return; }
 
     final SAPerformanceMetricDispatcher metric = new SAPerformanceMetricDispatcher(
         model, session, executor, 15000, false

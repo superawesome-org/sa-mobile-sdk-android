@@ -81,7 +81,7 @@ public class SAPerformanceMetricDispatcher_Tests {
     assertEquals(15L, query.opt("value"));
 
     assertNotNull(query.opt("metricName"));
-    assertEquals("sa.ad.sdk.close.button.press.time", query.opt("metricName"));
+    assertEquals("sa.ad.sdk.close.button.press.time.android", query.opt("metricName"));
 
     assertNotNull(query.opt("metricType"));
     assertEquals("gauge", query.opt("metricType"));
