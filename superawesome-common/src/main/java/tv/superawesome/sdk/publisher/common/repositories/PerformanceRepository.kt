@@ -9,6 +9,7 @@ import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 
 internal interface PerformanceRepositoryType {
+    suspend fun trackLoadTime(duration: Long)
     suspend fun trackDwellTime(duration: Long)
     suspend fun trackCloseButtonPressed(duration: Long)
     suspend fun sendMetric(metric: PerformanceMetric): DataResult<Unit>
@@ -17,6 +18,14 @@ internal interface PerformanceRepositoryType {
 internal class PerformanceRepository(
     private val dataSource: AwesomeAdsApiDataSourceType
 ) : PerformanceRepositoryType {
+    override suspend fun trackLoadTime(duration: Long) {
+        val metric = PerformanceMetric(
+            duration,
+            PerformanceMetricName.LoadTime,
+            PerformanceMetricType.Gauge,
+        )
+        sendMetric(metric)
+    }
 
     override suspend fun trackDwellTime(duration: Long) {
         val metric = PerformanceMetric(

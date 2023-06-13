@@ -14,10 +14,10 @@ public class SAPerformanceMetricModel_Test {
     SAPerformanceMetricName loadTime = SAPerformanceMetricName.LoadTime;
     SAPerformanceMetricName renderTime = SAPerformanceMetricName.RenderTime;
 
-    assertEquals("sa.ad.sdk.close.button.press.time", closeButtonPressTime.label);
-    assertEquals("sa.ad.sdk.dwell.time", dwellTime.label);
-    assertEquals("sa.ad.sdk.performance.load.time", loadTime.label);
-    assertEquals("sa.ad.sdk.performance.render.time", renderTime.label);
+    assertEquals("sa.ad.sdk.close.button.press.time.android", closeButtonPressTime.label);
+    assertEquals("sa.ad.sdk.dwell.time.android", dwellTime.label);
+    assertEquals("sa.ad.sdk.performance.load.time.android", loadTime.label);
+    assertEquals("sa.ad.sdk.performance.render.time.android", renderTime.label);
   }
 
   @Test

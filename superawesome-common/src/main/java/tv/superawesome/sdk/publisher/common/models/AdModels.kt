@@ -59,6 +59,7 @@ internal data class AdResponse(
     var filePath: String? = null,
     var referral: String? = null,
 ) {
+    fun isVpaid(): Boolean = ad.isVpaid
     fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.Video
     fun shouldShowPadlock(): Boolean = ad.shouldShowPadlock()
 
