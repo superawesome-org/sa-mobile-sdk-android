@@ -7,7 +7,16 @@ internal interface NumberGeneratorType {
      * @return Random percentage between 0.0 and 1.0
      */
     fun nextIntForCache(): Int
+
+    /**
+     * @return Random number for the parental gate puzzle
+     * between [NumberGenerator.parentalGateMin] and [NumberGenerator.parentalGateMax]
+     */
     fun nextIntForParentalGate(): Int
+
+    /**
+     * @return Random alphanumeric string with the given [length]
+     */
     fun nextAlphanumericString(length: Int): String
 }
 

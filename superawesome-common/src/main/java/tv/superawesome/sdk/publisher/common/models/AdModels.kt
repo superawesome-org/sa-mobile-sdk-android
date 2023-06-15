@@ -17,7 +17,8 @@ internal data class Ad(
     @SerialName("line_item_id") val lineItemId: Int,
     val test: Boolean,
     val creative: Creative,
-    @SerialName("is_vpaid") val isVpaid: Boolean = false
+    @SerialName("is_vpaid") val isVpaid: Boolean = false,
+    @SerialName("rnd") val random: String?,
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
     fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF
