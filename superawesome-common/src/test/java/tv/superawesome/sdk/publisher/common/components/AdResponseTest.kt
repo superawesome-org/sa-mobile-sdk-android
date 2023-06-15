@@ -54,6 +54,7 @@ internal class AdResponseTest {
                 duration = 1
             ),
             isKSF = isKSF
-        )
+        ),
+        random = ""
     )
 }
