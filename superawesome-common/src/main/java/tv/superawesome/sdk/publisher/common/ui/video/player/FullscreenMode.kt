@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.publisher.common.ui.video.player
 
-enum class FullscreenMode {
+internal enum class FullscreenMode {
     ANY, PORTRAIT, LANDSCAPE;
 
     val value: Int

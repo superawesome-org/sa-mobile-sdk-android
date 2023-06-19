@@ -25,7 +25,7 @@ fun AdBannerView(
                 layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                 setListener { _, event ->
                     when (event) {
-                        SAEvent.AdLoaded -> this.play()
+                        SAEvent.adLoaded -> this.play()
                         else -> Unit
                     }
                 }

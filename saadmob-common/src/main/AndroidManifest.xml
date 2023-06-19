@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tv.superawesome.plugins.publisher.admob">
+
+    <application>
+        <meta-data
+            android:name="tv.superawesome.plugins.publisher.NAME"
+            android:value="admob"
+            tools:replace="android:value" />
+    </application>
+</manifest>

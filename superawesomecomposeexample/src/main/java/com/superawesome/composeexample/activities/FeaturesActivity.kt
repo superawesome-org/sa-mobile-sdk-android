@@ -23,9 +23,9 @@ import com.superawesome.composeexample.R
 import com.superawesome.composeexample.enums.FeatureType
 import com.superawesome.composeexample.models.FeatureItem
 import com.superawesome.composeexample.models.PlacementItem
-import com.superawesome.composeexample.ui.theme.SamobilesdkandroidTheme
+import com.superawesome.composeexample.ui.theme.SAMobileSDKAndroidTheme
 import com.superawesome.composeexample.views.FeaturesList
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk
+import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
 
 class FeaturesActivity : ComponentActivity() {
 
@@ -33,7 +33,7 @@ class FeaturesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SamobilesdkandroidTheme {
+            SAMobileSDKAndroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -47,13 +47,18 @@ class FeaturesActivity : ComponentActivity() {
                         },
                         content = { _ ->
                             val title = resources.getString(R.string.version_title)
-                            val version = AwesomeAdsSdk.info()?.versionNumber ?: ""
+                            val version = AwesomeAds.info()?.versionNumber ?: ""
                             Column {
                                 Text(
                                     text = "$title $version",
                                     modifier = Modifier
                                         .fillMaxWidth(1.0f)
-                                        .padding(start = 16.dp, top = 10.dp, bottom = 0.dp, end = 10.dp),
+                                        .padding(
+                                            start = 16.dp,
+                                            top = 10.dp,
+                                            bottom = 0.dp,
+                                            end = 10.dp
+                                        ),
                                 )
                                 FeaturesList(
                                     features = features,
@@ -62,7 +67,10 @@ class FeaturesActivity : ComponentActivity() {
                                             this@FeaturesActivity,
                                             FeatureDetailActivity::class.java,
                                         )
-                                        intent.putExtra(FeatureDetailActivity.featureExtraKey, feature)
+                                        intent.putExtra(
+                                            FeatureDetailActivity.featureExtraKey,
+                                            feature
+                                        )
                                         startActivity(intent)
                                     }
                                 )
@@ -189,7 +197,7 @@ class FeaturesActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    SamobilesdkandroidTheme {
+    SAMobileSDKAndroidTheme {
         FeaturesList(features = FeaturesActivity.features, onTapFeature = {})
     }
 }

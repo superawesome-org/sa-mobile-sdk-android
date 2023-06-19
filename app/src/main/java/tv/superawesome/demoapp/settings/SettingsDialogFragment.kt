@@ -3,23 +3,21 @@ package tv.superawesome.demoapp.settings
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_settings.*
-import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
-import tv.superawesome.lib.sasession.defines.SAConfiguration
-import tv.superawesome.sdk.publisher.state.CloseButtonState
+import tv.superawesome.demoapp.admob.AdMobActivity
 
 class SettingsDialogFragment : DialogFragment() {
     var onDismissListener: (() -> Unit)? = null
-
-    private val app: MyApplication?
-        get() = activity?.application as? MyApplication
+    private val adapter = SettingsListAdapter()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -36,81 +34,42 @@ class SettingsDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?,
     ): View? = inflater.inflate(R.layout.fragment_settings, null, false)
 
+    private fun onTapAdMob() {
+        startActivity(Intent(context, AdMobActivity::class.java))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.contentDescription = "SettingsView"
+        adMobButton.contentDescription = "Settings.Buttons.AdMob"
+        resetButton.contentDescription = "Settings.Buttons.Reset"
+        closeButton.contentDescription = "Settings.Buttons.Close"
+
+        adapter.onItemSelected = { item, option ->
+            DataStore.updateSettings(item.item, option)
+        }
+        updateAdapter()
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        adMobButton.setOnClickListener {
+            dismiss()
+            onTapAdMob()
+        }
 
         resetButton.setOnClickListener {
-            app?.resetSettings()
+            DataStore.reset()
+            updateAdapter()
         }
+
         closeButton.setOnClickListener {
             dismiss()
         }
-        uiTestingButton.setOnClickListener {
-            app?.updateSettings { it.copy(environment = SAConfiguration.UITESTING) }
-        }
-        productionButton.setOnClickListener {
-            app?.updateSettings { it.copy(environment = SAConfiguration.PRODUCTION) }
-        }
+    }
 
-        closeImmediatelyButton.setOnClickListener {
-            app?.updateSettings { it.copy(closeButtonState = CloseButtonState.VisibleImmediately) }
-        }
-
-        closeDelayedButton.setOnClickListener {
-            app?.updateSettings { it.copy(closeButtonState = CloseButtonState.VisibleWithDelay) }
-        }
-
-        closeHiddenButton.setOnClickListener {
-            app?.updateSettings { it.copy(closeButtonState = CloseButtonState.Hidden) }
-        }
-
-        bumperEnableButton.setOnClickListener {
-            app?.updateSettings { it.copy(bumperEnabled = true) }
-        }
-
-        bumperDisableButton.setOnClickListener {
-            app?.updateSettings { it.copy(bumperEnabled = false) }
-        }
-
-        parentalEnableButton.setOnClickListener {
-            app?.updateSettings { it.copy(parentalEnabled = true) }
-        }
-
-        parentalDisableButton.setOnClickListener {
-            app?.updateSettings { it.copy(parentalEnabled = false) }
-        }
-
-        playbackEnableButton.setOnClickListener {
-            app?.updateSettings { it.copy(playEnabled = true) }
-        }
-
-        playbackDisableButton.setOnClickListener {
-            app?.updateSettings { it.copy(playEnabled = false) }
-        }
-
-        muteEnableButton.setOnClickListener {
-            app?.updateSettings { it.copy(muteOnStart = true) }
-        }
-
-        muteDisableButton.setOnClickListener {
-            app?.updateSettings { it.copy(muteOnStart = false) }
-        }
-
-        videoCloseDialogEnableButton.setOnClickListener {
-            app?.updateSettings { it.copy(videoWarnOnClose = true) }
-        }
-
-        videoCloseDialogDisableButton.setOnClickListener {
-            app?.updateSettings { it.copy(videoWarnOnClose = false) }
-        }
-
-        videoCloseAtEndEnableButton.setOnClickListener {
-            app?.updateSettings { it.copy(closeAtEnd = true) }
-        }
-
-        videoCloseAtEndDisableButton.setOnClickListener {
-            app?.updateSettings { it.copy(closeAtEnd = false) }
-        }
+    private fun updateAdapter() {
+        adapter.updateData(DataStore.toList())
     }
 
     override fun onDismiss(dialog: DialogInterface) {

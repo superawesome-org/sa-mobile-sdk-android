@@ -30,7 +30,7 @@ public class BannerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    val controller: AdControllerType by inject(AdControllerType::class.java)
+    internal val controller: AdControllerType by inject(AdControllerType::class.java)
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
@@ -44,6 +44,7 @@ public class BannerView @JvmOverloads constructor(
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
         isSaveEnabled = true
+        contentDescription = "Ad content"
     }
 
     override fun onSaveInstanceState(): Parcelable = Bundle().apply {
@@ -69,9 +70,13 @@ public class BannerView @JvmOverloads constructor(
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
+    @JvmOverloads
     public fun load(placementId: Int, options: Map<String, Any>? = null) {
         logger.info("load($placementId)")
         this.placementId = placementId
+        if (isAdPlayedBefore()) {
+            close()
+        }
         controller.load(placementId, makeAdRequest(options))
     }
 
@@ -85,8 +90,18 @@ public class BannerView @JvmOverloads constructor(
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
-    public fun load(placementId: Int, lineItemId: Int, creativeId: Int, options: Map<String, Any>? = null) {
+    @JvmOverloads
+    public fun load(
+        placementId: Int,
+        lineItemId: Int,
+        creativeId: Int,
+        options: Map<String, Any>? = null
+    ) {
+        logger.info("load($placementId, $lineItemId, $creativeId)")
         this.placementId = placementId
+        if (isAdPlayedBefore()) {
+            close()
+        }
         controller.load(placementId, lineItemId, creativeId, makeAdRequest(options))
     }
 
@@ -196,6 +211,7 @@ public class BannerView @JvmOverloads constructor(
         padlockButton.scaleType = ImageView.ScaleType.FIT_XY
         padlockButton.setPadding(0, 2.toPx, 0, 0)
         padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
+        padlockButton.contentDescription = "Safe Ad Logo"
 
         padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
 
@@ -238,6 +254,10 @@ public class BannerView @JvmOverloads constructor(
             removeView(webView)
             webView = null
         }
+    }
+
+    private fun isAdPlayedBefore(): Boolean {
+        return webView != null
     }
 
     override fun onDetachedFromWindow() {

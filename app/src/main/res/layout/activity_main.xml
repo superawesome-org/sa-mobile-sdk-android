@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
     <ImageButton
         android:id="@+id/settingsButton"
@@ -42,20 +42,33 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@+id/bannerView"
+        app:layout_constraintBottom_toTopOf="@+id/bannerContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitleTextView" />
 
-    <tv.superawesome.sdk.publisher.SABannerAd
-        android:id="@+id/bannerView"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:background="@color/color_primary"
-        android:contentDescription="@string/banner_ad_content_description"
-        android:visibility="visible"
+    <FrameLayout
+        android:id="@+id/bannerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent">
 
+        <tv.superawesome.sdk.publisher.common.ui.banner.BannerView
+            android:id="@+id/bannerView"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/color_primary"
+            android:contentDescription="@string/banner_ad_content_description"
+            android:visibility="invisible" />
+
+        <tv.superawesome.sdk.publisher.SABannerAd
+            android:id="@+id/bannerView2"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/color_primary"
+            android:contentDescription="@string/banner_ad_content_description"
+            android:visibility="visible" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

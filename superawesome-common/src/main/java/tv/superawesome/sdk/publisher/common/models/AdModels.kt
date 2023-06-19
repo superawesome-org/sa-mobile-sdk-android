@@ -11,25 +11,26 @@ import tv.superawesome.sdk.publisher.common.extensions.mergeToMap
 const val CPI_CAMPAIGN_ID = 1
 
 @Serializable
-data class Ad(
+internal data class Ad(
     @SerialName("campaign_type") val campaignType: Int,
     @SerialName("show_padlock") val showPadlock: Boolean,
     @SerialName("line_item_id") val lineItemId: Int,
     val test: Boolean,
     val creative: Creative,
-    @SerialName("is_vpaid") val isVpaid: Boolean = false
+    @SerialName("is_vpaid") val isVpaid: Boolean = false,
+    @SerialName("rnd") val random: String?,
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
     fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF
 }
-data class AdQueryBundle(
+internal data class AdQueryBundle(
     val parameters: AdQuery,
     val options: Map<String, Any>?) {
     fun build(): Map<String, Any> = Properties.mergeToMap(parameters, options)
 }
 
 @Serializable
-data class AdQuery(
+internal data class AdQuery(
     val test: Boolean,
     val sdkVersion: String,
     val rnd: Int,
@@ -49,7 +50,7 @@ data class AdQuery(
     val timestamp: Long
 )
 
-data class AdResponse(
+internal data class AdResponse(
     val placementId: Int,
     val ad: Ad,
     val requestOptions: Map<String, Any>? = null,
@@ -59,6 +60,7 @@ data class AdResponse(
     var filePath: String? = null,
     var referral: String? = null,
 ) {
+    fun isVpaid(): Boolean = ad.isVpaid
     fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.Video
     fun shouldShowPadlock(): Boolean = ad.shouldShowPadlock()
 
@@ -111,7 +113,7 @@ data class AdRequest(
     }
 
     /** Start delay cases */
-    enum class StartDelay(val value: Int) {
+    public enum class StartDelay(val value: Int) {
         PostRoll(-2),
         GenericMidRoll(-1),
         PreRoll(0),
@@ -119,6 +121,8 @@ data class AdRequest(
 
         companion object {
             private val values = values()
+
+            @JvmStatic
             fun fromValue(value: Int) = values.firstOrNull { it.value == value }
         }
     }
@@ -135,50 +139,4 @@ data class AdRequest(
         No(0),
         Yes(1),
     }
-}
-
-/**
- * This enum holds all the possible callback values that an ad sends during its lifetime
- *  - adLoaded:         ad was loaded successfully and is ready to be displayed
- *  - adEmpty:          ad was empty
- *  - adFailedToLoad:   ad was not loaded successfully and will not be able to play
- *  - adAlreadyLoaded   ad was previously loaded in an interstitial, video or app wall queue
- *  - adShown:          triggered once when the ad first displays
- *  - adFailedToShow:   for some reason the ad failed to show; technically this should
- *                      never happen nowadays
- *  - adClicked:        triggered every time the ad gets clicked
- *  - adClosed:         triggered once when the ad is closed;
- */
-
-enum class SAEvent(val value: String) {
-    /** ad was loaded successfully and is ready to be displayed */
-    AdLoaded("adLoaded"),
-    AdEmpty("adEmpty"),
-
-    /** ad was not loaded successfully and will not be able to play */
-    AdFailedToLoad("adFailedToLoad"),
-
-    /** ad was previously loaded in an interstitial, video or app wall queue */
-    AdAlreadyLoaded("adAlreadyLoaded"),
-
-    /** triggered once when the ad first displays */
-    AdShown("adShown"),
-    AdFailedToShow("adFailedToShow"),
-
-    /**  triggered every time the ad gets clicked */
-    AdClicked("adClicked"),
-    AdEnded("adEnded"),
-
-    /** triggered once when the ad is closed */
-    AdClosed("adClosed")
-}
-
-public fun interface SAInterface {
-    /**
-     * Only method that needs to be implemented to be able to receive events back from the SDK
-     *
-     * @param placementId   the Ad Placement Id the event happened for
-     * @param event         the type of the event, as an SAEvent enum variable
-     */
-    fun onEvent(placementId: Int, event: SAEvent)
 }

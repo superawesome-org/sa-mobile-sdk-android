@@ -17,7 +17,7 @@ references:
       command: |
         echo "Google Services"
         echo 'export SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC="$SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC"' >> $BASH_ENV
-        echo $SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC | base64 -di > $PWD/app/${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_NAME}.json
+        echo $SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC | base64 -di > app/${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_NAME}.json
 
   generate_github_token: &generate_github_token
     run:
@@ -30,7 +30,6 @@ references:
         echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
         echo "export GIT_AUTHOR_NAME=sa-release-bot" >> $BASH_ENV
         echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
-        source "$BASH_ENV"
 
     # clone some scripts
   clone_scripts_repo: &clone_scripts_repo
@@ -60,7 +59,7 @@ jobs:
             - "."
 
   ## Run unit tests
-  lint:
+  test_superawesome_base:
     <<: *android_config
     steps:
       - attach_workspace:
@@ -72,17 +71,6 @@ jobs:
       - run:
           name: Lint Code
           command: ./gradlew lint
-
-  ## Run unit tests
-  test_superawesome_base_unit_tests:
-    <<: *android_config
-    steps:
-      - attach_workspace:
-          at: .
-      - *generate_github_token
-      - *configure_google_services
-      - *clone_scripts_repo
-      - *bootstrap_android
       - run:
           name: Run unit tests for superawesome_base
           command: bundle exec fastlane run_all_tests module:superawesome-base
@@ -131,6 +119,28 @@ jobs:
           path: "./video.mp4"
           destination: videos
 
+
+  test_superawesome_common:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *generate_github_token
+      - *configure_google_services
+      - *clone_scripts_repo
+      - *bootstrap_android
+      - run:
+          name: Lint Code
+          command: ./gradlew lint
+      - run:
+          name: Run unit tests for superawesome_common
+          command: bundle exec fastlane run_all_tests module:superawesome-common
+      - run:
+          name: Copy test results to temp folder
+          command: find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+      - store_test_results:
+          path: temp_files/test-results
+  
   semantic_release_dry_run:
     <<: *android_config
     environment:
@@ -143,11 +153,11 @@ jobs:
       - run:
           name: Check semantic release version
           command: |
-            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/mobile/semantic-release/semantic-release.sh --dry-run
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/mobile/semantic-release/semantic-release-sdks.sh --dry-run
       - persist_to_workspace:
           root: "."
           paths:
-          - "nextRelease"
+            - "nextRelease"
 
   auto_update_release_version:
     <<: *android_config
@@ -162,19 +172,29 @@ jobs:
           command: |
             NEXT_RELEASE_NUMBER=`cat nextRelease`
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
+            NEW_VERSION_PROPERTIES=superawesome-common/src/main/resources/newVersion.properties
 
             if [[ ( ! -z "$NEXT_RELEASE_NUMBER" ) && ( -f "$VERSION_PROPERTIES" ) ]]; then
 
-              echo "****** Current release version ******"
+              echo "****** Current Base release version ******"
               cat $VERSION_PROPERTIES
 
               echo "version.name=$NEXT_RELEASE_NUMBER" > $VERSION_PROPERTIES
 
-              echo "****** Updated release version ******"
+              echo "****** Updated Base release version ******"
               cat $VERSION_PROPERTIES
+
+              echo "****** Current Common release version ******"
+              cat $NEW_VERSION_PROPERTIES
+
+              echo "version.name=$NEXT_RELEASE_NUMBER" > $NEW_VERSION_PROPERTIES
+
+              echo "****** Updated Common release version ******"
+              cat $NEW_VERSION_PROPERTIES
 
               git pull https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git develop
               git add $VERSION_PROPERTIES
+              git add $NEW_VERSION_PROPERTIES
               git commit -m "Auto incremented version to $NEXT_RELEASE_NUMBER via Circle CI [skip ci]"
               git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git -q develop
             else
@@ -195,7 +215,7 @@ jobs:
           name: Run semantic release
           command: |
             git pull https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git ${SA_SEMANTIC_RELEASE_RUN_BRANCH}
-            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/mobile/semantic-release/semantic-release.sh
+            ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/mobile/semantic-release/semantic-release-sdks.sh
 
   ## Run sdk push
   sdk_push_superawesome:
@@ -210,6 +230,45 @@ jobs:
       - run:
           name: Push Superawesome-All to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
+      - run:
+          name: Update Release page in docs
+          command: |
+            # get previous release tag
+            export CURRENT_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 1p`
+            export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
+            export CLEAN_CURRENT_VERSION="${CURRENT_VERSION:1}"
+
+            # get release notes from semantic-release
+            export CHANGES=`awk "/^([#]+ \[${CURRENT_VERSION:1}\])/{flag=1;next}/^([#]+ \[${PREVIOUS_VERSION:1}\])/{flag=0}flag" CHANGELOG.md`
+            
+            export CHANGES=`sed -E "s/ \(\[([^\[]+)\](\(.*\))//g" \<<< $CHANGES`
+
+            echo "CURRENT_VERSION ${CURRENT_VERSION}"
+            echo "PREVIOUS_VERSION ${PREVIOUS_VERSION}"
+            echo "Changes Found ${CHANGES}"
+
+            export LINKS="[SuperAwesome AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome/${CLEAN_CURRENT_VERSION}/superawesome-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Base AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-base/${CLEAN_CURRENT_VERSION}/superawesome-base-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Common AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-common/${CLEAN_CURRENT_VERSION}/superawesome-common-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome AdMob AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saadmob/${CLEAN_CURRENT_VERSION}/saadmob-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Unity AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saunity/${CLEAN_CURRENT_VERSION}/saunity-${CLEAN_CURRENT_VERSION}.aar)"
+
+            # checkout docs repo
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git
+
+            # Update releases
+            export RELEASE_DOC_PATH="sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md"
+
+            # insert new release and change log
+            perl -i -pe '$_ = "\n## $ENV{CLEAN_CURRENT_VERSION}$ENV{CHANGES}\n\n#### Downloads\n$ENV{LINKS}\n\n$_" if $. == 7' $RELEASE_DOC_PATH
+
+            # update config file release version
+            export CONFIG_PATH="sa-mobile-sdk-publisher-docs/docs/_config.yml"
+
+            sed -i "s/android_latest_version:.*/android_latest_version: ${CURRENT_VERSION:1}/g" $CONFIG_PATH
+
+            # commit and push
+            cd sa-mobile-sdk-publisher-docs
+            git add docs/_docs/android/releases.md
+            git add docs/_config.yml
+            git commit -m "Add Android release version $CURRENT_VERSION via Circle CI"
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git -q main
 
   sdk_push_superawesome_base:
     <<: *android_config
@@ -223,6 +282,19 @@ jobs:
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
+
+  sdk_push_superawesome_common:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *configure_google_services
+      - *generate_github_token
+      - *clone_scripts_repo
+      - *bootstrap_android
+      - run:
+          name: Push Superawesome-Base to the S3 Repo
+          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
 
   sdk_push_superawesome_admob:
     <<: *android_config
@@ -287,6 +359,7 @@ jobs:
           destination: docsy-jekyll
 
 workflows:
+  version: 2.1
   nightly:
     triggers:
       - schedule:
@@ -316,33 +389,33 @@ workflows:
 
   pull_request:
     jobs:
-      # - checkout_code:
-      #     context: MOBILE_ANDROID_SDKS
-      #     filters:
-      #       branches:
-      #         ignore: develop
-      #       tags:
-      #         ignore: /^v.*/
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
 
-      # - lint:
-      #     context: MOBILE_ANDROID_SDKS
-      #     requires:
-      #       - checkout_code
-      #     filters:
-      #       branches:
-      #         ignore: develop
-      #       tags:
-      #         ignore: /^v.*/
+      - test_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
 
-      # - test_superawesome_base_unit_tests:
-      #     context: MOBILE_ANDROID_SDKS
-      #     requires:
-      #       - checkout_code
-      #     filters:
-      #       branches:
-      #         ignore: develop
-      #       tags:
-      #         ignore: /^v.*/
+      - test_superawesome_common:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
 
       - test_superawesome_base_ui_tests:
           context: MOBILE_ANDROID_SDKS
@@ -364,7 +437,17 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - test_superawesome_base_unit_tests:
+      - test_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - test_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
@@ -377,7 +460,7 @@ workflows:
       - semantic_release_dry_run:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - test_superawesome_base_unit_tests
+            - test_superawesome_base
           filters:
             branches:
               only: develop
@@ -435,6 +518,16 @@ workflows:
               only: /^v.*/
 
       - sdk_push_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+      - sdk_push_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code

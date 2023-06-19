@@ -6,24 +6,41 @@ import android.content.Intent
 import android.net.Uri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
 import tv.superawesome.sdk.publisher.common.components.Logger
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.components.TimeProviderType
+import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
+import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.models.PerformanceTimer
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import kotlin.math.abs
 
-interface AdControllerType {
+internal interface AdControllerType {
     var config: Config
     var closed: Boolean
     var currentAdResponse: AdResponse?
     var delegate: SAInterface?
+    var videoListener: VideoPlayerListener?
     val shouldShowPadlock: Boolean
 
+    fun startTimingForLoadTime()
+    fun trackLoadTime()
+    fun startTimingForDwellTime()
+    fun trackDwellTime()
+    fun startTimingForCloseButtonPressed()
+    fun trackCloseButtonPressed()
     fun triggerImpressionEvent(placementId: Int)
     fun triggerViewableImpression(placementId: Int)
 
@@ -36,28 +53,80 @@ interface AdControllerType {
     fun handleAdTapForVast(context: Context)
     fun close()
     fun hasAdAvailable(placementId: Int): Boolean
-
     fun adFailedToShow()
     fun adShown()
-    fun adClicked()
     fun adEnded()
-    fun adClosed()
+    fun adPlaying()
+    fun adPaused()
 
     fun peekAdResponse(placementId: Int): AdResponse?
+
+    fun clearCache()
+
+    interface VideoPlayerListener {
+        fun didRequestVideoPause()
+        fun didRequestVideoPlay()
+    }
 }
 
-class AdController(
+internal class AdController(
     private val adRepository: AdRepositoryType,
     private val eventRepository: EventRepositoryType,
+    private val performanceRepository: PerformanceRepositoryType,
     private val logger: Logger,
-    private val adStore: AdStoreType
+    private val adStore: AdStoreType,
+    private val timeProvider: TimeProviderType
 ) : AdControllerType {
     override var config: Config = Config()
     override var closed: Boolean = false
     override var currentAdResponse: AdResponse? = null
     override var delegate: SAInterface? = null
+    override var videoListener: AdControllerType.VideoPlayerListener? = null
     override val shouldShowPadlock: Boolean
         get() = currentAdResponse?.shouldShowPadlock() ?: false
+
+    private val closeButtonPressedTimer = PerformanceTimer()
+    private val dwellTimeTimer = PerformanceTimer()
+    private val loadTimeTimer = PerformanceTimer()
+
+    override fun startTimingForLoadTime() {
+        loadTimeTimer.start(timeProvider.millis())
+    }
+
+    override fun trackLoadTime() {
+        if (loadTimeTimer.startTime == 0L) { return }
+        scope.launch {
+            performanceRepository.trackLoadTime(
+                loadTimeTimer.delta(timeProvider.millis())
+            )
+        }
+    }
+
+    override fun startTimingForDwellTime() {
+        dwellTimeTimer.start(timeProvider.millis())
+    }
+
+    override fun trackDwellTime() {
+        if (dwellTimeTimer.startTime == 0L) { return }
+        scope.launch {
+            performanceRepository.trackDwellTime(
+                dwellTimeTimer.delta(timeProvider.millis())
+            )
+        }
+    }
+
+    override fun startTimingForCloseButtonPressed() {
+        closeButtonPressedTimer.start(timeProvider.millis())
+    }
+
+    override fun trackCloseButtonPressed() {
+        if (closeButtonPressedTimer.startTime == 0L) { return }
+        scope.launch {
+            performanceRepository.trackCloseButtonPressed(
+                closeButtonPressedTimer.delta(timeProvider.millis())
+            )
+        }
+    }
 
     private val scope = CoroutineScope(Dispatchers.Main)
     private var parentalGate: ParentalGate? = null
@@ -79,14 +148,21 @@ class AdController(
     }
 
     override fun handleAdTapForVast(context: Context) {
-        val clickThroughUrl = currentAdResponse?.vast?.clickThroughUrl
+        // if the campaign is a CPI one, get the normal CPI url so that
+        // we can append the "referrer data" to it (since most likely
+        // "click_through" will have a redirect)
+        val destinationUrl = if (currentAdResponse?.ad?.isCPICampaign() == true) {
+            currentAdResponse?.ad?.creative?.clickUrl
+        } else {
+            currentAdResponse?.vast?.clickThroughUrl
+        }
 
-        if (clickThroughUrl == null) {
-            logger.info("Click through URL is not found")
+        if (destinationUrl == null) {
+            logger.info("Destination URL is not found")
             return
         }
 
-        handleAdTap(clickThroughUrl, context)
+        handleAdTap(destinationUrl, context)
     }
 
     private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) =
@@ -97,26 +173,36 @@ class AdController(
                 newQuestion()
                 listener = object : ParentalGate.Listener {
                     override fun parentalGateOpen() {
-                        scope.launch { currentAdResponse?.let { eventRepository.parentalGateOpen(it) } }
+                        scope.launch {
+                            videoListener?.didRequestVideoPause()
+                            adPaused()
+                            currentAdResponse?.let { eventRepository.parentalGateOpen(it) }
+                        }
                     }
 
                     override fun parentalGateCancel() {
-                        scope.launch { currentAdResponse?.let { eventRepository.parentalGateClose(it) } }
+                        scope.launch {
+                            videoListener?.didRequestVideoPlay()
+                            adPlaying()
+                            currentAdResponse?.let { eventRepository.parentalGateClose(it) }
+                        }
                     }
 
                     override fun parentalGateSuccess() {
                         scope.launch {
                             currentAdResponse?.let {
-                                eventRepository.parentalGateSuccess(
-                                    it
-                                )
+                                eventRepository.parentalGateSuccess(it)
                             }
                         }
                         completion()
                     }
 
                     override fun parentalGateFail() {
-                        scope.launch { currentAdResponse?.let { eventRepository.parentalGateFail(it) } }
+                        scope.launch {
+                            videoListener?.didRequestVideoPlay()
+                            adPlaying()
+                            currentAdResponse?.let { eventRepository.parentalGateFail(it) }
+                        }
                     }
                 }
                 parentalGate?.show(context)
@@ -145,11 +231,11 @@ class AdController(
         if (isClickTooFast()) return
 
         showParentalGateIfNeeded(context, completion = {
-            showBannerIfNeeded(url, context)
+            showBumperIfNeeded(url, context)
         })
     }
 
-    private fun showBannerIfNeeded(url: String, context: Context) {
+    private fun showBumperIfNeeded(url: String, context: Context) {
         if (config.isBumperPageEnabled || currentAdResponse?.ad?.creative?.bumper == true) {
             playBumperPage(url, context)
         } else {
@@ -159,6 +245,8 @@ class AdController(
 
     private fun playBumperPage(url: String, context: Context) {
         if (context is Activity) {
+            videoListener?.didRequestVideoPause()
+            adPaused()
             bumperPage?.stop()
             bumperPage = get(BumperPage::class.java)
             bumperPage?.onFinish = {
@@ -176,64 +264,101 @@ class AdController(
             return
         }
 
-        delegate?.onEvent(placementId, SAEvent.AdClicked)
+        adClicked()
 
         if (currentAdResponse?.isVideo() == true) {
             scope.launch { currentAdResponse?.let { eventRepository.videoClick(it) } }
+            triggerVastClickEvents()
         } else {
             scope.launch { currentAdResponse?.let { eventRepository.click(it) } }
         }
 
         // append CPI data to it
-        val referrer =
-            if (currentAdResponse?.ad?.isCPICampaign() == true) "&referrer=" + currentAdResponse?.referral else ""
+        val referrer = if (currentAdResponse?.ad?.isCPICampaign() == true) {
+            "&referrer=" + currentAdResponse?.referral
+        } else {
+            ""
+        }
+
         val destination = "$url$referrer"
 
-        // start browser
         try {
+            // start browser
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(destination)))
         } catch (exception: Exception) {
             logger.error("Exception while navigating to url", exception)
         }
     }
 
+    private fun triggerVastClickEvents() {
+        val vast = currentAdResponse?.vast ?: return
+        val vastEventRepository: VastEventRepositoryType = get(
+            clazz = VastEventRepositoryType::class.java,
+            parameters = { parametersOf(vast) }
+        )
+
+        scope.launch {
+            vastEventRepository.clickTracking()
+        }
+    }
+
     override fun close() = try {
+        adClosed()
         closed = true
+        currentAdResponse = null
         parentalGate?.stop()
         bumperPage?.stop()
-        scope.cancel()
+        scope.coroutineContext.cancelChildren()
     } catch (exception: IllegalStateException) {
         logger.error("Exception while closing the ad", exception)
     }
 
-    override fun hasAdAvailable(placementId: Int): Boolean {
-        return false
+    override fun hasAdAvailable(placementId: Int): Boolean = adStore.peek(placementId) != null
+
+    private fun adAlreadyLoaded(placementId: Int) {
+        delegate?.onEvent(placementId, SAEvent.adAlreadyLoaded)
     }
 
     override fun adFailedToShow() {
-        delegate?.onEvent(placementId, SAEvent.AdFailedToShow)
+        delegate?.onEvent(placementId, SAEvent.adFailedToShow)
     }
 
     override fun adShown() {
-        delegate?.onEvent(placementId, SAEvent.AdShown)
+        delegate?.onEvent(placementId, SAEvent.adShown)
     }
 
-    override fun adClicked() {
-        delegate?.onEvent(placementId, SAEvent.AdClicked)
+    fun adClicked() {
+        delegate?.onEvent(placementId, SAEvent.adClicked)
     }
 
     override fun adEnded() {
-        delegate?.onEvent(placementId, SAEvent.AdEnded)
+        delegate?.onEvent(placementId, SAEvent.adEnded)
     }
 
-    override fun adClosed() {
-        delegate?.onEvent(placementId, SAEvent.AdClosed)
+    fun adClosed() {
+        delegate?.onEvent(placementId, SAEvent.adClosed)
+    }
+
+    override fun adPlaying() {
+        delegate?.onEvent(placementId, SAEvent.adPlaying)
+    }
+
+    override fun adPaused() {
+        delegate?.onEvent(placementId, SAEvent.adPaused)
     }
 
     override fun peekAdResponse(placementId: Int): AdResponse? = adStore.peek(placementId)
 
     override fun load(placementId: Int, request: AdRequest) {
         logger.info("load($placementId) thread:${Thread.currentThread()}")
+
+        if (hasAdAvailable(placementId)) {
+            adAlreadyLoaded(placementId)
+            return
+        }
+
+        startTimingForLoadTime()
+
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -243,6 +368,15 @@ class AdController(
     }
 
     override fun load(placementId: Int, lineItemId: Int, creativeId: Int, request: AdRequest) {
+        logger.info("load($placementId, $lineItemId, $creativeId) thread:${Thread.currentThread()}")
+
+        if (hasAdAvailable(placementId)) {
+            adAlreadyLoaded(placementId)
+            return
+        }
+
+        startTimingForLoadTime()
+
         scope.launch {
             when (val result = adRepository.getAd(placementId, lineItemId, creativeId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -280,14 +414,29 @@ class AdController(
         scope.launch { currentAdResponse?.let { eventRepository.viewableImpression(it) } }
     }
 
+    override fun clearCache() {
+        adStore.clear()
+    }
+
     private fun onSuccess(response: AdResponse) {
+        if (response.ad.creative.format == CreativeFormatType.Video &&
+            response.ad.creative.details.tag == null &&
+            response.ad.creative.details.vast == null)  {
+            onFailure(placementId, MissingVastTagError())
+            return
+        }
+
         logger.success("onSuccess thread:${Thread.currentThread()} adResponse:$response")
         adStore.put(response)
-        delegate?.onEvent(response.placementId, SAEvent.AdLoaded)
+        delegate?.onEvent(response.placementId, SAEvent.adLoaded)
+        // Can be removed when we want to track this for all ad types
+        if (response.isVpaid()) {
+            trackLoadTime()
+        }
     }
 
     private fun onFailure(placementId: Int, error: Throwable) {
         logger.error("onFailure for $placementId", error)
-        delegate?.onEvent(placementId, SAEvent.AdFailedToLoad)
+        delegate?.onEvent(placementId, SAEvent.adFailedToLoad)
     }
 }

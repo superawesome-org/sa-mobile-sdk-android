@@ -2,7 +2,7 @@ package tv.superawesome.sdk.publisher.common.testutil
 
 import tv.superawesome.sdk.publisher.common.models.*
 
-object FakeFactory {
+internal object FakeFactory {
     const val exampleUrl = "https://www.superAwesome.com"
     const val exampleHtml = "<test></test>"
     const val exampleParamString = "id=12&name=tester"
@@ -27,7 +27,8 @@ object FakeFactory {
                 image = exampleUrl,
                 vast = vastUrl
             )
-        )
+        ),
+        random = ""
     )
 
     fun makeVastAd(

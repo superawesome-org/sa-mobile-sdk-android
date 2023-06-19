@@ -2,12 +2,10 @@ package tv.superawesome.lib.saevents;
 
 import android.util.Log;
 import android.view.ViewGroup;
-
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAEvents {
-
     private SAServerModule              serverModule;
     private SAVASTModule                vastModule;
     private SAViewableModule            viewableModule;
@@ -184,21 +182,5 @@ public class SAEvents {
         if (viewableModule != null) {
             viewableModule.checkViewableStatusForVideo (layout, listener);
         }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Getters
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public SAServerModule getServerModule() {
-        return serverModule;
-    }
-
-    public SAVASTModule getVastModule() {
-        return vastModule;
-    }
-
-    public SAViewableModule getViewableModule() {
-        return viewableModule;
     }
 }

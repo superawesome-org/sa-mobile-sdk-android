@@ -8,7 +8,7 @@ import android.view.SurfaceHolder
  * This interface defines the public interface for any object that can be
  * used to control a piece of media.
  */
-interface IVideoPlayerController {
+internal interface IVideoPlayerController {
     /**
      * This will play the media in a sync way
      * @param context the current Android context

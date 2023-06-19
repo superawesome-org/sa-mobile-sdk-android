@@ -5,7 +5,6 @@ package tv.superawesome.sdk.publisher.common.ui.managed
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -21,14 +20,10 @@ import tv.superawesome.sdk.publisher.common.components.TimeProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.models.VoidBlock
-import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
-import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
-import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
 
 @SuppressLint("AddJavascriptInterface")
 public class ManagedAdView @JvmOverloads constructor(
@@ -37,19 +32,14 @@ public class ManagedAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
+    internal val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
     private val imageProvider: ImageProviderType by KoinJavaComponent.inject(ImageProviderType::class.java)
     private val timeProvider: TimeProviderType by KoinJavaComponent.inject(TimeProviderType::class.java)
     private val logger: Logger by KoinJavaComponent.inject(Logger::class.java)
-    private val environment: Environment by KoinJavaComponent.inject(Environment::class.java)
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
-    private val viewableDetector: ViewableDetectorType by KoinJavaComponent.inject(
-        ViewableDetectorType::class.java
-    )
-    private var hasBeenVisible: VoidBlock? = null
 
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
@@ -57,15 +47,20 @@ public class ManagedAdView @JvmOverloads constructor(
         addWebView()
     }
 
-    public fun load(placementId: Int, html: String, listener: AdViewJavaScriptBridge.Listener) {
+    internal fun load(
+        placementId: Int,
+        html: String,
+        baseUrl: String?,
+        listener: AdViewJavaScriptBridge.Listener,
+    ) {
         logger.info("load($placementId)")
         this.placementId = placementId
         showPadlockIfNeeded()
 
         webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
-        webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener), JS_BRIDGE_NAME)
+        webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener, logger), JS_BRIDGE_NAME)
         val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
-        webView?.loadDataWithBaseURL(environment.baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
+        webView?.loadDataWithBaseURL(baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
         controller.play(placementId)
     }
 
@@ -96,10 +91,10 @@ public class ManagedAdView @JvmOverloads constructor(
      * Method that gets called in order to close the banner ad, remove any fragments, etc
      */
     public fun close() {
-        hasBeenVisible = null
-        viewableDetector.cancel()
         removeWebView()
         controller.close()
+        controller.videoListener = null
+        controller.delegate = null
     }
 
     /**
@@ -188,6 +183,20 @@ public class ManagedAdView @JvmOverloads constructor(
         }
     }
 
+    fun playVideo() {
+        webView?.evaluateJavascript(
+            "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));",
+            null,
+        )
+    }
+
+    fun pauseVideo() {
+        webView?.evaluateJavascript(
+            "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));",
+            null,
+        )
+    }
+
     private fun showPadlockIfNeeded() {
         if (!controller.shouldShowPadlock || webView == null) return
 
@@ -219,25 +228,12 @@ public class ManagedAdView @JvmOverloads constructor(
         webView.isHorizontalScrollBarEnabled = false
         webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
         webView.isFocusableInTouchMode = false
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            webView.settings.mediaPlaybackRequiresUserGesture = false
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true)
-        }
+        webView.settings.mediaPlaybackRequiresUserGesture = false
+        WebView.setWebContentsDebuggingEnabled(true)
         webView.settings.javaScriptEnabled = true
 
         webView.listener = object : CustomWebView.Listener {
-            override fun webViewOnStart() {
-                viewableDetector.cancel()
-                controller.triggerImpressionEvent(placementId)
-                viewableDetector.start(this@ManagedAdView, videoMaxTickCount) {
-                    controller.triggerViewableImpression(placementId)
-                    hasBeenVisible?.let { it() }
-                }
-            }
-
+            override fun webViewOnStart() = controller.triggerImpressionEvent(placementId)
             override fun webViewOnError() = controller.adFailedToShow()
             override fun webViewOnClick(url: String) = controller.handleAdTap(url, context)
         }
@@ -255,10 +251,9 @@ public class ManagedAdView @JvmOverloads constructor(
         }
     }
 
-    internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
+    internal fun configure(placementId: Int, delegate: SAInterface?) {
         this.placementId = placementId
         delegate?.let { setListener(it) }
-        this.hasBeenVisible = hasBeenVisible
     }
 }
 

@@ -17,8 +17,8 @@ import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.extensions.toPx
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Constants
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
@@ -33,7 +33,7 @@ import java.io.File
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
-class VideoActivity : FullScreenActivity() {
+internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val control: IVideoPlayerController by inject(IVideoPlayerController::class.java)
     private var videoEvents: VideoEvents? = null
@@ -56,7 +56,7 @@ class VideoActivity : FullScreenActivity() {
 
     override fun initChildUI() {
         controller.delegate = SAVideoAd.getDelegate()
-
+        controller.videoListener = this
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
         val params = RelativeLayout.LayoutParams(size, size)
 
@@ -65,6 +65,7 @@ class VideoActivity : FullScreenActivity() {
         videoPlayer.layoutParams = params
         videoPlayer.setController(control)
         videoPlayer.setBackgroundColor(Color.BLACK)
+        videoPlayer.contentDescription = "Ad content"
         parentLayout.addView(videoPlayer)
 
         closeButton.visibility =
@@ -86,6 +87,7 @@ class VideoActivity : FullScreenActivity() {
             override fun onComplete(player: IVideoPlayer, time: Int, duration: Int) {
                 completed = true
                 videoEvents?.complete(player, time, duration)
+                closeButton.visibility = View.VISIBLE
 
                 controller.adEnded()
 
@@ -190,8 +192,9 @@ class VideoActivity : FullScreenActivity() {
 
     override fun close() {
         CloseWarning.close()
-        controller.adClosed()
         controller.close()
+        controller.videoListener = null
+        controller.delegate = null
         videoPlayer.destroy()
         super.close()
     }
@@ -216,11 +219,20 @@ class VideoActivity : FullScreenActivity() {
         chrome.shouldShowPadlock(controller.shouldShowPadlock)
         chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick)
         chrome.setClickListener {
-            controller.adClicked()
             controller.handleAdTapForVast(this)
         }
         chrome.padlock.setOnClickListener { controller.handleSafeAdTap(this) }
         videoPlayer.setControllerView(chrome)
+    }
+
+    // AdControllerType.VideoPlayerListener
+
+    override fun didRequestVideoPause() {
+        control.pause()
+    }
+
+    override fun didRequestVideoPlay() {
+        control.start()
     }
 
     companion object {

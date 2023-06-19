@@ -1,6 +1,6 @@
 package tv.superawesome.sdk.publisher.common.models
 
-data class VastAd(
+internal data class VastAd(
     var url: String? = null,
     val redirect: String?,
     val type: VastType,
@@ -41,11 +41,11 @@ data class VastAd(
     }
 }
 
-enum class VastType {
+internal enum class VastType {
     Invalid, InLine, Wrapper
 }
 
-data class VastMedia(
+internal data class VastMedia(
     val type: String?,
     val url: String?,
     val bitrate: Int?,

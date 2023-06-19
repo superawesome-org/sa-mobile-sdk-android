@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
+import tv.superawesome.lib.sametrics.SAPerformanceMetrics
 import tv.superawesome.lib.samodelspace.saad.SAAd
 import tv.superawesome.lib.sautils.SAImageUtils
 import tv.superawesome.lib.sautils.SAUtils
@@ -39,6 +40,7 @@ class SAManagedAdActivity : Activity(),
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
     private lateinit var events: SAEvents
+    private lateinit var performanceMetrics: SAPerformanceMetrics
     private lateinit var viewableDetector: SAViewableDetector
 
     private val placementId by lazy {
@@ -64,9 +66,7 @@ class SAManagedAdActivity : Activity(),
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP)
 
         val closeButton = ImageButton(this)
-        closeButton.visibility =
-            if (config?.closeButtonState == CloseButtonState.VisibleImmediately)
-                View.VISIBLE else View.GONE
+        closeButton.visibility = View.GONE
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap())
         closeButton.setBackgroundColor(Color.TRANSPARENT)
         closeButton.setPadding(0, 0, 0, 0)
@@ -83,6 +83,7 @@ class SAManagedAdActivity : Activity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         events = SAVideoAd.getEvents()
+        performanceMetrics = SAVideoAd.getPerformanceMetrics()
 
         // get values from the intent
         config = intent.getParcelableExtra(CONFIG_KEY)
@@ -90,10 +91,14 @@ class SAManagedAdActivity : Activity(),
         viewableDetector = SAViewableDetector()
         setContentView(adView)
         adView.load(placementId, html, this)
-        listener = SAVideoAd.getListener()
 
         adView.addView(closeButton)
-        setUpCloseButtonTimeoutRunnable()
+
+        when (config?.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> showCloseButton()
+            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            else -> Unit // Hidden by default
+        }
 
         val ad: SAAd = intent.getParcelableExtra(AD_KEY) ?: return
 
@@ -103,12 +108,42 @@ class SAManagedAdActivity : Activity(),
             config?.isBumperPageEnabled ?: false,
             events,
         )
+
+        videoClick?.apply {
+            listener = object : SAVideoClick.Listener {
+                override fun didRequestPlaybackPause() {
+                    adView.pauseVideo()
+                }
+
+                override fun didRequestPlaybackResume() {
+                    adView.playVideo()
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        listener = SAVideoAd.getListener()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        adView.playVideo()
     }
 
     override fun onStop() {
         super.onStop()
+        adView.pauseVideo()
+        listener = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
+        config = null
+        videoClick = null
     }
 
     private fun setUpCloseButtonTimeoutRunnable() {
@@ -116,7 +151,7 @@ class SAManagedAdActivity : Activity(),
         val weak = WeakReference(this)
         timeOutRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTimeoutTime()
+            weakThis.showCloseButton()
         }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
@@ -126,7 +161,7 @@ class SAManagedAdActivity : Activity(),
         val weak = WeakReference(this)
         shownRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTime()
+            weakThis.showCloseButton()
         }
         shownRunnable?.let { shownHandler.postDelayed(it, CLOSE_BUTTON_SHOWN_TIME_INTERVAL) }
     }
@@ -143,25 +178,26 @@ class SAManagedAdActivity : Activity(),
 
     // AdViewJavaScriptBridge.Listener
 
-    override fun adLoaded() {
+    override fun adLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adLoaded)
     }
 
-    override fun adEmpty() {
+    override fun adEmpty() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adEmpty)
         close()
     }
 
-    override fun adFailedToLoad() {
+    override fun adFailedToLoad() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToLoad)
         close()
     }
 
-    override fun adAlreadyLoaded() {
+    override fun adAlreadyLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adAlreadyLoaded)
     }
 
-    override fun adShown() {
+    override fun adShown() = runOnUiThread {
+        performanceMetrics.startTimingForDwellTime()
         cancelCloseButtonTimeoutRunnable()
         if (config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
             setUpCloseButtonShownRunnable()
@@ -169,35 +205,50 @@ class SAManagedAdActivity : Activity(),
         listener?.onEvent(this.placementId, SAEvent.adShown)
     }
 
-    override fun adFailedToShow() {
+    override fun adFailedToShow() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToShow)
         close()
     }
 
-    override fun adClicked() {
+    override fun adClicked() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adClicked)
     }
 
-    override fun adEnded() {
+    override fun adEnded() = runOnUiThread {
         completed = true
         listener?.onEvent(this.placementId, SAEvent.adEnded)
         if (config?.autoCloseAtEnd == true) {
             close()
+        } else if (config?.closeButtonState == CloseButtonState.Hidden) {
+            showCloseButton()
         }
     }
 
-    override fun adClosed() = close()
+    override fun adClosed() = runOnUiThread { close() }
 
-    fun onCloseAction() {
+    override fun adPlaying() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adPlaying)
+    }
+
+    override fun adPaused() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adPaused)
+    }
+
+    private fun showCloseButton() {
+        closeButton.visibility = View.VISIBLE
+        performanceMetrics.startTimingForCloseButtonPressed()
+    }
+
+    private fun onCloseAction() {
+        performanceMetrics.trackCloseButtonPressed()
         if (config?.shouldShowCloseWarning == true && !completed) {
-//            control.pause() TODO: Add JS Pause function AAG-3023
+            adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
                 override fun onResumeSelected() {
-//                    control.start() TODO: Add JS Play function AAG-3023
+                    adView.playVideo()
                 }
-
                 override fun onCloseSelected() {
-                    close()
+                    this@SAManagedAdActivity.close()
                 }
             })
             SACloseWarning.show(this)
@@ -208,18 +259,10 @@ class SAManagedAdActivity : Activity(),
 
     private fun close() {
         if (!isFinishing) {
+            performanceMetrics.trackDwellTime()
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
-    }
-
-    private fun hasBeenVisibleForRequiredTime() {
-        closeButton.visibility =
-            if (config?.closeButtonState?.isVisible() == true) View.VISIBLE else closeButton.visibility
-    }
-
-    private fun hasBeenVisibleForRequiredTimeoutTime() {
-        closeButton.visibility = View.VISIBLE
     }
 
     /**

@@ -21,6 +21,7 @@ fun FeatureToggles(
     isCloseButtonEnabled: MutableState<Boolean>,
     isCloseButtonDelayEnabled: MutableState<Boolean>,
     isVideoMuteStartEnabled: MutableState<Boolean>,
+    isVideoLeaveWarningEnabled: MutableState<Boolean>,
     modifier: Modifier,
 ) {
     Column(modifier = modifier) {
@@ -110,6 +111,13 @@ fun FeatureToggles(
                     value = isVideoMuteStartEnabled,
                     onChange = { value ->
                         if (value) SAVideoAd.enableMuteOnStart() else SAVideoAd.disableMuteOnStart()
+                    }
+                )
+                FeatureSwitch(
+                    name = stringResource(id = R.string.options_video_close_warning_title),
+                    value = isVideoLeaveWarningEnabled,
+                    onChange = { value ->
+                        SAVideoAd.setCloseButtonWarning(value)
                     }
                 )
             }

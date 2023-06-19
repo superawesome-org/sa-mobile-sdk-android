@@ -1,26 +1,30 @@
 package tv.superawesome.demoapp
 
 import androidx.multidex.MultiDexApplication
-import tv.superawesome.demoapp.model.SettingsData
-import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.lib.sabumperpage.SABumperPage
 import tv.superawesome.sdk.publisher.common.models.Configuration
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk
+import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
+import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
 
 class MyApplication : MultiDexApplication() {
-    var settings = SettingsData()
+    var environment: Environment = Environment.Production
+        private set
 
     override fun onCreate() {
         super.onCreate()
-        AwesomeAds.init(this, true)
-        AwesomeAdsSdk.init(this, Configuration(logging = true))
+
+        BumperPage.overrideName("AwesomeAds Demo")
+        SABumperPage.overrideName("AwesomeAds Demo")
+
+        AwesomeAds.init(
+            this,
+            Configuration(logging = true, environment = environment)
+        )
+        tv.superawesome.sdk.publisher.AwesomeAds.init(this, true)
     }
 
-    fun resetSettings() {
-        settings = SettingsData()
-    }
-
-    fun updateSettings(update: (current: SettingsData) -> SettingsData) {
-        settings = update(settings)
+    fun setupUITest() {
+        environment = Environment.UITesting
     }
 }

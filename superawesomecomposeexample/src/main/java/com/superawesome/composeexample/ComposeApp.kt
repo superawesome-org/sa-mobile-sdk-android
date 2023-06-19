@@ -3,7 +3,7 @@ package com.superawesome.composeexample
 import android.app.Application
 import tv.superawesome.sdk.publisher.common.models.Configuration
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAdsSdk
+import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
 import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
 
 class ComposeApp : Application() {
@@ -11,7 +11,7 @@ class ComposeApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        AwesomeAdsSdk.init(
+        AwesomeAds.init(
             applicationContext = this,
             configuration = Configuration(environment = Environment.Production, logging = true),
         )

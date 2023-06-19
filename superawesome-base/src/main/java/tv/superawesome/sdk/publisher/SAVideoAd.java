@@ -6,7 +6,9 @@ import static tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod.WITH_SOU
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import java.io.File;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.sametrics.SAPerformanceMetrics;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
@@ -33,6 +36,7 @@ public class SAVideoAd {
 
     // private vars w/ a public interface
     private static final SAEvents events = new SAEvents();
+    private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
     public static final HashMap<Integer, Object> ads = new HashMap<>();
     private static SAInterface listener = (placementId, event) -> {};
 
@@ -95,6 +99,9 @@ public class SAVideoAd {
 
             session.prepareSession(() -> {
 
+                performanceMetrics.setSession(session);
+                performanceMetrics.startTimingForLoadTime();
+
                 // after session is OK - start loading
                 loader.loadAd(placementId, session, options, response -> {
 
@@ -119,6 +126,10 @@ public class SAVideoAd {
 
                         // put the correct value
                         if (isValid) {
+                            // Can be removed when we want to track this for all video ad types
+                            if (first.isVpaid) {
+                                performanceMetrics.trackLoadTime();
+                            }
                             ads.put(placementId, first);
                         }
                         // remove existing
@@ -205,6 +216,9 @@ public class SAVideoAd {
 
             session.prepareSession(() -> {
 
+                performanceMetrics.setSession(session);
+                performanceMetrics.startTimingForLoadTime();
+
                 // after session is OK - start loading
                 loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
 
@@ -228,6 +242,10 @@ public class SAVideoAd {
 
                         // put the correct value
                         if (isValid) {
+                            // Can be removed when we want to track this for all video ad types
+                            if (first.isVpaid) {
+                                performanceMetrics.trackLoadTime();
+                            }
                             ads.put(placementId, first);
                         }
                         // remove existing
@@ -329,6 +347,19 @@ public class SAVideoAd {
 
                     context.startActivity(intent);
                 } else {
+                    if (adL.creative.details.media.path == null || !adL.creative.details.media.isDownloaded) {
+                        sendAdFailedToShow(placementId);
+                        ads.remove(placementId);
+                        return;
+                    }
+
+                    try {
+                        Uri.fromFile(new File(adL.creative.details.media.path));
+                    } catch (Throwable error) {
+                        sendAdFailedToShow(placementId);
+                        return;
+                    }
+
                     // create intent
                     Intent intent = new Intent(context, SAVideoActivity.class);
 
@@ -354,18 +385,18 @@ public class SAVideoAd {
                     context.startActivity(intent);
                 }
             } else {
-                if (listener != null) {
-                    listener.onEvent(placementId, SAEvent.adFailedToShow);
-                } else {
-                    Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToShow");
-                }
+                sendAdFailedToShow(placementId);
             }
         } else {
-            if (listener != null) {
-                listener.onEvent(placementId, SAEvent.adFailedToShow);
-            } else {
-                Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToShow");
-            }
+            sendAdFailedToShow(placementId);
+        }
+    }
+
+    private static void sendAdFailedToShow(int placementId) {
+        if (listener != null) {
+            listener.onEvent(placementId, SAEvent.adFailedToShow);
+        } else {
+            Log.w("AwesomeAds", "Video Ad listener not implemented. Event would have been adFailedToShow");
         }
     }
 
@@ -571,6 +602,10 @@ public class SAVideoAd {
 
     public static SAEvents getEvents() {
         return events;
+    }
+
+    public static SAPerformanceMetrics getPerformanceMetrics() {
+        return performanceMetrics;
     }
 
     public static void setMuteOnStart(boolean mute) {

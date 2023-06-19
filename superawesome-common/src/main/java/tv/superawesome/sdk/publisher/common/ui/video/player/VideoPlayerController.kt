@@ -2,20 +2,26 @@ package tv.superawesome.sdk.publisher.common.ui.video.player
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.media.MediaPlayer.*
+import android.media.MediaPlayer.OnCompletionListener
+import android.media.MediaPlayer.OnErrorListener
+import android.media.MediaPlayer.OnPreparedListener
+import android.media.MediaPlayer.OnSeekCompleteListener
 import android.net.Uri
 import android.os.CountDownTimer
 
-class VideoPlayerController :
+internal class VideoPlayerController :
     MediaPlayer(),
     IVideoPlayerController,
     OnPreparedListener,
     OnErrorListener,
     OnCompletionListener,
     OnSeekCompleteListener {
+
     private var listener: IVideoPlayerController.Listener? = null
     private var countDownTimer: CountDownTimer? = null
     private var completed: Boolean = false
+    private var prepared: Boolean = false
+
     override val isIVideoPlaying: Boolean = false
     override val iVideoDuration: Int = 10
     override val currentIVideoPosition: Int = 0
@@ -49,6 +55,10 @@ class VideoPlayerController :
     }
 
     override fun start() {
+        if (!prepared) {
+            // If the video is not ready, skip the "start" function call.
+            return
+        }
         if (completed) {
             // if the video is completed then show the last frame only
             seekTo(currentPosition)
@@ -59,7 +69,9 @@ class VideoPlayerController :
     }
 
     override fun pause() {
-        super.pause()
+        if (prepared) {
+            super.pause()
+        }
         removeTimer()
     }
 
@@ -81,9 +93,12 @@ class VideoPlayerController :
 
         try {
             removeTimer()
-            super.reset()
+            if (prepared) {
+                super.reset()
+            }
         } catch (ignored: Exception) {
         }
+        prepared = false
     }
 
     override fun seekTo(position: Int) {
@@ -111,6 +126,7 @@ class VideoPlayerController :
     // Media Player listeners
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun onPrepared(mediaPlayer: MediaPlayer) {
+        prepared = true
         createTimer()
         listener?.onPrepared(this)
     }
@@ -130,7 +146,7 @@ class VideoPlayerController :
     override fun onError(mediaPlayer: MediaPlayer, error: Int, payload: Int): Boolean {
         removeTimer()
         reset()
-        listener?.onError(this, Throwable(), 0, 0)
+        listener?.onError(this, Throwable("Error: $error payload: $payload"), 0, 0)
         return false
     }
 

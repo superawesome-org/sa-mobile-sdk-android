@@ -104,6 +104,8 @@ public class SABannerAd extends FrameLayout {
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr, SAClock clock) {
         super(context, attrs, defStyleAttr);
 
+        setContentDescription("Ad content");
+
         // create the loader
         session = new SASession(context);
         loader = new SALoader(context);
@@ -414,7 +416,6 @@ public class SABannerAd extends FrameLayout {
                     case Web_Click: {
 
                         if (destination != null) {
-
                             Runnable runner = () -> click(destination);
                             runner.run();
                             // showParentalGateIfNeededWithCompletion(context, runner);
@@ -467,7 +468,6 @@ public class SABannerAd extends FrameLayout {
     }
 
     private void handleUrl(String destination) {
-
         // if someone's closed this thing
         if (ad == null || ad.creative == null) {
             return;
@@ -499,8 +499,7 @@ public class SABannerAd extends FrameLayout {
         if (ad != null &&
                 ad.creative != null &&
                 ad.creative.format != SACreativeFormat.rich &&
-                session != null &&
-                !destination.contains(session.getBaseUrl())) {
+                session != null) {
             events.triggerClickEvent();
         }
 

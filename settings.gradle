@@ -1,6 +1,8 @@
 include ':app'
 include ':saunity'
+include ':saunity-common'
 include ':saadmob'
+include ':saadmob-common'
 include ':superawesome'
 include ':superawesome-base'
 include ':superawesome-common'

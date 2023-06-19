@@ -4,15 +4,19 @@ package tv.superawesome.sdk.publisher.common.ui.video
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Orientation
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.managed.ManagedAdActivity
+import java.io.File
 
 public object SAVideoAd {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
@@ -27,6 +31,8 @@ public object SAVideoAd {
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
+    @JvmStatic
+    @JvmOverloads
     public fun load(placementId: Int, context: Context, options: Map<String, Any>? = null) {
         logger.info("load($placementId)")
         controller.load(placementId, makeAdRequest(context, options))
@@ -43,6 +49,8 @@ public object SAVideoAd {
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
+    @JvmStatic
+    @JvmOverloads
     public fun load(
         placementId: Int,
         lineItemId: Int,
@@ -59,79 +67,121 @@ public object SAVideoAd {
      * @param placementId the Ad placement id to play an ad for
      * @param context the current context (activity or fragment)
      */
+    @JvmStatic
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
         val adResponse = controller.peekAdResponse(placementId)
         val intent = if (adResponse?.ad?.isVpaid == true) {
             ManagedAdActivity.newInstance(
-                context,
-                placementId,
-                controller.config,
-                adResponse.html ?: "",
+                context = context,
+                placementId = placementId,
+                config = controller.config,
+                html = adResponse.html ?: "",
+                baseUrl = adResponse.baseUrl,
             )
         } else {
+
+            if (adResponse?.filePath == null) {
+                getDelegate()?.onEvent(placementId, SAEvent.adFailedToShow)
+                return
+            }
+
+            try {
+                Uri.fromFile(File(adResponse.filePath))
+            } catch (error: Throwable) {
+                getDelegate()?.onEvent(placementId, SAEvent.adFailedToShow)
+                return
+            }
+
             VideoActivity.newInstance(context, placementId, controller.config)
         }
         context.startActivity(intent)
     }
 
+    @JvmStatic
     public fun setListener(value: SAInterface) {
         controller.delegate = value
     }
 
+    @JvmStatic
     public fun setPlaybackMode(mode: AdRequest.StartDelay) {
         controller.config.startDelay = mode
     }
 
+    @JvmStatic
     public fun enableParentalGate() {
         setParentalGate(true)
     }
 
+    @JvmStatic
     public fun disableParentalGate() {
         setParentalGate(false)
     }
 
+    @JvmStatic
     public fun enableBumperPage() {
         setBumperPage(true)
     }
 
+    @JvmStatic
     public fun disableBumperPage() {
         setBumperPage(false)
     }
 
+    @JvmStatic
     public fun enableTestMode() {
         setTestMode(true)
     }
 
+    @JvmStatic
     public fun disableTestMode() {
         setTestMode(false)
     }
 
+    /**
+     * Enables the back button to close the ad.
+     */
+    @JvmStatic
     public fun enableBackButton() {
         setBackButton(true)
     }
 
+    /**
+     * Disables the back button to close the ad.
+     */
+    @JvmStatic
     public fun disableBackButton() {
         setBackButton(false)
     }
 
+    @JvmStatic
     public fun setSmallClick(value: Boolean) {
         controller.config.shouldShowSmallClick = value
     }
 
+    @JvmStatic
     public fun setCloseAtEnd(value: Boolean) {
         controller.config.shouldCloseAtEnd = value
     }
 
+    @JvmStatic
     public fun setCloseButton(value: Boolean) {
         controller.config.closeButtonState =
             if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
     }
 
+    /**
+     * Enables close button to be displayed after a delay.
+     */
+    @JvmStatic
     public fun enableCloseButton() {
         setCloseButton(true)
     }
 
+    /**
+     * Disables the close button and makes it hidden until the ad ends.
+     */
+    @JvmStatic
     public fun disableCloseButton() {
         setCloseButton(false)
     }
@@ -141,6 +191,7 @@ public object SAVideoAd {
      * WARNING: this will allow users to close the ad before the viewable tracking event is fired
      * and should only be used if you explicitly want this behaviour over consistent tracking.
      */
+    @JvmStatic
     public fun enableCloseButtonNoDelay() {
         controller.config.closeButtonState = CloseButtonState.VisibleImmediately
     }
@@ -149,63 +200,68 @@ public object SAVideoAd {
      * Method that shows a warning dialog prior to closing the video via the close button or the
      * the back button.
      */
+    @JvmStatic
     public fun enableCloseButtonWithWarning() {
         setCloseButton(true)
         setCloseButtonWarning(true)
     }
 
+    @JvmStatic
     public fun setCloseButtonWarning(value: Boolean) {
         controller.config.shouldShowCloseWarning = value
     }
 
-    fun setConfigurationProduction() {
-    }
-
-    fun setConfigurationStaging() {
-    }
-
+    @JvmStatic
     public fun setOrientationAny() {
         setOrientation(Orientation.Any)
     }
 
+    @JvmStatic
     public fun setOrientationPortrait() {
         setOrientation(Orientation.Portrait)
     }
 
+    @JvmStatic
     public fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
     }
 
-    public fun getIsBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
-
+    @JvmStatic
     public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
+    @JvmStatic
     public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
+    @JvmStatic
     public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
+    @JvmStatic
     public fun setBackButton(value: Boolean) {
         controller.config.isBackButtonEnabled = value
     }
 
+    @JvmStatic
     public fun setOrientation(value: Orientation) {
         controller.config.orientation = value
     }
 
+    @JvmStatic
     fun setMuteOnStart(mute: Boolean) {
         controller.config.shouldMuteOnStart = mute
     }
 
+    @JvmStatic
     fun enableMuteOnStart() {
         setMuteOnStart(true)
     }
 
+    @JvmStatic
     fun disableMuteOnStart() {
         setMuteOnStart(false)
     }
@@ -216,6 +272,7 @@ public object SAVideoAd {
      * @param placementId the Ad placement id to check for
      * @return true or false
      */
+    @JvmStatic
     public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
 
     private fun makeAdRequest(context: Context, options: Map<String, Any>?): AdRequest {
@@ -250,11 +307,13 @@ public object SAVideoAd {
         )
     }
 
-    internal fun isTestEnabled(): Boolean = controller.config.testEnabled
-
-    internal fun isBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
-
-    internal fun isParentalGateEnabled(): Boolean = controller.config.isParentalGateEnabled
+    private fun isTestEnabled(): Boolean = controller.config.testEnabled
 
     internal fun getDelegate(): SAInterface? = controller.delegate
+
+    @VisibleForTesting
+    @JvmStatic
+    private fun clearCache() {
+        controller.clearCache()
+    }
 }

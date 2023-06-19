@@ -8,28 +8,51 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import org.koin.java.KoinJavaComponent
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.state.CloseButtonState
+import tv.superawesome.sdk.publisher.common.models.CloseButtonState
+import tv.superawesome.sdk.publisher.common.network.Environment
+import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
+import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import java.lang.ref.WeakReference
 
-public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Listener {
+internal class ManagedAdActivity :
+    FullScreenActivity(),
+    AdViewJavaScriptBridge.Listener,
+    AdControllerType.VideoPlayerListener
+{
     private var listener: SAInterface? = null
     private var timeOutRunnable: Runnable? = null
     private var timeOutHandler = Handler(Looper.getMainLooper())
+    private var completed: Boolean = false
+
+    private val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
+    private val environment: Environment by KoinJavaComponent.inject(Environment::class.java)
+
+    private val viewableDetector: ViewableDetectorType by KoinJavaComponent.inject(
+        ViewableDetectorType::class.java
+    )
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
+    }
+
+    private val baseUrl by lazy {
+        intent.getStringExtra(Constants.Keys.baseUrl) ?: environment.baseUrl
     }
 
     private lateinit var adView: ManagedAdView
 
     override fun initChildUI() {
         adView = ManagedAdView(this)
+        adView.controller.videoListener = this
         adView.id = numberGenerator.nextIntForCache()
         adView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -43,7 +66,16 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
 
         parentLayout.addView(adView)
 
-        setUpCloseButtonTimeoutRunnable()
+        when (config.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> showCloseButton()
+            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            CloseButtonState.Hidden -> Unit // Hidden by default
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        adView.playVideo()
     }
 
     override fun onStop() {
@@ -56,7 +88,7 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
         val weak = WeakReference(this)
         timeOutRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTimeoutTime()
+            weakThis.showCloseButton()
         }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
@@ -68,78 +100,137 @@ public class ManagedAdActivity : FullScreenActivity(), AdViewJavaScriptBridge.Li
 
     public override fun playContent() {
         listener = SAVideoAd.getDelegate()
-        val weak = WeakReference(this)
-        adView.configure(placementId, listener) {
-            val weakThis = weak.get() ?: return@configure
-            weakThis.cancelCloseButtonTimeoutRunnable()
-            weakThis.closeButton.visibility =
-                if (weakThis.config.closeButtonState == CloseButtonState.VisibleWithDelay)
-                    View.VISIBLE else weakThis.closeButton.visibility
-        }
-        adView.load(placementId, html, this)
+        adView.configure(placementId, listener)
+        adView.load(placementId, html, baseUrl, this)
     }
 
+    public override fun onCloseButtonPressed() = controller.trackCloseButtonPressed()
+
     public override fun close() {
+        if (config.shouldShowCloseWarning && !completed) {
+            adView.pauseVideo()
+            CloseWarning.setListener(object : CloseWarning.Interface {
+                override fun onResumeSelected() {
+                    adView.playVideo()
+                }
+
+                override fun onCloseSelected() {
+                    closeActivity()
+                }
+            })
+            CloseWarning.show(this)
+        } else {
+            closeActivity()
+        }
+    }
+
+    private fun closeActivity() {
+        controller.trackDwellTime()
         if (!isFinishing) {
-            listener?.onEvent(this.placementId, SAEvent.AdClosed)
+            listener?.onEvent(this.placementId, SAEvent.adClosed)
         }
         super.close()
+        viewableDetector.cancel()
         adView.close()
     }
 
-    override fun adLoaded() {
-        listener?.onEvent(this.placementId, SAEvent.AdLoaded)
-    }
-
-    override fun adEmpty() {
-        listener?.onEvent(this.placementId, SAEvent.AdEmpty)
-        close()
-    }
-
-    override fun adFailedToLoad() {
-        listener?.onEvent(this.placementId, SAEvent.AdFailedToLoad)
-        close()
-    }
-
-    override fun adAlreadyLoaded() {
-        listener?.onEvent(this.placementId, SAEvent.AdAlreadyLoaded)
-    }
-
-    override fun adShown() {
-        listener?.onEvent(this.placementId, SAEvent.AdShown)
-    }
-
-    override fun adFailedToShow() {
-        listener?.onEvent(this.placementId, SAEvent.AdFailedToShow)
-        close()
-    }
-
-    override fun adClicked() {
-        listener?.onEvent(this.placementId, SAEvent.AdClicked)
-    }
-
-    override fun adEnded() {
-        listener?.onEvent(this.placementId, SAEvent.AdEnded)
-        close()
-    }
-
-    override fun adClosed() {
-        close()
-    }
-
-    private fun hasBeenVisibleForRequiredTimeoutTime() {
+    private fun showCloseButton() {
         closeButton.visibility = View.VISIBLE
+        controller.startTimingForCloseButtonPressed()
+    }
+
+    override fun adLoaded() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adLoaded)
+    }
+
+    override fun adEmpty() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adEmpty)
+        close()
+    }
+
+    override fun adFailedToLoad() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adFailedToLoad)
+        close()
+    }
+
+    override fun adAlreadyLoaded() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adAlreadyLoaded)
+    }
+
+    override fun adShown() = runOnUiThread {
+        controller.startTimingForDwellTime()
+        val weak = WeakReference(this)
+        viewableDetector.cancel()
+        viewableDetector.start(adView, videoMaxTickCount) {
+            val weakThis = weak.get()
+            weakThis?.cancelCloseButtonTimeoutRunnable()
+            weakThis?.controller?.triggerViewableImpression(placementId)
+            if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
+                weakThis.showCloseButton()
+        }
+        listener?.onEvent(this.placementId, SAEvent.adShown)
+    }
+
+    override fun adFailedToShow() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adFailedToShow)
+        close()
+    }
+
+    override fun adClicked() = runOnUiThread {
+        adView.pauseVideo()
+        listener?.onEvent(this.placementId, SAEvent.adClicked)
+        adPaused()
+    }
+
+    override fun adEnded() = runOnUiThread {
+        completed = true
+        listener?.onEvent(this.placementId, SAEvent.adEnded)
+        if (config.shouldCloseAtEnd) {
+            close()
+        } else if(config.closeButtonState == CloseButtonState.Hidden) {
+            showCloseButton()
+        }
+    }
+
+    override fun adClosed() = runOnUiThread {
+        close()
+    }
+
+    override fun adPlaying() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adPlaying)
+    }
+
+    override fun adPaused() = runOnUiThread {
+        listener?.onEvent(this.placementId, SAEvent.adPaused)
+    }
+
+    // AdControllerType.VideoPlayerListener
+
+    override fun didRequestVideoPause() {
+        adView.pauseVideo()
+    }
+
+    override fun didRequestVideoPlay() {
+        adView.playVideo()
     }
 
     companion object {
         private const val CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL = 12000L
 
         @JvmStatic
-        fun newInstance(context: Context, placementId: Int, config: Config, html: String): Intent =
+        fun newInstance(
+            context: Context,
+            placementId: Int,
+            config: Config,
+            html: String,
+            baseUrl: String?): Intent =
             Intent(context, ManagedAdActivity::class.java).apply {
                 putExtra(Constants.Keys.placementId, placementId)
                 putExtra(Constants.Keys.config, config)
                 putExtra(Constants.Keys.html, html)
+                baseUrl?.let {
+                    putExtra(Constants.Keys.baseUrl, it)
+                }
             }
     }
 }

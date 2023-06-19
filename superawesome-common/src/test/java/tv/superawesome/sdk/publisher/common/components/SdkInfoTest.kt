@@ -12,7 +12,7 @@ import java.util.*
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
-class SdkInfoTest : BaseTest() {
+internal class SdkInfoTest : BaseTest() {
 
     @BeforeTest
     fun prepare() {

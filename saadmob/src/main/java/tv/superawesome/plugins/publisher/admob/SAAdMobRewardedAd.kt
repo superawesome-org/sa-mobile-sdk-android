@@ -77,6 +77,7 @@ class SAAdMobRewardedAd(
             SAEvent.adClicked -> adCallback?.reportAdClicked()
             SAEvent.adEnded -> adCallback?.onUserEarnedReward(RewardItem.DEFAULT_REWARD)
             SAEvent.adClosed -> adClosed()
+            else -> Unit // Unused
         }
     }
 

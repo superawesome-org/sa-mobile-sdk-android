@@ -18,6 +18,13 @@ class SAVideoClick internal constructor(
     private val isBumperPageEnabled: Boolean,
     private val events: SAEvents,
 ) {
+    interface Listener {
+        fun didRequestPlaybackPause()
+        fun didRequestPlaybackResume()
+    }
+
+    var listener: Listener? = null
+
     private var currentClickThreshold = 0L
     private var bumperPage: SABumperPage? = null
 
@@ -42,6 +49,7 @@ class SAVideoClick internal constructor(
     }
 
     private fun playBumperPage(context: Context, onFinish: (() -> Unit)) {
+        listener?.didRequestPlaybackPause()
         bumperPage?.stop()
         bumperPage = SABumperPage()
         bumperPage?.onFinish = onFinish
@@ -85,6 +93,7 @@ class SAVideoClick internal constructor(
         if (isParentalGateEnabled) {
             SAParentalGate.setListener(object : SAParentalGate.Interface {
                 override fun parentalGateOpen() {
+                    listener?.didRequestPlaybackPause()
                     events.triggerPgOpenEvent()
                 }
 
@@ -94,10 +103,12 @@ class SAVideoClick internal constructor(
                 }
 
                 override fun parentalGateFailure() {
+                    listener?.didRequestPlaybackResume()
                     events.triggerPgFailEvent()
                 }
 
                 override fun parentalGateCancel() {
+                    listener?.didRequestPlaybackResume()
                     events.triggerPgCloseEvent()
                 }
             })
@@ -152,4 +163,3 @@ class SAVideoClick internal constructor(
 }
 
 const val PADLOCK_URL = "https://ads.superawesome.tv/v2/safead"
-

@@ -1,10 +1,18 @@
 package tv.superawesome.sdk.publisher.common.components
 
 import kotlinx.serialization.json.Json
-import tv.superawesome.sdk.publisher.common.models.*
-import java.util.*
+import tv.superawesome.sdk.publisher.common.models.AdQuery
+import tv.superawesome.sdk.publisher.common.models.AdQueryBundle
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.EventData
+import tv.superawesome.sdk.publisher.common.models.EventQuery
+import tv.superawesome.sdk.publisher.common.models.EventQueryBundle
+import tv.superawesome.sdk.publisher.common.models.EventType
+import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
+import java.util.Locale
 
-interface AdQueryMakerType {
+internal interface AdQueryMakerType {
     suspend fun makeAdQuery(request: AdRequest): AdQueryBundle
     fun makeImpressionQuery(adResponse: AdResponse): EventQueryBundle
     fun makeClickQuery(adResponse: AdResponse): EventQueryBundle
@@ -12,7 +20,7 @@ interface AdQueryMakerType {
     fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle
 }
 
-class AdQueryMaker(
+internal class AdQueryMaker(
     private val device: DeviceType,
     private val sdkInfoType: SdkInfoType,
     private val connectionProvider: ConnectionProviderType,
@@ -42,53 +50,12 @@ class AdQueryMaker(
             install = request.install,
             w = request.w,
             h = request.h,
-            timestamp = timeProvider.millis()),
+            timestamp = timeProvider.millis()
+        ),
         options = buildOptions(requestOptions = request.options)
     )
 
     override fun makeImpressionQuery(adResponse: AdResponse): EventQueryBundle = EventQueryBundle(
-        EventQuery(placement = adResponse.placementId,
-            bundle = sdkInfoType.bundle,
-            creative = adResponse.ad.creative.id,
-            lineItem = adResponse.ad.lineItemId,
-            ct = connectionProvider.findConnectionType(),
-            sdkVersion = sdkInfoType.version,
-            rnd = numberGenerator.nextIntForCache(),
-            type = null,
-            noImage = null,
-            data = null),
-        options = buildOptions(requestOptions = adResponse.requestOptions)
-    )
-
-    override fun makeClickQuery(adResponse: AdResponse): EventQueryBundle = EventQueryBundle(
-        EventQuery(placement = adResponse.placementId,
-            bundle = sdkInfoType.bundle,
-            creative = adResponse.ad.creative.id,
-            lineItem = adResponse.ad.lineItemId,
-            ct = connectionProvider.findConnectionType(),
-            sdkVersion = sdkInfoType.version,
-            rnd = numberGenerator.nextIntForCache(),
-            type = EventType.ImpressionDownloaded,
-            noImage = true,
-            data = null),
-        options = buildOptions(requestOptions = adResponse.requestOptions)
-    )
-
-    override fun makeVideoClickQuery(adResponse: AdResponse): EventQueryBundle = EventQueryBundle(
-        EventQuery(placement = adResponse.placementId,
-            bundle = sdkInfoType.bundle,
-            creative = adResponse.ad.creative.id,
-            lineItem = adResponse.ad.lineItemId,
-            ct = connectionProvider.findConnectionType(),
-            sdkVersion = sdkInfoType.version,
-            rnd = numberGenerator.nextIntForCache(),
-            type = null,
-            noImage = null,
-            data = null),
-        options = buildOptions(requestOptions = adResponse.requestOptions)
-    )
-
-    override fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle = EventQueryBundle(
         EventQuery(
             placement = adResponse.placementId,
             bundle = sdkInfoType.bundle,
@@ -96,12 +63,62 @@ class AdQueryMaker(
             lineItem = adResponse.ad.lineItemId,
             ct = connectionProvider.findConnectionType(),
             sdkVersion = sdkInfoType.version,
-            rnd = numberGenerator.nextIntForCache(),
-            type = eventData.type,
+            rnd = adResponse.ad.random ?: "",
+            type = null,
             noImage = null,
-            data = encodeData(eventData)),
+            data = null
+        ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
+
+    override fun makeClickQuery(adResponse: AdResponse): EventQueryBundle = EventQueryBundle(
+        EventQuery(
+            placement = adResponse.placementId,
+            bundle = sdkInfoType.bundle,
+            creative = adResponse.ad.creative.id,
+            lineItem = adResponse.ad.lineItemId,
+            ct = connectionProvider.findConnectionType(),
+            sdkVersion = sdkInfoType.version,
+            rnd = adResponse.ad.random ?: "",
+            type = EventType.ImpressionDownloaded,
+            noImage = true,
+            data = null
+        ),
+        options = buildOptions(requestOptions = adResponse.requestOptions)
+    )
+
+    override fun makeVideoClickQuery(adResponse: AdResponse): EventQueryBundle = EventQueryBundle(
+        EventQuery(
+            placement = adResponse.placementId,
+            bundle = sdkInfoType.bundle,
+            creative = adResponse.ad.creative.id,
+            lineItem = adResponse.ad.lineItemId,
+            ct = connectionProvider.findConnectionType(),
+            sdkVersion = sdkInfoType.version,
+            rnd = adResponse.ad.random ?: "",
+            type = null,
+            noImage = null,
+            data = null
+        ),
+        options = buildOptions(requestOptions = adResponse.requestOptions)
+    )
+
+    override fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle =
+        EventQueryBundle(
+            EventQuery(
+                placement = adResponse.placementId,
+                bundle = sdkInfoType.bundle,
+                creative = adResponse.ad.creative.id,
+                lineItem = adResponse.ad.lineItemId,
+                ct = connectionProvider.findConnectionType(),
+                sdkVersion = sdkInfoType.version,
+                rnd = adResponse.ad.random ?: "",
+                type = eventData.type,
+                noImage = null,
+                data = encodeData(eventData)
+            ),
+            options = buildOptions(requestOptions = adResponse.requestOptions)
+        )
 
     private fun encodeData(eventData: EventData): String {
         val dataAsJson = json.encodeToString(EventData.serializer(), eventData)
@@ -109,8 +126,7 @@ class AdQueryMaker(
     }
 
     private fun buildOptions(requestOptions: Map<String, Any>?): Map<String, Any> {
-
-        var optionsDict = mutableMapOf<String, Any>()
+        val optionsDict = mutableMapOf<String, Any>()
 
         QueryAdditionalOptions.instance?.options?.let {
             merge(new = it, original = optionsDict)
@@ -125,7 +141,7 @@ class AdQueryMaker(
 
     private fun merge(new: Map<String, Any>, original: MutableMap<String, Any>) {
         new.forEach { (key, value) ->
-            when (value){
+            when (value) {
                 is String -> original[key] = value
                 is Int -> original[key] = value
             }
