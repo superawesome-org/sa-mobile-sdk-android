@@ -84,7 +84,7 @@ jobs:
   test_superawesome_base_ui_tests:
     executor:
       name: android/android-machine
-      tag: 2022.12.1
+      tag: 2023.04.1
       resource-class: large
     steps:
       - checkout
@@ -94,8 +94,7 @@ jobs:
       - *bootstrap_android
       - android/accept-licenses
       - android/start-emulator-and-run-tests:
-          system-image: system-images;android-31;default;x86_64
-          memory: 4096
+          system-image: system-images;android-32;google_apis;x86_64
           post-emulator-launch-assemble-command: ./gradlew app:assembleDebugAndroidTest
           pre-run-tests-steps:
             - run:
