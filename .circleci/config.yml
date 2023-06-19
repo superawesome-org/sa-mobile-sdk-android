@@ -104,6 +104,7 @@ jobs:
                   adb shell screenrecord --time-limit=180 /sdcard/video.mp4 &
           test-command: ./gradlew app:connectedDebugAndroidTest
           run-logcat: true
+          no_output_timeout: 20m
       - run:
           name: Download video
           when: always
