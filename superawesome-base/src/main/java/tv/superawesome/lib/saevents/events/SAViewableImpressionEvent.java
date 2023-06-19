@@ -31,7 +31,7 @@ public class SAViewableImpressionEvent extends SAServerEvent {
                     "sdkVersion", session.getVersion(),
                     "ct", session.getConnectionType().ordinal(),
                     "bundle", session.getPackageName(),
-                    "rnd", session.getCachebuster(),
+                    "rnd", ad.rnd,
                     "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
                             "placement", ad.placementId,
                             "line_item", ad.lineItemId,
