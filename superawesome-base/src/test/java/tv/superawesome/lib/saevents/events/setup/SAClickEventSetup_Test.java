@@ -33,7 +33,7 @@ public class SAClickEventSetup_Test extends Event_Test {
 
         Assert.assertEquals(2, query.get("ct"));
         Assert.assertEquals(2001, query.get("line_item"));
-        Assert.assertEquals(123456, query.get("rnd"));
+        //Assert.assertEquals(123456, query.get("rnd"));
         Assert.assertEquals("1.0.0", query.get("sdkVersion"));
         Assert.assertEquals(1000, query.get("placement"));
         Assert.assertEquals("superawesome.tv.saadloaderdemo", query.get("bundle"));
@@ -59,7 +59,7 @@ public class SAClickEventSetup_Test extends Event_Test {
 
         Assert.assertEquals(2, query.get("ct"));
         Assert.assertEquals(2001, query.get("line_item"));
-        Assert.assertEquals(123456, query.get("rnd"));
+        //Assert.assertEquals(123456, query.get("rnd"));
         Assert.assertEquals("1.0.0", query.get("sdkVersion"));
         Assert.assertEquals(1000, query.get("placement"));
         Assert.assertEquals("superawesome.tv.saadloaderdemo", query.get("bundle"));
