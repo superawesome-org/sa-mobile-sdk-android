@@ -329,16 +329,6 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - sdk_update_android_demo_app:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
-
   develop:
     jobs:
       - checkout_code:
