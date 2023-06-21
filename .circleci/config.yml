@@ -278,41 +278,27 @@ jobs:
           name: Push Superawesome-Unity to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
 
-  publish_docs:
-    docker:
-      - image: circleci/ruby:2.4.1
-    working_directory: ~/repo
-    environment:
-      - JEKYLL_ENV: production
-      - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
-      - BUNDLE_PATH: ~/repo/docs/vendor/bundle
+  sdk_update_android_demo_app:
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
-      - restore_cache:
-          keys:
-          - rubygems-v1
+      - *generate_github_token
       - run:
-          name: Bundle Install
+          name: Update Demo app gradle File
           command: |
-              cd ~/repo/docs
-              bundle check || bundle install
-      - save_cache:
-          key: rubygems-v1
-          paths:
-            - vendor/bundle
-      - run:
-          name: Publish Superawesome SDK to the website
-          command: |
-            cp ~/repo/docs/.circleci/circle_urls.sh ~/repo/docs/circle_urls.sh
-            cd ~/repo/docs
-            chmod u+x circle_urls.sh
-            bash circle_urls.sh
-            bundle exec jekyll build
-            zip -r _site _site/
-      - store_artifacts:
-          path: ~/repo/docs/_site.zip
-          destination: docsy-jekyll
+            echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
+            source $BASH_ENV
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git
+            cd sa-mobile-sdk-android-demo
+
+            # Replace line 60 of the podfile with the update SuperAwesome SDK version
+            perl -i -pe '$_ = "    implementation \x27tv.superawesome.sdk.publisher:superawesome:$ENV{RELEASE_NUMBER}\x27\n" if $. == 60' app/build.gradle
+            
+            pod install --repo-update
+            git add app/build.gradle
+            git commit -m 'fix(SDK): Updated SDK to ${RELEASE_NUMBER}'
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git develop
 
 workflows:
   version: 2.1
@@ -345,6 +331,17 @@ workflows:
               ignore: develop
             tags:
               ignore: /^v.*/
+
+      - sdk_update_android_demo_app:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - sdk_push_superawesome
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
 
   develop:
     jobs:
@@ -476,7 +473,7 @@ workflows:
             tags:
               only: /^v.*/
 
-      - publish_docs:
+      - sdk_update_android_demo_app:
           context: MOBILE_ANDROID_SDKS
           requires:
             - sdk_push_superawesome
