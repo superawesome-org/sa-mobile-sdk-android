@@ -1,6 +1,7 @@
 package tv.superawesome.lib.saadloader.postprocessor;
 
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
@@ -41,7 +42,6 @@ public class SAProcessHTML_Test {
         assertFalse(ad.creative.details.media.html.contains("<a href='http://hotnews.ro' target='_blank'>"));
         assertFalse(ad.creative.details.media.html.contains("</a>"));
         assertTrue(ad.creative.details.media.html.equals("<img src='https://ads.superawesome.tv/v2/demo_images/320x50.jpg' width='100%' height='100%' style='object-fit: contain;'/>"));
-
     }
 
     @Test
@@ -49,14 +49,16 @@ public class SAProcessHTML_Test {
 
         SAAd ad = new SAAd();
         ad.placementId = 4091;
+        ad.campaignId = 2051;
         ad.lineItemId = 2001;
         ad.creative.id = 2081;
+        ad.openRTBPartnerId = 10101;
         ad.creative.format = SACreativeFormat.rich;
         ad.creative.details.url = "https://s3-eu-west-1.amazonaws.com/sb-ads-uploads/rich-media/tNmFLJ7kGQWBbyORkIqTJ4oqykaGPU9w/rich-media/index.html";
         ad.creative.details.media.html = SAProcessHTML.formatCreativeIntoRichMediaHTML(ad, 123456);
 
         assertNotNull(ad.creative.details.media.html);
-        assertTrue(ad.creative.details.media.html.contains("<iframe style='padding:0;border:0;' width='100%' height='100%' src='https://s3-eu-west-1.amazonaws.com/sb-ads-uploads/rich-media/tNmFLJ7kGQWBbyORkIqTJ4oqykaGPU9w/rich-media/index.html?placement=4091&line_item=2001&creative=2081&rnd=123456'></iframe>"));
+        assertEquals("<iframe style='padding:0; border:0;' width='100%' height='100%' src='https://s3-eu-west-1.amazonaws.com/sb-ads-uploads/rich-media/tNmFLJ7kGQWBbyORkIqTJ4oqykaGPU9w/rich-media/index.html?placement=4091&line_item=2001&creative=2081&rnd=123456' srcdoc='<script>window.AAGlobalData = {placement: 4091, campaign: 2051, line_item: 2001, creative: 2081, openRtbPartnerId: 10101};</script>'></iframe>", ad.creative.details.media.html);
     }
 
     @Test

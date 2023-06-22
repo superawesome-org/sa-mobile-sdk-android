@@ -19,7 +19,7 @@ import tv.superawesome.lib.samodelspace.referral.SAReferral;
  * Main class that contains all the information needed to play an ad and send all relevant
  * events back to our ad server.
  * - error (not really used)
- * - advertiser, publisher, app, line item, campaign, placement IDs
+ * - advertiser, publisher, app, line item, campaign, placement openRTBPartner IDs,
  * - campaign type (CPM or CPI)
  * - test, is fallback, is fill, is house, safe ad approved, show padlock - flags that determine
  * whether the SDK should show the "Safe Ad Padlock" over an ad or not
@@ -36,6 +36,7 @@ public class SAAd extends SABaseObject implements Parcelable {
     public int lineItemId = 0;
     public int campaignId = 0;
     public int placementId = 0;
+    public int openRTBPartnerId = 0;
     public int configuration = 0;
 
     public SACampaignType campaignType = SACampaignType.CPM;
@@ -142,6 +143,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         lineItemId = in.readInt();
         campaignId = in.readInt();
         placementId = in.readInt();
+        openRTBPartnerId = in.readInt();
         configuration = in.readInt();
         campaignType = in.readParcelable(SACampaignType.class.getClassLoader());
         isTest = in.readByte() != 0;
@@ -211,6 +213,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         lineItemId = SAJsonParser.getInt(jsonObject, "line_item_id", lineItemId);
         campaignId = SAJsonParser.getInt(jsonObject, "campaign_id", campaignId);
         placementId = SAJsonParser.getInt(jsonObject, "placementId", placementId);
+        openRTBPartnerId = SAJsonParser.getInt(jsonObject, "open_rtb_partner_id", openRTBPartnerId);
 
         configuration = SAJsonParser.getInt(jsonObject, "configuration", configuration);
 
@@ -254,6 +257,7 @@ public class SAAd extends SABaseObject implements Parcelable {
                 "line_item_id", lineItemId,
                 "campaign_id", campaignId,
                 "placementId", placementId,
+                "open_rtb_partner_id", openRTBPartnerId,
                 "configuration", configuration,
                 "campaign_type", campaignType.ordinal(),
                 "test", isTest,
@@ -307,6 +311,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         dest.writeInt(lineItemId);
         dest.writeInt(campaignId);
         dest.writeInt(placementId);
+        dest.writeInt(openRTBPartnerId);
         dest.writeInt(configuration);
         dest.writeParcelable(campaignType, flags);
         dest.writeByte((byte) (isTest ? 1 : 0));

@@ -31,12 +31,12 @@ public class SAProcessHTML {
 
         if (ad.creative.clickUrl != null) {
             return htmlString
-                    .replace("_HREF_URL_", ad.creative.clickUrl);
+                .replace("_HREF_URL_", ad.creative.clickUrl);
         }
         else {
             return htmlString
-                    .replace("<a href='_HREF_URL_' target='_blank'>", "")
-                    .replace("</a>", "");
+                .replace("<a href='_HREF_URL_' target='_blank'>", "")
+                .replace("</a>", "");
         }
     }
 
@@ -48,12 +48,20 @@ public class SAProcessHTML {
      * @return      the formatted HTML string to be used by a WebView
      */
     public static String formatCreativeIntoRichMediaHTML(SAAd ad, int random) {
-        String htmlString = "<iframe style='padding:0;border:0;' width='100%' height='100%' src='_RICH_MEDIA_URL_'></iframe>";
+        String jscode = "window.AAGlobalData = " +
+            "{placement: " + ad.placementId +
+            ", campaign: " + ad.campaignId +
+            ", line_item: " + ad.lineItemId +
+            ", creative: " + ad.creative.id +
+            ", openRtbPartnerId: " + ad.openRTBPartnerId + "};";
+        String htmlString = "<iframe style='padding:0; border:0;' width='100%' height='100%' src='_RICH_MEDIA_URL_' srcdoc='<script>" +
+            jscode +
+            "</script>'></iframe>";
         String richMediaURL = ad.creative.details.url +
-                "?placement=" + ad.placementId +
-                "&line_item=" + ad.lineItemId +
-                "&creative=" + ad.creative.id +
-                "&rnd=" + random;
+            "?placement=" + ad.placementId +
+            "&line_item=" + ad.lineItemId +
+            "&creative=" + ad.creative.id +
+            "&rnd=" + random;
 
         return htmlString.replace("_RICH_MEDIA_URL_", richMediaURL);
     }
@@ -70,12 +78,12 @@ public class SAProcessHTML {
         String tagString = ad.creative.details.tag;
         if (ad.creative.clickUrl != null) {
             tagString = tagString
-                    .replace("[click]", ad.creative.clickUrl + "&redir=")
-                    .replace("[click_enc]", SAUtils.encodeURL(ad.creative.clickUrl));
+                .replace("[click]", ad.creative.clickUrl + "&redir=")
+                .replace("[click_enc]", SAUtils.encodeURL(ad.creative.clickUrl));
         } else {
             tagString = tagString
-                    .replace("[click]", "")
-                    .replace("[click_enc]", "");
+                .replace("[click]", "")
+                .replace("[click_enc]", "");
         }
         tagString = tagString.replace("[keywords]", "");
         tagString = tagString.replace("[timestamp]", "");
