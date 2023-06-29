@@ -5,14 +5,8 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
-import kotlinx.android.synthetic.main.activity_main.bannerView
-import kotlinx.android.synthetic.main.activity_main.bannerView2
-import kotlinx.android.synthetic.main.activity_main.listView
-import kotlinx.android.synthetic.main.activity_main.settingsButton
-import kotlinx.android.synthetic.main.activity_main.subtitleTextView
-import kotlinx.android.synthetic.main.activity_main.titleTextView
 import tv.superawesome.demoapp.MyApplication
-import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.databinding.ActivityMainBinding
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.settings.DataStore
@@ -29,9 +23,12 @@ class MainActivity : FragmentActivity() {
     private lateinit var adapter: CustomListAdapter
     private val viewModel: MainViewModel by viewModels()
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initUI()
 
@@ -43,19 +40,19 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initButtons() {
-        settingsButton.setOnClickListener {
+        binding.settingsButton.setOnClickListener {
             val dialog = SettingsDialogFragment()
             dialog.show(supportFragmentManager, "settings")
             dialog.onDismissListener = {
                 updateSettings()
             }
         }
-        settingsButton.contentDescription = "AdList.Buttons.Settings"
+        binding.settingsButton.contentDescription = "AdList.Buttons.Settings"
     }
 
     private fun initUI() {
         val title = "AwesomeAds: v${AwesomeAds.info()?.versionNumber}"
-        titleTextView.text = title
+        binding.titleTextView.text = title
         setupListView()
     }
 
@@ -71,11 +68,11 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun setListeners() {
-        bannerView.setListener { placementId, event ->
+        binding.bannerView.setListener { placementId, event ->
             updateMessage(placementId, event)
 
             if (event == SAEvent.adLoaded && isPlayEnabled()) {
-                bannerView.play()
+                binding.bannerView.play()
             }
         }
 
@@ -102,9 +99,9 @@ class MainActivity : FragmentActivity() {
 
     private fun setupListView() {
         adapter = CustomListAdapter(this)
-        listView.adapter = adapter
+        binding.listView.adapter = adapter
 
-        listView.setOnItemClickListener { _, _, position, _ ->
+        binding.listView.setOnItemClickListener { _, _, position, _ ->
             val item = adapter.getItem(position)
             when (item.type) {
                 FeatureType.BANNER -> onBannerClick(item)
@@ -120,13 +117,13 @@ class MainActivity : FragmentActivity() {
             return
         }
         if (item.isFull()) {
-            bannerView.load(
+            binding.bannerView.load(
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0
             )
         } else {
-            bannerView.load(item.placementId)
+            binding.bannerView.load(item.placementId)
         }
     }
 
@@ -166,13 +163,13 @@ class MainActivity : FragmentActivity() {
 
     private fun onBannerClickForBase(item: PlacementItem) {
         if (item.isFull()) {
-            bannerView2.load(
+            binding.bannerView2.load(
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0
             )
         } else {
-            bannerView2.load(item.placementId)
+            binding.bannerView2.load(item.placementId)
         }
     }
 
@@ -205,8 +202,8 @@ class MainActivity : FragmentActivity() {
     private fun updateSettings() {
         val settings = DataStore.data
 
-        bannerView.visibility = View.GONE
-        bannerView2.visibility = View.GONE
+        binding.bannerView.visibility = View.GONE
+        binding.bannerView2.visibility = View.GONE
 
         if (settings.useBaseModule) {
             updateSettingsForBase()
@@ -220,9 +217,9 @@ class MainActivity : FragmentActivity() {
 
         val settings = DataStore.data
 
-        bannerView.visibility = View.VISIBLE
-        bannerView.setBumperPage(settings.bumperEnabled)
-        bannerView.setParentalGate(settings.parentalEnabled)
+        binding.bannerView.visibility = View.VISIBLE
+        binding.bannerView.setBumperPage(settings.bumperEnabled)
+        binding.bannerView.setParentalGate(settings.parentalEnabled)
 
         SAInterstitialAd.setBumperPage(settings.bumperEnabled)
         SAInterstitialAd.setParentalGate(settings.parentalEnabled)
@@ -267,12 +264,12 @@ class MainActivity : FragmentActivity() {
             }
         }
 
-        bannerView2.setListener { placementId, event ->
+        binding.bannerView2.setListener { placementId, event ->
             updateMessage(placementId, event)
             Log.i(TAG, "bannerView2 event ${event.name} thread:${Thread.currentThread()}")
 
             if (event == tv.superawesome.sdk.publisher.SAEvent.adLoaded && isPlayEnabled()) {
-                bannerView2.play(this)
+                binding.bannerView2.play(this)
             }
         }
     }
@@ -284,10 +281,10 @@ class MainActivity : FragmentActivity() {
         val environment = if ((application as MyApplication).environment == Environment.UITesting)
             SAConfiguration.UITESTING else SAConfiguration.PRODUCTION
 
-        bannerView2.visibility = View.VISIBLE
-        bannerView2.setBumperPage(settings.bumperEnabled)
-        bannerView2.setParentalGate(settings.parentalEnabled)
-        bannerView2.setConfiguration(environment)
+        binding.bannerView2.visibility = View.VISIBLE
+        binding.bannerView2.setBumperPage(settings.bumperEnabled)
+        binding.bannerView2.setParentalGate(settings.parentalEnabled)
+        binding.bannerView2.setConfiguration(environment)
 
         tv.superawesome.sdk.publisher.SAInterstitialAd.setBumperPage(settings.bumperEnabled)
         tv.superawesome.sdk.publisher.SAInterstitialAd.setParentalGate(settings.parentalEnabled)
@@ -316,15 +313,15 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val originalMessage = subtitleTextView.text
+        val originalMessage =binding. subtitleTextView.text
         val message = "$originalMessage $placementId $event"
-        subtitleTextView.text = message
+        binding.subtitleTextView.text = message
     }
 
     private fun updateMessage(placementId: Int, event: tv.superawesome.sdk.publisher.SAEvent) {
-        val originalMessage = subtitleTextView.text
+        val originalMessage = binding.subtitleTextView.text
         val message = "$originalMessage $placementId $event"
-        subtitleTextView.text = message
+        binding.subtitleTextView.text = message
     }
 }
 

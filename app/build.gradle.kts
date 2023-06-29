@@ -1,6 +1,5 @@
 plugins {
     id("ads.sdk.android.app")
-    id("kotlin-android-extensions")
     id("kotlinx-serialization")
 }
 
@@ -16,6 +15,8 @@ android {
         packagingOptions {
             resources.excludes.add("META-INF/*")
         }
+
+        buildFeatures.viewBinding = true
     }
 }
 
