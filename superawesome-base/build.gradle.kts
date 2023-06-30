@@ -1,3 +1,5 @@
+import buildlogic.Namespace
+
 plugins {
     id("ads.sdk.android.library")
 }
@@ -11,6 +13,7 @@ extra.apply {
 }
 
 android {
+    namespace = "${Namespace.sdk.publisher}.base"
     resourcePrefix = "superawesome__"
 
     defaultConfig {

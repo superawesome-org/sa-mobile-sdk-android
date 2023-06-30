@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-agp = "7.4.0"
+agp = "8.0.2"
 jsonassert = "1.5.0"
 kotlin = "1.7.0"
 gms = "4.3.15"

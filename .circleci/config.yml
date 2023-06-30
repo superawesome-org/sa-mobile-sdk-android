@@ -2,7 +2,7 @@ version: 2.1
 references:
   android_config: &android_config
     docker:
-      - image: cimg/android:2022.12
+      - image: cimg/android:2023.06
     resource_class: medium
     environment:
       FL_OUTPUT_DIR: output
