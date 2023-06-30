@@ -1,3 +1,5 @@
+import buildlogic.Namespace
+
 plugins {
     id("ads.sdk.android.library")
     id("kotlinx-serialization")
@@ -7,6 +9,8 @@ apply(from = "../publish.gradle")
 apply(from = "../jacoco.gradle")
 
 android {
+    namespace = "${Namespace.sdk.publisher}.common"
+
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

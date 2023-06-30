@@ -1,9 +1,13 @@
+import buildlogic.Namespace
+
 plugins {
     id("ads.sdk.android.app")
     id("kotlinx-serialization")
 }
 
 android {
+    namespace = "${Namespace.base}.demoapp"
+
     defaultConfig {
         applicationId = "tv.superawesome.demoapp"
 

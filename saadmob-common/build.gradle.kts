@@ -1,3 +1,5 @@
+import buildlogic.Namespace
+
 plugins {
     id("ads.sdk.android.library")
 }
@@ -8,6 +10,10 @@ apply(from = "../jacoco.gradle")
 extra.apply {
     set("libraryDescription", "SuperAwesome Mobile SDK for Android with AdMob extension")
     set("libraryName", "SuperAwesome AdMob")
+}
+
+android {
+    namespace = "${Namespace.plugins.publisher}.admob"
 }
 
 dependencies {
