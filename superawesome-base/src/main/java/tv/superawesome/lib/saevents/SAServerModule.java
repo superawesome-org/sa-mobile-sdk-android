@@ -27,20 +27,20 @@ public class SAServerModule {
   private final DwellTimeEvent dwellTimeEvent;
 
   public SAServerModule(SAAd ad, ISASession session) {
-    this(ad, session, Executors.newSingleThreadExecutor(), 15000, false);
+    this(ad, session, Executors.newSingleThreadExecutor(), 15000, 1000L, false);
   }
 
   public SAServerModule(
-      SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
-    clickEvent = new SAClickEvent(ad, session, executor, timeout, isDebug);
-    impressionEvent = new SAImpressionEvent(ad, session, executor, timeout, isDebug);
+      SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
+    clickEvent = new SAClickEvent(ad, session, executor, timeout, retryDelay, isDebug);
+    impressionEvent = new SAImpressionEvent(ad, session, executor, timeout, retryDelay, isDebug);
     viewableImpressionEvent =
-        new SAViewableImpressionEvent(ad, session, executor, timeout, isDebug);
-    sapgOpenEvent = new SAPGOpenEvent(ad, session, executor, timeout, isDebug);
-    sapgCloseEvent = new SAPGCloseEvent(ad, session, executor, timeout, isDebug);
-    sapgFailEvent = new SAPGFailEvent(ad, session, executor, timeout, isDebug);
-    sapgSuccessEvent = new SAPGSuccessEvent(ad, session, executor, timeout, isDebug);
-    dwellTimeEvent = new DwellTimeEvent(ad, session, executor, timeout, isDebug);
+        new SAViewableImpressionEvent(ad, session, executor, timeout, retryDelay, isDebug);
+    sapgOpenEvent = new SAPGOpenEvent(ad, session, executor, timeout, retryDelay, isDebug);
+    sapgCloseEvent = new SAPGCloseEvent(ad, session, executor, timeout, retryDelay, isDebug);
+    sapgFailEvent = new SAPGFailEvent(ad, session, executor, timeout, retryDelay,isDebug);
+    sapgSuccessEvent = new SAPGSuccessEvent(ad, session, executor, timeout, retryDelay, isDebug);
+    dwellTimeEvent = new DwellTimeEvent(ad, session, executor, timeout, retryDelay, isDebug);
   }
 
   public void triggerClickEvent(Listener listener) {

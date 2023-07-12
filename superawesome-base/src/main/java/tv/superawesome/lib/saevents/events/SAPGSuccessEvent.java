@@ -15,8 +15,8 @@ public class SAPGSuccessEvent extends SAServerEvent {
         super(ad, session);
     }
 
-    public SAPGSuccessEvent(SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
-        super(ad, session, executor, timeout, isDebug);
+    public SAPGSuccessEvent(SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
+        super(ad, session, executor, timeout, retryDelay, isDebug);
     }
 
     @Override
