@@ -25,15 +25,15 @@ public class SAServerEvent {
   private final QueryBuilder queryBuilder = new QueryBuilder();
 
   public SAServerEvent(SAAd ad, ISASession session) {
-    this(ad, session, Executors.newSingleThreadExecutor(), 15000, false);
+    this(ad, session, Executors.newSingleThreadExecutor(), 15000, 1000L, false);
   }
 
   public SAServerEvent(
-      SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
+      SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
     this.ad = ad;
     this.session = session;
     this.isDebug = isDebug;
-    this.network = new SANetwork(executor, timeout);
+    this.network = new SANetwork(executor, timeout, retryDelay);
   }
 
   public String getUrl() {

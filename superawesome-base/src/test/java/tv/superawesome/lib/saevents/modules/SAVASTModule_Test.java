@@ -13,11 +13,14 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 
 public class SAVASTModule_Test extends Module_Test {
 
+    final int timeout = 1;
+    final long retryDelay = 0L;
+
     @Test
     public void test_SAVASTModule_Success () {
         // given
         SAAd ad = ModelFactory.createVideoAd(1000);
-        SAVASTModule module = new SAVASTModule(ad, super.executor, 1000, true);
+        SAVASTModule module = new SAVASTModule(ad, super.executor, timeout, retryDelay, true);
 
         // when
         module.triggerVASTImpressionEvent(Assert::assertTrue);
@@ -46,7 +49,7 @@ public class SAVASTModule_Test extends Module_Test {
     public void test_SAVASTModule_Failure () {
         // given
         SAAd ad = ModelFactory.createVideoAd(1001);
-        SAVASTModule module = new SAVASTModule(ad, super.executor, 1000, true);
+        SAVASTModule module = new SAVASTModule(ad, super.executor, timeout, retryDelay, true);
 
         // when
         module.triggerVASTImpressionEvent(Assert::assertFalse);

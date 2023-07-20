@@ -15,8 +15,8 @@ public class SAPGCloseEvent extends SAServerEvent {
         super(ad, session);
     }
 
-    public SAPGCloseEvent(SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
-        super(ad, session, executor, timeout, isDebug);
+    public SAPGCloseEvent(SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
+        super(ad, session, executor, timeout, retryDelay, isDebug);
     }
 
     @Override

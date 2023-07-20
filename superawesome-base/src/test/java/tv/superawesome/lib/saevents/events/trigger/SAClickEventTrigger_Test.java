@@ -18,13 +18,16 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
  */
 
 public class SAClickEventTrigger_Test extends EventTrigger_Test {
+    
+    final int timeout = 10;
+    final long retryDelay = 0L;
 
     @Test
     public void test_SAClickEvent_triggerEvent_WithDisplayAdSuccess () {
 
         // given
         SAAd ad = ModelFactory.createDisplayAd(1000);
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -36,7 +39,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
 
         // given
         SAAd ad = ModelFactory.createDisplayAd(1001);
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -48,7 +51,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
 
         // given
         SAAd ad = ModelFactory.createVideoAd(1000);
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -60,7 +63,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
 
         // given
         SAAd ad = ModelFactory.createVideoAd(1001);
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -74,7 +77,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
         options.put("openRtbPartnerId", "xyz");
 
         SAAd ad = ModelFactory.createVideoAd(1000, options);
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // When
         event.triggerEvent(Assert::assertTrue);
@@ -85,7 +88,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
     public void test_givenNoQueryOptions_thenNotFilled() {
         // Given
         SAAd ad = ModelFactory.createVideoAd(1000);
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // When
         event.triggerEvent(Assert::assertTrue);
