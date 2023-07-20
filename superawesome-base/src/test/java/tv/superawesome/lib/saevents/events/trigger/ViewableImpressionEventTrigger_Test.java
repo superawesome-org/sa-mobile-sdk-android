@@ -13,12 +13,15 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 
 public class ViewableImpressionEventTrigger_Test extends EventTrigger_Test {
 
+    final int timeout = 1;
+    final long retryDelay = 0L;
+
     @Test
     public void test_ViewableImpression_triggerEvent_WithSuccess () {
 
         // given
         SAAd ad = ModelFactory.createDisplayAd(1000);
-        SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1000, true);
+        SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -30,7 +33,7 @@ public class ViewableImpressionEventTrigger_Test extends EventTrigger_Test {
 
         // given
         SAAd ad = ModelFactory.createDisplayAd(1001);
-        SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1000, true);
+        SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then

@@ -13,11 +13,14 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 
 public class SAServerModule_Test extends Module_Test {
 
+    final int timeout = 1;
+    final long retryDelay = 0L;
+    
     @Test
     public void test_SAServerModule_WithDisplayAd_Success () {
         // given
         SAAd ad = ModelFactory.createDisplayAd(1000);
-        SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
+        SAServerModule module = new SAServerModule(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -35,7 +38,7 @@ public class SAServerModule_Test extends Module_Test {
 
         // given
         SAAd ad = ModelFactory.createDisplayAd(1001);
-        SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
+        SAServerModule module = new SAServerModule(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -53,7 +56,7 @@ public class SAServerModule_Test extends Module_Test {
 
         // given
         SAAd ad = ModelFactory.createVideoAd(1000);
-        SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
+        SAServerModule module = new SAServerModule(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -71,7 +74,7 @@ public class SAServerModule_Test extends Module_Test {
 
         // given
         SAAd ad = ModelFactory.createVideoAd(1001);
-        SAServerModule module = new SAServerModule(ad, super.session, super.executor, 1000, true);
+        SAServerModule module = new SAServerModule(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // when
         // then

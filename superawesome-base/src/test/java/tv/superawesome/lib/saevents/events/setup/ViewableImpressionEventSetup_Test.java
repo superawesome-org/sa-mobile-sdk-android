@@ -21,7 +21,7 @@ public class ViewableImpressionEventSetup_Test extends Event_Test {
         SAAd ad = ModelFactory.createDisplayAd(1000);
 
         // when
-        SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1000, true);
+        SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, 1, 0, true);
 
         // then - endpoint
         Assert.assertNotNull(event.getEndpoint());

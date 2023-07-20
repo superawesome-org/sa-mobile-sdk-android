@@ -11,9 +11,10 @@ class DwellTimeEvent(
     session: ISASession,
     executor: Executor,
     timeout: Int,
+    retryDelay: Long,
     isDebug: Boolean
 ) :
-    SAServerEvent(ad, session, executor, timeout, isDebug) {
+    SAServerEvent(ad, session, executor, timeout, retryDelay, isDebug) {
 
     override fun getEndpoint(): String {
         return "/event"

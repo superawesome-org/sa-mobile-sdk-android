@@ -10,13 +10,16 @@ import tv.superawesome.lib.saevents.events.SAURLEvent;
  */
 
 public class SAURLEventTrigger_Test extends EventTrigger_Test {
+    
+    final int timeout = 1;
+    final long retryDelay = 0L;
 
     @Test
     public void test_URLEvent_triggerEvent_WithSuccess () {
 
         // given
         String url = "http://localhost:64000/api/url?placement=1000";
-        SAURLEvent event = new SAURLEvent(url, super.executor, 1000, true);
+        SAURLEvent event = new SAURLEvent(url, super.executor, timeout, retryDelay, true);
 
         // when
         // then
@@ -28,7 +31,7 @@ public class SAURLEventTrigger_Test extends EventTrigger_Test {
 
         // given
         String url = "http://localhost:64000/api/url?placement=1001";
-        SAURLEvent event = new SAURLEvent(url, super.executor, 1000, true);
+        SAURLEvent event = new SAURLEvent(url, super.executor, timeout, retryDelay, true);
 
         // when
         // then
