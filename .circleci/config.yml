@@ -292,7 +292,7 @@ jobs:
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git
             cd sa-mobile-sdk-android-demo
 
-            # update release number
+            # update release number in demo app build gradle file for SuperAwesome
             perl -i -pe 's/tv.superawesome.sdk.publisher:superawesome:(\d+\.)?(\d+\.)?(\*|\d+)/tv.superawesome.sdk.publisher:superawesome:$ENV{RELEASE_NUMBER}/g' app/build.gradle
             
             git add app/build.gradle
