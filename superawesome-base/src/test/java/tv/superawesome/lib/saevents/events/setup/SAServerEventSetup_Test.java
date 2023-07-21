@@ -20,7 +20,7 @@ public class SAServerEventSetup_Test extends Event_Test {
         SAAd ad = ModelFactory.createDisplayAd(1000);
 
         // when
-        SAServerEvent event = new SAServerEvent(ad, super.session, super.executor, 1000, true);
+        SAServerEvent event = new SAServerEvent(ad, super.session, super.executor, 1, 0, true);
 
         // then - url
         Assert.assertNotNull(event);

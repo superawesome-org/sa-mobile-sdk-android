@@ -25,27 +25,42 @@ import javax.net.ssl.HttpsURLConnection;
 public class SANetwork {
 
     private int timeout = 15000;
-    private int maxRetries = 5;
-    private int retryDelay = 1000;
+    private static final int maxRetries = 5;
+    private long retryDelay = 1000L;
 
     private final Executor executor;
     private final SANetworkUtils utils = new SANetworkUtils();
 
     /**
-     * Constructor without any executor, so choose a new single thread executor
+     * Constructor without any executor, so choose a new single thread executor.
+     * Default timeout is 15_000ms and default retry delay is 1_000ms.
      */
     public SANetwork() {
         this.executor = Executors.newSingleThreadExecutor();
     }
 
     /**
-     * Constructor with executor
+     * Constructor with executor and timeout.
      *
-     * @param executor - the executor that may be passed in as param
+     * @param executor - the executor to run the HTTP requests.
+     * @param timeout - the HTTP request timeout, in ms.
      */
     public SANetwork(Executor executor, int timeout) {
         this.executor = executor;
         this.timeout = timeout;
+    }
+
+    /**
+     * Constructor with executor, timeout and retry delay.
+     *
+     * @param executor - the executor to run the HTTP requests.
+     * @param timeout - the HTTP request timeout, in ms.
+     * @param retryDelay - delay between two request retries, in ms.
+     */
+    public SANetwork(Executor executor, int timeout, long retryDelay) {
+        this.executor = executor;
+        this.timeout = timeout;
+        this.retryDelay = retryDelay;
     }
 
     /**

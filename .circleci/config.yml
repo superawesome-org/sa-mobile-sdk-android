@@ -2,13 +2,13 @@ version: 2.1
 references:
   android_config: &android_config
     docker:
-      - image: cimg/android:2022.12
+      - image: cimg/android:2023.06
     resource_class: medium
     environment:
       FL_OUTPUT_DIR: output
       TERM: dumb
-      JAVA_TOOL_OPTIONS: "-Xmx2048m"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      _JAVA_OPTIONS: "-Xms512m -Xmx2g -XX:ParallelGCThreads=4 -XX:ConcGCThreads=4 -XX:ParallelGCThreads=4 -Djava.util.concurrent.ForkJoinPool.common.parallelism=4"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048M -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.workers.max=2 -Dorg.gradle.daemon=false -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false'
 
   configure_google_services: &configure_google_services
     run:

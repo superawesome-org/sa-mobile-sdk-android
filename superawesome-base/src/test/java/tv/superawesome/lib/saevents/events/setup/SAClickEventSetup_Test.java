@@ -14,13 +14,16 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
  */
 public class SAClickEventSetup_Test extends Event_Test {
 
+    final int timeout = 1;
+    final long retryDelay = 0L;
+
     @Test
     public void test_ClickEvent_Init_WithDisplayAd () throws Throwable {
         // given
         SAAd ad = ModelFactory.createDisplayAd(1000);
 
         // when
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // then - endpoint
         Assert.assertNotNull(event.getEndpoint());
@@ -46,7 +49,7 @@ public class SAClickEventSetup_Test extends Event_Test {
         SAAd ad = ModelFactory.createVideoAd(1000);
 
         // when
-        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, 1000, true);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // then - endpoint
         Assert.assertNotNull(event.getEndpoint());

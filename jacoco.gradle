@@ -5,21 +5,22 @@ apply plugin: 'jacoco'
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 jacoco {
-    toolVersion = jacocoVersion
+    toolVersion = "0.8.8"
     reportsDirectory = file("$buildDir/reports")
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     jacoco.includeNoLocationClasses = true
     jacoco.excludes = ['jdk.internal.*']
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+tasks.register('jacocoTestReport', JacocoReport) {
+    dependsOn "testDebugUnitTest"
     group = "Reporting"
 
     reports {
-        xml.enabled(true)
-        html.enabled(true)
+        xml.required.set(true)
+        html.required.set(true)
     }
 
     def excludes = [
