@@ -292,7 +292,7 @@ jobs:
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git
             cd sa-mobile-sdk-android-demo
 
-            # Replace line 60 of the podfile with the update SuperAwesome SDK version
+            # Replace line 60 of build.gradle with the updated SuperAwesome SDK version
             perl -i -pe '$_ = "    implementation \x27tv.superawesome.sdk.publisher:superawesome:$ENV{RELEASE_NUMBER}\x27\n" if $. == 60' app/build.gradle
             
             git add app/build.gradle
