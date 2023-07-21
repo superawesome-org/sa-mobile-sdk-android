@@ -294,7 +294,7 @@ jobs:
             perl -i -pe '$_ = "    implementation \x27tv.superawesome.sdk.publisher:superawesome:$ENV{RELEASE_NUMBER}\x27\n" if $. == 60' app/build.gradle
             
             git add app/build.gradle
-            git commit -m 'fix(SDK): Updated SDK to ${RELEASE_NUMBER}'
+            git commit -m "fix(SDK): Updated SDK to ${RELEASE_NUMBER}"
             git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git develop
 
 workflows:
