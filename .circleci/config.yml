@@ -326,7 +326,7 @@ jobs:
       - *download_android_versioning_plugin
       - *fix_android_version_name
       - run:
-          name: Assemble Example App store .ipa file
+          name: Assemble Test App .apk file for the Device Farm
           no_output_timeout: 30m
           command: |
             export GIT_LOG_TEST=`git log --since="24 hours ago"`
@@ -395,16 +395,6 @@ workflows:
               ignore: /^v.*/
 
       - test_superawesome_common:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
-
-      - build_test_app_for_smoke_tests:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
