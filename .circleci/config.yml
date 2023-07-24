@@ -339,7 +339,7 @@ jobs:
               git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git
               cd sa-ad-smoke-test-sdk
               
-              cp -a $PWD/app/build/outputs/bundle/debug/app-release.aab ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.aab
+              cp -a $PWD/app/build/outputs/bundle/debug/app-debug.aab ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.aab
               
               git add apps/android/app-production-debug.aab
               git commit -m "Updated Android Native SDK Mobile Test App to ${RELEASE_NUMBER}"
