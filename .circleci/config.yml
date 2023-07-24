@@ -331,7 +331,7 @@ jobs:
           command: |
             export GIT_LOG_TEST=`git log --since="24 hours ago"`
             if [ ! -z "$GIT_LOG_TEST" ]; then
-              SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_PRODUCTION SA_ANDROID_APPS_PACKAGE_NAME=$SA_ANDROID_APPS_PACKAGE_NAME_PRODUCTION SA_ANDROID_APPS_PATH_TO_APK=$PWD/temp_apk_build_outputs/app-release.aab bundle exec fastlane build_aab_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
+              SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_AAB bundle exec fastlane build_aab_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
                             
               echo "export RELEASE_NUMBER=`cat SuperAwesome/Classes/Common/Model/Version.swift | cut -d '"' -f 2`" >> $BASH_ENV
               source $BASH_ENV
@@ -339,7 +339,7 @@ jobs:
               git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git
               cd sa-ad-smoke-test-sdk
               
-              cp -a $PWD/app/build/outputs/bundle/release/app-release.aab ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.aab
+              cp -a $PWD/app/build/outputs/bundle/debug/app-release.aab ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.aab
               
               git add apps/android/app-production-debug.aab
               git commit -m "Updated Android Native SDK Mobile Test App to ${RELEASE_NUMBER}"
