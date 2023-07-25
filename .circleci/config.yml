@@ -37,11 +37,27 @@ references:
       command: |
         git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
 
-  bootstrap_android: &bootstrap_android
+  bootstrap_android_sdk: &bootstrap_android_sdk
     run:
       name: Bootstrap
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
+
+  bootstrap_android_app: &bootstrap_android_app
+    run:
+      name: Bootstrap
+      command: |
+        ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-app.sh
+
+  download_android_versioning_plugin: &download_android_versioning_plugin
+    run:
+      name: Download Plugin for versioning in fastlane
+      command: bundle exec fastlane add_plugin android_versioning_kts
+
+  fix_android_version_name: &fix_android_version_name
+    run:
+      name: Fix Android Version Name
+      command: sed -i -r 's/(\s*versionName = )(([0-9A-Za-z]|\.)+)/\1"\2"/' $PWD/app/build.gradle.kts
 
 jobs:
 
@@ -63,7 +79,7 @@ jobs:
       - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Lint Code
           command: ./gradlew lint
@@ -84,7 +100,7 @@ jobs:
       - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Lint Code
           command: ./gradlew lint
@@ -182,7 +198,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-All to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
@@ -234,7 +250,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
@@ -247,7 +263,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
@@ -260,7 +276,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
@@ -273,7 +289,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-Unity to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
@@ -299,8 +315,65 @@ jobs:
             git commit -m "fix(SDK): Updated SDK to ${RELEASE_NUMBER}"
             git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git develop
 
+  build_test_app_for_smoke_tests:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *generate_github_token
+      - *clone_scripts_repo
+      - *bootstrap_android_app
+      - *download_android_versioning_plugin
+      - *fix_android_version_name
+      - run:
+          name: Assemble Test App .apk file for the Device Farm
+          no_output_timeout: 30m
+          command: |
+            export GIT_LOG_TEST=`git log --since="24 hours ago"`
+            if [ ! -z "$GIT_LOG_TEST" ]; then
+              SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
+              echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
+              source $BASH_ENV
+              git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git
+              cd sa-ad-smoke-test-sdk
+              
+              cp -a ~/project/app/build/outputs/apk/debug/app-debug.apk ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.apk
+
+              git add apps/android/app-production-debug.apk
+              git commit -m "Updated Android Native SDK Mobile Test App to ${RELEASE_NUMBER}"
+              git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git develop
+            fi
+
 workflows:
   version: 2.1
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 7 * * 1-5"
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - build_test_app_for_smoke_tests:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
   pull_request:
     jobs:
       - checkout_code:
