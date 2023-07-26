@@ -6,7 +6,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import tv.superawesome.demoapp.model.FeatureItem
 import tv.superawesome.demoapp.model.Features
-import tv.superawesome.sdk.publisher.common.network.DataResult
 
 private val okHttpClient = OkHttpClient.Builder().build()
 private const val FEATURES_JSON_URL = "https://aa-sdk.s3.eu-west-1.amazonaws.com/placements.json"

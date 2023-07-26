@@ -12,12 +12,11 @@ import kotlinx.serialization.json.Json
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
 import tv.superawesome.sdk.publisher.common.models.Ad
-import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.ConnectionType
 import tv.superawesome.sdk.publisher.common.models.EventData
 import tv.superawesome.sdk.publisher.common.models.EventType
-import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
 import java.util.Locale
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
@@ -71,7 +70,7 @@ internal class AdQueryMakerTest : BaseTest() {
     @Test
     fun test_adQuery() {
         // Given
-        val request = AdRequest(false, 10, 20, 30, 40, 50, 60, 70)
+        val request = DefaultAdRequest(false, 10, 20, 30, 40, 50, 60, 70)
         coEvery { idGeneratorType.findDauId() } returns 99
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
@@ -199,7 +198,7 @@ internal class AdQueryMakerTest : BaseTest() {
     @Test
     fun test_adQuery_with_no_options() {
         // Given
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -224,7 +223,7 @@ internal class AdQueryMakerTest : BaseTest() {
         // Given
         QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
 
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -248,7 +247,7 @@ internal class AdQueryMakerTest : BaseTest() {
     @Test
     fun test_adQuery_with_additional_options_only() {
         // Given
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -273,7 +272,7 @@ internal class AdQueryMakerTest : BaseTest() {
         // Given
         QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
 
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -301,7 +300,7 @@ internal class AdQueryMakerTest : BaseTest() {
 
         val additionalOptions = mapOf("key1" to "x")
 
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -330,7 +329,7 @@ internal class AdQueryMakerTest : BaseTest() {
 
         val additionalOptions = mapOf("key3" to Activity(), "key4" to 4)
 
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -354,7 +353,7 @@ internal class AdQueryMakerTest : BaseTest() {
     @Test
     fun test_built_adQuery_without_additional_options_builds_original_adQuery_only() {
         // Given
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -397,7 +396,7 @@ internal class AdQueryMakerTest : BaseTest() {
     @Test
     fun test_built_adQuery_with_additional_options_builds_original_adQuery_with_additional_options() {
         // Given
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,
@@ -444,7 +443,7 @@ internal class AdQueryMakerTest : BaseTest() {
     fun test_built_adQuery_with_initial_and_additional_options_builds_original_adQuery_with_initial_and_additional_options() {
         // Given
         QueryAdditionalOptions.instance = QueryAdditionalOptions(initialOptions)
-        val request = AdRequest(
+        val request = DefaultAdRequest(
             false,
             10,
             20,

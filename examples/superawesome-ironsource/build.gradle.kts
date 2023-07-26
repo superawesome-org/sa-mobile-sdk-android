@@ -1,5 +1,3 @@
-import groovy.json.JsonSlurper
-
 plugins {
     id("ads.sdk.android.app")
     id("kotlin-parcelize")

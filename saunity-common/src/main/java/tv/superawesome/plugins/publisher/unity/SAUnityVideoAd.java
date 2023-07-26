@@ -5,6 +5,7 @@ import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.superawesome.plugins.publisher.unity.util.OrientationExtensionsKt;
 import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.common.models.AdRequest;
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState;
@@ -154,7 +155,7 @@ public class SAUnityVideoAd {
     }
 
     private static void setOrientation(int orientation) {
-        Orientation value = Orientation.fromValue(orientation);
+        Orientation value = OrientationExtensionsKt.getOrientationFromValue(orientation);
         if (value != null) {
             SAVideoAd.setOrientation(value);
         }
