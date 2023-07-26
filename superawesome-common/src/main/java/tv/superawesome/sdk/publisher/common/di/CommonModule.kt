@@ -50,10 +50,10 @@ import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDat
 import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.VastAd
+import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.network.datasources.OkHttpNetworkDataSource
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSource
-import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
 import tv.superawesome.sdk.publisher.common.repositories.AdRepository
@@ -69,6 +69,7 @@ import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.AdController
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
+import tv.superawesome.sdk.publisher.common.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.common.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
@@ -79,7 +80,8 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerControlle
 import java.util.*
 
 @OptIn(ExperimentalSerializationApi::class)
-@Suppress("LongMethod")
+@Suppress("LongMethod", "UndocumentedPublicFunction")
+@JvmSynthetic
 internal fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
     single { environment }
     single { Locale.getDefault() }
@@ -109,7 +111,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
 
     factory<AdControllerType> { AdController(get(), get(), get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
-    factory { BumperPage() }
+    factory<BumperPage> { DefaultBumperPage() }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
