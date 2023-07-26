@@ -13,9 +13,15 @@ android {
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    kotlin {
+        explicitApiWarning()
+    }
 }
 
 dependencies {
+    api(project(":superawesome-common:api"))
+    implementation(project(":superawesome-common:internal"))
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.serialization.properties)
     implementation(libs.kotlinx.coroutines.core)
