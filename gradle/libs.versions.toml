@@ -2,7 +2,7 @@
 # Plugins
 agp = "8.0.2"
 jsonassert = "1.5.0"
-kotlin = "1.7.0"
+kotlin = "1.9.0"
 gms = "4.3.15"
 ktlint-gradle = "10.0.0"
 jacoco = "0.8.8"
@@ -31,8 +31,8 @@ androidx-test-core = "1.5.0"
 androidx-test-uiautomator = "2.2.0"
 
 # Compose
-compose-compiler = "1.2.0"
-compose-ui = "1.2.0"
+compose-compiler = "1.5.0"
+compose-ui = "1.4.3"
 
 # Koin
 koin = "3.0.1"
@@ -48,6 +48,14 @@ chucker = "3.5.0"
 
 # Google Play Services
 google-play-services-ads = "21.5.0"
+google-play-services-ads-identifier = "18.0.1"
+
+# IronSource
+ironsource-adapters-superawesome = "4.1.7"
+ironsource-mediator = "7.3.1.1"
+
+# SA SDK
+superawesome-sdk = "9.1.0"
 
 # Test
 jUnit4 = "4.13.2"
@@ -58,6 +66,7 @@ assertjCore = "3.19.0"
 catchException = "2.0"
 wiremock = "2.18.0"
 httpcomponents-android = "4.3.5.1"
+compose-bom = "2023.03.00"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -135,6 +144,14 @@ chucker-release = { module = "com.github.chuckerteam.chucker:library-no-op", ver
 
 # Google Play Services
 google-play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "google-play-services-ads" }
+google-play-services-ads-identifier = { module = "com.google.android.gms:play-services-ads-identifier", version.ref = "google-play-services-ads-identifier" }
+
+# IronSource
+ironsource-mediation = { module = "com.ironsource.sdk:mediationsdk", version.ref = "ironsource-mediator"}
+ironsource-adapters-superawesome = { module = "com.ironsource.adapters:superawesomeadapter", version.ref = "ironsource-adapters-superawesome" }
+
+# SA
+superawesome-sdk = { module = "tv.superawesome.sdk.publisher:superawesome", version.ref = "superawesome-sdk" }
 
 # Test
 junit4 = { module = "junit:junit", version.ref = "jUnit4" }
@@ -145,6 +162,9 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertjCore
 catch-exception = { module = "eu.codearte.catch-exception:catch-exception", version.ref = "catchException" }
 wiremock = { module = "com.github.tomakehurst:wiremock", version.ref = "wiremock" }
 httpcomponents-android = { module = "org.apache.httpcomponents:httpclient-android", version.ref = "httpcomponents-android" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
 
 [bundles]
 compose = ["compose.ui", "compose.ui.tooling.preview", "compose.material"]
