@@ -87,7 +87,6 @@ internal class AdQueryMakerTest : BaseTest() {
         // Then
         assertEquals(false, baseQuery.test)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
         assertEquals("sdk_bundle", baseQuery.bundle)
         assertEquals("sdk_name", baseQuery.name)
         assertEquals(99, baseQuery.dauId)
@@ -373,7 +372,6 @@ internal class AdQueryMakerTest : BaseTest() {
             "" +
                     "{test=false, " +
                     "sdkVersion=, " +
-                    "rnd=0, " +
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
@@ -417,7 +415,6 @@ internal class AdQueryMakerTest : BaseTest() {
             "" +
                     "{test=false, " +
                     "sdkVersion=, " +
-                    "rnd=0, " +
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
@@ -464,7 +461,6 @@ internal class AdQueryMakerTest : BaseTest() {
             "" +
                     "{test=false, " +
                     "sdkVersion=, " +
-                    "rnd=0, " +
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
