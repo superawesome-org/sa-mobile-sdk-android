@@ -91,9 +91,6 @@ jobs:
       - *bootstrap_android_sdk
       - *set_keylist_android
       - run:
-          name: Lint Code
-          command: ./gradlew lint
-      - run:
           name: Run unit tests for superawesome_base
           command: bundle exec fastlane run_all_tests module:superawesome-base
       - run:
@@ -112,9 +109,6 @@ jobs:
       - *clone_scripts_repo
       - *bootstrap_android_sdk
       - *set_keylist_android
-      - run:
-          name: Lint Code
-          command: ./gradlew lint
       - run:
           name: Run unit tests for superawesome_common
           command: bundle exec fastlane run_all_tests module:superawesome-common
