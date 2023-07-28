@@ -34,12 +34,15 @@ android {
 
         release {
             buildConfigField("String", "APP_KEY", appKey)
-            buildConfigField("String", "IS_MEDIATOR_VERSION", libs.versions.ironsource.mediator.get())
-            buildConfigField("String", "IS_ADAPTER_VERSION", libs.versions.ironsource.adapters.superawesome.get())
-            buildConfigField("String", "SA_SDK_VERSION", libs.versions.superawesome.sdk.get())
+            buildConfigField("String", "IS_MEDIATOR_VERSION", "\"${libs.versions.ironsource.mediator.get()}\"")
+            buildConfigField("String", "IS_ADAPTER_VERSION", "\"${libs.versions.ironsource.adapters.superawesome.get()}\"")
+            buildConfigField("String", "SA_SDK_VERSION", "\"${libs.versions.superawesome.sdk.get()}\"")
         }
         debug {
             buildConfigField("String", "APP_KEY", appKey)
+            buildConfigField("String", "IS_MEDIATOR_VERSION", "\"${libs.versions.ironsource.mediator.get()}\"")
+            buildConfigField("String", "IS_ADAPTER_VERSION", "\"${libs.versions.ironsource.adapters.superawesome.get()}\"")
+            buildConfigField("String", "SA_SDK_VERSION", "\"${libs.versions.superawesome.sdk.get()}\"")
         }
     }
 
