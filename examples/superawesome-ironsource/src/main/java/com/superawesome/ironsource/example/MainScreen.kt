@@ -68,6 +68,10 @@ fun MainScreen(
             interstitialAdButtonClick = onInterstitialButtonClick,
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.size(24.dp))
+        Text(text = "IronSource Mediator: ${BuildConfig.IS_MEDIATOR_VERSION}")
+        Text(text = "IronSource Adapter: ${BuildConfig.IS_ADAPTER_VERSION}")
+        Text(text = "AwesomeAds SDK: ${BuildConfig.SA_SDK_VERSION}")
     }
 }
 
