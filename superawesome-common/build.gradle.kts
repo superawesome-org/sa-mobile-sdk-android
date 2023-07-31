@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit.serialization.converter)
+    implementation(files("jni/omsdk-android-1.4.7-release.aar"))
     debugImplementation(libs.chucker.debug)
     releaseImplementation(libs.chucker.release)
 

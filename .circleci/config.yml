@@ -347,32 +347,32 @@ jobs:
 workflows:
   version: 2.1
 
-  nightly:
-    triggers:
-      - schedule:
-          cron: "0 23 * * 1-5"
-          filters:
-            branches:
-              only:
-                - develop
-    jobs:
-      - checkout_code:
-          context: MOBILE_ANDROID_SDKS
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
+  # nightly:
+  #   triggers:
+  #     - schedule:
+  #         cron: "0 23 * * 1-5"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - develop
+  #   jobs:
+  #     - checkout_code:
+  #         context: MOBILE_ANDROID_SDKS
+  #         filters:
+  #           branches:
+  #             only: develop
+  #           tags:
+  #             ignore: /^v.*/
 
-      - build_test_app_for_smoke_tests:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
+  #     - build_test_app_for_smoke_tests:
+  #         context: MOBILE_ANDROID_SDKS
+  #         requires:
+  #           - checkout_code
+  #         filters:
+  #           branches:
+  #             only: develop
+  #           tags:
+  #             ignore: /^v.*/
 
   pull_request:
     jobs:

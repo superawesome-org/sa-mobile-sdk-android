@@ -27,6 +27,7 @@ android {
 
 dependencies {
     implementation (libs.androidx.annotation)
+    implementation(files("jni/omsdk-android-1.4.7-release.aar"))
 
     // Tests
     testImplementation(libs.junit4)
