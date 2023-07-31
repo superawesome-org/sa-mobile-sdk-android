@@ -11,13 +11,16 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_settings.*
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.admob.AdMobActivity
+import tv.superawesome.demoapp.databinding.FragmentSettingsBinding
 
 class SettingsDialogFragment : DialogFragment() {
     var onDismissListener: (() -> Unit)? = null
     private val adapter = SettingsListAdapter()
+
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -32,7 +35,15 @@ class SettingsDialogFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? = inflater.inflate(R.layout.fragment_settings, null, false)
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     private fun onTapAdMob() {
         startActivity(Intent(context, AdMobActivity::class.java))
@@ -41,29 +52,29 @@ class SettingsDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.contentDescription = "SettingsView"
-        adMobButton.contentDescription = "Settings.Buttons.AdMob"
-        resetButton.contentDescription = "Settings.Buttons.Reset"
-        closeButton.contentDescription = "Settings.Buttons.Close"
+        binding.adMobButton.contentDescription = "Settings.Buttons.AdMob"
+        binding.resetButton.contentDescription = "Settings.Buttons.Reset"
+        binding.closeButton.contentDescription = "Settings.Buttons.Close"
 
         adapter.onItemSelected = { item, option ->
-            DataStore.updateSettings(item, option)
+            DataStore.updateSettings(item.item, option)
         }
         updateAdapter()
 
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-        adMobButton.setOnClickListener {
+        binding.adMobButton.setOnClickListener {
             dismiss()
             onTapAdMob()
         }
 
-        resetButton.setOnClickListener {
+        binding.resetButton.setOnClickListener {
             DataStore.reset()
             updateAdapter()
         }
 
-        closeButton.setOnClickListener {
+        binding.closeButton.setOnClickListener {
             dismiss()
         }
     }

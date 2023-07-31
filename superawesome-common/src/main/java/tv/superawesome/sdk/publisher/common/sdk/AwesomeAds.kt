@@ -19,6 +19,17 @@ object AwesomeAds {
     private var app: KoinApplication? = null
 
     /**
+     * Initialisation of AwesomeAds SDK
+     * @param logging Enable or disable logs
+     * */
+    @JvmStatic
+    fun init(applicationContext: Context, logging: Boolean) {
+        if (app == null) {
+            app = buildKoinApplication(applicationContext, Configuration(logging = logging))
+        }
+    }
+
+    /**
      * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings
      * */
     @JvmStatic

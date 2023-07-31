@@ -16,6 +16,14 @@ class VideoScreenRobot : BaseRobot() {
             .check(isVisible())
     }
 
+    fun waitForImpression() {
+        Thread.sleep(5000)
+    }
+
+    fun waitForAdEnds() {
+        Thread.sleep(20000)
+    }
+
     fun tapOnAd() {
         onView(withContentDescription("Ad content"))
             .perform(click())

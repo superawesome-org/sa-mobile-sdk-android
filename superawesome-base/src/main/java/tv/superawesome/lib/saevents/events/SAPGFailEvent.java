@@ -15,8 +15,8 @@ public class SAPGFailEvent extends SAServerEvent {
         super(ad, session);
     }
 
-    public SAPGFailEvent(SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
-        super(ad, session, executor, timeout, isDebug);
+    public SAPGFailEvent(SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
+        super(ad, session, executor, timeout, retryDelay, isDebug);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SAPGFailEvent extends SAServerEvent {
                     "sdkVersion", session.getVersion(),
                     "ct", session.getConnectionType(),
                     "bundle", session.getPackageName(),
-                    "rnd", session.getCachebuster(),
+                    "rnd", ad.rnd,
                     "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
                             "placement", ad.placementId,
                             "line_item", ad.lineItemId,

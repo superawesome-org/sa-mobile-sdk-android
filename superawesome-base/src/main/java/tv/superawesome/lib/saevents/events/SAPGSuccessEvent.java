@@ -15,8 +15,8 @@ public class SAPGSuccessEvent extends SAServerEvent {
         super(ad, session);
     }
 
-    public SAPGSuccessEvent(SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
-        super(ad, session, executor, timeout, isDebug);
+    public SAPGSuccessEvent(SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
+        super(ad, session, executor, timeout, retryDelay, isDebug);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SAPGSuccessEvent extends SAServerEvent {
                     "sdkVersion", session.getVersion(),
                     "ct", session.getConnectionType(),
                     "bundle", session.getPackageName(),
-                    "rnd", session.getCachebuster(),
+                    "rnd", ad.rnd,
                     "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
                             "placement", ad.placementId,
                             "line_item", ad.lineItemId,

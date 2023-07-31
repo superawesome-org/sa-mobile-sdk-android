@@ -30,7 +30,8 @@ internal object FakeFactory {
                 image = exampleUrl,
                 vast = vastUrl
             )
-        )
+        ),
+        random = ""
     )
 
     fun makeVastAd(

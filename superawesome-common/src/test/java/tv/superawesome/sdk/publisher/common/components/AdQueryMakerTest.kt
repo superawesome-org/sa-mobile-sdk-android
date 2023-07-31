@@ -10,11 +10,17 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.models.*
-import java.util.*
+import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.ConnectionType
+import tv.superawesome.sdk.publisher.common.models.EventData
+import tv.superawesome.sdk.publisher.common.models.EventType
+import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
+import java.util.Locale
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import kotlin.test.BeforeTest
 
 internal class AdQueryMakerTest : BaseTest() {
     @MockK
@@ -81,7 +87,6 @@ internal class AdQueryMakerTest : BaseTest() {
         // Then
         assertEquals(false, baseQuery.test)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
         assertEquals("sdk_bundle", baseQuery.bundle)
         assertEquals("sdk_name", baseQuery.name)
         assertEquals(99, baseQuery.dauId)
@@ -104,11 +109,11 @@ internal class AdQueryMakerTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true) {
             every { creative.id } returns 20
             every { lineItemId } returns 30
+            every { random } returns "abc33"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
         every { sdkInfoType.bundle } returns "sdk_bundle"
-        every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
@@ -121,7 +126,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(30, baseQuery.lineItem)
         assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
+        assertEquals("abc33", baseQuery.rnd)
         assertEquals(EventType.ImpressionDownloaded, baseQuery.type)
         assertEquals(true, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
@@ -133,6 +138,7 @@ internal class AdQueryMakerTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true) {
             every { creative.id } returns 20
             every { lineItemId } returns 30
+            every { random } returns "abc33"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
@@ -150,7 +156,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(30, baseQuery.lineItem)
         assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
+        assertEquals("abc33", baseQuery.rnd)
         assertEquals(null, baseQuery.type)
         assertEquals(null, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
@@ -162,6 +168,7 @@ internal class AdQueryMakerTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true) {
             every { creative.id } returns 20
             every { lineItemId } returns 30
+            every { random } returns "abc33"
         }
         val request = AdResponse(10, ad)
         val data = EventData(10, 30, 20, EventType.ParentalGateClose)
@@ -181,7 +188,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(30, baseQuery.lineItem)
         assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
+        assertEquals("abc33", baseQuery.rnd)
         assertEquals(null, baseQuery.noImage)
         assertEquals("encoded_uri", baseQuery.data)
     }
@@ -361,24 +368,24 @@ internal class AdQueryMakerTest : BaseTest() {
         val query = runBlocking { queryMaker.makeAdQuery(request).build() }
 
         // Then
-        assertEquals("" +
-            "{test=false, " +
-            "sdkVersion=, " +
-            "rnd=0, " +
-            "bundle=, " +
-            "name=, " +
-            "dauid=0, " +
-            "ct=Cellular4g, " +
-            "lang=en_en, " +
-            "device=, " +
-            "pos=10, " +
-            "skip=20, " +
-            "playbackmethod=30, " +
-            "startdelay=40, " +
-            "instl=50, " +
-            "w=60, " +
-            "h=70, " +
-            "timestamp=0}",
+        assertEquals(
+            "" +
+                    "{test=false, " +
+                    "sdkVersion=, " +
+                    "bundle=, " +
+                    "name=, " +
+                    "dauid=0, " +
+                    "ct=Cellular4g, " +
+                    "lang=en_en, " +
+                    "device=, " +
+                    "pos=10, " +
+                    "skip=20, " +
+                    "playbackmethod=30, " +
+                    "startdelay=40, " +
+                    "instl=50, " +
+                    "w=60, " +
+                    "h=70, " +
+                    "timestamp=0}",
             query.toString()
         )
     }
@@ -404,26 +411,26 @@ internal class AdQueryMakerTest : BaseTest() {
         val query = runBlocking { queryMaker.makeAdQuery(request).build() }
 
         // Then
-        assertEquals("" +
-            "{test=false, " +
-            "sdkVersion=, " +
-            "rnd=0, " +
-            "bundle=, " +
-            "name=, " +
-            "dauid=0, " +
-            "ct=Cellular4g, " +
-            "lang=en_en, " +
-            "device=, " +
-            "pos=10, " +
-            "skip=20, " +
-            "playbackmethod=30, " +
-            "startdelay=40, " +
-            "instl=50, " +
-            "w=60, " +
-            "h=70, " +
-            "timestamp=0, " +
-            "key3=value3, " +
-            "key4=4}",
+        assertEquals(
+            "" +
+                    "{test=false, " +
+                    "sdkVersion=, " +
+                    "bundle=, " +
+                    "name=, " +
+                    "dauid=0, " +
+                    "ct=Cellular4g, " +
+                    "lang=en_en, " +
+                    "device=, " +
+                    "pos=10, " +
+                    "skip=20, " +
+                    "playbackmethod=30, " +
+                    "startdelay=40, " +
+                    "instl=50, " +
+                    "w=60, " +
+                    "h=70, " +
+                    "timestamp=0, " +
+                    "key3=value3, " +
+                    "key4=4}",
             query.toString()
         )
     }
@@ -450,28 +457,28 @@ internal class AdQueryMakerTest : BaseTest() {
         val query = runBlocking { queryMaker.makeAdQuery(request).build() }
 
         // Then
-        assertEquals("" +
-            "{test=false, " +
-            "sdkVersion=, " +
-            "rnd=0, " +
-            "bundle=, " +
-            "name=, " +
-            "dauid=0, " +
-            "ct=Cellular4g, " +
-            "lang=en_en, " +
-            "device=, " +
-            "pos=10, " +
-            "skip=20, " +
-            "playbackmethod=30, " +
-            "startdelay=40, " +
-            "instl=50, " +
-            "w=60, " +
-            "h=70, " +
-            "timestamp=0, " +
-            "key1=value1, " +
-            "key2=2, " +
-            "key3=value3, " +
-            "key4=4}",
+        assertEquals(
+            "" +
+                    "{test=false, " +
+                    "sdkVersion=, " +
+                    "bundle=, " +
+                    "name=, " +
+                    "dauid=0, " +
+                    "ct=Cellular4g, " +
+                    "lang=en_en, " +
+                    "device=, " +
+                    "pos=10, " +
+                    "skip=20, " +
+                    "playbackmethod=30, " +
+                    "startdelay=40, " +
+                    "instl=50, " +
+                    "w=60, " +
+                    "h=70, " +
+                    "timestamp=0, " +
+                    "key1=value1, " +
+                    "key2=2, " +
+                    "key3=value3, " +
+                    "key4=4}",
             query.toString()
         )
     }

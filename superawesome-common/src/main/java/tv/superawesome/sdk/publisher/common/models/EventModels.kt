@@ -19,7 +19,7 @@ internal data class EventQuery(
     @SerialName("line_item") val lineItem: Int,
     val ct: ConnectionType,
     val sdkVersion: String,
-    val rnd: Int,
+    val rnd: String,
     val type: EventType?,
     @SerialName("no_image") val noImage: Boolean?,
     val data: String?

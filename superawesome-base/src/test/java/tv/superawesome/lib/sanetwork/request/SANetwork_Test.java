@@ -36,7 +36,7 @@ public class SANetwork_Test {
         server.start();
 
         Executor executor = new MockExecutor();
-        network = new SANetwork(executor, 1000);
+        network = new SANetwork(executor, 100, 0L);
     }
 
     @After
@@ -191,7 +191,7 @@ public class SANetwork_Test {
     public void test_SANetwork_SendGET_WithSlowResponse() throws Exception {
         // given
         String url = server.url("/some/url").toString();
-        int delay = 500;
+        int delay = 50;
         MockResponse mockResponse = new MockResponse()
                 .setBodyDelay(delay, TimeUnit.MILLISECONDS)
                 .setBody(responseBody);

@@ -66,11 +66,11 @@ internal class ManagedAdActivity :
 
         parentLayout.addView(adView)
 
-        closeButton.visibility =
-            if (config.closeButtonState == CloseButtonState.VisibleImmediately)
-                View.VISIBLE else View.GONE
-
-        setUpCloseButtonTimeoutRunnable()
+        when (config.closeButtonState) {
+            CloseButtonState.VisibleImmediately -> showCloseButton()
+            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            CloseButtonState.Hidden -> Unit // Hidden by default
+        }
     }
 
     override fun onRestart() {
@@ -88,7 +88,7 @@ internal class ManagedAdActivity :
         val weak = WeakReference(this)
         timeOutRunnable = Runnable {
             val weakThis = weak.get() ?: return@Runnable
-            weakThis.hasBeenVisibleForRequiredTimeoutTime()
+            weakThis.showCloseButton()
         }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
@@ -103,6 +103,8 @@ internal class ManagedAdActivity :
         adView.configure(placementId, listener)
         adView.load(placementId, html, baseUrl, this)
     }
+
+    public override fun onCloseButtonPressed() = controller.trackCloseButtonPressed()
 
     public override fun close() {
         if (config.shouldShowCloseWarning && !completed) {
@@ -123,6 +125,7 @@ internal class ManagedAdActivity :
     }
 
     private fun closeActivity() {
+        controller.trackDwellTime()
         if (!isFinishing) {
             listener?.onEvent(this.placementId, SAEvent.adClosed)
         }
@@ -131,25 +134,31 @@ internal class ManagedAdActivity :
         adView.close()
     }
 
-    override fun adLoaded() {
+    private fun showCloseButton() {
+        closeButton.visibility = View.VISIBLE
+        controller.startTimingForCloseButtonPressed()
+    }
+
+    override fun adLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adLoaded)
     }
 
-    override fun adEmpty() {
+    override fun adEmpty() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adEmpty)
         close()
     }
 
-    override fun adFailedToLoad() {
+    override fun adFailedToLoad() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToLoad)
         close()
     }
 
-    override fun adAlreadyLoaded() {
+    override fun adAlreadyLoaded() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adAlreadyLoaded)
     }
 
-    override fun adShown() {
+    override fun adShown() = runOnUiThread {
+        controller.startTimingForDwellTime()
         val weak = WeakReference(this)
         viewableDetector.cancel()
         viewableDetector.start(adView, videoMaxTickCount) {
@@ -157,44 +166,42 @@ internal class ManagedAdActivity :
             weakThis?.cancelCloseButtonTimeoutRunnable()
             weakThis?.controller?.triggerViewableImpression(placementId)
             if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
-                weakThis.closeButton.visibility = View.VISIBLE
+                weakThis.showCloseButton()
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
     }
 
-    override fun adFailedToShow() {
+    override fun adFailedToShow() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adFailedToShow)
         close()
     }
 
-    override fun adClicked() {
+    override fun adClicked() = runOnUiThread {
         adView.pauseVideo()
         listener?.onEvent(this.placementId, SAEvent.adClicked)
         adPaused()
     }
 
-    override fun adEnded() {
+    override fun adEnded() = runOnUiThread {
         completed = true
         listener?.onEvent(this.placementId, SAEvent.adEnded)
         if (config.shouldCloseAtEnd) {
             close()
+        } else if(config.closeButtonState == CloseButtonState.Hidden) {
+            showCloseButton()
         }
     }
 
-    override fun adClosed() {
+    override fun adClosed() = runOnUiThread {
         close()
     }
 
-    override fun adPlaying() {
+    override fun adPlaying() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adPlaying)
     }
 
-    override fun adPaused() {
+    override fun adPaused() = runOnUiThread {
         listener?.onEvent(this.placementId, SAEvent.adPaused)
-    }
-
-    private fun hasBeenVisibleForRequiredTimeoutTime() {
-        closeButton.visibility = View.VISIBLE
     }
 
     // AdControllerType.VideoPlayerListener

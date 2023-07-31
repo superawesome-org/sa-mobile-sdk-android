@@ -14,8 +14,8 @@ public class SAImpressionEvent extends SAServerEvent {
         super(ad, session);
     }
 
-    public SAImpressionEvent(SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
-        super(ad, session, executor, timeout, isDebug);
+    public SAImpressionEvent(SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
+        super(ad, session, executor, timeout, retryDelay, isDebug);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SAImpressionEvent extends SAServerEvent {
                     "bundle", session.getPackageName(),
                     "ct", session.getConnectionType().ordinal(),
                     "no_image", true,
-                    "rnd", session.getCachebuster(),
+                    "rnd", ad.rnd,
                     "type", "impressionDownloaded"
             );
         } catch (Exception e) {

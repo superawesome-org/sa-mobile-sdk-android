@@ -47,6 +47,7 @@ public class SAAd extends SABaseObject implements Parcelable {
     public boolean isSafeAdApproved = false;
     public boolean isPadlockVisible = false;
     public boolean isVpaid = false;
+    public String rnd = "";
 
     public String device = null;
 
@@ -152,6 +153,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         device = in.readString();
         creative = in.readParcelable(SACreative.class.getClassLoader());
         loadTime = in.readLong();
+        rnd = in.readString();
     }
 
     /**
@@ -220,6 +222,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         isFill = SAJsonParser.getBoolean(jsonObject, "is_fill", isFill);
         isHouse = SAJsonParser.getBoolean(jsonObject, "is_house", isHouse);
         isVpaid = SAJsonParser.getBoolean(jsonObject, "is_vpaid", isVpaid);
+        rnd = SAJsonParser.getString(jsonObject, "rnd", rnd);
         isSafeAdApproved = SAJsonParser.getBoolean(jsonObject, "safe_ad_approved", isSafeAdApproved);
         isPadlockVisible = SAJsonParser.getBoolean(jsonObject, "show_padlock", isPadlockVisible);
         device = SAJsonParser.getString(jsonObject, "device", device);
@@ -315,6 +318,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         dest.writeString(device);
         dest.writeParcelable(creative, flags);
         dest.writeLong(loadTime);
+        dest.writeString(rnd);
     }
 
     private boolean isTagValid(SACreative creative) {

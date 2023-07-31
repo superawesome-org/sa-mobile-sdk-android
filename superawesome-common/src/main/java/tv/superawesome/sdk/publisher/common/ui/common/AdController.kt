@@ -12,15 +12,18 @@ import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.components.TimeProviderType
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.AdRequest
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
-import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.models.PerformanceTimer
 import tv.superawesome.sdk.publisher.common.network.DataResult
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import kotlin.math.abs
 
@@ -32,6 +35,12 @@ internal interface AdControllerType {
     var videoListener: VideoPlayerListener?
     val shouldShowPadlock: Boolean
 
+    fun startTimingForLoadTime()
+    fun trackLoadTime()
+    fun startTimingForDwellTime()
+    fun trackDwellTime()
+    fun startTimingForCloseButtonPressed()
+    fun trackCloseButtonPressed()
     fun triggerImpressionEvent(placementId: Int)
     fun triggerViewableImpression(placementId: Int)
 
@@ -63,8 +72,10 @@ internal interface AdControllerType {
 internal class AdController(
     private val adRepository: AdRepositoryType,
     private val eventRepository: EventRepositoryType,
+    private val performanceRepository: PerformanceRepositoryType,
     private val logger: Logger,
-    private val adStore: AdStoreType
+    private val adStore: AdStoreType,
+    private val timeProvider: TimeProviderType
 ) : AdControllerType {
     override var config: Config = Config()
     override var closed: Boolean = false
@@ -73,6 +84,49 @@ internal class AdController(
     override var videoListener: AdControllerType.VideoPlayerListener? = null
     override val shouldShowPadlock: Boolean
         get() = currentAdResponse?.shouldShowPadlock() ?: false
+
+    private val closeButtonPressedTimer = PerformanceTimer()
+    private val dwellTimeTimer = PerformanceTimer()
+    private val loadTimeTimer = PerformanceTimer()
+
+    override fun startTimingForLoadTime() {
+        loadTimeTimer.start(timeProvider.millis())
+    }
+
+    override fun trackLoadTime() {
+        if (loadTimeTimer.startTime == 0L) { return }
+        scope.launch {
+            performanceRepository.trackLoadTime(
+                loadTimeTimer.delta(timeProvider.millis())
+            )
+        }
+    }
+
+    override fun startTimingForDwellTime() {
+        dwellTimeTimer.start(timeProvider.millis())
+    }
+
+    override fun trackDwellTime() {
+        if (dwellTimeTimer.startTime == 0L) { return }
+        scope.launch {
+            performanceRepository.trackDwellTime(
+                dwellTimeTimer.delta(timeProvider.millis())
+            )
+        }
+    }
+
+    override fun startTimingForCloseButtonPressed() {
+        closeButtonPressedTimer.start(timeProvider.millis())
+    }
+
+    override fun trackCloseButtonPressed() {
+        if (closeButtonPressedTimer.startTime == 0L) { return }
+        scope.launch {
+            performanceRepository.trackCloseButtonPressed(
+                closeButtonPressedTimer.delta(timeProvider.millis())
+            )
+        }
+    }
 
     private val scope = CoroutineScope(Dispatchers.Main)
     private var parentalGate: ParentalGate? = null
@@ -303,6 +357,8 @@ internal class AdController(
             return
         }
 
+        startTimingForLoadTime()
+
         scope.launch {
             when (val result = adRepository.getAd(placementId, request)) {
                 is DataResult.Success -> onSuccess(result.value)
@@ -318,6 +374,8 @@ internal class AdController(
             adAlreadyLoaded(placementId)
             return
         }
+
+        startTimingForLoadTime()
 
         scope.launch {
             when (val result = adRepository.getAd(placementId, lineItemId, creativeId, request)) {
@@ -371,6 +429,10 @@ internal class AdController(
         logger.success("onSuccess thread:${Thread.currentThread()} adResponse:$response")
         adStore.put(response)
         delegate?.onEvent(response.placementId, SAEvent.adLoaded)
+        // Can be removed when we want to track this for all ad types
+        if (response.isVpaid()) {
+            trackLoadTime()
+        }
     }
 
     private fun onFailure(placementId: Int, error: Throwable) {

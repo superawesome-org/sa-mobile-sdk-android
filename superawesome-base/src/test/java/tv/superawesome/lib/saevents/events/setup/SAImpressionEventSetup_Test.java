@@ -21,7 +21,7 @@ public class SAImpressionEventSetup_Test extends Event_Test {
         SAAd ad = ModelFactory.createDisplayAd(1000);
 
         // when
-        SAImpressionEvent event = new SAImpressionEvent(ad, super.session, super.executor, 1000, true);
+        SAImpressionEvent event = new SAImpressionEvent(ad, super.session, super.executor, 1, 0L, true);
 
         // then - endpoint
         Assert.assertNotNull(event.getEndpoint());
@@ -35,7 +35,7 @@ public class SAImpressionEventSetup_Test extends Event_Test {
         Assert.assertEquals(9, query.length());
         Assert.assertEquals(2, query.get("ct"));
         Assert.assertEquals(2001, query.get("line_item"));
-        Assert.assertEquals(123456, query.get("rnd"));
+        //Assert.assertEquals(123456, query.get("rnd"));
         Assert.assertEquals("1.0.0", query.get("sdkVersion"));
         Assert.assertEquals(1000, query.get("placement"));
         Assert.assertEquals("superawesome.tv.saadloaderdemo", query.get("bundle"));

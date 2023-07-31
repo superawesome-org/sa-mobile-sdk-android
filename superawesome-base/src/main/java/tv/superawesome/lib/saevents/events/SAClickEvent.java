@@ -15,8 +15,8 @@ public class SAClickEvent extends SAServerEvent {
         super(ad, session);
     }
 
-    public SAClickEvent(SAAd ad, ISASession session, Executor executor, int timeout, boolean isDebug) {
-        super(ad, session, executor, timeout, isDebug);
+    public SAClickEvent(SAAd ad, ISASession session, Executor executor, int timeout, long retryDelay, boolean isDebug) {
+        super(ad, session, executor, timeout, retryDelay, isDebug);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SAClickEvent extends SAServerEvent {
                     "line_item", ad.lineItemId,
                     "ct", session.getConnectionType().ordinal(),
                     "sdkVersion", session.getVersion(),
-                    "rnd", session.getCachebuster());
+                    "rnd", ad.rnd);
         } catch (Exception e) {
             return new JSONObject();
         }

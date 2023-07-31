@@ -2,13 +2,13 @@ version: 2.1
 references:
   android_config: &android_config
     docker:
-      - image: cimg/android:2022.12
+      - image: cimg/android:2023.06
     resource_class: medium
     environment:
       FL_OUTPUT_DIR: output
       TERM: dumb
-      JAVA_TOOL_OPTIONS: "-Xmx2048m"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      _JAVA_OPTIONS: "-Xms512m -Xmx2g -XX:ParallelGCThreads=4 -XX:ConcGCThreads=4 -XX:ParallelGCThreads=4 -Djava.util.concurrent.ForkJoinPool.common.parallelism=4"
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048M -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.workers.max=2 -Dorg.gradle.daemon=false -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false'
 
   configure_google_services: &configure_google_services
     run:
@@ -37,11 +37,27 @@ references:
       command: |
         git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
 
-  bootstrap_android: &bootstrap_android
+  bootstrap_android_sdk: &bootstrap_android_sdk
     run:
       name: Bootstrap
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
+
+  bootstrap_android_app: &bootstrap_android_app
+    run:
+      name: Bootstrap
+      command: |
+        ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-app.sh
+
+  download_android_versioning_plugin: &download_android_versioning_plugin
+    run:
+      name: Download Plugin for versioning in fastlane
+      command: bundle exec fastlane add_plugin android_versioning_kts
+
+  fix_android_version_name: &fix_android_version_name
+    run:
+      name: Fix Android Version Name
+      command: sed -i -r 's/(\s*versionName = )(([0-9A-Za-z]|\.)+)/\1"\2"/' $PWD/app/build.gradle.kts
 
 jobs:
 
@@ -63,7 +79,7 @@ jobs:
       - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Lint Code
           command: ./gradlew lint
@@ -84,7 +100,7 @@ jobs:
       - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Lint Code
           command: ./gradlew lint
@@ -128,19 +144,29 @@ jobs:
           command: |
             NEXT_RELEASE_NUMBER=`cat nextRelease`
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
+            NEW_VERSION_PROPERTIES=superawesome-common/src/main/resources/newVersion.properties
 
             if [[ ( ! -z "$NEXT_RELEASE_NUMBER" ) && ( -f "$VERSION_PROPERTIES" ) ]]; then
 
-              echo "****** Current release version ******"
+              echo "****** Current Base release version ******"
               cat $VERSION_PROPERTIES
 
               echo "version.name=$NEXT_RELEASE_NUMBER" > $VERSION_PROPERTIES
 
-              echo "****** Updated release version ******"
+              echo "****** Updated Base release version ******"
               cat $VERSION_PROPERTIES
+
+              echo "****** Current Common release version ******"
+              cat $NEW_VERSION_PROPERTIES
+
+              echo "version.name=$NEXT_RELEASE_NUMBER" > $NEW_VERSION_PROPERTIES
+
+              echo "****** Updated Common release version ******"
+              cat $NEW_VERSION_PROPERTIES
 
               git pull https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git develop
               git add $VERSION_PROPERTIES
+              git add $NEW_VERSION_PROPERTIES
               git commit -m "Auto incremented version to $NEXT_RELEASE_NUMBER via Circle CI [skip ci]"
               git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git -q develop
             else
@@ -172,7 +198,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-All to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
@@ -182,8 +208,9 @@ jobs:
             # get previous release tag
             export CURRENT_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 1p`
             export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
-
-            # get release notes from semantic-release
+            export CLEAN_CURRENT_VERSION="${CURRENT_VERSION:1}"
+            
+             get release notes from semantic-release
             export CHANGES=`awk "/^([#]+ \[${CURRENT_VERSION:1}\])/{flag=1;next}/^([#]+ \[${PREVIOUS_VERSION:1}\])/{flag=0}flag" CHANGELOG.md`
             
             export CHANGES=`sed -E "s/ \(\[([^\[]+)\](\(.*\))//g" \<<< $CHANGES`
@@ -192,6 +219,8 @@ jobs:
             echo "PREVIOUS_VERSION ${PREVIOUS_VERSION}"
             echo "Changes Found ${CHANGES}"
 
+            export LINKS="[SuperAwesome AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome/${CLEAN_CURRENT_VERSION}/superawesome-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Base AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-base/${CLEAN_CURRENT_VERSION}/superawesome-base-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Common AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-common/${CLEAN_CURRENT_VERSION}/superawesome-common-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome AdMob AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saadmob/${CLEAN_CURRENT_VERSION}/saadmob-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Unity AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saunity/${CLEAN_CURRENT_VERSION}/saunity-${CLEAN_CURRENT_VERSION}.aar)"
+
             # checkout docs repo
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git
 
@@ -199,8 +228,7 @@ jobs:
             export RELEASE_DOC_PATH="sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md"
 
             # insert new release and change log
-            export CLEAN_CURRENT_VERSION="${CURRENT_VERSION:1}"
-            perl -i -pe '$_ = "\n## $ENV{CLEAN_CURRENT_VERSION}$ENV{CHANGES}\n$_" if $. == 7' $RELEASE_DOC_PATH
+            perl -i -pe '$_ = "\n## $ENV{CLEAN_CURRENT_VERSION}$ENV{CHANGES}\n\n#### Downloads\n$ENV{LINKS}\n\n$_" if $. == 7' $RELEASE_DOC_PATH
 
             # update config file release version
             export CONFIG_PATH="sa-mobile-sdk-publisher-docs/docs/_config.yml"
@@ -222,7 +250,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
@@ -235,7 +263,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
@@ -248,7 +276,7 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
@@ -261,49 +289,91 @@ jobs:
       - *configure_google_services
       - *generate_github_token
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - run:
           name: Push Superawesome-Unity to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
 
-  publish_docs:
-    docker:
-      - image: circleci/ruby:2.4.1
-    working_directory: ~/repo
-    environment:
-      - JEKYLL_ENV: production
-      - NOKOGIRI_USE_SYSTEM_LIBRARIES: true
-      - BUNDLE_PATH: ~/repo/docs/vendor/bundle
+  sdk_update_android_demo_app:
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
-      - restore_cache:
-          keys:
-          - rubygems-v1
+      - *generate_github_token
       - run:
-          name: Bundle Install
+          name: Update Demo app gradle File
           command: |
-              cd ~/repo/docs
-              bundle check || bundle install
-      - save_cache:
-          key: rubygems-v1
-          paths:
-            - vendor/bundle
+            echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
+            source $BASH_ENV
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git
+            cd sa-mobile-sdk-android-demo
+
+            # update release number in demo app build gradle file for SuperAwesome
+            perl -i -pe 's/tv.superawesome.sdk.publisher:superawesome:(\d+\.)?(\d+\.)?(\*|\d+)/tv.superawesome.sdk.publisher:superawesome:$ENV{RELEASE_NUMBER}/g' app/build.gradle
+            
+            git add app/build.gradle
+            git commit -m "fix(SDK): Updated SDK to ${RELEASE_NUMBER}"
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git develop
+
+  build_test_app_for_smoke_tests:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *generate_github_token
+      - *clone_scripts_repo
+      - *bootstrap_android_app
+      - *download_android_versioning_plugin
+      - *fix_android_version_name
       - run:
-          name: Publish Superawesome SDK to the website
+          name: Assemble Test App .apk file for the Device Farm
+          no_output_timeout: 30m
           command: |
-            cp ~/repo/docs/.circleci/circle_urls.sh ~/repo/docs/circle_urls.sh
-            cd ~/repo/docs
-            chmod u+x circle_urls.sh
-            bash circle_urls.sh
-            bundle exec jekyll build
-            zip -r _site _site/
-      - store_artifacts:
-          path: ~/repo/docs/_site.zip
-          destination: docsy-jekyll
+            export GIT_LOG_TEST=`git log --since="24 hours ago"`
+            if [ ! -z "$GIT_LOG_TEST" ]; then
+              SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
+              echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
+              source $BASH_ENV
+              git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git
+              cd sa-ad-smoke-test-sdk
+              
+              cp -a ~/project/app/build/outputs/apk/debug/app-debug.apk ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.apk
+
+              git add apps/android/app-production-debug.apk
+              git commit -m "Updated Android Native SDK Mobile Test App to ${RELEASE_NUMBER}"
+              git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git develop
+            fi
 
 workflows:
   version: 2.1
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 23 * * 1-5"
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - build_test_app_for_smoke_tests:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
   pull_request:
     jobs:
       - checkout_code:
@@ -464,7 +534,7 @@ workflows:
             tags:
               only: /^v.*/
 
-      - publish_docs:
+      - sdk_update_android_demo_app:
           context: MOBILE_ANDROID_SDKS
           requires:
             - sdk_push_superawesome

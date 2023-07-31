@@ -117,6 +117,8 @@ public class SABannerAd extends FrameLayout {
     public SABannerAd(Context context, AttributeSet attrs, int defStyleAttr, SAClock clock) {
         super(context, attrs, defStyleAttr);
 
+        setContentDescription("Ad content");
+
         // create the loader
         session = new SASession(context);
         loader = new SALoader(context);
@@ -543,8 +545,7 @@ public class SABannerAd extends FrameLayout {
         if (ad != null &&
                 ad.creative != null &&
                 ad.creative.format != SACreativeFormat.rich &&
-                session != null &&
-                !destination.contains(session.getBaseUrl())) {
+                session != null) {
             events.triggerClickEvent();
         }
 

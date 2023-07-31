@@ -77,6 +77,15 @@ object WireMockHelper {
                 )
         )
 
+        stubFor(
+            get(urlPathMatching("/vast/tag-grey-box"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vpaid_grey_box_vast_tag.xml"))
+                )
+        )
+
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")

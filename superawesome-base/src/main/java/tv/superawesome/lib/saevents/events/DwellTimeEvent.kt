@@ -11,9 +11,10 @@ class DwellTimeEvent(
     session: ISASession,
     executor: Executor,
     timeout: Int,
+    retryDelay: Long,
     isDebug: Boolean
 ) :
-    SAServerEvent(ad, session, executor, timeout, isDebug) {
+    SAServerEvent(ad, session, executor, timeout, retryDelay, isDebug) {
 
     override fun getEndpoint(): String {
         return "/event"
@@ -29,7 +30,7 @@ class DwellTimeEvent(
                 "line_item", ad.lineItemId,
                 "ct", session.connectionType.ordinal,
                 "sdkVersion", session.version,
-                "rnd", session.cachebuster
+                "rnd", ad.rnd
             )
         } catch (e: Exception) {
             JSONObject()

@@ -20,7 +20,8 @@ internal data class Ad(
     val moat: Double = 0.0,
     val test: Boolean,
     val creative: Creative,
-    @SerialName("is_vpaid") val isVpaid: Boolean = false
+    @SerialName("is_vpaid") val isVpaid: Boolean = false,
+    @SerialName("rnd") val random: String?,
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
     fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF
@@ -35,7 +36,6 @@ internal data class AdQueryBundle(
 internal data class AdQuery(
     val test: Boolean,
     val sdkVersion: String,
-    val rnd: Int,
     val bundle: String,
     val name: String,
     @SerialName("dauid") val dauId: Int,
@@ -62,6 +62,7 @@ internal data class AdResponse(
     var filePath: String? = null,
     var referral: String? = null,
 ) {
+    fun isVpaid(): Boolean = ad.isVpaid
     fun isVideo(): Boolean = ad.creative.format == CreativeFormatType.Video
     fun shouldShowPadlock(): Boolean = ad.shouldShowPadlock()
 
@@ -122,6 +123,8 @@ data class AdRequest(
 
         companion object {
             private val values = values()
+
+            @JvmStatic
             fun fromValue(value: Int) = values.firstOrNull { it.value == value }
         }
     }

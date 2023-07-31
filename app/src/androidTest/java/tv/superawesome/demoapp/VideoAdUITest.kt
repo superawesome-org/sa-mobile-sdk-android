@@ -1,6 +1,6 @@
 package tv.superawesome.demoapp
 
-import androidx.test.espresso.action.ViewActions.click
+import android.graphics.Color
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -12,22 +12,21 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import tv.superawesome.demoapp.interaction.*
-import tv.superawesome.demoapp.interaction.AdInteraction.testAdLoading
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.robot.videoScreenRobot
+import tv.superawesome.demoapp.robot.videoWarningRobot
 import tv.superawesome.demoapp.rules.RetryTestRule
+import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.TestColors
-import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
-import tv.superawesome.demoapp.util.waitUntil
+import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 
 @RunWith(AndroidJUnit4::class)
@@ -48,6 +47,11 @@ class VideoAdUITest {
         ads.isAccessible = true
         ads.invoke(null)
 
+        val base =
+            tv.superawesome.sdk.publisher.SAVideoAd::class.java.getDeclaredMethod("clearCache")
+        base.isAccessible = true
+        base.invoke(null)
+
         wireMockRule.resetAll()
     }
 
@@ -59,130 +63,205 @@ class VideoAdUITest {
     @Test
     fun test_closeAtEndEnabled_closeBeforeEnds_receiveOnlyAdClosedEvent() {
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnCloseDelayed()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseDelayed()
+                }
             }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adClosed)
+            checkNotForEvent(testData, SAEvent.adEnded)
         }
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
-        CommonInteraction.checkSubtitleNotContains("${testData.placement} adEnded")
     }
 
     @Test
     fun test_closeAtEndDisabled_waitVideoEnds_receiveAdClosedEvent() {
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisableCloseAtEnd()
-                tapOnCloseHidden()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnDisableCloseAtEnd()
+                    tapOnCloseHidden()
+                }
             }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adClosed)
+            checkForEvent(testData, SAEvent.adEnded)
         }
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
     }
 
     @Test
     fun test_standard_CloseButtonWithNoDelay() {
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnCloseNoDelay()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
             }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                tapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adClosed)
         }
-
-        CommonInteraction.clickItemAt(testData)
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_standard_CloseButtonWithDelay() {
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnCloseDelayed()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseDelayed()
+                }
             }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adClosed)
+            verifyUrlPathCalled("/event")
         }
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForCloseButtonWithDelayThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
-        verifyUrlPathCalled("/event")
     }
 
     @Test
     fun test_vast_CloseButtonWithNoDelay() {
         val testData = TestData.videoVast
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnCloseNoDelay()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
             }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                tapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adClosed)
         }
-
-        CommonInteraction.clickItemAt(testData)
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_vast_CloseButtonWithDelay() {
         val testData = TestData.videoVast
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnCloseDelayed()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseDelayed()
+                }
             }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adClosed)
         }
-
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForCloseButtonWithDelayThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_vpaid_CloseButton() {
         val testData = TestData.videoVpaid
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
 
-        CommonInteraction.waitForCloseButtonThenClick()
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
+            videoScreenRobot {
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adClosed)
+        }
+    }
+
+    @Test
+    fun test_vpaid_hidden_CloseButton_is_hidden_until_video_ends() {
+        val testData = TestData.videoVpaidGreyBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseHidden()
+                    tapOnDisableCloseAtEnd()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adEnded)
+        }
     }
 
     @Test
     fun test_auto_close_on_finish() {
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
 
-        ViewTester()
-            .waitForView(withId(R.id.subtitleTextView))
-            .perform(waitUntil(isDisplayed()))
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
+            // Wait for returning to the list screen
+            waitForDisplay()
 
-        // Then all of the events are triggered
-        verifyQueryParamContains("/video/tracking", "event", "start")
-        verifyQueryParamContains("/video/tracking", "event", "creativeView")
-        verifyQueryParamContains("/video/tracking", "event", "firstQuartile")
-        verifyQueryParamContains("/video/tracking", "event", "midpoint")
-        verifyQueryParamContains("/video/tracking", "event", "thirdQuartile")
-        verifyQueryParamContains("/video/tracking", "event", "complete")
+            checkForEvent(testData, SAEvent.adEnded)
+
+            // Then all of the events are triggered
+            verifyQueryParamContains("/video/tracking", "event", "start")
+            verifyQueryParamContains("/video/tracking", "event", "creativeView")
+            verifyQueryParamContains("/video/tracking", "event", "firstQuartile")
+            verifyQueryParamContains("/video/tracking", "event", "midpoint")
+            verifyQueryParamContains("/video/tracking", "event", "thirdQuartile")
+            verifyQueryParamContains("/video/tracking", "event", "complete")
+        }
+    }
+
+    private fun testAdLoading(testData: TestData, color: Color) {
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(color)
+
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+
+        }
     }
 
     @Test
@@ -190,20 +269,15 @@ class VideoAdUITest {
         val testData = TestData.videoVast
         testAdLoading(testData, TestColors.vastYellow)
 
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
+        listScreenRobot {
+            checkForEvent(testData, SAEvent.adShown)
+        }
     }
 
     @Test
     fun test_vpaid_adLoading() {
         val testData = TestData.videoVpaid
         testAdLoading(testData, TestColors.vpaidYellow)
-
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
     }
 
     @Test
@@ -211,52 +285,66 @@ class VideoAdUITest {
         val testData = TestData.videoDirect
         testAdLoading(testData, TestColors.vastYellow)
 
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
+        listScreenRobot {
+            checkForEvent(testData, SAEvent.adShown)
+        }
     }
 
     @Test
     fun test_adFailure() {
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithFailureStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchActivityWithFailureStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
     }
 
     @Test
     fun test_adNotFound() {
         val testData = TestData("87969", "not_found.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.checkSubtitleContains("${testData.placement} adFailedToLoad")
+            checkForAnyEvent(testData, SAEvent.adFailedToLoad, SAEvent.adEmpty)
+        }
     }
 
     @Test
     fun test_direct_safeAdVisible() {
-        CommonInteraction.launchActivityWithSuccessStub(TestData.videoPadlock)
-        CommonInteraction.clickItemAt(TestData.videoPadlock)
+        val testData = TestData.videoPadlock
 
-        CommonInteraction.waitAndCheckSafeAdLogo()
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+            }
+        }
     }
 
     @Test
     fun test_vast_safeAdVisible() {
         val testData = TestData("88406", "padlock/video_vast_success_padlock_enabled.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData)
 
-        CommonInteraction.clickItemAt(testData)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        CommonInteraction.waitAndCheckSafeAdLogo()
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+            }
+        }
     }
 
     @Test
     fun test_bumper_enabled_from_settings() {
+        if (DataStore.data.useBaseModule) return
         IntentsHelper.stubIntentsForVast()
         val testData = TestData.videoDirect
 
@@ -287,12 +375,14 @@ class VideoAdUITest {
                 tapOnClose()
             }
 
-            checkAdHasBeenLoadedShownClickedClosed(testData.placement)
+            checkAdHasBeenLoadedShownClickedClosed(testData)
         }
     }
 
     @Test
     fun test_bumper_enabled_from_api() {
+        if (DataStore.data.useBaseModule) return
+
         // Given bumper page is enabled from api
         IntentsHelper.stubIntentsForVast()
         val testData = TestData("87969", "video_direct_enabled_success.json")
@@ -323,114 +413,113 @@ class VideoAdUITest {
                 tapOnClose()
             }
 
-            checkAdHasBeenLoadedShownClickedClosed(testData.placement)
+            checkAdHasBeenLoadedShownClickedClosed(testData)
         }
     }
 
     @Test
     fun test_parental_gate_for_safe_ad_click() {
         val testData = TestData.videoPadlock
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnEnableParentalGate()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                }
             }
         }
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.waitForSafeAdLogoThenClick()
-
-        ParentalGateInteraction.checkVisible()
     }
 
     @Test
     fun test_parental_gate_for_ad_click() {
         val testData = TestData("87969", "padlock/video_direct_success_padlock_enabled.json")
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnEnableParentalGate()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay()
+                tapOnAd()
+
+                parentalGateRobot {
+                    checkVisible()
+                }
             }
         }
-        CommonInteraction.clickItemAt(testData)
+    }
 
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()), click())
+    private fun testAdAlreadyLoaded(testData: TestData) {
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnDisablePlay()
+                }
+            }
+            tapOnPlacement(testData)
+            tapOnPlacement(testData)
 
-        ParentalGateInteraction.checkVisible()
+            checkForEvent(testData, SAEvent.adAlreadyLoaded)
+        }
     }
 
     @Test
     fun test_direct_adAlreadyLoaded_callback() {
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisablePlay()
-            }
-        }
-
-        CommonInteraction.clickItemAt(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
+        testAdAlreadyLoaded(testData)
     }
 
     @Test
     fun test_vast_adAlreadyLoaded_callback() {
         val testData = TestData.videoVast
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisablePlay()
-            }
-        }
-
-        CommonInteraction.clickItemAt(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
+        testAdAlreadyLoaded(testData)
     }
 
     @Test
     fun test_vpaid_adAlreadyLoaded_callback() {
         val testData = TestData.videoVpaid
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisablePlay()
-            }
-        }
-
-        CommonInteraction.clickItemAt(testData)
-        CommonInteraction.clickItemAt(testData)
-
-        CommonInteraction.checkSubtitleContains("${testData.placement} adAlreadyLoaded")
+        testAdAlreadyLoaded(testData)
     }
 
     // Events
     @Test
     fun test_direct_ad_impression_events() {
-        // Given
         val testData = TestData.videoDirect
-        CommonInteraction.launchActivityWithSuccessStub(testData)
-        CommonInteraction.clickItemAt(testData)
 
-        ViewTester()
-            .waitForView(withContentDescription("Ad content"))
-            .perform(waitUntil(isDisplayed()))
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // When
-        Thread.sleep(5000)
+            videoScreenRobot {
+                waitForDisplay()
+                waitForImpression()
 
-        // Then
-        verifyUrlPathCalled("/vast/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
+                verifyUrlPathCalled("/vast/impression")
+                verifyUrlPathCalledWithQueryParam(
+                    "/event",
+                    "data",
+                    ".*viewable_impression.*"
+                )
+            }
+        }
     }
 
     @Test
     fun test_direct_ad_click_event() {
-        // Given
         val testData = TestData.videoDirect
         IntentsHelper.stubIntentsForVast()
 
@@ -441,80 +530,92 @@ class VideoAdUITest {
                 }
             }
             tapOnPlacement(testData)
-        }
 
-        videoScreenRobot {
+            videoScreenRobot {
+                waitForDisplay()
+                tapOnAd()
+
+                // Then
+                verifyUrlPathCalled("/vast/click")
+                IntentsHelper.checkIntentsForVast()
+
+                tapOnClose()
+            }
+
             waitForDisplay()
-            tapOnAd()
-
-            // Then
-            verifyUrlPathCalled("/vast/click")
-            IntentsHelper.checkIntentsForVast()
-
-            tapOnClose()
-        }
-
-        listScreenRobot {
-            waitForDisplay()
-            checkAdHasBeenLoadedShownClickedClosed(testData.placement)
+            checkAdHasBeenLoadedShownClickedClosed(testData)
         }
     }
 
     @Test
     fun test_direct_ad_dwell_time() {
-        // Given
-        CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect)
-        CommonInteraction.clickItemAt(TestData.videoDirect)
+        val testData = TestData.videoDirect
 
-        // When
-        Thread.sleep(5000)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // Then
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "type",
-            ".*viewTime.*"
-        )
+            videoScreenRobot {
+                waitForDisplay()
+                waitForImpression()
+
+                verifyUrlPathCalledWithQueryParam(
+                    "/event",
+                    "type",
+                    ".*viewTime.*"
+                )
+            }
+        }
     }
 
     @Test
     fun test_vast_ad_impression_events() {
-        // Given
-        CommonInteraction.launchActivityWithSuccessStub(TestData.videoVast)
-        CommonInteraction.clickItemAt(TestData.videoVast)
+        val testData = TestData.videoVast
 
-        // When
-        Thread.sleep(5000)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // Then
-        verifyUrlPathCalled("/vast/impression")
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "data",
-            ".*viewable_impression.*"
-        )
+            videoScreenRobot {
+                waitForDisplay()
+                waitForImpression()
+
+                verifyUrlPathCalled("/vast/impression")
+                verifyUrlPathCalledWithQueryParam(
+                    "/event",
+                    "data",
+                    ".*viewable_impression.*"
+                )
+            }
+        }
     }
 
     @Test
     fun test_vast_ad_dwell_time() {
-        // Given
-        CommonInteraction.launchActivityWithSuccessStub(TestData.videoVast)
-        CommonInteraction.clickItemAt(TestData.videoVast)
+        val testData = TestData.videoVast
 
-        // When
-        Thread.sleep(5000)
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
 
-        // Then
-        verifyUrlPathCalledWithQueryParam(
-            "/event",
-            "type",
-            ".*viewTime.*"
-        )
+            videoScreenRobot {
+                waitForDisplay()
+                waitForImpression()
+
+                verifyUrlPathCalledWithQueryParam(
+                    "/event",
+                    "type",
+                    ".*viewTime.*"
+                )
+            }
+        }
     }
 
     @Test
     fun test_parental_gate_success_event() {
+        val testData = TestData.videoDirect
         IntentsHelper.stubIntentsForVast()
+
         openParentalGate()
         parentalGateRobot {
             solve()
@@ -529,46 +630,59 @@ class VideoAdUITest {
 
         listScreenRobot {
             waitForDisplay()
-            checkAdHasBeenLoadedShownClickedClosed("87969")
+            checkAdHasBeenLoadedShownClickedClosed(testData)
         }
     }
 
     @Test
     fun test_parental_gate_close_event() {
         openParentalGate()
-        ParentalGateInteraction.testClose()
+
+        parentalGateRobot {
+            tapOnCancel()
+            checkEventForClose()
+        }
     }
 
     @Test
     fun test_parental_gate_failure_event() {
         openParentalGate()
-        ParentalGateInteraction.testFailure()
+
+        parentalGateRobot {
+            solveForFailure()
+        }
     }
 
     @Test
     fun test_external_webpage_opening_on_click() {
-        // Given
+        val testData = TestData.videoDirect
         IntentsHelper.stubIntentsForVast()
-        CommonInteraction.launchActivityWithSuccessStub(TestData.videoDirect) {
-            settingsScreenRobot {
-                tapOnCloseNoDelay()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
             }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay()
+                tapOnAd()
+
+                // Then view URL is redirected to browser
+                IntentsHelper.checkIntentsForVast()
+
+                waitAndTapOnClose()
+            }
+
+            checkAdHasBeenLoadedShownClickedClosed(testData)
         }
-        CommonInteraction.clickItemAt(TestData.videoDirect)
-
-        // When ad is clicked
-        CommonInteraction.waitForAdContentThenClick()
-
-        // Then view URL is redirected to browser
-        IntentsHelper.checkIntentsForVast()
-
-        // Then go back and check ad is loaded
-        CommonInteraction.waitForCloseButtonThenClick()
-        CommonInteraction.checkAdHasBeenLoadedShownClickedClosed("87969")
     }
 
     @Test
     fun test_vast_click_event() {
+        if (DataStore.data.useBaseModule) return
         // Given CPI Vast Ad
         val testData = TestData("88406", "video_vast_cpi_success.json")
         val url = "https://www.superawesome.com/&referrer=null"
@@ -578,128 +692,135 @@ class VideoAdUITest {
             launchWithSuccessStub(testData)
 
             tapOnPlacement(testData)
-        }
 
-        videoScreenRobot {
-            waitForDisplay()
+            videoScreenRobot {
+                waitForDisplay()
 
-            tapOnAd()
+                tapOnAd()
 
-            IntentsHelper.checkIntentsForUrl(url)
+                IntentsHelper.checkIntentsForUrl(url)
+            }
         }
     }
 
     @Test
     fun test_iv_video_warn_dialog_press_close() {
-        // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
 
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnEnableVideoWarnDialog()
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableVideoWarnDialog()
+                }
             }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+
+                videoWarningRobot {
+                    checkVisible()
+
+                    tapOnClose()
+                }
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+            checkForEvent(testData, SAEvent.adPaused)
+            checkForEvent(testData, SAEvent.adClosed)
         }
-
-        CommonInteraction.clickItemAt(testData)
-
-        // When close is clicked
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        VideoWarnInteraction.checkVisible()
-
-        VideoWarnInteraction.clickClose()
-
-        // Then
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adPaused")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_iv_video_warn_dialog_press_resume() {
-        // Given VPAID Ad
         val testData = TestData.videoVpaidPJ
 
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisableCloseAtEnd()
-                tapOnEnableVideoWarnDialog()
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableVideoWarnDialog()
+                    tapOnDisableCloseAtEnd()
+                }
             }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+
+                videoWarningRobot {
+                    checkVisible()
+
+                    tapOnResume()
+                }
+
+                waitForAdEnds()
+
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adEnded)
+            checkForEvent(testData, SAEvent.adClosed)
         }
-
-        CommonInteraction.clickItemAt(testData)
-
-        // When close is clicked
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        VideoWarnInteraction.checkVisible()
-
-        VideoWarnInteraction.clickResume()
-
-        Thread.sleep(20000)
-
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        // Then
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_direct_video_warn_dialog_press_close() {
-        // Given a direct Ad
         val testData = TestData.videoDirect
 
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnEnableVideoWarnDialog()
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableVideoWarnDialog()
+                }
             }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+
+                videoWarningRobot {
+                    checkVisible()
+
+                    tapOnClose()
+                }
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+            checkForEvent(testData, SAEvent.adClosed)
         }
-
-        CommonInteraction.clickItemAt(testData)
-
-        // When close is clicked
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        VideoWarnInteraction.checkVisible()
-
-        VideoWarnInteraction.clickClose()
-
-        // Then check correct events were called
-        CommonInteraction.checkSubtitleContains("${testData.placement} adLoaded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adShown")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     @Test
     fun test_direct_video_warn_dialog_press_resume() {
-        // Given a direct Ad
         val testData = TestData.videoDirect
 
-        CommonInteraction.launchActivityWithSuccessStub(testData) {
-            settingsScreenRobot {
-                tapOnDisableCloseAtEnd()
-                tapOnEnableVideoWarnDialog()
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnDisableCloseAtEnd()
+                    tapOnEnableVideoWarnDialog()
+                }
             }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+
+                videoWarningRobot {
+                    checkVisible()
+                    tapOnResume()
+                }
+
+                waitForAdEnds()
+
+                tapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adEnded)
+            checkForEvent(testData, SAEvent.adClosed)
         }
-
-        CommonInteraction.clickItemAt(testData)
-
-        // When close is clicked
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        VideoWarnInteraction.checkVisible()
-
-        VideoWarnInteraction.clickResume()
-
-        Thread.sleep(20000)
-
-        CommonInteraction.waitForCloseButtonThenClick()
-
-        // Then
-        CommonInteraction.checkSubtitleContains("${testData.placement} adEnded")
-        CommonInteraction.checkSubtitleContains("${testData.placement} adClosed")
     }
 
     private fun openParentalGate() {
