@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity(), LevelPlayRewardedVideoListener, LevelP
         super.onCreate(savedInstanceState)
         setContent {
             MyComposeTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -57,7 +56,8 @@ class MainActivity : ComponentActivity(), LevelPlayRewardedVideoListener, LevelP
             }
         }
 
-        //The integrationHelper is used to validate the integration. Remove the integrationHelper before going live!
+        // The integrationHelper is used to validate the integration.
+        // Remove the integrationHelper before going live!
         IntegrationHelper.validateIntegration(this)
         setupIronSource()
     }
