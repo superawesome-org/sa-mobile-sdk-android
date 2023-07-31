@@ -350,7 +350,7 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          cron: "0 7 * * 1-5"
+          cron: "0 23 * * 1-5"
           filters:
             branches:
               only:
@@ -395,6 +395,16 @@ workflows:
               ignore: /^v.*/
 
       - test_superawesome_common:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+      - build_test_app_for_smoke_tests:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
