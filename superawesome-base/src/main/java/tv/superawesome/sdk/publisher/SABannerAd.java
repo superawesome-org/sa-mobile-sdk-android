@@ -48,7 +48,7 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 
 public class SABannerAd extends FrameLayout {
 
-    interface SABannerAdListener {
+    public interface SABannerAdListener {
         void hasLoaded();
         void hasBeenVisible();
 
@@ -159,7 +159,7 @@ public class SABannerAd extends FrameLayout {
         try {
             AwesomeAds.init(((Activity) this.getContext()).getApplication(), false);
         } catch (Exception e) {
-            Log.d("SuperAwesome", "Error initing AwesomeAds in SABannerAd " + e.getMessage());
+            Log.d("SuperAwesome", "Error initiating AwesomeAds in SABannerAd " + e.getMessage());
         }
 
         // from this moment on the ad can't be played, to avoid wierd things
@@ -334,12 +334,6 @@ public class SABannerAd extends FrameLayout {
                                 .html
                                 .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
 
-                        // load the HTML
-//                        try {
-//                            fullHTML = SAOpenMeasurement.INSTANCE.injectOmsdkJavascript(context, fullHTML);
-//                        } catch (IllegalArgumentException | IllegalStateException error) {
-//                            error.printStackTrace();
-//                        }
                         Log.d("SADefaults", "Full HTML is " + fullHTML);
                         webPlayer.loadHTML(ad.creative.details.base, fullHTML);
 
@@ -410,7 +404,9 @@ public class SABannerAd extends FrameLayout {
                         padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
                         padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
                         setupAdSession();
-                        bannerListener.hasLoaded();
+                        if (bannerListener != null) {
+                            bannerListener.hasLoaded();
+                        }
                         break;
                     }
                     // this is called when the fragment & web view have all been laid out
@@ -763,7 +759,7 @@ public class SABannerAd extends FrameLayout {
         session.setConfiguration(value);
     }
 
-    void setBannerListener(SABannerAdListener listener) {
+    public void setBannerListener(SABannerAdListener listener) {
         bannerListener = listener;
     }
 

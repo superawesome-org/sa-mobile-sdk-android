@@ -12,6 +12,7 @@ import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.settings.SettingsDialogFragment
 import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.sdk.publisher.SABannerAd.SABannerAdListener
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.SAEvent
 import tv.superawesome.sdk.publisher.common.network.Environment
@@ -272,6 +273,20 @@ class MainActivity : FragmentActivity() {
                 binding.bannerView2.play(this)
             }
         }
+
+        binding.bannerView2.setBannerListener( object : SABannerAdListener {
+            override fun hasLoaded() {
+
+            }
+
+            override fun hasBeenVisible() {
+
+            }
+
+            override fun failedToShow() {
+
+            }
+        })
     }
 
     private fun updateSettingsForBase() {
