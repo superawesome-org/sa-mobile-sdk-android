@@ -12,6 +12,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         mavenLocal()
+        maven { url = uri("https://android-sdk.is.com/") }
+        maven { url = uri("https://aa-sdk.s3-eu-west-1.amazonaws.com/android_repo") }
     }
 }
 
@@ -27,4 +29,5 @@ include(":saadmob-common")
 include(":superawesome")
 include(":superawesome-base")
 include(":superawesome-common")
-include(":superawesomecomposeexample")
+include(":examples:superawesome-compose")
+include(":examples:superawesome-ironsource")
