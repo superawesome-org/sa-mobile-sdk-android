@@ -20,4 +20,9 @@ object Versions {
      * Android app's version name
      */
     internal const val versionName = "1.0"
+
+    /**
+     * Android app's target SDK version.
+     */
+    internal const val targetSdk = 33
 }
