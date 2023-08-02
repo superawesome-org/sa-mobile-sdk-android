@@ -1,8 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
 import tv.superawesome.sdk.publisher.common.models.Ad
-import java.util.Date
-import kotlin.random.Random
 
 internal interface HtmlFormatterType {
     fun formatImageIntoHtml(ad: Ad, placementId: Int): String
@@ -41,7 +39,7 @@ internal class HtmlFormatter(
         if (ad.creative.clickUrl != null) {
             return "<a href='${ad.creative.clickUrl}' target='_blank'>$img</a>"
         }
-        return "<html><head></head><body>$img</body>$iasUrl</html>"
+        return "<html><head><script type='text/javascript' src='https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js'/></head><body><body>$img</body>$iasUrl</html>"
     }
 
     override fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String {
@@ -49,7 +47,7 @@ internal class HtmlFormatter(
         val iasUrl = getIASUrl(ad, placementId)
         val url =
             "${ad.creative.details.url}?placement=$placementId&line_item=${ad.lineItemId}&creative=${ad.creative.id}&rnd=${numberGenerator.nextIntForCache()}"
-        return "<html><head></head><body><iframe class='omid-element' style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>$iasUrl</body></html>"
+        return "<html><head><script type='text/javascript' src='https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js'/></head><body><iframe class='omid-element' style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>$iasUrl</body></html>"
     }
 
     override fun formatTagIntoHtml(ad: Ad): String {

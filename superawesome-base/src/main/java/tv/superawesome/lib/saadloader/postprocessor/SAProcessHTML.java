@@ -23,7 +23,7 @@ public class SAProcessHTML {
      * @return      the formatted HTML string to be used by a WebView
      */
     public static String formatCreativeIntoImageHTML(SAAd ad) {
-        String htmlString = "<a href='_HREF_URL_' target='_blank'><img src='_IMAGE_URL_' width='100%' height='100%' style='object-fit: contain;'/></a>";
+        String htmlString = "<html><head><script type='text/javascript' src='https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js'/></head><body><a href='_HREF_URL_' target='_blank'><img src='_IMAGE_URL_' width='100%' height='100%' style='object-fit: contain;'/></a></body></html>";
 
         if (ad.creative.details.image != null) {
             htmlString = htmlString.replace("_IMAGE_URL_", ad.creative.details.image);
@@ -48,7 +48,7 @@ public class SAProcessHTML {
      * @return      the formatted HTML string to be used by a WebView
      */
     public static String formatCreativeIntoRichMediaHTML(SAAd ad, int random) {
-        String htmlString = "<iframe style='padding:0;border:0;' width='100%' height='100%' src='_RICH_MEDIA_URL_'></iframe>";
+        String htmlString = "<html><head><script type='text/javascript' src='https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js'/></head><body><iframe style='padding:0;border:0;' width='100%' height='100%' src='_RICH_MEDIA_URL_'></iframe></body></html>";
         String richMediaURL = ad.creative.details.url +
                 "?placement=" + ad.placementId +
                 "&line_item=" + ad.lineItemId +
