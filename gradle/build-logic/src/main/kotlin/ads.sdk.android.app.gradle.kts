@@ -14,6 +14,7 @@ android {
     configureKotlinAndroid(this)
 
     defaultConfig {
+        targetSdk = Versions.targetSdk
         versionCode = Versions.versionCode
         versionName = Versions.versionName
 
