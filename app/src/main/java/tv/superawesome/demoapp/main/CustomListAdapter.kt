@@ -17,14 +17,8 @@ internal class CustomListAdapter(context: Context?) :
 
     private var data: List<PlacementItem> = emptyList()
     fun updateData(newData: List<PlacementItem>) {
-        data = newData + listOf(
-            PlacementItem(name = "SJ Test", placementId = 82089, lineItemId = 172880, creativeId = 545450, type = FeatureType.INTERSTITIAL),
-            PlacementItem(name = "SJ Test 2", placementId = 82089, lineItemId = 205118, creativeId = 545452, type = FeatureType.INTERSTITIAL),
-            PlacementItem(name = "Bid switch Test 2", placementId = 93158, lineItemId = 205131, creativeId = 543276, type = FeatureType.VIDEO),
-        )
+        data = newData
     }
-
-    // 43383
 
     fun reloadList() {
         notifyDataSetChanged()
