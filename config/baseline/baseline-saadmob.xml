@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EndOfSentenceFormat:SAAdMobAdapter.kt$SAAdMobAdapter$* AdMob mediation adapter for AwesomeAds</ID>
+    <ID>EndOfSentenceFormat:SAAdMobVideoMediationAdapter.kt$SAAdMobVideoMediationAdapter$* This adapter will be retired and instead use `SAAdMobAdapter` for all ad types</ID>
+    <ID>ExpressionBodySyntax:SAAdMobBannerAd.kt$SAAdMobBannerAd$return bannerAd ?: View(adConfiguration.context)</ID>
+    <ID>LabeledExpression:SAAdMobInterstitialCustomEvent.kt$SAAdMobInterstitialCustomEvent$@SAInterface</ID>
+    <ID>MagicNumber:SAAdMobAdapter.kt$SAAdMobAdapter$100</ID>
+    <ID>MagicNumber:SAAdMobAdapter.kt$SAAdMobAdapter$3</ID>
+    <ID>MaxLineLength:SAAdMobBannerAd.kt$SAAdMobBannerAd$bannerAd</ID>
+    <ID>MaxLineLength:SAAdMobInterstitialAd.kt$SAAdMobInterstitialAd$private var mediationAdLoadCallback: MediationAdLoadCallback&lt;MediationInterstitialAd, MediationInterstitialAdCallback&gt;</ID>
+    <ID>NewLineAtEndOfFile:EventListener.kt$tv.superawesome.plugins.publisher.admob.EventListener.kt</ID>
+    <ID>NewLineAtEndOfFile:SAAdMobBannerAd.kt$tv.superawesome.plugins.publisher.admob.SAAdMobBannerAd.kt</ID>
+    <ID>NewLineAtEndOfFile:SAAdMobError.kt$tv.superawesome.plugins.publisher.admob.SAAdMobError.kt</ID>
+    <ID>StringLiteralDuplication:EventListener.kt$EventListener$"SuperAwesome"</ID>
+    <ID>UnderscoresInNumericLiterals:SAAdMobBannerAd.kt$SAAdMobBannerAd$1000000</ID>
+    <ID>UnderscoresInNumericLiterals:SAAdMobBannerAd.kt$SAAdMobBannerAd$1500000</ID>
+    <ID>UndocumentedPublicClass:SAAdMobBannerAd.kt$SAAdMobBannerAd : MediationBannerAdSAInterface</ID>
+    <ID>UndocumentedPublicClass:SAAdMobError.kt$SAAdMobError</ID>
+    <ID>UndocumentedPublicClass:SAAdMobInterstitialAd.kt$SAAdMobInterstitialAd : MediationInterstitialAdSAInterface</ID>
+    <ID>UndocumentedPublicClass:SAAdMobInterstitialCustomEvent.kt$SAAdMobInterstitialCustomEvent : CustomEventInterstitial</ID>
+    <ID>UndocumentedPublicClass:SAAdMobRewardedAd.kt$SAAdMobRewardedAd : MediationRewardedAdSAInterface</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobBannerAd.kt$SAAdMobBannerAd$fun load()</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobError.kt$SAAdMobError$fun adFailedToLoad(message: String): AdError</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobError.kt$SAAdMobError$fun adFailedToLoad(placementId: Int): AdError</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobError.kt$SAAdMobError$fun adFailedToShow(placementId: Int): AdError</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobInterstitialAd.kt$SAAdMobInterstitialAd$fun load()</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobRewardedAd.kt$SAAdMobRewardedAd$fun load()</ID>
+    <ID>VariableNaming:SAAdMobBannerAd.kt$SAAdMobBannerAd$private val ID = SAUtils.randomNumberBetween(1000000, 1500000)</ID>
+    <ID>WildcardImport:SAAdMobAdapter.kt$import com.google.android.gms.ads.mediation.*</ID>
+    <ID>WildcardImport:SAAdMobInterstitialCustomEvent.kt$import tv.superawesome.sdk.publisher.SAInterstitialAd.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

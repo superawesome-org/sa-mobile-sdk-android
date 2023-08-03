@@ -78,6 +78,16 @@ jobs:
           root: "."
           paths:
             - "."
+  ## Lint code
+  lint_check:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *set_keylist_android
+      - run:
+          name: Detekt
+          command: ./gradlew detekt
 
   ## Run unit tests
   test_superawesome_base:
@@ -394,7 +404,7 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - test_superawesome_base:
+      - lint_check:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
@@ -404,10 +414,20 @@ workflows:
             tags:
               ignore: /^v.*/
 
+      - test_superawesome_base:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - lint_check
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
       - test_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - checkout_code
+            - lint_check
           filters:
             branches:
               ignore: develop
