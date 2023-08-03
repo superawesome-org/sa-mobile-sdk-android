@@ -50,7 +50,6 @@ references:
       command: |
         echo "Setting Android keys JSON config file + create missing dirs"
         echo "IronSource app key"
-        echo "${SA_ANDROID_IS_APP_KEY_ENC}" | base64 --decode > examples/superawesome-ironsource/app_key.json
 
   bootstrap_android_app: &bootstrap_android_app
     run:

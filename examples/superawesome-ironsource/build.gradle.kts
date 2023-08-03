@@ -26,20 +26,12 @@ android {
     }
 
     buildTypes {
-        val appKey = with(JsonSlurper()) {
-            val file = File("${projectDir.absolutePath}/app_key.json").readText()
-            val json = parseText(file) as Map<String, String>
-            "\"${json["app_key"]}\""
-        }
-
         release {
-            buildConfigField("String", "APP_KEY", appKey)
             buildConfigField("String", "IS_MEDIATOR_VERSION", "\"${libs.versions.ironsource.mediator.get()}\"")
             buildConfigField("String", "IS_ADAPTER_VERSION", "\"${libs.versions.ironsource.adapters.superawesome.get()}\"")
             buildConfigField("String", "SA_SDK_VERSION", "\"${libs.versions.superawesome.sdk.get()}\"")
         }
         debug {
-            buildConfigField("String", "APP_KEY", appKey)
             buildConfigField("String", "IS_MEDIATOR_VERSION", "\"${libs.versions.ironsource.mediator.get()}\"")
             buildConfigField("String", "IS_ADAPTER_VERSION", "\"${libs.versions.ironsource.adapters.superawesome.get()}\"")
             buildConfigField("String", "SA_SDK_VERSION", "\"${libs.versions.superawesome.sdk.get()}\"")
