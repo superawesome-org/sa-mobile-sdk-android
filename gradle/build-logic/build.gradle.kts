@@ -19,4 +19,5 @@ dependencies {
     implementation(libs.gradlePlugin.android)
     implementation(libs.gradlePlugin.kotlin)
     implementation(libs.gradlePlugin.kotlin.serialization)
+    implementation(libs.detekt)
 }
