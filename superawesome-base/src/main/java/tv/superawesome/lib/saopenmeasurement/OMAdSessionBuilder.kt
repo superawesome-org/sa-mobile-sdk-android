@@ -34,7 +34,7 @@ object OMAdSessionBuilder {
         val adSessionContext: AdSessionContext = AdSessionContext.createHtmlAdSessionContext(
             partner,
             webView,
-            null,
+            webView?.url,
             customReferenceData,
         )
         val adSession: AdSession = AdSession.createAdSession(adSessionConfiguration, adSessionContext)

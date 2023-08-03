@@ -17,10 +17,10 @@ import android.widget.ImageView;
 
 import com.iab.omid.library.superawesome.adsession.AdEvents;
 import com.iab.omid.library.superawesome.adsession.AdSession;
-import com.iab.omid.library.superawesome.adsession.CreativeType;
 import com.iab.omid.library.superawesome.adsession.FriendlyObstructionPurpose;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import kotlin.Unit;
@@ -32,7 +32,6 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.saopenmeasurement.OMAdSessionBuilder;
-import tv.superawesome.lib.saopenmeasurement.SAOpenMeasurement;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
@@ -73,12 +72,12 @@ public class SABannerAd extends FrameLayout {
     private final SALoader loader;
 
     // private subviews
-    private SAWebPlayer webPlayer;
+    private SAWebPlayer activeWebPlayer;
+    private Map<String, SAWebPlayer> webPlayerStore;
     private ImageButton padlock;
 
     // bool
     private boolean canPlay = true;
-    private boolean firstPlay = true;
     private boolean isClosed = false;
 
     private Long currentClickThreshold = 0L;
@@ -123,6 +122,7 @@ public class SABannerAd extends FrameLayout {
         session = new SASession(context);
         loader = new SALoader(context);
         events = new SAEvents();
+        webPlayerStore = new HashMap<>();
 
         // Add the clock
         this.clock = clock;
@@ -166,7 +166,7 @@ public class SABannerAd extends FrameLayout {
         canPlay = false;
 
         // close
-        if (!firstPlay) {
+        if (!webPlayerStore.isEmpty()) {
             close();
         }
 
@@ -252,7 +252,7 @@ public class SABannerAd extends FrameLayout {
         canPlay = false;
 
         // close
-        if (!firstPlay) {
+        if (!webPlayerStore.isEmpty()) {
             close();
         }
 
@@ -311,14 +311,17 @@ public class SABannerAd extends FrameLayout {
 
             // canPlay becomes "false" again so no other playing can happen until a new load
             canPlay = false;
-            firstPlay = false;
 
             // create a new web player fragment object
-            webPlayer = new SAWebPlayer(context);
-            webPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            SAWebPlayer webPlayer = new SAWebPlayer(context);
+            webPlayerStore.put(ad.rnd, webPlayer);
+
+            activeWebPlayer = webPlayer;
+            activeWebPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             // and set it's event listener
 
-            webPlayer.setEventListener((event, destination) -> {
+            activeWebPlayer.setEventListener((event, destination) -> {
 
                 switch (event) {
                     // this is called when the web player is on screen and prepared to load
@@ -335,7 +338,7 @@ public class SABannerAd extends FrameLayout {
                                 .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
 
                         Log.d("SADefaults", "Full HTML is " + fullHTML);
-                        webPlayer.loadHTML(ad.creative.details.base, fullHTML);
+                        activeWebPlayer.loadHTML(ad.creative.details.base, fullHTML);
 
                         break;
                     }
@@ -347,8 +350,12 @@ public class SABannerAd extends FrameLayout {
                         events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
                             if (success) {
                                 events.triggerViewableImpressionEvent();
-                                if (adEvents != null) {
-                                    adEvents.impressionOccurred();
+                                if (adEvents != null && activeWebPlayer.getWebView() != null) {
+                                    try {
+                                        adEvents.impressionOccurred();
+                                    } catch (IllegalArgumentException | IllegalStateException error) {
+                                        error.printStackTrace();
+                                    }
                                 }
                                 if (bannerListener != null) {
                                     bannerListener.hasBeenVisible();
@@ -361,14 +368,6 @@ public class SABannerAd extends FrameLayout {
                             Log.d("SABannerAd", "Event callback: " + SAEvent.adShown);
                         } else {
                             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
-                        }
-
-                        try {
-                            if (adEvents != null) {
-                                adEvents.loaded();
-                            }
-                        } catch (IllegalArgumentException | IllegalStateException error) {
-                            error.printStackTrace();
                         }
 
                         break;
@@ -400,21 +399,30 @@ public class SABannerAd extends FrameLayout {
                             Runnable runner = () -> showSuperAwesomeWebViewInExternalBrowser(context);
                             showParentalGateIfNeededWithCompletion(context, runner);
                         });
-                        webPlayer.getHolder().addView(padlock);
-                        padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
-                        padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+                        activeWebPlayer.getHolder().addView(padlock);
+                        padlock.setTranslationX(activeWebPlayer.getWebView().getTranslationX());
+                        padlock.setTranslationY(activeWebPlayer.getWebView().getTranslationY());
                         setupAdSession();
                         if (bannerListener != null) {
                             bannerListener.hasLoaded();
                         }
+
+                        if (adEvents != null) {
+                            try {
+                                adEvents.loaded();
+                            } catch (IllegalArgumentException | IllegalStateException error) {
+                                error.printStackTrace();
+                            }
+                        }
+
                         break;
                     }
                     // this is called when the fragment & web view have all been laid out
                     case Web_Layout: {
 
-                        if (webPlayer.getWebView() != null && padlock != null) {
-                            padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
-                            padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+                        if (activeWebPlayer.getWebView() != null && padlock != null) {
+                            padlock.setTranslationX(activeWebPlayer.getWebView().getTranslationX());
+                            padlock.setTranslationY(activeWebPlayer.getWebView().getTranslationY());
                         }
                         break;
                     }
@@ -452,8 +460,8 @@ public class SABannerAd extends FrameLayout {
                 }
             });
 
-            this.addView(webPlayer);
-            webPlayer.setup();
+            this.addView(activeWebPlayer);
+            activeWebPlayer.setup();
         }
         // if no ad has been loaded, send an ad failure event
         else {
@@ -486,7 +494,7 @@ public class SABannerAd extends FrameLayout {
         try {
             adSession = OMAdSessionBuilder.INSTANCE.getHtmlAdSession(
                     getContext(),
-                    webPlayer.getWebView(),
+                    activeWebPlayer.getWebView(),
                     null);
             if (padlock != null && padlock.getVisibility() == VISIBLE) {
                 adSession.addFriendlyObstruction(padlock, FriendlyObstructionPurpose.OTHER, null);
@@ -576,12 +584,13 @@ public class SABannerAd extends FrameLayout {
         // reset any ad that might be in here
         setAd(null);
 
-        adSession.finish();
+        if (adSession != null) {
+            adSession.finish();
+        }
         adEvents = null;
         adSession = null;
 
         // remove the web player
-
         destroyWebViewDelayed();
 
         // make padlock invisible
@@ -598,14 +607,24 @@ public class SABannerAd extends FrameLayout {
         isClosed = true;
     }
 
-    private void destroyWebViewDelayed() {
-        this.removeView(webPlayer);
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        destroyWebViewDelayed();
+        webPlayerStore.clear();
+    }
 
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> {
-            webPlayer.getWebView().loadUrl("about:blank");
-            webPlayer.destroy();
-        }, 1000);
+    private void destroyWebViewDelayed() {
+        for (Map.Entry<String, SAWebPlayer> playerEntry : webPlayerStore.entrySet()) {
+            SAWebPlayer cPlayer = playerEntry.getValue();
+            webPlayerStore.remove(playerEntry);
+            this.removeView(cPlayer);
+
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(() -> {
+                cPlayer.destroy();
+            }, 1000);
+        }
     }
 
     /**
