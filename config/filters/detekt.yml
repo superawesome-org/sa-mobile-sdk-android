@@ -1,0 +1,42 @@
+complexity:
+  TooManyFunctions:
+    thresholdInClasses: 20
+
+comments:
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+  CommentOverPrivateFunction:
+    active: false
+  CommentOverPrivateProperty:
+    active: false
+  UndocumentedPublicProperty:
+    excludes: ['**/design/**']
+
+style:
+  DataClassContainsFunctions:
+    active: false
+  DataClassShouldBeImmutable:
+    active: false
+  MagicNumber:
+    ignorePropertyDeclaration: true
+    excludes: [ '**/design/**', '**/test/**','**/androidTest/**' ]
+  UnusedPrivateMember:
+    ignoreAnnotated: [ 'Preview' ]
+  UseIfInsteadOfWhen:
+    active: false
+  BracesOnWhenStatements:
+    active: false
+
+potential-bugs:
+  UnsafeCallOnNullableType:
+    excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+  UnsafeCast:
+    excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+
+naming:
+  TopLevelPropertyNaming:
+    constantPattern: '[A-Z][A-Za-z0-9]*'
+    excludes: [ '**/theme/**', '**/test/**','**/androidTest/**' ]
+  FunctionMaxLength:
+    excludes: [ '**/test/**','**/androidTest/**' ]
+  FunctionNaming:
+    ignoreAnnotated: [ 'Composable' ]

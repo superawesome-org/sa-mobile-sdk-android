@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EndOfSentenceFormat:SAAdMobAdapter.kt$SAAdMobAdapter$* AdMob mediation adapter for AwesomeAds</ID>
+    <ID>ExpressionBodySyntax:SAAdMobBannerAd.kt$SAAdMobBannerAd$return bannerAd ?: View(adConfiguration.context)</ID>
+    <ID>MagicNumber:SAAdMobAdapter.kt$SAAdMobAdapter$100</ID>
+    <ID>MagicNumber:SAAdMobAdapter.kt$SAAdMobAdapter$3</ID>
+    <ID>MaxLineLength:SAAdMobBannerAd.kt$SAAdMobBannerAd$bannerAd</ID>
+    <ID>MaxLineLength:SAAdMobInterstitialAd.kt$SAAdMobInterstitialAd$private var mediationAdLoadCallback: MediationAdLoadCallback&lt;MediationInterstitialAd, MediationInterstitialAdCallback&gt;</ID>
+    <ID>NewLineAtEndOfFile:EventListener.kt$tv.superawesome.plugins.publisher.admob.EventListener.kt</ID>
+    <ID>NewLineAtEndOfFile:SAAdMobBannerAd.kt$tv.superawesome.plugins.publisher.admob.SAAdMobBannerAd.kt</ID>
+    <ID>NewLineAtEndOfFile:SAAdMobError.kt$tv.superawesome.plugins.publisher.admob.SAAdMobError.kt</ID>
+    <ID>NewLineAtEndOfFile:SAAdMobExtras.kt$tv.superawesome.plugins.publisher.admob.SAAdMobExtras.kt</ID>
+    <ID>SpacingBetweenPackageAndImports:SAAdMobAdapter.kt$ </ID>
+    <ID>StringLiteralDuplication:EventListener.kt$EventListener$"SuperAwesome"</ID>
+    <ID>UndocumentedPublicClass:SAAdMobBannerAd.kt$SAAdMobBannerAd : MediationBannerAdSAInterface</ID>
+    <ID>UndocumentedPublicClass:SAAdMobError.kt$SAAdMobError</ID>
+    <ID>UndocumentedPublicClass:SAAdMobExtras.kt$SAAdMobExtras</ID>
+    <ID>UndocumentedPublicClass:SAAdMobInterstitialAd.kt$SAAdMobInterstitialAd : MediationInterstitialAdSAInterface</ID>
+    <ID>UndocumentedPublicClass:SAAdMobRewardedAd.kt$SAAdMobRewardedAd : MediationRewardedAdSAInterface</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobBannerAd.kt$SAAdMobBannerAd$fun load()</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobError.kt$SAAdMobError$fun adFailedToLoad(message: String): AdError</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobError.kt$SAAdMobError$fun adFailedToLoad(placementId: Int): AdError</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobError.kt$SAAdMobError$fun adFailedToShow(placementId: Int): AdError</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun build(): Bundle</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setBackButton(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setBumperPage(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setCloseAtEnd(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setCloseButton(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setOrientation(value: Orientation): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setParentalGate(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setPlaybackMode(mode: StartDelay): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setSmallClick(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setTestMode(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras$fun setTransparent(value: Boolean): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras.Companion$fun extras(): SAAdMobExtras</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobExtras.kt$SAAdMobExtras.Companion$fun readBundle(bundle: Bundle?): SAAdMobExtras?</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobInterstitialAd.kt$SAAdMobInterstitialAd$fun load()</ID>
+    <ID>UndocumentedPublicFunction:SAAdMobRewardedAd.kt$SAAdMobRewardedAd$fun load()</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var backButton = true private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var bumperPage = false private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var closeAtEnd = true private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var closeButton = false private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var orientation = Orientation.Any private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var parentalGate = false private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var playback = AdRequest.StartDelay.PreRoll private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var smallClick = false private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var testMode = false private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras$var transparent = false private set</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val PARAMETER = "parameter"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_BACK_BUTTON = "SA_BACK_BUTTON"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_BUMPER_PAGE = "SA_BUMPER"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_CLOSE_AT_END = "SA_CLOSE_AT_END"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_CLOSE_BUTTON = "SA_CLOSE_BUTTON"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_ORIENTATION = "SA_ORIENTATION"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_PARENTAL_GATE = "SA_PG"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_PLAYBACK_MODE = "SA_PLAYBACK_MODE"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_SMALL_CLICK = "SA_SMALL_CLICK"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_TEST = "SA_TEST_MODE"</ID>
+    <ID>UndocumentedPublicProperty:SAAdMobExtras.kt$SAAdMobExtras.Companion$const val kKEY_TRANSPARENT = "SA_TRANSPARENT"</ID>
+  </CurrentIssues>
+</SmellBaseline>
