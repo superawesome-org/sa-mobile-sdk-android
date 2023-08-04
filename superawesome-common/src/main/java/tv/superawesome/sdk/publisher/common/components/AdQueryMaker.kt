@@ -20,6 +20,7 @@ internal interface AdQueryMakerType {
     fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle
 }
 
+@Suppress("LongParameterList")
 internal class AdQueryMaker(
     private val device: DeviceType,
     private val sdkInfoType: SdkInfoType,
