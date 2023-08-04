@@ -25,6 +25,7 @@ internal class AdQueryMaker(
     private val device: DeviceType,
     private val sdkInfoType: SdkInfoType,
     private val connectionProvider: ConnectionProviderType,
+    private val numberGenerator: NumberGeneratorType,
     private val idGenerator: IdGeneratorType,
     private val encoder: EncoderType,
     private val json: Json,
@@ -36,6 +37,7 @@ internal class AdQueryMaker(
         AdQuery(
             test = request.test,
             sdkVersion = sdkInfoType.version,
+            rnd = numberGenerator.nextIntForCache(),
             bundle = sdkInfoType.bundle,
             name = sdkInfoType.name,
             dauId = idGenerator.findDauId(),

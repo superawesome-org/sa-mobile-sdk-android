@@ -1,3 +1,4 @@
+@file:Suppress("MaxLineLength")
 package tv.superawesome.sdk.publisher.common.components
 
 import android.app.Activity
@@ -87,6 +88,7 @@ internal class AdQueryMakerTest : BaseTest() {
         // Then
         assertEquals(false, baseQuery.test)
         assertEquals("sdk_version", baseQuery.sdkVersion)
+        assertEquals(33, baseQuery.rnd)
         assertEquals("sdk_bundle", baseQuery.bundle)
         assertEquals("sdk_name", baseQuery.name)
         assertEquals(99, baseQuery.dauId)
@@ -109,6 +111,7 @@ internal class AdQueryMakerTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true) {
             every { creative.id } returns 20
             every { lineItemId } returns 30
+            every { random } returns "33"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
@@ -126,7 +129,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(30, baseQuery.lineItem)
         assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
+        assertEquals("33", baseQuery.rnd)
         assertEquals(EventType.ImpressionDownloaded, baseQuery.type)
         assertEquals(true, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
@@ -138,6 +141,7 @@ internal class AdQueryMakerTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true) {
             every { creative.id } returns 20
             every { lineItemId } returns 30
+            every { random } returns "33"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
@@ -155,7 +159,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(30, baseQuery.lineItem)
         assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
+        assertEquals("33", baseQuery.rnd)
         assertEquals(null, baseQuery.type)
         assertEquals(null, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
@@ -167,6 +171,7 @@ internal class AdQueryMakerTest : BaseTest() {
         val ad = mockk<Ad>(relaxed = true) {
             every { creative.id } returns 20
             every { lineItemId } returns 30
+            every { random } returns "33"
         }
         val request = AdResponse(10, ad)
         val data = EventData(10, 30, 20, EventType.ParentalGateClose)
@@ -186,7 +191,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(30, baseQuery.lineItem)
         assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
-        assertEquals(33, baseQuery.rnd)
+        assertEquals("33", baseQuery.rnd)
         assertEquals(null, baseQuery.noImage)
         assertEquals("encoded_uri", baseQuery.data)
     }
@@ -370,6 +375,7 @@ internal class AdQueryMakerTest : BaseTest() {
             "" +
                     "{test=false, " +
                     "sdkVersion=, " +
+                    "rnd=0, " +
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
@@ -413,6 +419,7 @@ internal class AdQueryMakerTest : BaseTest() {
             "" +
                     "{test=false, " +
                     "sdkVersion=, " +
+                    "rnd=0, " +
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
@@ -459,6 +466,7 @@ internal class AdQueryMakerTest : BaseTest() {
             "" +
                     "{test=false, " +
                     "sdkVersion=, " +
+                    "rnd=0, " +
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
