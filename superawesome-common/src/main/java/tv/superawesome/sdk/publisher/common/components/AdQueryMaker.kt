@@ -28,7 +28,7 @@ internal class AdQueryMaker(
     private val encoder: EncoderType,
     private val json: Json,
     private val locale: Locale,
-    private val timeProvider: TimeProviderType
+    private val timeProvider: TimeProviderType,
 ) : AdQueryMakerType {
 
     override suspend fun makeAdQuery(request: AdRequest): AdQueryBundle = AdQueryBundle(
@@ -48,7 +48,7 @@ internal class AdQueryMaker(
             install = request.install,
             w = request.w,
             h = request.h,
-            timestamp = timeProvider.millis()
+            timestamp = timeProvider.millis(),
         ),
         options = buildOptions(requestOptions = request.options)
     )
@@ -64,7 +64,7 @@ internal class AdQueryMaker(
             rnd = adResponse.ad.random ?: "",
             type = null,
             noImage = null,
-            data = null
+            data = null,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
