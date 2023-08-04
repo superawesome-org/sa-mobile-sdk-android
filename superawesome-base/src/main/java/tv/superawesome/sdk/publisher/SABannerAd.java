@@ -82,7 +82,7 @@ public class SABannerAd extends FrameLayout {
 
     private Long currentClickThreshold = 0L;
 
-    private SABannerAdListener bannerListener = null;
+    SABannerAdListener bannerListener = null;
 
     // Utils
     private final SAClock clock;
@@ -497,7 +497,7 @@ public class SABannerAd extends FrameLayout {
                     activeWebPlayer.getWebView(),
                     null);
             if (padlock != null && padlock.getVisibility() == VISIBLE) {
-                adSession.addFriendlyObstruction(padlock, FriendlyObstructionPurpose.OTHER, null);
+                addFab(padlock, FriendlyObstructionPurpose.OTHER, "SafeAdPadlock");
             }
             adSession.start();
             adEvents = AdEvents.createAdEvents(adSession);
@@ -650,9 +650,9 @@ public class SABannerAd extends FrameLayout {
         return ad;
     }
 
-    public void addFab(View fabView, FriendlyObstructionPurpose purpose) {
+    public void addFab(View fabView, FriendlyObstructionPurpose purpose, String reason) {
         if (adSession == null) return;
-        adSession.addFriendlyObstruction(fabView, purpose, null);
+        adSession.addFriendlyObstruction(fabView, purpose, reason);
     }
 
     private void showParentalGateIfNeededWithCompletion(final Context context,
@@ -778,7 +778,7 @@ public class SABannerAd extends FrameLayout {
         session.setConfiguration(value);
     }
 
-    public void setBannerListener(SABannerAdListener listener) {
+    void setBannerListener(SABannerAdListener listener) {
         bannerListener = listener;
     }
 

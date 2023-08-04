@@ -76,7 +76,7 @@ enum class Settings(val label: String) {
 
 data class SettingsData(
     val environment: SAConfiguration = SAConfiguration.PRODUCTION,
-    val useBaseModule: Boolean = true,
+    val useBaseModule: Boolean = false,
     val closeButtonState: CloseButtonState = CloseButtonState.VisibleWithDelay,
     val bumperEnabled: Boolean = false,
     val parentalEnabled: Boolean = false,

@@ -60,7 +60,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
             SAEvent.adShown ->
                 interstitialBanner
                     .omSessionManager
-                    .addFriendlyObstruction(closeButton, FriendlyObstructionType.CloseAd, null)
+                    .addFriendlyObstruction(closeButton, FriendlyObstructionType.CloseAd, "CloseButton")
             SAEvent.adFailedToShow -> close()
             else -> {}
         }

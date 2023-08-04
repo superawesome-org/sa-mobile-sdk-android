@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -38,10 +39,12 @@ public class BannerView @JvmOverloads constructor(
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
-    internal val omSessionManager: OpenMeasurementSessionManagerType by inject(OpenMeasurementSessionManagerType::class.java)
+    internal val omSessionManager: OpenMeasurementSessionManagerType
+        by inject(OpenMeasurementSessionManagerType::class.java)
 
     private var placementId: Int = 0
-    private var webView: CustomWebView? = null
+    private var webViewStore: MutableMap<String, CustomWebView> = mutableMapOf()
+    private var currentWebView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
     private val viewableDetector: ViewableDetectorType by inject(ViewableDetectorType::class.java)
     private var hasBeenVisible: VoidBlock? = null
@@ -127,12 +130,11 @@ public class BannerView @JvmOverloads constructor(
         addWebView()
         showPadlockIfNeeded()
 
-        var bodyHtml = data.second
+        val bodyHtml = data.second
             .replace("_TIMESTAMP_", timeProvider.millis().toString())
 
         // load the HTML
-        bodyHtml = omSessionManager.injectJS(context, bodyHtml)
-        webView?.loadHTML(data.first, bodyHtml)
+        currentWebView?.loadHTML(data.first, bodyHtml)
     }
 
     public fun setListener(delegate: SAInterface) {
@@ -146,7 +148,7 @@ public class BannerView @JvmOverloads constructor(
         hasBeenVisible = null
         viewableDetector.cancel()
         omSessionManager.finish()
-        removeWebView(delayed = true)
+        removeWebViewsWithDelay()
         controller.close()
     }
 
@@ -212,7 +214,7 @@ public class BannerView @JvmOverloads constructor(
     }
 
     private fun showPadlockIfNeeded() {
-        if (!controller.shouldShowPadlock || webView == null) return
+        if (!controller.shouldShowPadlock || currentWebView == null) return
 
         val padlockButton = ImageButton(context)
         padlockButton.setImageBitmap(imageProvider.padlockImage())
@@ -224,15 +226,16 @@ public class BannerView @JvmOverloads constructor(
 
         padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
 
-        webView?.addView(padlockButton)
+        currentWebView?.addView(padlockButton)
 
         this.padlockButton = padlockButton
     }
 
     private fun addWebView() {
-        removeWebView()
+        removeWebViewsWithDelay()
 
         val webView = CustomWebView(context)
+        webViewStore[controller.currentAdResponse?.ad?.random ?: placementId.toString()] = webView
         webView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -240,6 +243,16 @@ public class BannerView @JvmOverloads constructor(
         webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
                 omSessionManager.start(context, webView)
+                padlockButton?.let {
+                    if (it.visibility == View.VISIBLE) {
+                        omSessionManager.addFriendlyObstruction(
+                            view = it,
+                            purpose = FriendlyObstructionType.Other,
+                            reason = "SafeAdPadlock",
+                        )
+                    }
+                }
+
                 controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
@@ -264,31 +277,20 @@ public class BannerView @JvmOverloads constructor(
 
         addView(webView)
 
-        this.webView = webView
+        this.currentWebView = webView
     }
 
-    private fun removeWebView(delayed: Boolean = false) {
-        webView?.let {
-            removeView(webView)
-            if (delayed) {
-                removeWebViewWithDelay()
-            } else {
-                webView?.destroy()
-                webView = null
-            }
+    private fun removeWebViewsWithDelay() {
+        webViewStore.forEach {
+            webViewStore.remove(it.key)
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                it.value.destroy()
+            }, 1000)
         }
     }
 
-    private fun removeWebViewWithDelay() {
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            webView?.loadUrl("about:blank")
-            webView?.destroy()
-            webView = null
-        }, 1000)
-    }
-
-    private fun isAdPlayedBefore(): Boolean = webView != null
+    private fun isAdPlayedBefore(): Boolean = currentWebView != null
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
