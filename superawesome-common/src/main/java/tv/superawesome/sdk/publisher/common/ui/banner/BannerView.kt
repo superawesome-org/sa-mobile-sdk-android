@@ -22,8 +22,12 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
-import tv.superawesome.sdk.publisher.common.ui.common.interstitialMaxTickCount
+import tv.superawesome.sdk.publisher.common.ui.common.INTERSTITIAL_MAX_TICK_COUNT
 
+/**
+ * View that shows banner ads.
+ */
+@Suppress("TooManyFunctions")
 public class BannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -63,8 +67,7 @@ public class BannerView @JvmOverloads constructor(
     }
 
     /**
-     * One of the main public methods of the SABannerAd class. This will load a new SAAd object
-     * corresponding to a given placement Id.
+     * Loads a new SAAd object corresponding to a given placement Id.
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
      * @param options: an optional dictionary of data to send with an ad's requests and events.
@@ -81,7 +84,7 @@ public class BannerView @JvmOverloads constructor(
     }
 
     /**
-     * Static method that loads an ad into the interstitial queue.
+     * Loads an ad into the interstitial queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
      * @param placementId the Ad placement id to load data for
@@ -106,8 +109,7 @@ public class BannerView @JvmOverloads constructor(
     }
 
     /**
-     * One of the main public methods of the SABannerAd class. This will play an already existing
-     * loaded ad, or fail.
+     * Plays an already existing loaded ad, or fail.
      */
     public fun play() {
         logger.info("play($placementId)")
@@ -127,12 +129,17 @@ public class BannerView @JvmOverloads constructor(
         webView?.loadHTML(data.first, bodyHtml)
     }
 
+    /**
+     * Registers a callback to be called for certain events.
+     *
+     * @param delegate the callback delegate.
+     */
     public fun setListener(delegate: SAInterface) {
         controller.delegate = delegate
     }
 
     /**
-     * Method that gets called in order to close the banner ad, remove any fragments, etc
+     * Gets called in order to close the banner ad, remove any fragments, etc.
      */
     public fun close() {
         hasBeenVisible = null
@@ -142,58 +149,97 @@ public class BannerView @JvmOverloads constructor(
     }
 
     /**
-     * Method that determines if an ad is available
-     *
-     * @return true or false
+     * Returns whether an ad is available.
      */
     public fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
 
+    /**
+     * Returns whether the ad is closed.
+     */
     public fun isClosed(): Boolean = controller.closed
 
+    /**
+     * Enables parental gate.
+     */
     public fun enableParentalGate() {
         setParentalGate(true)
     }
 
+    /**
+     * Disables parental gate.
+     */
     public fun disableParentalGate() {
         setParentalGate(false)
     }
 
+    /**
+     * Enables bumper page.
+     */
     public fun enableBumperPage() {
         setBumperPage(true)
     }
 
+    /**
+     * Disables bumper page.
+     */
     public fun disableBumperPage() {
         setBumperPage(false)
     }
 
+    /**
+     * Enables test mode.
+     */
     public fun enableTestMode() {
         setTestMode(true)
     }
 
+    /**
+     * Disables test mode.
+     */
     public fun disableTestMode() {
         setTestMode(false)
     }
 
+    /**
+     * Sets transparent color background.
+     */
     public fun setColorTransparent() {
         setColor(true)
     }
 
+    /**
+     * Sets gray color background.
+     */
     public fun setColorGray() {
         setColor(false)
     }
 
+    /**
+     * Sets parental gate enabled.
+     */
     public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
+    /**
+     * Sets bumper page enabled.
+     */
     public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
+    /**
+     * Sets the test mode.
+     */
     public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
+    /**
+     * Sets the transparency of the banner.
+     *
+     * @param value `true` makes the banner transparent, `false` makes it gray.
+     */
     public fun setColor(value: Boolean) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
@@ -233,7 +279,7 @@ public class BannerView @JvmOverloads constructor(
                 controller.adShown()
                 viewableDetector.cancel()
                 controller.triggerImpressionEvent(placementId)
-                viewableDetector.start(this@BannerView, interstitialMaxTickCount) {
+                viewableDetector.start(this@BannerView, INTERSTITIAL_MAX_TICK_COUNT) {
                     controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
                 }
@@ -256,9 +302,7 @@ public class BannerView @JvmOverloads constructor(
         }
     }
 
-    private fun isAdPlayedBefore(): Boolean {
-        return webView != null
-    }
+    private fun isAdPlayedBefore(): Boolean = webView != null
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()

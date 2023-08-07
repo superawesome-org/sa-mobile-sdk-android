@@ -25,8 +25,12 @@ internal class HtmlFormatter(
     }
 
     override fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String {
-        val url =
-            "${ad.creative.details.url}?placement=$placementId&line_item=${ad.lineItemId}&creative=${ad.creative.id}&rnd=${numberGenerator.nextIntForCache()}"
+        val url = "${ad.creative.details.url}" +
+                "?placement=$placementId" +
+                "&line_item=${ad.lineItemId}" +
+                "&creative=${ad.creative.id}" +
+                "&rnd=${numberGenerator.nextIntForCache()}"
+
         return "<iframe style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>"
     }
 

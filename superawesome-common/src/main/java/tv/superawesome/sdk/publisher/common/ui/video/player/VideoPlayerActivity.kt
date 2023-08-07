@@ -23,6 +23,7 @@ internal class VideoPlayerActivity : Activity() {
         canDismissOnRotateToPortrait =
             intent.getBooleanExtra(VideoPlayer.ROTATION_DISMISS_KEY, false)
         orientationListener = object : OrientationEventListener(this) {
+            @Suppress("MagicNumber")
             override fun onOrientationChanged(orientation: Int) {
                 val epsilon = 10
                 val leftLandscape = 90
@@ -41,9 +42,8 @@ internal class VideoPlayerActivity : Activity() {
                 }
             }
 
-            private fun epsilonCheck(a: Int, b: Int, epsilon: Int): Boolean {
-                return a > b - epsilon && a < b + epsilon
-            }
+            private fun epsilonCheck(a: Int, b: Int, epsilon: Int): Boolean =
+                a > b - epsilon && a < b + epsilon
         }
         setScreenOrientation()
         if (orientationListener.canDetectOrientation()) {

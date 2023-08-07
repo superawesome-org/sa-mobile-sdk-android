@@ -8,6 +8,7 @@ internal object VideoUtils {
     /**
      * @return the current scale
      */
+    @Suppress("MagicNumber")
     fun getScale(context: Context?): Float {
         val metrics = DisplayMetrics()
         return if (context is Activity) {

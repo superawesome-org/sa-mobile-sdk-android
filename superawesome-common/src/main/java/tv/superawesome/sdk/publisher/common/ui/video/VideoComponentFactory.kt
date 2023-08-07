@@ -4,26 +4,19 @@ import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 
+@Suppress("MagicNumber")
 internal class VideoComponentFactory {
+
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
-
-    fun getChronographBackground(id: Int, context: Context?): ImageView =
-        bgCreator.createComponent(id, context)
-
-    fun getChronograph(id: Int, context: Context?): TextView =
-        chronoCreator.createComponent(id, context)
-
-    fun getClick(id: Int, context: Context?): Button = clickCreator.createComponent(id, context)
-
-    fun getSmallClick(id: Int, context: Context?): Button =
-        smallClickCreator.createComponent(id, context)
-
-    fun getPadlock(id: Int, context: Context?): ImageButton = padlock.createComponent(id, context)
 
     private val bgCreator: ComponentCreator<ImageView> = ComponentCreator { id, context ->
         val scale: Float = VideoUtils.getScale(context)
@@ -38,6 +31,7 @@ internal class VideoComponentFactory {
         view.layoutParams = layout
         view
     }
+
     private val chronoCreator: ComponentCreator<TextView> = ComponentCreator { id, context ->
         val scale: Float = VideoUtils.getScale(context)
         val view = TextView(context)
@@ -51,6 +45,7 @@ internal class VideoComponentFactory {
         view.layoutParams = layoutParams
         view
     }
+
     private val clickCreator: ComponentCreator<Button> = ComponentCreator { id, context ->
         val view = Button(context)
         view.id = id
@@ -63,6 +58,7 @@ internal class VideoComponentFactory {
         view.layoutParams = params
         view
     }
+
     private val smallClickCreator: ComponentCreator<Button> = ComponentCreator { id, context ->
         val scale: Float = VideoUtils.getScale(context)
         val view = Button(context)
@@ -79,6 +75,7 @@ internal class VideoComponentFactory {
         view.setPadding((65 * scale).toInt(), 0, 0, 0)
         view
     }
+
     private val padlock: ComponentCreator<ImageButton> = ComponentCreator { id, context ->
         val scale: Float = VideoUtils.getScale(context)
         val view = ImageButton(context)
@@ -90,8 +87,32 @@ internal class VideoComponentFactory {
         view.layoutParams = ViewGroup.LayoutParams((77 * scale).toInt(), (31 * scale).toInt())
         view
     }
+
+    fun getChronographBackground(id: Int, context: Context?): ImageView =
+        bgCreator.createComponent(id, context)
+
+    fun getChronograph(id: Int, context: Context?): TextView =
+        chronoCreator.createComponent(id, context)
+
+    fun getClick(id: Int, context: Context?): Button = clickCreator.createComponent(id, context)
+
+    fun getSmallClick(id: Int, context: Context?): Button =
+        smallClickCreator.createComponent(id, context)
+
+    fun getPadlock(id: Int, context: Context?): ImageButton = padlock.createComponent(id, context)
 }
 
+/**
+ * Defines a video component creator.
+ */
 fun interface ComponentCreator<T> {
+
+    /**
+     * Creates a component.
+     *
+     * @param id an identifier.
+     * @param context an activity context.
+     * @return the created component of type [T].
+     */
     fun createComponent(id: Int, context: Context?): T
 }

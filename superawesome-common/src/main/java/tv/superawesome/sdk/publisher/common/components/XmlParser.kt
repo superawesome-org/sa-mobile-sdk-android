@@ -14,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException
 
 internal interface XmlParserType {
     /**
-     * Function that parses a XML document
+     * Function that parses a XML document.
      *
      * @param xml xml string
      * @return a Document object
@@ -46,7 +46,7 @@ internal interface XmlParserType {
 
     /**
      * Method that checks if in all children and siblings of a XML node, there exists
-     * at least one element with given name
+     * at least one element with given name.
      *
      * @param node parent XML node
      * @param name name to search for
@@ -56,7 +56,7 @@ internal interface XmlParserType {
 }
 
 /**
- * Class that abstracts away the complexities of XML parsing into a series of utility methods
+ * Class that abstracts away the complexities of XML parsing into a series of utility methods.
  */
 internal class XmlParser : XmlParserType {
 
@@ -98,13 +98,9 @@ internal class XmlParser : XmlParserType {
 
         // get the sub-nodes
         var subnodes: NodeList = object : NodeList {
-            override fun item(index: Int): Node? {
-                return null
-            }
+            override fun item(index: Int): Node? = null
 
-            override fun getLength(): Int {
-                return 0
-            }
+            override fun getLength(): Int = 0
         }
         if (node.nodeType == Node.ELEMENT_NODE) {
             subnodes = (node as Element).getElementsByTagName(name)

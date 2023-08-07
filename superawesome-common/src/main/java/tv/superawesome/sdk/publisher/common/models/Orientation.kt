@@ -1,14 +1,22 @@
 package tv.superawesome.sdk.publisher.common.models
 
-import androidx.annotation.NonNull
-
+/**
+ * Screen orientation.
+ */
 enum class Orientation {
-    Any, Portrait, Landscape;
+    /** Any orientation. Portrait or Landscape. **/
+    Any,
+    /** Portrait only. */
+    Portrait,
+    /** Landscape only. */
+    Landscape;
 
     companion object {
-        private val values = values()
 
+        /**
+         * Finds the [Orientation] from a given integer [value] or returns `null` if not found.
+         */
         @JvmStatic
-        fun fromValue(@NonNull value: Int) = values.firstOrNull { it.ordinal == value }
+        fun fromValue(value: Int) = entries.firstOrNull { it.ordinal == value }
     }
 }

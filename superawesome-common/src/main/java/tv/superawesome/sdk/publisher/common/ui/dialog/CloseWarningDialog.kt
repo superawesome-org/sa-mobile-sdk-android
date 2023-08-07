@@ -1,13 +1,12 @@
 package tv.superawesome.sdk.publisher.common.ui.dialog
 
-import android.R
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 
-internal object CloseWarning {
+internal object CloseWarningDialog {
     private const val CloseButtonTitle = "Close Video"
     private const val ResumeButtonTitle = "Resume Video"
     private const val AlertTitle = "Close Video?"
@@ -18,7 +17,7 @@ internal object CloseWarning {
 
     fun show(context: Context) {
         val alert: AlertDialog.Builder = if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1) {
-            AlertDialog.Builder(context, R.style.Theme_DeviceDefault_Dialog_Alert)
+            AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Dialog_Alert)
         } else {
             AlertDialog.Builder(context)
         }
@@ -45,7 +44,7 @@ internal object CloseWarning {
     }
 
     fun setListener(listener: Interface?) {
-        CloseWarning.listener = listener
+        CloseWarningDialog.listener = listener
     }
 
     interface Interface {
