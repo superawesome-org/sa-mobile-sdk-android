@@ -6,10 +6,11 @@ import android.webkit.WebView
 
 interface OpenMeasurementSessionManagerType {
 
-    fun start(
+    fun setup(
         context: Context,
         webView: WebView,
     )
+    fun start()
     fun finish()
     fun setAdView(view: View?)
     fun injectJS(context: Context, html: String): String
@@ -24,10 +25,12 @@ interface OpenMeasurementSessionManagerType {
 
 class DefaultOpenMeasurementSessionManager: OpenMeasurementSessionManagerType {
 
-    override fun start(
+    override fun setup(
         context: Context,
         webView: WebView,
     ) = Unit
+
+    override fun start() = Unit
 
     override fun finish() = Unit
 

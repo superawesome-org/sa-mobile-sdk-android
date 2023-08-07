@@ -620,7 +620,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     }
 
     @Override
-    public void hasLoaded() {
+    public void hasCreatedAdSession() {
         interstitialBanner.addFab(closeButton, FriendlyObstructionPurpose.CLOSE_AD, "CloseButton");
     }
 

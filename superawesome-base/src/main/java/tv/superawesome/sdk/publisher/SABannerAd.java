@@ -48,7 +48,7 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 public class SABannerAd extends FrameLayout {
 
     public interface SABannerAdListener {
-        void hasLoaded();
+        void hasCreatedAdSession();
         void hasBeenVisible();
 
         void failedToShow();
@@ -403,9 +403,6 @@ public class SABannerAd extends FrameLayout {
                         padlock.setTranslationX(activeWebPlayer.getWebView().getTranslationX());
                         padlock.setTranslationY(activeWebPlayer.getWebView().getTranslationY());
                         setupAdSession();
-                        if (bannerListener != null) {
-                            bannerListener.hasLoaded();
-                        }
 
                         if (adEvents != null) {
                             try {
@@ -498,6 +495,9 @@ public class SABannerAd extends FrameLayout {
                     null);
             if (padlock != null && padlock.getVisibility() == VISIBLE) {
                 addFab(padlock, FriendlyObstructionPurpose.OTHER, "SafeAdPadlock");
+            }
+            if (bannerListener != null) {
+                bannerListener.hasCreatedAdSession();
             }
             adSession.start();
             adEvents = AdEvents.createAdEvents(adSession);
@@ -617,13 +617,11 @@ public class SABannerAd extends FrameLayout {
     private void destroyWebViewDelayed() {
         for (Map.Entry<String, SAWebPlayer> playerEntry : webPlayerStore.entrySet()) {
             SAWebPlayer cPlayer = playerEntry.getValue();
-            webPlayerStore.remove(playerEntry);
-            this.removeView(cPlayer);
+            webPlayerStore.remove(playerEntry.getKey());
+            removeView(cPlayer);
 
             Handler handler = new Handler(Looper.getMainLooper());
-            handler.postDelayed(() -> {
-                cPlayer.destroy();
-            }, 1000);
+            handler.postDelayed(cPlayer::destroy, 1000);
         }
     }
 

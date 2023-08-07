@@ -65,11 +65,14 @@ internal class OpenMeasurementSessionManager(
 
     // Public
 
-    override fun start(
+    override fun setup(
         context: Context,
         webView: WebView,
     ) {
         createSession(context, webView)
+    }
+
+    override fun start() {
         startSession()
         setupAdEvents()
     }
