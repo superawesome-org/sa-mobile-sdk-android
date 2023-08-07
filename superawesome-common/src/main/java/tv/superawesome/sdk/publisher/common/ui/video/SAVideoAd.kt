@@ -18,16 +18,23 @@ import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.managed.ManagedAdActivity
 import java.io.File
 
+/**
+ * Video ads are full-screen ads that cover the interface of their host app.
+ * They are a full screen experience where users opt-in to view a video ad in exchange for something
+ * of value, such as virtual currency, in-app items, exclusive content, and more.
+ * This class allows the configuration of the SuperAwesome video ads.
+ */
+@Suppress("TooManyFunctions")
 public object SAVideoAd {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
     private val logger: Logger by inject(Logger::class.java)
 
     /**
-     * Static method that loads an ad into the queue.
+     * Loads an ad into the queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
-     * @param placementId the Ad placement id to load data for
-     * @param context the current context
+     * @param placementId the Ad placement id to load data for.
+     * @param context the current context.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
@@ -39,13 +46,13 @@ public object SAVideoAd {
     }
 
     /**
-     * Static method that loads an ad into the queue.
+     * Loads an ad into the queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
-     * @param placementId the Ad placement id to load data for
+     * @param placementId the Ad placement id to load data for.
      * @param lineItemId
-     * @param creativeId id of the Creative
-     * @param context the current context
+     * @param creativeId id of the Creative.
+     * @param context the current context.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
      */
@@ -62,12 +69,13 @@ public object SAVideoAd {
     }
 
     /**
-     * Static method that, if an ad data is loaded, will play the content for the user
+     * Plays the content for the user if the ad data is loaded.
      *
-     * @param placementId the Ad placement id to play an ad for
-     * @param context the current context (activity or fragment)
+     * @param placementId the Ad placement id to play an ad for.
+     * @param context the current activity context.
      */
     @JvmStatic
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
         val adResponse = controller.peekAdResponse(placementId)
@@ -88,7 +96,7 @@ public object SAVideoAd {
 
             try {
                 Uri.fromFile(File(adResponse.filePath))
-            } catch (error: Throwable) {
+            } catch (error: Exception) {
                 getDelegate()?.onEvent(placementId, SAEvent.adFailedToShow)
                 return
             }
@@ -98,41 +106,69 @@ public object SAVideoAd {
         context.startActivity(intent)
     }
 
+    /**
+     * Sets the video listener.
+     *
+     * @param value listener.
+     */
     @JvmStatic
     public fun setListener(value: SAInterface) {
         controller.delegate = value
     }
 
+    /**
+     * Sets the video playback mode.
+     *
+     * @param mode the desired playback mode.
+     */
     @JvmStatic
     public fun setPlaybackMode(mode: AdRequest.StartDelay) {
         controller.config.startDelay = mode
     }
 
+    /**
+     * Enables showing the parental gate.
+     */
     @JvmStatic
     public fun enableParentalGate() {
         setParentalGate(true)
     }
 
+    /**
+     * Disables showing the parental gate.
+     */
     @JvmStatic
     public fun disableParentalGate() {
         setParentalGate(false)
     }
 
+    /**
+     * Enables showing the bumper page.
+     */
     @JvmStatic
     public fun enableBumperPage() {
         setBumperPage(true)
     }
 
+    /**
+     * Disables showing the bumper page.
+     */
     @JvmStatic
     public fun disableBumperPage() {
         setBumperPage(false)
     }
 
+    /**
+     * Enables test mode.
+     */
     @JvmStatic
     public fun enableTestMode() {
         setTestMode(true)
     }
 
+    /**
+     * Disables test mode.
+     */
     @JvmStatic
     public fun disableTestMode() {
         setTestMode(false)
@@ -154,16 +190,31 @@ public object SAVideoAd {
         setBackButton(false)
     }
 
+    /**
+     * Sets whether the small click button should show.
+     *
+     * @param value `true` to show the button, `false` to hide it.
+     */
     @JvmStatic
     public fun setSmallClick(value: Boolean) {
         controller.config.shouldShowSmallClick = value
     }
 
+    /**
+     * Sets whether the ad should close at the end of the video.
+     *
+     * @param value `true` to close the ad, `false` otherwise.
+     */
     @JvmStatic
     public fun setCloseAtEnd(value: Boolean) {
         controller.config.shouldCloseAtEnd = value
     }
 
+    /**
+     * Sets the close button visibility.
+     *
+     * @param `true` makes the button visible with delay, `false` hides the button.
+     */
     @JvmStatic
     public fun setCloseButton(value: Boolean) {
         controller.config.closeButtonState =
@@ -187,8 +238,8 @@ public object SAVideoAd {
     }
 
     /**
-     * Method that enables the close button to display immediately without a delay.
-     * WARNING: this will allow users to close the ad before the viewable tracking event is fired
+     * Enables the close button to display immediately without a delay.
+     * **WARNING**: This allows users to close the ad before the viewable tracking event is fired
      * and should only be used if you explicitly want this behaviour over consistent tracking.
      */
     @JvmStatic
@@ -197,7 +248,7 @@ public object SAVideoAd {
     }
 
     /**
-     * Method that shows a warning dialog prior to closing the video via the close button or the
+     * Shows a warning dialog prior to closing the video via the close button or the
      * the back button.
      */
     @JvmStatic
@@ -206,71 +257,121 @@ public object SAVideoAd {
         setCloseButtonWarning(true)
     }
 
+    /**
+     * Sets if the warning when closing the video ad should show.
+     *
+     * @param value `true` to show warning, `false` otherwise.
+     */
     @JvmStatic
     public fun setCloseButtonWarning(value: Boolean) {
         controller.config.shouldShowCloseWarning = value
     }
 
+    /**
+     * Sets the orientation to any (portrait or landscape).
+     */
     @JvmStatic
     public fun setOrientationAny() {
         setOrientation(Orientation.Any)
     }
 
+    /**
+     * Sets the video orientation to portrait.
+     */
     @JvmStatic
     public fun setOrientationPortrait() {
         setOrientation(Orientation.Portrait)
     }
 
+    /**
+     * Sets the video orientation to landscape.
+     */
     @JvmStatic
     public fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
     }
 
+    /**
+     * Sets whether the parental gate should show.
+     *
+     * @param value `true` to show parental gate, `false` otherwise.
+     */
     @JvmStatic
     public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
+    /**
+     * Sets whether the bumper page should show.
+     *
+     * @param value `true` to show bumper page, `false` otherwise.
+     */
     @JvmStatic
     public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
+    /**
+     * Sets whether the test mode is enabled.
+     *
+     * @param value `true` to enable test mode, `false` otherwise.
+     */
     @JvmStatic
     public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
+    /**
+     * Sets whether the back button should be enabled.
+     *
+     * @param value `true` to enable back button, `false` otherwise.
+     */
     @JvmStatic
     public fun setBackButton(value: Boolean) {
         controller.config.isBackButtonEnabled = value
     }
 
+    /**
+     * Sets the video orientation.
+     *
+     * @param value the desired [Orientation].
+     */
     @JvmStatic
     public fun setOrientation(value: Orientation) {
         controller.config.orientation = value
     }
 
+    /**
+     * Sets whether the video should be muted on start or not.
+     *
+     * @param mute `true` to mute the video, `false` otherwise.
+     */
     @JvmStatic
     fun setMuteOnStart(mute: Boolean) {
         controller.config.shouldMuteOnStart = mute
     }
 
+    /**
+     * Makes the video muted on start.
+     */
     @JvmStatic
     fun enableMuteOnStart() {
         setMuteOnStart(true)
     }
 
+    /**
+     * Makes the video un-muted on start.
+     */
     @JvmStatic
     fun disableMuteOnStart() {
         setMuteOnStart(false)
     }
 
     /**
-     * Static method that returns whether ad data for a certain placement has already been loaded
+     * Returns whether ad data for a certain placement has already been loaded.
      *
-     * @param placementId the Ad placement id to check for
-     * @return true or false
+     * @param placementId the Ad placement id to check for.
+     * @return true or false.
      */
     @JvmStatic
     public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
@@ -288,11 +389,18 @@ public object SAVideoAd {
             height = 0
         }
 
-        val skip = if (controller.config.closeButtonState.isVisible())
-            AdRequest.Skip.Yes.value else AdRequest.Skip.No.value
+        val skip = if (controller.config.closeButtonState.isVisible()) {
+            AdRequest.Skip.Yes.value
+        } else {
+            AdRequest.Skip.No.value
+        }
 
-        val playbackMethod = if (controller.config.shouldMuteOnStart)
-            AdRequest.PlaybackSoundOffScreen else AdRequest.PlaybackSoundOnScreen
+        val playbackMethod = if (controller.config.shouldMuteOnStart) {
+            AdRequest.PlaybackSoundOffScreen
+        } else {
+            AdRequest.PlaybackSoundOffScreen
+        }
+
 
         return AdRequest(
             test = isTestEnabled(),

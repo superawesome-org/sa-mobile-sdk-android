@@ -14,6 +14,14 @@ import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 
+/**
+ * Interstitial ads are full-screen ads that cover the interface of their host app.
+ * They're typically displayed at natural transition points in the flow of an app,
+ * such as between activities or during the pause between levels in a game.
+ *
+ * This class allows the configuration of the SuperAwesome interstitial ads.
+ */
+@Suppress("TooManyFunctions")
 public object SAInterstitialAd {
     private var orientation: Orientation = Constants.defaultOrientation
     private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
@@ -21,7 +29,7 @@ public object SAInterstitialAd {
     private val controller: AdControllerType by inject(AdControllerType::class.java)
 
     /**
-     * Static method that loads an ad into the interstitial queue.
+     * Loads an ad into the interstitial queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
      * @param placementId the Ad placement id to load data for
@@ -36,7 +44,7 @@ public object SAInterstitialAd {
     }
 
     /**
-     * Static method that loads an ad into the interstitial queue.
+     * Loads an ad into the interstitial queue.
      * Ads can only be loaded once and then can be reloaded after they've been played.
      *
      * @param placementId the Ad placement id to load data for
@@ -59,107 +67,169 @@ public object SAInterstitialAd {
     }
 
     /**
-     * Static method that, if an ad data is loaded, will play the content for the user
+     * Plays the content for the user if an ad data is loaded.
      *
      * @param placementId the Ad placement id to play an ad for
-     * @param context the current context (activity or fragment)
+     * @param context an activity context.
      */
     @JvmStatic
     public fun play(placementId: Int, context: Context) {
         InterstitialActivity.start(placementId, context)
     }
 
+    /**
+     * Sets the callback listener.
+     *
+     * @param value [SAInterface] listener implementation.
+     */
     @JvmStatic
     public fun setListener(value: SAInterface) {
         controller.delegate = value
     }
 
+    /**
+     * Enables parental gate.
+     */
     @JvmStatic
-
     public fun enableParentalGate() {
         setParentalGate(true)
     }
 
+    /**
+     * Disables parental gate.
+     */
     @JvmStatic
     public fun disableParentalGate() {
         setParentalGate(false)
     }
 
+    /**
+     * Enables bumper page.
+     */
     @JvmStatic
     public fun enableBumperPage() {
         setBumperPage(true)
     }
 
+    /**
+     * Disables bumper page.
+     */
     @JvmStatic
     public fun disableBumperPage() {
         setBumperPage(false)
     }
 
+    /**
+     * Enables test mode.
+     */
     @JvmStatic
     public fun enableTestMode() {
         setTestMode(true)
     }
 
+    /**
+     * Disables test mode.
+     */
     @JvmStatic
     public fun disableTestMode() {
         setTestMode(false)
     }
 
+    /**
+     * Enables the back button.
+     */
     @JvmStatic
     public fun enableBackButton() {
         setBackButton(true)
     }
 
+    /**
+     * Disables the back button.
+     */
     @JvmStatic
     public fun disableBackButton() {
         setBackButton(false)
     }
 
+    /**
+     * Sets the interstitial orientation to any (portrait or landscape).
+     */
     @JvmStatic
     public fun setOrientationAny() {
         setOrientation(Orientation.Any)
     }
 
+    /**
+     * Sets the interstitial orientation to portrait.
+     */
     @JvmStatic
     public fun setOrientationPortrait() {
         setOrientation(Orientation.Portrait)
     }
 
+    /**
+     * Sets the interstitial orientation to landscape.
+     */
     @JvmStatic
     public fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
     }
 
+    /**
+     * Sets whether the parental gate should show.
+     *
+     * @param value `true` to enable parental gate, `false` otherwise.
+     */
     @JvmStatic
     public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
+    /**
+     * Sets whether the bumper page should show.
+     *
+     * @param value `true` enables bumper page, `false` otherwise.
+     */
     @JvmStatic
     public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
+    /**
+     * Sets if the ad shows in test mode.
+     *
+     * @param value whether it should enable test mode or not.
+     */
     @JvmStatic
     public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
+    /**
+     * Sets if the back button is enabled.
+     *
+     * @param value whether the button is enabled or not.
+     */
     @JvmStatic
     public fun setBackButton(value: Boolean) {
         backButtonEnabled = value
     }
 
+    /**
+     * Sets the orientation for the interstitial ad.
+     *
+     * @param value the new orientation.
+     */
     @JvmStatic
     public fun setOrientation(value: Orientation) {
         orientation = value
     }
 
     /**
-     * Static method that returns whether ad data for a certain placement has already been loaded
+     * Returns whether ad data for a certain placement has already been loaded.
      *
-     * @param placementId the Ad placement id to check for
-     * @return true or false
+     * @param placementId the Ad placement id to check for.
+     * @return true or false.
      */
     @JvmStatic
     public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)

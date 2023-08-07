@@ -8,138 +8,157 @@ import android.view.SurfaceHolder
  * This interface defines the public interface for any object that can be
  * used to control a piece of media.
  */
+@Suppress("TooManyFunctions", "ComplexInterface")
 internal interface IVideoPlayerController {
-    /**
-     * This will play the media in a sync way
-     * @param context the current Android context
-     * @param uri a valid Uri
-     */
-    fun play(context: Context, uri: Uri)
 
     /**
-     * This will play the media in an async way
-     * @param context the current Android context
-     * @param uri a valid Uri
+     * Get if the video is currently muted.
      */
-    fun playAsync(context: Context, uri: Uri)
-
-    /**
-     * Method that resumes the media play
-     */
-    fun start()
-
-    /**
-     * Method that pauses the media play
-     */
-    fun pause()
-
-    /**
-     * Method that resets the state of the IVideoPlayerController, but should
-     * not release all resources so that it becomes unavailable
-     */
-    fun reset()
-
-    /**
-     * Method that frees up all resources owned by the IVideoPlayerController;
-     * From here on, it cannot be re-used to play media
-     */
-    fun destroy()
-
-    /**
-     * Method to seek to a different position
-     */
-    fun seekTo(position: Int)
-
-    fun setMuted(muted: Boolean)
-
     val isMuted: Boolean
 
     /**
-     * @return true or false, depending on whether the media control is playing
+     * Gets whether the video is currently playing.
      */
     val isIVideoPlaying: Boolean
 
     /**
-     * Method that sets the current surface holder of the media control
-     * @param holder a surface holder, null or otherwise
-     */
-    fun setDisplay(holder: SurfaceHolder?)
-
-    /**
-     * @return the width of the video resource
+     * Gets the width of the video resource.
      */
     val videoIVideoWidth: Int
 
     /**
-     * @return the height of the video resource
+     * Gets the height of the video resource.
      */
     val videoIVideoHeight: Int
 
     /**
-     * Method that returns the total duration, in seconds, of the
-     * media control
+     * Gets the total duration, in seconds, of the media control.
      */
     val iVideoDuration: Int
 
     /**
-     * Method that returns the current position, in seconds, of the
-     * media control
+     * Gets the current position, in seconds, of the media control.
      */
     val currentIVideoPosition: Int
 
     /**
-     * @param listener the listener to be added
+     * Plays the media in a synchronously.
+     *
+     * @param context the current context.
+     * @param uri a Uri where the media is located.
+     */
+    fun play(context: Context, uri: Uri)
+
+    /**
+     * Plays the media in an asynchronously.
+     *
+     * @param context the current context.
+     * @param uri a Uri where the media is located.
+     */
+    fun playAsync(context: Context, uri: Uri)
+
+    /**
+     * Resumes the media play.
+     */
+    fun start()
+
+    /**
+     * Pauses the media play.
+     */
+    fun pause()
+
+    /**
+     * Resets the state of the [IVideoPlayerController], but should
+     * not release all resources so that it becomes unavailable.
+     */
+    fun reset()
+
+    /**
+     * Frees up all resources owned by the [IVideoPlayerController].
+     * From here on, it cannot be re-used to play media.
+     */
+    fun destroy()
+
+    /**
+     * Seeks to a different position in the video.
+     *
+     * @param position the position to seek to.
+     */
+    fun seekTo(position: Int)
+
+    /**
+     * Sets the video muted state.
+     *
+     * @param muted `true` to mute the video, `false` to unmute.
+     */
+    fun setMuted(muted: Boolean)
+
+    /**
+     * Sets the current surface holder of the media control.
+     * @param holder a surface holder, null or otherwise.
+     */
+    fun setDisplay(holder: SurfaceHolder?)
+
+    /**
+     * Sets the listener.
+     * @param listener listener to be added.
      */
     fun setListener(listener: Listener)
 
     /**
-     * Method that creates the timer for the video player.
-     * This timer will interact with Listener.onTimeUpdated that itself sets the chrome time.
+     * Creates the timer for the video player.
+     * This timer will interact with [Listener.onTimeUpdated] that itself sets the chrome time.
      */
     fun createTimer()
 
     /**
-     * Method that removes the current timer.
+     * Removes the current timer.
      */
     fun removeTimer()
 
     /**
-     * The listener interface and all the delegated methods
+     * The listener interface and all the delegated methods.
      */
     interface Listener {
         /**
-         * This method is called by the IVideoPlayerController when the media is prepared
-         * @param control - the current media control instance
+         * Called by the [IVideoPlayerController] when the media is prepared.
+         *
+         * @param control current media control instance.
          */
         fun onPrepared(control: IVideoPlayerController)
 
         /**
-         * This method is called by the IVideoPlayerController when the time has been updated
-         * @param control - the current media control instance
-         * @param time - the current media time
-         * @param duration - the total duration of the media
+         * Called by the IVideoPlayerController when the time has been updated.
+         *
+         * @param control current media control instance.
+         * @param time current media time.
+         * @param duration total duration of the media.
          */
         fun onTimeUpdated(control: IVideoPlayerController, time: Int, duration: Int)
 
         /**
-         * This method is called by the IVideoPlayerController when the media is finished
-         * @param control - the current media control instance
-         * @param time - the current media time
-         * @param duration - the total duration of the media
+         * Called by the IVideoPlayerController when the media is finished.
+         *
+         * @param control current media control instance.
+         * @param time current media time.
+         * @param duration total duration of the media.
          */
         fun onMediaComplete(control: IVideoPlayerController, time: Int, duration: Int)
 
         /**
-         * This method is called by the IVideoPlayerController when seeking is over
-         * @param control - the current media control instance
+         * Called by the IVideoPlayerController when seeking is over.
+         *
+         * @param control current media control instance.
          */
         fun onSeekComplete(control: IVideoPlayerController)
 
         /**
-         * This method is called by the IVideoPlayerController when an error happened
-         * @param control - the current media control instance
-         * @param time - the current media time
-         * @param duration - the total duration of the media
+         * Called by the IVideoPlayerController when an error occurs.
+         *
+         * @param control current media control instance
+         * @param error exception that occurred.
+         * @param time current media time
+         * @param duration total duration of the media
          */
         fun onError(control: IVideoPlayerController, error: Throwable, time: Int, duration: Int)
     }

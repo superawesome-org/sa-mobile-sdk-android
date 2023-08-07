@@ -78,7 +78,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { sdkInfoType.name } returns "sdk_name"
         every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
-        every { deviceType.genericType } returns DeviceCategory.tablet
+        every { deviceType.genericType } returns DeviceCategory.TABLET
         every { locale.toString() } returns "en_en"
         every { timeProvider.millis() } returns 12345678912345
 
@@ -94,7 +94,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(99, baseQuery.dauId)
         assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
         assertEquals("en_en", baseQuery.lang)
-        assertEquals(DeviceCategory.tablet.name, baseQuery.device)
+        assertEquals(DeviceCategory.TABLET.name, baseQuery.device)
         assertEquals(10, baseQuery.pos)
         assertEquals(20, baseQuery.skip)
         assertEquals(30, baseQuery.playbackMethod)

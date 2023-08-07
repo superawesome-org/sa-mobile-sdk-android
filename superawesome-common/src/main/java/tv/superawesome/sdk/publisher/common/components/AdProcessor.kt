@@ -3,7 +3,12 @@ package tv.superawesome.sdk.publisher.common.components
 import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.extensions.baseUrl
 import tv.superawesome.sdk.publisher.common.extensions.extractURLs
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.Constants
+import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
+import tv.superawesome.sdk.publisher.common.models.VastAd
+import tv.superawesome.sdk.publisher.common.models.VastType
 import tv.superawesome.sdk.publisher.common.network.DataResult
 
 internal interface AdProcessorType {
@@ -16,6 +21,7 @@ internal class AdProcessor(
     private val networkDataSource: NetworkDataSourceType,
     private val encoder: EncoderType,
 ) : AdProcessorType {
+    @Suppress("NestedBlockDepth", "ReturnCount")
     override suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse> {
         val response = AdResponse(placementId, ad, requestOptions)
 
@@ -32,7 +38,7 @@ internal class AdProcessor(
                 response.html = htmlFormatter.formatTagIntoHtml(ad)
                 response.baseUrl = Constants.defaultSuperAwesomeUrl
             }
-            CreativeFormatType.Video -> {
+            CreativeFormatType.Video ->
                 if (ad.isVpaid) {
                     ad.creative.details.tag?.let { tag ->
                         tag.extractURLs().firstOrNull()?.let {
@@ -53,7 +59,6 @@ internal class AdProcessor(
                         } ?: return DataResult.Failure(Exception("empty url"))
                     }
                 }
-            }
         }
 
         ad.creative.referral?.let {
@@ -63,6 +68,7 @@ internal class AdProcessor(
         return DataResult.Success(response)
     }
 
+    @Suppress("ReturnCount")
     private suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? {
         val result = networkDataSource.getData(url)
         if (result is DataResult.Success) {

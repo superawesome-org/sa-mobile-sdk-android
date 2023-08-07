@@ -17,12 +17,13 @@ import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
-import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
-import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
+import tv.superawesome.sdk.publisher.common.ui.common.VIDEO_MAX_TICK_COUNT
+import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarningDialog
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
 import java.lang.ref.WeakReference
 
+@Suppress("TooManyFunctions")
 internal class ManagedAdActivity :
     FullScreenActivity(),
     AdViewJavaScriptBridge.Listener,
@@ -86,10 +87,7 @@ internal class ManagedAdActivity :
     private fun setUpCloseButtonTimeoutRunnable() {
         cancelCloseButtonTimeoutRunnable()
         val weak = WeakReference(this)
-        timeOutRunnable = Runnable {
-            val weakThis = weak.get() ?: return@Runnable
-            weakThis.showCloseButton()
-        }
+        timeOutRunnable = Runnable { weak.get()?.showCloseButton() }
         timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
 
@@ -109,7 +107,7 @@ internal class ManagedAdActivity :
     public override fun close() {
         if (config.shouldShowCloseWarning && !completed) {
             adView.pauseVideo()
-            CloseWarning.setListener(object : CloseWarning.Interface {
+            CloseWarningDialog.setListener(object : CloseWarningDialog.Interface {
                 override fun onResumeSelected() {
                     adView.playVideo()
                 }
@@ -118,7 +116,7 @@ internal class ManagedAdActivity :
                     closeActivity()
                 }
             })
-            CloseWarning.show(this)
+            CloseWarningDialog.show(this)
         } else {
             closeActivity()
         }
@@ -161,12 +159,13 @@ internal class ManagedAdActivity :
         controller.startTimingForDwellTime()
         val weak = WeakReference(this)
         viewableDetector.cancel()
-        viewableDetector.start(adView, videoMaxTickCount) {
+        viewableDetector.start(adView, VIDEO_MAX_TICK_COUNT) {
             val weakThis = weak.get()
             weakThis?.cancelCloseButtonTimeoutRunnable()
             weakThis?.controller?.triggerViewableImpression(placementId)
-            if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay)
+            if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
                 weakThis.showCloseButton()
+            }
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
     }
@@ -215,7 +214,7 @@ internal class ManagedAdActivity :
     }
 
     companion object {
-        private const val CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL = 12000L
+        private const val CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL = 12_000L
 
         @JvmStatic
         fun newInstance(

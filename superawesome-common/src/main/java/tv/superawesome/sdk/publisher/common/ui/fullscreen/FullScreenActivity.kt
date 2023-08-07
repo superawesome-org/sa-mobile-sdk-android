@@ -18,6 +18,9 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 
+/**
+ * A full screen activity used to play ad placements.
+ */
 open class FullScreenActivity : Activity() {
     internal val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     internal val logger: Logger by inject(Logger::class.java)
@@ -47,10 +50,18 @@ open class FullScreenActivity : Activity() {
         playContent()
     }
 
+    /**
+     * Initializes the child user interface.
+     * Override this function.
+     */
     open fun initChildUI() {
         // to be overridden
     }
 
+    /**
+     * Plays the content in the activity.
+     * Override this function.
+     */
     open fun playContent() {
         // to be overridden
     }
@@ -82,7 +93,7 @@ open class FullScreenActivity : Activity() {
             close()
         }
 
-        // make sure direction is locked
+        // make sure direction is locked.
         requestedOrientation = when (config.orientation) {
             Orientation.Any -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             Orientation.Portrait -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -97,9 +108,14 @@ open class FullScreenActivity : Activity() {
         }
     }
 
-    // Close button action specific, useful for tracking requirements
-    open fun onCloseButtonPressed() = Unit
+    /**
+     * Close button action specific, useful for tracking requirements.
+     */
+    open fun onCloseButtonPressed() { }
 
+    /**
+     * Closes the activity.
+     */
     open fun close() {
         if (!isFinishing) {
             finish()

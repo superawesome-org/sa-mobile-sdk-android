@@ -15,7 +15,7 @@ private object Keys {
     const val dauUniquePart = "dauUniquePart"
 }
 
-internal class PreferencesRepository(private val context: Context) : PreferencesRepositoryType {
+internal data class PreferencesRepository(private val context: Context) : PreferencesRepositoryType {
     override var userAgent: String?
         get() = preferences?.getString(Keys.userAgent, null)
         set(value) {
