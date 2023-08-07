@@ -13,7 +13,7 @@ internal class WebViewWrapper @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    var webView: CustomWebView = CustomWebView(context, attrs, defStyleAttr)
+    var webView: CustomWebView = CustomWebView(context)
     var holder: FrameLayout = FrameLayout(context).apply {
         clipChildren = false
         setBackgroundColor(Color.TRANSPARENT)
@@ -22,6 +22,7 @@ internal class WebViewWrapper @JvmOverloads constructor(
 
     init {
         setBackgroundColor(Color.TRANSPARENT)
+        setup()
     }
 
     fun setup() {
@@ -34,7 +35,7 @@ internal class WebViewWrapper @JvmOverloads constructor(
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         holder.addView(webView)
-        this.addView(holder)
+        addView(holder)
     }
 
     fun setListener(listener: CustomWebView.Listener) {

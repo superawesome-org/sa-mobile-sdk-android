@@ -43,8 +43,8 @@ public class BannerView @JvmOverloads constructor(
         by inject(OpenMeasurementSessionManagerType::class.java)
 
     private var placementId: Int = 0
-    private var webViewStore: MutableMap<String, CustomWebView> = mutableMapOf()
-    private var currentWebView: CustomWebView? = null
+    private var webViewStore: MutableMap<String, WebViewWrapper> = mutableMapOf()
+    private var currentWebViewWrapper: WebViewWrapper? = null
     private var padlockButton: ImageButton? = null
     private val viewableDetector: ViewableDetectorType by inject(ViewableDetectorType::class.java)
     private var hasBeenVisible: VoidBlock? = null
@@ -134,7 +134,7 @@ public class BannerView @JvmOverloads constructor(
             .replace("_TIMESTAMP_", timeProvider.millis().toString())
 
         // load the HTML
-        currentWebView?.loadHTML(data.first, bodyHtml)
+        currentWebViewWrapper?.webView?.loadHTML(data.first, bodyHtml)
     }
 
     public fun setListener(delegate: SAInterface) {
@@ -216,9 +216,9 @@ public class BannerView @JvmOverloads constructor(
     private fun showPadlockIfNeeded() {
         if (!controller.shouldShowPadlock) return
 
-        currentWebView?.let { webView ->
+        currentWebViewWrapper?.let { webView ->
             padlockButton?.let {
-                currentWebView?.removeView(it)
+                currentWebViewWrapper?.removeView(it)
                 padlockButton = null
             }
 
@@ -244,16 +244,17 @@ public class BannerView @JvmOverloads constructor(
     private fun addWebView() {
         removeWebViewsWithDelay()
 
-        val webView = CustomWebView(context)
-        webViewStore[controller.currentAdResponse?.ad?.random ?: placementId.toString()] = webView
-        webView.layoutParams = ViewGroup.LayoutParams(
+        val webViewWrapper = WebViewWrapper(context)
+        webViewStore[controller.currentAdResponse?.ad?.random ?: placementId.toString()] =
+            webViewWrapper
+        webViewWrapper.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
         )
 
-        addView(webView)
+        addView(webViewWrapper)
 
-        this.currentWebView = webView
+        this.currentWebViewWrapper = webViewWrapper
     }
 
     private fun addSafeAdToOM() {
@@ -269,10 +270,10 @@ public class BannerView @JvmOverloads constructor(
     }
 
     private fun setupWebViewListener() {
-        currentWebView?.let { webView ->
-            webView.listener = object : CustomWebView.Listener {
+        currentWebViewWrapper?.let { webViewWrapper ->
+            webViewWrapper.setListener(object : CustomWebView.Listener {
                 override fun webViewOnStart() {
-                    omSessionManager.setup(context, webView)
+                    omSessionManager.setup(context, webViewWrapper.webView)
                     addSafeAdToOM()
                     controller.adShown()
                     omSessionManager.start()
@@ -288,7 +289,7 @@ public class BannerView @JvmOverloads constructor(
 
                 override fun webViewOnError() = controller.adFailedToShow()
                 override fun webViewOnClick(url: String) = controller.handleAdTap(url, context)
-            }
+            })
         }
     }
 
@@ -303,7 +304,7 @@ public class BannerView @JvmOverloads constructor(
         }
     }
 
-    private fun isAdPlayedBefore(): Boolean = currentWebView != null
+    private fun isAdPlayedBefore(): Boolean = currentWebViewWrapper != null
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
