@@ -43,7 +43,7 @@ public class BannerView @JvmOverloads constructor(
         by inject(OpenMeasurementSessionManagerType::class.java)
 
     private var placementId: Int = 0
-    private var webViewStore: MutableMap<String, WebViewWrapper> = mutableMapOf()
+    private var webViewWrapperStore: MutableMap<String, WebViewWrapper> = mutableMapOf()
     private var currentWebViewWrapper: WebViewWrapper? = null
     private var padlockButton: ImageButton? = null
     private val viewableDetector: ViewableDetectorType by inject(ViewableDetectorType::class.java)
@@ -245,7 +245,7 @@ public class BannerView @JvmOverloads constructor(
         removeWebViewsWithDelay()
 
         val webViewWrapper = WebViewWrapper(context)
-        webViewStore[controller.currentAdResponse?.ad?.random ?: placementId.toString()] =
+        webViewWrapperStore[controller.currentAdResponse?.ad?.random ?: placementId.toString()] =
             webViewWrapper
         webViewWrapper.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -294,9 +294,9 @@ public class BannerView @JvmOverloads constructor(
     }
 
     private fun removeWebViewsWithDelay() {
-        webViewStore.forEach {
+        webViewWrapperStore.forEach {
             removeView(it.value)
-            webViewStore.remove(it.key)
+            webViewWrapperStore.remove(it.key)
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
                 it.value.destroy()

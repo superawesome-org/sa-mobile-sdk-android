@@ -4,8 +4,12 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.RelativeLayout
+
+/* This Class is used to wrap around the webview so that additional Friendly Obstruction
+   views can be added so that Open Measurement (OM) can see them in the view hierarchy,
+   otherwise they are not seen and sent in the OM events.
+ */
 
 internal class WebViewWrapper @JvmOverloads constructor(
     context: Context,
@@ -14,11 +18,6 @@ internal class WebViewWrapper @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
     var webView: CustomWebView = CustomWebView(context)
-    var holder: FrameLayout = FrameLayout(context).apply {
-        clipChildren = false
-        setBackgroundColor(Color.TRANSPARENT)
-        clipToPadding = false
-    }
 
     init {
         setBackgroundColor(Color.TRANSPARENT)
@@ -30,12 +29,8 @@ internal class WebViewWrapper @JvmOverloads constructor(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        holder.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        holder.addView(webView)
-        addView(holder)
+
+        addView(webView)
     }
 
     fun setListener(listener: CustomWebView.Listener) {
@@ -44,7 +39,6 @@ internal class WebViewWrapper @JvmOverloads constructor(
 
     fun destroy() {
         webView.let {
-            holder.removeView(it)
             it.removeAllViews()
             it.destroy()
         }
