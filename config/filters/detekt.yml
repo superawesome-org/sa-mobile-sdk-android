@@ -1,6 +1,10 @@
 complexity:
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
   TooManyFunctions:
     thresholdInClasses: 20
+  CognitiveComplexMethod:
+    ignoreFunction: ["writeToParcel"]
+
 
 comments:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
@@ -12,12 +16,14 @@ comments:
     excludes: ['**/design/**']
 
 style:
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
   DataClassContainsFunctions:
     active: false
   DataClassShouldBeImmutable:
     active: false
   MagicNumber:
     ignorePropertyDeclaration: true
+    ignoreEnums: true
     excludes: [ '**/design/**', '**/test/**','**/androidTest/**' ]
   UnusedPrivateMember:
     ignoreAnnotated: [ 'Preview' ]
@@ -25,18 +31,32 @@ style:
     active: false
   BracesOnWhenStatements:
     active: false
+  ReturnCount:
+    excludeGuardClauses: true
 
 potential-bugs:
-  UnsafeCallOnNullableType:
-    excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
-  UnsafeCast:
-    excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+  LateinitUsage:
+    ignoreOnClassesPattern: '.*Activity'
 
 naming:
-  TopLevelPropertyNaming:
-    constantPattern: '[A-Z][A-Za-z0-9]*'
-    excludes: [ '**/theme/**', '**/test/**','**/androidTest/**' ]
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
   FunctionMaxLength:
-    excludes: [ '**/test/**','**/androidTest/**' ]
+    maximumFunctionNameLength: 48
+  FunctionMinLength:
+    minimumFunctionNameLength: 2
   FunctionNaming:
     ignoreAnnotated: [ 'Composable' ]
+
+empty-blocks:
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+
+exceptions:
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+
+coroutines:
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+
+performance:
+  excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+

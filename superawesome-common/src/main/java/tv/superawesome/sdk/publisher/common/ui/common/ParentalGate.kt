@@ -37,7 +37,7 @@ internal class ParentalGate(
     }
 
     /**
-     * Method that shows the parental gate popup and fires the necessary events
+     * Shows the parental gate popup and fires the necessary events.
      */
     fun show(context: Context) {
         listener?.parentalGateOpen()
@@ -55,7 +55,8 @@ internal class ParentalGate(
 
         // Set an EditText view to get user input
         val input = EditText(context)
-        input.tag = 998877
+        @Suppress("MagicNumber")
+        input.tag = 998_877
         input.inputType = InputType.TYPE_CLASS_NUMBER
         alertDialog.setView(input)
 

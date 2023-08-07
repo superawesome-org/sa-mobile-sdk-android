@@ -25,7 +25,11 @@ import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 
+/**
+ * The view that displays the ad.
+ */
 @SuppressLint("AddJavascriptInterface")
+@Suppress("TooManyFunctions")
 public class ManagedAdView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -79,16 +83,26 @@ public class ManagedAdView @JvmOverloads constructor(
         super.onRestoreInstanceState(restoreState)
     }
 
+    /**
+     * Sets the ad listener.
+     *
+     * @param delegate the ad listener.
+     */
     public fun setListener(delegate: SAInterface) {
         controller.delegate = delegate
     }
 
+    /**
+     * Sets the ad configuration.
+     *
+     * @param config the [Config] object to configure the ad.
+     */
     public fun setConfig(config: Config) {
         controller.config = config
     }
 
     /**
-     * Method that gets called in order to close the banner ad, remove any fragments, etc
+     * Closes the banner ad, remove any fragments, etc.
      */
     public fun close() {
         removeWebView()
@@ -98,83 +112,154 @@ public class ManagedAdView @JvmOverloads constructor(
     }
 
     /**
-     * Method that determines if an ad is available
+     * Determines if an ad is available.
      *
      * @return true or false
      */
     public fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
 
+    /**
+     * Gets whether the ad is closed.
+     *
+     * @return `true` if the ad is closed, `false` otherwise.
+     */
     public fun isClosed(): Boolean = controller.closed
 
+    /**
+     * Enables showing the parental gate.
+     */
     public fun enableParentalGate() {
         setParentalGate(true)
     }
 
+    /**
+     * Disables showing the parental gate.
+     */
     public fun disableParentalGate() {
         setParentalGate(false)
     }
 
+    /**
+     * Enables showing the bumper page.
+     */
     public fun enableBumperPage() {
         setBumperPage(true)
     }
 
+    /**
+     * Disables showing the bumper page.
+     */
     public fun disableBumperPage() {
         setBumperPage(false)
     }
 
+    /**
+     * Enables test mode.
+     */
     public fun enableTestMode() {
         setTestMode(true)
     }
 
+    /**
+     * Disables test mode.
+     */
     public fun disableTestMode() {
         setTestMode(false)
     }
 
+    /**
+     * Sets the background color to transparent.
+     */
     public fun setColorTransparent() {
         setColor(true)
     }
 
+    /**
+     * Sets the background color to gray.
+     */
     public fun setColorGray() {
         setColor(false)
     }
 
+    /**
+     * Sets the back button state.
+     *
+     * @param value `true` to enable back button, `false` to disable it.
+     */
     public fun setBackButton(value: Boolean) {
         controller.config.isBackButtonEnabled = value
     }
 
+    /**
+     * Enables the back button.
+     */
     public fun enableBackButton() {
         setBackButton(true)
     }
 
+    /**
+     * Disables the back button.
+     */
     public fun disableBackButton() {
         setBackButton(false)
     }
 
+    /**
+     * Sets whether the parental gate should show.
+     *
+     * @param value `true` to show the parental gate, `false` otherwise.
+     */
     public fun setParentalGate(value: Boolean) {
         controller.config.isParentalGateEnabled = value
     }
 
+    /**
+     * Sets whether bumper page should show.
+     *
+     * @param value `true` to show the bumper page, `false` otherwise.
+     */
     public fun setBumperPage(value: Boolean) {
         controller.config.isBumperPageEnabled = value
     }
 
+    /**
+     * Sets the test mode.
+     *
+     * @param value `true` to enable test mode, `false` otherwise.
+     */
     public fun setTestMode(value: Boolean) {
         controller.config.testEnabled = value
     }
 
+    /**
+     * Sets the close button state.
+     *
+     * @param value `true` enables the close button, `false` disables it.
+     */
     public fun setCloseButton(value: Boolean) {
         controller.config.closeButtonState =
             if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
     }
 
+    /**
+     * Enables the close button.
+     */
     public fun enableCloseButton() {
         setCloseButton(true)
     }
 
+    /**
+     * Disables the close button.
+     */
     public fun disableCloseButton() {
         setCloseButton(false)
     }
 
+    /**
+     * Sets the background color.
+     *
+     * @param value `true` makes it transparent, while `false` makes it gray.
+     */
     public fun setColor(value: Boolean) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
@@ -183,6 +268,9 @@ public class ManagedAdView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Plays the video.
+     */
     fun playVideo() {
         webView?.evaluateJavascript(
             "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));",
@@ -190,6 +278,9 @@ public class ManagedAdView @JvmOverloads constructor(
         )
     }
 
+    /**
+     * Pauses the video.
+     */
     fun pauseVideo() {
         webView?.evaluateJavascript(
             "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));",

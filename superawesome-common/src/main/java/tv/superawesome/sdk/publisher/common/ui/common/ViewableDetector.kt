@@ -26,22 +26,23 @@ internal class ViewableDetector(private val logger: Logger) : ViewableDetectorTy
         val weak = WeakReference(view)
         viewableCounter = 0
         runnable = Runnable {
-            val weakView = weak.get() ?: return@Runnable
-            if (isViewVisible(weakView)) {
-                logger.info("isViewVisible true")
-                viewableCounter += 1
-                isVisible?.invoke()
-            } else {
-                logger.info("isViewVisible false")
-            }
+            weak.get()?.let { weakView ->
+                if (isViewVisible(weakView)) {
+                    logger.info("isViewVisible true")
+                    viewableCounter += 1
+                    isVisible?.invoke()
+                } else {
+                    logger.info("isViewVisible false")
+                }
 
-            if (viewableCounter >= targetTickCount) {
-                logger.info("completed")
-                hasBeenVisible()
-                cancel()
-            } else {
-                logger.info("Tick: $viewableCounter")
-                schedule()
+                if (viewableCounter >= targetTickCount) {
+                    logger.info("completed")
+                    hasBeenVisible()
+                    cancel()
+                } else {
+                    logger.info("Tick: $viewableCounter")
+                    schedule()
+                }
             }
         }
 
@@ -63,7 +64,7 @@ internal class ViewableDetector(private val logger: Logger) : ViewableDetectorTy
     }
 
     private fun schedule() {
-        runnable?.let { handler.postDelayed(it, delayMillis) }
+        runnable?.let { handler.postDelayed(it, DELAY_MILLIS) }
     }
 
     override fun cancel() {
@@ -73,16 +74,16 @@ internal class ViewableDetector(private val logger: Logger) : ViewableDetectorTy
 }
 
 /**
- * Number of ticks required for banner/interstitial to decide viewable status
+ * Number of ticks required for banner/interstitial to decide viewable status.
  */
-const val interstitialMaxTickCount = 1
+const val INTERSTITIAL_MAX_TICK_COUNT = 1
 
 /**
- * Number of ticks required for video to decide viewable status
+ * Number of ticks required for video to decide viewable status.
  */
-const val videoMaxTickCount = 2
+const val VIDEO_MAX_TICK_COUNT = 2
 
 /**
- * The delay between each tick to check viewable status
+ * The delay between each tick to check viewable status.
  */
-private const val delayMillis: Long = 1000
+private const val DELAY_MILLIS: Long = 1000

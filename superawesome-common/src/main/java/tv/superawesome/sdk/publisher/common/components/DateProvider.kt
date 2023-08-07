@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 internal interface DateProviderType {
-    /** Returns the MMyyyy of the current date */
+    /** Returns the MMyyyy of the current date. */
     fun nowAsMonthYear(): String
 }
 
