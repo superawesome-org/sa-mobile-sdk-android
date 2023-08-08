@@ -1,11 +1,13 @@
 package tv.superawesome.demoapp.main
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tv.superawesome.demoapp.model.FeatureItem
+import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.repository.FeaturesRepository
 
@@ -18,8 +20,22 @@ class MainViewModel : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = featuresRepository.fetchAllFeatures()
-            updateData(result.optValue)
+            try {
+                val result = featuresRepository.fetchAllFeatures()
+                updateData(result.optValue)
+            } catch (error: Throwable) {
+                Log.e("SATestApp", "Error loading placements: ${error.message}")
+                updateData(
+                    listOf(
+                        FeatureItem(
+                            FeatureType.BANNER,
+                            listOf(
+                                PlacementItem(name = "Error loading placements"),
+                            ),
+                        )
+                    )
+                )
+            }
         }
     }
 
