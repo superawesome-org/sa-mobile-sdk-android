@@ -15,6 +15,7 @@ class FeaturesRepository {
 
     fun fetchAllFeatures(): DataResult<List<FeatureItem>> {
         val request = Request.Builder().url(FEATURES_JSON_URL).build()
+
         val response = okHttpClient.newCall(request).execute()
 
         return if (response.isSuccessful) {

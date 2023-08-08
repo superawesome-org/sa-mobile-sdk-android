@@ -7,7 +7,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 
 /**
- * OmidJsLoader - utility for loading the Omid JavaScript resource
+ * OpenMeasurementJSLoader - Utility for loading the OMID JavaScript resource
  */
 internal class OpenMeasurementJSLoader(
     private val logger: Logger,
@@ -20,7 +20,7 @@ internal class OpenMeasurementJSLoader(
     override fun loadJSLibrary(context: Context): String? {
         val res = context.resources
         try {
-            // TODO: Load Omid JS remotely and load from the app documents folder here.
+            // TODO: AASDK-499 Load Omid JS remotely and load from the app documents folder here.
             res.openRawResource(R.raw.omsdk_v1).use { inputStream ->
                 val bytes = ByteArray(inputStream.available())
                 val bytesRead = inputStream.read(bytes)

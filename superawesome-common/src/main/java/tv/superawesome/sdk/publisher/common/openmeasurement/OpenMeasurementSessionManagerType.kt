@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import android.webkit.WebView
 
-interface OpenMeasurementSessionManagerType {
+internal interface OpenMeasurementSessionManagerType {
 
     fun setup(
         context: Context,
@@ -23,7 +23,7 @@ interface OpenMeasurementSessionManagerType {
     fun sendAdImpression()
 }
 
-class DefaultOpenMeasurementSessionManager: OpenMeasurementSessionManagerType {
+internal class DefaultOpenMeasurementSessionManager: OpenMeasurementSessionManagerType {
 
     override fun setup(
         context: Context,

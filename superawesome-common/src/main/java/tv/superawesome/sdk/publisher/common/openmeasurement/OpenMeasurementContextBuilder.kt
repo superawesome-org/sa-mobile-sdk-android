@@ -20,7 +20,7 @@ internal class OpenMeasurementContextBuilder(
                 OpenMeasurementAdType.HTMLDisplay -> AdSessionContext.createHtmlAdSessionContext(
                     partner,
                     adView,
-                    null,
+                    adView.url,
                     customReferenceData,
                 )
             }

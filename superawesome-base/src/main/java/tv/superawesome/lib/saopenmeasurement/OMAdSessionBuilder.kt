@@ -12,7 +12,7 @@ import com.iab.omid.library.superawesome.adsession.Owner
 import com.iab.omid.library.superawesome.adsession.Partner
 import tv.superawesome.sdk.publisher.SAVersion
 
-object OMAdSessionBuilder {
+internal object OMAdSessionBuilder {
 
     private const val PARTNER_NAME = "SuperAwesomeLtd"
 
@@ -21,36 +21,38 @@ object OMAdSessionBuilder {
         webView: WebView?,
         customReferenceData: String?,
     ): AdSession {
-        ensureOmidActivated(context)
-        val adSessionConfiguration: AdSessionConfiguration =
-            AdSessionConfiguration.createAdSessionConfiguration(
-                CreativeType.HTML_DISPLAY,
-                ImpressionType.BEGIN_TO_RENDER,
-                Owner.NATIVE,
-                Owner.NONE,
-                false,
-            )
-        val partner: Partner = getPartner()
-        val adSessionContext: AdSessionContext = AdSessionContext.createHtmlAdSessionContext(
+        Omid.activate(context.applicationContext)
+        val adSessionConfiguration: AdSessionConfiguration = createSessionConfig()
+        val partner: Partner = createPartner()
+        val adSessionContext: AdSessionContext =
+            createAdSessionContext(partner, webView, customReferenceData)
+        val adSession: AdSession =
+            AdSession.createAdSession(adSessionConfiguration, adSessionContext)
+        adSession.registerAdView(webView)
+        return adSession
+    }
+
+    private fun createSessionConfig(): AdSessionConfiguration =
+        AdSessionConfiguration.createAdSessionConfiguration(
+            CreativeType.HTML_DISPLAY,
+            ImpressionType.BEGIN_TO_RENDER,
+            Owner.NATIVE,
+            Owner.NONE,
+            false,
+        )
+
+    private fun createPartner(): Partner =
+        Partner.createPartner(PARTNER_NAME, SAVersion.getSDKVersionNumber())
+
+    private fun createAdSessionContext(
+        partner: Partner,
+        webView: WebView?,
+        customReferenceData: String?,
+    ): AdSessionContext =
+        AdSessionContext.createHtmlAdSessionContext(
             partner,
             webView,
             webView?.url,
             customReferenceData,
         )
-        val adSession: AdSession = AdSession.createAdSession(adSessionConfiguration, adSessionContext)
-        adSession.registerAdView(webView)
-        return adSession
-    }
-
-    /**
-     * Lazily activate the OMID API.
-     *
-     * @param context any context
-     */
-    private fun ensureOmidActivated(context: Context) {
-        Omid.activate(context.applicationContext)
-    }
-
-    private fun getPartner(): Partner =
-        Partner.createPartner(PARTNER_NAME, SAVersion.getSDKVersionNumber())
 }

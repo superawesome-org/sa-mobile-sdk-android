@@ -502,7 +502,7 @@ public class SABannerAd extends FrameLayout {
             adSession.start();
             adEvents = AdEvents.createAdEvents(adSession);
         } catch (IllegalArgumentException error) {
-            error.printStackTrace();
+            Log.e("SAAwesomeAds", "Failure creating the Open Management Session");
         }
     }
 
@@ -523,24 +523,22 @@ public class SABannerAd extends FrameLayout {
             return;
         }
 
-        Log.d("AwesomeAds-2", "Got here!");
-
         Long currentTime = System.currentTimeMillis() / 1000;
         long diff = Math.abs(currentTime - currentClickThreshold);
 
         if (diff < SADefaults.defaultClickThreshold()) {
-            Log.d("AwesomeAds-2", "Current diff is " + diff);
+            Log.d("AwesomeAds", "Current diff is " + diff);
             return;
         }
 
         currentClickThreshold = currentTime;
 
-        Log.d("AwesomeAds-2", "Going to " + destination);
+        Log.d("AwesomeAds", "Going to " + destination);
 
         // callback
         if (listener != null) {
             listener.onEvent(ad.placementId, SAEvent.adClicked);
-            Log.d("SABannerAd", "Event callback: " + SAEvent.adClicked);
+            Log.d("AwesomeAds", "SA Banner Ad Event callback: " + SAEvent.adClicked);
         } else {
             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClicked");
         }

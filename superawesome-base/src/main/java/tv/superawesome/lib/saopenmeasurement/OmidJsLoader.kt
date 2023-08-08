@@ -8,11 +8,12 @@ import java.nio.charset.Charset
 /**
  * OmidJsLoader - utility for loading the Omid JavaScript resource
  */
-object OmidJsLoader {
+internal object OmidJsLoader {
     /**
      * getOmidJs - gets the Omid JS resource as a string
      * @param context - used to access the JS resource
      * @return - the Omid JS resource as a string
+     * @throws - If the JS file does not exist, this function will throw an error
      */
     fun getOmidJs(context: Context): String {
         val res = context.resources

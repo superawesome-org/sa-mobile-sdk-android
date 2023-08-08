@@ -4,7 +4,7 @@ import android.webkit.WebView
 import com.iab.omid.library.superawesome.adsession.AdSessionContext
 import com.iab.omid.library.superawesome.adsession.Partner
 
-interface OpenMeasurementContextBuilderType {
+internal interface OpenMeasurementContextBuilderType {
     fun sessionContext(
         adView: WebView,
         adType: OpenMeasurementAdType,

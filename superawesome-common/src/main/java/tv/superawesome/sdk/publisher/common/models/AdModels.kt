@@ -17,7 +17,6 @@ internal data class Ad(
     @SerialName("campaign_id") val campaignId: Int,
     @SerialName("show_padlock") val showPadlock: Boolean,
     @SerialName("line_item_id") val lineItemId: Int,
-    val moat: Double = 0.0,
     val test: Boolean,
     val creative: Creative,
     @SerialName("is_vpaid") val isVpaid: Boolean = false,

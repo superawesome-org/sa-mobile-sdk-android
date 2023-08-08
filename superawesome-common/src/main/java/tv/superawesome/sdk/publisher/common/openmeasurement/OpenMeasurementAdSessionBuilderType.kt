@@ -4,7 +4,7 @@ import android.content.Context
 import android.webkit.WebView
 import com.iab.omid.library.superawesome.adsession.AdSession
 
-interface OpenMeasurementAdSessionBuilderType {
+internal interface OpenMeasurementAdSessionBuilderType {
     fun getHtmlAdSession(
         context: Context,
         webView: WebView,
