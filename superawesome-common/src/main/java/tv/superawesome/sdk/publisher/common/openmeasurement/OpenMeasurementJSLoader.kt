@@ -7,15 +7,15 @@ import java.io.IOException
 import java.nio.charset.Charset
 
 /**
- * OpenMeasurementJSLoader - Utility for loading the OMID JavaScript resource
+ * Utility for loading the OMID JavaScript resource
  */
 internal class OpenMeasurementJSLoader(
     private val logger: Logger,
 ) : OpenMeasurementJSLoaderType {
     /**
-     * loadJSLibrary - gets the Omid JS resource as a string
-     * @param context - used to access the JS resource
-     * @return String? - the Omid JS resource as a string
+     * Gets the Omid JS resource as a string
+     * @param context Used to access the JS resource
+     * @return The Omid JS resource as a string
      */
     override fun loadJSLibrary(context: Context): String? {
         val res = context.resources

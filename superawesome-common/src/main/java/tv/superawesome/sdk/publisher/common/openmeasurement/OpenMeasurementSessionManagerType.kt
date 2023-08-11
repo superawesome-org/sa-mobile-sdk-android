@@ -4,6 +4,10 @@ import android.content.Context
 import android.view.View
 import android.webkit.WebView
 
+/**
+ * Interface for the OpenMeasurement Session Manger
+ */
+
 internal interface OpenMeasurementSessionManagerType {
 
     fun setup(
@@ -21,33 +25,4 @@ internal interface OpenMeasurementSessionManagerType {
     )
     fun sendAdLoaded()
     fun sendAdImpression()
-}
-
-internal class DefaultOpenMeasurementSessionManager: OpenMeasurementSessionManagerType {
-
-    override fun setup(
-        context: Context,
-        webView: WebView,
-    ) = Unit
-
-    override fun start() = Unit
-
-    override fun finish() = Unit
-
-    override fun setAdView(view: View?) = Unit
-
-    override fun injectJS(
-        context: Context,
-        html: String,
-    ): String = ""
-
-    override fun addFriendlyObstruction(
-        view: View,
-        purpose: FriendlyObstructionType,
-        reason: String?,
-    ) = Unit
-
-    override fun sendAdLoaded() = Unit
-
-    override fun sendAdImpression()  = Unit
 }
