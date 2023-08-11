@@ -5,7 +5,6 @@ plugins {
 }
 
 apply(from = "../publish.gradle")
-apply(from = "../jacoco.gradle")
 
 extra.apply {
     set("libraryDescription", "SuperAwesome Base Mobile SDK for Android")
