@@ -10,7 +10,6 @@ import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.components.Logger
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.OmidJSNotLoadedThrowable
 import kotlin.test.assertEquals
 
 class OpenMeasurementJSInjectorTests {
@@ -61,7 +60,7 @@ class OpenMeasurementJSInjectorTests {
         verify {
             logger.error(
                 "The omidJS was not loaded",
-                ofType(OmidJSNotLoadedThrowable::class),
+                ofType(OpenMeasurementError.OmidJSNotLoaded::class),
             )
         }
         confirmVerified(logger)
@@ -71,7 +70,7 @@ class OpenMeasurementJSInjectorTests {
     @Test
     fun `injectJS logs an error and returns unmodified html if injector fails`() {
         // given
-        val error = Throwable()
+        val error = Exception()
         val js = "some js"
         val adHtml = "<html><head></head><body><a href=\"https://www.superawesome.com\">" +
                 "<img src=\"https://wwww.image.com\"></a></body></html>"

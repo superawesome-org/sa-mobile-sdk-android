@@ -13,10 +13,6 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.components.Logger
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionCreationFailureThrowable
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionStartFailureThrowable
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionUnavailableFailureThrowable
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.UpdateAdViewFailureThrowable
 import kotlin.test.assertNotNull
 
 class OpenMeasurementSessionManagerTests {
@@ -72,7 +68,7 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 1) {
             logger.error(
                 "Unable to create the ad session",
-                ofType(AdSessionCreationFailureThrowable::class),
+                ofType(OpenMeasurementError.AdSessionCreationFailure::class),
             )
         }
         confirmVerified(logger)
@@ -102,7 +98,7 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 2) {
             logger.error(
                 "No ad session available",
-                ofType(AdSessionUnavailableFailureThrowable::class),
+                ofType(OpenMeasurementError.AdSessionUnavailableFailure::class),
             )
         }
         confirmVerified(logger)
@@ -121,7 +117,7 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 1) {
             logger.error(
                 "Unable to start the ad session",
-                ofType(AdSessionStartFailureThrowable::class),
+                ofType(OpenMeasurementError.AdSessionStartFailure::class),
             )
         }
         confirmVerified(logger)
@@ -198,7 +194,7 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 1) {
             logger.error(
                 "Unable to update the ad view",
-                ofType(UpdateAdViewFailureThrowable::class),
+                ofType(OpenMeasurementError.UpdateAdViewFailure::class),
             )
         }
         verify(exactly = 0) { session.registerAdView(webView) }
@@ -215,7 +211,7 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 1) {
             logger.error(
                 "Unable to update the ad view",
-                ofType(UpdateAdViewFailureThrowable::class),
+                ofType(OpenMeasurementError.UpdateAdViewFailure::class),
             )
         }
         verify(exactly = 0) { session.registerAdView(null) }
@@ -296,7 +292,7 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 1) {
             logger.error(
                 "No ad session available",
-                ofType(AdSessionUnavailableFailureThrowable::class),
+                ofType(OpenMeasurementError.AdSessionUnavailableFailure::class),
             )
         }
         confirmVerified(session)
