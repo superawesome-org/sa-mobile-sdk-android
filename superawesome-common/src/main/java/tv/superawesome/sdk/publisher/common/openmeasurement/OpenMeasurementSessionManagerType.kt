@@ -5,7 +5,7 @@ import android.view.View
 import android.webkit.WebView
 
 /**
- * Interface for the OpenMeasurement Session Manger
+ * Interface for the OpenMeasurement Session Manger.
  */
 
 internal interface OpenMeasurementSessionManagerType {

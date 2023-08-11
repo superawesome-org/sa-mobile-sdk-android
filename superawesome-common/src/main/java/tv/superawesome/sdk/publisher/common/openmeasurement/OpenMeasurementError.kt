@@ -1,7 +1,7 @@
 package tv.superawesome.sdk.publisher.common.openmeasurement
 
 /**
- * Error classes for Open Measurement
+ * Error classes for Open Measurement.
  */
 sealed class OpenMeasurementError(
     open val exception: Exception?,

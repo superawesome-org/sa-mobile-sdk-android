@@ -124,7 +124,9 @@ class SACustomWebView @JvmOverloads constructor(
 
     fun loadHTML(base: String, html: String) {
         val baseHtml =
-            "<html><head><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></head><body>$html</body></html>"
+            "<html><head><meta name='viewport' content='width=device-width'/><style>html," +
+                    " body, div { margin: 0px; padding: 0px; } html, body { width: 100%; " +
+                    "height: 100%; }</style></head><body>$html</body></html>"
         loadDataWithBaseURL(base, baseHtml, "text/html", "UTF-8", null)
     }
 }

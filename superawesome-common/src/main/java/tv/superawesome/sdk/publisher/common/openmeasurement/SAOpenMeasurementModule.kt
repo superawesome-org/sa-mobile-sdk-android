@@ -12,8 +12,8 @@ import com.iab.omid.library.superawesome.Omid
  */
 object SAOpenMeasurementModule {
     /**
-     * This activates the OM SDK on initial launch
-     * @param context This is used to activate and update the OMID object
+     * This activates the OM SDK on initial launch.
+     * @param context This is used to activate and update the OMID object.
      */
     fun activate(context: Context) {
         Handler(Looper.getMainLooper()).post {

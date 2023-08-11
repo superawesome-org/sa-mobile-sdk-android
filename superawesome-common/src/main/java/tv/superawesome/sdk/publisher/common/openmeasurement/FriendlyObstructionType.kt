@@ -15,8 +15,8 @@ internal enum class FriendlyObstructionType {
 
 /**
  * Helper function to convert AA SDK enum FriendlyObstructionType
- * to OM enum FriendlyObstructionPurpose
- * @return FriendlyObstructionPurpose value
+ * to OM enum FriendlyObstructionPurpose.
+ * @return FriendlyObstructionPurpose value.
  */
 internal fun FriendlyObstructionType.omidFriendlyObstruction(): FriendlyObstructionPurpose =
     when (this) {
