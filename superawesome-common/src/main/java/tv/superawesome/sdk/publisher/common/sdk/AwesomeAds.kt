@@ -88,4 +88,5 @@ object AwesomeAds {
                 )
             )
         }
+    }
 }
