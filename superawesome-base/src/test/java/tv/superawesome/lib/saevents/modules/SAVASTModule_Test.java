@@ -41,7 +41,6 @@ public class SAVASTModule_Test extends Module_Test {
 
         module.triggerVastClickThroughEvent(Assert::assertTrue);
 
-
         module.triggerVASTClickTrackingEvent(Assert::assertTrue);
     }
 
