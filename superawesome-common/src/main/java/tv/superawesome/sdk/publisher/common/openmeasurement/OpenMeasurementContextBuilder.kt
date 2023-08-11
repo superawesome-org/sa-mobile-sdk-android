@@ -24,7 +24,7 @@ internal class OpenMeasurementContextBuilder(
                     customReferenceData,
                 )
             }
-        } catch (error: Throwable) {
+        } catch (error: Exception) {
             logger.error("Unable to create session context", error)
             null
         }

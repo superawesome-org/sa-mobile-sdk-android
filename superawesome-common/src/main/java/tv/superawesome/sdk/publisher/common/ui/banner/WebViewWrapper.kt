@@ -17,7 +17,7 @@ internal class WebViewWrapper @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    var webView: CustomWebView = CustomWebView(context)
+    val webView: CustomWebView = CustomWebView(context)
 
     init {
         setBackgroundColor(Color.TRANSPARENT)
@@ -38,9 +38,7 @@ internal class WebViewWrapper @JvmOverloads constructor(
     }
 
     fun destroy() {
-        webView.let {
-            it.removeAllViews()
-            it.destroy()
-        }
+        webView.removeAllViews()
+        webView.destroy()
     }
 }
