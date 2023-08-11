@@ -3,6 +3,10 @@ package tv.superawesome.sdk.publisher.common.openmeasurement
 import android.view.View
 import android.webkit.WebView
 
+/**
+ * Interface for the OpenMeasurement Session Manger
+ */
+
 internal interface OpenMeasurementSessionManagerType {
 
     fun setup(webView: WebView)

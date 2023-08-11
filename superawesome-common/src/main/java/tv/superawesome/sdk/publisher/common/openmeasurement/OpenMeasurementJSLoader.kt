@@ -6,15 +6,15 @@ import java.io.InputStream
 import java.nio.charset.Charset
 
 /**
- * OpenMeasurementJSLoader - Utility for loading the OMID JavaScript resource
+ * Utility for loading the OMID JavaScript resource
  */
 internal class OpenMeasurementJSLoader(
     private val logger: Logger,
     private val jsInputStream: InputStream,
 ) : OpenMeasurementJSLoaderType {
     /**
-     * loadJSLibrary - gets the Omid JS resource as a string
-     * @return String? - the Omid JS resource as a string
+     * Gets the Omid JS resource as a string
+     * @return The Omid JS resource as a string
      */
     override fun loadJSLibrary(): String? {
         try {

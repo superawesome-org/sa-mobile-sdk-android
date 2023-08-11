@@ -10,7 +10,7 @@ import com.iab.omid.library.superawesome.adsession.Partner
 import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 
 /**
- * OpenMeasurementAdSessionBuilder - Builds and configures the Open Measurement AdSession
+ * Builds and configures the Open Measurement AdSession
  */
 internal class OpenMeasurementAdSessionFactory(
     private val omidActivator: OmidActivatorType,
@@ -18,10 +18,10 @@ internal class OpenMeasurementAdSessionFactory(
     private val contextBuilder: OpenMeasurementContextFactoryType,
 ): OpenMeasurementAdSessionFactoryType {
     /**
-     * getHtmlAdSession - gets the OM AdSession object
-     * @param webView - the web view that is presenting the ad
-     * @param customReferenceData - additional info for the context
-     * @return the ad session object for the given web view
+     * Gets the OM AdSession object
+     * @param webView The web view that is presenting the ad
+     * @param customReferenceData Additional info for the context
+     * @return The ad session object for the given web view
      */
     override fun getHtmlAdSession(
         webView: WebView,

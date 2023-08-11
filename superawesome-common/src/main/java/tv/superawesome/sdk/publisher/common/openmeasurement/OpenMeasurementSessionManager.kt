@@ -7,7 +7,7 @@ import com.iab.omid.library.superawesome.adsession.AdSession
 import tv.superawesome.sdk.publisher.common.components.Logger
 
 /**
- * OpenMeasurementSessionManager - main class for constructing and managing the OM ad session
+ * Main class for constructing and managing an OM ad session for a single ad instance
  */
 internal class OpenMeasurementSessionManager(
     private val sessionFactory: OpenMeasurementAdSessionFactoryType,
@@ -66,15 +66,15 @@ internal class OpenMeasurementSessionManager(
     // Public
 
     /**
-     * setup - builds the ad session
-     * @param webView - the web view containing the ad
+     * Builds the ad session
+     * @param webView The web view containing the ad
      */
     override fun setup(webView: WebView) {
         createSession(webView)
     }
 
     /**
-     * start - starts the ad session if one has been created and creates the ad events object
+     * Starts the ad session if one has been created and creates the ad events object
      */
     override fun start() {
         startSession()
@@ -82,7 +82,7 @@ internal class OpenMeasurementSessionManager(
     }
 
     /**
-     * finish - ends and cleans up the ad session and events
+     * Ends and cleans up the ad session and events
      */
     override fun finish() {
         adSession?.finish()
@@ -91,8 +91,8 @@ internal class OpenMeasurementSessionManager(
     }
 
     /**
-     * setAdView - sets the ad view
-     * @param view - the view containing the ad
+     * Sets the ad view
+     * @param view The view containing the ad
      */
     override fun setAdView(view: View?) {
         if (view == null || adSession == null) {
@@ -104,18 +104,18 @@ internal class OpenMeasurementSessionManager(
     }
 
     /**
-     * injectJS - injects the OMID JS into the ad html
-     * @param html - the html string for the ad
-     * @return string - the html for the ad with the OMID js if injection was successful
+     * Injects the OMID JS into the ad html
+     * @param html The html string for the ad
+     * @return The html for the ad with the OMID js if injection was successful
      */
     override fun injectJS(html: String): String = jsInjector.injectJS(html)
 
     /**
-     * addFriendlyObstruction - adds a view to the friendly obstruction list in the ad session,
+     * Adds a view to the friendly obstruction list in the ad session,
      * this is for views that are overlaid on the ad such as close buttons, images etc.
-     * @param view - the obstruction view
-     * @param purpose - an enum containing the purpose of the obstructive view
-     * @param reason - a descriptive reason for the view
+     * @param view The obstruction view
+     * @param purpose An enum containing the purpose of the obstructive view
+     * @param reason A descriptive reason for the view
      */
     override fun addFriendlyObstruction(
         view: View,
@@ -131,7 +131,7 @@ internal class OpenMeasurementSessionManager(
     }
 
     /**
-     * sendAdLoaded - sends the ad loaded event to OMID via the AdEvents object if
+     * Sends the ad loaded event to OMID via the AdEvents object if
      * the ad session exists and is started
      */
     override fun sendAdLoaded() {
@@ -145,7 +145,7 @@ internal class OpenMeasurementSessionManager(
     }
 
     /**
-     * sendAdImpression - sends the ad impression event to OMID via the AdEvents object if
+     * Sends the ad impression event to OMID via the AdEvents object if
      * the ad session exists and is started
      */
     override fun sendAdImpression() {

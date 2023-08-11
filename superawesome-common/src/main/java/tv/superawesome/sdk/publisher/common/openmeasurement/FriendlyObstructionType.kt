@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.common.openmeasurement
 import com.iab.omid.library.superawesome.adsession.FriendlyObstructionPurpose
 
 /**
- * FriendlyObstructionType - This enum specifies AA SDK friendly versions of the
+ * This enum specifies AA SDK friendly versions of the
  * Open Measurement SDK Friendly Obstruction Purposes.
  */
 internal enum class FriendlyObstructionType {
@@ -14,8 +14,9 @@ internal enum class FriendlyObstructionType {
 }
 
 /**
- * omidFriendlyObstruction - Helper function to convert AA SDK enum FriendlyObstructionType
+ * Helper function to convert AA SDK enum FriendlyObstructionType
  * to OM enum FriendlyObstructionPurpose
+ * @return FriendlyObstructionPurpose value
  */
 internal fun FriendlyObstructionType.omidFriendlyObstruction(): FriendlyObstructionPurpose =
     when (this) {

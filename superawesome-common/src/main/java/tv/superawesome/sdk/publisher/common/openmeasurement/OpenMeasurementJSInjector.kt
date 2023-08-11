@@ -4,16 +4,16 @@ import com.iab.omid.library.superawesome.ScriptInjector
 import tv.superawesome.sdk.publisher.common.components.Logger
 
 /**
- * OpenMeasurementJSInjector - Utility for injecting the OMID JavaScript string into a HTML string
+ * Utility for injecting the OMID JavaScript string into a HTML string
  */
 internal class OpenMeasurementJSInjector(
     private val jsLoader: OpenMeasurementJSLoaderType,
     private val logger: Logger,
 ): OpenMeasurementJSInjectorType {
     /**
-     * injectJS - injects the JS string into the provided HTML string
-     * @param adHtml - the HTML string for the ad
-     * @return String - the HTML string for the ad with the OMID JS injected into it
+     * Injects the JS string into the provided HTML string
+     * @param adHtml The HTML string for the ad
+     * @return The HTML string for the ad with the OMID JS injected into it
      */
     override fun injectJS(adHtml: String): String {
         val omidJs = jsLoader.loadJSLibrary()
