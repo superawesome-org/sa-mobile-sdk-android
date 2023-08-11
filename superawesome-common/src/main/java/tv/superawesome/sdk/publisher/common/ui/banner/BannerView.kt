@@ -346,7 +346,7 @@ public class BannerView @JvmOverloads constructor(
             val handler = Handler(Looper.getMainLooper())
             handler.postDelayed({
                 it.value.destroy()
-            }, 1000)
+            }, WEB_VIEW_REMOVAL_TIME)
         }
     }
 
@@ -373,5 +373,9 @@ public class BannerView @JvmOverloads constructor(
         this.placementId = placementId
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible
+    }
+
+    companion object {
+        private const val WEB_VIEW_REMOVAL_TIME = 1000L
     }
 }

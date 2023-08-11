@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.common.openmeasurement
 /**
  * Error classes for Open Measurement.
  */
-sealed class OpenMeasurementError(
+internal sealed class OpenMeasurementError(
     open val exception: Exception?,
     override val message: String,
 ) : Exception() {

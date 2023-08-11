@@ -2,7 +2,6 @@ package tv.superawesome.lib.saopenmeasurement
 
 import android.content.Context
 import com.iab.omid.library.superawesome.Omid
-import com.iab.omid.library.superawesome.ScriptInjector
 
 /**
  * Object for initialising the OM SDK.

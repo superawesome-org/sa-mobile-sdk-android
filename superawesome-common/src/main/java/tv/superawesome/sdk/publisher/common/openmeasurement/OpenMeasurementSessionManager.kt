@@ -6,6 +6,7 @@ import android.webkit.WebView
 import com.iab.omid.library.superawesome.adsession.AdEvents
 import com.iab.omid.library.superawesome.adsession.AdSession
 import tv.superawesome.sdk.publisher.common.components.Logger
+import java.lang.IllegalStateException
 
 /**
  * Main class for constructing and managing an OM ad session for a single ad instance.
@@ -33,7 +34,7 @@ internal class OpenMeasurementSessionManager(
             )
         } catch (error: IllegalArgumentException) {
             val throwable = OpenMeasurementError.AdSessionCreationFailure(error)
-            logger.error(throwable.message, throwable)
+            logger.error("${throwable.message} error: ${error.message}", throwable)
             return
         }
     }
@@ -43,7 +44,7 @@ internal class OpenMeasurementSessionManager(
             adSession?.start()
         } catch (error: IllegalArgumentException) {
             val throwable = OpenMeasurementError.AdSessionStartFailure()
-            logger.error(throwable.message, throwable)
+            logger.error("${throwable.message} error: ${error.message}", throwable)
             return
         }
     }
@@ -57,8 +58,13 @@ internal class OpenMeasurementSessionManager(
 
         try {
             adEvents = AdEvents.createAdEvents(adSession)
-        } catch (error: Exception) {
-            logger.error("Unable to create ad events", error)
+        } catch (error: IllegalArgumentException) {
+            logger.error("Unable to create ad events error: ${error.message}", error)
+        } catch (error: IllegalStateException) {
+            logger.error(
+                error.message ?: "Unable to create ad events error: ${error.message}",
+                error,
+            )
         }
     }
 
@@ -94,7 +100,7 @@ internal class OpenMeasurementSessionManager(
     }
 
     /**
-     * Sets the ad view
+     * Sets the ad view.
      * @param view The view containing the ad.
      */
     override fun setAdView(view: View?) {
@@ -131,8 +137,8 @@ internal class OpenMeasurementSessionManager(
     ) {
         try {
             adSession?.addFriendlyObstruction(view, purpose.omidFriendlyObstruction(), reason)
-        } catch (error: Exception) {
-            logger.error("Failed to add friendly obstruction", error)
+        } catch (error: IllegalArgumentException) {
+            logger.error("Failed to add friendly obstruction error: ${error.message}", error)
         }
     }
 
@@ -143,8 +149,8 @@ internal class OpenMeasurementSessionManager(
     override fun sendAdLoaded() {
         try {
             adEvents?.loaded()
-        } catch (error: Exception) {
-            logger.error("Unable to send the ad loaded event", error)
+        } catch (error: IllegalStateException) {
+            logger.error("Unable to send the ad loaded event error: ${error.message}", error)
         }
     }
 
@@ -155,8 +161,8 @@ internal class OpenMeasurementSessionManager(
     override fun sendAdImpression() {
         try {
             adEvents?.impressionOccurred()
-        } catch (error: Exception) {
-            logger.error("Unable to send the ad impression event", error)
+        } catch (error: IllegalStateException) {
+            logger.error("Unable to send the ad impression event error: ${error.message}", error)
         }
     }
 }

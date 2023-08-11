@@ -82,7 +82,6 @@ import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoa
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoaderType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManager
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
-import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurementModule
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController

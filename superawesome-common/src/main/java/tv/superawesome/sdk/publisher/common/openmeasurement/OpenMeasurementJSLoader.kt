@@ -20,7 +20,6 @@ internal class OpenMeasurementJSLoader(
     override fun loadJSLibrary(context: Context): String? {
         val res = context.resources
         try {
-            // TODO: AASDK-499 Load Omid JS remotely and load from the app documents folder here.
             res.openRawResource(R.raw.omsdk_v1).use { inputStream ->
                 val bytes = ByteArray(inputStream.available())
                 val bytesRead = inputStream.read(bytes)

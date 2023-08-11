@@ -1,7 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
 import android.util.Log
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementError
 
 internal interface Logger {
     fun info(message: String)
