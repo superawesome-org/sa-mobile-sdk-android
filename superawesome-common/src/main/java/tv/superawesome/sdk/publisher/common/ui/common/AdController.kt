@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.common.ui.common
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -27,6 +28,7 @@ import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepositoryTy
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import kotlin.math.abs
 
+@Suppress("TooManyFunctions", "ComplexInterface")
 internal interface AdControllerType {
     var config: Config
     var closed: Boolean
@@ -69,6 +71,7 @@ internal interface AdControllerType {
     }
 }
 
+@Suppress("TooManyFunctions")
 internal class AdController(
     private val adRepository: AdRepositoryType,
     private val eventRepository: EventRepositoryType,
@@ -89,12 +92,21 @@ internal class AdController(
     private val dwellTimeTimer = PerformanceTimer()
     private val loadTimeTimer = PerformanceTimer()
 
+    private val scope = CoroutineScope(Dispatchers.Main)
+    private var parentalGate: ParentalGate? = null
+    private var lastClickTime = 0L
+
+    private val placementId: Int
+        get() = currentAdResponse?.placementId ?: 0
+
+    private var bumperPage: BumperPage? = null
+
     override fun startTimingForLoadTime() {
         loadTimeTimer.start(timeProvider.millis())
     }
 
     override fun trackLoadTime() {
-        if (loadTimeTimer.startTime == 0L) { return }
+        if (loadTimeTimer.startTime == 0L) return
         scope.launch {
             performanceRepository.trackLoadTime(
                 loadTimeTimer.delta(timeProvider.millis())
@@ -107,7 +119,7 @@ internal class AdController(
     }
 
     override fun trackDwellTime() {
-        if (dwellTimeTimer.startTime == 0L) { return }
+        if (dwellTimeTimer.startTime == 0L) return
         scope.launch {
             performanceRepository.trackDwellTime(
                 dwellTimeTimer.delta(timeProvider.millis())
@@ -120,22 +132,13 @@ internal class AdController(
     }
 
     override fun trackCloseButtonPressed() {
-        if (closeButtonPressedTimer.startTime == 0L) { return }
+        if (closeButtonPressedTimer.startTime == 0L) return
         scope.launch {
             performanceRepository.trackCloseButtonPressed(
                 closeButtonPressedTimer.delta(timeProvider.millis())
             )
         }
     }
-
-    private val scope = CoroutineScope(Dispatchers.Main)
-    private var parentalGate: ParentalGate? = null
-    private var lastClickTime = 0L
-
-    private val placementId: Int
-        get() = currentAdResponse?.placementId ?: 0
-
-    private var bumperPage: BumperPage? = null
 
     override fun handleAdTap(url: String, context: Context) {
         onAdClicked(url, context)
@@ -165,11 +168,11 @@ internal class AdController(
         handleAdTap(destinationUrl, context)
     }
 
-    private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) =
+    private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) {
         if (config.isParentalGateEnabled) {
             parentalGate?.stop()
             parentalGate = get(ParentalGate::class.java)
-            parentalGate?.apply {
+            parentalGate?.run {
                 newQuestion()
                 listener = object : ParentalGate.Listener {
                     override fun parentalGateOpen() {
@@ -207,10 +210,10 @@ internal class AdController(
                 }
                 parentalGate?.show(context)
             }
-            Unit
         } else {
             completion()
         }
+    }
 
     private fun isClickTooFast(): Boolean {
         val currentTime = System.currentTimeMillis()
@@ -285,7 +288,7 @@ internal class AdController(
         try {
             // start browser
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(destination)))
-        } catch (exception: Exception) {
+        } catch (exception: ActivityNotFoundException) {
             logger.error("Exception while navigating to url", exception)
         }
     }

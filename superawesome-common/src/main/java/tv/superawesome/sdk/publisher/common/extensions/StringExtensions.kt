@@ -1,9 +1,11 @@
 package tv.superawesome.sdk.publisher.common.extensions
 
+import java.net.MalformedURLException
 import java.net.URL
 import java.security.MessageDigest
 import java.util.regex.Pattern
 
+@Suppress("StringShouldBeRawString")
 private val urlPattern: Pattern
     get() {
         return Pattern.compile(
@@ -14,13 +16,11 @@ private val urlPattern: Pattern
         )
     }
 internal val String.baseUrl: String?
-    get() {
-        return try {
-            val url = URL(this)
-            "${url.protocol}://${url.authority}"
-        } catch (exception: Exception) {
-            null
-        }
+    get() = try {
+        val url = URL(this)
+        "${url.protocol}://${url.authority}"
+    } catch (exception: MalformedURLException) {
+        null
     }
 
 internal fun String.extractURLs(): List<String> {
@@ -39,6 +39,6 @@ internal fun String.extractURLs(): List<String> {
 internal fun String.toMD5(): String = MessageDigest.getInstance("MD5").digest(toByteArray()).toHex()
 
 /**
- * Converts String to Hexadecimal format
+ * Converts String to Hexadecimal format.
  */
 private fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it) }

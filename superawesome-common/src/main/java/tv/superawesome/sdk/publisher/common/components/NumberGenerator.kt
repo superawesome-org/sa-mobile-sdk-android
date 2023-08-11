@@ -10,7 +10,7 @@ internal interface NumberGeneratorType {
 
     /**
      * @return Random number for the parental gate puzzle
-     * between [NumberGenerator.parentalGateMin] and [NumberGenerator.parentalGateMax]
+     * between [NumberGenerator.PARENTAL_GATE_MIN] and [NumberGenerator.PARENTAL_GATE_MAX]
      */
     fun nextIntForParentalGate(): Int
 
@@ -21,14 +21,17 @@ internal interface NumberGeneratorType {
 }
 
 internal class NumberGenerator : NumberGeneratorType {
-    private val cacheBoundMin: Int = 1000000
-    private val cacheBoundMax: Int = 1500000
 
-    private val parentalGateMin: Int = 50
-    private val parentalGateMax: Int = 99
-
-    override fun nextIntForCache(): Int = (cacheBoundMin..cacheBoundMax).random()
-    override fun nextIntForParentalGate(): Int = (parentalGateMin..parentalGateMax).random()
+    override fun nextIntForCache(): Int = (CACHE_BOUND_MIN..CACHE_BOUND_MAX).random()
+    override fun nextIntForParentalGate(): Int = (PARENTAL_GATE_MIN..PARENTAL_GATE_MAX).random()
 
     override fun nextAlphanumericString(length: Int): String = UUID.randomUUID().toString()
+
+    companion object {
+        private const val CACHE_BOUND_MIN: Int = 1_000_000
+        private const val CACHE_BOUND_MAX: Int = 1_500_000
+
+        private const val PARENTAL_GATE_MIN: Int = 50
+        private const val PARENTAL_GATE_MAX: Int = 99
+    }
 }

@@ -6,7 +6,6 @@ plugins {
 }
 
 apply(from = "../publish.gradle")
-apply(from = "../jacoco.gradle")
 
 android {
     namespace = "${Namespace.sdk.publisher}.common"

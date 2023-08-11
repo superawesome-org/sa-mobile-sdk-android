@@ -21,13 +21,12 @@ import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
-import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarning
+import tv.superawesome.sdk.publisher.common.ui.dialog.CloseWarningDialog
 import tv.superawesome.sdk.publisher.common.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayer
 import java.io.File
-
 
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
@@ -69,8 +68,11 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
         parentLayout.addView(videoPlayer)
 
         closeButton.visibility =
-            if (config.closeButtonState == CloseButtonState.VisibleImmediately)
-                View.VISIBLE else View.GONE
+            if (config.closeButtonState == CloseButtonState.VisibleImmediately) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
 
         closeButton.setOnClickListener { onCloseAction() }
 
@@ -109,6 +111,7 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
         })
     }
 
+    @Suppress("TooGenericExceptionCaught")
     public override fun playContent() {
         controller.play(placementId)?.let {
             addChrome()
@@ -169,7 +172,7 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
     private fun onCloseAction() {
         if (config.shouldShowCloseWarning && !completed) {
             control.pause()
-            CloseWarning.setListener(object : CloseWarning.Interface {
+            CloseWarningDialog.setListener(object : CloseWarningDialog.Interface {
                 override fun onResumeSelected() {
                     control.start()
                 }
@@ -178,7 +181,7 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
                     close()
                 }
             })
-            CloseWarning.show(this)
+            CloseWarningDialog.show(this)
         } else {
             close()
         }
@@ -191,7 +194,7 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
     }
 
     override fun close() {
-        CloseWarning.close()
+        CloseWarningDialog.close()
         controller.close()
         controller.videoListener = null
         controller.delegate = null
@@ -200,7 +203,7 @@ internal class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlaye
     }
 
     override fun onDestroy() {
-        CloseWarning.close()
+        CloseWarningDialog.close()
         super.onDestroy()
     }
 

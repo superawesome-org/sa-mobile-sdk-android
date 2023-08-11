@@ -57,7 +57,7 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         JSONObject query = loader.getAwesomeAdsQuery(session);
 
         assertNotNull(query);
-        assertEquals(16, query.length());
+        assertEquals(17, query.length());
 
         assertNotNull(query.opt("test"));
         assertEquals(true, query.opt("test"));
@@ -65,8 +65,8 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         assertNotNull(query.opt("sdkVersion"));
         assertEquals("1.0.0", query.opt("sdkVersion"));
 
-        // assertNotNull(query.opt("rnd"));
-        // assertEquals(123456, query.opt("rnd"));
+        assertNotNull(query.opt("rnd"));
+        assertEquals(123456, query.opt("rnd"));
 
         assertNotNull(query.opt("bundle"));
         assertEquals("superawesome.tv.saadloaderdemo", query.opt("bundle"));
@@ -177,7 +177,7 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         JSONObject query = loader.getAwesomeAdsQuery(session, requestOptions);
 
         assertNotNull(query);
-        assertEquals(20, query.length());
+        assertEquals(21, query.length());
 
         assertNotNull(query.opt("test"));
         assertEquals(true, query.opt("test"));
@@ -185,8 +185,8 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         assertNotNull(query.opt("sdkVersion"));
         assertEquals("1.0.0", query.opt("sdkVersion"));
 
-        // assertNotNull(query.opt("rnd"));
-        // assertEquals(123456, query.opt("rnd"));
+        assertNotNull(query.opt("rnd"));
+        assertEquals(123456, query.opt("rnd"));
 
         assertNotNull(query.opt("bundle"));
         assertEquals("superawesome.tv.saadloaderdemo", query.opt("bundle"));

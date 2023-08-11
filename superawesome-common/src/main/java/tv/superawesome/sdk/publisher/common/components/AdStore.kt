@@ -6,10 +6,10 @@ internal interface AdStoreType {
     fun put(adResponse: AdResponse)
     fun consume(placementId: Int): AdResponse?
 
-    /** Peeks the content inside the store without consuming it */
+    /** Peeks the content inside the store without consuming it. */
     fun peek(placementId: Int): AdResponse?
 
-    /** Clears cache */
+    /** Clears cache. */
     fun clear()
 }
 

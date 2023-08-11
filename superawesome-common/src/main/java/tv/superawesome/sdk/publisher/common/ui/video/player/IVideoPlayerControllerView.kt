@@ -1,128 +1,125 @@
 package tv.superawesome.sdk.publisher.common.ui.video.player
 
 /**
- * This interface defines the public interface of a video's chrome
+ * This interface defines the public interface of a video's chrome.
  * (that is also used to control the video from the user's perspective)
  */
+@Suppress("TooManyFunctions", "ComplexInterface")
 internal interface IVideoPlayerControllerView {
-    /**
-     * Method that sets the chrome in the playing state
-     */
-    fun setPlaying()
 
     /**
-     * Method that sets the chrome in the paused state
-     */
-    fun setPaused()
-
-    /**
-     * Method that sets the chrome in the completed state
-     */
-    fun setCompleted()
-
-    /**
-     * Method that sets the chrome in the error state
-     * @param: error - the error object
-     */
-    fun setError(error: Throwable?)
-
-    /**
-     * The chrome gets it's time indicators updated
-     * @param time current time (in seconds)
-     * @param duration current duration (in seconds)
-     */
-    fun setTime(time: Int, duration: Int)
-
-    /**
-     * @return whether the chrome element is in a playing state or not
+     * Gets whether the chrome element is in a playing state or not.
      */
     val isPlaying: Boolean
 
     /**
-     * Method that sets the chrome in the visible state
-     */
-    fun show()
-
-    /**
-     * Method that sets the chrome in the invisible state
-     */
-    fun hide()
-
-    /**
-     * Method that sets the chrome in the minimised state
-     */
-    fun setMinimised()
-
-    /**
-     * Method that sets the chrome in the maximised state
-     */
-    fun setMaximised()
-
-    /**
-     * Method that returns whether the chrome is in maximised or minimised state
+     * Gets whether the chrome is in maximised state.
      */
     val isMaximised: Boolean
 
     /**
-     * Called when the chrome would want to close the video player somehow
+     * Setts the chrome in the playing state.
+     */
+    fun setPlaying()
+
+    /**
+     * Sets the chrome in the paused state.
+     */
+    fun setPaused()
+
+    /**
+     * Sets the chrome in the completed state.
+     */
+    fun setCompleted()
+
+    /**
+     * Sets the chrome in the error state.
+     * @param error the error object.
+     */
+    fun setError(error: Throwable?)
+
+    /**
+     * Set the chrome's time indicators.
+     * @param time current time (in seconds).
+     * @param duration current duration (in seconds).
+     */
+    fun setTime(time: Int, duration: Int)
+
+    /**
+     * Sets the chrome in the visible state.
+     */
+    fun show()
+
+    /**
+     * Sets the chrome in the invisible state.
+     */
+    fun hide()
+
+    /**
+     * Sets the chrome in the minimised state.
+     */
+    fun setMinimised()
+
+    /**
+     * Sets the chrome in the maximised state.
+     */
+    fun setMaximised()
+
+    /**
+     * Closes the video player.
      */
     fun close()
 
     /**
-     * Set the listener
+     * Sets the listener.
+     *
+     * @param listener listener to be set.
      */
     fun setListener(listener: Listener?)
 
     /**
-     * The listener interface and all the delegated methods
+     * The listener interface and all the delegated methods.
      */
     interface Listener {
         /**
-         * This method is called by the chrome control when the progress
-         * bar has started to move
+         * Called by the chrome control when the progress
+         * bar has started to move.
          */
         fun onStartProgressBarSeek()
 
         /**
-         * This method is called by the chrome control when the progress
-         * bar has finished to move
-         * @param time - the value the chrome has seeked to
+         * Called by the chrome control when the progress bar has finished moving.
+         * @param time the value the chrome has sought to.
          */
         fun onEndProgressBarSeek(time: Int)
 
         /**
-         * This method is called by the chrome control when the
-         * play button has been clicked
+         * Called by the chrome control when the play button has been clicked.
          */
         fun onClickPlay()
 
         /**
-         * This method is called by the chrome control when the
-         * pause button has been clicked
+         * Called by the chrome control when the pause button has been clicked.
          */
         fun onClickPause()
 
         /**
-         * This method is called by the chrome control when the
-         * replayu button has been clicked
+         * Called by the chrome control when the replay button has been clicked.
          */
         fun onClickReplay()
 
         /**
-         * This method is called by the chrome control when the
-         * maximise button has been clicked
+         * Called by the chrome control when the maximise button has been clicked.
          */
         fun onClickMaximise()
 
         /**
-         * This method is called by the chrome control when the
-         * minimise button has been clicked
+         * Called by the chrome control when the minimise button has been clicked.
          */
         fun onClickMinimise()
 
         /**
-         * This method is called by the chrome control when the
-         * close button has been clicked
+         * Called by the chrome control when the close button has been clicked.
          */
         fun onClickClose()
     }

@@ -21,21 +21,16 @@ internal data class VastAd(
         return copy(
             url = from.url ?: url,
             clickThroughUrl = from.clickThroughUrl ?: clickThroughUrl,
-            errorEvents = errorEvents.toMutableList().also { it.addAll(from.errorEvents) },
-            impressionEvents = impressionEvents.toMutableList()
-                .also { it.addAll(from.impressionEvents) },
-            creativeViewEvents = creativeViewEvents.toMutableList()
-                .also { it.addAll(from.creativeViewEvents) },
-            startEvents = startEvents.toMutableList().also { it.addAll(from.startEvents) },
-            firstQuartileEvents = firstQuartileEvents.toMutableList()
-                .also { it.addAll(from.firstQuartileEvents) },
-            midPointEvents = midPointEvents.toMutableList().also { it.addAll(from.midPointEvents) },
-            thirdQuartileEvents = thirdQuartileEvents.toMutableList()
-                .also { it.addAll(from.thirdQuartileEvents) },
-            completeEvents = completeEvents.toMutableList().also { it.addAll(from.completeEvents) },
-            clickTrackingEvents = clickTrackingEvents.toMutableList()
-                .also { it.addAll(from.clickTrackingEvents) },
-            media = this.media.toMutableList().also { it.addAll(from.media) },
+            errorEvents = errorEvents + from.errorEvents,
+            impressionEvents = impressionEvents + from.impressionEvents,
+            creativeViewEvents = creativeViewEvents + from.creativeViewEvents,
+            startEvents = startEvents + from.startEvents,
+            firstQuartileEvents = firstQuartileEvents + from.firstQuartileEvents,
+            midPointEvents = midPointEvents + from.midPointEvents,
+            thirdQuartileEvents = thirdQuartileEvents + from.thirdQuartileEvents,
+            completeEvents = completeEvents + from.completeEvents,
+            clickTrackingEvents = clickTrackingEvents + from.clickTrackingEvents,
+            media = media + from.media,
             redirect = null
         )
     }

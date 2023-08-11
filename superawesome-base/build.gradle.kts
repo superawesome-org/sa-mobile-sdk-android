@@ -5,7 +5,6 @@ plugins {
 }
 
 apply(from = "../publish.gradle")
-apply(from = "../jacoco.gradle")
 
 extra.apply {
     set("libraryDescription", "SuperAwesome Base Mobile SDK for Android")
@@ -22,7 +21,7 @@ android {
 
     lint.abortOnError = false
     testOptions.animationsDisabled = true
-
+    testOptions.unitTests.isReturnDefaultValues = true
 }
 
 dependencies {
@@ -30,7 +29,7 @@ dependencies {
     implementation(files("jni/omsdk-android-1.4.7-release.aar"))
 
     // Tests
-    testImplementation(libs.junit4)
+    testImplementation (libs.junit4)
     testImplementation (libs.mockito.core)
     testImplementation (libs.catch.exception)
     testImplementation (libs.assertj.core)

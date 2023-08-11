@@ -21,7 +21,7 @@ internal class DeviceTest : BaseTest() {
         val deviceCategory = device.genericType
 
         // Then
-        assertEquals(DeviceCategory.phone, deviceCategory)
+        assertEquals(DeviceCategory.PHONE, deviceCategory)
     }
 
     @Test
@@ -38,6 +38,6 @@ internal class DeviceTest : BaseTest() {
         val deviceCategory = device.genericType
 
         // Then
-        assertEquals(DeviceCategory.tablet, deviceCategory)
+        assertEquals(DeviceCategory.TABLET, deviceCategory)
     }
 }

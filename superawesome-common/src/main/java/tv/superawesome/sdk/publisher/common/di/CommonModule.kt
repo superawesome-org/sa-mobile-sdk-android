@@ -13,7 +13,40 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import tv.superawesome.sdk.publisher.common.R
-import tv.superawesome.sdk.publisher.common.components.*
+import tv.superawesome.sdk.publisher.common.components.AdProcessor
+import tv.superawesome.sdk.publisher.common.components.AdProcessorType
+import tv.superawesome.sdk.publisher.common.components.AdQueryMaker
+import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
+import tv.superawesome.sdk.publisher.common.components.AdStore
+import tv.superawesome.sdk.publisher.common.components.AdStoreType
+import tv.superawesome.sdk.publisher.common.components.ConnectionProvider
+import tv.superawesome.sdk.publisher.common.components.ConnectionProviderType
+import tv.superawesome.sdk.publisher.common.components.DateProvider
+import tv.superawesome.sdk.publisher.common.components.DateProviderType
+import tv.superawesome.sdk.publisher.common.components.DefaultLogger
+import tv.superawesome.sdk.publisher.common.components.Device
+import tv.superawesome.sdk.publisher.common.components.DeviceType
+import tv.superawesome.sdk.publisher.common.components.Encoder
+import tv.superawesome.sdk.publisher.common.components.EncoderType
+import tv.superawesome.sdk.publisher.common.components.HtmlFormatter
+import tv.superawesome.sdk.publisher.common.components.HtmlFormatterType
+import tv.superawesome.sdk.publisher.common.components.IdGenerator
+import tv.superawesome.sdk.publisher.common.components.IdGeneratorType
+import tv.superawesome.sdk.publisher.common.components.ImageProvider
+import tv.superawesome.sdk.publisher.common.components.ImageProviderType
+import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.components.NumberGenerator
+import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
+import tv.superawesome.sdk.publisher.common.components.SdkInfo
+import tv.superawesome.sdk.publisher.common.components.SdkInfoType
+import tv.superawesome.sdk.publisher.common.components.TimeProvider
+import tv.superawesome.sdk.publisher.common.components.TimeProviderType
+import tv.superawesome.sdk.publisher.common.components.UserAgentProvider
+import tv.superawesome.sdk.publisher.common.components.UserAgentProviderType
+import tv.superawesome.sdk.publisher.common.components.VastParser
+import tv.superawesome.sdk.publisher.common.components.VastParserType
+import tv.superawesome.sdk.publisher.common.components.XmlParser
+import tv.superawesome.sdk.publisher.common.components.XmlParserType
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
@@ -24,6 +57,22 @@ import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDat
 import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
+import tv.superawesome.sdk.publisher.common.repositories.AdRepository
+import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.EventRepository
+import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepository
+import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.PreferencesRepository
+import tv.superawesome.sdk.publisher.common.repositories.PreferencesRepositoryType
+import tv.superawesome.sdk.publisher.common.repositories.VastEventRepository
+import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
+import tv.superawesome.sdk.publisher.common.ui.common.AdController
+import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
+import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
+import tv.superawesome.sdk.publisher.common.ui.common.ParentalGate
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
+import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivator
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactory
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
@@ -35,8 +84,7 @@ import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoa
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoaderType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManager
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
-import tv.superawesome.sdk.publisher.common.repositories.*
-import tv.superawesome.sdk.publisher.common.ui.common.*
+import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurementModule
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
@@ -44,6 +92,7 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerControlle
 import java.util.*
 
 @OptIn(ExperimentalSerializationApi::class)
+@Suppress("LongMethod")
 internal fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
     single { environment }
     single { Locale.getDefault() }
@@ -59,6 +108,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<DateProviderType> { DateProvider(Calendar.getInstance()) }
     single<AdQueryMakerType> {
         AdQueryMaker(
+            get(),
             get(),
             get(),
             get(),
@@ -109,7 +159,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
             .addInterceptor(
                 ChuckerInterceptor.Builder(androidContext())
                     .collector(ChuckerCollector(androidContext()))
-                    .maxContentLength(250000L)
+                    .maxContentLength(length = 250_000L)
                     .redactHeaders(emptySet())
                     .alwaysReadResponseBody(false)
                     .build()
