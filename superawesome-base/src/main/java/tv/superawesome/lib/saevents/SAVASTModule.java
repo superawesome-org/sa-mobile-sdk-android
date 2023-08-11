@@ -11,7 +11,7 @@ import tv.superawesome.lib.samodelspace.vastad.SAVASTEvent;
 
 public class SAVASTModule {
 
-    private SAURLEvent                  vastClickThrough = null;
+    private SAURLEvent                        vastClickThrough = null;
     private final List<SAURLEvent>            vastError = new ArrayList<>();
     private final List<SAURLEvent>            vastImpression = new ArrayList<>();
     private final List<SAURLEvent>            vastCreativeView = new ArrayList<>();
