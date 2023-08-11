@@ -20,21 +20,24 @@ internal interface AdQueryMakerType {
     fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle
 }
 
+@Suppress("LongParameterList")
 internal class AdQueryMaker(
     private val device: DeviceType,
     private val sdkInfoType: SdkInfoType,
     private val connectionProvider: ConnectionProviderType,
+    private val numberGenerator: NumberGeneratorType,
     private val idGenerator: IdGeneratorType,
     private val encoder: EncoderType,
     private val json: Json,
     private val locale: Locale,
-    private val timeProvider: TimeProviderType
+    private val timeProvider: TimeProviderType,
 ) : AdQueryMakerType {
 
     override suspend fun makeAdQuery(request: AdRequest): AdQueryBundle = AdQueryBundle(
         AdQuery(
             test = request.test,
             sdkVersion = sdkInfoType.version,
+            rnd = numberGenerator.nextIntForCache(),
             bundle = sdkInfoType.bundle,
             name = sdkInfoType.name,
             dauId = idGenerator.findDauId(),
@@ -48,7 +51,7 @@ internal class AdQueryMaker(
             install = request.install,
             w = request.w,
             h = request.h,
-            timestamp = timeProvider.millis()
+            timestamp = timeProvider.millis(),
         ),
         options = buildOptions(requestOptions = request.options)
     )
@@ -64,7 +67,7 @@ internal class AdQueryMaker(
             rnd = adResponse.ad.random ?: "",
             type = null,
             noImage = null,
-            data = null
+            data = null,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )

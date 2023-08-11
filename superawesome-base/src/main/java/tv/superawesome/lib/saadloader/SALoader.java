@@ -116,6 +116,7 @@ public class SALoader {
             JSONObject query = SAJsonParser.newObject(
                     "test", session.getTestMode(),
                     "sdkVersion", session.getVersion(),
+                    "rnd", session.getCachebuster(),
                     "bundle", session.getPackageName(),
                     "name", session.getAppName(),
                     "dauid", session.getDauId(),

@@ -33,6 +33,7 @@ internal data class AdQueryBundle(
 internal data class AdQuery(
     val test: Boolean,
     val sdkVersion: String,
+    val rnd: Int,
     val bundle: String,
     val name: String,
     @SerialName("dauid") val dauId: Int,
