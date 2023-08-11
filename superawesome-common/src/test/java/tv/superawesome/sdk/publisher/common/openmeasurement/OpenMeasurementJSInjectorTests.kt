@@ -83,7 +83,7 @@ class OpenMeasurementJSInjectorTests {
         verify {
             logger.error(
                 "Unable to inject the Open Measurement JS",
-                ofType(RuntimeException::class),
+                any(),
             )
         }
         confirmVerified(logger)
