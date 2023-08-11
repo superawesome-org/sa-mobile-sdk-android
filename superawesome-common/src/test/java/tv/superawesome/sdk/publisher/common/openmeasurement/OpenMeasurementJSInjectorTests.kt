@@ -31,6 +31,8 @@ class OpenMeasurementJSInjectorTests {
         every { loader.loadJSLibrary() } returns js
         mockkStatic(TextUtils::class)
         every { TextUtils.isEmpty(any()) } answers { arg<String?>(0).isNullOrEmpty() }
+        mockkStatic(ScriptInjector::class)
+        every { ScriptInjector.injectScriptContentIntoHtml(any(), any()) } returns adHtmlWithJs
         val injector = OpenMeasurementJSInjector(jsLoader = loader, logger = logger)
 
         // when
