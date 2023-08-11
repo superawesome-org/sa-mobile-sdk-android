@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.common.openmeasurement
 
 import android.text.TextUtils
+import com.iab.omid.library.superawesome.ScriptInjector
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -68,6 +69,7 @@ class OpenMeasurementJSInjectorTests {
     @Test
     fun `injectJS logs an error and returns unmodified html if injector fails`() {
         // given
+        val error = Throwable()
         val js = "some js"
         val adHtml = "<html><head></head><body><a href=\"https://www.superawesome.com\">" +
                 "<img src=\"https://wwww.image.com\"></a></body></html>"
@@ -75,17 +77,14 @@ class OpenMeasurementJSInjectorTests {
         val loader = mockk<OpenMeasurementJSLoaderType>(relaxed = true)
         every { loader.loadJSLibrary() } returns js
         val injector = OpenMeasurementJSInjector(jsLoader = loader, logger = logger)
+        mockkStatic(ScriptInjector::class)
+        every { ScriptInjector.injectScriptContentIntoHtml(any(), any()) } throws error
 
         // when
         val result = injector.injectJS(adHtml = adHtml)
 
         // then
-        verify {
-            logger.error(
-                "Unable to inject the Open Measurement JS",
-                any(),
-            )
-        }
+        verify { logger.error("Unable to inject the Open Measurement JS", error) }
         confirmVerified(logger)
         assertEquals(adHtml, result)
     }
