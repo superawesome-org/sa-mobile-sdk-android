@@ -22,14 +22,14 @@ android {
 
     lint.abortOnError = false
     testOptions.animationsDisabled = true
-
+    testOptions.unitTests.isReturnDefaultValues = true
 }
 
 dependencies {
     implementation (libs.androidx.annotation)
 
     // Tests
-    testImplementation(libs.junit4)
+    testImplementation (libs.junit4)
     testImplementation (libs.mockito.core)
     testImplementation (libs.catch.exception)
     testImplementation (libs.assertj.core)
