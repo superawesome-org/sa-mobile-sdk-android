@@ -38,6 +38,8 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation(libs.mockwebserver)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.androidx.test.core.ktx)
 
     // UI Testing
     androidTestImplementation(libs.androidx.test.runner)

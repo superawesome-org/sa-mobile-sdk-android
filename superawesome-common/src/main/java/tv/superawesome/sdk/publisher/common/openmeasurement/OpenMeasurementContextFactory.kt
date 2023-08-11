@@ -5,9 +5,9 @@ import com.iab.omid.library.superawesome.adsession.AdSessionContext
 import com.iab.omid.library.superawesome.adsession.Partner
 import tv.superawesome.sdk.publisher.common.components.Logger
 
-internal class OpenMeasurementContextBuilder(
+internal class OpenMeasurementContextFactory(
     private val logger: Logger,
-): OpenMeasurementContextBuilderType {
+): OpenMeasurementContextFactoryType {
 
     override fun sessionContext(
         adView: WebView,
@@ -23,6 +23,7 @@ internal class OpenMeasurementContextBuilder(
                     adView.url,
                     customReferenceData,
                 )
+                OpenMeasurementAdType.Video -> null
             }
         } catch (error: Throwable) {
             logger.error("Unable to create session context", error)

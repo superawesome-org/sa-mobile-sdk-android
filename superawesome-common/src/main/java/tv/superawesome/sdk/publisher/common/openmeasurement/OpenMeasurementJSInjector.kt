@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.common.openmeasurement
 
-import android.content.Context
 import com.iab.omid.library.superawesome.ScriptInjector
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.openmeasurement.error.OmidJSNotLoadedThrowable
@@ -14,21 +13,21 @@ internal class OpenMeasurementJSInjector(
 ): OpenMeasurementJSInjectorType {
     /**
      * injectJS - injects the JS string into the provided HTML string
-     * @param context - used to access the JS resource
      * @param adHtml - the HTML string for the ad
      * @return String - the HTML string for the ad with the OMID JS injected into it
      */
-    override fun injectJS(context: Context, adHtml: String): String {
-        val omidJs = jsLoader.loadJSLibrary(context)
-        if (omidJs == null) {
+    override fun injectJS(adHtml: String): String {
+        val omidJs = jsLoader.loadJSLibrary()
+        if (omidJs.isNullOrEmpty()) {
             val error = OmidJSNotLoadedThrowable()
             logger.error(error.message, error)
             return adHtml
         }
 
         return try {
+            val result = ScriptInjector.injectScriptContentIntoHtml(omidJs, adHtml)
             logger.success("The Open Measurement JS was injected")
-            ScriptInjector.injectScriptContentIntoHtml(omidJs, adHtml)
+            result
         } catch (error: Throwable) {
             logger.error("Unable to inject the Open Measurement JS", error)
             adHtml

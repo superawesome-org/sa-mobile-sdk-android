@@ -12,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.common.components.*
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
@@ -23,17 +24,17 @@ import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDat
 import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionBuilder
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionBuilderType
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextBuilder
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextBuilderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivator
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactory
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactory
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactoryType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjector
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjectorType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoader
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoaderType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManager
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
-import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurementModule
 import tv.superawesome.sdk.publisher.common.repositories.*
 import tv.superawesome.sdk.publisher.common.ui.common.*
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
@@ -143,10 +144,15 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<AdStoreType> { AdStore() }
 
     // Open Measurement
-    single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(get()) }
+    single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(
+        get(),
+        androidContext().resources.openRawResource(R.raw.omsdk_v1),
+    ) }
     single<OpenMeasurementJSInjectorType> { OpenMeasurementJSInjector(get(), get()) }
-    single<OpenMeasurementContextBuilderType> { OpenMeasurementContextBuilder(get()) }
-    single<OpenMeasurementAdSessionBuilderType> { OpenMeasurementAdSessionBuilder(get(), get()) }
+    single<OpenMeasurementContextFactoryType> { OpenMeasurementContextFactory(get()) }
+    single<OpenMeasurementAdSessionFactoryType> {
+        OpenMeasurementAdSessionFactory(OmidActivator(androidContext()), get(), get())
+    }
     factory<OpenMeasurementSessionManagerType> { OpenMeasurementSessionManager(get(), get(), get()) }
 
     // Vast
