@@ -67,6 +67,12 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     }
 
     companion object {
+        /**
+         * Starts the activity.
+         *
+         * @param placementId ad placement identifier.
+         * @param context an activity context.
+         */
         public fun start(placementId: Int, context: Context) {
             val intent = Intent(context, InterstitialActivity::class.java)
             intent.putExtra(Constants.Keys.placementId, placementId)

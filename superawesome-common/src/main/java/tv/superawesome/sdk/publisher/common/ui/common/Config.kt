@@ -7,18 +7,37 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 
+/**
+ * Ad presentation configuration holder.
+ */
 open class Config : Parcelable {
+
+    /** Enabled for testing. */
     var testEnabled: Boolean
+
+    /** Should show parental age gate before showing the ad. */
     var isParentalGateEnabled: Boolean
+
+    /** Should show a bumper page before opening the ad. */
     var isBumperPageEnabled: Boolean
+
+    /** Should show small button. */
     var shouldShowSmallClick: Boolean
+
+    /** Should show a warning before closing the ad. */
     var shouldShowCloseWarning: Boolean
+
+    /** Should the back button be enabled. */
     var isBackButtonEnabled: Boolean
+
+    /** Ad should close automatically at the end. */
     var shouldCloseAtEnd: Boolean
+
+    /** Ad should be muted on start. */
+    var shouldMuteOnStart: Boolean
     internal var closeButtonState: CloseButtonState
     internal var orientation: Orientation
     internal var startDelay: AdRequest.StartDelay
-    var shouldMuteOnStart: Boolean
 
     @Suppress("LongParameterList")
     internal constructor(
@@ -77,7 +96,11 @@ open class Config : Parcelable {
         parcel.writeByte((if (shouldMuteOnStart) 1 else 0).toByte())
     }
 
+    /**
+     * Parcelable creator object.
+     */
     companion object CREATOR : Parcelable.Creator<Config> {
+
         override fun createFromParcel(parcel: Parcel): Config = Config(parcel)
 
         override fun newArray(size: Int): Array<Config?> = arrayOfNulls(size)

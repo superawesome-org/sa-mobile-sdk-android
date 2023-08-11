@@ -7,28 +7,37 @@ import java.util.Locale
 import java.util.Properties
 
 /**
- * Technical information about the AwesomeAds Publisher SDK, such as name and version number
+ * Technical information about the AwesomeAds Publisher SDK, such as name and version number.
  */
 interface SdkInfoType {
-    /** Returns the combined version information platform + version number
-     * e.g. android_x.y.z */
+    /**
+     * Returns the combined version information platform + version number.
+     * e.g. android_x.y.z
+     */
     val version: String
 
-    /** Returns the version number only
-     * e.g. x.y.z */
+    /**
+     * Returns the version number only.
+     * e.g. x.y.z
+     */
     val versionNumber: String
 
-    /** Returns the bundle name for the app */
+    /** Returns the bundle name for the app. */
     val bundle: String
 
-    /** Returns the name of the app */
+    /** Returns the name of the app. */
     val name: String
 
-    /** Returns the preferred locale language and region
-     * e.g. en_UK */
+    /**
+     * Returns the preferred locale language and region.
+     * e.g. en_UK
+     */
     val lang: String
 }
 
+/**
+ * Provides information about the SDK such as version, name, and more.
+ */
 class SdkInfo(
     private val context: Context,
     private val encoder: EncoderType,
@@ -64,6 +73,7 @@ class SdkInfo(
     override val name: String by lazy { findAppName() }
     override val lang: String = locale.toString()
 
+    @Suppress("SwallowedException")
     private fun findAppName(): String = try {
         val label = context.packageManager.getApplicationLabel(context.applicationInfo).toString()
         encoder.encodeUri(label)
@@ -75,6 +85,9 @@ class SdkInfo(
         private var overrideVersion: String? = null
         private var overrideVersionNumber: String? = null
 
+        /**
+         * Overrides the [SDKInfo] version.
+         */
         @JvmStatic
         fun overrideVersionPlatform(version: String?, platform: Platform?) {
             if (version != null && platform != null) {

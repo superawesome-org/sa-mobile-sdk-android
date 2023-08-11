@@ -9,10 +9,10 @@ internal interface DeviceType {
 }
 
 internal enum class DeviceCategory {
-    phone, tablet;
+    PHONE, TABLET;
 }
 
-internal class Device(private val displayMetrics: DisplayMetrics) : DeviceType {
+internal data class Device(private val displayMetrics: DisplayMetrics) : DeviceType {
 
     override var genericType: DeviceCategory = deviceCategory
 
@@ -27,7 +27,7 @@ internal class Device(private val displayMetrics: DisplayMetrics) : DeviceType {
         }
 
     private val deviceCategory: DeviceCategory
-        get() = if (systemSize <= PHONE_SCREEN_MAX) DeviceCategory.phone else DeviceCategory.tablet
+        get() = if (systemSize <= PHONE_SCREEN_MAX) DeviceCategory.PHONE else DeviceCategory.TABLET
 
     companion object {
         private const val PHONE_SCREEN_MAX = 6.2

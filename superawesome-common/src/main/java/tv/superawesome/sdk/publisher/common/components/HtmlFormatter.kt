@@ -24,11 +24,13 @@ internal class HtmlFormatter(
     }
 
     override fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String {
-        val url =
-            "${ad.creative.details.url}?placement=$placementId&line_item=${ad.lineItemId}" +
-                    "&creative=${ad.creative.id}&rnd=${numberGenerator.nextIntForCache()}"
-        return "<iframe class='omid-element' style='padding:0;border:0;'" +
-                " width='100%' height='100%' src='$url'></iframe>"
+        val url = "${ad.creative.details.url}" +
+                "?placement=$placementId" +
+                "&line_item=${ad.lineItemId}" +
+                "&creative=${ad.creative.id}" +
+                "&rnd=${numberGenerator.nextIntForCache()}"
+
+        return "<iframe class='omid-element' style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>"
     }
 
     override fun formatTagIntoHtml(ad: Ad): String {

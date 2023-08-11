@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.common.components
 
+import org.w3c.dom.Element
 import tv.superawesome.sdk.publisher.common.models.ConnectionQuality
 import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.models.VastMedia
@@ -13,6 +14,8 @@ internal class VastParser(
     private val parser: XmlParserType,
     private val connectionProvider: ConnectionProviderType
 ) : VastParserType {
+
+    @Suppress("ReturnCount", "LongMethod")
     override fun parse(data: String): VastAd? {
         val document = parser.parse(data)
         val ad = parser.findFirst(document, "Ad") ?: return null
@@ -28,27 +31,30 @@ internal class VastParser(
 
         parser.findFirst(ad, "Creative")?.let { creative ->
             val clickThrough = parser.findAll(creative, "ClickThrough")
-                .firstOrNull()?.textContent?.replace("&amp;", "&")
-                ?.replace("%3A", ":")?.replace("%2F", "/")
+                .firstOrNull()
+                ?.textContent
+                ?.replace("&amp;", "&")
+                ?.replace("%3A", ":")
+                ?.replace("%2F", "/")
 
             val clickTracking = parser.findAll(creative, "ClickTracking").mapNotNull {
                 it.textContent
             }
             val trackingElements = parser.findAll(creative, "Tracking")
             val creativeViews =
-                trackingElements.filter { it.getAttribute("event") == "creativeView" }
+                trackingElements.filterAttribute("creativeView")
                     .mapNotNull { it.textContent }
-            val start = trackingElements.filter { it.getAttribute("event") == "start" }
+            val start = trackingElements.filterAttribute("start")
                 .mapNotNull { it.textContent }
             val firstQuartile =
-                trackingElements.filter { it.getAttribute("event") == "firstQuartile" }
+                trackingElements.filterAttribute("firstQuartile")
                     .mapNotNull { it.textContent }
-            val midPoint = trackingElements.filter { it.getAttribute("event") == "midpoint" }
+            val midPoint = trackingElements.filterAttribute("midpoint")
                 .mapNotNull { it.textContent }
             val thirdQuartile =
-                trackingElements.filter { it.getAttribute("event") == "thirdQuartile" }
+                trackingElements.filterAttribute("thirdQuartile")
                     .mapNotNull { it.textContent }
-            val complete = trackingElements.filter { it.getAttribute("event") == "complete" }
+            val complete = trackingElements.filterAttribute("complete")
                 .mapNotNull { it.textContent }
 
             val media = parser.findAll(creative, "MediaFile").filter {
@@ -72,7 +78,9 @@ internal class VastParser(
                 ConnectionQuality.Minimum -> sortedMedia.firstOrNull()?.url
                 ConnectionQuality.Medium -> if (sortedMedia.size > 2) {
                     sortedMedia[sortedMedia.size / 2].url
-                } else sortedMedia.lastOrNull()?.url
+                } else  {
+                    sortedMedia.lastOrNull()?.url
+                }
                 ConnectionQuality.Maximum -> sortedMedia.lastOrNull()?.url
             }
 
@@ -95,4 +103,7 @@ internal class VastParser(
         }
         return null
     }
+
+    private fun List<Element>.filterAttribute(attributeName: String) =
+        filter { element -> element.getAttribute("event") == attributeName }
 }

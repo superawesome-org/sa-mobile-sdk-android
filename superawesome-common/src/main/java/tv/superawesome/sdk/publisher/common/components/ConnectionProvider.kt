@@ -45,11 +45,12 @@ internal class ConnectionProvider(private val context: Context) : ConnectionProv
     private fun findConnectionTypeLegacy(connectivityManager: ConnectivityManager): ConnectionType {
         val info = connectivityManager.activeNetworkInfo
 
-        if (info == null || !info.isConnected) return ConnectionType.Unknown
-        if (info.type == ConnectivityManager.TYPE_WIFI) return ConnectionType.Wifi
-        if (info.type == ConnectivityManager.TYPE_ETHERNET) return ConnectionType.Ethernet
-        if (info.type == ConnectivityManager.TYPE_MOBILE) return findCellularType(info.subtype)
-
-        return ConnectionType.Unknown
+        return when {
+            info == null || !info.isConnected -> ConnectionType.Unknown
+            info.type == ConnectivityManager.TYPE_WIFI -> ConnectionType.Wifi
+            info.type == ConnectivityManager.TYPE_ETHERNET -> ConnectionType.Ethernet
+            info.type == ConnectivityManager.TYPE_MOBILE -> findCellularType(info.subtype)
+            else -> ConnectionType.Unknown
+        }
     }
 }

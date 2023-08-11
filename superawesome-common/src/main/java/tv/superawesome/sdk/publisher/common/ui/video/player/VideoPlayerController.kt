@@ -9,6 +9,7 @@ import android.media.MediaPlayer.OnSeekCompleteListener
 import android.net.Uri
 import android.os.CountDownTimer
 
+@Suppress("TooManyFunctions", "MagicNumber", "TooGenericExceptionCaught")
 internal class VideoPlayerController :
     MediaPlayer(),
     IVideoPlayerController,
@@ -32,6 +33,17 @@ internal class VideoPlayerController :
 
     override var isMuted: Boolean = false
         private set
+
+    init {
+        setOnPreparedListener(this)
+        setOnCompletionListener(this)
+        setOnErrorListener(this)
+        setOnSeekCompleteListener(this)
+
+        setOnVideoSizeChangedListener { _, width, height ->
+            onVideoSizeChanged(width, height)
+        }
+    }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
     // Custom safe play & prepare method
@@ -181,16 +193,5 @@ internal class VideoPlayerController :
     private fun onVideoSizeChanged(width: Int, height: Int) {
         videoIVideoWidth = width
         videoIVideoHeight = height
-    }
-
-    init {
-        setOnPreparedListener(this)
-        setOnCompletionListener(this)
-        setOnErrorListener(this)
-        setOnSeekCompleteListener(this)
-
-        setOnVideoSizeChangedListener { _, width, height ->
-            onVideoSizeChanged(width, height)
-        }
     }
 }

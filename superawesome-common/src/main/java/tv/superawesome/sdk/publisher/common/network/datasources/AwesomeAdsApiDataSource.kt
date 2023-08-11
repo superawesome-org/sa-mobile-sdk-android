@@ -28,6 +28,7 @@ internal interface AwesomeAdsApiDataSourceType {
 }
 
 @ExperimentalSerializationApi
+@Suppress("TooGenericExceptionCaught")
 internal class AwesomeAdsApiDataSource(private val awesomeAdsApi: AwesomeAdsApi) :
     AwesomeAdsApiDataSourceType {
 

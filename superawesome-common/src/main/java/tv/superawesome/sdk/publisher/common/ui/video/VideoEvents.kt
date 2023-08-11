@@ -13,7 +13,7 @@ import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
-import tv.superawesome.sdk.publisher.common.ui.common.videoMaxTickCount
+import tv.superawesome.sdk.publisher.common.ui.common.VIDEO_MAX_TICK_COUNT
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 
 internal class VideoEvents(
@@ -38,7 +38,9 @@ internal class VideoEvents(
     private var isThirdQuartileHandled = false
     private var viewableDetector: ViewableDetectorType? = null
 
-    public fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {}
+    public fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
+        // Do nothing
+    }
 
     public fun complete(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
         scope.launch { vastEventRepository.complete() }
@@ -48,6 +50,7 @@ internal class VideoEvents(
         scope.launch { vastEventRepository.error() }
     }
 
+    @Suppress("MagicNumber")
     public fun time(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
         if (viewableDetector?.isVisible == null) {
             viewableDetector?.isVisible = {
@@ -73,7 +76,7 @@ internal class VideoEvents(
             viewableDetector?.cancel()
             viewableDetector = get(ViewableDetectorType::class.java)
             if (videoPlayer is ViewGroup) {
-                viewableDetector?.start(videoPlayer, videoMaxTickCount) {
+                viewableDetector?.start(videoPlayer, VIDEO_MAX_TICK_COUNT) {
                     scope.launch { eventRepository.viewableImpression(adResponse) }
                     listener?.hasBeenVisible()
                 }

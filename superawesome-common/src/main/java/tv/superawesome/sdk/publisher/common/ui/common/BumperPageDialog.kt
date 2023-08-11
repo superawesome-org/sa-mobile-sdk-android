@@ -23,6 +23,7 @@ internal class BumperPageDialog(context: Context) : Dialog(context) {
     private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
     private var smallText: TextView? = null
 
+    @Suppress("MagicNumber", "LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity(), LevelPlayRewardedVideoListener, LevelP
         IronSource.setUserId(userId)
         IronSource.init(
             this,
-            BuildConfig.APP_KEY,
+            APP_KEY,
             IronSource.AD_UNIT.REWARDED_VIDEO,
             IronSource.AD_UNIT.INTERSTITIAL,
         )
@@ -144,5 +144,6 @@ class MainActivity : ComponentActivity(), LevelPlayRewardedVideoListener, LevelP
 
     companion object {
         private const val TAG = "SA-IronSource"
+        private const val APP_KEY = "1b22ccd4d"
     }
 }

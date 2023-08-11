@@ -11,6 +11,16 @@ internal interface Logger {
 
 internal class DefaultLogger(private val loggingEnabled: Boolean) : Logger {
 
+    @Suppress("ThrowingExceptionsWithoutMessageOrCause")
+    private val stackTrace: StackTraceElement?
+        get() = Exception().stackTrace.first { it.className != DefaultLogger::class.java.name }
+
+    private val callerInformation: String
+        get() {
+            val stackTrace = this.stackTrace ?: return ""
+            return stackTrace.className.substringAfterLast('.')
+        }
+
     override fun info(message: String) {
         if (!loggingEnabled) return
         Log.i(callerInformation, "⬜️ $message")
@@ -25,13 +35,4 @@ internal class DefaultLogger(private val loggingEnabled: Boolean) : Logger {
         if (!loggingEnabled) return
         Log.i(callerInformation, "🟥 $message \n $error")
     }
-
-    private val stackTrace: StackTraceElement?
-        get() = Throwable().stackTrace.first { it.className != DefaultLogger::class.java.name }
-
-    private val callerInformation: String
-        get() {
-            val stackTrace = this.stackTrace ?: return ""
-            return stackTrace.className.substringAfterLast('.')
-        }
 }

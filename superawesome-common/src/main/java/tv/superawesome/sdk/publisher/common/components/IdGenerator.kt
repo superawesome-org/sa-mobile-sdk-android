@@ -5,10 +5,10 @@ import kotlin.math.abs
 
 /**
  * Interface that abstracts away generating a distinct ID called "DAU ID", which consists of:
- *  - the Advertising ID int
- *  - a random ID
- *  - the package name
- * each hashed and then XOR-ed together
+ *  - the Advertising ID int.
+ *  - a random ID.
+ *  - the package name.
+ * each hashed and then XOR-ed together.
  */
 internal interface IdGeneratorType {
     fun findDauId(): Int

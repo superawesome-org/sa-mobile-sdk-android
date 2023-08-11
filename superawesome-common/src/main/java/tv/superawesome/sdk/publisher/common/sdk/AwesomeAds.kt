@@ -19,7 +19,9 @@ object AwesomeAds {
     private var app: KoinApplication? = null
 
     /**
-     * Initialisation of AwesomeAds SDK
+     * Initialisation of AwesomeAds SDK.
+     *
+     * @param applicationContext the application context.
      * @param logging Enable or disable logs
      * */
     @JvmStatic
@@ -30,7 +32,10 @@ object AwesomeAds {
     }
 
     /**
-     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings
+     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings.
+     *
+     * @param applicationContext the application context
+     * @param configuration additional AwesomeAds configurations.
      * */
     @JvmStatic
     fun init(applicationContext: Context, configuration: Configuration) {
@@ -40,10 +45,13 @@ object AwesomeAds {
     }
 
     /**
-     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings
+     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings.
+     *
+     * @param applicationContext the application context.
+     * @param configuration additional AwesomeAds configurations.
      * @param options The options dictionary is used to set additional tracking information in the
-     * form of key-value pairs. This information is sent when events are fired from the SDK
-     * */
+     * form of key-value pairs. This information is sent when events are fired from the SDK.
+     */
     @JvmStatic
     fun init(
         applicationContext: Context,
@@ -56,9 +64,11 @@ object AwesomeAds {
         }
     }
 
-    /** Information about the SDK e.g. version number
+    /**
+     * Information about the SDK e.g. version number.
+     *
      * @return SDK info or `null` if the SDK is not initialised
-     * */
+     */
     @JvmStatic
     fun info(): SdkInfoType? = app?.koin?.get()
 
@@ -78,5 +88,4 @@ object AwesomeAds {
                 )
             )
         }
-    }
 }

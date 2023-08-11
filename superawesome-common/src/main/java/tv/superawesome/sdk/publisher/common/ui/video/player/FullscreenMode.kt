@@ -8,8 +8,6 @@ internal enum class FullscreenMode {
 
     companion object {
         @JvmStatic
-        fun fromValue(orientation: Int): FullscreenMode {
-            return values().getOrElse(orientation) { ANY }
-        }
+        fun fromValue(orientation: Int): FullscreenMode = entries.getOrElse(orientation) { ANY }
     }
 }
