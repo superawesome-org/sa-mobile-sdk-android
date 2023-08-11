@@ -5,10 +5,6 @@ import android.webkit.WebView
 import com.iab.omid.library.superawesome.adsession.AdEvents
 import com.iab.omid.library.superawesome.adsession.AdSession
 import tv.superawesome.sdk.publisher.common.components.Logger
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionCreationFailureThrowable
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionStartFailureThrowable
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.AdSessionUnavailableFailureThrowable
-import tv.superawesome.sdk.publisher.common.openmeasurement.error.UpdateAdViewFailureThrowable
 
 /**
  * OpenMeasurementSessionManager - main class for constructing and managing the OM ad session
@@ -30,8 +26,8 @@ internal class OpenMeasurementSessionManager(
                 webView,
                 null,
             )
-        } catch (error: IllegalArgumentException) {
-            val throwable = AdSessionCreationFailureThrowable()
+        } catch (error: Exception) {
+            val throwable = OpenMeasurementError.AdSessionCreationFailure(error)
             logger.error(throwable.message, throwable)
             return
         }
@@ -41,8 +37,8 @@ internal class OpenMeasurementSessionManager(
         if (!checkIfSessionExists()) return
         try {
             adSession?.start()
-        } catch (error: Throwable) {
-            val throwable = AdSessionStartFailureThrowable()
+        } catch (error: Exception) {
+            val throwable = OpenMeasurementError.AdSessionStartFailure()
             logger.error(throwable.message, throwable)
             return
         }
@@ -53,14 +49,14 @@ internal class OpenMeasurementSessionManager(
 
         try {
             adEvents = AdEvents.createAdEvents(adSession)
-        } catch (error: Throwable) {
+        } catch (error: Exception) {
             logger.error("Unable to create ad events", error)
         }
     }
 
     private fun checkIfSessionExists(): Boolean =
         if (adSession == null) {
-            val error = AdSessionUnavailableFailureThrowable()
+            val error = OpenMeasurementError.AdSessionUnavailableFailure()
             logger.error(error.message, error)
             false
         } else {
@@ -100,7 +96,7 @@ internal class OpenMeasurementSessionManager(
      */
     override fun setAdView(view: View?) {
         if (view == null || adSession == null) {
-            val error = UpdateAdViewFailureThrowable()
+            val error = OpenMeasurementError.UpdateAdViewFailure()
             logger.error(error.message, error)
             return
         }
@@ -129,7 +125,7 @@ internal class OpenMeasurementSessionManager(
         if (!checkIfSessionExists()) return
         try {
             adSession?.addFriendlyObstruction(view, purpose.omidFriendlyObstruction(), reason)
-        } catch (error: Throwable) {
+        } catch (error: Exception) {
             logger.error("Failed to add friendly obstruction", error)
         }
     }
@@ -142,7 +138,7 @@ internal class OpenMeasurementSessionManager(
         adEvents?.let {
             try {
                 it.loaded()
-            } catch (error: Throwable) {
+            } catch (error: Exception) {
                 logger.error("Unable to send the ad loaded event", error)
             }
         } ?: logger.error("Unable to send the ad loaded event as ad events is null", null)
@@ -156,7 +152,7 @@ internal class OpenMeasurementSessionManager(
         adEvents?.let {
             try {
                 it.impressionOccurred()
-            } catch (error: Throwable) {
+            } catch (error: Exception) {
                 logger.error("Unable to send the ad impression event", error)
             }
         } ?: logger.error("Unable to send the ad impression event as ad events is null", null)

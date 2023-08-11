@@ -25,7 +25,7 @@ internal class OpenMeasurementContextFactory(
                 )
                 OpenMeasurementAdType.Video -> null
             }
-        } catch (error: Throwable) {
+        } catch (error: Exception) {
             logger.error("Unable to create session context", error)
             null
         }
