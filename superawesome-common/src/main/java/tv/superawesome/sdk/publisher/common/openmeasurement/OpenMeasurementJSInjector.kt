@@ -3,17 +3,14 @@ package tv.superawesome.sdk.publisher.common.openmeasurement
 import com.iab.omid.library.superawesome.ScriptInjector
 import tv.superawesome.sdk.publisher.common.components.Logger
 
-/**
- * Utility for injecting the OMID JavaScript string into a HTML string
- */
 internal class OpenMeasurementJSInjector(
     private val jsLoader: OpenMeasurementJSLoaderType,
     private val logger: Logger,
 ): OpenMeasurementJSInjectorType {
     /**
-     * Injects the JS string into the provided HTML string
-     * @param adHtml The HTML string for the ad
-     * @return The HTML string for the ad with the OMID JS injected into it
+     * Injects the JS string into the provided HTML string.
+     * @param adHtml The HTML string for the ad.
+     * @return The HTML string for the ad with the OMID JS injected into it.
      */
     override fun injectJS(adHtml: String): String {
         val omidJs = jsLoader.loadJSLibrary()
@@ -27,8 +24,8 @@ internal class OpenMeasurementJSInjector(
             val result = ScriptInjector.injectScriptContentIntoHtml(omidJs, adHtml)
             logger.success("The Open Measurement JS was injected")
             result
-        } catch (error: Exception) {
-            logger.error("Unable to inject the Open Measurement JS", error)
+        } catch (error: IllegalArgumentException) {
+            logger.error("Unable to inject the Open Measurement JS error: ${error.message}", error)
             adHtml
         }
     }

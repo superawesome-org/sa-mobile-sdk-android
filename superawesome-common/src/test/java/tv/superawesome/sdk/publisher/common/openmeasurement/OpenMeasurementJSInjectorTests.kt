@@ -70,7 +70,7 @@ class OpenMeasurementJSInjectorTests {
     @Test
     fun `injectJS logs an error and returns unmodified html if injector fails`() {
         // given
-        val error = Exception()
+        val error = IllegalArgumentException("An error")
         val js = "some js"
         val adHtml = "<html><head></head><body><a href=\"https://www.superawesome.com\">" +
                 "<img src=\"https://wwww.image.com\"></a></body></html>"
@@ -85,7 +85,7 @@ class OpenMeasurementJSInjectorTests {
         val result = injector.injectJS(adHtml = adHtml)
 
         // then
-        verify { logger.error("Unable to inject the Open Measurement JS", error) }
+        verify { logger.error("Unable to inject the Open Measurement JS error: An error", error) }
         confirmVerified(logger)
         assertEquals(adHtml, result)
     }

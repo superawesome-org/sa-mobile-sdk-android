@@ -6,19 +6,18 @@ import java.io.InputStream
 import java.nio.charset.Charset
 
 /**
- * Utility for loading the OMID JavaScript resource
+ * Utility for loading the OMID JavaScript resource.
  */
 internal class OpenMeasurementJSLoader(
     private val logger: Logger,
     private val jsInputStream: InputStream,
 ) : OpenMeasurementJSLoaderType {
     /**
-     * Gets the Omid JS resource as a string
-     * @return The Omid JS resource as a string
+     * Gets the Omid JS resource as a string.
+     * @return The Omid JS resource as a string.
      */
-    override fun loadJSLibrary(): String? {
+    override fun loadJSLibrary(): String? =
         try {
-            // TODO: AASDK-499 Load Omid JS remotely and load from the app documents folder here.
             jsInputStream.use { inputStream ->
                 val bytes = ByteArray(inputStream.available())
                 val bytesRead = inputStream.read(bytes)
@@ -26,10 +25,9 @@ internal class OpenMeasurementJSLoader(
             }
         } catch (error: IOException) {
             logger.error("Unable to load OMSDK JS from local storage", error)
-            return null
+            null
         } catch (error: StringIndexOutOfBoundsException) {
             logger.error("Unable to load OMSDK JS from local storage", error)
-            return null
+            null
         }
-    }
 }

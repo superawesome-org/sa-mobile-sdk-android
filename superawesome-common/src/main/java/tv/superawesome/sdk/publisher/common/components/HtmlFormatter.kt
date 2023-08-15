@@ -30,7 +30,8 @@ internal class HtmlFormatter(
                 "&creative=${ad.creative.id}" +
                 "&rnd=${numberGenerator.nextIntForCache()}"
 
-        return "<iframe class='omid-element' style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>"
+        return "<iframe class='omid-element' style='padding:0;border:0;' " +
+                "width='100%' height='100%' src='$url'></iframe>"
     }
 
     override fun formatTagIntoHtml(ad: Ad): String {

@@ -17,7 +17,8 @@ import kotlin.test.assertNotNull
 
 class OpenMeasurementSessionManagerTests {
 
-    private val error = IllegalArgumentException("An error")
+    private val argumentException = IllegalArgumentException("An error")
+    private val stateException = IllegalStateException("An error")
     private val logger = spyk<Logger>()
     private val adUrl = "https://wwww.some.ad.com"
     private val webView = mockk<WebView>(relaxed = true).apply {
@@ -55,9 +56,18 @@ class OpenMeasurementSessionManagerTests {
     }
 
     @Test
-    fun `setup fails to create a session`() {
+    fun `setup fails to create a session with IllegalArgumentException`() {
+        sessionFactoryFailsWithException(exception = argumentException)
+    }
+
+    @Test
+    fun `setup fails to create a session with IllegalStateException`() {
+        sessionFactoryFailsWithException(exception = stateException)
+    }
+
+    private fun sessionFactoryFailsWithException(exception: Exception) {
         // given
-        every { sessionFactory.getHtmlAdSession(any(), any()) } throws error
+        every { sessionFactory.getHtmlAdSession(any(), any()) } throws exception
 
         // when
         manager.setup(webView = webView)
@@ -67,7 +77,7 @@ class OpenMeasurementSessionManagerTests {
         confirmVerified(sessionFactory)
         verify(exactly = 1) {
             logger.error(
-                "Unable to create the ad session",
+                "Unable to create the ad session error: An error",
                 ofType(OpenMeasurementError.AdSessionCreationFailure::class),
             )
         }
@@ -105,9 +115,18 @@ class OpenMeasurementSessionManagerTests {
     }
 
     @Test
-    fun `start fails to start the session due to an error`() {
+    fun `start fails to start the session due to an IllegalArgumentException`() {
+        startSessionFailsWithAnException(exception = argumentException)
+    }
+
+    @Test
+    fun `start fails to start the session due to an IllegalStateException`() {
+        startSessionFailsWithAnException(exception = stateException)
+    }
+
+    private fun startSessionFailsWithAnException(exception: Exception) {
         // given
-        every { session.start() } throws error
+        every { session.start() } throws exception
 
         // when
         manager.setup(webView = webView)
@@ -116,7 +135,7 @@ class OpenMeasurementSessionManagerTests {
         // then
         verify(exactly = 1) {
             logger.error(
-                "Unable to start the ad session",
+                "Unable to start the ad session error: An error",
                 ofType(OpenMeasurementError.AdSessionStartFailure::class),
             )
         }
@@ -124,9 +143,25 @@ class OpenMeasurementSessionManagerTests {
     }
 
     @Test
-    fun `start succeeds in starting the session, but fails to create events due to an error`() {
+    fun `start succeeds in starting the session, but fails to create events due to an IllegalArgumentException`() {
+        createAdsFailsWithException(
+            exception = argumentException,
+            exceptionMessage = "Unable to create ad events error: An error",
+        )
+    }
+
+    @Test
+    fun `start succeeds in starting the session, but fails to create events due to an IllegalStateException`() {
+        createAdsFailsWithException(
+            exception = stateException,
+            exceptionMessage = "Unable to create ad events error: An error",
+        )
+    }
+
+    private fun createAdsFailsWithException(exception: Exception, exceptionMessage: String) {
         // given
-        every { AdEvents.createAdEvents(session) } throws error
+        every { session.start() } returns Unit
+        every { AdEvents.createAdEvents(session) } throws exception
 
         // when
         manager.setup(webView = webView)
@@ -138,10 +173,7 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 1) { sessionFactory.getHtmlAdSession(webView, null) }
         confirmVerified(sessionFactory)
         verify {
-            logger.error(
-                "Unable to create ad events",
-                ofType(IllegalArgumentException::class),
-            )
+            logger.error(exceptionMessage, exception)
         }
         confirmVerified(logger)
     }
@@ -260,7 +292,7 @@ class OpenMeasurementSessionManagerTests {
         val purpose = FriendlyObstructionType.CloseAd
         val reason: String? = null
 
-        every { session.addFriendlyObstruction(any(), any(), any()) } throws error
+        every { session.addFriendlyObstruction(any(), any(), any()) } throws argumentException
 
         // when
         manager.setup(webView)
@@ -270,7 +302,9 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 1) {
             session.addFriendlyObstruction(view, purpose.omidFriendlyObstruction(), reason)
         }
-        verify(exactly = 1) { logger.error("Failed to add friendly obstruction", any()) }
+        verify(exactly = 1) {
+            logger.error("Failed to add friendly obstruction error: An error", argumentException)
+        }
         confirmVerified(session)
         confirmVerified(logger)
     }
@@ -333,7 +367,7 @@ class OpenMeasurementSessionManagerTests {
     @Test
     fun `sendAdLoaded logs error if adEvents throws`() {
         // given
-        every { adEvents.loaded() } throws error
+        every { adEvents.loaded() } throws stateException
 
         // when
         manager.setup(webView)
@@ -342,7 +376,9 @@ class OpenMeasurementSessionManagerTests {
 
         // then
         verify(exactly = 1) { adEvents.loaded() }
-        verify(exactly = 1) { logger.error("Unable to send the ad loaded event", error) }
+        verify(exactly = 1) {
+            logger.error("Unable to send the ad loaded event error: An error", stateException)
+        }
         confirmVerified(adEvents)
         confirmVerified(logger)
     }
@@ -379,9 +415,9 @@ class OpenMeasurementSessionManagerTests {
     }
 
     @Test
-    fun `sendAdImpression logs error if adEvents throws`() {
+    fun `sendAdImpression logs error if adEvents throws IllegalStateException`() {
         // given
-        every { adEvents.impressionOccurred() } throws error
+        every { adEvents.impressionOccurred() } throws stateException
 
         // when
         manager.setup(webView)
@@ -390,7 +426,9 @@ class OpenMeasurementSessionManagerTests {
 
         // then
         verify(exactly = 1) { adEvents.impressionOccurred() }
-        verify(exactly = 1) { logger.error("Unable to send the ad impression event", error) }
+        verify(exactly = 1) {
+            logger.error("Unable to send the ad impression event error: An error", stateException)
+        }
         confirmVerified(adEvents)
         confirmVerified(logger)
     }
