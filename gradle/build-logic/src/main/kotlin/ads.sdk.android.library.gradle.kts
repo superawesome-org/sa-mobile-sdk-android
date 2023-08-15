@@ -16,3 +16,10 @@ android {
     androidConfig()
     configureKotlinAndroid(this)
 }
+
+subprojects {
+    tasks.withType(JavaCompile::class) {
+        options.isFork = true
+        options.forkOptions.memoryMaximumSize = "2G"
+    }
+}
