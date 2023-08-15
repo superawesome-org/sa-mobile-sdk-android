@@ -22,4 +22,7 @@ subprojects {
         options.isFork = true
         options.forkOptions.memoryMaximumSize = "2G"
     }
+    tasks.withType(Test::class) {
+        maxParallelForks = 4
+    }
 }
