@@ -1,3 +1,4 @@
+@file:Suppress("TooGenericExceptionCaught")
 package tv.superawesome.sdk.publisher.videoPlayer
 
 import android.content.Context
