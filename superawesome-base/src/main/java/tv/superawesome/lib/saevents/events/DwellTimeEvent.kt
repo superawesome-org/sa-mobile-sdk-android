@@ -12,7 +12,7 @@ class DwellTimeEvent(
     executor: Executor,
     timeout: Int,
     retryDelay: Long,
-    isDebug: Boolean
+    isDebug: Boolean,
 ) :
     SAServerEvent(ad, session, executor, timeout, retryDelay, isDebug) {
 
@@ -30,7 +30,7 @@ class DwellTimeEvent(
                 "line_item", ad.lineItemId,
                 "ct", session.connectionType.ordinal,
                 "sdkVersion", session.version,
-                "rnd", ad.rnd
+                "rnd", session.cachebuster,
             )
         } catch (e: Exception) {
             JSONObject()
