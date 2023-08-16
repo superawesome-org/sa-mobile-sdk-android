@@ -78,6 +78,8 @@ import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSes
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactory
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactoryType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloader
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloaderType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjector
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjectorType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoader
@@ -88,6 +90,8 @@ import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerController
+import tv.superawesome.sdk.publisher.common.utilities.FileWrapper
+import java.io.File
 import java.util.*
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -184,17 +188,24 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         val retrofit: Retrofit = get()
         retrofit.create(AwesomeAdsApi::class.java)
     }
-    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get(), get()) }
+    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get()) }
 
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
-    single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
+    single<AdProcessorType> { AdProcessor(get(), get(), get(), get(), androidContext().cacheDir) }
     single<ImageProviderType> { ImageProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
     single<AdStoreType> { AdStore() }
 
     // Open Measurement
+    single<OpenMeasurementJSDownloaderType> { OpenMeasurementJSDownloader(
+        get(),
+        get(),
+        "https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js",
+        androidContext().cacheDir,
+    ) }
     single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(
         get(),
+        FileWrapper(File(androidContext().cacheDir, "omsdk-v1.js")),
         androidContext().resources.openRawResource(R.raw.omsdk_v1),
     ) }
     single<OpenMeasurementJSInjectorType> { OpenMeasurementJSInjector(get(), get()) }

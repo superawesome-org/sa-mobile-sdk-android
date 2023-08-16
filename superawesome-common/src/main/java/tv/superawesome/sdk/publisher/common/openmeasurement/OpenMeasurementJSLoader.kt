@@ -1,15 +1,17 @@
 package tv.superawesome.sdk.publisher.common.openmeasurement
 
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.utilities.FileWrapper
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.nio.charset.Charset
 
 /**
  * Utility for loading the OMID JavaScript resource.
  */
 internal class OpenMeasurementJSLoader(
     private val logger: Logger,
+    private val jsFile: FileWrapper,
     private val jsInputStream: InputStream,
 ) : OpenMeasurementJSLoaderType {
     /**
@@ -18,16 +20,32 @@ internal class OpenMeasurementJSLoader(
      */
     override fun loadJSLibrary(): String? =
         try {
-            jsInputStream.use { inputStream ->
-                val bytes = ByteArray(inputStream.available())
-                val bytesRead = inputStream.read(bytes)
-                return String(bytes, 0, bytesRead, Charset.forName("UTF-8"))
+            if (jsFile.exists()) {
+                String(jsFile.readBytes())
+            } else {
+                jsInputStream.use { inputStream ->
+                    val bytes = ByteArray(inputStream.available())
+                    return String(bytes)
+                }
             }
+        } catch (error: OutOfMemoryError) {
+            logger.error(
+                "Unable to load OMSDK JS from local storage error: ${error.message}",
+                error,
+            )
+            null
+
         } catch (error: IOException) {
-            logger.error("Unable to load OMSDK JS from local storage", error)
+            logger.error(
+                "Unable to load OMSDK JS from local storage error: ${error.message}",
+                error,
+            )
             null
         } catch (error: StringIndexOutOfBoundsException) {
-            logger.error("Unable to load OMSDK JS from local storage", error)
+            logger.error(
+                "Unable to load OMSDK JS from local storage error: ${error.message}",
+                error,
+            )
             null
         }
 }

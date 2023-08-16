@@ -68,7 +68,8 @@ public class SAFileDownloader {
     public void downloadFileFrom(final String url, SAFileDownloaderInterface listener1) {
 
         // get a local copy of the listener
-        final SAFileDownloaderInterface listener = listener1 != null ? listener1 : (success, key, filePath) -> {};
+        final SAFileDownloaderInterface listener =
+                listener1 != null ? listener1 : (success, key, filePath) -> {};
 
         // check for null context
         if (context == null) {
@@ -151,7 +152,8 @@ public class SAFileDownloader {
             if (success) {
 
                 // put data in the editor
-                SharedPreferences preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences preferences =
+                        context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
                 preferences.edit().putString(currentItem.getKey(), currentItem.getFilePath()).commit();
 
                 // send back
@@ -163,7 +165,12 @@ public class SAFileDownloader {
         });
     }
 
-    private void sendBack (final SAFileDownloaderInterface listener, final boolean success, final String key, final String diskUrl) {
+    private void sendBack (
+            final SAFileDownloaderInterface listener,
+            final boolean success,
+            final String key,
+            final String diskUrl
+    ) {
         /*
           And try to return it on the main thread
          */

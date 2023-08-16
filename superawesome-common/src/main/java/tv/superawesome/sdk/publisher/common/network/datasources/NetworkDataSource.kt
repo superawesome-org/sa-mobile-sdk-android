@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.common.network.datasources
 
-import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -15,22 +14,21 @@ import java.io.File
 internal interface NetworkDataSourceType {
     /**
      * Returns the response body from the network request from the given [url].
-     * @param [url] The URL address of the requested resource
+     * @param [url] The URL address of the requested resource.
      */
     suspend fun getData(url: String): DataResult<String>
 
     /**
      * Downloads a file from the given [url].
-     * @param [url] The URL address of the requested resource
-     * @return the local file path to the downloaded file
+     * @param [url] The URL address of the requested resource.
+     * @param [destDirectory] The destination of the file on the device.
+     * @return the local file path to the downloaded file.
      */
-    suspend fun downloadFile(url: String): DataResult<String>
+    suspend fun downloadFile(url: String, destDirectory: File): DataResult<String>
 }
-
 
 internal class OkHttpNetworkDataSource(
     private val client: OkHttpClient,
-    private val applicationContext: Context,
     private val logger: Logger,
 ) : NetworkDataSourceType {
     override suspend fun getData(url: String): DataResult<String> {
@@ -45,14 +43,17 @@ internal class OkHttpNetworkDataSource(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun downloadFile(url: String): DataResult<String> {
-        logger.info("downloadFile")
+    override suspend fun downloadFile(
+        url: String,
+        destDirectory: File,
+    ): DataResult<String> {
+        logger.info("downloadFile from: $url")
         return try {
             val request = Request.Builder().url(url).build()
             val response = client.newCall(request).execute()
 
             val urlFileItem = UrlFileItem(url)
-            val downloadedFile = File(applicationContext.cacheDir, urlFileItem.fileName)
+            val downloadedFile = File(destDirectory, urlFileItem.fileName)
 
 
             val sink = downloadedFile.sink().buffer()
@@ -61,10 +62,12 @@ internal class OkHttpNetworkDataSource(
                 sink.close()
             }
 
-            logger.success("File download successful with path: ${downloadedFile.absolutePath}")
+            logger.success(
+                "File download successful for: $url path: ${downloadedFile.absolutePath}",
+                )
             DataResult.Success(downloadedFile.absolutePath)
         } catch (e: Exception) {
-            logger.error("File download error", e)
+            logger.error("File download error for: $url error: ${e.message}", e)
             DataResult.Failure(Error(e.localizedMessage))
         }
     }
