@@ -142,6 +142,7 @@ class SAManagedAdActivity : Activity(),
         super.onDestroy()
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
+        viewableDetector.cancel()
         config = null
         videoClick = null
     }
