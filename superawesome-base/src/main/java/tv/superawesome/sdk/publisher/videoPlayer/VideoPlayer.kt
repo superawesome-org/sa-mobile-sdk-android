@@ -117,6 +117,7 @@ class VideoPlayer @JvmOverloads constructor(
         control?.apply {
             setDisplay(null)
             reset()
+            destroy()
         }
         weakParent?.clear()
         weakParent = null
