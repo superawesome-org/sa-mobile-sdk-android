@@ -162,7 +162,6 @@ class VideoPlayerController :
         if (countDownTimer == null) {
             countDownTimer = object : CountDownTimer(duration.toLong(), 500) {
                 override fun onTick(remainingTime: Long) {
-                    Log.d("mylo", "tick timer")
                     listener?.onTimeUpdated(
                         this@VideoPlayerController,
                         currentPosition,
