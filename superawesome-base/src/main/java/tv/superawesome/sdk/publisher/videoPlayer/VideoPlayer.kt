@@ -140,6 +140,7 @@ class VideoPlayer @JvmOverloads constructor(
     override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
         try {
             control?.takeIf { it.isIVideoPlaying }?.pause()
+            control?.setDisplay(null)
         } catch (ignored: Exception) { /* N/A */
         }
     }
