@@ -31,7 +31,7 @@ public class SAPGFailEvent extends SAServerEvent {
                     "sdkVersion", session.getVersion(),
                     "ct", session.getConnectionType(),
                     "bundle", session.getPackageName(),
-                    "rnd", ad.rnd,
+                    "rnd", session.getCachebuster(),
                     "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
                             "placement", ad.placementId,
                             "line_item", ad.lineItemId,

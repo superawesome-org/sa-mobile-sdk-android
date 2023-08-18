@@ -18,7 +18,7 @@ android {
 }
 
 subprojects {
-    tasks.withType(JavaCompile::class) {
+    tasks.withType<JavaCompile> {
         options.isFork = true
         options.forkOptions.memoryMaximumSize = "2G"
     }
