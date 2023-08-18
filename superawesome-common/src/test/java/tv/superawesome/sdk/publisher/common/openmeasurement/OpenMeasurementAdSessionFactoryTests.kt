@@ -14,18 +14,19 @@ import org.junit.Test
 import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class OpenMeasurementAdSessionFactoryTests {
 
     private val versionName = "2.0.0"
     private val omidActivator = spyk<OmidActivatorType>()
     private val contextBuilder = spyk<OpenMeasurementContextFactoryType>()
-    private val sdkInfo = mockk<SdkInfoType>().apply {
+    private val sdkInfo = mockk<SdkInfoType>() {
         every { versionNumber } returns versionName
     }
     private val id = "mock-session-id"
     private val webView = mockk<WebView>(relaxed = true)
-    private val mockSession = mockk<AdSession>(relaxed = true).apply {
+    private val mockSession = mockk<AdSession>(relaxed = true) {
         every { adSessionId } returns id
     }
 
@@ -59,7 +60,7 @@ class OpenMeasurementAdSessionFactoryTests {
         verify { omidActivator.activate() }
         confirmVerified(omidActivator)
         assertNotNull(result)
-        assertEquals(id, mockSession.adSessionId)
+        assertEquals(result.adSessionId, id)
     }
 
     @Test
@@ -78,6 +79,28 @@ class OpenMeasurementAdSessionFactoryTests {
         confirmVerified(omidActivator)
 
         assertNotNull(result)
-        assertEquals(id, mockSession.adSessionId)
+        assertEquals(result.adSessionId, id)
+    }
+
+    @Test
+    fun `getHtmlAdSession throws an error when adSessionContext is null`() {
+        // given
+        val customReferenceData = "Some data"
+        val exception = Exception("an error")
+        every { contextBuilder.sessionContext(any(), any(), any(), any()) } returns null
+        every { AdSession.createAdSession(any(), any()) } throws exception
+
+        // when
+        try {
+            sessionBuilder.getHtmlAdSession(
+                webView = webView,
+                customReferenceData = customReferenceData,
+            )
+        } catch (error: Exception) {
+            assertEquals(exception, error)
+        }
+        // then
+        verify { omidActivator.activate() }
+        confirmVerified(omidActivator)
     }
 }

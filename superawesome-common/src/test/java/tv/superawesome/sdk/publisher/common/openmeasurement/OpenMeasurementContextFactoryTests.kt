@@ -19,7 +19,7 @@ class OpenMeasurementContextFactoryTests {
 
     private val logger = spyk<Logger>()
     private val adUrl = "https://wwww.some.ad.com"
-    private val webView = mockk<WebView>(relaxed = true).apply {
+    private val webView = mockk<WebView>(relaxed = true) {
         every { url } returns adUrl
     }
     private val adType = OpenMeasurementAdType.HTMLDisplay

@@ -21,13 +21,13 @@ class OpenMeasurementSessionManagerTests {
     private val stateException = IllegalStateException("An error")
     private val logger = spyk<Logger>()
     private val adUrl = "https://wwww.some.ad.com"
-    private val webView = mockk<WebView>(relaxed = true).apply {
+    private val webView = mockk<WebView>(relaxed = true) {
         every { url } returns adUrl
     }
     private val session = spyk<AdSession>()
     private val adEvents = mockk<AdEvents>(relaxed = true)
     private val sessionFactory = spyk<OpenMeasurementAdSessionFactoryType>()
-    private val jsInjector = spyk<OpenMeasurementJSInjectorType>().apply {
+    private val jsInjector = spyk<OpenMeasurementJSInjectorType>() {
         every { injectJS(any()) } returns "<html>some js</html>"
     }
     private val manager = OpenMeasurementSessionManager(
