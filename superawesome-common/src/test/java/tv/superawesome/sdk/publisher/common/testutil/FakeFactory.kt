@@ -9,6 +9,8 @@ internal object FakeFactory {
     const val exampleVastUrl = "https://www.superAwesome.com"
 
     fun makeFakeAd(type: CreativeFormatType, vastUrl: String = exampleVastUrl) = Ad(
+        publisherId = 0,
+        campaignId = 0,
         campaignType = 123,
         showPadlock = false,
         lineItemId = 123,

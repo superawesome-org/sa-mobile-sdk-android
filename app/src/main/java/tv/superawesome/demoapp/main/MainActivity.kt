@@ -313,7 +313,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val originalMessage =binding. subtitleTextView.text
+        val originalMessage = binding.subtitleTextView.text
         val message = "$originalMessage $placementId $event"
         binding.subtitleTextView.text = message
     }

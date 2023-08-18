@@ -39,6 +39,8 @@ internal class AdResponseTest {
     }
 
     private fun buildAd(showPadlock: Boolean, isKSF: Boolean = false) = Ad(
+        publisherId = 0,
+        campaignId = 0,
         campaignType = 123,
         showPadlock = showPadlock,
         lineItemId = 123,

@@ -3,24 +3,23 @@ package tv.superawesome.sdk.publisher.common.components
 import tv.superawesome.sdk.publisher.common.models.Ad
 
 internal interface HtmlFormatterType {
-    fun formatImageIntoHtml(ad: Ad): String
+    fun formatImageIntoHtml(ad: Ad, placementId: Int): String
     fun formatRichMediaIntoHtml(placementId: Int, ad: Ad): String
     fun formatTagIntoHtml(ad: Ad): String
 }
 
 internal class HtmlFormatter(
     private val numberGenerator: NumberGeneratorType,
-    private val encoder: EncoderType
+    private val encoder: EncoderType,
 ) : HtmlFormatterType {
 
-    override fun formatImageIntoHtml(ad: Ad): String {
-        val img =
-            "<img src='${ad.creative.details.image ?: ""}' width='100%' height='100%' style='object-fit: contain;'/>"
+    override fun formatImageIntoHtml(ad: Ad, placementId: Int): String {
+        val img = "<img src='${ad.creative.details.image ?: ""}' " +
+                "width='100%' height='100%' style='object-fit: contain;'/>"
 
         if (ad.creative.clickUrl != null) {
             return "<a href='${ad.creative.clickUrl}' target='_blank'>$img</a>"
         }
-
         return img
     }
 
@@ -31,7 +30,8 @@ internal class HtmlFormatter(
                 "&creative=${ad.creative.id}" +
                 "&rnd=${numberGenerator.nextIntForCache()}"
 
-        return "<iframe style='padding:0;border:0;' width='100%' height='100%' src='$url'></iframe>"
+        return "<iframe class='omid-element' style='padding:0;border:0;' " +
+                "width='100%' height='100%' src='$url'></iframe>"
     }
 
     override fun formatTagIntoHtml(ad: Ad): String {

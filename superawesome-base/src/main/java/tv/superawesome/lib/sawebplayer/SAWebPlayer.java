@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -76,6 +75,8 @@ public class SAWebPlayer extends RelativeLayout implements SAWebClient.Listener 
     public void destroy() {
         if (webView != null) {
             setEventListener(null);
+            holder.removeView(webView);
+            webView.removeAllViews();
             webView.destroy();
         }
     }

@@ -69,7 +69,7 @@ internal class CustomWebView @JvmOverloads constructor(
                 view: WebView?,
                 errorCode: Int,
                 description: String?,
-                failingUrl: String?
+                failingUrl: String?,
             ) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
                 handleError(errorCode)
@@ -127,7 +127,7 @@ internal class CustomWebView @JvmOverloads constructor(
     @Suppress("MaxLineLength")
     public fun loadHTML(base: String, html: String) {
         val baseHtml =
-            "<html><header><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></header><body>$html</body></html>"
+            "<html><header><script type='text/javascript' src='https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js'></script><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></header><body>$html</body></html>"
         loadDataWithBaseURL(base, baseHtml, "text/html", "UTF-8", null)
     }
 }

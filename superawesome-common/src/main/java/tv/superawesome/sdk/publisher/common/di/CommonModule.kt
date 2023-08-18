@@ -72,6 +72,16 @@ import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
 import tv.superawesome.sdk.publisher.common.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionBuilder
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionBuilderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextBuilder
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextBuilderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjector
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjectorType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoader
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoaderType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManager
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
 import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
@@ -179,6 +189,13 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<ImageProviderType> { ImageProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
     single<AdStoreType> { AdStore() }
+
+    // Open Measurement
+    single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(get()) }
+    single<OpenMeasurementJSInjectorType> { OpenMeasurementJSInjector(get(), get()) }
+    single<OpenMeasurementContextBuilderType> { OpenMeasurementContextBuilder(get()) }
+    single<OpenMeasurementAdSessionBuilderType> { OpenMeasurementAdSessionBuilder(get(), get()) }
+    factory<OpenMeasurementSessionManagerType> { OpenMeasurementSessionManager(get(), get(), get()) }
 
     // Vast
     single<VastParserType> { VastParser(get(), get()) }

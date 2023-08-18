@@ -17,6 +17,8 @@ const val CPI_CAMPAIGN_ID = 1
 @Serializable
 internal data class Ad(
     @SerialName("campaign_type") val campaignType: Int,
+    @SerialName("publisherId") val publisherId: Int,
+    @SerialName("campaign_id") val campaignId: Int,
     @SerialName("show_padlock") val showPadlock: Boolean,
     @SerialName("line_item_id") val lineItemId: Int,
     val test: Boolean,

@@ -5,14 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.iab.omid.library.superawesome.adsession.AdEvents;
+import com.iab.omid.library.superawesome.adsession.AdSession;
+import com.iab.omid.library.superawesome.adsession.FriendlyObstructionPurpose;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import kotlin.Unit;
@@ -23,6 +31,7 @@ import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
+import tv.superawesome.lib.saopenmeasurement.OMAdSessionBuilder;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
@@ -38,19 +47,23 @@ import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 
 public class SABannerAd extends FrameLayout {
 
-    interface SABannerAdListener {
+    public interface SABannerAdListener {
+        void hasCreatedAdSession();
         void hasBeenVisible();
 
         void failedToShow();
     }
 
     // constants
+    private static String LOG_TAG =  "SAAwesomeAds";
     private final int BANNER_BACKGROUND = Color.rgb(224, 224, 224);
 
     // private vars w/ exposed setters & getters
     private boolean isParentalGateEnabled = false;
     private boolean isBumperPageEnabled = false;
     private SAAd ad;
+    private AdSession adSession;
+    private AdEvents adEvents;
     private SAInterface listener = (placementId, event) -> {
     };
 
@@ -60,17 +73,17 @@ public class SABannerAd extends FrameLayout {
     private final SALoader loader;
 
     // private subviews
-    private SAWebPlayer webPlayer;
+    private SAWebPlayer activeWebPlayer;
+    private Map<String, SAWebPlayer> webPlayerStore;
     private ImageButton padlock;
 
     // bool
     private boolean canPlay = true;
-    private boolean firstPlay = true;
     private boolean isClosed = false;
 
     private Long currentClickThreshold = 0L;
 
-    private SABannerAdListener bannerListener = null;
+    SABannerAdListener bannerListener = null;
 
     // Utils
     private final SAClock clock;
@@ -110,6 +123,7 @@ public class SABannerAd extends FrameLayout {
         session = new SASession(context);
         loader = new SALoader(context);
         events = new SAEvents();
+        webPlayerStore = new HashMap<>();
 
         // Add the clock
         this.clock = clock;
@@ -146,14 +160,14 @@ public class SABannerAd extends FrameLayout {
         try {
             AwesomeAds.init(((Activity) this.getContext()).getApplication(), false);
         } catch (Exception e) {
-            Log.d("SuperAwesome", "Error initing AwesomeAds in SABannerAd " + e.getMessage());
+            Log.w(LOG_TAG, "Error initiating AwesomeAds in SABannerAd " + e.getMessage());
         }
 
         // from this moment on the ad can't be played, to avoid wierd things
         canPlay = false;
 
         // close
-        if (!firstPlay) {
+        if (!webPlayerStore.isEmpty()) {
             close();
         }
 
@@ -182,7 +196,7 @@ public class SABannerAd extends FrameLayout {
                     if (listener != null) {
                         listener.onEvent(placementId, SAEvent.adFailedToLoad);
                     } else {
-                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
+                        Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
                     }
                 } else {
                     canPlay = response.isValid();
@@ -190,9 +204,9 @@ public class SABannerAd extends FrameLayout {
                     if (listener != null) {
                         SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                         listener.onEvent(placementId, eventToSend);
-                        Log.d("SABannerAd", "Event callback: " + eventToSend);
+                        Log.d(LOG_TAG, "Event callback: " + eventToSend);
                     } else {
-                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                        Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                     }
                 }
             });
@@ -232,14 +246,14 @@ public class SABannerAd extends FrameLayout {
         try {
             AwesomeAds.init(((Activity) this.getContext()).getApplication(), false);
         } catch (Exception e) {
-            Log.d("SuperAwesome", "Error initing AwesomeAds in SABannerAd " + e.getMessage());
+            Log.w(LOG_TAG, "Error initialising AwesomeAds in SABannerAd " + e.getMessage());
         }
 
         // from this moment on the ad can't be played, to avoid wierd things
         canPlay = false;
 
         // close
-        if (!firstPlay) {
+        if (!webPlayerStore.isEmpty()) {
             close();
         }
 
@@ -268,7 +282,7 @@ public class SABannerAd extends FrameLayout {
                         if (listener != null) {
                             listener.onEvent(placementId, SAEvent.adFailedToLoad);
                         } else {
-                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
+                            Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
                         }
                     } else {
                         canPlay = response.isValid();
@@ -276,9 +290,9 @@ public class SABannerAd extends FrameLayout {
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
                             listener.onEvent(placementId, eventToSend);
-                            Log.d("SABannerAd", "Event callback: " + eventToSend);
+                            Log.d(LOG_TAG, "Event callback: " + eventToSend);
                         } else {
-                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                            Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
                         }
                     }
                 })
@@ -298,13 +312,17 @@ public class SABannerAd extends FrameLayout {
 
             // canPlay becomes "false" again so no other playing can happen until a new load
             canPlay = false;
-            firstPlay = false;
 
             // create a new web player fragment object
-            webPlayer = new SAWebPlayer(context);
-            webPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            SAWebPlayer webPlayer = new SAWebPlayer(context);
+            webPlayerStore.put(Long.toString(ad.loadTime), webPlayer);
+
+            activeWebPlayer = webPlayer;
+            activeWebPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             // and set it's event listener
-            webPlayer.setEventListener((event, destination) -> {
+
+            activeWebPlayer.setEventListener((event, destination) -> {
 
                 switch (event) {
                     // this is called when the web player is on screen and prepared to load
@@ -319,9 +337,9 @@ public class SABannerAd extends FrameLayout {
                                 .media
                                 .html
                                 .replace("_TIMESTAMP_", Long.toString(clock.getTimestamp()));
-                        // load the HTML
-                        Log.d("SADefaults", "Full HTML is " + fullHTML);
-                        webPlayer.loadHTML(ad.creative.details.base, fullHTML);
+
+                        Log.d(LOG_TAG, "Full HTML is " + fullHTML);
+                        activeWebPlayer.loadHTML(ad.creative.details.base, fullHTML);
 
                         break;
                     }
@@ -333,6 +351,13 @@ public class SABannerAd extends FrameLayout {
                         events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
                             if (success) {
                                 events.triggerViewableImpressionEvent();
+                                if (adEvents != null && activeWebPlayer.getWebView() != null) {
+                                    try {
+                                        adEvents.impressionOccurred();
+                                    } catch (IllegalArgumentException | IllegalStateException error) {
+                                        Log.w(LOG_TAG,"Unable to send OpenMeasurement Impression event error: " + error.getMessage());
+                                    }
+                                }
                                 if (bannerListener != null) {
                                     bannerListener.hasBeenVisible();
                                 }
@@ -341,9 +366,9 @@ public class SABannerAd extends FrameLayout {
                         // call listener
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adShown);
-                            Log.d("SABannerAd", "Event callback: " + SAEvent.adShown);
+                            Log.d(LOG_TAG, "Event callback: " + SAEvent.adShown);
                         } else {
-                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
+                            Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been adShown");
                         }
 
                         break;
@@ -351,7 +376,6 @@ public class SABannerAd extends FrameLayout {
                     // this is actually a fragment event notifying the banner class that
                     // the fragment has started
                     case Web_Started: {
-
                         float sf = SAUtils.getScaleFactor((Activity) context);
                         padlock = new ImageButton(context);
                         padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
@@ -376,18 +400,27 @@ public class SABannerAd extends FrameLayout {
                             Runnable runner = () -> showSuperAwesomeWebViewInExternalBrowser(context);
                             showParentalGateIfNeededWithCompletion(context, runner);
                         });
-                        webPlayer.getHolder().addView(padlock);
-                        padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
-                        padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+                        activeWebPlayer.getHolder().addView(padlock);
+                        padlock.setTranslationX(activeWebPlayer.getWebView().getTranslationX());
+                        padlock.setTranslationY(activeWebPlayer.getWebView().getTranslationY());
+                        setupAdSession();
+
+                        if (adEvents != null) {
+                            try {
+                                adEvents.loaded();
+                            } catch (IllegalArgumentException | IllegalStateException error) {
+                                Log.w(LOG_TAG,"Unable to send OpenMeasurement load ad event error: " + error.getMessage());
+                            }
+                        }
 
                         break;
                     }
                     // this is called when the fragment & web view have all been laid out
                     case Web_Layout: {
 
-                        if (webPlayer.getWebView() != null && padlock != null) {
-                            padlock.setTranslationX(webPlayer.getWebView().getTranslationX());
-                            padlock.setTranslationY(webPlayer.getWebView().getTranslationY());
+                        if (activeWebPlayer.getWebView() != null && padlock != null) {
+                            padlock.setTranslationX(activeWebPlayer.getWebView().getTranslationX());
+                            padlock.setTranslationY(activeWebPlayer.getWebView().getTranslationY());
                         }
                         break;
                     }
@@ -396,7 +429,7 @@ public class SABannerAd extends FrameLayout {
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adFailedToShow);
                         } else {
-                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToShow");
+                            Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been adFailedToShow");
                         }
                         if (bannerListener != null) {
                             bannerListener.failedToShow();
@@ -408,7 +441,7 @@ public class SABannerAd extends FrameLayout {
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
                         } else {
-                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToLoad");
+                            Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been adFailedToLoad");
                         }
                         break;
                     }
@@ -418,7 +451,6 @@ public class SABannerAd extends FrameLayout {
                         if (destination != null) {
                             Runnable runner = () -> click(destination);
                             runner.run();
-                            // showParentalGateIfNeededWithCompletion(context, runner);
                         }
 
                         break;
@@ -426,15 +458,15 @@ public class SABannerAd extends FrameLayout {
                 }
             });
 
-            this.addView(webPlayer);
-            webPlayer.setup();
+            this.addView(activeWebPlayer);
+            activeWebPlayer.setup();
         }
         // if no ad has been loaded, send an ad failure event
         else {
             if (listener != null) {
                 listener.onEvent(0, SAEvent.adFailedToShow);
             } else {
-                Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adFailedToShow");
+                Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been adFailedToShow");
             }
         }
     }
@@ -456,6 +488,25 @@ public class SABannerAd extends FrameLayout {
         }
     }
 
+    private void setupAdSession() {
+        try {
+            adSession = OMAdSessionBuilder.INSTANCE.getHtmlAdSession(
+                    getContext(),
+                    activeWebPlayer.getWebView(),
+                    null);
+            if (padlock != null && padlock.getVisibility() == VISIBLE) {
+                addFab(padlock, FriendlyObstructionPurpose.OTHER, "SafeAdPadlock");
+            }
+            if (bannerListener != null) {
+                bannerListener.hasCreatedAdSession();
+            }
+            adSession.start();
+            adEvents = AdEvents.createAdEvents(adSession);
+        } catch (IllegalArgumentException error) {
+            Log.e(LOG_TAG, "Failure creating the Open Management Session");
+        }
+    }
+
     private SABumperPage bumperPage = null;
 
     private void playBumperPage(Context context, Function0<Unit> onFinish) {
@@ -473,26 +524,24 @@ public class SABannerAd extends FrameLayout {
             return;
         }
 
-        Log.d("AwesomeAds-2", "Got here!");
-
         Long currentTime = System.currentTimeMillis() / 1000;
         long diff = Math.abs(currentTime - currentClickThreshold);
 
         if (diff < SADefaults.defaultClickThreshold()) {
-            Log.d("AwesomeAds-2", "Current diff is " + diff);
+            Log.d(LOG_TAG, "Current diff is " + diff);
             return;
         }
 
         currentClickThreshold = currentTime;
 
-        Log.d("AwesomeAds-2", "Going to " + destination);
+        Log.d(LOG_TAG, "Going to " + destination);
 
         // callback
         if (listener != null) {
             listener.onEvent(ad.placementId, SAEvent.adClicked);
-            Log.d("SABannerAd", "Event callback: " + SAEvent.adClicked);
+            Log.d(LOG_TAG, "SA Banner Ad Event callback: " + SAEvent.adClicked);
         } else {
-            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClicked");
+            Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been adClicked");
         }
 
         // send tracking events, if needed
@@ -526,20 +575,22 @@ public class SABannerAd extends FrameLayout {
         // de-set public listener
         if (listener != null) {
             listener.onEvent(ad != null ? ad.placementId : 0, SAEvent.adClosed);
-            Log.d("SABannerAd", "Event callback: " + SAEvent.adClosed);
+            Log.d(LOG_TAG, "Event callback: " + SAEvent.adClosed);
         } else {
-            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adClosed");
+            Log.w(LOG_TAG, "Banner Ad listener not implemented. Event would have been adClosed");
         }
 
         // reset any ad that might be in here
         setAd(null);
 
-        // remove the web player
-        if (webPlayer != null) {
-            this.removeView(webPlayer);
-            webPlayer.destroy();
-            webPlayer = null;
+        if (adSession != null) {
+            adSession.finish();
         }
+        adEvents = null;
+        adSession = null;
+
+        // remove the web player
+        destroyWebViewDelayed();
 
         // make padlock invisible
         if (padlock != null) {
@@ -553,6 +604,24 @@ public class SABannerAd extends FrameLayout {
 
         // close ad
         isClosed = true;
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        destroyWebViewDelayed();
+        webPlayerStore.clear();
+    }
+
+    private void destroyWebViewDelayed() {
+        for (Map.Entry<String, SAWebPlayer> playerEntry : webPlayerStore.entrySet()) {
+            SAWebPlayer cPlayer = playerEntry.getValue();
+            webPlayerStore.remove(playerEntry.getKey());
+            removeView(cPlayer);
+
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(cPlayer::destroy, 1000);
+        }
     }
 
     /**
@@ -576,6 +645,11 @@ public class SABannerAd extends FrameLayout {
 
     public SAAd getAd() {
         return ad;
+    }
+
+    public void addFab(View fabView, FriendlyObstructionPurpose purpose, String reason) {
+        if (adSession == null) return;
+        adSession.addFriendlyObstruction(fabView, purpose, reason);
     }
 
     private void showParentalGateIfNeededWithCompletion(final Context context,
@@ -617,7 +691,7 @@ public class SABannerAd extends FrameLayout {
             try {
                 context.startActivity(browserIntent);
             } catch (Exception e) {
-                Log.d("SuperAwesome", "Couldn't start browser in SABannerAd: " + e.getMessage());
+                Log.d(LOG_TAG, "Couldn't start browser in SABannerAd: " + e.getMessage());
             }
             return null;
         };
