@@ -193,15 +193,10 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<AdStoreType> { AdStore() }
 
     // Open Measurement
-    single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(
-        get(),
-        androidContext().resources.openRawResource(R.raw.omsdk_v1),
-    ) }
+    single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(get()) }
     single<OpenMeasurementJSInjectorType> { OpenMeasurementJSInjector(get(), get()) }
-    single<OpenMeasurementContextFactoryType> { OpenMeasurementContextFactory(get()) }
-    single<OpenMeasurementAdSessionFactoryType> {
-        OpenMeasurementAdSessionFactory(OmidActivator(androidContext()), get(), get())
-    }
+    single<OpenMeasurementContextBuilderType> { OpenMeasurementContextBuilder(get()) }
+    single<OpenMeasurementAdSessionBuilderType> { OpenMeasurementAdSessionBuilder(get(), get()) }
     factory<OpenMeasurementSessionManagerType> { OpenMeasurementSessionManager(get(), get(), get()) }
 
     // Vast
