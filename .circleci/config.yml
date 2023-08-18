@@ -225,7 +225,7 @@ jobs:
             export PREVIOUS_VERSION=`git tag -l 'v*' --sort=-refname | sed -n 2p`
             export CLEAN_CURRENT_VERSION="${CURRENT_VERSION:1}"
             
-             get release notes from semantic-release
+            # get release notes from semantic-release
             export CHANGES=`awk "/^([#]+ \[${CURRENT_VERSION:1}\])/{flag=1;next}/^([#]+ \[${PREVIOUS_VERSION:1}\])/{flag=0}flag" CHANGELOG.md`
             
             export CHANGES=`sed -E "s/ \(\[([^\[]+)\](\(.*\))//g" \<<< $CHANGES`
