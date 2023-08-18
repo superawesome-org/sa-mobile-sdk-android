@@ -21,3 +21,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 }
+
+subprojects {
+    tasks.withType<JavaCompile> {
+        options.isFork = true
+        options.forkOptions.memoryMaximumSize = "2G"
+    }
+    tasks.withType(Test::class) {
+        maxParallelForks = 4
+    }
+}
