@@ -34,7 +34,7 @@ public class SAClickEvent extends SAServerEvent {
                     "line_item", ad.lineItemId,
                     "ct", session.getConnectionType().ordinal(),
                     "sdkVersion", session.getVersion(),
-                    "rnd", ad.rnd);
+                    "rnd", session.getCachebuster());
         } catch (Exception e) {
             return new JSONObject();
         }

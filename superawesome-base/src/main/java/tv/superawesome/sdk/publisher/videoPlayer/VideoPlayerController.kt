@@ -1,3 +1,4 @@
+@file:Suppress("TooGenericExceptionCaught")
 package tv.superawesome.sdk.publisher.videoPlayer
 
 import android.content.Context
@@ -8,6 +9,7 @@ import android.media.MediaPlayer.OnPreparedListener
 import android.media.MediaPlayer.OnSeekCompleteListener
 import android.net.Uri
 import android.os.CountDownTimer
+import android.util.Log
 
 class VideoPlayerController :
     MediaPlayer(),
@@ -81,10 +83,12 @@ class VideoPlayerController :
     override fun destroy() {
         try {
             stop()
+            removeTimer()
             setDisplay(null)
             release()
-            removeTimer()
-        } catch (ignored: Throwable) {
+
+        } catch (exception: Exception) {
+            Log.e("SuperAwesome", "Error destroying Video Player ${exception.message}")
         }
     }
 
@@ -96,7 +100,8 @@ class VideoPlayerController :
             if (prepared) {
                 super.reset()
             }
-        } catch (ignored: Exception) {
+        } catch (exception: Exception) {
+            Log.e("SuperAwesome", "Error resetting Video Player ${exception.message}")
         }
         prepared = false
     }
@@ -116,7 +121,7 @@ class VideoPlayerController :
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
-    // Media Constrol setters & getters for the listeners
+    // Media Control setters & getters for the listeners
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun setListener(listener: IVideoPlayerController.Listener) {
         this.listener = listener
