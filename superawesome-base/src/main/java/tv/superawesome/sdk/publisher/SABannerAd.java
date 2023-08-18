@@ -316,7 +316,7 @@ public class SABannerAd extends FrameLayout {
             // create a new web player fragment object
 
             SAWebPlayer webPlayer = new SAWebPlayer(context);
-            webPlayerStore.put(ad.rnd, webPlayer);
+            webPlayerStore.put(Long.toString(ad.loadTime), webPlayer);
 
             activeWebPlayer = webPlayer;
             activeWebPlayer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
