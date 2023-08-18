@@ -319,7 +319,7 @@ public class BannerView @JvmOverloads constructor(
         currentWebViewWrapper?.let { webViewWrapper ->
             webViewWrapper.setListener(object : CustomWebView.Listener {
                 override fun webViewOnStart() {
-                    omSessionManager.setup(context, webViewWrapper.webView)
+                    omSessionManager.setup(webViewWrapper.webView)
                     addSafeAdToOM()
                     controller.adShown()
                     omSessionManager.start()

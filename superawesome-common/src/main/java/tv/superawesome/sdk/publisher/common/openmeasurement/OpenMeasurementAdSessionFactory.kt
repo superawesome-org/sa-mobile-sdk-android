@@ -1,8 +1,6 @@
 package tv.superawesome.sdk.publisher.common.openmeasurement
 
-import android.content.Context
 import android.webkit.WebView
-import com.iab.omid.library.superawesome.Omid
 import com.iab.omid.library.superawesome.adsession.AdSession
 import com.iab.omid.library.superawesome.adsession.AdSessionConfiguration
 import com.iab.omid.library.superawesome.adsession.CreativeType
@@ -14,23 +12,22 @@ import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 /**
  * Builds and configures the Open Measurement AdSession.
  */
-internal class OpenMeasurementAdSessionBuilder(
+internal class OpenMeasurementAdSessionFactory(
+    private val omidActivator: OmidActivatorType,
     private val sdkInfo: SdkInfoType,
-    private val contextBuilder: OpenMeasurementContextBuilderType,
-): OpenMeasurementAdSessionBuilderType {
+    private val contextBuilder: OpenMeasurementContextFactoryType,
+): OpenMeasurementAdSessionFactoryType {
     /**
      * Gets the OM AdSession object.
-     * @param context Used to activate and update the OMID object.
      * @param webView The web view that is presenting the ad.
      * @param customReferenceData Additional info for the context.
      * @return The ad session object for the given web view.
      */
     override fun getHtmlAdSession(
-        context: Context,
         webView: WebView,
         customReferenceData: String?,
     ): AdSession {
-        Omid.activate(context.applicationContext)
+        omidActivator.activate()
         val adSessionConfiguration: AdSessionConfiguration = createSessionConfig()
         val partner: Partner = createPartner()
         val adSessionContext = contextBuilder.sessionContext(

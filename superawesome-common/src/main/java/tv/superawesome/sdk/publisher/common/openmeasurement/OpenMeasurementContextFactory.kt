@@ -8,9 +8,9 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 /**
  * Factory for the Open Measurement AdSession Context.
  */
-internal class OpenMeasurementContextBuilder(
+internal class OpenMeasurementContextFactory(
     private val logger: Logger,
-): OpenMeasurementContextBuilderType {
+): OpenMeasurementContextFactoryType {
 
     /**
      * Factory for the Open Measurement AdSession Context.
@@ -34,6 +34,7 @@ internal class OpenMeasurementContextBuilder(
                     adView.url,
                     customReferenceData,
                 )
+                OpenMeasurementAdType.Video -> null
             }
         } catch (error: IllegalArgumentException) {
             logger.error("Unable to create session context", error)
