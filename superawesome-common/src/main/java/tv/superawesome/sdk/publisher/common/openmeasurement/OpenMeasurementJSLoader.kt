@@ -2,7 +2,6 @@ package tv.superawesome.sdk.publisher.common.openmeasurement
 
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.utilities.FileWrapper
-import java.io.File
 import java.io.IOException
 import java.io.InputStream
 
@@ -18,8 +17,9 @@ internal class OpenMeasurementJSLoader(
      * Gets the Omid JS resource as a string.
      * @return The Omid JS resource as a string.
      */
-    override fun loadJSLibrary(): String? =
-        try {
+    override fun loadJSLibrary(): String? {
+        val errorMessage = "Unable to load OMSDK JS from local storage error: "
+        return try {
             if (jsFile.exists()) {
                 String(jsFile.readBytes())
             } else {
@@ -29,23 +29,14 @@ internal class OpenMeasurementJSLoader(
                 }
             }
         } catch (error: OutOfMemoryError) {
-            logger.error(
-                "Unable to load OMSDK JS from local storage error: ${error.message}",
-                error,
-            )
+            logger.error(errorMessage + error.message, error)
             null
-
         } catch (error: IOException) {
-            logger.error(
-                "Unable to load OMSDK JS from local storage error: ${error.message}",
-                error,
-            )
+            logger.error(errorMessage + error.message, error)
             null
         } catch (error: StringIndexOutOfBoundsException) {
-            logger.error(
-                "Unable to load OMSDK JS from local storage error: ${error.message}",
-                error,
-            )
+            logger.error(errorMessage + error.message, error)
             null
         }
+    }
 }
