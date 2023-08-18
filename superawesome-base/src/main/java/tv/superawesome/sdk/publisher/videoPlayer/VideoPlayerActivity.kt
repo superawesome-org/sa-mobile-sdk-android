@@ -14,6 +14,7 @@ class VideoPlayerActivity : Activity() {
     private var canDismissOnRotateToPortrait = false
     var minimisedByButton = false
     private lateinit var orientationListener: OrientationEventListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -97,9 +98,8 @@ class VideoPlayerActivity : Activity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         orientationListener.disable()
-        orientationListener
+        super.onDestroy()
     }
 
     override fun onBackPressed() {

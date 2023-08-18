@@ -1,3 +1,16 @@
+## [9.1.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.0...v9.1.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* **Ads:** Use the random number returned from the ad response ([#362](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/362)) ([64eee68](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/64eee68e46295aa861200ecb1f79dfdecb1e75ed))
+* **Ads:** Use the random number returned from the ad response for the ad events ([#360](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/360)) ([42611fc](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/42611fcba7b0a5df64f2242f85560b2c408be5a3))
+* **ci:** gradle crashing on CI ([7c1e0b2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7c1e0b2b124bc6877773c3177823fdcf665d89ba))
+* **Releases:** Added download links to release docs step of the CI ([#361](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/361)) ([10072cd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/10072cd9689aa64cbc68f8222b2f1bb1325f9698))
+* **rnd:** Reverted the rnd changes to allow a release in the base module. ([#390](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/390)) ([148404e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/148404e50997c87e869df3a5e401db31b2dcdc6d))
+* **video-player:** bufferQueue has been abandoned error message ([03c78cd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/03c78cd681c616628aa7e50ce8a4d8e16bfe81fb))
+* **Video:** Added additional logs and rearranged destroy methods ([#393](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/393)) ([fde9712](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fde9712e27de809bc8849782b95044502ac93983))
+
 # [9.1.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.2...v9.1.0) (2023-06-13)
 
 
