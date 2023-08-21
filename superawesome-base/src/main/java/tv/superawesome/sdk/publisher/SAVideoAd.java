@@ -238,7 +238,8 @@ public class SAVideoAd {
                         // find out the real valid
                         boolean isValid = response.isValid();
                         SAAd first = isValid ? response.ads.get(0) : null;
-                        isValid = first != null && first.creative.details.media.isDownloaded;
+                        isValid = first != null
+                                && (first.creative.details.media.isDownloaded || first.isVpaid);
 
                         // put the correct value
                         if (isValid) {
