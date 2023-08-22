@@ -50,6 +50,7 @@ import tv.superawesome.sdk.publisher.common.components.XmlParserType
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.UrlFileItem
 import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.network.datasources.OkHttpNetworkDataSource
@@ -206,8 +207,14 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     ) }
     single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(
         get(),
-        FileWrapper(File(androidContext().cacheDir, "omsdk-v1.js")),
-        androidContext().resources.openRawResource(R.raw.omsdk_v1),
+        FileWrapper(
+            File(
+                androidContext().cacheDir,
+                UrlFileItem(
+                    "https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js").fileName
+                ),
+            ),
+            androidContext().resources.openRawResource(R.raw.omsdk_v1),
     ) }
     single<OpenMeasurementJSInjectorType> { OpenMeasurementJSInjector(get(), get()) }
     single<OpenMeasurementContextFactoryType> { OpenMeasurementContextFactory(get()) }

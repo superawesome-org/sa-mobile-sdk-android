@@ -54,8 +54,6 @@ internal class OkHttpNetworkDataSource(
 
             val urlFileItem = UrlFileItem(url)
             val downloadedFile = File(destDirectory, urlFileItem.fileName)
-
-
             val sink = downloadedFile.sink().buffer()
             sink.writeAll(response.body!!.source())
             withContext(Dispatchers.IO) {

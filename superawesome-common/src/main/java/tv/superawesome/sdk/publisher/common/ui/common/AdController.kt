@@ -72,7 +72,7 @@ internal interface AdControllerType {
     }
 }
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal class AdController(
     private val adRepository: AdRepositoryType,
     private val eventRepository: EventRepositoryType,
@@ -458,6 +458,6 @@ internal class AdController(
     }
 
     companion object {
-        private const val ONE_WEEK_MILLIS = 604800000L
+        private const val ONE_WEEK_MILLIS = 604_800_000L
     }
 }
