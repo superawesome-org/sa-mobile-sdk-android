@@ -22,6 +22,7 @@ import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.PerformanceTimer
 import tv.superawesome.sdk.publisher.common.network.DataResult
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloader
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepositoryType
@@ -78,7 +79,8 @@ internal class AdController(
     private val performanceRepository: PerformanceRepositoryType,
     private val logger: Logger,
     private val adStore: AdStoreType,
-    private val timeProvider: TimeProviderType
+    private val timeProvider: TimeProviderType,
+    private val jsDownloader: OpenMeasurementJSDownloader,
 ) : AdControllerType {
     override var config: Config = Config()
     override var closed: Boolean = false
@@ -88,6 +90,7 @@ internal class AdController(
     override val shouldShowPadlock: Boolean
         get() = currentAdResponse?.shouldShowPadlock() ?: false
 
+    private var updatedJSTime = 0L
     private val closeButtonPressedTimer = PerformanceTimer()
     private val dwellTimeTimer = PerformanceTimer()
     private val loadTimeTimer = PerformanceTimer()
@@ -355,6 +358,8 @@ internal class AdController(
     override fun load(placementId: Int, request: AdRequest) {
         logger.info("load($placementId) thread:${Thread.currentThread()}")
 
+        updateOMJSIfNeeded()
+
         if (hasAdAvailable(placementId)) {
             adAlreadyLoaded(placementId)
             return
@@ -372,6 +377,8 @@ internal class AdController(
 
     override fun load(placementId: Int, lineItemId: Int, creativeId: Int, request: AdRequest) {
         logger.info("load($placementId, $lineItemId, $creativeId) thread:${Thread.currentThread()}")
+
+        updateOMJSIfNeeded()
 
         if (hasAdAvailable(placementId)) {
             adAlreadyLoaded(placementId)
@@ -421,6 +428,13 @@ internal class AdController(
         adStore.clear()
     }
 
+    private fun updateOMJSIfNeeded() {
+        if (updatedJSTime <= timeProvider.millis() ) {
+            updatedJSTime = timeProvider.millis() + ONE_WEEK_MILLIS
+            jsDownloader.downloadJS()
+        }
+    }
+
     private fun onSuccess(response: AdResponse) {
         if (response.ad.creative.format == CreativeFormatType.Video &&
             response.ad.creative.details.tag == null &&
@@ -441,5 +455,9 @@ internal class AdController(
     private fun onFailure(placementId: Int, error: Throwable) {
         logger.error("onFailure for $placementId", error)
         delegate?.onEvent(placementId, SAEvent.adFailedToLoad)
+    }
+
+    companion object {
+        private const val ONE_WEEK_MILLIS = 604800000L
     }
 }

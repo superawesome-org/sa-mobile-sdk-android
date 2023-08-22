@@ -58,7 +58,6 @@ import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
 import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivator
-import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivatorType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactory
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactory
@@ -79,11 +78,6 @@ import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
 import tv.superawesome.sdk.publisher.common.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
-import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivator
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactory
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactory
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactoryType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloader
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloaderType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjector
@@ -98,7 +92,8 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerControll
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerController
 import tv.superawesome.sdk.publisher.common.utilities.FileWrapper
 import java.io.File
-import java.util.*
+import java.util.Locale
+import java.util.Calendar
 
 @OptIn(ExperimentalSerializationApi::class)
 @Suppress("LongMethod")

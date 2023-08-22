@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.common.openmeasurement
 
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.extensions.readAllBytesLegacy
 import tv.superawesome.sdk.publisher.common.utilities.FileWrapper
 import java.io.IOException
 import java.io.InputStream
@@ -24,8 +25,7 @@ internal class OpenMeasurementJSLoader(
                 String(jsFile.readBytes())
             } else {
                 jsInputStream.use { inputStream ->
-                    val bytes = ByteArray(inputStream.available())
-                    return String(bytes)
+                    return String(inputStream.readAllBytesLegacy())
                 }
             }
         } catch (error: OutOfMemoryError) {
