@@ -124,7 +124,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         )
     }
 
-    factory<AdControllerType> { AdController(get(), get(), get(), get(), get(), get()) }
+    factory<AdControllerType> { AdController(get(), get(), get(), get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
     factory { BumperPage() }
     factory<ViewableDetectorType> { ViewableDetector(get()) }

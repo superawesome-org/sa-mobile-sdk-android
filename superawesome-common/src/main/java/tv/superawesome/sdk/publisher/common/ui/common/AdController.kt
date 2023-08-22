@@ -22,7 +22,7 @@ import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.PerformanceTimer
 import tv.superawesome.sdk.publisher.common.network.DataResult
-import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloader
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloaderType
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.PerformanceRepositoryType
@@ -80,7 +80,7 @@ internal class AdController(
     private val logger: Logger,
     private val adStore: AdStoreType,
     private val timeProvider: TimeProviderType,
-    private val jsDownloader: OpenMeasurementJSDownloader,
+    private val jsDownloader: OpenMeasurementJSDownloaderType,
 ) : AdControllerType {
     override var config: Config = Config()
     override var closed: Boolean = false
