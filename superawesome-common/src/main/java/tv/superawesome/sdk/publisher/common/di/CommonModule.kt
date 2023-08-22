@@ -57,6 +57,12 @@ import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDat
 import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
+import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivator
+import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivatorType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactory
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactory
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactoryType
 import tv.superawesome.sdk.publisher.common.repositories.AdRepository
 import tv.superawesome.sdk.publisher.common.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.EventRepository
