@@ -60,7 +60,7 @@ references:
   download_android_versioning_plugin: &download_android_versioning_plugin
     run:
       name: Download Plugin for versioning in fastlane
-      command: bundle exec fastlane add_plugin android_versioning_kts
+      command: sudo bundle exec fastlane add_plugin android_versioning_kts
 
   fix_android_version_name: &fix_android_version_name
     run:
