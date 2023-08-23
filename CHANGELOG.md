@@ -1,3 +1,10 @@
+## [9.1.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.1...v9.1.2) (2023-08-23)
+
+
+### Bug Fixes
+
+* **vpaid:** not loading VPAID ads when supplying creativeId and lineItemId ([3d5e495](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3d5e49552ed610e67ede40aa3e24f5fa03bff097))
+
 ## [9.1.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.0...v9.1.1) (2023-08-17)
 
 
