@@ -60,7 +60,7 @@ references:
   download_android_versioning_plugin: &download_android_versioning_plugin
     run:
       name: Download Plugin for versioning in fastlane
-      command: bundle exec fastlane add_plugin android_versioning_kts
+      command: sudo bundle exec fastlane add_plugin android_versioning_kts
 
   fix_android_version_name: &fix_android_version_name
     run:
@@ -101,7 +101,7 @@ jobs:
       - *set_keylist_android
       - run:
           name: Run unit tests for superawesome_base
-          command: bundle exec fastlane run_all_tests module:superawesome-base
+          command: sudo bundle exec fastlane run_all_tests module:superawesome-base
       - run:
           name: Copy test results to temp folder
           command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
@@ -120,7 +120,7 @@ jobs:
       - *set_keylist_android
       - run:
           name: Run unit tests for superawesome_common
-          command: bundle exec fastlane run_all_tests module:superawesome-common
+          command: sudo bundle exec fastlane run_all_tests module:superawesome-common
       - run:
           name: Copy test results to temp folder
           command: find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
@@ -216,7 +216,7 @@ jobs:
       - *set_keylist_android
       - run:
           name: Push Superawesome-All to the S3 Repo
-          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
+          command: sudo bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
       - run:
           name: Update Release page in docs
           command: |
@@ -269,7 +269,7 @@ jobs:
       - *set_keylist_android
       - run:
           name: Push Superawesome-Base to the S3 Repo
-          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
+          command: sudo bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
 
   sdk_push_superawesome_common:
     <<: *android_config
@@ -283,7 +283,7 @@ jobs:
       - *set_keylist_android
       - run:
           name: Push Superawesome-Base to the S3 Repo
-          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
+          command: sudo bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
 
   sdk_push_superawesome_admob:
     <<: *android_config
@@ -297,7 +297,7 @@ jobs:
       - *set_keylist_android
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
-          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
+          command: sudo bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
 
   sdk_push_superawesome_unity:
     <<: *android_config
@@ -311,7 +311,7 @@ jobs:
       - *set_keylist_android
       - run:
           name: Push Superawesome-Unity to the S3 Repo
-          command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
+          command: sudo bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
 
   sdk_update_android_demo_app:
     <<: *android_config
@@ -350,7 +350,7 @@ jobs:
           command: |
             export GIT_LOG_TEST=`git log --since="24 hours ago"`
             if [ ! -z "$GIT_LOG_TEST" ]; then
-              SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
+              SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK sudo bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
               echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
               source $BASH_ENV
               git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git
