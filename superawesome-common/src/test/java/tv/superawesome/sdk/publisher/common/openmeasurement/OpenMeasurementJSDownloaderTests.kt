@@ -41,7 +41,7 @@ class OpenMeasurementJSDownloaderTests {
     }
 
     @Test
-    fun`downloadJS saves a file to disk if network request was unsuccessful`() = runTest {
+    fun`downloadJS logs an error if the network request was unsuccessful`() = runTest {
         // given
         val exception = IOException("something")
         val result = DataResult.Failure(exception)
