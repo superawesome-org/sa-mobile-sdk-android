@@ -2,8 +2,8 @@ version: 2.1
 references:
   android_config: &android_config
     docker:
-      - image: cimg/android:2023.06
-    resource_class: medium
+      - image: cimg/android:2023.08.1-browsers
+    resource_class: medium+
     environment:
       FL_OUTPUT_DIR: output
       TERM: dumb
@@ -60,7 +60,7 @@ references:
   download_android_versioning_plugin: &download_android_versioning_plugin
     run:
       name: Download Plugin for versioning in fastlane
-      command: bundle exec fastlane add_plugin android_versioning_kts
+      command: sudo bundle exec fastlane add_plugin android_versioning_kts
 
   fix_android_version_name: &fix_android_version_name
     run:
