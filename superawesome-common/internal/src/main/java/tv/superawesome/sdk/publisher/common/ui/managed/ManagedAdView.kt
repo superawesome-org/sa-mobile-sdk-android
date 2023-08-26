@@ -13,7 +13,8 @@ import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
-import org.koin.java.KoinJavaComponent
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.TimeProviderType
@@ -34,12 +35,12 @@ public class ManagedAdView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr), KoinComponent {
 
-    internal val controller: AdControllerType by KoinJavaComponent.inject(AdControllerType::class.java)
-    private val imageProvider: ImageProviderType by KoinJavaComponent.inject(ImageProviderType::class.java)
-    private val timeProvider: TimeProviderType by KoinJavaComponent.inject(TimeProviderType::class.java)
-    private val logger: Logger by KoinJavaComponent.inject(Logger::class.java)
+    internal val controller: AdControllerType by inject()
+    private val imageProvider: ImageProviderType by inject()
+    private val timeProvider: TimeProviderType by inject()
+    private val logger: Logger by inject()
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null

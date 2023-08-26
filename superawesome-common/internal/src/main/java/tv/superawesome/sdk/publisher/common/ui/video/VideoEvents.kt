@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
-import org.koin.java.KoinJavaComponent.get
-import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
@@ -19,12 +20,12 @@ import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayer
 public class VideoEvents(
     private val adResponse: AdResponse,
     private val eventRepository: EventRepositoryType
-) {
+) : KoinComponent {
     interface Listener {
         fun hasBeenVisible()
     }
 
-    private val vastEventRepository: VastEventRepositoryType by inject(VastEventRepositoryType::class.java) {
+    private val vastEventRepository: VastEventRepositoryType by inject {
         parametersOf(adResponse.vast)
     }
 
@@ -74,7 +75,7 @@ public class VideoEvents(
         if (time >= 2000 && !is2SHandled) {
             is2SHandled = true
             viewableDetector?.cancel()
-            viewableDetector = get(ViewableDetectorType::class.java)
+            viewableDetector = get()
             if (videoPlayer is ViewGroup) {
                 viewableDetector?.start(videoPlayer, VIDEO_MAX_TICK_COUNT) {
                     scope.launch { eventRepository.viewableImpression(adResponse) }

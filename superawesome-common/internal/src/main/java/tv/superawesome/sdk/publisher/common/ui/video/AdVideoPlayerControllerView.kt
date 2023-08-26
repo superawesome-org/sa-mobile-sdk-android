@@ -9,16 +9,21 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerControllerView
 import java.util.concurrent.TimeUnit
 
 @Suppress("TooManyFunctions")
-internal class AdVideoPlayerControllerView
-@JvmOverloads
-constructor(context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    RelativeLayout(context, attrs, defStyleAttr), IVideoPlayerControllerView {
-    private val videoComponentFactory: VideoComponentFactory by inject(VideoComponentFactory::class.java)
+internal class AdVideoPlayerControllerView @JvmOverloads constructor(
+    context: Context?,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : RelativeLayout(context, attrs, defStyleAttr),
+    IVideoPlayerControllerView,
+    KoinComponent {
+
+    private val videoComponentFactory: VideoComponentFactory by inject()
 
     // mask, chronograph & the "show more" button
     private var chronoBg: ImageView
