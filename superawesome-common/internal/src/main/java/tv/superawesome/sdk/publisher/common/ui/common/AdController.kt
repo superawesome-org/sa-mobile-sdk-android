@@ -9,8 +9,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.parameter.parametersOf
-import org.koin.java.KoinJavaComponent.get
 import tv.superawesome.sdk.publisher.common.components.AdStoreType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.TimeProviderType
@@ -36,7 +37,7 @@ class AdController(
     private val logger: Logger,
     private val adStore: AdStoreType,
     private val timeProvider: TimeProviderType
-) : AdControllerType {
+) : AdControllerType, KoinComponent {
     override var config: Config = Config()
     override var closed: Boolean = false
     override var currentAdResponse: AdResponse? = null
@@ -128,7 +129,7 @@ class AdController(
     private fun showParentalGateIfNeeded(context: Context, completion: () -> Unit) {
         if (config.isParentalGateEnabled) {
             parentalGate?.stop()
-            parentalGate = get(ParentalGate::class.java)
+            parentalGate = get()
             parentalGate?.run {
                 newQuestion()
                 listener = object : ParentalGate.Listener {
@@ -208,7 +209,7 @@ class AdController(
             videoListener?.didRequestVideoPause()
             adPaused()
             bumperPage?.stop()
-            bumperPage = get(BumperPage::class.java)
+            bumperPage = get()
             bumperPage?.onFinish = {
                 navigateToUrl(url, context)
             }
@@ -252,10 +253,9 @@ class AdController(
 
     private fun triggerVastClickEvents() {
         val vast = currentAdResponse?.vast ?: return
-        val vastEventRepository: VastEventRepositoryType = get(
-            clazz = VastEventRepositoryType::class.java,
-            parameters = { parametersOf(vast) }
-        )
+        val vastEventRepository: VastEventRepositoryType = get {
+            parametersOf(vast)
+        }
 
         scope.launch {
             vastEventRepository.clickTracking()

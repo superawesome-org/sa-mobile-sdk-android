@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.android.ext.android.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.NumberGeneratorType
@@ -23,9 +23,9 @@ import tv.superawesome.sdk.publisher.common.ui.common.Config
  */
 open class FullScreenActivity : Activity() {
 
-    internal val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
-    internal val logger: Logger by inject(Logger::class.java)
-    internal val numberGenerator: NumberGeneratorType by inject(NumberGeneratorType::class.java)
+    internal val imageProvider: ImageProviderType by inject()
+    internal val logger: Logger by inject()
+    internal val numberGenerator: NumberGeneratorType by inject()
 
     internal lateinit var parentLayout: RelativeLayout
     internal lateinit var closeButton: ImageButton
