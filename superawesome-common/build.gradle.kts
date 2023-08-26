@@ -28,9 +28,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.koin.android)
-    implementation(libs.retrofit)
-    implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.retrofit.serialization.converter)
     debugImplementation(libs.chucker.debug)
     releaseImplementation(libs.chucker.release)
 
@@ -42,11 +39,4 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation(libs.mockwebserver)
-
-    // UI Testing
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.core.ktx)
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(libs.androidx.test.espresso.intents)
 }

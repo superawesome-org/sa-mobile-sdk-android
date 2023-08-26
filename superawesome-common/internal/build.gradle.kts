@@ -26,20 +26,4 @@ dependencies {
     implementation(libs.retrofit.serialization.converter)
     debugImplementation(libs.chucker.debug)
     releaseImplementation(libs.chucker.release)
-
-    // Unit Testing
-    testImplementation(libs.junit4)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.core)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit"))
-    testImplementation(libs.mockwebserver)
-
-    // UI Testing
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.core.ktx)
-    androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestImplementation(libs.androidx.test.espresso.intents)
 }
