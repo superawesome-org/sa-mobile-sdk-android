@@ -40,13 +40,10 @@ public class CustomWebView @JvmOverloads constructor(
         isHorizontalScrollBarEnabled = false
         scrollBarStyle = SCROLLBARS_OUTSIDE_OVERLAY
         isFocusableInTouchMode = false
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            settings.mediaPlaybackRequiresUserGesture = false
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setWebContentsDebuggingEnabled(true)
-        }
+        settings.mediaPlaybackRequiresUserGesture = false
         settings.javaScriptEnabled = true
+        setWebContentsDebuggingEnabled(true)
+
         webViewClient = object : WebViewClient() {
             override fun onReceivedError(
                 view: WebView?,
