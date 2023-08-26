@@ -9,14 +9,15 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 
 @Suppress("MagicNumber")
-class VideoComponentFactory {
+class VideoComponentFactory : KoinComponent {
 
-    private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
+    private val imageProvider: ImageProviderType by inject()
 
     private val bgCreator: ComponentCreator<ImageView> = ComponentCreator { id, context ->
         val scale: Float = VideoUtils.getScale(context)

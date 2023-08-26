@@ -11,7 +11,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.components.TimeProviderType
@@ -34,17 +35,17 @@ public class InternalBannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), AdView {
+) : FrameLayout(context, attrs, defStyleAttr), AdView, KoinComponent {
 
-    internal val controller: AdControllerType by inject(AdControllerType::class.java)
-    private val imageProvider: ImageProviderType by inject(ImageProviderType::class.java)
-    private val logger: Logger by inject(Logger::class.java)
-    private val timeProvider: TimeProviderType by inject(TimeProviderType::class.java)
+    internal val controller: AdControllerType by inject()
+    private val imageProvider: ImageProviderType by inject()
+    private val logger: Logger by inject()
+    private val timeProvider: TimeProviderType by inject()
+    private val viewableDetector: ViewableDetectorType by inject()
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
-    private val viewableDetector: ViewableDetectorType by inject(ViewableDetectorType::class.java)
     private var hasBeenVisible: VoidBlock? = null
 
     init {
