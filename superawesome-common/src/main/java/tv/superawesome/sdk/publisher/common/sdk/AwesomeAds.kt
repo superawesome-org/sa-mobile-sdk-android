@@ -6,8 +6,9 @@ import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 import tv.superawesome.sdk.publisher.common.di.createCommonModule
+import tv.superawesome.sdk.publisher.common.models.DefaultConfiguration
 import tv.superawesome.sdk.publisher.common.models.Configuration
-import tv.superawesome.sdk.publisher.common.models.QueryAdditionalOptions
+import tv.superawesome.sdk.publisher.common.components.QueryAdditionalOptions
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurementModule
 
@@ -15,7 +16,7 @@ import tv.superawesome.sdk.publisher.common.openmeasurement.SAOpenMeasurementMod
  * The AwesomeAds Publisher SDK (Software Development Kit) enables you to add COPPA-compliant
  * banner, interstitial, and video advertisements easily to your apps.
  */
-object AwesomeAds {
+public object AwesomeAds {
     private var app: KoinApplication? = null
 
     /**
@@ -25,9 +26,9 @@ object AwesomeAds {
      * @param logging Enable or disable logs
      * */
     @JvmStatic
-    fun init(applicationContext: Context, logging: Boolean) {
+    public fun init(applicationContext: Context, logging: Boolean) {
         if (app == null) {
-            app = buildKoinApplication(applicationContext, Configuration(logging = logging))
+            app = buildKoinApplication(applicationContext, DefaultConfiguration(logging = logging))
         }
     }
 
@@ -38,7 +39,7 @@ object AwesomeAds {
      * @param configuration additional AwesomeAds configurations.
      * */
     @JvmStatic
-    fun init(applicationContext: Context, configuration: Configuration) {
+    public fun init(applicationContext: Context, configuration: Configuration) {
         if (app == null) {
             app = buildKoinApplication(applicationContext, configuration)
         }
@@ -53,7 +54,7 @@ object AwesomeAds {
      * form of key-value pairs. This information is sent when events are fired from the SDK.
      */
     @JvmStatic
-    fun init(
+    public fun init(
         applicationContext: Context,
         configuration: Configuration,
         options: Map<String, Any>,
@@ -70,13 +71,13 @@ object AwesomeAds {
      * @return SDK info or `null` if the SDK is not initialised
      */
     @JvmStatic
-    fun info(): SdkInfoType? = app?.koin?.get()
+    public fun info(): SdkInfoType? = app?.koin?.get()
 
     private fun buildKoinApplication(
         applicationContext: Context,
         configuration: Configuration,
     ): KoinApplication {
-        if (configuration.environment != Environment.Production) {
+        if (configuration.environment == Environment.Production) {
             SAOpenMeasurementModule.activate(applicationContext)
         }
         return startKoin {

@@ -5,7 +5,7 @@ package tv.superawesome.sdk.publisher.common.models
  *
  * @property value name of the platform.
  */
-enum class Platform(val value: String) {
+public enum class Platform(public val value: String) {
     /**
      * Android platform.
      */

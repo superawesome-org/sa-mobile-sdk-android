@@ -10,6 +10,7 @@ import androidx.annotation.VisibleForTesting
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.components.Logger
 import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Orientation
 import tv.superawesome.sdk.publisher.common.models.SAEvent
@@ -17,6 +18,7 @@ import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.managed.ManagedAdActivity
 import java.io.File
+import java.io.IOException
 
 /**
  * Video ads are full-screen ads that cover the interface of their host app.
@@ -90,14 +92,15 @@ public object SAVideoAd {
         } else {
 
             if (adResponse?.filePath == null) {
-                getDelegate()?.onEvent(placementId, SAEvent.adFailedToShow)
+                controller.delegate?.onEvent(placementId, SAEvent.adFailedToShow)
                 return
             }
 
             try {
-                Uri.fromFile(File(adResponse.filePath))
+                val stringPath = adResponse.filePath ?: throw IOException()
+                Uri.fromFile(File(stringPath))
             } catch (error: Exception) {
-                getDelegate()?.onEvent(placementId, SAEvent.adFailedToShow)
+                controller.delegate?.onEvent(placementId, SAEvent.adFailedToShow)
                 return
             }
 
@@ -347,7 +350,7 @@ public object SAVideoAd {
      * @param mute `true` to mute the video, `false` otherwise.
      */
     @JvmStatic
-    fun setMuteOnStart(mute: Boolean) {
+    public fun setMuteOnStart(mute: Boolean) {
         controller.config.shouldMuteOnStart = mute
     }
 
@@ -355,7 +358,7 @@ public object SAVideoAd {
      * Makes the video muted on start.
      */
     @JvmStatic
-    fun enableMuteOnStart() {
+    public fun enableMuteOnStart() {
         setMuteOnStart(true)
     }
 
@@ -363,7 +366,7 @@ public object SAVideoAd {
      * Makes the video un-muted on start.
      */
     @JvmStatic
-    fun disableMuteOnStart() {
+    public fun disableMuteOnStart() {
         setMuteOnStart(false)
     }
 
@@ -396,14 +399,14 @@ public object SAVideoAd {
         }
 
         val playbackMethod = if (controller.config.shouldMuteOnStart) {
-            AdRequest.PlaybackSoundOffScreen
+            DefaultAdRequest.PlaybackSoundOffScreen
         } else {
-            AdRequest.PlaybackSoundOffScreen
+            DefaultAdRequest.PlaybackSoundOffScreen
         }
 
 
-        return AdRequest(
-            test = isTestEnabled(),
+        return DefaultAdRequest(
+            test = controller.config.testEnabled,
             pos = AdRequest.Position.FullScreen.value,
             skip = skip,
             playbackMethod = playbackMethod,
@@ -414,10 +417,6 @@ public object SAVideoAd {
             options = options,
         )
     }
-
-    private fun isTestEnabled(): Boolean = controller.config.testEnabled
-
-    internal fun getDelegate(): SAInterface? = controller.delegate
 
     @VisibleForTesting
     @JvmStatic

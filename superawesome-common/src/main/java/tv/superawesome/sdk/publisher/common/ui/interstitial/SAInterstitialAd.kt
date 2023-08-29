@@ -8,6 +8,7 @@ import android.view.View
 import androidx.annotation.VisibleForTesting
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.common.models.AdRequest
+import tv.superawesome.sdk.publisher.common.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.Orientation
@@ -248,7 +249,7 @@ public object SAInterstitialAd {
      * Method that enables the close button to display with a delay.
      */
     @JvmStatic
-    fun enableCloseButton() {
+    public fun enableCloseButton() {
         controller.config.closeButtonState = CloseButtonState.VisibleWithDelay
     }
 
@@ -265,26 +266,18 @@ public object SAInterstitialAd {
             height = 0
         }
 
-        return AdRequest(
-            test = isTestEnabled(),
+        return DefaultAdRequest(
+            test = controller.config.testEnabled,
             pos = AdRequest.Position.FullScreen.value,
             skip = AdRequest.Skip.Yes.value,
-            playbackMethod = AdRequest.PlaybackSoundOnScreen,
+            playbackMethod = DefaultAdRequest.PlaybackSoundOnScreen,
             startDelay = AdRequest.StartDelay.PreRoll.value,
             install = AdRequest.FullScreen.On.value,
             w = width,
             h = height,
-            options = options
+            options = options,
         )
     }
-
-    internal fun isTestEnabled(): Boolean = controller.config.testEnabled
-
-    internal fun isBumperPageEnabled(): Boolean = controller.config.isBumperPageEnabled
-
-    internal fun isParentalGateEnabled(): Boolean = controller.config.isParentalGateEnabled
-
-    internal fun getDelegate(): SAInterface? = controller.delegate
 
     @VisibleForTesting
     @JvmStatic

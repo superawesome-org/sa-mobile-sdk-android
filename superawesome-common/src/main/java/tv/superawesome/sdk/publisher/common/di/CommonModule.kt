@@ -1,17 +1,9 @@
 package tv.superawesome.sdk.publisher.common.di
 
 import android.content.res.Resources
-import com.chuckerteam.chucker.api.ChuckerCollector
-import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import retrofit2.Retrofit
 import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.common.components.AdProcessor
 import tv.superawesome.sdk.publisher.common.components.AdProcessorType
@@ -48,16 +40,11 @@ import tv.superawesome.sdk.publisher.common.components.VastParserType
 import tv.superawesome.sdk.publisher.common.components.XmlParser
 import tv.superawesome.sdk.publisher.common.components.XmlParserType
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
-import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
 import tv.superawesome.sdk.publisher.common.models.UrlFileItem
 import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.network.datasources.OkHttpNetworkDataSource
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSource
-import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
-import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
-import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
 import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivator
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactory
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
@@ -76,6 +63,7 @@ import tv.superawesome.sdk.publisher.common.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.common.ui.common.AdController
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
+import tv.superawesome.sdk.publisher.common.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.common.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
@@ -97,8 +85,11 @@ import java.util.Locale
 import java.util.Calendar
 
 @OptIn(ExperimentalSerializationApi::class)
-@Suppress("LongMethod")
+@Suppress("LongMethod", "UndocumentedPublicFunction")
+@JvmSynthetic
 internal fun createCommonModule(environment: Environment, loggingEnabled: Boolean) = module {
+    includes(networkModule(environment.baseUrl))
+
     single { environment }
     single { Locale.getDefault() }
     single { Resources.getSystem().displayMetrics }
@@ -127,7 +118,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
 
     factory<AdControllerType> { AdController(get(), get(), get(), get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
-    factory { BumperPage() }
+    factory<BumperPage> { DefaultBumperPage() }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
@@ -150,47 +141,6 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<PerformanceRepositoryType> { PerformanceRepository(get()) }
 
     single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get()) }
-    single { HeaderInterceptor(get()) }
-    single { RetryInterceptor(maxRetries = 5, get()) }
-    single {
-        val retryInterceptor: RetryInterceptor = get()
-        val headerInterceptor: HeaderInterceptor = get()
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        OkHttpClient().newBuilder()
-            .addNetworkInterceptor(retryInterceptor)
-            .addInterceptor(headerInterceptor)
-            .addInterceptor(
-                ChuckerInterceptor.Builder(androidContext())
-                    .collector(ChuckerCollector(androidContext()))
-                    .maxContentLength(length = 250_000L)
-                    .redactHeaders(emptySet())
-                    .alwaysReadResponseBody(false)
-                    .build()
-            )
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
-    }
-    single {
-        Json {
-            allowStructuredMapKeys = true
-            ignoreUnknownKeys = true
-        }
-    }
-    single {
-        val json: Json = get()
-        Retrofit.Builder()
-            .baseUrl(environment.baseUrl)
-            .client(get())
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .build()
-    }
-    single {
-        val retrofit: Retrofit = get()
-        retrofit.create(AwesomeAdsApi::class.java)
-    }
-    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get()) }
 
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> { AdProcessor(get(), get(), get(), get(), androidContext().cacheDir) }

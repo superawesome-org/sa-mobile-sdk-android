@@ -13,7 +13,11 @@ comments:
   CommentOverPrivateProperty:
     active: false
   UndocumentedPublicProperty:
-    excludes: ['**/design/**']
+    excludes: ['**/design/**', '**/internal/**']
+  UndocumentedPublicClass:
+    excludes: ['**/internal/**']
+  UndocumentedPublicFunction:
+    excludes: ['**/internal/**']
 
 style:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
@@ -33,6 +37,8 @@ style:
     active: false
   ReturnCount:
     excludeGuardClauses: true
+  RedundantVisibilityModifierRule:
+    excludes: [ '**/api/**', '**/superawesome-common/src/**']
 
 potential-bugs:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
