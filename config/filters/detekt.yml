@@ -38,7 +38,7 @@ style:
   ReturnCount:
     excludeGuardClauses: true
   RedundantVisibilityModifierRule:
-    excludes: [ '**/api/**']
+    excludes: [ '**/api/**', '**/superawesome-common/src/**']
 
 potential-bugs:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]

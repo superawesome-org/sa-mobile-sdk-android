@@ -55,7 +55,6 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
     }
 
     override fun initChildUI() {
-        // controller.delegate = SAVideoAd.getDelegate()
         controller.videoListener = this
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
         val params = RelativeLayout.LayoutParams(size, size)
