@@ -28,7 +28,7 @@ object Constants {
     val defaultEnvironment = Environment.Production
 
     @JvmField
-    val defaultStartDelay = tv.superawesome.sdk.publisher.common.models.AdRequest.StartDelay.PreRoll
+    val defaultStartDelay = AdRequest.StartDelay.PreRoll
 
     @JvmField
     val backgroundColorGray = Color.rgb(224, 224, 224)
