@@ -50,6 +50,7 @@ import tv.superawesome.sdk.publisher.common.components.XmlParserType
 import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.UrlFileItem
 import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.network.Environment
 import tv.superawesome.sdk.publisher.common.network.datasources.OkHttpNetworkDataSource
@@ -58,7 +59,6 @@ import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.interceptors.HeaderInterceptor
 import tv.superawesome.sdk.publisher.common.network.interceptors.RetryInterceptor
 import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivator
-import tv.superawesome.sdk.publisher.common.openmeasurement.OmidActivatorType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactory
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdSessionFactoryType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementContextFactory
@@ -79,6 +79,8 @@ import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
 import tv.superawesome.sdk.publisher.common.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.common.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloader
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSDownloaderType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjector
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjectorType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSLoader
@@ -89,7 +91,10 @@ import tv.superawesome.sdk.publisher.common.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.common.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.common.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.common.ui.video.player.VideoPlayerController
-import java.util.*
+import tv.superawesome.sdk.publisher.common.utilities.FileWrapper
+import java.io.File
+import java.util.Locale
+import java.util.Calendar
 
 @OptIn(ExperimentalSerializationApi::class)
 @Suppress("LongMethod")
@@ -120,7 +125,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         )
     }
 
-    factory<AdControllerType> { AdController(get(), get(), get(), get(), get(), get()) }
+    factory<AdControllerType> { AdController(get(), get(), get(), get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
     factory { BumperPage() }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
@@ -185,25 +190,37 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         val retrofit: Retrofit = get()
         retrofit.create(AwesomeAdsApi::class.java)
     }
-    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get(), get()) }
+    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get()) }
 
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
-    single<AdProcessorType> { AdProcessor(get(), get(), get(), get()) }
+    single<AdProcessorType> { AdProcessor(get(), get(), get(), get(), androidContext().cacheDir) }
     single<ImageProviderType> { ImageProvider() }
     single<Logger> { DefaultLogger(loggingEnabled) }
     single<AdStoreType> { AdStore() }
 
     // Open Measurement
-    single<OpenMeasurementJSLoaderType> {
-        OpenMeasurementJSLoader(
-            get(),
+    single<OpenMeasurementJSDownloaderType> { OpenMeasurementJSDownloader(
+        get(),
+        get(),
+        "https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js",
+        androidContext().cacheDir,
+    ) }
+    single<OpenMeasurementJSLoaderType> { OpenMeasurementJSLoader(
+        get(),
+        FileWrapper(
+            File(
+                androidContext().cacheDir,
+                UrlFileItem(
+                    "https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js").fileName
+                ),
+            ),
             androidContext().resources.openRawResource(R.raw.omsdk_v1),
-        )
-    }
-    single<OmidActivatorType> { OmidActivator(androidContext()) }
+    ) }
     single<OpenMeasurementJSInjectorType> { OpenMeasurementJSInjector(get(), get()) }
     single<OpenMeasurementContextFactoryType> { OpenMeasurementContextFactory(get()) }
-    single<OpenMeasurementAdSessionFactoryType> { OpenMeasurementAdSessionFactory(get(), get(), get()) }
+    single<OpenMeasurementAdSessionFactoryType> {
+        OpenMeasurementAdSessionFactory(OmidActivator(androidContext()), get(), get())
+    }
     factory<OpenMeasurementSessionManagerType> { OpenMeasurementSessionManager(get(), get(), get()) }
 
     // Vast

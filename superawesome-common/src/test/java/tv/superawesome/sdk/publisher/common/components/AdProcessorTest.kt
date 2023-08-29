@@ -19,6 +19,7 @@ import tv.superawesome.sdk.publisher.common.testutil.FakeFactory.exampleUrl
 import tv.superawesome.sdk.publisher.common.testutil.FakeFactory.exampleVastUrl
 import tv.superawesome.sdk.publisher.common.testutil.FakeFactory.makeFakeAd
 import tv.superawesome.sdk.publisher.common.testutil.FakeFactory.makeVastAd
+import java.io.File
 import kotlin.test.assertTrue
 
 internal class AdProcessorTest {
@@ -35,12 +36,21 @@ internal class AdProcessorTest {
     @MockK
     private lateinit var encoder: EncoderType
 
+    @MockK
+    private lateinit var destDirectory: File
+
     private lateinit var adProcessor: AdProcessor
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        adProcessor = AdProcessor(htmlFormatter, vastParser, networkDataSource, encoder)
+        adProcessor = AdProcessor(
+            htmlFormatter,
+            vastParser,
+            networkDataSource,
+            encoder,
+            destDirectory,
+        )
         coEvery { encoder.encodeUrlParamsFromObject(any()) } returns exampleParamString
     }
 
@@ -92,7 +102,7 @@ internal class AdProcessorTest {
     @Test
     fun `ensure video processes correctly`() = runBlocking {
         // Given
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(exampleVastUrl)
+        coEvery { networkDataSource.downloadFile(any(), any()) } returns DataResult.Success(exampleVastUrl)
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success("")
         coEvery { vastParser.parse(any()) } returns makeVastAd(exampleUrl)
 
@@ -107,7 +117,7 @@ internal class AdProcessorTest {
     @Test
     fun `video with no url returns failure`() = runBlocking {
         // Given
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(exampleVastUrl)
+        coEvery { networkDataSource.downloadFile(any(), any()) } returns DataResult.Success(exampleVastUrl)
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success("")
         coEvery { vastParser.parse(any()) } returns makeVastAd(null)
 
@@ -140,7 +150,7 @@ internal class AdProcessorTest {
         val passedVastAd = makeVastAd()
         val filePath = "filePath"
 
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(filePath)
+        coEvery { networkDataSource.downloadFile(any(), any()) } returns DataResult.Success(filePath)
         coEvery { networkDataSource.getData(any()) } returns DataResult.Success(filePath)
 
         coEvery { vastParser.parse(any()) } returns passedVastAd
@@ -162,7 +172,7 @@ internal class AdProcessorTest {
         val firstVast = makeVastAd(type = VastType.Wrapper, redDirect = redirectUrl)
         val redirectVast = makeVastAd(type = VastType.Wrapper, redDirect = null)
 
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success("filePath")
+        coEvery { networkDataSource.downloadFile(any(), any()) } returns DataResult.Success("filePath")
 
         coEvery { networkDataSource.getData(firstAdUrl) } returns DataResult.Success(firstAdUrl)
         coEvery { networkDataSource.getData(redirectUrl) } returns DataResult.Success(redirectUrl)
@@ -189,7 +199,7 @@ internal class AdProcessorTest {
         val firstVast = makeVastAd(type = VastType.InLine, redDirect = redirectUrl)
         val redirectVast = makeVastAd(type = VastType.Wrapper, redDirect = null)
 
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success("filePath")
+        coEvery { networkDataSource.downloadFile(any(), any()) } returns DataResult.Success("filePath")
 
         coEvery { networkDataSource.getData(firstAdUrl) } returns DataResult.Success(firstAdUrl)
         coEvery { networkDataSource.getData(redirectUrl) } returns DataResult.Success(redirectUrl)

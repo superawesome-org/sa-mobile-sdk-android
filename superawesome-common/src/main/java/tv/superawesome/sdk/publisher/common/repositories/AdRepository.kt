@@ -15,19 +15,20 @@ internal interface AdRepositoryType {
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-        request: AdRequest
+        request: AdRequest,
     ): DataResult<AdResponse>
 }
 
 internal class AdRepository(
     private val dataSource: AwesomeAdsApiDataSourceType,
     private val adQueryMaker: AdQueryMakerType,
-    private val adProcessor: AdProcessorType
+    private val adProcessor: AdProcessorType,
 ) : AdRepositoryType {
     override suspend fun getAd(placementId: Int, request: AdRequest): DataResult<AdResponse> =
         withContext(Dispatchers.IO) {
             when (val result = dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request))) {
-                is DataResult.Success -> adProcessor.process(placementId, result.value, request.options)
+                is DataResult.Success ->
+                    adProcessor.process(placementId, result.value, request.options)
                 is DataResult.Failure -> result
             }
         }
@@ -36,11 +37,15 @@ internal class AdRepository(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-        request: AdRequest
+        request: AdRequest,
     ): DataResult<AdResponse> = withContext(Dispatchers.IO) {
         when (
-            val result =
-                dataSource.getAd(placementId, lineItemId, creativeId, adQueryMaker.makeAdQuery(request))
+            val result = dataSource.getAd(
+                placementId,
+                lineItemId,
+                creativeId,
+                adQueryMaker.makeAdQuery(request),
+            )
         ) {
             is DataResult.Success -> adProcessor.process(placementId, result.value, request.options)
             is DataResult.Failure -> result

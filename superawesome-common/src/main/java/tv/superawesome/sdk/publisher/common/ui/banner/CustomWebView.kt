@@ -13,6 +13,8 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import org.koin.java.KoinJavaComponent
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementJSInjectorType
 
 @SuppressLint("SetJavaScriptEnabled")
 internal class CustomWebView @JvmOverloads constructor(
@@ -25,6 +27,9 @@ internal class CustomWebView @JvmOverloads constructor(
         fun webViewOnError()
         fun webViewOnClick(url: String)
     }
+
+    internal val omJSInjector: OpenMeasurementJSInjectorType by
+        KoinJavaComponent.inject(OpenMeasurementJSInjectorType::class.java)
 
     var listener: Listener? = null
 
@@ -124,10 +129,18 @@ internal class CustomWebView @JvmOverloads constructor(
         Log.i("WebView", "WebView destroy()")
     }
 
-    @Suppress("MaxLineLength")
     public fun loadHTML(base: String, html: String) {
         val baseHtml =
-            "<html><header><script type='text/javascript' src='https://aa-sdk.s3.eu-west-1.amazonaws.com/omsdk/omsdk-v1.js'></script><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></header><body>$html</body></html>"
-        loadDataWithBaseURL(base, baseHtml, "text/html", "UTF-8", null)
+            "<html><head><meta name='viewport' content='width=device-width'/><style>html, body, " +
+                    "div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }" +
+                    "</style></head><body>$html</body></html>"
+        val injectedHtml = omJSInjector.injectJS(baseHtml)
+        loadDataWithBaseURL(
+            base,
+            injectedHtml,
+            "text/html",
+            "UTF-8",
+            null,
+        )
     }
 }

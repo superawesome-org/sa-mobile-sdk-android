@@ -5,7 +5,7 @@ import tv.superawesome.sdk.publisher.common.base.BaseTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-internal class StringExtensionsKtTest : BaseTest() {
+internal class StringExtensionsTests : BaseTest() {
 
     @Test
     fun test_toMD5() {

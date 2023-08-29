@@ -7,6 +7,7 @@ import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Test
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.utilities.FileWrapper
 import java.io.IOException
 import java.io.InputStream
 import kotlin.test.assertEquals
@@ -16,15 +17,22 @@ class OpenMeasurementJSLoaderTests {
 
     private val logger = spyk<Logger>()
 
+    private val rawJSFile = "test js"
+    private val jsFile = mockk<FileWrapper>(relaxed = true).apply {
+        every { readBytes() } returns rawJSFile.toByteArray()
+    }
+
     @Test
-    fun `loadJSLibrary successfully returns the javascript`() {
+    fun `loadJSLibrary successfully returns the bundled javascript when the local JS file does not exist`() {
         // given
         val jsData = "<script>test</script>"
         val stubInputStream: InputStream = jsData.byteInputStream()
         val loader = OpenMeasurementJSLoader(
             logger = logger,
+            jsFile = jsFile,
             jsInputStream = stubInputStream,
         )
+        every { jsFile.exists() } returns false
 
         // when
         val result = loader.loadJSLibrary()
@@ -34,13 +42,34 @@ class OpenMeasurementJSLoaderTests {
     }
 
     @Test
-    fun `loadJSLibrary returns null and logs an string out of bounds error if no file exists`() {
+    fun `loadJSLibrary successfully returns the local javascript when the local JS file exists`() {
         // given
-        val stubInputStream: InputStream = "".byteInputStream()
+        val jsData = "<script>test</script>"
+        val stubInputStream: InputStream = jsData.byteInputStream()
         val loader = OpenMeasurementJSLoader(
             logger = logger,
+            jsFile = jsFile,
             jsInputStream = stubInputStream,
         )
+        every { jsFile.exists() } returns true
+
+        // when
+        val result = loader.loadJSLibrary()
+
+        // then
+        assertEquals(rawJSFile, result)
+    }
+
+    @Test
+    fun `loadJSLibrary returns null and logs an string out of bounds error if no file exists`() {
+        // given
+        val stubInputStream = mockk<InputStream>()
+        val loader = OpenMeasurementJSLoader(
+            logger = logger,
+            jsFile = jsFile,
+            jsInputStream = stubInputStream,
+        )
+        every { stubInputStream.read(any(), any(), any()) } throws StringIndexOutOfBoundsException()
 
         // when
         val result = loader.loadJSLibrary()
@@ -49,7 +78,7 @@ class OpenMeasurementJSLoaderTests {
         assertNull(result)
         verify {
             logger.error(
-                message = "Unable to load OMSDK JS from local storage",
+                message = "Unable to load OMSDK JS from local storage error: null",
                 error = ofType(StringIndexOutOfBoundsException::class),
             )
         }
@@ -60,9 +89,10 @@ class OpenMeasurementJSLoaderTests {
     fun `loadJSLibrary returns null and logs an IOException error if no file exists`() {
         // given
         val mockInputStream = mockk<InputStream>(relaxed = true)
-        every { mockInputStream.available() } throws IOException()
+        every { mockInputStream.read(any(), any(), any()) } throws IOException("Empty")
         val loader = OpenMeasurementJSLoader(
             logger = logger,
+            jsFile = jsFile,
             jsInputStream = mockInputStream,
         )
 
@@ -73,7 +103,7 @@ class OpenMeasurementJSLoaderTests {
         assertNull(result)
         verify {
             logger.error(
-                message = "Unable to load OMSDK JS from local storage",
+                message = "Unable to load OMSDK JS from local storage error: Empty",
                 error = ofType(IOException::class),
             )
         }

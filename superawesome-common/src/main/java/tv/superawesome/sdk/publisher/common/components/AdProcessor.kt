@@ -10,9 +10,14 @@ import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.common.models.VastAd
 import tv.superawesome.sdk.publisher.common.models.VastType
 import tv.superawesome.sdk.publisher.common.network.DataResult
+import java.io.File
 
 internal interface AdProcessorType {
-    suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse>
+    suspend fun process(
+        placementId: Int,
+        ad: Ad,
+        requestOptions: Map<String, Any>?,
+    ): DataResult<AdResponse>
 }
 
 internal class AdProcessor(
@@ -20,9 +25,14 @@ internal class AdProcessor(
     private val vastParser: VastParserType,
     private val networkDataSource: NetworkDataSourceType,
     private val encoder: EncoderType,
+    private val videoDestDirectory: File,
 ) : AdProcessorType {
     @Suppress("NestedBlockDepth", "ReturnCount")
-    override suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse> {
+    override suspend fun process(
+        placementId: Int,
+        ad: Ad,
+        requestOptions: Map<String, Any>?,
+    ): DataResult<AdResponse> {
         val response = AdResponse(placementId, ad, requestOptions)
 
         when (ad.creative.format) {
@@ -51,7 +61,8 @@ internal class AdProcessor(
                         response.vast = handleVast(url, null)
                         response.baseUrl = response.vast?.url?.baseUrl
                         response.vast?.url?.let {
-                            when (val downloadFileResult = networkDataSource.downloadFile(it)) {
+                            when (val downloadFileResult =
+                                networkDataSource.downloadFile(it, videoDestDirectory)) {
                                 is DataResult.Success -> response.filePath =
                                     downloadFileResult.value
                                 is DataResult.Failure -> return downloadFileResult
