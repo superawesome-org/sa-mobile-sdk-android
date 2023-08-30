@@ -1,4 +1,5 @@
 import buildlogic.Namespace
+import buildlogic.addTestDependencies
 
 plugins {
     id("ads.sdk.android.library")
@@ -26,4 +27,9 @@ dependencies {
     implementation(libs.retrofit.serialization.converter)
     debugImplementation(libs.chucker.debug)
     releaseImplementation(libs.chucker.release)
+
+    // Unit Testing
+    addTestDependencies(project)
+    testImplementation(libs.mockwebserver)
+    testImplementation(testFixtures(project(":superawesome-common:test-fixtures")))
 }

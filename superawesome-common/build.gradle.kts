@@ -1,4 +1,5 @@
 import buildlogic.Namespace
+import buildlogic.addTestDependencies
 
 plugins {
     id("ads.sdk.android.library")
@@ -32,11 +33,7 @@ dependencies {
     releaseImplementation(libs.chucker.release)
 
     // Unit Testing
-    testImplementation(libs.junit4)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.core)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit"))
+    addTestDependencies(project)
     testImplementation(libs.mockwebserver)
+    testImplementation(testFixtures(project(":superawesome-common:test-fixtures")))
 }
