@@ -57,7 +57,7 @@ internal class AdProcessorTest {
     @Test
     fun `ensure image with link processes correctly`() = runBlocking {
         // Given
-        coEvery { htmlFormatter.formatImageIntoHtml(any(), any()) } returns exampleHtml
+        coEvery { htmlFormatter.formatImageIntoHtml(any()) } returns exampleHtml
 
         // When
         val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.ImageWithLink), null)
