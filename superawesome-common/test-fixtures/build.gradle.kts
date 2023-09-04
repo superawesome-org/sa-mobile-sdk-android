@@ -7,4 +7,5 @@ plugins {
 dependencies {
     testFixturesImplementation(libs.junit4)
     testFixturesImplementation(libs.mockk)
+    testFixturesImplementation(libs.mockwebserver)
 }

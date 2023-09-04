@@ -28,5 +28,6 @@
   "line_item_id": 931,
   "test": false,
   "app": 1484,
-  "device": "web"
+  "device": "web",
+  "rnd": null
 }
