@@ -6,7 +6,7 @@ import tv.superawesome.sdk.publisher.common.components.Logger
 import java.net.SocketTimeoutException
 
 class RetryInterceptor(
-    private val maxRetries: Int = 5,
+    private val maxRetries: Int,
     private val logger: Logger
 ) :
     Interceptor {
