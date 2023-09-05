@@ -9,9 +9,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.internal.closeQuietly
 import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
 import tv.superawesome.sdk.publisher.common.models.Ad
@@ -32,9 +29,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.test.assertIs
 
 @OptIn(ExperimentalSerializationApi::class, ExperimentalCoroutinesApi::class)
-class AwesomeAdsApiDataSourceTest {
+class AwesomeAdsApiDataSourceTest : MockServerTest() {
 
-    private val mockServer = MockWebServer()
     private val client = OkHttpClient.Builder()
         .connectTimeout(1, TimeUnit.SECONDS)
         .readTimeout(1, TimeUnit.SECONDS)
@@ -55,16 +51,6 @@ class AwesomeAdsApiDataSourceTest {
 
 
     val sut = AwesomeAdsApiDataSource(api)
-
-    @Before
-    fun setup() {
-        mockServer.start()
-    }
-
-    @After
-    fun tearDown() {
-        mockServer.shutdown()
-    }
 
     @Test
     fun `when fetching ads it should return Success on 200`() = runTest {

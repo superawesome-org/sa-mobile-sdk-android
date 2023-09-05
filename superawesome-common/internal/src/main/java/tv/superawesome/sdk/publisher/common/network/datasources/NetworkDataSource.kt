@@ -38,7 +38,9 @@ class OkHttpNetworkDataSource(
         val request = Request.Builder().url(url).build()
         val response = client.newCall(request).execute()
         return if (response.isSuccessful) {
-            DataResult.Success(response.body?.string() ?: "")
+            // Safe to assume that body is non-null since it's
+            // from a Response returned from `execute()`.
+            DataResult.Success(response.body!!.string())
         } else {
             DataResult.Failure(Error("Could not GET data from $url"))
         }
