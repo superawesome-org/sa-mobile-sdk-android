@@ -26,6 +26,7 @@ import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
 import tv.superawesome.sdk.publisher.common.models.VoidBlock
 import tv.superawesome.sdk.publisher.common.openmeasurement.FriendlyObstructionType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdType
 import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
 import tv.superawesome.sdk.publisher.common.ui.AdView
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
@@ -201,7 +202,7 @@ public class InternalBannerView @JvmOverloads constructor(
 
         currentWebViewWrapper?.let { webView ->
             padlockButton?.let {
-                currentWebViewWrapper?.removeView(it)
+                webView.removeView(it)
                 padlockButton = null
             }
 
@@ -253,7 +254,7 @@ public class InternalBannerView @JvmOverloads constructor(
         currentWebViewWrapper?.let { webViewWrapper ->
             webViewWrapper.setListener(object : CustomWebView.Listener {
                 override fun webViewOnStart() {
-                    omSessionManager.setup(webViewWrapper.webView)
+                    omSessionManager.setup(webViewWrapper.webView, OpenMeasurementAdType.HTMLDisplay)
                     addSafeAdToOM()
                     controller.adShown()
                     omSessionManager.start()

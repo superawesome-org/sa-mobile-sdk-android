@@ -12,7 +12,6 @@ import java.lang.IllegalStateException
  */
 class OpenMeasurementSessionManager(
     private val sessionFactory: OpenMeasurementAdSessionFactoryType,
-    private val jsInjector: OpenMeasurementJSInjectorType,
     private val logger: Logger,
 ): OpenMeasurementSessionManagerType {
 
@@ -21,12 +20,20 @@ class OpenMeasurementSessionManager(
 
     // Private
 
-    private fun createSession(webView: WebView) {
+    private fun createSession(webView: WebView, adType: OpenMeasurementAdType) {
         try {
-            adSession = sessionFactory.getHtmlAdSession(
-                webView,
-                null,
-            )
+            adSession = when(adType) {
+                OpenMeasurementAdType.HTMLDisplay -> sessionFactory.getHtmlAdSession(
+                    webView,
+                    null,
+                )
+                OpenMeasurementAdType.HTMLVideo -> sessionFactory.getHtmlVideoAdSession(
+                    webView,
+                    null,
+                )
+                OpenMeasurementAdType.Video ->
+                    throw IllegalArgumentException("Video type not yet implemented") // AASDK-473, to be replaced
+            }
         } catch (error: IllegalArgumentException) {
             logAdSessionCreateError(error)
             return
@@ -87,8 +94,8 @@ class OpenMeasurementSessionManager(
      * Builds the ad session.
      * @param webView The web view containing the ad.
      */
-    override fun setup(webView: WebView) {
-        createSession(webView)
+    override fun setup(webView: WebView, adType: OpenMeasurementAdType) {
+        createSession(webView, adType)
     }
 
     /**
@@ -120,13 +127,6 @@ class OpenMeasurementSessionManager(
         }
         adSession?.registerAdView(view)
     }
-
-    /**
-     * Injects the OMID JS into the ad html.
-     * @param html The html string for the ad.
-     * @return The html for the ad with the OMID js if injection was successful.
-     */
-    override fun injectJS(html: String): String = jsInjector.injectJS(html)
 
     /**
      * Adds a view to the friendly obstruction list in the ad session,

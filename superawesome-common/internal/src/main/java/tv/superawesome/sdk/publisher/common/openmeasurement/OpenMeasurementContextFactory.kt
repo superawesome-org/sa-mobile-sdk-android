@@ -28,7 +28,8 @@ class OpenMeasurementContextFactory(
     ): AdSessionContext? =
         try {
             when (adType) {
-                OpenMeasurementAdType.HTMLDisplay -> AdSessionContext.createHtmlAdSessionContext(
+                OpenMeasurementAdType.HTMLDisplay,
+                OpenMeasurementAdType.HTMLVideo -> AdSessionContext.createHtmlAdSessionContext(
                     partner,
                     adView,
                     adView.url,

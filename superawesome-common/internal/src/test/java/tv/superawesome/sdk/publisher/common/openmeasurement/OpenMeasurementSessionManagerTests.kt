@@ -27,12 +27,9 @@ class OpenMeasurementSessionManagerTests {
     private val session = spyk<AdSession>()
     private val adEvents = mockk<AdEvents>(relaxed = true)
     private val sessionFactory = spyk<OpenMeasurementAdSessionFactoryType>()
-    private val jsInjector = spyk<OpenMeasurementJSInjectorType>() {
-        every { injectJS(any()) } returns "<html>some js</html>"
-    }
+
     private val manager = OpenMeasurementSessionManager(
         sessionFactory = sessionFactory,
-        jsInjector = jsInjector,
         logger = logger,
     )
 
@@ -249,20 +246,6 @@ class OpenMeasurementSessionManagerTests {
         verify(exactly = 0) { session.registerAdView(null) }
         confirmVerified(logger)
         confirmVerified(session)
-    }
-
-    @Test
-    fun `injectJS correctly injects JS into HTML`() {
-        // given
-        val htmlString = "<html></html>"
-
-        // when
-        val result = manager.injectJS(htmlString)
-
-        // then
-        assertNotNull(result)
-        verify(exactly = 1) { jsInjector.injectJS(htmlString) }
-        confirmVerified(jsInjector)
     }
 
     @Test

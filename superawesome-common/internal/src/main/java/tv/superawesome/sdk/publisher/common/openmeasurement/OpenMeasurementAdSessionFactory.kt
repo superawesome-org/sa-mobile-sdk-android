@@ -28,24 +28,39 @@ class OpenMeasurementAdSessionFactory(
         customReferenceData: String?,
     ): AdSession {
         omidActivator.activate()
-        val adSessionConfiguration: AdSessionConfiguration = createSessionConfig()
+        val adSessionConfiguration: AdSessionConfiguration = createHTMLSessionConfig()
+        return getSession(webView, adSessionConfiguration, customReferenceData)
+    }
+
+    override fun getHtmlVideoAdSession(
+        webView: WebView,
+        customReferenceData: String?,
+    ): AdSession {
+        val adSessionConfiguration: AdSessionConfiguration = createSessionConfigForVideo()
+        return getSession(webView, adSessionConfiguration, customReferenceData)
+    }
+
+    private fun getSession(
+        adView: WebView,
+        adSessionConfiguration: AdSessionConfiguration,
+        customReferenceData: String?,
+    ): AdSession {
         val partner: Partner = createPartner()
         val adSessionContext = contextBuilder.sessionContext(
-            webView,
+            adView,
             OpenMeasurementAdType.HTMLDisplay,
             partner,
             customReferenceData,
         )
-
         val adSession: AdSession = AdSession.createAdSession(
             adSessionConfiguration,
             adSessionContext,
         )
-        adSession.registerAdView(webView)
+        adSession.registerAdView(adView)
         return adSession
     }
 
-    private fun createSessionConfig(): AdSessionConfiguration =
+    private fun createHTMLSessionConfig(): AdSessionConfiguration =
         AdSessionConfiguration.createAdSessionConfiguration(
             CreativeType.HTML_DISPLAY,
             ImpressionType.BEGIN_TO_RENDER,
@@ -54,10 +69,17 @@ class OpenMeasurementAdSessionFactory(
             false,
         )
 
+    private fun createSessionConfigForVideo(): AdSessionConfiguration =
+        AdSessionConfiguration.createAdSessionConfiguration(
+            CreativeType.DEFINED_BY_JAVASCRIPT,
+            ImpressionType.DEFINED_BY_JAVASCRIPT,
+            Owner.JAVASCRIPT,
+            Owner.JAVASCRIPT,
+            false,
+        )
+
     private fun createPartner(): Partner =
         Partner.createPartner(PARTNER_NAME, sdkInfo.versionNumber)
-
-    companion object {
-        private const val PARTNER_NAME = "SuperAwesomeLtd"
-    }
 }
+
+internal const val PARTNER_NAME = "SuperAwesomeLtd"

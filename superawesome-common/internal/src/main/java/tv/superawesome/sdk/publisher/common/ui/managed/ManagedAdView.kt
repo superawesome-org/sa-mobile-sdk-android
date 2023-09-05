@@ -6,8 +6,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.FrameLayout
@@ -17,12 +20,18 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
 import tv.superawesome.sdk.publisher.common.components.Logger
+import tv.superawesome.sdk.publisher.common.components.SdkInfoType
 import tv.superawesome.sdk.publisher.common.components.TimeProviderType
 import tv.superawesome.sdk.publisher.common.extensions.toPx
 import tv.superawesome.sdk.publisher.common.models.CloseButtonState
 import tv.superawesome.sdk.publisher.common.models.Constants
 import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.common.openmeasurement.FriendlyObstructionType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementAdType
+import tv.superawesome.sdk.publisher.common.openmeasurement.OpenMeasurementSessionManagerType
+import tv.superawesome.sdk.publisher.common.openmeasurement.PARTNER_NAME
 import tv.superawesome.sdk.publisher.common.ui.banner.CustomWebView
+import tv.superawesome.sdk.publisher.common.ui.banner.WebViewWrapper
 import tv.superawesome.sdk.publisher.common.ui.common.AdControllerType
 import tv.superawesome.sdk.publisher.common.ui.common.Config
 
@@ -34,16 +43,18 @@ import tv.superawesome.sdk.publisher.common.ui.common.Config
 public class ManagedAdView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr), KoinComponent {
 
     internal val controller: AdControllerType by inject()
     private val imageProvider: ImageProviderType by inject()
+    private val sdkInfo: SdkInfoType by inject()
     private val timeProvider: TimeProviderType by inject()
+    private val omSessionManager: OpenMeasurementSessionManagerType by inject()
     private val logger: Logger by inject()
 
     private var placementId: Int = 0
-    private var webView: CustomWebView? = null
+    private var webViewWrapper: WebViewWrapper? = null
     private var padlockButton: ImageButton? = null
 
     init {
@@ -61,11 +72,83 @@ public class ManagedAdView @JvmOverloads constructor(
         logger.info("load($placementId)")
         this.placementId = placementId
         showPadlockIfNeeded()
+        webViewWrapper?.webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
+        webViewWrapper?.webView?.addJavascriptInterface(
+            AdViewJavaScriptBridge(listener, logger),
+            JS_BRIDGE_NAME,
+        )
 
-        webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
-        webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener, logger), JS_BRIDGE_NAME)
         val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
-        webView?.loadDataWithBaseURL(baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
+        val omUpdatedHTML = updatedHTML.replace(
+            "<html><header>",
+            "<html><header><script type='text/javascript'>" +
+                    "var sessionClient;\n" +
+                    "try {\n" +
+                    "  sessionClient = OmidSessionClient[$SESSION_CLIENT_VERSION];\n" +
+                    "} catch (e) {}\n" +
+                    "if (!sessionClient) {\n" +
+                    "  return;\n" +
+                    "}\n" +
+                    "const AdSession = sessionClient.AdSession;\n" +
+                    "const Partner = sessionClient.Partner;\n" +
+                    "const Context = sessionClient.Context;\n" +
+                    "const VerificationScriptResource = sessionClient.VerificationScriptResource;\n" +
+                    "const AdEvents = sessionClient.AdEvents;\n" +
+                    "const MediaEvents = sessionClient.MediaEvents;" +
+                    "var resources = [];\n" +
+
+                    // Update these with actual values
+                    "var vendorKey = \"123456\"; // parsed from \"vendor\" attribute\n" +
+                    "var params = \"\"; // parsed from VerificationParameters as a string\n" +
+                    "var url = \"http://www.google.com\"; // parsed from JavaScriptResource\n" +
+
+                    "var resource = new VerificationScriptResource(url, vendorKey, params);\n" +
+                    "resources.add(resource);\n" +
+                    "var partner = new Partner($PARTNER_NAME, ${sdkInfo.versionNumber});\n" +
+                    "var context = new Context(partner, resources);\n" +
+                    "var adSession = new AdSession(context);\n" +
+                    "// elementBounds is a rect {x, y, width, height} that indicates the" +
+                    " position of the video element\n" +
+                    "// inside the iframe.\n" +
+                    "adSession.setElementBounds(elementBounds)\n" +
+                    "const iframeElement = document.getElementById(\"result\");\n" +
+                    "context.setSlotElement(iframeElement);\n" +
+                    "adSession.setElementBounds(elementBounds)\n" +
+                    "const adEvents = new AdEvents(adSession);\n" +
+                    "const mediaEvents = new MediaEvents(adSession);\n" +
+                    "adSession.start()\n" +
+                    "adSession.registerSessionObserver((event) => {\n" +
+                    "  if (event.type === \"sessionStart\") {\n" +
+                    "    // setup code\n" +
+                    "    // Set the impression/creative type here.\n" +
+                    "    if (event.data.creativeType === 'definedByJavaScript') {\n" +
+                    "      adSession.setCreativeType('video');\n" +
+                    "    }\n" +
+                    "    if (event.data.impressionType === 'definedByJavaScript') {\n" +
+                    "      adSession.setImpressionType('beginToRender');\n" +
+                    "    }\n" +
+                    "    var skippable = false;\n" +
+                    "    var offsetForSkip = 0;\n" +
+                    "    var autoplay = true;\n" +
+                    "    var position = 0;\n" +
+                    "    // load event\n" +
+                    "    adEvents.loaded({\n" +
+                    "      isSkippable: skippable,\n" +
+                    "      skipOffset: offsetForSkip,\n" +
+                    "      isAutoPlay: autoplay,\n" +
+                    "      position: position\n" +
+                    "    });\n" +
+                    "    // other event code\n" +
+                    "    adEvents.impressionOccurred();\n" +
+                    "  }\n" +
+                    "  else if (event.type === \"sessionError\") {\n" +
+                    "    // handle error\n" +
+                    "  } else if (event.type === \"sessionFinish\") {\n" +
+                    "    // clean up\n" +
+                    "  }\n" +
+                    "});" +
+                    "</script>")
+        webViewWrapper?.webView?.loadHTML(baseUrl, omUpdatedHTML)
         controller.play(placementId)
     }
 
@@ -106,7 +189,8 @@ public class ManagedAdView @JvmOverloads constructor(
      * Closes the banner ad, remove any fragments, etc.
      */
     public fun close() {
-        removeWebView()
+        removeWebViewWithDelay()
+        omSessionManager.finish()
         controller.close()
         controller.videoListener = null
         controller.delegate = null
@@ -273,7 +357,7 @@ public class ManagedAdView @JvmOverloads constructor(
      * Plays the video.
      */
     fun playVideo() {
-        webView?.evaluateJavascript(
+        webViewWrapper?.webView?.evaluateJavascript(
             "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPlay'));",
             null,
         )
@@ -283,63 +367,91 @@ public class ManagedAdView @JvmOverloads constructor(
      * Pauses the video.
      */
     fun pauseVideo() {
-        webView?.evaluateJavascript(
+        webViewWrapper?.webView?.evaluateJavascript(
             "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));",
             null,
         )
     }
 
     private fun showPadlockIfNeeded() {
-        if (!controller.shouldShowPadlock || webView == null) return
+        if (!controller.shouldShowPadlock) return
 
-        val padlockButton = ImageButton(context)
-        padlockButton.setImageBitmap(imageProvider.padlockImage())
-        padlockButton.setBackgroundColor(Color.TRANSPARENT)
-        padlockButton.scaleType = ImageView.ScaleType.FIT_XY
-        padlockButton.setPadding(0, 2.toPx, 0, 0)
-        padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
+        webViewWrapper?.let { webView ->
+            padlockButton?.let {
+                webView.removeView(it)
+                padlockButton = null
+            }
 
-        padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
+            val padlockButton = ImageButton(context)
+            padlockButton.setImageBitmap(imageProvider.padlockImage())
+            padlockButton.setBackgroundColor(Color.TRANSPARENT)
+            padlockButton.scaleType = ImageView.ScaleType.FIT_XY
+            padlockButton.setPadding(0, 2.toPx, 0, 0)
+            padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
+            padlockButton.contentDescription = "Safe Ad Logo"
 
-        webView?.addView(padlockButton)
+            padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
 
-        this.padlockButton = padlockButton
+            webView.addView(padlockButton)
+
+            this.padlockButton = padlockButton
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun addWebView() {
-        removeWebView()
+        removeWebViewWithDelay()
 
-        val webView = CustomWebView(context)
-        webView.layoutParams = ViewGroup.LayoutParams(
+        val webViewWrapper = WebViewWrapper(context)
+        webViewWrapper.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        webView.setBackgroundColor(Color.TRANSPARENT)
-        webView.isVerticalScrollBarEnabled = false
-        webView.isHorizontalScrollBarEnabled = false
-        webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
-        webView.isFocusableInTouchMode = false
-        webView.settings.mediaPlaybackRequiresUserGesture = false
+        webViewWrapper.webView.setBackgroundColor(Color.TRANSPARENT)
+        webViewWrapper.webView.isVerticalScrollBarEnabled = false
+        webViewWrapper.webView.isHorizontalScrollBarEnabled = false
+        webViewWrapper.webView.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
+        webViewWrapper.webView.isFocusableInTouchMode = false
+        webViewWrapper.webView.settings.mediaPlaybackRequiresUserGesture = false
         WebView.setWebContentsDebuggingEnabled(true)
-        webView.settings.javaScriptEnabled = true
+        webViewWrapper.webView.settings.javaScriptEnabled = true
 
-        webView.listener = object : CustomWebView.Listener {
-            override fun webViewOnStart() = controller.triggerImpressionEvent(placementId)
+        webViewWrapper.webView.listener = object : CustomWebView.Listener {
+            override fun webViewOnStart() {
+                omSessionManager.setup(webViewWrapper.webView, OpenMeasurementAdType.HTMLVideo)
+                controller.triggerImpressionEvent(placementId)
+                addSafeAdToOM()
+                omSessionManager.start()
+            }
             override fun webViewOnError() = controller.adFailedToShow()
             override fun webViewOnClick(url: String) = controller.handleAdTap(url, context)
         }
 
-        addView(webView)
+        addView(webViewWrapper)
 
-        this.webView = webView
+        this.webViewWrapper = webViewWrapper
     }
 
-    private fun removeWebView() {
-        if (webView != null) {
-            webView?.destroy()
-            removeView(webView)
-            webView = null
+    private fun addSafeAdToOM() {
+        padlockButton?.let {
+            if (it.visibility == View.VISIBLE) {
+                omSessionManager.addFriendlyObstruction(
+                    view = it,
+                    purpose = FriendlyObstructionType.Other,
+                    reason = "SafeAdPadlock",
+                )
+            }
+        }
+    }
+
+    private fun removeWebViewWithDelay() {
+        if (webViewWrapper != null) {
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                webViewWrapper?.destroy()
+                removeView(webViewWrapper)
+                webViewWrapper = null
+            }, WEB_VIEW_REMOVAL_TIME)
         }
     }
 
@@ -347,8 +459,11 @@ public class ManagedAdView @JvmOverloads constructor(
         this.placementId = placementId
         delegate?.let { setListener(it) }
     }
+
+    companion object {
+        private const val WEB_VIEW_REMOVAL_TIME = 1000L
+        private const val SESSION_CLIENT_VERSION = "1.4.7"
+    }
 }
 
 private const val JS_BRIDGE_NAME = "SA_AD_JS_BRIDGE"
-private const val MIME_TYPE = ""
-private const val ENCODING = ""

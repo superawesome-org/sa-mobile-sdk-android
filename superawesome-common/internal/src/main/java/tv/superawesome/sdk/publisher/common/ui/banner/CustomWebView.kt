@@ -28,7 +28,7 @@ public class CustomWebView @JvmOverloads constructor(
         fun webViewOnClick(url: String)
     }
 
-    val omJSInjector: OpenMeasurementJSInjectorType by
+    private val omJSInjector: OpenMeasurementJSInjectorType by
         KoinJavaComponent.inject(OpenMeasurementJSInjectorType::class.java)
 
     var listener: Listener? = null
@@ -126,10 +126,18 @@ public class CustomWebView @JvmOverloads constructor(
         Log.i("WebView", "WebView destroy()")
     }
 
-    public fun loadHTML(base: String, html: String) {
+    public fun loadHTML(base: String?, html: String) {
+        val debugString = if (IS_DEBUG_OM_ENABLED) {
+            "<script type='text/javascript' src='https://aa-sdk.s3.eu-west-1.amazonaws.com" +
+                    "/omsdk/omid-validation-verification-script-v1.js'></script>"
+        } else {
+            ""
+        }
+
         val baseHtml =
-            "<html><head><meta name='viewport' content='width=device-width'/><style>html, body, " +
-                    "div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }" +
+            "<html><head>$debugString<meta name='viewport' content='width=device-width'/>" +
+                    "<style>html, body, div { margin: 0px; padding: 0px; } html, body " +
+                    "{ width: 100%; height: 100%; }" +
                     "</style></head><body>$html</body></html>"
         val injectedHtml = omJSInjector.injectJS(baseHtml)
         loadDataWithBaseURL(
@@ -139,5 +147,9 @@ public class CustomWebView @JvmOverloads constructor(
             "UTF-8",
             null,
         )
+    }
+
+    companion object {
+        private const val IS_DEBUG_OM_ENABLED = false
     }
 }

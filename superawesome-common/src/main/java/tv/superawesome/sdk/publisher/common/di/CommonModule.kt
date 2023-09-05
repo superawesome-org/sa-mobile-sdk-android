@@ -171,7 +171,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<OpenMeasurementAdSessionFactoryType> {
         OpenMeasurementAdSessionFactory(OmidActivator(androidContext()), get(), get())
     }
-    factory<OpenMeasurementSessionManagerType> { OpenMeasurementSessionManager(get(), get(), get()) }
+    factory<OpenMeasurementSessionManagerType> { OpenMeasurementSessionManager(get(), get()) }
 
     // Vast
     single<VastParserType> { VastParser(get(), get()) }

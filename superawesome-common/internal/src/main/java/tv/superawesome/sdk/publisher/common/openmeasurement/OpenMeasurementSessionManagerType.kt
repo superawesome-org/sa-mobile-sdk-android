@@ -9,11 +9,10 @@ import android.webkit.WebView
 
 interface OpenMeasurementSessionManagerType {
 
-    fun setup(webView: WebView)
+    fun setup(webView: WebView, adType: OpenMeasurementAdType)
     fun start()
     fun finish()
     fun setAdView(view: View?)
-    fun injectJS(html: String): String
     fun addFriendlyObstruction(
         view: View,
         purpose: FriendlyObstructionType,

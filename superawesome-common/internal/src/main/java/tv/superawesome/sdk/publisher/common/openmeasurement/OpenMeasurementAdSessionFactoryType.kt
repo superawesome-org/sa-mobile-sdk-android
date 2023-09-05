@@ -10,5 +10,10 @@ interface OpenMeasurementAdSessionFactoryType {
     fun getHtmlAdSession(
         webView: WebView,
         customReferenceData: String?,
-    ): AdSession?
+    ): AdSession
+
+    fun getHtmlVideoAdSession(
+        webView: WebView,
+        customReferenceData: String?,
+    ): AdSession
 }
