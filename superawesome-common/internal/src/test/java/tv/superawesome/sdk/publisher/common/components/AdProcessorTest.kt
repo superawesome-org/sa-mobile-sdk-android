@@ -159,8 +159,8 @@ internal class AdProcessorTest {
         val redirectUrl = "www.second.com"
         val ad = makeFakeAd(CreativeFormatType.Video, vastUrl = firstAdUrl)
 
-        val firstVast = makeVastAd(type = VastType.Wrapper, redDirect = redirectUrl)
-        val redirectVast = makeVastAd(type = VastType.Wrapper, redDirect = null)
+        val firstVast = makeVastAd(type = VastType.Wrapper, redirect = redirectUrl)
+        val redirectVast = makeVastAd(type = VastType.Wrapper, redirect = null)
 
         coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success("filePath")
 
@@ -186,8 +186,8 @@ internal class AdProcessorTest {
         val redirectUrl = "www.second.com"
         val ad = makeFakeAd(CreativeFormatType.Video, vastUrl = firstAdUrl)
 
-        val firstVast = makeVastAd(type = VastType.InLine, redDirect = redirectUrl)
-        val redirectVast = makeVastAd(type = VastType.Wrapper, redDirect = null)
+        val firstVast = makeVastAd(type = VastType.InLine, redirect = redirectUrl)
+        val redirectVast = makeVastAd(type = VastType.Wrapper, redirect = null)
 
         coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success("filePath")
 

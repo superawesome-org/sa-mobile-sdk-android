@@ -1,187 +1,159 @@
 package tv.superawesome.sdk.publisher.common.repositories
 
-import io.mockk.coEvery
-import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.mockk.mockk
-import io.mockk.slot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.MockResponse
 import org.junit.Test
-import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
-import tv.superawesome.sdk.publisher.common.models.*
+import retrofit2.Retrofit
+import tv.superawesome.sdk.publisher.common.models.AdResponse
+import tv.superawesome.sdk.publisher.common.models.EventData
+import tv.superawesome.sdk.publisher.common.models.EventType
+import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.DataResult
+import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSource
+import tv.superawesome.sdk.publisher.common.network.datasources.MockServerTest
+import tv.superawesome.sdk.publisher.common.testutil.FakeAdQueryMaker
+import tv.superawesome.sdk.publisher.common.testutil.decodeDataParams
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
-@OptIn(ExperimentalCoroutinesApi::class)
-internal class EventRepositoryTest : BaseTest() {
-    @MockK
-    lateinit var adDataSourceType: AwesomeAdsApiDataSourceType
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalSerializationApi::class)
+class EventRepositoryTest : MockServerTest() {
 
-    @MockK
-    lateinit var adQueryMakerType: AdQueryMakerType
+    private val client = OkHttpClient.Builder()
+        .connectTimeout(100, TimeUnit.MILLISECONDS)
+        .readTimeout(100, TimeUnit.MILLISECONDS)
+        .writeTimeout(100, TimeUnit.MILLISECONDS)
+        .build()
 
-    @InjectMockKs
-    lateinit var repository: EventRepository
+    private val json = Json {
+        allowStructuredMapKeys = true
+        ignoreUnknownKeys = true
+    }
+
+    private val api = Retrofit.Builder()
+        .baseUrl(mockServer.url("/"))
+        .client(client)
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .build()
+        .create(AwesomeAdsApi::class.java)
+
+    private val sut = EventRepository(
+        dataSource = AwesomeAdsApiDataSource(api),
+        adQueryMaker = FakeAdQueryMaker(),
+    )
 
     @Test
-    fun test_impression_success() = runTest {
+    fun `when sending impression, it should return the request result`() = runTest {
         // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.impression(any()) } returns DataResult.Success(Unit)
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+        val expected = listOf("impression")
 
         // When
-        val result = repository.impression(adResponse)
+        val result = sut.impression(fakeAdResponse())
 
         // Then
-        assertEquals(true, result.isSuccess)
+        val request = mockServer.takeRequest()
+        val endpoint = request.requestUrl?.pathSegments
+        val type = request.requestUrl?.queryParameter("type")
+
+        assertEquals("impressionDownloaded", type)
+        assertEquals(expected, endpoint)
+        assertIs<DataResult.Success<Unit>>(result)
     }
 
     @Test
-    fun test_click_success() = runTest {
+    fun `when sending click, it should return the request result`() = runTest {
         // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.click(any()) } returns DataResult.Success(Unit)
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+        val expected = listOf("click")
 
         // When
-        val result = repository.click(adResponse)
+        val result = sut.click(fakeAdResponse())
 
         // Then
-        assertEquals(true, result.isSuccess)
+        val endpoint = mockServer.takeRequest().requestUrl?.pathSegments
+
+        assertEquals(expected, endpoint)
+        assertIs<DataResult.Success<Unit>>(result)
     }
 
     @Test
-    fun test_videoClick_success() = runTest {
+    fun `when sending video click, it should return the request result`() = runTest {
         // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        coEvery { adQueryMakerType.makeAdQuery(any()) } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.videoClick(any()) } returns DataResult.Success(Unit)
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+        val expected = listOf("video", "click")
 
         // When
-        val result = repository.videoClick(adResponse)
+        val result = sut.videoClick(fakeAdResponse())
 
         // Then
-        assertEquals(true, result.isSuccess)
+        val endpoint = mockServer.takeRequest().requestUrl?.pathSegments
+
+        assertEquals(expected, endpoint)
+        assertIs<DataResult.Success<Unit>>(result)
     }
 
     @Test
-    fun test_parentalGateOpen_success() = runTest {
-        // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        val slot = slot<EventData>()
-        coEvery {
-            adQueryMakerType.makeEventQuery(any(), capture(slot))
-        } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.event(any()) } returns DataResult.Success(Unit)
-
-        // When
-        val result = repository.parentalGateOpen(adResponse)
-
-        // Then
-        assertEquals(EventType.ParentalGateOpen, slot.captured.type)
-        assertEquals(true, result.isSuccess)
+    fun `when sending parental gate open, it should return the request result`() = runTest {
+        testEvent(EventType.ParentalGateOpen) { sut.parentalGateOpen(fakeAdResponse()) }
     }
 
     @Test
-    fun test_parentalGateClose_success() = runTest {
-        // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        val slot = slot<EventData>()
-        coEvery {
-            adQueryMakerType.makeEventQuery(any(), capture(slot))
-        } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.event(any()) } returns DataResult.Success(Unit)
-
-        // When
-        val result = repository.parentalGateClose(adResponse)
-
-        // Then
-        assertEquals(EventType.ParentalGateClose, slot.captured.type)
-        assertEquals(true, result.isSuccess)
+    fun `when sending parental gate close, it should return the request result`() = runTest {
+        testEvent(EventType.ParentalGateClose) { sut.parentalGateClose(fakeAdResponse()) }
     }
 
     @Test
-    fun test_parentalGateSuccess_success() = runTest {
-        // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        val slot = slot<EventData>()
-        coEvery {
-            adQueryMakerType.makeEventQuery(any(), capture(slot))
-        } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.event(any()) } returns DataResult.Success(Unit)
-
-        // When
-        val result = repository.parentalGateSuccess(adResponse)
-
-        // Then
-        assertEquals(EventType.ParentalGateSuccess, slot.captured.type)
-        assertEquals(true, result.isSuccess)
+    fun `when sending parental gate success, it should return the request result`() = runTest {
+        testEvent(EventType.ParentalGateSuccess) { sut.parentalGateSuccess(fakeAdResponse()) }
     }
 
     @Test
-    fun test_parentalGateFail_success() = runTest {
-        // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        val slot = slot<EventData>()
-        coEvery {
-            adQueryMakerType.makeEventQuery(any(), capture(slot))
-        } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.event(any()) } returns DataResult.Success(Unit)
-
-        // When
-        val result = repository.parentalGateFail(adResponse)
-
-        // Then
-        assertEquals(EventType.ParentalGateFail, slot.captured.type)
-        assertEquals(true, result.isSuccess)
+    fun `when sending parental gate fail, it should return the request result`() = runTest {
+        testEvent(EventType.ParentalGateFail) { sut.parentalGateFail(fakeAdResponse()) }
     }
 
     @Test
-    fun test_viewableImpression_success() = runTest {
-        // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        val slot = slot<EventData>()
-        coEvery {
-            adQueryMakerType.makeEventQuery(any(), capture(slot))
-        } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.event(any()) } returns DataResult.Success(Unit)
-
-        // When
-        val result = repository.viewableImpression(adResponse)
-
-        // Then
-        assertEquals(EventType.ViewableImpression, slot.captured.type)
-        assertEquals(true, result.isSuccess)
+    fun `when sending viewable impression, it should return the request result`() = runTest {
+        testEvent(EventType.ViewableImpression) { sut.viewableImpression(fakeAdResponse()) }
     }
 
     @Test
-    fun test_oneSecondDwellTime_success() = runTest {
+    fun `when sending dwell time, it should return the request result`() = runTest {
+        testEvent(EventType.DwellTime) { sut.oneSecondDwellTime(fakeAdResponse()) }
+    }
+
+    private suspend fun <T : Any> testEvent(
+        eventType: EventType,
+        block: suspend () -> DataResult<T>,
+    ) {
         // Given
-        val ad = mockk<Ad>(relaxed = true)
-        val adResponse = AdResponse(1, ad)
-        val slot = slot<EventData>()
-        coEvery {
-            adQueryMakerType.makeEventQuery(any(), capture(slot))
-        } returns mockk(relaxed = true)
-        coEvery { adDataSourceType.event(any()) } returns DataResult.Success(Unit)
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+        val expected = listOf("event")
 
         // When
-        val result = repository.oneSecondDwellTime(adResponse)
+        val result = block()
 
         // Then
-        assertEquals(EventType.DwellTime, slot.captured.type)
-        assertEquals(true, result.isSuccess)
+        val requestUrl = mockServer.takeRequest().requestUrl
+        val endpoint = requestUrl?.pathSegments
+        val eventData = decodeDataParams<EventData>(requestUrl?.queryParameter("data"))
+
+        assertEquals(expected, endpoint)
+        assertEquals(eventType, eventData?.type)
+        assertIs<DataResult.Success<Unit>>(result)
     }
+
+    private fun fakeAdResponse() = AdResponse(
+        placementId = 1234,
+        ad = mockk(relaxed = true),
+    )
 }

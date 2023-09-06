@@ -1,161 +1,116 @@
 package tv.superawesome.sdk.publisher.common.repositories
 
-import io.mockk.*
-import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
+import android.content.Context
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
+import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.MockResponse
 import org.junit.Test
-import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.network.datasources.NetworkDataSourceType
-import tv.superawesome.sdk.publisher.common.models.*
-import tv.superawesome.sdk.publisher.common.network.DataResult
+import tv.superawesome.sdk.publisher.common.network.datasources.MockServerTest
+import tv.superawesome.sdk.publisher.common.network.datasources.OkHttpNetworkDataSource
 import tv.superawesome.sdk.publisher.common.testutil.FakeFactory
+import tv.superawesome.sdk.publisher.common.testutil.TestLogger
+import java.util.concurrent.TimeUnit
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
+import kotlin.test.fail
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class VastEventRepositoryTest : BaseTest() {
-    @MockK
-    lateinit var vastAd: VastAd
+class VastEventRepositoryTest : MockServerTest() {
 
-    @MockK
-    lateinit var dataSource: NetworkDataSourceType
+    private val client = OkHttpClient.Builder()
+        .connectTimeout(100, TimeUnit.MILLISECONDS)
+        .readTimeout(100, TimeUnit.MILLISECONDS)
+        .writeTimeout(100, TimeUnit.MILLISECONDS)
+        .build()
 
-    @InjectMockKs
-    lateinit var repository: VastEventRepository
+    private val context = mockk<Context>()
 
-    private val listOfUrls = listOf(
-        FakeFactory.exampleUrl, FakeFactory.exampleVastUrl
-    )
+    private val datasource = OkHttpNetworkDataSource(client, context, TestLogger())
 
-    @Before
-    fun setup() {
-        coEvery { dataSource.getData(any()) } returns DataResult.Success("")
+    private val vastAd = FakeFactory.makeVastAd(mockServer.url("vast").toString())
+
+    private val sut = VastEventRepository(vastAd, datasource)
+
+    @Test
+    fun `when sending complete events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.completeEvents) { sut.complete() }
     }
 
     @Test
-    fun test_clickThrough() = runTest {
-        // Given
-        every { vastAd.clickThroughUrl } returns FakeFactory.exampleUrl
-
-        // When
-        repository.clickThrough()
-
-        // Then
-        coVerify { dataSource.getData(FakeFactory.exampleUrl) }
+    fun `when sending start events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.startEvents) { sut.start() }
     }
 
-    private fun verifyDataSourceCalledForUrls() {
-        listOfUrls.forEach {
-            coVerify { dataSource.getData(it) }
+    @Test
+    fun `when sending first quartile events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.firstQuartileEvents) { sut.firstQuartile() }
+    }
+
+    @Test
+    fun `when sending midpoint events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.midPointEvents) { sut.midPoint() }
+    }
+
+    @Test
+    fun `when sending third quartile events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.thirdQuartileEvents) { sut.thirdQuartile() }
+    }
+
+    @Test
+    fun `when sending error events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.errorEvents) { sut.error() }
+    }
+
+    @Test
+    fun `when sending impression events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.impressionEvents) { sut.impression() }
+    }
+
+    @Test
+    fun `when sending click tracking events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.clickTrackingEvents) { sut.clickTracking() }
+    }
+
+    @Test
+    fun `when sending creative view events, all should be sent to the correct address`() = runTest {
+        testVastEvent(vastAd.creativeViewEvents) { sut.creativeView() }
+    }
+
+    @Test
+    fun `when sending click though event, it should be sent to the correct address`() = runTest {
+        val clickThroughUrl = vastAd.clickThroughUrl ?: fail()
+        testVastEvent(listOf(clickThroughUrl)) { sut.clickThrough() }
+    }
+
+    @Test
+    fun `when sending click though event, given it's null, then it should not be sent`() = runTest {
+        // Given
+        val vastAd = vastAd.copy(clickThroughUrl = null)
+        val newSut = VastEventRepository(vastAd, datasource)
+
+        // When
+        newSut.clickThrough()
+
+        // Then
+        val url = mockServer.takeRequest(timeout = 100L, unit = TimeUnit.MILLISECONDS)
+        assertNull(url)
+    }
+
+    private suspend fun testVastEvent(urls: List<String>, block: suspend () -> Unit) {
+        // Given
+        repeat(urls.size) {
+            mockServer.enqueue(MockResponse().setResponseCode(200))
         }
-    }
-
-    @Test
-    fun test_error() = runTest {
-        // Given
-        every { vastAd.errorEvents } returns listOfUrls
 
         // When
-        repository.error()
+        block()
 
         // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_impression() = runTest {
-        // Given
-        every { vastAd.impressionEvents } returns listOfUrls
-
-        // When
-        repository.impression()
-
-        // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_creativeView() = runTest {
-        // Given
-        every { vastAd.creativeViewEvents } returns listOfUrls
-
-        // When
-        repository.creativeView()
-
-        // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_start() = runTest {
-        // Given
-        every { vastAd.startEvents } returns listOfUrls
-
-        // When
-        repository.start()
-
-        // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_firstQuartile() = runTest {
-        // Given
-        every { vastAd.firstQuartileEvents } returns listOfUrls
-
-        // When
-        repository.firstQuartile()
-
-        // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_midPoint() = runTest {
-        // Given
-        every { vastAd.midPointEvents } returns listOfUrls
-
-        // When
-        repository.midPoint()
-
-        // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_thirdQuartile() = runTest {
-        // Given
-        every { vastAd.thirdQuartileEvents } returns listOfUrls
-
-        // When
-        repository.thirdQuartile()
-
-        // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_complete() = runTest {
-        // Given
-        every { vastAd.completeEvents } returns listOfUrls
-
-        // When
-        repository.complete()
-
-        // Then
-        verifyDataSourceCalledForUrls()
-    }
-
-    @Test
-    fun test_clickTracking() = runTest {
-        // Given
-        every { vastAd.clickTrackingEvents } returns listOfUrls
-
-        // When
-        repository.clickTracking()
-
-        // Then
-        verifyDataSourceCalledForUrls()
+        for (url in urls) {
+            val requestUrl = mockServer.takeRequest().requestUrl?.toString()
+            assertEquals(url, requestUrl)
+        }
     }
 }
