@@ -1,10 +1,9 @@
 package tv.superawesome.demoapp.settings
 
 import tv.superawesome.lib.sasession.defines.SAConfiguration
-import tv.superawesome.sdk.publisher.common.models.CloseButtonState
+import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 enum class Settings(val label: String) {
-    UseBaseModule("Use base module"),
     CloseButton("Close button"),
     BumperPage("Bumper page"),
     ParentalGate("Parental gate"),
@@ -14,11 +13,6 @@ enum class Settings(val label: String) {
     CloseAtEnd("Close at the end");
 
     fun options(): List<SettingsItemOption<Any>> = when (this) {
-        UseBaseModule -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.BaseEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.BaseDisable", false),
-        )
-
         CloseButton -> listOf(
             SettingsItemOption(
                 "No delay",
@@ -92,7 +86,6 @@ object DataStore {
 
     fun updateSettings(item: Settings, value: Any) {
         data = when (item) {
-            Settings.UseBaseModule -> data.copy(useBaseModule = value as Boolean)
             Settings.CloseButton -> data.copy(closeButtonState = value as CloseButtonState)
             Settings.BumperPage -> data.copy(bumperEnabled = value as Boolean)
             Settings.ParentalGate -> data.copy(parentalEnabled = value as Boolean)
@@ -108,7 +101,6 @@ object DataStore {
     }
 
     fun toList(): List<SettingsItem<Any>> = listOf(
-        SettingsItem(Settings.UseBaseModule, data.useBaseModule),
         SettingsItem(Settings.CloseButton, data.closeButtonState),
         SettingsItem(Settings.BumperPage, data.bumperEnabled),
         SettingsItem(Settings.ParentalGate, data.parentalEnabled),
