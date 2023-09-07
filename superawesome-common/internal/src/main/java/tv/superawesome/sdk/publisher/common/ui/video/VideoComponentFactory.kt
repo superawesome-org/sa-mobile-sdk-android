@@ -13,7 +13,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.common.components.ImageProviderType
-import tv.superawesome.sdk.publisher.common.extensions.toPx
 
 @Suppress("MagicNumber")
 class VideoComponentFactory : KoinComponent {
@@ -97,9 +96,9 @@ class VideoComponentFactory : KoinComponent {
             res.getDimensionPixelOffset(R.dimen.safe_ad_logo_bottom_inset),
         )
         view.layoutParams = ViewGroup.LayoutParams(
-            (res.getDimensionPixelOffset(R.dimen.safe_ad_logo_width)),
-            ((res.getDimensionPixelOffset(R.dimen.safe_ad_logo_height) +
-                    res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset))),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_width),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_height) +
+                    res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset),
         )
         view.setBackgroundColor(Color.TRANSPARENT)
         view.scaleType = ImageView.ScaleType.FIT_XY
