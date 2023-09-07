@@ -25,7 +25,7 @@ import com.superawesome.composeexample.models.FeatureItem
 import com.superawesome.composeexample.models.PlacementItem
 import com.superawesome.composeexample.ui.theme.SAMobileSDKAndroidTheme
 import com.superawesome.composeexample.views.FeaturesList
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
+import tv.superawesome.sdk.publisher.sdk.AwesomeAds
 
 class FeaturesActivity : ComponentActivity() {
 
