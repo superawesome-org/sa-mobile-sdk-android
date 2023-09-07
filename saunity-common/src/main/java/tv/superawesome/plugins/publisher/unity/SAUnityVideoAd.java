@@ -7,11 +7,11 @@ import org.json.JSONObject;
 
 import tv.superawesome.plugins.publisher.unity.util.OrientationExtensionsKt;
 import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
-import tv.superawesome.sdk.publisher.common.models.AdRequest;
-import tv.superawesome.sdk.publisher.common.models.CloseButtonState;
-import tv.superawesome.sdk.publisher.common.models.Orientation;
-import tv.superawesome.sdk.publisher.common.models.SAEvent;
-import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd;
+import tv.superawesome.sdk.publisher.models.AdRequest;
+import tv.superawesome.sdk.publisher.models.CloseButtonState;
+import tv.superawesome.sdk.publisher.models.Orientation;
+import tv.superawesome.sdk.publisher.models.SAEvent;
+import tv.superawesome.sdk.publisher.ui.video.SAVideoAd;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity

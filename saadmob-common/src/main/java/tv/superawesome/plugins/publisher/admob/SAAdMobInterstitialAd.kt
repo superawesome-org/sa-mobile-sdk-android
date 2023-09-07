@@ -5,9 +5,9 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback
 import com.google.android.gms.ads.mediation.MediationInterstitialAd
 import com.google.android.gms.ads.mediation.MediationInterstitialAdCallback
 import com.google.android.gms.ads.mediation.MediationInterstitialAdConfiguration
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
+import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.models.SAInterface
+import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
 
 class SAAdMobInterstitialAd(
     private val adConfiguration: MediationInterstitialAdConfiguration,

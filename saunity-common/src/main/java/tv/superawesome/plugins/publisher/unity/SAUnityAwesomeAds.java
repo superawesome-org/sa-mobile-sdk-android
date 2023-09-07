@@ -2,7 +2,7 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.app.Activity;
 
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds;
+import tv.superawesome.sdk.publisher.sdk.AwesomeAds;
 
 public class SAUnityAwesomeAds {
 

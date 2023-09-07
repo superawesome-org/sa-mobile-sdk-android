@@ -15,8 +15,8 @@ import com.google.android.gms.ads.mediation.MediationRewardedAd
 import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
 import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
 import com.google.android.gms.ads.mediation.VersionInfo
-import tv.superawesome.sdk.publisher.common.models.Configuration
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
+import tv.superawesome.sdk.publisher.models.Configuration
+import tv.superawesome.sdk.publisher.sdk.AwesomeAds
 
 
 /**

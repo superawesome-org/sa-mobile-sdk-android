@@ -1,9 +1,9 @@
 package tv.superawesome.plugins.publisher.admob
 
 import android.os.Bundle
-import tv.superawesome.sdk.publisher.common.models.AdRequest
-import tv.superawesome.sdk.publisher.common.models.AdRequest.StartDelay
-import tv.superawesome.sdk.publisher.common.models.Orientation
+import tv.superawesome.sdk.publisher.models.AdRequest
+import tv.superawesome.sdk.publisher.models.AdRequest.StartDelay
+import tv.superawesome.sdk.publisher.models.Orientation
 
 class SAAdMobExtras private constructor() {
     var transparent = false
