@@ -14,8 +14,8 @@ import java.util.HashMap;
 
 import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.plugins.publisher.unity.util.SAScreenUtil;
-import tv.superawesome.sdk.publisher.common.models.SAEvent;
-import tv.superawesome.sdk.publisher.common.ui.banner.BannerView;
+import tv.superawesome.sdk.publisher.models.SAEvent;
+import tv.superawesome.sdk.publisher.ui.banner.BannerView;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity

@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.superawesome.composeexample.R
 import com.superawesome.composeexample.models.PlacementItem
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.ui.banner.BannerView
+import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.ui.banner.BannerView
 
 @Composable
 fun AdBannerView(

@@ -8,8 +8,8 @@ import androidx.compose.ui.res.stringResource
 import com.superawesome.composeexample.R
 import com.superawesome.composeexample.enums.FeatureType
 import com.superawesome.composeexample.models.FeatureItem
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
-import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
+import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
+import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
 
 @Composable
 fun FeatureToggles(
