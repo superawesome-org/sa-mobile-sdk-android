@@ -16,18 +16,30 @@ android {
         multiDexEnabled = true
 
         lint.abortOnError = false
-        packagingOptions {
+        packaging {
             resources.excludes.add("META-INF/*")
         }
 
         buildFeatures.viewBinding = true
     }
+
+    flavorDimensions += "sdk"
+    productFlavors {
+        create("common") {
+            dimension = "sdk"
+            applicationIdSuffix = ".common"
+            versionNameSuffix = "-common"
+        }
+        create("base") {
+            dimension = "sdk"
+        }
+    }
 }
 
 dependencies {
     implementation(project(":saadmob"))
-    implementation(project(":superawesome-common"))
-    implementation(project(":superawesome-base"))
+    "commonImplementation"(project(":superawesome-common"))
+    "baseImplementation"(project(":superawesome-base"))
 
     implementation(libs.google.play.services.ads)
     implementation(libs.material)
