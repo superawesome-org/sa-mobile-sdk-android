@@ -27,12 +27,10 @@ android {
         release {
             buildConfigField("String", "IS_MEDIATOR_VERSION", "\"${libs.versions.ironsource.mediator.get()}\"")
             buildConfigField("String", "IS_ADAPTER_VERSION", "\"${libs.versions.ironsource.adapters.superawesome.get()}\"")
-            buildConfigField("String", "SA_SDK_VERSION", "\"${libs.versions.superawesome.sdk.get()}\"")
         }
         debug {
             buildConfigField("String", "IS_MEDIATOR_VERSION", "\"${libs.versions.ironsource.mediator.get()}\"")
             buildConfigField("String", "IS_ADAPTER_VERSION", "\"${libs.versions.ironsource.adapters.superawesome.get()}\"")
-            buildConfigField("String", "SA_SDK_VERSION", "\"${libs.versions.superawesome.sdk.get()}\"")
         }
     }
 
@@ -65,7 +63,7 @@ dependencies {
     // IronSource adapter and SuperAwesome SDK
     implementation(libs.ironsource.mediation)
     implementation(libs.ironsource.adapters.superawesome)
-    implementation(libs.superawesome.sdk)
+    implementation(project(":superawesome"))
 
     // AdMob
     implementation(libs.google.play.services.ads.identifier)
