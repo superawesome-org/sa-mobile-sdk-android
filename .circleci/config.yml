@@ -2,13 +2,19 @@ version: 2.1
 orbs:
   token-gen: superawesomeltd/sa-gha-token-gen-orb@0.0.6
 references:
-  android_config: &android_config
+  sa_config: &sa_config
     resource_class: superawesomeltd/machine-runner
+
+  android_config: &android_config
+    docker:
+      - image: cimg/android:2023.08.1-browsers
+    resource_class: medium+
     environment:
       FL_OUTPUT_DIR: output
       TERM: dumb
       _JAVA_OPTIONS: "-Xms512m -Xmx2g -XX:ParallelGCThreads=4 -XX:ConcGCThreads=4 -XX:ParallelGCThreads=4 -Djava.util.concurrent.ForkJoinPool.common.parallelism=4"
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048M -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.workers.max=2 -Dorg.gradle.daemon=false -Dorg.gradle.caching=true -Dorg.gradle.configureondemand=true -Dkotlin.compiler.execution.strategy=in-process -Dkotlin.incremental=false'
+  
   configure_google_services: &configure_google_services
     run:
       name: Configure Google Services
@@ -16,6 +22,7 @@ references:
         echo "Google Services"
         echo 'export SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC="$SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC"' >> $BASH_ENV
         echo $SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_ENC | base64 -di > app/${SA_ANDROID_SDKS_GOOGLE_SERVICES_JSON_NAME}.json
+  
   generate_github_token: &generate_github_token
     run:
       name: Generate & store Github Token
@@ -27,49 +34,57 @@ references:
         echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
         echo "export GIT_AUTHOR_NAME=sa-release-bot" >> $BASH_ENV
         echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
-      # clone some scripts
+
+  # clone some scripts
   clone_scripts_repo: &clone_scripts_repo
     run:
       name: Clone scripts repo
       command: |-
-        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git
+        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+  
   bootstrap_android_sdk: &bootstrap_android_sdk
     run:
       name: Bootstrap
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
-      # set secrets in the Android app
+  
+  # set secrets in the Android app
   set_keylist_android: &set_keylist_android
     run:
       name: Android keys json
       command: |
         echo "Setting Android keys JSON config file + create missing dirs"
         echo "IronSource app key"
+  
   bootstrap_android_app: &bootstrap_android_app
     run:
       name: Bootstrap
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-app.sh
+  
   download_android_versioning_plugin: &download_android_versioning_plugin
     run:
       name: Download Plugin for versioning in fastlane
       command: sudo bundle exec fastlane add_plugin android_versioning_kts
+  
   fix_android_version_name: &fix_android_version_name
     run:
       name: Fix Android Version Name
       command: sed -i -r 's/(\s*versionName = )(([0-9A-Za-z]|\.)+)/\1"\2"/' $PWD/app/build.gradle.kts
+
 jobs:
   checkout_code:
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - checkout
       - persist_to_workspace:
           root: "."
           paths:
             - "."
+  
   ## Lint code
   lint_check:
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
@@ -77,15 +92,31 @@ jobs:
       - run:
           name: Detekt
           command: ./gradlew detekt
+
+  generate_github_token1:
+    <<: *sa_config
+    steps:
+      - *generate_github_token
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bash.env
+
+  generate_github_token2:
+    <<: *sa_config
+    steps:
+      - *generate_github_token
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bash.env
+  
   ## Run unit tests
   test_superawesome_base:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -98,14 +129,12 @@ jobs:
           command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
+  
   test_superawesome_common:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -118,16 +147,14 @@ jobs:
           command: find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
+  
   semantic_release_dry_run:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - *clone_scripts_repo
       - run:
           name: Check semantic release version
@@ -137,14 +164,14 @@ jobs:
           root: "."
           paths:
             - "nextRelease"
+  
   auto_update_release_version:
-    !!merge <<: *android_config
+    <<: *android_config
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - run:
           name: Auto update release version
           command: |
@@ -179,32 +206,28 @@ jobs:
               echo "Next release version number not found, no new version to release."
               exit 1
             fi
+  
   semantic_release:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     environment:
       SA_SEMANTIC_RELEASE_RUN_BRANCH: develop
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - *clone_scripts_repo
       - run:
           name: Run semantic release
           command: |
             git pull https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git ${SA_SEMANTIC_RELEASE_RUN_BRANCH}
             ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/mobile/semantic-release/semantic-release-sdks.sh
+  
   ## Run sdk push
   sdk_push_superawesome:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
       - *configure_google_services
-      - *generate_github_token
       - *clone_scripts_repo
       - *bootstrap_android_sdk
       - *set_keylist_android
@@ -250,72 +273,64 @@ jobs:
             git add docs/_config.yml
             git commit -m "Add Android release version $CURRENT_VERSION via Circle CI"
             git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git -q main
+  
   sdk_push_superawesome_base:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
       - *configure_google_services
-      - *generate_github_token
       - *clone_scripts_repo
       - *bootstrap_android_sdk
       - *set_keylist_android
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
+  
   sdk_push_superawesome_common:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
       - *configure_google_services
-      - *generate_github_token
       - *clone_scripts_repo
       - *bootstrap_android_sdk
       - *set_keylist_android
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
+  
   sdk_push_superawesome_admob:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
       - *configure_google_services
-      - *generate_github_token
       - *clone_scripts_repo
       - *bootstrap_android_sdk
       - *set_keylist_android
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
+  
   sdk_push_superawesome_unity:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
       - *configure_google_services
-      - *generate_github_token
       - *clone_scripts_repo
       - *bootstrap_android_sdk
       - *set_keylist_android
       - run:
           name: Push Superawesome-Unity to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
+  
   sdk_update_android_demo_app:
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - run:
           name: Update Demo app gradle File
           command: |
@@ -330,14 +345,12 @@ jobs:
             git add app/build.gradle
             git commit -m "fix(SDK): Updated SDK to ${RELEASE_NUMBER}"
             git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git develop
+  
   build_test_app_for_smoke_tests:
-    machine: true
-    resource_class: ""
-    !!merge <<: *android_config
+    <<: *android_config
     steps:
       - attach_workspace:
           at: .
-      - *generate_github_token
       - *clone_scripts_repo
       - *bootstrap_android_app
       - *download_android_versioning_plugin
@@ -345,7 +358,21 @@ jobs:
       - run:
           name: Assemble Test App .apk file for the Device Farm
           no_output_timeout: 30m
-          command: "export GIT_LOG_TEST=`git log --since=\"24 hours ago\"`\nif [ ! -z \"$GIT_LOG_TEST\" ]; then\n  SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'\n  echo \"export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`\" >> $BASH_ENV\n  source $BASH_ENV\n  git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git\n  cd sa-ad-smoke-test-sdk\n  \n  cp -a ~/project/app/build/outputs/apk/debug/app-debug.apk ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.apk\n\n  git add apps/android/app-production-debug.apk\n  git commit -m \"Updated Android Native SDK Mobile Test App to ${RELEASE_NUMBER}\"\n  git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git develop\nfi\n"
+          command: |
+            export GIT_LOG_TEST=`git log --since="24 hours ago"`
+            if [ ! -z "$GIT_LOG_TEST" ]; then
+              SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
+              echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
+              source $BASH_ENV
+              git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git
+              cd sa-ad-smoke-test-sdk
+              
+              cp -a ~/project/app/build/outputs/apk/debug/app-debug.apk ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.apk
+              git add apps/android/app-production-debug.apk
+              git commit -m "Updated Android Native SDK Mobile Test App to ${RELEASE_NUMBER}"
+              git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git develop
+            fi
+
 workflows:
   version: 2.1
   nightly:
@@ -356,6 +383,7 @@ workflows:
             branches:
               only:
                 - develop
+
     jobs:
       - checkout_code:
           context: MOBILE_ANDROID_SDKS
@@ -363,16 +391,27 @@ workflows:
             branches:
               only: develop
             tags:
-              ignore: /^v.*/
-      - build_test_app_for_smoke_tests:
+              ignore: /^v.*/\
+
+      - generate_github_token1:
           context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
           filters:
             branches:
               only: develop
             tags:
               ignore: /^v.*/
+
+      - build_test_app_for_smoke_tests:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+            - generate_github_token1
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
   pull_request:
     jobs:
       - checkout_code:
@@ -382,15 +421,26 @@ workflows:
               ignore: develop
             tags:
               ignore: /^v.*/
-      - lint_check:
+
+      - generate_github_token1:
           context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
           filters:
             branches:
               ignore: develop
             tags:
               ignore: /^v.*/
+
+      - lint_check:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+            - generate_github_token1
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -400,6 +450,7 @@ workflows:
               ignore: develop
             tags:
               ignore: /^v.*/
+
       - test_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -409,6 +460,7 @@ workflows:
               ignore: develop
             tags:
               ignore: /^v.*/
+
   develop:
     jobs:
       - checkout_code:
@@ -418,25 +470,38 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
+
+      - generate_github_token1:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
       - test_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+            - generate_github_token1
           filters:
             branches:
               only: develop
             tags:
               ignore: /^v.*/
+
       - test_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+            - generate_github_token1
           filters:
             branches:
               only: develop
             tags:
               ignore: /^v.*/
-      - semantic_release_dry_run:
+
+      - generate_github_token2:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
@@ -445,6 +510,17 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
+
+      - semantic_release_dry_run:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - generate_github_token2
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
       - approve_dry_run_and_release:
           type: approval
           requires:
@@ -454,6 +530,7 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
+
       - auto_update_release_version:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -463,6 +540,7 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
+
       - semantic_release:
           context: MOBILE_ANDROID_SDKS
           requires:
@@ -472,6 +550,7 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
+
   release:
     jobs:
       - checkout_code:
@@ -481,51 +560,70 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
+
+      - generate_github_token1:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+            - generate_github_token1
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
+
       - sdk_push_superawesome_base:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+            - generate_github_token1
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
+
       - sdk_push_superawesome_common:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+            - generate_github_token1
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
+
       - sdk_push_superawesome_admob:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+            - generate_github_token1
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
+
       - sdk_push_superawesome_unity:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
+            - generate_github_token1
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
+
       - sdk_update_android_demo_app:
           context: MOBILE_ANDROID_SDKS
           requires:
