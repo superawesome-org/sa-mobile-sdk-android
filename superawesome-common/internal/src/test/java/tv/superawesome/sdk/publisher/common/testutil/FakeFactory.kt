@@ -1,6 +1,13 @@
 package tv.superawesome.sdk.publisher.common.testutil
 
-import tv.superawesome.sdk.publisher.common.models.*
+import tv.superawesome.sdk.publisher.common.models.Ad
+import tv.superawesome.sdk.publisher.common.models.Creative
+import tv.superawesome.sdk.publisher.common.models.CreativeDetail
+import tv.superawesome.sdk.publisher.common.models.CreativeFormatType
+import tv.superawesome.sdk.publisher.common.models.CreativeReferral
+import tv.superawesome.sdk.publisher.common.models.VastAd
+import tv.superawesome.sdk.publisher.common.models.VastType
+
 
 internal object FakeFactory {
     const val exampleUrl = "https://www.superAwesome.com"
@@ -33,22 +40,22 @@ internal object FakeFactory {
 
     fun makeVastAd(
         url: String? = "www.here.com",
-        redDirect: String? = null,
+        redirect: String? = null,
         type: VastType = VastType.Invalid
     ) = VastAd(
         url,
         type = type,
-        errorEvents = emptyList(),
-        impressionEvents = emptyList(),
-        redirect = redDirect,
-        media = listOf(),
-        clickThroughUrl = "",
-        creativeViewEvents = listOf(),
-        startEvents = listOf(),
-        completeEvents = listOf(),
-        firstQuartileEvents = listOf(),
-        midPointEvents = listOf(),
-        thirdQuartileEvents = listOf(),
-        clickTrackingEvents = listOf(),
+        errorEvents = listOf("$url/error"),
+        impressionEvents = listOf("$url/impression"),
+        redirect = redirect,
+        media = emptyList(),
+        clickThroughUrl = "$url/clickThrough",
+        creativeViewEvents = listOf("$url/creativeView"),
+        startEvents = listOf("$url/start"),
+        completeEvents = listOf("$url/complete1", "$url/complete2"),
+        firstQuartileEvents = listOf("$url/firstQuartile"),
+        midPointEvents = listOf("$url/midpoint"),
+        thirdQuartileEvents = listOf("$url/thirdQuartile"),
+        clickTrackingEvents = listOf("$url/clickTracking", "$url/clickTracking2"),
     )
 }
