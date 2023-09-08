@@ -11,8 +11,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.components.ImageProviderType
-import tv.superawesome.sdk.publisher.extensions.toPx
 
 @Suppress("MagicNumber")
 class VideoComponentFactory : KoinComponent {
@@ -23,7 +23,14 @@ class VideoComponentFactory : KoinComponent {
         val scale: Float = VideoUtils.getScale(context)
         val view = ImageView(context)
         view.id = id
-        view.setImageBitmap(imageProvider.createBitmap(100, 52, 0xFF4D4D4D.toInt(), 10.0f))
+        view.setImageBitmap(
+            imageProvider.createBitmap(
+                100,
+                52,
+                0xFF4D4D4D.toInt(),
+                10.0f,
+            ),
+        )
         view.scaleType = ImageView.ScaleType.FIT_XY
         view.alpha = 0.7f
         val layout = RelativeLayout.LayoutParams((50 * scale).toInt(), (26 * scale).toInt())
@@ -78,29 +85,38 @@ class VideoComponentFactory : KoinComponent {
     }
 
     private val padlock: ComponentCreator<ImageButton> = ComponentCreator { id, context ->
-        val scale: Float = VideoUtils.getScale(context)
         val view = ImageButton(context)
         view.id = id
         view.setImageBitmap(imageProvider.padlockImage())
-        view.setPadding(0, 2.toPx, 0, 0)
+        val res = context.resources
+        view.setPadding(
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_left_inset),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_right_inset),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_bottom_inset),
+        )
+        view.layoutParams = ViewGroup.LayoutParams(
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_width),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_height) +
+                    res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset),
+        )
         view.setBackgroundColor(Color.TRANSPARENT)
         view.scaleType = ImageView.ScaleType.FIT_XY
-        view.layoutParams = ViewGroup.LayoutParams((77 * scale).toInt(), (31 * scale).toInt())
         view
     }
 
-    fun getChronographBackground(id: Int, context: Context?): ImageView =
+    fun getChronographBackground(id: Int, context: Context): ImageView =
         bgCreator.createComponent(id, context)
 
-    fun getChronograph(id: Int, context: Context?): TextView =
+    fun getChronograph(id: Int, context: Context): TextView =
         chronoCreator.createComponent(id, context)
 
-    fun getClick(id: Int, context: Context?): Button = clickCreator.createComponent(id, context)
+    fun getClick(id: Int, context: Context): Button = clickCreator.createComponent(id, context)
 
-    fun getSmallClick(id: Int, context: Context?): Button =
+    fun getSmallClick(id: Int, context: Context): Button =
         smallClickCreator.createComponent(id, context)
 
-    fun getPadlock(id: Int, context: Context?): ImageButton = padlock.createComponent(id, context)
+    fun getPadlock(id: Int, context: Context): ImageButton = padlock.createComponent(id, context)
 }
 
 /**
@@ -115,5 +131,5 @@ fun interface ComponentCreator<T> {
      * @param context an activity context.
      * @return the created component of type [T].
      */
-    fun createComponent(id: Int, context: Context?): T
+    fun createComponent(id: Int, context: Context): T
 }

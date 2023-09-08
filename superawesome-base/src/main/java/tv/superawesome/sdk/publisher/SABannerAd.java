@@ -3,6 +3,7 @@ package tv.superawesome.sdk.publisher;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -35,6 +36,7 @@ import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
+import tv.superawesome.sdk.publisher.base.R;
 
 public class SABannerAd extends FrameLayout {
 
@@ -351,15 +353,24 @@ public class SABannerAd extends FrameLayout {
                     // this is actually a fragment event notifying the banner class that
                     // the fragment has started
                     case Web_Started: {
-
-                        float sf = SAUtils.getScaleFactor((Activity) context);
+                        Resources res = context.getResources();
                         padlock = new ImageButton(context);
                         padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
                         padlock.setBackgroundColor(Color.TRANSPARENT);
                         padlock.setScaleType(ImageView.ScaleType.FIT_XY);
-                        int topPadding = (int) (2 * sf);
-                        padlock.setPadding(0, topPadding, 0, 0);
-                        padlock.setLayoutParams(new ViewGroup.LayoutParams((int) (77 * sf), (int) (31 * sf)));
+                        padlock.setPadding(
+                                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_left_inset),
+                                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset),
+                                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_right_inset),
+                                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_bottom_inset)
+                        );
+                        padlock.setLayoutParams(
+                                new ViewGroup.LayoutParams(
+                                        res.getDimensionPixelOffset(R.dimen.safe_ad_logo_width),
+                                        res.getDimensionPixelOffset(R.dimen.safe_ad_logo_height) +
+                                                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset)
+                                )
+                        );
                         padlock.setContentDescription("Safe Ad Logo");
 
                         //
