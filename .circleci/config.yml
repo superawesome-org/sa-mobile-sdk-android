@@ -3,7 +3,9 @@ orbs:
   token-gen: superawesomeltd/sa-gha-token-gen-orb@0.0.6
 references:
   sa_config: &sa_config
-    resource_class: superawesomeltd/machine-runner
+    machine: 
+      image: superawesomeltd/machine-runner
+    resource_class: ""
 
   android_config: &android_config
     docker:
@@ -93,7 +95,7 @@ jobs:
           name: Detekt
           command: ./gradlew detekt
 
-  generate_github_token1:
+  generate_github_token_one:
     <<: *sa_config
     steps:
       - *generate_github_token
@@ -102,7 +104,7 @@ jobs:
           paths:
             - bash.env
 
-  generate_github_token2:
+  generate_github_token_two:
     <<: *sa_config
     steps:
       - *generate_github_token
@@ -393,7 +395,7 @@ workflows:
             tags:
               ignore: /^v.*/\
 
-      - generate_github_token1:
+      - generate_github_token_one:
           context: MOBILE_ANDROID_SDKS
           filters:
             branches:
@@ -405,7 +407,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               only: develop
@@ -422,7 +424,7 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - generate_github_token1:
+      - generate_github_token_one:
           context: MOBILE_ANDROID_SDKS
           filters:
             branches:
@@ -434,7 +436,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               ignore: develop
@@ -471,7 +473,7 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - generate_github_token1:
+      - generate_github_token_one:
           context: MOBILE_ANDROID_SDKS
           filters:
             branches:
@@ -483,7 +485,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               only: develop
@@ -494,14 +496,14 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               only: develop
             tags:
               ignore: /^v.*/
 
-      - generate_github_token2:
+      - generate_github_token_two:
           context: MOBILE_ANDROID_SDKS
           requires:
             - test_superawesome_base
@@ -514,7 +516,7 @@ workflows:
       - semantic_release_dry_run:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - generate_github_token2
+            - generate_github_token_two
           filters:
             branches:
               only: develop
@@ -561,7 +563,7 @@ workflows:
             tags:
               only: /^v.*/
 
-      - generate_github_token1:
+      - generate_github_token_one:
           context: MOBILE_ANDROID_SDKS
           filters:
             branches:
@@ -573,7 +575,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               ignore: /.*/
@@ -584,7 +586,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               ignore: /.*/
@@ -595,7 +597,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               ignore: /.*/
@@ -606,7 +608,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               ignore: /.*/
@@ -617,7 +619,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token1
+            - generate_github_token_one
           filters:
             branches:
               ignore: /.*/
