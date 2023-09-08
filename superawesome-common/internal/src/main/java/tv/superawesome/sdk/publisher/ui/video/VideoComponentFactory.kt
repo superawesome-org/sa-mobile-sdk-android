@@ -11,7 +11,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import tv.superawesome.sdk.publisher.R
+import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 
 @Suppress("MagicNumber")

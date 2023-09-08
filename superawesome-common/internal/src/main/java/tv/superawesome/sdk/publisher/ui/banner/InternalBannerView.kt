@@ -13,10 +13,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
-import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
