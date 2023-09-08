@@ -15,19 +15,20 @@ private object Keys {
     const val dauUniquePart = "dauUniquePart"
 }
 
-data class PreferencesRepository(private val context: Context) : PreferencesRepositoryType {
+@Suppress("UseDataClass")
+class PreferencesRepository(private val context: Context) : PreferencesRepositoryType {
     override var userAgent: String?
-        get() = preferences?.getString(Keys.userAgent, null)
+        get() = preferences.getString(Keys.userAgent, null)
         set(value) {
-            preferences?.edit()?.putString(Keys.userAgent, value)?.apply()
+            preferences.edit().putString(Keys.userAgent, value).apply()
         }
 
     override var dauUniquePart: String?
-        get() = preferences?.getString(Keys.dauUniquePart, null)
+        get() = preferences.getString(Keys.dauUniquePart, null)
         set(value) {
-            preferences?.edit()?.putString(Keys.dauUniquePart, value)?.apply()
+            preferences.edit().putString(Keys.dauUniquePart, value).apply()
         }
 
-    private val preferences: SharedPreferences?
+    private val preferences: SharedPreferences
         get() = context.getSharedPreferences(Keys.preferencesFileName, MODE_PRIVATE)
 }

@@ -1,41 +1,131 @@
 package tv.superawesome.sdk.publisher.common.repositories
 
-import io.mockk.coEvery
-import io.mockk.impl.annotations.InjectMockKs
-import io.mockk.impl.annotations.MockK
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.MockResponse
 import org.junit.Test
-import tv.superawesome.sdk.publisher.common.base.BaseTest
-import tv.superawesome.sdk.publisher.common.models.*
+import retrofit2.Retrofit
+import tv.superawesome.sdk.publisher.common.models.PerformanceMetric
+import tv.superawesome.sdk.publisher.common.models.PerformanceMetricName
+import tv.superawesome.sdk.publisher.common.models.PerformanceMetricType
+import tv.superawesome.sdk.publisher.common.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.common.network.DataResult
-import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSourceType
+import tv.superawesome.sdk.publisher.common.network.datasources.AwesomeAdsApiDataSource
+import tv.superawesome.sdk.publisher.common.network.datasources.MockServerTest
+import tv.superawesome.sdk.publisher.common.testutil.decodeParams
+import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
-@OptIn(ExperimentalCoroutinesApi::class)
-internal class PerformanceRepositoryTest : BaseTest() {
+@OptIn(ExperimentalSerializationApi::class, ExperimentalCoroutinesApi::class)
+class PerformanceRepositoryTest : MockServerTest() {
 
-  @MockK
-  lateinit var adDataSourceType: AwesomeAdsApiDataSourceType
+    private val client = OkHttpClient.Builder()
+        .connectTimeout(100, TimeUnit.MILLISECONDS)
+        .readTimeout(100, TimeUnit.MILLISECONDS)
+        .writeTimeout(100, TimeUnit.MILLISECONDS)
+        .build()
 
-  @InjectMockKs
-  lateinit var repository: PerformanceRepository
+    private val json = Json {
+        allowStructuredMapKeys = true
+        ignoreUnknownKeys = true
+    }
 
-  @Test
-  fun test_performance_metric_success() = runTest {
-    // Given
-    val metric = PerformanceMetric(
-        3L,
-        PerformanceMetricName.LoadTime,
-        PerformanceMetricType.Gauge
-    )
+    private val api = Retrofit.Builder()
+        .baseUrl(mockServer.url("/"))
+        .client(client)
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .build()
+        .create(AwesomeAdsApi::class.java)
 
-    coEvery { adDataSourceType.performance(metric) } returns DataResult.Success(Unit)
+    private val datasource = AwesomeAdsApiDataSource(api)
 
-    // When
-    val result = repository.sendMetric(metric)
+    private val sut = PerformanceRepository(datasource)
+    @Test
+    fun `when sending metrics, it should send and return success`() = runTest {
+        // Given
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+        val metric = PerformanceMetric(
+            0L,
+            PerformanceMetricName.LoadTime,
+            PerformanceMetricType.Timing
+        )
 
-    // Then
-    assertEquals(true, result.isSuccess)
-  }
+        // When
+        val result = sut.sendMetric(metric)
+
+        // Then
+        assertIs<DataResult.Success<Unit>>(result)
+    }
+
+    @Test
+    fun `when sending metrics, if it fails, should return failure`() = runTest {
+        // Given
+        mockServer.enqueue(MockResponse().setResponseCode(500))
+        val metric = PerformanceMetric(
+            0L,
+            PerformanceMetricName.LoadTime,
+            PerformanceMetricType.Timing
+        )
+
+        // When
+        val result = sut.sendMetric(metric)
+
+        // Then
+        assertIs<DataResult.Failure>(result)
+    }
+
+    @Test
+    fun `when sending track dwell time, it should send the correct params`() = runTest {
+        testTracking(
+            PerformanceMetricName.DwellTime,
+            PerformanceMetricType.Gauge,
+            100L
+        ) { value -> sut.trackDwellTime(value) }
+    }
+
+    @Test
+    fun `when sending track load time, it should send the correct params`() = runTest {
+        testTracking(
+            PerformanceMetricName.LoadTime,
+            PerformanceMetricType.Gauge,
+            100L
+        ) { value -> sut.trackLoadTime(value) }
+    }
+
+    @Test
+    fun `when sending track close button time, it should send the correct params`() = runTest {
+        testTracking(
+            PerformanceMetricName.CloseButtonPressTime,
+            PerformanceMetricType.Gauge,
+            100L
+        ) { value -> sut.trackCloseButtonPressed(value) }
+    }
+
+    private suspend fun testTracking(
+        metricName: PerformanceMetricName,
+        metricType: PerformanceMetricType,
+        value: Long,
+        block: suspend (Long) -> Unit,
+    ) {
+        // Given
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+
+        // When
+        block(value)
+
+        // Then
+        val request = mockServer.takeRequest()
+        val params = decodeParams(request.requestUrl)
+
+        // Then
+        assertEquals(metricName.value, params["metricName"])
+        assertEquals(metricType.value, params["metricType"])
+        assertEquals(value, params["value"]?.toLong())
+    }
 }
