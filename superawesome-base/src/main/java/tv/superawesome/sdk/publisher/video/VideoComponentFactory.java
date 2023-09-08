@@ -3,6 +3,7 @@ package tv.superawesome.sdk.publisher.video;
 import static android.widget.RelativeLayout.ALIGN_PARENT_BOTTOM;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import tv.superawesome.lib.sautils.SAImageUtils;
+import tv.superawesome.sdk.publisher.base.R;
 
 class VideoComponentFactory {
 
@@ -109,16 +111,26 @@ class VideoComponentFactory {
     };
 
     private static final ComponentCreator<ImageButton> padlock = (id, context) -> {
-        float scale = new VideoUtils().getScale(context);
-
+        Resources res = context.getResources();
         ImageButton view = new ImageButton(context);
         view.setId(id);
         view.setImageBitmap(SAImageUtils.createPadlockBitmap());
-        view.setPadding(0, 0, 0, 0);
+
         view.setBackgroundColor(Color.TRANSPARENT);
         view.setScaleType(ImageView.ScaleType.FIT_XY);
-        view.setLayoutParams(new ViewGroup.LayoutParams((int) (77 * scale), (int) (31 * scale)));
-
+        view.setPadding(
+                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_left_inset),
+                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset),
+                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_right_inset),
+                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_bottom_inset)
+        );
+        view.setLayoutParams(
+                new ViewGroup.LayoutParams(
+                        res.getDimensionPixelOffset(R.dimen.safe_ad_logo_width),
+                        res.getDimensionPixelOffset(R.dimen.safe_ad_logo_height) +
+                                res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset)
+                )
+        );
         return view;
     };
 }

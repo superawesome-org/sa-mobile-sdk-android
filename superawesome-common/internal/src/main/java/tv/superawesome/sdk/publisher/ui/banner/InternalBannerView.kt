@@ -13,10 +13,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
-import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
@@ -193,8 +193,18 @@ public class InternalBannerView @JvmOverloads constructor(
         padlockButton.setImageBitmap(imageProvider.padlockImage())
         padlockButton.setBackgroundColor(Color.TRANSPARENT)
         padlockButton.scaleType = ImageView.ScaleType.FIT_XY
-        padlockButton.setPadding(0, 2.toPx, 0, 0)
-        padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
+        val res = context.resources
+        padlockButton.setPadding(
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_left_inset),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_right_inset),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_bottom_inset),
+        )
+        padlockButton.layoutParams = ViewGroup.LayoutParams(
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_width),
+            res.getDimensionPixelOffset(R.dimen.safe_ad_logo_height) +
+                    res.getDimensionPixelOffset(R.dimen.safe_ad_logo_top_inset),
+        )
         padlockButton.contentDescription = "Safe Ad Logo"
 
         padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
