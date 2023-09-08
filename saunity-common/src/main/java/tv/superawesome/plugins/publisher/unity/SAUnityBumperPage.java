@@ -2,7 +2,7 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.sdk.publisher.common.ui.common.BumperPage;
+import tv.superawesome.sdk.publisher.ui.common.BumperPage;
 
 public class SAUnityBumperPage {
 

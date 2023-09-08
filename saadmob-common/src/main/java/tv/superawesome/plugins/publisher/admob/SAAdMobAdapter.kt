@@ -15,8 +15,8 @@ import com.google.android.gms.ads.mediation.MediationRewardedAd
 import com.google.android.gms.ads.mediation.MediationRewardedAdCallback
 import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
 import com.google.android.gms.ads.mediation.VersionInfo
-import tv.superawesome.sdk.publisher.common.models.Configuration
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
+import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.models.DefaultConfiguration
 
 
 /**
@@ -33,7 +33,7 @@ open class SAAdMobAdapter : Adapter() {
         initializationCompleteCallback: InitializationCompleteCallback,
         mediationConfigurations: MutableList<MediationConfiguration>
     ) {
-        AwesomeAds.init(context, Configuration(logging = false))
+        AwesomeAds.init(context, DefaultConfiguration(logging = false))
         initializationCompleteCallback.onInitializationSucceeded()
     }
 

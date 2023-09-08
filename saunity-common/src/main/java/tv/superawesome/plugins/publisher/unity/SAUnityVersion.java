@@ -2,8 +2,8 @@ package tv.superawesome.plugins.publisher.unity;
 
 import android.content.Context;
 
-import tv.superawesome.sdk.publisher.common.components.SdkInfo;
-import tv.superawesome.sdk.publisher.common.models.Platform;
+import tv.superawesome.sdk.publisher.components.SdkInfo;
+import tv.superawesome.sdk.publisher.models.Platform;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
