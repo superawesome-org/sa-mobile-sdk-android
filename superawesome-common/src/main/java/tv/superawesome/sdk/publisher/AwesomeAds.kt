@@ -1,5 +1,6 @@
-package tv.superawesome.sdk.publisher.sdk
+package tv.superawesome.sdk.publisher
 
+import android.app.Application
 import android.content.Context
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.KoinApplication
@@ -18,11 +19,52 @@ public object AwesomeAds {
     private var app: KoinApplication? = null
 
     /**
-     * Initialisation of AwesomeAds SDK.
+     * Initialization of AwesomeAds SDK.
+     *
+     * @param application the application instance.
+     * @param loggingEnabled Enable or disable logs.
+     * @param options extra ad query options to be added.
+     */
+    @Deprecated(
+        message = "This usage has been deprecated",
+        replaceWith = ReplaceWith(expression = "init(applicationContext, configuration, options)"),
+        level = DeprecationLevel.WARNING,
+    )
+    @JvmStatic
+    public fun init(application: Application, loggingEnabled: Boolean, options: Map<String, Any>) {
+        init(
+            applicationContext = application,
+            configuration = DefaultConfiguration(logging = loggingEnabled),
+            options = options,
+        )
+    }
+
+    /**
+     * Initialization of AwesomeAds SDK.
+     *
+     * @param application the application instance.
+     * @param loggingEnabled Enable or disable logs.
+     */
+    @Deprecated(
+        message = "This usage has been deprecated",
+        replaceWith = ReplaceWith(expression = "init(applicationContext, configuration)"),
+        level = DeprecationLevel.WARNING,
+    )
+    @JvmStatic
+    public fun init(application: Application, loggingEnabled: Boolean) {
+        init(
+            applicationContext = application,
+            configuration = DefaultConfiguration(logging = loggingEnabled),
+        )
+    }
+
+
+    /**
+     * Initialization of AwesomeAds SDK.
      *
      * @param applicationContext the application context.
      * @param logging Enable or disable logs
-     * */
+     */
     @JvmStatic
     public fun init(applicationContext: Context, logging: Boolean) {
         if (app == null) {
@@ -31,11 +73,11 @@ public object AwesomeAds {
     }
 
     /**
-     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings.
+     * Initialization of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings.
      *
      * @param applicationContext the application context
      * @param configuration additional AwesomeAds configurations.
-     * */
+     */
     @JvmStatic
     public fun init(applicationContext: Context, configuration: Configuration) {
         if (app == null) {
@@ -44,7 +86,7 @@ public object AwesomeAds {
     }
 
     /**
-     * Initialisation of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings.
+     * Initialization of AwesomeAds SDK, you can provide [Configuration] to enable/disable settings.
      *
      * @param applicationContext the application context.
      * @param configuration additional AwesomeAds configurations.
