@@ -22,7 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ironsource.mediationsdk.IronSource
 import com.ironsource.mediationsdk.model.Placement
+import com.ironsource.sdk.utils.SDKUtils
 import kotlinx.coroutines.flow.StateFlow
+import tv.superawesome.sdk.publisher.SAVersion
 
 @Composable
 fun MainScreen(
@@ -71,7 +73,7 @@ fun MainScreen(
         Spacer(modifier = Modifier.size(24.dp))
         Text(text = "IronSource Mediator: ${BuildConfig.IS_MEDIATOR_VERSION}")
         Text(text = "IronSource Adapter: ${BuildConfig.IS_ADAPTER_VERSION}")
-        Text(text = "AwesomeAds SDK: ${BuildConfig.SA_SDK_VERSION}")
+        Text(text = "AwesomeAds SDK: ${SAVersion.getSDKVersionNumber()}")
     }
 }
 

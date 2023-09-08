@@ -54,9 +54,6 @@ google-play-services-ads-identifier = "18.0.1"
 ironsource-adapters-superawesome = "4.1.7"
 ironsource-mediator = "7.3.1.1"
 
-# SA SDK
-superawesome-sdk = "9.1.0"
-
 # Test
 jUnit4 = "4.13.2"
 mockitoCore = "3.11.0"
@@ -152,9 +149,6 @@ google-play-services-ads-identifier = { module = "com.google.android.gms:play-se
 # IronSource
 ironsource-mediation = { module = "com.ironsource.sdk:mediationsdk", version.ref = "ironsource-mediator"}
 ironsource-adapters-superawesome = { module = "com.ironsource.adapters:superawesomeadapter", version.ref = "ironsource-adapters-superawesome" }
-
-# SA
-superawesome-sdk = { module = "tv.superawesome.sdk.publisher:superawesome", version.ref = "superawesome-sdk" }
 
 # Test
 junit4 = { module = "junit:junit", version.ref = "jUnit4" }
