@@ -65,8 +65,7 @@ references:
   load_env_vars: &load_env_vars
     run:
       name: Load environment variables from GitHub Token Generator
-      command: source ~/project/.bashrc2
-
+      command: source $BASH_ENV
 jobs:
   checkout_code:
     <<: *android_config
@@ -96,18 +95,18 @@ jobs:
       - run:
           name: Set environment variables for GITHUB
           command: |
-            echo "export GITHUB_TOKEN=${GITHUB_TOKEN}" >> .bashrc2
-            echo "export GIT_COMMITTER_NAME=sa-release-bot" >> .bashrc2
-            echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
-            echo "export GIT_AUTHOR_NAME=sa-release-bot" >> .bashrc2
-            echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
+            echo "export GIT_COMMITTER_NAME=sa-release-bot" >> $BASH_ENV
+            echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
+            echo "export GIT_AUTHOR_NAME=sa-release-bot" >> $BASH_ENV
+            echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
+
             echo "Mylo test 1"
             echo $GIT_AUTHOR_EMAIL
             echo "Did it work?"
       - persist_to_workspace:
           root: .
           paths:
-            - .bashrc2
+            - $BASH_ENV
   
   ## Run unit tests
   test_superawesome_base:
