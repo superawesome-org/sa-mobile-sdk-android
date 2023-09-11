@@ -384,7 +384,7 @@ workflows:
               ignore: /^v.*/\
 
       - generate_github_token_one:
-          context: MOBILE_ANDROID_SDKS
+          context: Build
           filters:
             branches:
               only: develop
@@ -413,7 +413,7 @@ workflows:
               ignore: /^v.*/
 
       - generate_github_token_one:
-          context: MOBILE_ANDROID_SDKS
+          context: Build
           filters:
             branches:
               ignore: develop
@@ -462,7 +462,7 @@ workflows:
               ignore: /^v.*/
 
       - generate_github_token_one:
-          context: MOBILE_ANDROID_SDKS
+          context: Build
           filters:
             branches:
               only: develop
@@ -492,7 +492,7 @@ workflows:
               ignore: /^v.*/
 
       - generate_github_token_two:
-          context: MOBILE_ANDROID_SDKS
+          context: Build
           requires:
             - test_superawesome_base
           filters:
@@ -552,7 +552,7 @@ workflows:
               only: /^v.*/
 
       - generate_github_token_one:
-          context: MOBILE_ANDROID_SDKS
+          context: Build
           filters:
             branches:
               only: develop
