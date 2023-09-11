@@ -65,7 +65,7 @@ references:
   load_env_vars: &load_env_vars
     run:
       name: Load environment variables from GitHub Token Generator
-      command: source .bashrc2
+      command: source ~/project/.bashrc2
 
 jobs:
   checkout_code:
