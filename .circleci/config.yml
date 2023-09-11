@@ -91,7 +91,8 @@ jobs:
   generate_github_token:
     <<: *sa_config
     steps:
-      - token-gen/generate
+      - token-gen/generate:
+          scope: read-write
       - run:
           name: Set environment variables for GITHUB
           command: |
