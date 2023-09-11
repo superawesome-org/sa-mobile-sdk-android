@@ -392,6 +392,14 @@ workflows:
                 - develop
 
     jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
       - generate_github_token:
           context: Build
           filters:
@@ -399,14 +407,6 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
-
-      - checkout_code:
-          context: MOBILE_ANDROID_SDKS
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/\
 
       - build_test_app_for_smoke_tests:
           context: MOBILE_ANDROID_SDKS
@@ -562,7 +562,7 @@ workflows:
           context: Build
           filters:
             branches:
-              only: develop
+              ignore: /.*/
             tags:
               ignore: /^v.*/
 
