@@ -95,7 +95,7 @@ jobs:
       - run:
           name: Set environment variables for GITHUB
           command: |
-            echo "export GITHUB_TOKEN=$GITHUB_TOKENI" >> .bashrc2
+            echo "export GITHUB_TOKEN=$GITHUB_TOKEN" >> .bashrc2
             echo "export GIT_COMMITTER_NAME=sa-release-bot" >> .bashrc2
             echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
             echo "export GIT_AUTHOR_NAME=sa-release-bot" >> .bashrc2
