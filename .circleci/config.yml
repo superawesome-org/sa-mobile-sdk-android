@@ -91,7 +91,8 @@ jobs:
   generate_github_token:
     <<: *sa_config
     steps:
-      - token-gen/generate
+      - token-gen/generate: 
+          scope: read-write
       - run:
           name: Set environment variables for GITHUB
           command: |
@@ -100,6 +101,9 @@ jobs:
             echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
             echo "export GIT_AUTHOR_NAME=sa-release-bot" >> .bashrc2
             echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
+            echo "Mylo test 1"
+            echo $GIT_AUTHOR_EMAIL
+            echo "Did it work?"
       - persist_to_workspace:
           root: .
           paths:
@@ -118,7 +122,11 @@ jobs:
       - *set_keylist_android
       - run:
           name: Run unit tests for superawesome_base
-          command: bundle exec fastlane run_all_tests module:superawesome-base
+          command: |
+            bundle exec fastlane run_all_tests module:superawesome-base
+            echo "Mylo test 2"
+            echo $GIT_AUTHOR_EMAIL
+            echo "did it work?"
       - run:
           name: Copy test results to temp folder
           command: find $PWD/superawesome-base/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
