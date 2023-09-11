@@ -62,15 +62,20 @@ references:
       name: Fix Android Version Name
       command: sed -i -r 's/(\s*versionName = )(([0-9A-Za-z]|\.)+)/\1"\2"/' $PWD/app/build.gradle.kts
 
+  load_env_vars: &load_env_vars
+    run:
+      name: Load environment variables from GitHub Token Generator
+      command: source .bashrc2
+
 jobs:
   checkout_code:
     <<: *android_config
     steps:
       - checkout
       - persist_to_workspace:
-          root: "."
+          root: .
           paths:
-            - "."
+            - .
   
   ## Lint code
   lint_check:
@@ -83,23 +88,22 @@ jobs:
           name: Detekt
           command: ./gradlew detekt
 
-  generate_github_token_one:
+  generate_github_token:
     <<: *sa_config
     steps:
       - token-gen/generate
+      - run:
+          name: Set environment variables for GITHUB
+          command: |
+            echo "export GITHUB_TOKEN=$GITHUB_TOKENI" >> .bashrc2
+            echo "export GIT_COMMITTER_NAME=sa-release-bot" >> .bashrc2
+            echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
+            echo "export GIT_AUTHOR_NAME=sa-release-bot" >> .bashrc2
+            echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
       - persist_to_workspace:
           root: .
           paths:
-            - bash.env
-
-  generate_github_token_two:
-    <<: *sa_config
-    steps:
-      - token-gen/generate
-      - persist_to_workspace:
-          root: .
-          paths:
-            - bash.env
+            - .bashrc2
   
   ## Run unit tests
   test_superawesome_base:
@@ -107,6 +111,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -125,6 +130,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -145,6 +151,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *clone_scripts_repo
       - run:
           name: Check semantic release version
@@ -162,6 +169,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - run:
           name: Auto update release version
           command: |
@@ -204,6 +212,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *clone_scripts_repo
       - run:
           name: Run semantic release
@@ -217,6 +226,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -269,6 +279,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -282,6 +293,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -295,6 +307,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -308,6 +321,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
@@ -321,6 +335,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - run:
           name: Update Demo app gradle File
           command: |
@@ -341,6 +356,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - *load_env_vars
       - *clone_scripts_repo
       - *bootstrap_android_app
       - *download_android_versioning_plugin
@@ -383,7 +399,7 @@ workflows:
             tags:
               ignore: /^v.*/\
 
-      - generate_github_token_one:
+      - generate_github_token:
           context: Build
           filters:
             branches:
@@ -395,7 +411,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               only: develop
@@ -412,7 +428,7 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - generate_github_token_one:
+      - generate_github_token:
           context: Build
           filters:
             branches:
@@ -424,7 +440,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               ignore: develop
@@ -461,7 +477,7 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - generate_github_token_one:
+      - generate_github_token:
           context: Build
           filters:
             branches:
@@ -473,7 +489,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               only: develop
@@ -484,17 +500,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
-
-      - generate_github_token_two:
-          context: Build
-          requires:
-            - test_superawesome_base
+            - generate_github_token
           filters:
             branches:
               only: develop
@@ -504,7 +510,7 @@ workflows:
       - semantic_release_dry_run:
           context: MOBILE_ANDROID_SDKS
           requires:
-            - generate_github_token_two
+            - test_superawesome_base
           filters:
             branches:
               only: develop
@@ -551,7 +557,7 @@ workflows:
             tags:
               only: /^v.*/
 
-      - generate_github_token_one:
+      - generate_github_token:
           context: Build
           filters:
             branches:
@@ -563,7 +569,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               ignore: /.*/
@@ -574,7 +580,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               ignore: /.*/
@@ -585,7 +591,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               ignore: /.*/
@@ -596,7 +602,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               ignore: /.*/
@@ -607,7 +613,7 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - checkout_code
-            - generate_github_token_one
+            - generate_github_token
           filters:
             branches:
               ignore: /.*/
