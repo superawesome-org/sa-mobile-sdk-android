@@ -65,7 +65,7 @@ references:
   load_env_vars: &load_env_vars
     run:
       name: Load environment variables from GitHub Token Generator
-      command: source ~/project/.bashrc2
+      command: cat bash.env >> $BASH_ENV
 
 jobs:
   checkout_code:
@@ -95,15 +95,17 @@ jobs:
       - run:
           name: Set environment variables for GITHUB
           command: |
-            echo "export GITHUB_TOKEN=${GITHUB_TOKEN}" >> .bashrc2
-            echo "export GIT_COMMITTER_NAME=sa-release-bot" >> .bashrc2
-            echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
-            echo "export GIT_AUTHOR_NAME=sa-release-bot" >> .bashrc2
-            echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> .bashrc2
+            echo "export GITHUB_TOKEN=${GITHUB_TOKEN}" >> $BASH_ENV
+            echo "export GIT_COMMITTER_NAME=sa-release-bot" >> $BASH_ENV
+            echo "export GIT_COMMITTER_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
+            echo "export GIT_AUTHOR_NAME=sa-release-bot" >> $BASH_ENV
+            echo "export GIT_AUTHOR_EMAIL=sa-release-bot@superawesome.tv" >> $BASH_ENV
+      - run: |
+          cp $BASH_ENV bash.env
       - persist_to_workspace:
           root: .
           paths:
-            - .bashrc2
+            - bash.env
   
   ## Run unit tests
   test_superawesome_base:
@@ -391,14 +393,6 @@ workflows:
                 - develop
 
     jobs:
-      - checkout_code:
-          context: MOBILE_ANDROID_SDKS
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/\
-
       - generate_github_token:
           context: Build
           filters:
@@ -406,6 +400,14 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
+
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/\
 
       - build_test_app_for_smoke_tests:
           context: MOBILE_ANDROID_SDKS
