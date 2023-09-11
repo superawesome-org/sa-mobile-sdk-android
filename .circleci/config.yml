@@ -91,7 +91,8 @@ jobs:
   generate_github_token:
     <<: *sa_config
     steps:
-      - token-gen/generate
+      - token-gen/generate:
+          scope: read-write
       - run:
           name: Set environment variables for GITHUB
           command: |
@@ -392,6 +393,14 @@ workflows:
                 - develop
 
     jobs:
+      - checkout_code:
+          context: MOBILE_ANDROID_SDKS
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
       - generate_github_token:
           context: Build
           filters:
@@ -399,14 +408,6 @@ workflows:
               only: develop
             tags:
               ignore: /^v.*/
-
-      - checkout_code:
-          context: MOBILE_ANDROID_SDKS
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/\
 
       - build_test_app_for_smoke_tests:
           context: MOBILE_ANDROID_SDKS
@@ -562,9 +563,9 @@ workflows:
           context: Build
           filters:
             branches:
-              only: develop
+              ignore: /.*/
             tags:
-              ignore: /^v.*/
+              only: /^v.*/
 
       - sdk_push_superawesome:
           context: MOBILE_ANDROID_SDKS
