@@ -1,10 +1,10 @@
 package com.superawesome.composeexample
 
 import android.app.Application
-import tv.superawesome.sdk.publisher.common.models.DefaultConfiguration
-import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
-import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
+import tv.superawesome.sdk.publisher.models.DefaultConfiguration
+import tv.superawesome.sdk.publisher.network.Environment
+import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.ui.common.BumperPage
 
 class ComposeApp : Application() {
 

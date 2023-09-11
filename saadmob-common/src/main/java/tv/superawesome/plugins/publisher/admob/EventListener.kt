@@ -1,8 +1,8 @@
 package tv.superawesome.plugins.publisher.admob
 
 import android.util.Log
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.models.SAInterface
+import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.models.SAInterface
 
 import java.lang.ref.WeakReference
 

@@ -1,2 +1,8 @@
 <resources>
+    <dimen name="safe_ad_logo_width">50dp</dimen>
+    <dimen name="safe_ad_logo_height">20dp</dimen>
+    <dimen name="safe_ad_logo_top_inset">4dp</dimen>
+    <dimen name="safe_ad_logo_bottom_inset">0dp</dimen>
+    <dimen name="safe_ad_logo_left_inset">0dp</dimen>
+    <dimen name="safe_ad_logo_right_inset">0dp</dimen>
 </resources>
