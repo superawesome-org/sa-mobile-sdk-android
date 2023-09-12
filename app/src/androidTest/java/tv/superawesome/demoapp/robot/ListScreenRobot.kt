@@ -22,7 +22,7 @@ import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
-import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 
 class ListScreenRobot : BaseRobot() {
     private fun launchActivityWithSuccessStub(
