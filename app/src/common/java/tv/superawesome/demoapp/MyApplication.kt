@@ -1,10 +1,10 @@
 package tv.superawesome.demoapp
 
 import androidx.multidex.MultiDexApplication
-import tv.superawesome.sdk.publisher.common.models.DefaultConfiguration
-import tv.superawesome.sdk.publisher.common.network.Environment
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
-import tv.superawesome.sdk.publisher.common.ui.common.BumperPage
+import tv.superawesome.sdk.publisher.models.DefaultConfiguration
+import tv.superawesome.sdk.publisher.network.Environment
+import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.ui.common.BumperPage
 
 class MyApplication : MultiDexApplication() {
     var environment: Environment = Environment.Production
@@ -17,7 +17,7 @@ class MyApplication : MultiDexApplication() {
 
         AwesomeAds.init(
             this,
-            DefaultConfiguration(logging = true, environment = environment)
+            DefaultConfiguration(logging = true, environment = environment),
         )
     }
 

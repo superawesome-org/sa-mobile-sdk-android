@@ -37,7 +37,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":saadmob"))
+    "commonImplementation"(project(":saadmob-common"))
+    "baseImplementation"(project(":saadmob"))
     "commonImplementation"(project(":superawesome-common"))
     "baseImplementation"(project(":superawesome-base"))
 
