@@ -84,6 +84,7 @@ class FakeAdQueryMaker : AdQueryMakerType {
                 type = type,
                 noImage = false,
                 data = data?.let { encodeData(data) },
+                adRequestId = null,
             ),
             options = null,
         )
