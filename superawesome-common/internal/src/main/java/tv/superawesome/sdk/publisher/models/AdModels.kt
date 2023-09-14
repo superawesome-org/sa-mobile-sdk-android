@@ -41,7 +41,7 @@ data class AdQuery(
     val bundle: String,
     val name: String,
     @SerialName("dauid") val dauId: Int,
-    val ct: ConnectionType,
+    val ct: Int,
     val lang: String,
     val device: String,
     val pos: Int,

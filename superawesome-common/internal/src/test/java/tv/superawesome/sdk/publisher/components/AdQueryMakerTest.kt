@@ -91,7 +91,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals("sdk_bundle", baseQuery.bundle)
         assertEquals("sdk_name", baseQuery.name)
         assertEquals(99, baseQuery.dauId)
-        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals(ConnectionType.Cellular4g.ordinal, baseQuery.ct)
         assertEquals("en_en", baseQuery.lang)
         assertEquals(DeviceCategory.TABLET.name, baseQuery.device)
         assertEquals(10, baseQuery.pos)
@@ -126,7 +126,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals("sdk_bundle", baseQuery.bundle)
         assertEquals(20, baseQuery.creative)
         assertEquals(30, baseQuery.lineItem)
-        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals(ConnectionType.Cellular4g.ordinal, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
         assertEquals("33", baseQuery.rnd)
         assertEquals(EventType.ImpressionDownloaded, baseQuery.type)
@@ -156,7 +156,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals("sdk_bundle", baseQuery.bundle)
         assertEquals(20, baseQuery.creative)
         assertEquals(30, baseQuery.lineItem)
-        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals(ConnectionType.Cellular4g.ordinal, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
         assertEquals("33", baseQuery.rnd)
         assertEquals(null, baseQuery.type)
@@ -178,7 +178,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { sdkInfoType.bundle } returns "sdk_bundle"
         every { numberGeneratorType.nextIntForCache() } returns 33
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
-        every { encoderType.encodeUri(any()) } returns "encoded_uri"
+        every { json.encodeToString(EventData.serializer(), data) } returns "encoded_uri"
 
         // When
         val baseQuery = queryMaker.makeEventQuery(request, data).parameters
@@ -188,7 +188,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals("sdk_bundle", baseQuery.bundle)
         assertEquals(20, baseQuery.creative)
         assertEquals(30, baseQuery.lineItem)
-        assertEquals(ConnectionType.Cellular4g, baseQuery.ct)
+        assertEquals(ConnectionType.Cellular4g.ordinal, baseQuery.ct)
         assertEquals("sdk_version", baseQuery.sdkVersion)
         assertEquals("33", baseQuery.rnd)
         assertEquals(null, baseQuery.noImage)
@@ -382,7 +382,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
-                    "ct=Cellular4g, " +
+                    "ct=6, " +
                     "lang=en_en, " +
                     "device=, " +
                     "pos=10, " +
@@ -426,7 +426,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
-                    "ct=Cellular4g, " +
+                    "ct=6, " +
                     "lang=en_en, " +
                     "device=, " +
                     "pos=10, " +
@@ -474,7 +474,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "bundle=, " +
                     "name=, " +
                     "dauid=0, " +
-                    "ct=Cellular4g, " +
+                    "ct=6, " +
                     "lang=en_en, " +
                     "device=, " +
                     "pos=10, " +
