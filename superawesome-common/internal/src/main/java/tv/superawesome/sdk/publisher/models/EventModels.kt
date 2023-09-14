@@ -7,7 +7,8 @@ import tv.superawesome.sdk.publisher.extensions.mergeToMap
 
 data class EventQueryBundle(
     val parameters: EventQuery,
-    val options: Map<String, Any>?) {
+    val options: Map<String, Any>?,
+) {
     fun build(): Map<String, Any> = Properties.mergeToMap(parameters, options)
 }
 
@@ -22,7 +23,8 @@ data class EventQuery(
     val rnd: String,
     val type: EventType?,
     @SerialName("no_image") val noImage: Boolean?,
-    val data: String?
+    val data: String?,
+    val adRequestId: String?,
 )
 
 @Serializable
@@ -30,7 +32,7 @@ data class EventData(
     val placement: Int,
     @SerialName("line_item") val lineItem: Int,
     val creative: Int,
-    val type: EventType
+    val type: EventType,
 )
 
 @Serializable
