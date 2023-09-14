@@ -78,7 +78,7 @@ public class InternalBannerView @JvmOverloads constructor(
         controller.load(placementId, makeAdRequest(options))
     }
 
-    public open fun load(placementId: Int) {
+    public fun load(placementId: Int) {
         load(placementId, options = null)
     }
 
@@ -96,7 +96,7 @@ public class InternalBannerView @JvmOverloads constructor(
         controller.load(placementId, lineItemId, creativeId, makeAdRequest(options))
     }
 
-    public open fun load(
+    public fun load(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
@@ -266,7 +266,7 @@ public class InternalBannerView @JvmOverloads constructor(
         install = AdRequest.FullScreen.Off.value,
         w = width,
         h = height,
-        options = options
+        options = options,
     )
 
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
