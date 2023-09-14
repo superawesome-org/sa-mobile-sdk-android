@@ -17,6 +17,12 @@ android {
 
     kotlin {
         explicitApiWarning()
+
+        testOptions {
+            unitTests {
+                isIncludeAndroidResources = true
+            }
+        }
     }
 }
 
@@ -34,6 +40,9 @@ dependencies {
 
     // Unit Testing
     addTestDependencies(project)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit)
     testImplementation(libs.mockwebserver)
     testImplementation(testFixtures(project(":superawesome-common:test-fixtures")))
+    testImplementation(libs.roboelectric)
 }

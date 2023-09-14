@@ -41,7 +41,7 @@ class Config : Parcelable {
     var startDelay: AdRequest.StartDelay
 
     @Suppress("LongParameterList")
-    internal constructor(
+    constructor(
         testEnabled: Boolean = Constants.defaultTestMode,
         isParentalGateEnabled: Boolean = Constants.defaultParentalGate,
         isBumperPageEnabled: Boolean = Constants.defaultBumperPage,
