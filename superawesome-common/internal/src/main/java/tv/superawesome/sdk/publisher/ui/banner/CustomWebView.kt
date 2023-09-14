@@ -18,13 +18,8 @@ import android.webkit.WebViewClient
 public class CustomWebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : WebView(context, attrs, defStyleAttr) {
-    interface Listener {
-        fun webViewOnStart()
-        fun webViewOnError()
-        fun webViewOnClick(url: String)
-    }
 
     var listener: Listener? = null
 
@@ -48,7 +43,7 @@ public class CustomWebView @JvmOverloads constructor(
             override fun onReceivedError(
                 view: WebView?,
                 request: WebResourceRequest,
-                error: WebResourceError
+                error: WebResourceError,
             ) {
                 super.onReceivedError(view, request, error)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -66,7 +61,7 @@ public class CustomWebView @JvmOverloads constructor(
                 view: WebView?,
                 errorCode: Int,
                 description: String?,
-                failingUrl: String?
+                failingUrl: String?,
             ) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
                 handleError(errorCode)
@@ -124,7 +119,15 @@ public class CustomWebView @JvmOverloads constructor(
     @Suppress("MaxLineLength")
     public fun loadHTML(base: String, html: String) {
         val baseHtml =
-            "<html><header><meta name='viewport' content='width=device-width'/><style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style></header><body>$html</body></html>"
+            "<html><header><meta name='viewport' content='width=device-width'/>" +
+                    "<style>html, body, div { margin: 0px; padding: 0px; } html, " +
+                    "body { width: 100%; height: 100%; }</style></header><body>$html</body></html>"
         loadDataWithBaseURL(base, baseHtml, "text/html", "UTF-8", null)
+    }
+
+    interface Listener {
+        fun webViewOnStart()
+        fun webViewOnError()
+        fun webViewOnClick(url: String)
     }
 }
