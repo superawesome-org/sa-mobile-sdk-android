@@ -1,7 +1,7 @@
 package tv.superawesome.demoapp.settings
 
-import tv.superawesome.sdk.publisher.common.models.CloseButtonState
-import tv.superawesome.sdk.publisher.common.network.Environment
+import tv.superawesome.sdk.publisher.models.CloseButtonState
+import tv.superawesome.sdk.publisher.network.Environment
 
 enum class Settings(val label: String) {
     CloseButton("Close button"),
@@ -17,42 +17,78 @@ enum class Settings(val label: String) {
             SettingsItemOption(
                 "No delay",
                 "SettingsItem.Buttons.CloseImmediately",
-                CloseButtonState.VisibleImmediately
+                CloseButtonState.VisibleImmediately,
             ),
             SettingsItemOption(
                 "Delay",
                 "SettingsItem.Buttons.CloseDelayed",
-                CloseButtonState.VisibleWithDelay
+                CloseButtonState.VisibleWithDelay,
             ),
             SettingsItemOption(
                 "Hidden",
                 "SettingsItem.Buttons.CloseHidden",
-                CloseButtonState.Hidden
+                CloseButtonState.Hidden,
             )
         )
 
         BumperPage -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.BumperEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.BumperDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.BumperEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.BumperDisable",
+                false,
+            ),
         )
 
         ParentalGate -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.ParentalGateEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.ParentalGateDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.ParentalGateEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.ParentalGateDisable",
+                false,
+            ),
         )
 
         Playback -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.PlaybackEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.PlaybackDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.PlaybackEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.PlaybackDisable",
+                false,
+            ),
         )
 
         MuteOnStart -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.MuteEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.MuteDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.MuteEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.MuteDisable",
+                false,
+            ),
         )
 
         LeaveVideoWarning -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.VideoCloseDialogEnable", true),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.VideoCloseDialogEnable",
+                true,
+            ),
             SettingsItemOption(
                 "Disable",
                 "SettingsItem.Buttons.VideoCloseDialogDisable",
@@ -61,8 +97,16 @@ enum class Settings(val label: String) {
         )
 
         CloseAtEnd -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.VideoCloseAtEndEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.VideoCloseAtEndDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.VideoCloseAtEndEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.VideoCloseAtEndDisable",
+                false,
+            ),
         )
 
     }
@@ -114,7 +158,7 @@ object DataStore {
 data class SettingsItemOption<T>(
     val label: String,
     val contentDescription: String,
-    val value: T
+    val value: T,
 )
 
 data class SettingsItem<T>(

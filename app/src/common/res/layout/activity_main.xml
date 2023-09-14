@@ -56,7 +56,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <tv.superawesome.sdk.publisher.common.ui.banner.BannerView
+        <tv.superawesome.sdk.publisher.ui.banner.BannerView
             android:id="@+id/bannerView"
             android:layout_width="match_parent"
             android:layout_height="70dp"

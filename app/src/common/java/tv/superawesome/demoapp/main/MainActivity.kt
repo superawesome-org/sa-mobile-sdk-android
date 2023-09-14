@@ -10,11 +10,11 @@ import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.settings.SettingsDialogFragment
-import tv.superawesome.sdk.publisher.common.models.CloseButtonState
-import tv.superawesome.sdk.publisher.common.models.SAEvent
-import tv.superawesome.sdk.publisher.common.sdk.AwesomeAds
-import tv.superawesome.sdk.publisher.common.ui.interstitial.SAInterstitialAd
-import tv.superawesome.sdk.publisher.common.ui.video.SAVideoAd
+import tv.superawesome.sdk.publisher.models.CloseButtonState
+import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
+import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
 
 @Suppress("TooManyFunctions")
 class MainActivity : FragmentActivity() {
@@ -49,7 +49,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initUI() {
-        val title = "AwesomeAds: v${AwesomeAds.info()?.versionNumber}"
+        val title = "AwesomeAds: v${AwesomeAds.info()?.versionNumber} - Common"
         binding.titleTextView.text = title
         setupListView()
     }
@@ -112,7 +112,7 @@ class MainActivity : FragmentActivity() {
             binding.bannerView.load(
                 item.placementId,
                 item.lineItemId ?: 0,
-                item.creativeId ?: 0
+                item.creativeId ?: 0,
             )
         } else {
             binding.bannerView.load(item.placementId)
@@ -125,7 +125,7 @@ class MainActivity : FragmentActivity() {
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
-                this
+                this,
             )
         } else {
             SAInterstitialAd.load(item.placementId, this)
@@ -138,7 +138,7 @@ class MainActivity : FragmentActivity() {
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
-                this
+                this,
             )
         } else {
             SAVideoAd.load(item.placementId, this)

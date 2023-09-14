@@ -52,7 +52,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initUI() {
-        val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()}"
+        val title = "AwesomeAds: v${SAVersion.getSDKVersionNumber()} - Base"
         binding.titleTextView.text = title
         setupListView()
     }
@@ -87,7 +87,7 @@ class MainActivity : FragmentActivity() {
             binding.bannerView2.load(
                 item.placementId,
                 item.lineItemId ?: 0,
-                item.creativeId ?: 0
+                item.creativeId ?: 0,
             )
         } else {
             binding.bannerView2.load(item.placementId)
@@ -100,7 +100,7 @@ class MainActivity : FragmentActivity() {
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
-                this
+                this,
             )
         } else {
             SAInterstitialAd.load(item.placementId, this)
@@ -113,7 +113,7 @@ class MainActivity : FragmentActivity() {
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
-                this
+                this,
             )
         } else {
             SAVideoAd.load(item.placementId, this)
