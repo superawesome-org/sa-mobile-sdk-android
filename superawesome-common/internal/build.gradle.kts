@@ -12,6 +12,12 @@ android {
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -30,6 +36,9 @@ dependencies {
 
     // Unit Testing
     addTestDependencies(project)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit)
     testImplementation(libs.mockwebserver)
     testImplementation(testFixtures(project(":superawesome-common:test-fixtures")))
+    testImplementation(libs.roboelectric)
 }
