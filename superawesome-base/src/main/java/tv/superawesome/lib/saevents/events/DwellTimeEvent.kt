@@ -31,6 +31,7 @@ class DwellTimeEvent(
                 "ct", session.connectionType.ordinal,
                 "sdkVersion", session.version,
                 "rnd", session.cachebuster,
+                "ad_request_id", ad.adRequestId
             )
         } catch (e: Exception) {
             JSONObject()

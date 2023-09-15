@@ -28,15 +28,17 @@ public class SAPGSuccessEvent extends SAServerEvent {
     public JSONObject getQuery() {
         try {
             return SAJsonParser.newObject(
-                    "sdkVersion", session.getVersion(),
-                    "ct", session.getConnectionType(),
-                    "bundle", session.getPackageName(),
-                    "rnd", session.getCachebuster(),
-                    "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
-                            "placement", ad.placementId,
-                            "line_item", ad.lineItemId,
-                            "creative", ad.creative.id,
-                            "type", "parentalGateSuccess")));
+                "sdkVersion", session.getVersion(),
+                "ct", session.getConnectionType(),
+                "bundle", session.getPackageName(),
+                "rnd", session.getCachebuster(),
+                "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
+                    "placement", ad.placementId,
+                    "line_item", ad.lineItemId,
+                    "creative", ad.creative.id,
+                    "type", "parentalGateSuccess")),
+                "ad_request_id", ad.adRequestId
+            );
         } catch (Exception e) {
             return new JSONObject();
         }

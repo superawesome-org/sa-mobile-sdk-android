@@ -48,6 +48,7 @@ public class SAAd extends SABaseObject implements Parcelable {
     public boolean isPadlockVisible = false;
     public boolean isVpaid = false;
 
+    public String adRequestId = null;
     public String device = null;
 
     public SACreative creative = new SACreative();
@@ -149,6 +150,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         isHouse = in.readByte() != 0;
         isSafeAdApproved = in.readByte() != 0;
         isPadlockVisible = in.readByte() != 0;
+        adRequestId = in.readString();
         device = in.readString();
         creative = in.readParcelable(SACreative.class.getClassLoader());
         loadTime = in.readLong();
@@ -222,6 +224,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         isVpaid = SAJsonParser.getBoolean(jsonObject, "is_vpaid", isVpaid);
         isSafeAdApproved = SAJsonParser.getBoolean(jsonObject, "safe_ad_approved", isSafeAdApproved);
         isPadlockVisible = SAJsonParser.getBoolean(jsonObject, "show_padlock", isPadlockVisible);
+        adRequestId = SAJsonParser.getString(jsonObject, "ad_request_id", adRequestId);
         device = SAJsonParser.getString(jsonObject, "device", device);
         String ksfRequest = SAJsonParser.getString(jsonObject, "ksfRequest", null);
 
@@ -260,6 +263,7 @@ public class SAAd extends SABaseObject implements Parcelable {
                 "safe_ad_approved", isSafeAdApproved,
                 "show_padlock", isPadlockVisible,
                 "creative", creative.writeToJson(),
+                "ad_request_id", adRequestId,
                 "device", device,
                 "loadTime", loadTime);
     }
@@ -312,6 +316,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         dest.writeByte((byte) (isHouse ? 1 : 0));
         dest.writeByte((byte) (isSafeAdApproved ? 1 : 0));
         dest.writeByte((byte) (isPadlockVisible ? 1 : 0));
+        dest.writeString(adRequestId);
         dest.writeString(device);
         dest.writeParcelable(creative, flags);
         dest.writeLong(loadTime);

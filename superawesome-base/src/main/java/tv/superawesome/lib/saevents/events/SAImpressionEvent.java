@@ -27,15 +27,16 @@ public class SAImpressionEvent extends SAServerEvent {
     public JSONObject getQuery() {
         try {
             return SAJsonParser.newObject(
-                    "placement", ad.placementId,
-                    "creative", ad.creative.id,
-                    "line_item", ad.lineItemId,
-                    "sdkVersion", session.getVersion(),
-                    "bundle", session.getPackageName(),
-                    "ct", session.getConnectionType().ordinal(),
-                    "no_image", true,
-                    "rnd", session.getCachebuster(),
-                    "type", "impressionDownloaded"
+                "placement", ad.placementId,
+                "creative", ad.creative.id,
+                "line_item", ad.lineItemId,
+                "sdkVersion", session.getVersion(),
+                "bundle", session.getPackageName(),
+                "ct", session.getConnectionType().ordinal(),
+                "no_image", true,
+                "rnd", session.getCachebuster(),
+                "type", "impressionDownloaded",
+                "ad_request_id", ad.adRequestId
             );
         } catch (Exception e) {
             return new JSONObject();
