@@ -111,6 +111,7 @@ internal class AdQueryMakerTest : BaseTest() {
             every { creative.id } returns 20
             every { lineItemId } returns 30
             every { random } returns "33"
+            every { adRequestId } returns "test-id"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
@@ -132,6 +133,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(EventType.ImpressionDownloaded, baseQuery.type)
         assertEquals(true, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
+        assertEquals("test-id", baseQuery.adRequestId)
     }
 
     @Test
@@ -141,6 +143,7 @@ internal class AdQueryMakerTest : BaseTest() {
             every { creative.id } returns 20
             every { lineItemId } returns 30
             every { random } returns "33"
+            every { adRequestId } returns "test-id"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
@@ -162,6 +165,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(null, baseQuery.type)
         assertEquals(null, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
+        assertEquals("test-id", baseQuery.adRequestId)
     }
 
     @Test
@@ -171,6 +175,7 @@ internal class AdQueryMakerTest : BaseTest() {
             every { creative.id } returns 20
             every { lineItemId } returns 30
             every { random } returns "33"
+            every { adRequestId } returns "test-id"
         }
         val request = AdResponse(10, ad)
         val data = EventData(10, 30, 20, EventType.ParentalGateClose)
@@ -193,6 +198,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals("33", baseQuery.rnd)
         assertEquals(null, baseQuery.noImage)
         assertEquals("encoded_uri", baseQuery.data)
+        assertEquals("test-id", baseQuery.adRequestId)
     }
 
     @Test

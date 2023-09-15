@@ -235,5 +235,6 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         type = EventType.ImpressionDownloaded,
         noImage = null,
         data = null,
+        adRequestId = "test-id",
     )
 }

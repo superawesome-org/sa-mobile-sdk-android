@@ -66,6 +66,7 @@ class AdQueryMaker(
             type = null,
             noImage = null,
             data = null,
+            adRequestId = adResponse.ad.adRequestId,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
@@ -81,7 +82,8 @@ class AdQueryMaker(
             rnd = adResponse.ad.random ?: "",
             type = EventType.ImpressionDownloaded,
             noImage = true,
-            data = null
+            data = null,
+            adRequestId = adResponse.ad.adRequestId,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
@@ -97,7 +99,8 @@ class AdQueryMaker(
             rnd = adResponse.ad.random ?: "",
             type = null,
             noImage = null,
-            data = null
+            data = null,
+            adRequestId = adResponse.ad.adRequestId,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
@@ -114,7 +117,8 @@ class AdQueryMaker(
                 rnd = adResponse.ad.random ?: "",
                 type = eventData.type,
                 noImage = null,
-                data = encodeData(eventData)
+                data = encodeData(eventData),
+                adRequestId = adResponse.ad.adRequestId,
             ),
             options = buildOptions(requestOptions = adResponse.requestOptions)
         )

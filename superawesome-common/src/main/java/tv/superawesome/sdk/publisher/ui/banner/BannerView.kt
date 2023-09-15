@@ -59,7 +59,9 @@ public class BannerView @JvmOverloads constructor(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-    ) { load(placementId, lineItemId, creativeId, options = null) }
+    ) {
+        load(placementId, lineItemId, creativeId, options = null)
+    }
 
     /**
      * Plays an already existing loaded ad, or fail.
