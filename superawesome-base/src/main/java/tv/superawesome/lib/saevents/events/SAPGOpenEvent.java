@@ -37,7 +37,7 @@ public class SAPGOpenEvent extends SAServerEvent {
                     "line_item", ad.lineItemId,
                     "creative", ad.creative.id,
                     "type", "parentalGateOpen")),
-                "ad_request_id", ad.adRequestId
+                "adRequestId", ad.adRequestId
             );
         } catch (Exception e) {
             return new JSONObject();
