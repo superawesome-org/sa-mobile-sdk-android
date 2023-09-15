@@ -37,7 +37,7 @@ public class SAViewableImpressionEvent extends SAServerEvent {
                     "line_item", ad.lineItemId,
                     "creative", ad.creative.id,
                     "type", "viewable_impression")),
-                "ad_request_id", ad.adRequestId
+                "adRequestId", ad.adRequestId
             );
         } catch (Exception e) {
             return new JSONObject();
