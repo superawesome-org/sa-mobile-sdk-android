@@ -41,6 +41,7 @@ public class SAClickEventSetup_Test extends Event_Test {
         Assert.assertEquals(1000, query.get("placement"));
         Assert.assertEquals("superawesome.tv.saadloaderdemo", query.get("bundle"));
         Assert.assertEquals(5001, query.get("creative"));
+        Assert.assertEquals("abc", query.get("adRequestId"));
     }
 
     @Test
@@ -67,5 +68,6 @@ public class SAClickEventSetup_Test extends Event_Test {
         Assert.assertEquals(1000, query.get("placement"));
         Assert.assertEquals("superawesome.tv.saadloaderdemo", query.get("bundle"));
         Assert.assertEquals(5001, query.get("creative"));
+        Assert.assertEquals("abc", query.get("adRequestId"));
     }
 }

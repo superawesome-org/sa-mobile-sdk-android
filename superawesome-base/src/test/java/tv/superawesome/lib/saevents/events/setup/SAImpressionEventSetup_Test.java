@@ -32,7 +32,7 @@ public class SAImpressionEventSetup_Test extends Event_Test {
 
         JSONObject query = event.getQuery();
 
-        Assert.assertEquals(9, query.length());
+        Assert.assertEquals(10, query.length());
         Assert.assertEquals(2, query.get("ct"));
         Assert.assertEquals(2001, query.get("line_item"));
         Assert.assertEquals(123456, query.get("rnd"));
@@ -41,5 +41,6 @@ public class SAImpressionEventSetup_Test extends Event_Test {
         Assert.assertEquals("superawesome.tv.saadloaderdemo", query.get("bundle"));
         Assert.assertEquals(5001, query.get("creative"));
         Assert.assertEquals("impressionDownloaded", query.get("type"));
+        Assert.assertEquals("abc", query.get("adRequestId"));
     }
 }

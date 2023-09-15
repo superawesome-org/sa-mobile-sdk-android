@@ -30,6 +30,7 @@ public class MockAd extends SAAd {
         this.device = "phone";
         this.loadTime = 0;
         this.creative = creative;
+        this.adRequestId = "abc";
     }
 
     public MockAd(int placementId, SACreative creative, Map<String, Object> requestOptions) {

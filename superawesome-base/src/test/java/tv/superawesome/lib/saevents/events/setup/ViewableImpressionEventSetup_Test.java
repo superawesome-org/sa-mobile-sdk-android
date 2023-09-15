@@ -36,6 +36,7 @@ public class ViewableImpressionEventSetup_Test extends Event_Test {
         Assert.assertEquals(123456, query.get("rnd"));
         Assert.assertEquals("1.0.0", query.get("sdkVersion"));
         Assert.assertEquals("superawesome.tv.saadloaderdemo", query.get("bundle"));
+        Assert.assertEquals("abc", query.get("adRequestId"));
 
         String stringData = query.getString("data");
 
