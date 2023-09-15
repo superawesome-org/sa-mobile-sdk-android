@@ -38,7 +38,7 @@ public class SAPGCloseEvent extends SAServerEvent {
                     "creative", ad.creative.id,
                     "type", "parentalGateClose")
                 ),
-                "ad_request_id", ad.adRequestId
+                "adRequestId", ad.adRequestId
             );
         } catch (Exception e) {
             return new JSONObject();
