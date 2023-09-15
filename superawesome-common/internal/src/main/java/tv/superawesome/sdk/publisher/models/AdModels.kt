@@ -22,6 +22,7 @@ data class Ad(
     val creative: Creative,
     @SerialName("is_vpaid") val isVpaid: Boolean = false,
     @SerialName("rnd") val random: String?,
+    @SerialName("ad_request_id") val adRequestId: String? = null,
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
     fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF

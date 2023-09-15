@@ -46,7 +46,7 @@ class EventRepository(
                 adResponse.placementId,
                 adResponse.ad.lineItemId,
                 adResponse.ad.creative.id,
-                type
+                type,
             )
             dataSource.event(adQueryMaker.makeEventQuery(adResponse, data))
         }
