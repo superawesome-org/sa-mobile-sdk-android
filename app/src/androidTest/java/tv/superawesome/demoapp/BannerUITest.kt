@@ -23,7 +23,7 @@ import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
-import tv.superawesome.sdk.publisher.common.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
