@@ -34,7 +34,6 @@ import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAImageUtils;
-import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.sdk.publisher.base.R;
 

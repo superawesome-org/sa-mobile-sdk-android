@@ -32,6 +32,11 @@ public class MockAd extends SAAd {
         this.creative = creative;
     }
 
+    public MockAd(int placementId, SACreative creative, String adRequestId) {
+        this(placementId, creative);
+        this.adRequestId = adRequestId;
+    }
+
     public MockAd(int placementId, SACreative creative, Map<String, Object> requestOptions) {
         this(placementId, creative);
         this.requestOptions = requestOptions;
