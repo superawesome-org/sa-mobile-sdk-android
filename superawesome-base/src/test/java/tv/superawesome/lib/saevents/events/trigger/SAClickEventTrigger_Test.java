@@ -1,8 +1,11 @@
 package tv.superawesome.lib.saevents.events.trigger;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,12 +21,12 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
  */
 
 public class SAClickEventTrigger_Test extends EventTrigger_Test {
-    
+
     final int timeout = 10;
     final long retryDelay = 0L;
 
     @Test
-    public void test_SAClickEvent_triggerEvent_WithDisplayAdSuccess () {
+    public void test_SAClickEvent_triggerEvent_WithDisplayAdSuccess() {
 
         // given
         SAAd ad = ModelFactory.createDisplayAd(1000);
@@ -35,7 +38,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
     }
 
     @Test
-    public void test_SAClickEvent_triggerEvent_WithDisplayAdFailure () {
+    public void test_SAClickEvent_triggerEvent_WithDisplayAdFailure() {
 
         // given
         SAAd ad = ModelFactory.createDisplayAd(1001);
@@ -47,7 +50,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
     }
 
     @Test
-    public void test_SAClickEvent_triggerEvent_WithVideoAdSuccess () {
+    public void test_SAClickEvent_triggerEvent_WithVideoAdSuccess() {
 
         // given
         SAAd ad = ModelFactory.createVideoAd(1000);
@@ -59,7 +62,7 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
     }
 
     @Test
-    public void test_SAClickEvent_triggerEvent_WithVideoAdFailure () {
+    public void test_SAClickEvent_triggerEvent_WithVideoAdFailure() {
 
         // given
         SAAd ad = ModelFactory.createVideoAd(1001);
@@ -84,7 +87,9 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
 
         // Then
         assertTrue(server.getLine().contains("openRtbPartnerId=xyz"));
-    }@Test
+    }
+
+    @Test
     public void test_givenNoQueryOptions_thenNotFilled() {
         // Given
         SAAd ad = ModelFactory.createVideoAd(1000);
@@ -95,5 +100,39 @@ public class SAClickEventTrigger_Test extends EventTrigger_Test {
 
         // Then
         assertFalse(server.getLine().contains("openRtbPartnerId=xyz"));
+    }
+
+    @Test
+    public void test_givenAdRequestId_In_Ad_then_Event_Contains_AdRequestId() {
+        // Given
+        SAAd ad = ModelFactory.createDisplayAd(1000, "abc");
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
+
+        // When
+        event.triggerEvent(Assert::assertTrue);
+
+        // Then
+        assertTrue(server.getLine().contains("adRequestId=abc"));
+    }
+
+    @Test
+    public void test_givenNoAdRequestId_In_Ad_then_Event_Does_Not_Contain_AdRequestId() {
+        // Given
+        SAAd ad = ModelFactory.createDisplayAd(1000);
+        SAClickEvent event = new SAClickEvent(ad, super.session, super.executor, timeout, retryDelay, true);
+
+        // When
+        event.triggerEvent(Assert::assertTrue);
+
+        // Then
+        JSONObject query = event.getQuery();
+
+        Throwable exception = assertThrows(
+            JSONException.class, () -> {
+                query.get("adRequestId");
+            }
+        );
+
+        Assert.assertEquals("No value for adRequestId", exception.getMessage());
     }
 }
