@@ -92,7 +92,6 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
             get(),
             get(),
             get(),
-            get(),
         )
     }
 
@@ -105,7 +104,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     factory { (adResponse: AdResponse) ->
         VideoEvents(
             adResponse,
-            get()
+            get(),
         )
     }
 
@@ -114,7 +113,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     factory<VastEventRepositoryType> { (vastAd: VastAd) ->
         VastEventRepository(
             vastAd,
-            get()
+            get(),
         )
     }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
@@ -128,7 +127,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
             get(),
             get(),
             get(),
-            get()
+            get(),
         )
     }
     single<ImageProviderType> { ImageProvider() }

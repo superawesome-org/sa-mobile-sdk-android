@@ -26,7 +26,6 @@ class AdQueryMaker(
     private val connectionProvider: ConnectionProviderType,
     private val numberGenerator: NumberGeneratorType,
     private val idGenerator: IdGeneratorType,
-    private val encoder: EncoderType,
     private val json: Json,
     private val locale: Locale,
     private val timeProvider: TimeProviderType,
@@ -40,7 +39,7 @@ class AdQueryMaker(
             bundle = sdkInfoType.bundle,
             name = sdkInfoType.name,
             dauId = idGenerator.findDauId(),
-            ct = connectionProvider.findConnectionType(),
+            ct = connectionProvider.findConnectionType().ordinal,
             lang = locale.toString(),
             device = device.genericType.name,
             pos = request.pos,
@@ -61,7 +60,7 @@ class AdQueryMaker(
             bundle = sdkInfoType.bundle,
             creative = adResponse.ad.creative.id,
             lineItem = adResponse.ad.lineItemId,
-            ct = connectionProvider.findConnectionType(),
+            ct = connectionProvider.findConnectionType().ordinal,
             sdkVersion = sdkInfoType.version,
             rnd = adResponse.ad.random ?: "",
             type = null,
@@ -78,7 +77,7 @@ class AdQueryMaker(
             bundle = sdkInfoType.bundle,
             creative = adResponse.ad.creative.id,
             lineItem = adResponse.ad.lineItemId,
-            ct = connectionProvider.findConnectionType(),
+            ct = connectionProvider.findConnectionType().ordinal,
             sdkVersion = sdkInfoType.version,
             rnd = adResponse.ad.random ?: "",
             type = EventType.ImpressionDownloaded,
@@ -95,7 +94,7 @@ class AdQueryMaker(
             bundle = sdkInfoType.bundle,
             creative = adResponse.ad.creative.id,
             lineItem = adResponse.ad.lineItemId,
-            ct = connectionProvider.findConnectionType(),
+            ct = connectionProvider.findConnectionType().ordinal,
             sdkVersion = sdkInfoType.version,
             rnd = adResponse.ad.random ?: "",
             type = null,
@@ -113,7 +112,7 @@ class AdQueryMaker(
                 bundle = sdkInfoType.bundle,
                 creative = adResponse.ad.creative.id,
                 lineItem = adResponse.ad.lineItemId,
-                ct = connectionProvider.findConnectionType(),
+                ct = connectionProvider.findConnectionType().ordinal,
                 sdkVersion = sdkInfoType.version,
                 rnd = adResponse.ad.random ?: "",
                 type = eventData.type,
@@ -124,10 +123,8 @@ class AdQueryMaker(
             options = buildOptions(requestOptions = adResponse.requestOptions)
         )
 
-    private fun encodeData(eventData: EventData): String {
-        val dataAsJson = json.encodeToString(EventData.serializer(), eventData)
-        return encoder.encodeUri(dataAsJson)
-    }
+    private fun encodeData(eventData: EventData): String =
+        json.encodeToString(EventData.serializer(), eventData)
 
     private fun buildOptions(requestOptions: Map<String, Any>?): Map<String, Any> {
         val optionsDict = mutableMapOf<String, Any>()

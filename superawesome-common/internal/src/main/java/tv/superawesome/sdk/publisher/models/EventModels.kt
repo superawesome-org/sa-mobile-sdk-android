@@ -18,7 +18,7 @@ data class EventQuery(
     val bundle: String,
     val creative: Int,
     @SerialName("line_item") val lineItem: Int,
-    val ct: ConnectionType,
+    val ct: Int,
     val sdkVersion: String,
     val rnd: String,
     val type: EventType?,
