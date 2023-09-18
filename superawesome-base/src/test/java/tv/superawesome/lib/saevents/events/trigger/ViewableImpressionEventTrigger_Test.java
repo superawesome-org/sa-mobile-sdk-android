@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tv.superawesome.lib.saevents.events.SAImpressionEvent;
 import tv.superawesome.lib.saevents.events.SAViewableImpressionEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
