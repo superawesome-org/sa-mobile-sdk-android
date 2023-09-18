@@ -24,12 +24,27 @@ public class ModelFactory {
         return new MockAd(placementId, creative);
     }
 
+    public static SAAd createDisplayAd (int placementId, String adRequestId) {
+        SAMedia media = new MockMedia(null, "file.png");
+        SADetails details = new MockDetails(media);
+        SACreative creative = new MockCreative(SACreativeFormat.image, details);
+        return new MockAd(placementId, creative, adRequestId);
+    }
+
     public static SAAd createVideoAd (int placementId) {
         SAVASTAd savastAd = new MockVastAd(placementId);
         SAMedia media = new MockMedia(savastAd, "");
         SADetails details = new MockDetails(media);
         SACreative creative = new MockCreative(SACreativeFormat.video, details);
         return new MockAd(placementId, creative);
+    }
+
+    public static SAAd createVideoAd (int placementId, String adRequestId) {
+        SAVASTAd savastAd = new MockVastAd(placementId);
+        SAMedia media = new MockMedia(savastAd, "");
+        SADetails details = new MockDetails(media);
+        SACreative creative = new MockCreative(SACreativeFormat.video, details);
+        return new MockAd(placementId, creative, adRequestId);
     }
 
     public static SAAd createVideoAd (int placementId, Map<String, Object> options) {

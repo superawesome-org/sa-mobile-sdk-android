@@ -28,13 +28,15 @@ public class SAClickEvent extends SAServerEvent {
     public JSONObject getQuery () {
         try {
             return SAJsonParser.newObject(
-                    "placement", ad.placementId,
-                    "bundle", session.getPackageName(),
-                    "creative", ad.creative.id,
-                    "line_item", ad.lineItemId,
-                    "ct", session.getConnectionType().ordinal(),
-                    "sdkVersion", session.getVersion(),
-                    "rnd", session.getCachebuster());
+                "placement", ad.placementId,
+                "bundle", session.getPackageName(),
+                "creative", ad.creative.id,
+                "line_item", ad.lineItemId,
+                "ct", session.getConnectionType().ordinal(),
+                "sdkVersion", session.getVersion(),
+                "rnd", session.getCachebuster(),
+                "adRequestId", ad.adRequestId
+            );
         } catch (Exception e) {
             return new JSONObject();
         }

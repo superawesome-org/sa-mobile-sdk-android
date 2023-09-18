@@ -28,15 +28,17 @@ public class SAPGOpenEvent extends SAServerEvent {
     public JSONObject getQuery() {
         try {
             return SAJsonParser.newObject(
-                    "sdkVersion", session.getVersion(),
-                    "ct", session.getConnectionType(),
-                    "bundle", session.getPackageName(),
-                    "rnd", session.getCachebuster(),
-                    "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
-                            "placement", ad.placementId,
-                            "line_item", ad.lineItemId,
-                            "creative", ad.creative.id,
-                            "type", "parentalGateOpen")));
+                "sdkVersion", session.getVersion(),
+                "ct", session.getConnectionType(),
+                "bundle", session.getPackageName(),
+                "rnd", session.getCachebuster(),
+                "data", SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
+                    "placement", ad.placementId,
+                    "line_item", ad.lineItemId,
+                    "creative", ad.creative.id,
+                    "type", "parentalGateOpen")),
+                "adRequestId", ad.adRequestId
+            );
         } catch (Exception e) {
             return new JSONObject();
         }
