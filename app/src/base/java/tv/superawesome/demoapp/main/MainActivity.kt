@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import tv.superawesome.demoapp.Environment
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
+import tv.superawesome.demoapp.management.AddPlacementDialogFragment
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.settings.DataStore
@@ -48,7 +49,15 @@ class MainActivity : FragmentActivity() {
                 updateSettings()
             }
         }
+        binding.addPlacementButton.setOnClickListener {
+            val dialog = AddPlacementDialogFragment()
+            dialog.show(supportFragmentManager, "addPlacement")
+            dialog.onSubmitListener = {
+                viewModel.insertPlacementItem(it)
+            }
+        }
         binding.settingsButton.contentDescription = "AdList.Buttons.Settings"
+        binding.addPlacementButton.contentDescription = "AdList.Buttons.AddPlacement"
     }
 
     private fun initUI() {

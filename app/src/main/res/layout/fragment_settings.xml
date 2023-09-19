@@ -24,8 +24,8 @@
 
         <ImageButton
             android:id="@+id/resetButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/close"
             android:padding="16dp"
@@ -35,8 +35,8 @@
 
         <ImageButton
             android:id="@+id/closeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/close"
             android:padding="16dp"
