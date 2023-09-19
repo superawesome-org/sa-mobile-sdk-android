@@ -11,14 +11,16 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.databinding.FragmentAddPlacementBinding
+import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 
 class AddPlacementDialogFragment : DialogFragment() {
     var onSubmitListener: ((PlacementItem) -> Unit)? = null
 
     private var _binding: FragmentAddPlacementBinding? = null
-    private var isPlacementNameFieldValid = false
-    private var isPlacementIdFieldValid = false
+    private var isPlacementNameFieldPopulated = false
+    private var isPlacementIdFieldPopulated = false
+    private var isPlacementTypeSelected = false
     private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -72,17 +74,28 @@ class AddPlacementDialogFragment : DialogFragment() {
                 placementItem.creativeId = creativeId.toString().toInt()
             }
 
+            when (binding.placementTypeRadioGroup.checkedRadioButtonId) {
+                R.id.bannerTypeRadioButton -> placementItem.type = FeatureType.BANNER
+                R.id.interstitialTypeRadioButton -> placementItem.type = FeatureType.INTERSTITIAL
+                R.id.videoTypeRadioButton -> placementItem.type = FeatureType.VIDEO
+            }
+
             onSubmitListener?.invoke(placementItem)
             dismiss()
         }
 
         binding.placementNameInput.doAfterTextChanged {
-            isPlacementNameFieldValid = binding.placementNameInput.text.isNotBlank()
+            isPlacementNameFieldPopulated = binding.placementNameInput.text.isNotBlank()
             checkRequiredFields()
         }
 
         binding.placementIdInput.doAfterTextChanged {
-            isPlacementIdFieldValid = binding.placementIdInput.text.isNotBlank()
+            isPlacementIdFieldPopulated = binding.placementIdInput.text.isNotBlank()
+            checkRequiredFields()
+        }
+
+        binding.placementTypeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            isPlacementTypeSelected = true
             checkRequiredFields()
         }
 
@@ -92,6 +105,8 @@ class AddPlacementDialogFragment : DialogFragment() {
     }
 
     private fun checkRequiredFields() {
-        binding.addAdButton.isEnabled = isPlacementNameFieldValid && isPlacementIdFieldValid
+        binding.addAdButton.isEnabled = isPlacementNameFieldPopulated
+            && isPlacementIdFieldPopulated
+            && isPlacementTypeSelected
     }
 }
