@@ -70,19 +70,19 @@ class AddPlacementDialogFragment : DialogFragment() {
 
             val placementItem = PlacementItem()
 
-            if(placementName.isNotBlank()) {
+            if (placementName.isNotBlank()) {
                 placementItem.name = placementName.toString()
             }
 
-            if(placementId.isNotBlank()) {
+            if (placementId.isNotBlank()) {
                 placementItem.placementId = placementId.toString().toInt()
             }
 
-            if(lineItemId.isNotBlank()) {
+            if (lineItemId.isNotBlank()) {
                 placementItem.lineItemId = lineItemId.toString().toInt()
             }
 
-            if(creativeId.isNotBlank()) {
+            if (creativeId.isNotBlank()) {
                 placementItem.creativeId = creativeId.toString().toInt()
             }
 
