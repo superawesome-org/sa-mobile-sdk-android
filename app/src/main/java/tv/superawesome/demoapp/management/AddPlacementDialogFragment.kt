@@ -55,11 +55,11 @@ class AddPlacementDialogFragment : DialogFragment() {
         binding.lineItemIdIdInput.contentDescription = "AddPlacementView.EditText.LineItemId"
         binding.creativeIdIdInput.contentDescription = "AddPlacementView.EditText.CreativeId"
 
-        binding.bannerTypeRadioButton.contentDescription = "AddPlacementView.RadioButton.Banner"
-        binding.interstitialTypeRadioButton.contentDescription = "AddPlacementView.RadioButton.Interstitial"
-        binding.videoTypeRadioButton.contentDescription = "AddPlacementView.RadioButton.Video"
+        binding.bannerTypeRadioButton.contentDescription = "AddPlacementView.RadioButtons.Banner"
+        binding.interstitialTypeRadioButton.contentDescription = "AddPlacementView.RadioButtons.Interstitial"
+        binding.videoTypeRadioButton.contentDescription = "AddPlacementView.RadioButtons.Video"
 
-        binding.addPlacementButton.contentDescription = "AddPlacementView.Button.AddPlacement"
+        binding.addPlacementButton.contentDescription = "AddPlacementView.Buttons.AddPlacement"
         binding.closeButton.contentDescription = "AddPlacementView.Buttons.Close"
 
         binding.addPlacementButton.setOnClickListener {
