@@ -50,7 +50,7 @@ class MainViewModel : ViewModel() {
         val placements = mutableListOf<PlacementItem>()
         items.value?.let { placements.addAll(it) }
 
-        val insertionIndex = placements.indexOfFirst { it.type ==  placementItem.type}
+        val insertionIndex = placements.indexOfFirst { it.type ==  placementItem.type }
 
         if (insertionIndex >= 0) {
             placements.add(insertionIndex, placementItem)
