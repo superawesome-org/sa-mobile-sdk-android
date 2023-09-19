@@ -52,7 +52,7 @@ class MainViewModel : ViewModel() {
 
         val insertionIndex = placements.indexOfFirst { it.type ==  placementItem.type}
 
-        if(insertionIndex >= 0) {
+        if (insertionIndex >= 0) {
             placements.add(insertionIndex, placementItem)
         }
 
