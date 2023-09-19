@@ -107,7 +107,7 @@ class AddPlacementDialogFragment : DialogFragment() {
         }
 
         binding.placementTypeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            isPlacementTypeSelected = true
+            isPlacementTypeSelected = checkedId != -1
             checkRequiredFields()
         }
 
