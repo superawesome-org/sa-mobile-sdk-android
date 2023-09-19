@@ -50,7 +50,19 @@ class AddPlacementDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         view.contentDescription = "AddPlacementView"
 
-        binding.addAdButton.setOnClickListener {
+        binding.placementNameInput.contentDescription = "AddPlacementView.EditText.PlacementName"
+        binding.placementIdInput.contentDescription = "AddPlacementView.EditText.PlacementId"
+        binding.lineItemIdIdInput.contentDescription = "AddPlacementView.EditText.LineItemId"
+        binding.creativeIdIdInput.contentDescription = "AddPlacementView.EditText.CreativeId"
+
+        binding.bannerTypeRadioButton.contentDescription = "AddPlacementView.RadioButton.Banner"
+        binding.interstitialTypeRadioButton.contentDescription = "AddPlacementView.RadioButton.Interstitial"
+        binding.videoTypeRadioButton.contentDescription = "AddPlacementView.RadioButton.Video"
+
+        binding.addPlacementButton.contentDescription = "AddPlacementView.Button.AddPlacement"
+        binding.closeButton.contentDescription = "AddPlacementView.Buttons.Close"
+
+        binding.addPlacementButton.setOnClickListener {
             val placementName = binding.placementNameInput.text
             val placementId = binding.placementIdInput.text
             val lineItemId = binding.lineItemIdIdInput.text
@@ -105,7 +117,7 @@ class AddPlacementDialogFragment : DialogFragment() {
     }
 
     private fun checkRequiredFields() {
-        binding.addAdButton.isEnabled = isPlacementNameFieldPopulated
+        binding.addPlacementButton.isEnabled = isPlacementNameFieldPopulated
             && isPlacementIdFieldPopulated
             && isPlacementTypeSelected
     }
