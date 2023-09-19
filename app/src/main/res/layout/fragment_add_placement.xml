@@ -118,19 +118,19 @@
                 android:id="@+id/bannerTypeRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Banner" />
+                android:text="@string/add_placement_dialog_banner_radio_button" />
 
             <RadioButton
                 android:id="@+id/interstitialTypeRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Interstitial" />
+                android:text="@string/add_placement_dialog_interstitial_radio_button" />
 
             <RadioButton
                 android:id="@+id/videoTypeRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Video" />
+                android:text="@string/add_placement_dialog_video_radio_button" />
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,4 +45,17 @@ class MainViewModel : ViewModel() {
         features.forEach { placements.addAll(it.placements) }
         items.postValue(placements)
     }
+
+    fun insertPlacementItem(placementItem: PlacementItem) {
+        val placements = mutableListOf<PlacementItem>()
+        items.value?.let { placements.addAll(it) }
+
+        val insertionIndex = placements.indexOfFirst { it.type ==  placementItem.type}
+
+        if(insertionIndex >= 0) {
+            placements.add(insertionIndex, placementItem)
+        }
+
+        items.postValue(placements)
+    }
 }

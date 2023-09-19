@@ -32,11 +32,14 @@
     <string name="settings_mute">Mute on start</string>
     <string name="settings_video_warn_dialog">Leave Video Warning</string>
     <string name="settings_close_end">Close At End</string>
+
     <string name="add_placement_dialog_title">Add Placement</string>
     <string name="add_placement_dialog_button">Add Ad</string>
     <string name="add_placement_dialog_placement_name_field_hint">Placement Name</string>
     <string name="add_placement_dialog_placementId_field_hint">Placement Id</string>
     <string name="add_placement_dialog_lineitemId_field_hint">Line Item Id</string>
     <string name="add_placement_dialog_creativeId_field_hint">Creative Id</string>
-
+    <string name="add_placement_dialog_banner_radio_button">Banner</string>
+    <string name="add_placement_dialog_interstitial_radio_button">Interstitial</string>
+    <string name="add_placement_dialog_video_radio_button">Video</string>
 </resources>

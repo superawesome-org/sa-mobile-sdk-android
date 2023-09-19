@@ -52,7 +52,9 @@ class MainActivity : FragmentActivity() {
         binding.addPlacementButton.setOnClickListener {
             val dialog = AddPlacementDialogFragment()
             dialog.show(supportFragmentManager, "add")
-            dialog.onDismissListener = {}
+            dialog.onSubmitListener = {
+                viewModel.insertPlacementItem(it)
+            }
         }
         binding.settingsButton.contentDescription = "AdList.Buttons.Settings"
         binding.addPlacementButton.contentDescription = "AdList.Buttons.AdPlacement"
