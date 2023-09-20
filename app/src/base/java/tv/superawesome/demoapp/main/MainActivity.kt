@@ -2,7 +2,6 @@ package tv.superawesome.demoapp.main
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import tv.superawesome.demoapp.Environment
@@ -13,7 +12,6 @@ import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.settings.SettingsDialogFragment
-import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVersion
@@ -133,23 +131,21 @@ class MainActivity : FragmentActivity() {
         Log.i(TAG, "updateSettings")
 
         val settings = DataStore.data
-        val environment = if ((application as MyApplication).environment == Environment.UITesting)
-            SAConfiguration.UITESTING else SAConfiguration.PRODUCTION
 
         binding.bannerView2.setBumperPage(settings.bumperEnabled)
         binding.bannerView2.setParentalGate(settings.parentalEnabled)
-        binding.bannerView2.setConfiguration(environment)
+        binding.bannerView2.setConfiguration(settings.environment)
 
         SAInterstitialAd.setBumperPage(settings.bumperEnabled)
         SAInterstitialAd.setParentalGate(settings.parentalEnabled)
-        SAInterstitialAd.setConfiguration(environment)
+        SAInterstitialAd.setConfiguration(settings.environment)
 
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
         SAVideoAd.setMuteOnStart(settings.muteOnStart)
         SAVideoAd.setCloseButtonWarning(settings.videoWarnOnClose)
         SAVideoAd.setCloseAtEnd(settings.closeAtEnd)
-        SAVideoAd.setConfiguration(environment)
+        SAVideoAd.setConfiguration(settings.environment)
 
         when (settings.closeButtonState) {
             CloseButtonState.VisibleImmediately -> {
