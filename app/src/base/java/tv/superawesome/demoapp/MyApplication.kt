@@ -6,9 +6,6 @@ import tv.superawesome.sdk.publisher.AwesomeAds
 
 class MyApplication : MultiDexApplication() {
 
-    var environment: Environment = Environment.Production
-        private set
-
     override fun onCreate() {
         super.onCreate()
 
@@ -19,5 +16,11 @@ class MyApplication : MultiDexApplication() {
 
     fun setupUITest() {
         environment = Environment.UITesting
+    }
+
+    companion object {
+        var environment: Environment = Environment.Production
+            private set
+
     }
 }

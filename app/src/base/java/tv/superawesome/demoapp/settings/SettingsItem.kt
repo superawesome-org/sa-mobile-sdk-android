@@ -1,9 +1,12 @@
 package tv.superawesome.demoapp.settings
 
+import tv.superawesome.demoapp.Environment
+import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 enum class Settings(val label: String) {
+    Environment("Environment"),
     CloseButton("Close button"),
     BumperPage("Bumper page"),
     ParentalGate("Parental gate"),
@@ -13,6 +16,18 @@ enum class Settings(val label: String) {
     CloseAtEnd("Close at the end");
 
     fun options(): List<SettingsItemOption<Any>> = when (this) {
+        Environment -> listOf(
+            SettingsItemOption(
+                "Staging",
+                "SettingsItem.Buttons.Environment.Staging",
+                SAConfiguration.STAGING,
+            ),
+            SettingsItemOption(
+                "Production",
+                "SettingsItem.Buttons.Environment.Production",
+                SAConfiguration.PRODUCTION,
+            )
+        )
         CloseButton -> listOf(
             SettingsItemOption(
                 "No delay",
@@ -81,11 +96,18 @@ data class SettingsData(
 )
 
 object DataStore {
-    var data = SettingsData()
+    var data = SettingsData(
+        environment = when (MyApplication.environment) {
+            Environment.Production -> SAConfiguration.PRODUCTION
+            Environment.Staging -> SAConfiguration.STAGING
+            Environment.UITesting -> SAConfiguration.UITESTING
+        }
+    )
         private set
 
     fun updateSettings(item: Settings, value: Any) {
         data = when (item) {
+            Settings.Environment -> data.copy(environment = value as SAConfiguration)
             Settings.CloseButton -> data.copy(closeButtonState = value as CloseButtonState)
             Settings.BumperPage -> data.copy(bumperEnabled = value as Boolean)
             Settings.ParentalGate -> data.copy(parentalEnabled = value as Boolean)
@@ -97,10 +119,17 @@ object DataStore {
     }
 
     fun reset() {
-        data = SettingsData()
+        data = SettingsData(
+            environment = when (MyApplication.environment) {
+                Environment.Production -> SAConfiguration.PRODUCTION
+                Environment.Staging -> SAConfiguration.STAGING
+                Environment.UITesting -> SAConfiguration.UITESTING
+            }
+        )
     }
 
     fun toList(): List<SettingsItem<Any>> = listOf(
+        SettingsItem(Settings.Environment, data.environment),
         SettingsItem(Settings.CloseButton, data.closeButtonState),
         SettingsItem(Settings.BumperPage, data.bumperEnabled),
         SettingsItem(Settings.ParentalGate, data.parentalEnabled),
