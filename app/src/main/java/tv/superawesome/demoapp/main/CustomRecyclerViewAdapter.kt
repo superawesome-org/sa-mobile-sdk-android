@@ -1,5 +1,7 @@
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tv.superawesome.demoapp.R
@@ -39,6 +41,7 @@ internal class CustomRecyclerViewAdapter: RecyclerView.Adapter<CustomRecyclerVie
         val item = data[position]
         val title = holder.rowPlacementBinding.labelTextView
         val icon = holder.rowPlacementBinding.typeIcon
+        val userCreatedIcon = holder.rowPlacementBinding.userCreatedIcon
 
         val titleText = if (item.lineItemId != null && item.creativeId != null)
             "${item.placementId} - ${item.lineItemId} - ${item.creativeId}  | ${item.name}" else
@@ -48,6 +51,11 @@ internal class CustomRecyclerViewAdapter: RecyclerView.Adapter<CustomRecyclerVie
         title.setBackgroundColor(Color.WHITE)
 
         icon.setImageResource(typeToResource(item.type))
+
+        if(item.isUserCreated) { userCreatedIcon.visibility = VISIBLE } else {
+            userCreatedIcon.visibility = GONE
+        }
+
         holder.itemView.contentDescription = titleText
 
         holder.itemView.setOnClickListener {

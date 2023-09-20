@@ -48,7 +48,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private val userPlacements: List<PlacementItem>?
-        get() = items.value?.filter { it.isUserAdded }
+        get() = items.value?.filter { it.isUserCreated }
 
     private val cachedUserPlacements: List<PlacementItem>
         get() = Json.decodeFromString<List<PlacementItem>>(

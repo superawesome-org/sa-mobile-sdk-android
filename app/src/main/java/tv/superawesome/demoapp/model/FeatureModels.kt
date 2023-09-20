@@ -28,7 +28,7 @@ data class PlacementItem(
     var lineItemId: Int? = null,
     var creativeId: Int? = null,
     var type: FeatureType = FeatureType.BANNER,
-    var isUserAdded: Boolean = false,
+    var isUserCreated: Boolean = false,
     var creationTimestamp: Long = System.currentTimeMillis()
 ) {
     fun isFull(): Boolean = lineItemId != null && creativeId != null
