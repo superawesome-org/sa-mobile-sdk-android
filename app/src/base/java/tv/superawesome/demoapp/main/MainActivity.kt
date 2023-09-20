@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
-import tv.superawesome.demoapp.Environment
-import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
 import tv.superawesome.demoapp.management.AddPlacementDialogFragment
 import tv.superawesome.demoapp.model.FeatureType

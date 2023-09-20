@@ -14,13 +14,19 @@ class MyApplication : MultiDexApplication() {
         AwesomeAds.init(this, true)
     }
 
+    @Suppress("unused")
+    fun switchEnvironment(environment: SDKEnvironment) {
+        /* no-op */
+    }
+
     fun setupUITest() {
-        environment = Environment.UITesting
+        environment = SDKEnvironment.UITesting
     }
 
     companion object {
-        var environment: Environment = Environment.Production
+        var environment: SDKEnvironment = SDKEnvironment.Production
             private set
 
+        val flavor = SDKFlavor.BASE
     }
 }
