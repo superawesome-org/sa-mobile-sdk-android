@@ -68,7 +68,7 @@ class AddPlacementDialogFragment : DialogFragment() {
             val lineItemId = binding.lineItemIdIdInput.text
             val creativeId = binding.creativeIdIdInput.text
 
-            val placementItem = PlacementItem()
+            val placementItem = PlacementItem(isUserAdded = true)
 
             if (placementName.isNotBlank()) {
                 placementItem.name = placementName.toString()
