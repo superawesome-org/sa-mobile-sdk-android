@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import tv.superawesome.demoapp.Environment
 import tv.superawesome.demoapp.MyApplication
@@ -79,6 +80,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun setupListView() {
+        val layoutManager = LinearLayoutManager(this)
         adapter = CustomRecyclerViewAdapter()
         adapter.onPlacementRowClick = {
             when (it.type) {
@@ -88,7 +90,13 @@ class MainActivity : FragmentActivity() {
             }
         }
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                baseContext,
+                layoutManager.orientation
+            )
+        )
     }
 
     private fun onBannerClick(item: PlacementItem) {
