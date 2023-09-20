@@ -1,10 +1,11 @@
 package tv.superawesome.demoapp.main
 
+import CustomRecyclerViewAdapter
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import tv.superawesome.demoapp.Environment
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
@@ -22,7 +23,7 @@ import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 @Suppress("TooManyFunctions")
 class MainActivity : FragmentActivity() {
-    private lateinit var adapter: CustomListAdapter
+    private lateinit var adapter: CustomRecyclerViewAdapter
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
@@ -78,17 +79,16 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun setupListView() {
-        adapter = CustomListAdapter(this)
-        binding.listView.adapter = adapter
-
-        binding.listView.setOnItemClickListener { _, _, position, _ ->
-            val item = adapter.getItem(position)
-            when (item.type) {
-                FeatureType.BANNER -> onBannerClick(item)
-                FeatureType.INTERSTITIAL -> onInterstitialClick(item)
-                FeatureType.VIDEO -> onVideoClick(item)
+        adapter = CustomRecyclerViewAdapter()
+        adapter.onPlacementRowClick = {
+            when (it.type) {
+                FeatureType.BANNER -> onBannerClick(it)
+                FeatureType.INTERSTITIAL -> onInterstitialClick(it)
+                FeatureType.VIDEO -> onVideoClick(it)
             }
         }
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun onBannerClick(item: PlacementItem) {
