@@ -18,13 +18,21 @@ import tv.superawesome.demoapp.repository.FeaturesRepository
 import java.lang.Integer.max
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private var featuresRepository: FeaturesRepository = FeaturesRepository()
+    private val featuresRepository: FeaturesRepository = FeaturesRepository()
+    private val userPlacementsCache = UserPlacementsCache(application.applicationContext)
+    private val userPlacements: List<PlacementItem>?
+        get() = items.value?.filter { it.isUserCreated }
+
+    private val cachedUserPlacements: List<PlacementItem>
+        get() = Json.decodeFromString<List<PlacementItem>>(userPlacementsCache.userPlacements)
+            .sortedBy { it.creationTimestamp }
+
+    private val hasCachedUserPlacements: Boolean
+        get() = cachedUserPlacements.isNotEmpty()
 
     val items: MutableLiveData<ArrayList<PlacementItem>> by lazy {
         MutableLiveData<ArrayList<PlacementItem>>()
     }
-
-    private val userPlacementsCache = UserPlacementsCache(application.applicationContext)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -32,28 +40,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val result = featuresRepository.fetchAllFeatures()
                 updateData(result.optValue)
             } catch (error: Throwable) {
-                Log.e("SATestApp", "Error loading placements: ${error.message}")
-                updateData(
-                    arrayListOf(
-                        FeatureItem(
-                            FeatureType.BANNER,
-                            listOf(
-                                PlacementItem(name = "Error loading placements"),
-                            ),
+                if(hasCachedUserPlacements) {
+                    // Still load the cached placements
+                    updateData(arrayListOf())
+                } else {
+                    Log.e("SATestApp", "Error loading placements: ${error.message}")
+                    updateData(
+                        arrayListOf(
+                            FeatureItem(
+                                FeatureType.BANNER,
+                                listOf(
+                                    PlacementItem(name = "Error loading placements"),
+                                ),
+                            )
                         )
                     )
-                )
+                }
             }
         }
     }
-
-    private val userPlacements: List<PlacementItem>?
-        get() = items.value?.filter { it.isUserCreated }
-
-    private val cachedUserPlacements: List<PlacementItem>
-        get() = Json.decodeFromString<List<PlacementItem>>(
-            userPlacementsCache.userPlacements
-        ).sortedBy { it.creationTimestamp }
 
     private fun updateData(features: List<FeatureItem>?) {
         if (features == null) return
