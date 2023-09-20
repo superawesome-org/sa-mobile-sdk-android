@@ -88,7 +88,6 @@ class BannerViewTests: KoinTest {
                     ),
                     bumper = false,
                     referral = null,
-                    isKSF = false,
                 ),
                 isVpaid = false,
                 random = "",
