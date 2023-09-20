@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.admob.AdMobActivity
 import tv.superawesome.demoapp.databinding.FragmentSettingsBinding
@@ -58,6 +59,10 @@ class SettingsDialogFragment : DialogFragment() {
 
         adapter.onItemSelected = { item, option ->
             DataStore.updateSettings(item.item, option)
+        }
+        adapter.onEnvironmentSelected = { value ->
+            val application = view.context.applicationContext as MyApplication
+            application.switchEnvironment(value)
         }
         updateAdapter()
 

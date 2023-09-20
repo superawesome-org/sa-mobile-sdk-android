@@ -8,13 +8,17 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.R
+import tv.superawesome.demoapp.SDKEnvironment
+import tv.superawesome.demoapp.SDKFlavor
 
 class SettingsListAdapter :
     RecyclerView.Adapter<SettingsListAdapter.ViewHolder>() {
 
     private var dataSet: List<SettingsItem<Any>> = emptyList()
     var onItemSelected: ((item: SettingsItem<Any>, value: Any) -> Unit)? = null
+    var onEnvironmentSelected: ((value: SDKEnvironment) -> Unit)? = null
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(dataSet: List<SettingsItem<Any>>) {
@@ -24,7 +28,8 @@ class SettingsListAdapter :
 
     class ViewHolder(
         view: View,
-        val onItemSelected: (item: SettingsItem<Any>, option: Any) -> Unit
+        val onItemSelected: (item: SettingsItem<Any>, option: Any) -> Unit,
+        val onEnvironmentSelected: ((item: SettingsItem<SDKEnvironment>, option: SDKEnvironment) -> Unit),
     ) : RecyclerView.ViewHolder(view) {
         private val labelTextView: TextView
         private val buttonOne: MaterialButton
@@ -59,6 +64,24 @@ class SettingsListAdapter :
             }
         }
 
+        fun updateEnvironmentToggle(item: SettingsItem<SDKEnvironment>) {
+            val options = item.item.options()
+            labelTextView.text = item.item.label
+            updateButton(buttonOne, item as SettingsItem<Any>, options[0]) {
+                onEnvironmentSelected(
+                    item,
+                    options[0].value as SDKEnvironment,
+                )
+            }
+
+            updateButton(buttonTwo, item as SettingsItem<Any>, options[1]) {
+                onEnvironmentSelected(
+                    item,
+                    options[1].value as SDKEnvironment,
+                )
+            }
+        }
+
         private fun updateButton(
             button: MaterialButton,
             item: SettingsItem<Any>,
@@ -78,9 +101,14 @@ class SettingsListAdapter :
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.settings_list_item, viewGroup, false)
 
-        return ViewHolder(view) { item, option ->
-            onItemSelected?.invoke(item, option)
-        }
+        return ViewHolder(view,
+            onItemSelected = { item, option ->
+                onItemSelected?.invoke(item, option)
+            },
+            onEnvironmentSelected = { _, option ->
+                onEnvironmentSelected?.invoke(option)
+            },
+        )
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -88,5 +116,15 @@ class SettingsListAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataSet[position]
         holder.update(item)
+
+        if (MyApplication.flavor == SDKFlavor.COMMON) {
+            if (position == 0) {
+                holder.updateEnvironmentToggle(item as SettingsItem<SDKEnvironment>)
+            } else {
+                holder.update(item)
+            }
+        } else {
+            holder.update(item)
+        }
     }
 }

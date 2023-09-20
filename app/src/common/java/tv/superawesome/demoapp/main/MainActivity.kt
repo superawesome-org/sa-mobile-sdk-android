@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
+import tv.superawesome.demoapp.MyApplication
+import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
@@ -13,6 +15,7 @@ import tv.superawesome.demoapp.settings.SettingsDialogFragment
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.network.Environment
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
 
@@ -27,6 +30,14 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val environment = when(intent.getStringExtra("environment")) {
+            SDKEnvironment.UITesting.name -> SDKEnvironment.UITesting
+            SDKEnvironment.Staging.name -> SDKEnvironment.Staging
+            else -> SDKEnvironment.Production
+        }
+
+        MyApplication.initSDK(application, environment)
 
         initUI()
 
