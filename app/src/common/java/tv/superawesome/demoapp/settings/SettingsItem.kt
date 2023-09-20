@@ -17,15 +17,15 @@ enum class Settings(val label: String) {
     fun options(): List<SettingsItemOption<Any>> = when (this) {
         Environment -> listOf(
             SettingsItemOption(
+                "Production",
+                "SettingsItem.Buttons.Environment.Production",
+                SDKEnvironment.Production,
+            ),
+            SettingsItemOption(
                 "Staging",
                 "SettingsItem.Buttons.Environment.Staging",
                 SDKEnvironment.Staging,
             ),
-            SettingsItemOption(
-                "Production",
-                "SettingsItem.Buttons.Environment.Production",
-                SDKEnvironment.Production,
-            )
         )
         CloseButton -> listOf(
             SettingsItemOption(
