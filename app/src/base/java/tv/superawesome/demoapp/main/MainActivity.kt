@@ -6,10 +6,13 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import tv.superawesome.demoapp.Environment
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
+import tv.superawesome.demoapp.gestures.PlacementRowSwipeGesture
 import tv.superawesome.demoapp.management.AddPlacementDialogFragment
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
@@ -81,6 +84,16 @@ class MainActivity : FragmentActivity() {
 
     private fun setupListView() {
         val layoutManager = LinearLayoutManager(this)
+        val touchHelper = ItemTouchHelper(object: PlacementRowSwipeGesture() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                super.onSwiped(viewHolder, direction)
+                when(direction) {
+                    ItemTouchHelper.LEFT -> viewModel.removePlacementItem(
+                        viewHolder.adapterPosition
+                    )
+                }
+            }
+        })
 
         adapter = CustomRecyclerViewAdapter()
         adapter.setOnItemClickListener {
@@ -99,6 +112,7 @@ class MainActivity : FragmentActivity() {
                 layoutManager.orientation
             )
         )
+        touchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun onBannerClick(item: PlacementItem) {
