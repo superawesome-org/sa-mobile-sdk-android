@@ -5,5 +5,6 @@ package tv.superawesome.demoapp
  */
 enum class Environment {
     Production,
+    Staging,
     UITesting,
 }
