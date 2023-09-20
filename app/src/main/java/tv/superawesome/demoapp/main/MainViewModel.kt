@@ -50,7 +50,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val userPlacements: List<PlacementItem>?
         get() = items.value?.filter { it.isUserAdded }
 
-    private val cachedUserPlacement: List<PlacementItem>
+    private val cachedUserPlacements: List<PlacementItem>
         get() = Json.decodeFromString<List<PlacementItem>>(
             userPlacementsCache.userPlacements
         ).sortedBy { it.creationTimestamp }
@@ -59,7 +59,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (features == null) return
         val placements = ArrayList<PlacementItem>()
         features.forEach { placements.addAll(it.placements) }
-        cachedUserPlacement.forEach { placementItem ->
+        cachedUserPlacements.forEach { placementItem ->
             val insertionIndex = max(0, placements.indexOfFirst { it.type ==  placementItem.type })
             placements.add(insertionIndex, placementItem)
         }
