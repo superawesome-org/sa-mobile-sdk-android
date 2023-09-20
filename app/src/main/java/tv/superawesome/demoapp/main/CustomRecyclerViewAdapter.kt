@@ -9,12 +9,17 @@ import tv.superawesome.demoapp.model.PlacementItem
 
 internal class CustomRecyclerViewAdapter: RecyclerView.Adapter<CustomRecyclerViewAdapter.View>() {
 
-    var onPlacementRowClick: ((PlacementItem) -> Unit)? = null
-    private var data: List<PlacementItem> = emptyList()
+    private var data: ArrayList<PlacementItem> = ArrayList()
+    private var onItemClickListener: ((PlacementItem) -> Unit)? = null
+
     inner class View(val rowPlacementBinding: PlacementRowBinding)
         : RecyclerView.ViewHolder(rowPlacementBinding.root)
 
-    fun updateData(newData: List<PlacementItem>) {
+    fun setOnItemClickListener(listener: ((PlacementItem) -> Unit)?) {
+        onItemClickListener = listener
+    }
+
+    fun updateData(newData: ArrayList<PlacementItem>) {
         data = newData
     }
 
@@ -46,7 +51,7 @@ internal class CustomRecyclerViewAdapter: RecyclerView.Adapter<CustomRecyclerVie
         holder.itemView.contentDescription = titleText
 
         holder.itemView.setOnClickListener {
-            onPlacementRowClick?.invoke(item)
+            onItemClickListener?.invoke(item)
         }
     }
 

@@ -3,7 +3,7 @@ package tv.superawesome.demoapp.gestures
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class SwipeRightGesture: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+class CustomItemTouchHelper: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -13,6 +13,5 @@ class SwipeRightGesture: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        TODO("Not yet implemented")
     }
 }

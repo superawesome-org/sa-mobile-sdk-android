@@ -81,14 +81,16 @@ class MainActivity : FragmentActivity() {
 
     private fun setupListView() {
         val layoutManager = LinearLayoutManager(this)
+
         adapter = CustomRecyclerViewAdapter()
-        adapter.onPlacementRowClick = {
+        adapter.setOnItemClickListener {
             when (it.type) {
                 FeatureType.BANNER -> onBannerClick(it)
                 FeatureType.INTERSTITIAL -> onInterstitialClick(it)
                 FeatureType.VIDEO -> onVideoClick(it)
             }
         }
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addItemDecoration(

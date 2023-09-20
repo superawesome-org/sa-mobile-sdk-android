@@ -14,8 +14,8 @@ import tv.superawesome.demoapp.repository.FeaturesRepository
 class MainViewModel : ViewModel() {
     private var featuresRepository: FeaturesRepository = FeaturesRepository()
 
-    val items: MutableLiveData<List<PlacementItem>> by lazy {
-        MutableLiveData<List<PlacementItem>>()
+    val items: MutableLiveData<ArrayList<PlacementItem>> by lazy {
+        MutableLiveData<ArrayList<PlacementItem>>()
     }
 
     init {
@@ -26,7 +26,7 @@ class MainViewModel : ViewModel() {
             } catch (error: Throwable) {
                 Log.e("SATestApp", "Error loading placements: ${error.message}")
                 updateData(
-                    listOf(
+                    arrayListOf(
                         FeatureItem(
                             FeatureType.BANNER,
                             listOf(
@@ -41,21 +41,27 @@ class MainViewModel : ViewModel() {
 
     private fun updateData(features: List<FeatureItem>?) {
         if (features == null) return
-        val placements = mutableListOf<PlacementItem>()
+        val placements = ArrayList<PlacementItem>()
         features.forEach { placements.addAll(it.placements) }
         items.postValue(placements)
     }
 
     fun insertPlacementItem(placementItem: PlacementItem) {
-        val placements = mutableListOf<PlacementItem>()
-        items.value?.let { placements.addAll(it) }
-
+        val placements = items.value ?: ArrayList()
         val insertionIndex = placements.indexOfFirst { it.type ==  placementItem.type }
 
         if (insertionIndex >= 0) {
             placements.add(insertionIndex, placementItem)
+        } else {
+            placements.add(0, placementItem)
         }
 
         items.postValue(placements)
+    }
+
+    fun removePlacementItem(index: Int) {
+        val updated = items.value
+        updated?.removeAt(index)
+        items.postValue(updated)
     }
 }
