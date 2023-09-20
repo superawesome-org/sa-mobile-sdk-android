@@ -25,7 +25,6 @@ data class Ad(
     @SerialName("ad_request_id") val adRequestId: String? = null,
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
-    fun shouldShowPadlock(): Boolean = showPadlock && !creative.isKSF
 }
 data class AdQueryBundle(
     val parameters: AdQuery,
@@ -78,7 +77,7 @@ data class AdResponse(
     /**
      * Returns whether the ad should show a Padlock or not.
      */
-    fun shouldShowPadlock(): Boolean = ad.shouldShowPadlock()
+    fun shouldShowPadlock(): Boolean = ad.showPadlock
 
     /**
      * Returns `baseUrl` and `html` data to use in `WebView`.
