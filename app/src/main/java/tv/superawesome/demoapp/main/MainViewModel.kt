@@ -65,16 +65,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val placements = ArrayList<PlacementItem>()
         features.forEach { placements.addAll(it.placements) }
         cachedUserPlacements.forEach { placementItem ->
-            val insertionIndex = max(0, placements.indexOfFirst { it.type ==  placementItem.type })
-            placements.add(insertionIndex, placementItem)
+            insertPlacementItem(placementItem, placements)
         }
         items.postValue(placements)
     }
 
     fun insertPlacementItem(placementItem: PlacementItem) {
         val placements = items.value ?: ArrayList()
-        val insertionIndex = max(0, placements.indexOfFirst { it.type ==  placementItem.type })
-        placements.add(insertionIndex, placementItem)
+        insertPlacementItem(placementItem, placements)
         saveUserPlacements()
         items.postValue(placements)
     }
@@ -84,6 +82,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         placements?.removeAt(index)
         saveUserPlacements()
         items.postValue(placements)
+    }
+
+    private fun insertPlacementItem(item: PlacementItem,
+                                    placementItems: ArrayList<PlacementItem>) {
+
+        val insertionIndex = max(0, placementItems.indexOfFirst { it.type ==  item.type })
+        placementItems.add(insertionIndex, item)
     }
 
     private fun saveUserPlacements() {
