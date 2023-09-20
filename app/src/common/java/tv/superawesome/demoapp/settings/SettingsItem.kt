@@ -1,9 +1,11 @@
 package tv.superawesome.demoapp.settings
 
+import tv.superawesome.demoapp.MyApplication
+import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.sdk.publisher.models.CloseButtonState
-import tv.superawesome.sdk.publisher.network.Environment
 
 enum class Settings(val label: String) {
+    Environment("Environment"),
     CloseButton("Close button"),
     BumperPage("Bumper page"),
     ParentalGate("Parental gate"),
@@ -13,6 +15,18 @@ enum class Settings(val label: String) {
     CloseAtEnd("Close at the end");
 
     fun options(): List<SettingsItemOption<Any>> = when (this) {
+        Environment -> listOf(
+            SettingsItemOption(
+                "Staging",
+                "SettingsItem.Buttons.Environment.Staging",
+                SDKEnvironment.Staging,
+            ),
+            SettingsItemOption(
+                "Production",
+                "SettingsItem.Buttons.Environment.Production",
+                SDKEnvironment.Production,
+            )
+        )
         CloseButton -> listOf(
             SettingsItemOption(
                 "No delay",
@@ -113,7 +127,7 @@ enum class Settings(val label: String) {
 }
 
 data class SettingsData(
-    val environment: Environment = Environment.Production,
+    val environment: SDKEnvironment = SDKEnvironment.Production,
     val useBaseModule: Boolean = true,
     val closeButtonState: CloseButtonState = CloseButtonState.VisibleWithDelay,
     val bumperEnabled: Boolean = false,
@@ -125,11 +139,14 @@ data class SettingsData(
 )
 
 object DataStore {
-    var data = SettingsData()
+    var data = SettingsData(
+        environment = MyApplication.environment,
+    )
         private set
 
     fun updateSettings(item: Settings, value: Any) {
         data = when (item) {
+            Settings.Environment -> data.copy(environment = value as SDKEnvironment)
             Settings.CloseButton -> data.copy(closeButtonState = value as CloseButtonState)
             Settings.BumperPage -> data.copy(bumperEnabled = value as Boolean)
             Settings.ParentalGate -> data.copy(parentalEnabled = value as Boolean)
@@ -141,10 +158,13 @@ object DataStore {
     }
 
     fun reset() {
-        data = SettingsData()
+        data = SettingsData(
+            environment = MyApplication.environment,
+        )
     }
 
     fun toList(): List<SettingsItem<Any>> = listOf(
+        SettingsItem(Settings.Environment, data.environment),
         SettingsItem(Settings.CloseButton, data.closeButtonState),
         SettingsItem(Settings.BumperPage, data.bumperEnabled),
         SettingsItem(Settings.ParentalGate, data.parentalEnabled),

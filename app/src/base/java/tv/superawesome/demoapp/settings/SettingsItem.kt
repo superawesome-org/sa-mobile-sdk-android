@@ -1,6 +1,6 @@
 package tv.superawesome.demoapp.settings
 
-import tv.superawesome.demoapp.Environment
+import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.state.CloseButtonState
@@ -98,9 +98,9 @@ data class SettingsData(
 object DataStore {
     var data = SettingsData(
         environment = when (MyApplication.environment) {
-            Environment.Production -> SAConfiguration.PRODUCTION
-            Environment.Staging -> SAConfiguration.STAGING
-            Environment.UITesting -> SAConfiguration.UITESTING
+            SDKEnvironment.Production -> SAConfiguration.PRODUCTION
+            SDKEnvironment.Staging -> SAConfiguration.STAGING
+            SDKEnvironment.UITesting -> SAConfiguration.UITESTING
         }
     )
         private set
@@ -121,9 +121,9 @@ object DataStore {
     fun reset() {
         data = SettingsData(
             environment = when (MyApplication.environment) {
-                Environment.Production -> SAConfiguration.PRODUCTION
-                Environment.Staging -> SAConfiguration.STAGING
-                Environment.UITesting -> SAConfiguration.UITESTING
+                SDKEnvironment.Production -> SAConfiguration.PRODUCTION
+                SDKEnvironment.Staging -> SAConfiguration.STAGING
+                SDKEnvironment.UITesting -> SAConfiguration.UITESTING
             }
         )
     }
