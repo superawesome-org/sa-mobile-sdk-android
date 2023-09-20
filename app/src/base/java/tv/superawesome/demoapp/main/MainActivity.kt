@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
-import tv.superawesome.demoapp.gestures.PlacementRowSwipeGesture
+import tv.superawesome.demoapp.gestures.DeleteGesture
 import tv.superawesome.demoapp.management.AddPlacementDialogFragment
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
@@ -81,7 +81,7 @@ class MainActivity : FragmentActivity() {
 
     private fun setupListView() {
         val layoutManager = LinearLayoutManager(this)
-        val touchHelper = ItemTouchHelper(object: PlacementRowSwipeGesture() {
+        val touchHelper = ItemTouchHelper(object: DeleteGesture() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 super.onSwiped(viewHolder, direction)
                 when(direction) {
