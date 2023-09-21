@@ -72,7 +72,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <tv.superawesome.sdk.publisher.SABannerAd
-            android:id="@+id/bannerView2"
+            android:id="@+id/bannerView"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@color/color_primary"

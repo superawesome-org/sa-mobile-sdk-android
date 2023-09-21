@@ -34,6 +34,14 @@ class MainActivity : FragmentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val environment = when(intent.getStringExtra("environment")) {
+            SDKEnvironment.UITesting.name -> SDKEnvironment.UITesting
+            SDKEnvironment.Staging.name -> SDKEnvironment.Staging
+            else -> SDKEnvironment.Production
+        }
+
+        MyApplication.initSDK(application, environment)
+
         initUI()
 
         observeSettings()
@@ -112,15 +120,44 @@ class MainActivity : FragmentActivity() {
         touchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
+    private fun setListeners() {
+        SAVideoAd.setListener { placementId, event ->
+            updateMessage(placementId, event)
+            Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
+
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
+                SAVideoAd.play(placementId, this)
+            }
+        }
+
+        SAInterstitialAd.setListener { placementId, event ->
+            updateMessage(placementId, event)
+            Log.i(TAG, "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
+
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
+                SAInterstitialAd.play(placementId, this)
+            }
+        }
+
+        binding.bannerView.setListener { placementId, event ->
+            updateMessage(placementId, event)
+            Log.i(TAG, "bannerView event ${event.name} thread:${Thread.currentThread()}")
+
+            if (event == SAEvent.adLoaded && isPlayEnabled()) {
+                binding.bannerView.play(this)
+            }
+        }
+    }
+
     private fun onBannerClick(item: PlacementItem) {
         if (item.isFull()) {
-            binding.bannerView2.load(
+            binding.bannerView.load(
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
             )
         } else {
-            binding.bannerView2.load(item.placementId)
+            binding.bannerView.load(item.placementId)
         }
     }
 
@@ -155,9 +192,9 @@ class MainActivity : FragmentActivity() {
 
         val settings = DataStore.data
 
-        binding.bannerView2.setBumperPage(settings.bumperEnabled)
-        binding.bannerView2.setParentalGate(settings.parentalEnabled)
-        binding.bannerView2.setConfiguration(settings.environment)
+        binding.bannerView.setBumperPage(settings.bumperEnabled)
+        binding.bannerView.setParentalGate(settings.parentalEnabled)
+        binding.bannerView.setConfiguration(settings.environment)
 
         SAInterstitialAd.setBumperPage(settings.bumperEnabled)
         SAInterstitialAd.setParentalGate(settings.parentalEnabled)
@@ -180,35 +217,6 @@ class MainActivity : FragmentActivity() {
                 SAInterstitialAd.enableCloseButton()
             }
             CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
-        }
-    }
-
-    private fun setListeners() {
-        SAVideoAd.setListener { placementId, event ->
-            updateMessage(placementId, event)
-            Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
-
-            if (event == SAEvent.adLoaded && isPlayEnabled()) {
-                SAVideoAd.play(placementId, this)
-            }
-        }
-
-        SAInterstitialAd.setListener { placementId, event ->
-            updateMessage(placementId, event)
-            Log.i(TAG, "SAInterstitialAd event ${event.name} thread:${Thread.currentThread()}")
-
-            if (event == SAEvent.adLoaded && isPlayEnabled()) {
-                SAInterstitialAd.play(placementId, this)
-            }
-        }
-
-        binding.bannerView2.setListener { placementId, event ->
-            updateMessage(placementId, event)
-            Log.i(TAG, "bannerView2 event ${event.name} thread:${Thread.currentThread()}")
-
-            if (event == SAEvent.adLoaded && isPlayEnabled()) {
-                binding.bannerView2.play(this)
-            }
         }
     }
 
