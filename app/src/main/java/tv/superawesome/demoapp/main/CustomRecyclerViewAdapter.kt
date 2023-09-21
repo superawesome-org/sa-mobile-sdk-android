@@ -52,7 +52,7 @@ internal class CustomRecyclerViewAdapter: RecyclerView.Adapter<CustomRecyclerVie
 
         icon.setImageResource(typeToResource(item.type))
 
-        if(item.isUserCreated) { userCreatedIcon.visibility = VISIBLE } else {
+        if (item.isUserCreated) { userCreatedIcon.visibility = VISIBLE } else {
             userCreatedIcon.visibility = GONE
         }
 

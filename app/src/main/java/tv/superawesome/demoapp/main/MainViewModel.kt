@@ -40,7 +40,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val result = featuresRepository.fetchAllFeatures()
                 updateData(result.optValue)
             } catch (error: Throwable) {
-                if(hasCachedUserPlacements) {
+                if (hasCachedUserPlacements) {
                     // Still load the cached placements
                     updateData(arrayListOf())
                 } else {
