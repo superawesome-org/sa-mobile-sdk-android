@@ -36,7 +36,8 @@ public class SAImpressionEvent extends SAServerEvent {
                 "no_image", true,
                 "rnd", session.getCachebuster(),
                 "type", "impressionDownloaded",
-                "adRequestId", ad.adRequestId
+                "adRequestId", ad.adRequestId,
+                "openRtbPartnerId", ad.openRtbPartnerId
             );
         } catch (Exception e) {
             return new JSONObject();

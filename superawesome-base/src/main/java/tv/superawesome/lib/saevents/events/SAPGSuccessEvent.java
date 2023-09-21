@@ -37,7 +37,8 @@ public class SAPGSuccessEvent extends SAServerEvent {
                     "line_item", ad.lineItemId,
                     "creative", ad.creative.id,
                     "type", "parentalGateSuccess")),
-                "adRequestId", ad.adRequestId
+                "adRequestId", ad.adRequestId,
+                "openRtbPartnerId", ad.openRtbPartnerId
             );
         } catch (Exception e) {
             return new JSONObject();

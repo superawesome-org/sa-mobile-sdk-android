@@ -8,6 +8,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,10 +109,16 @@ public class SALoader {
     }
 
     public JSONObject getAwesomeAdsQuery(ISASession session) {
-        return getAwesomeAdsQuery(session, Collections.emptyMap());
+        return getAwesomeAdsQuery(session, Collections.emptyMap(), null);
     }
 
     public JSONObject getAwesomeAdsQuery(ISASession session, Map<String, Object> requestOptions) {
+        return getAwesomeAdsQuery(session, requestOptions, null);
+    }
+
+    public JSONObject getAwesomeAdsQuery(ISASession session,
+                                         Map<String, Object> requestOptions,
+                                         @Nullable final String openRtbPartnerId) {
         try {
             JSONObject query = SAJsonParser.newObject(
                     "test", session.getTestMode(),
@@ -130,7 +137,8 @@ public class SALoader {
                     "instl", session.getInstl().getValue(),
                     "w", session.getWidth(),
                     "h", session.getHeight(),
-                    "timestamp", clock.getTimestamp()
+                    "timestamp", clock.getTimestamp(),
+                    "openRtbPartnerId", openRtbPartnerId
                     // "preload", true
             );
             if (requestOptions != null) {
@@ -156,17 +164,48 @@ public class SALoader {
      *
      * @param placementId the AwesomeAds ID to load an ad for
      * @param session     the current session to load the placement Id for
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param listener    listener copy so that the loader can return the response to the library user
      */
     public void loadAd(final int placementId,
                        final ISASession session,
                        final Map<String, Object> options,
+                       @Nullable final String openRtbPartnerId,
                        final SALoaderInterface listener) {
 
         // get connection things to AwesomeAds
         Map<String, Object> requestOptions = buildRequestOptions(options);
         String endpoint = getAwesomeAdsEndpoint(session, placementId);
-        JSONObject query = getAwesomeAdsQuery(session, requestOptions);
+        JSONObject query = getAwesomeAdsQuery(session, requestOptions, openRtbPartnerId);
+        JSONObject header = getAwesomeAdsHeader(session);
+
+        // call to the load ad method
+        loadAd(endpoint, query, header, placementId, session.getConfiguration(), requestOptions, listener);
+    }
+
+    /**
+     * Shorthand method that takes a placement, line item id, creative Id and a session
+     *
+     * @param placementId the AwesomeAds ID to load an ad for
+     * @param lineItemId  Line Item ID for the given placementId
+     * @param creativeId  Creative ID for the given lineItemId
+     * @param session     the current session to load the placement Id for
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
+     * @param listener    listener copy so that the loader can return the response to the library user
+     */
+    public void loadAd(
+            int placementId,
+            int lineItemId,
+            int creativeId,
+            final ISASession session,
+            final Map<String, Object> options,
+            @Nullable final String openRtbPartnerId,
+            final SALoaderInterface listener) {
+
+        // get connection things to AwesomeAds
+        Map<String, Object> requestOptions = buildRequestOptions(options);
+        String endpoint = getAwesomeAdsEndpoint(session, placementId, lineItemId, creativeId);
+        JSONObject query = getAwesomeAdsQuery(session, requestOptions, openRtbPartnerId);
         JSONObject header = getAwesomeAdsHeader(session);
 
         // call to the load ad method
@@ -193,7 +232,7 @@ public class SALoader {
         // get connection things to AwesomeAds
         Map<String, Object> requestOptions = buildRequestOptions(options);
         String endpoint = getAwesomeAdsEndpoint(session, placementId, lineItemId, creativeId);
-        JSONObject query = getAwesomeAdsQuery(session, requestOptions);
+        JSONObject query = getAwesomeAdsQuery(session, requestOptions, null);
         JSONObject header = getAwesomeAdsHeader(session);
 
         // call to the load ad method
