@@ -56,6 +56,8 @@ public class SAAd extends SABaseObject implements Parcelable {
     public long loadTime;
     public Map<String, Object> requestOptions = new HashMap<>();
 
+    public String openRtbPartnerId = null;
+
     /**
      * Basic constructor
      */
@@ -154,6 +156,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         device = in.readString();
         creative = in.readParcelable(SACreative.class.getClassLoader());
         loadTime = in.readLong();
+        openRtbPartnerId = in.readString();
     }
 
     /**
@@ -232,6 +235,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         creative.referral = new SAReferral(configuration, campaignId, lineItemId, creative.id, placementId);
 
         loadTime = SAJsonParser.getLong(jsonObject, "loadTime", loadTime);
+        openRtbPartnerId = SAJsonParser.getString(jsonObject, "openRtbPartnerId", openRtbPartnerId);
     }
 
     /**
@@ -260,7 +264,8 @@ public class SAAd extends SABaseObject implements Parcelable {
                 "creative", creative.writeToJson(),
                 "ad_request_id", adRequestId,
                 "device", device,
-                "loadTime", loadTime);
+                "loadTime", loadTime,
+                "openRtbPartnerId", openRtbPartnerId);
     }
 
     /**
@@ -315,6 +320,7 @@ public class SAAd extends SABaseObject implements Parcelable {
         dest.writeString(device);
         dest.writeParcelable(creative, flags);
         dest.writeLong(loadTime);
+        dest.writeString(openRtbPartnerId);
     }
 
     private boolean isTagValid(SACreative creative) {

@@ -89,7 +89,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1000, session, null, response -> {
+        loader.loadAd(1000, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -148,7 +148,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1001, session, null, response -> {
+        loader.loadAd(1001, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -217,7 +217,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1002, session, null, response -> {
+        loader.loadAd(1002, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -284,7 +284,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1005, session, null, response -> {
+        loader.loadAd(1005, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -312,7 +312,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1006, session, null, response -> {
+        loader.loadAd(1006, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -340,7 +340,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1003, session, null, response -> {
+        loader.loadAd(1003, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -368,7 +368,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1004, session, null, response -> {
+        loader.loadAd(1004, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -396,7 +396,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(50000, session, null, response -> {
+        loader.loadAd(50000, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -414,7 +414,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1006, session, null, response -> {
+        loader.loadAd(1006, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -437,7 +437,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1006, session, null, response -> {
+        loader.loadAd(1006, session, null, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -459,7 +459,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1006, session, additionalOptions, response -> {
+        loader.loadAd(1006, session, additionalOptions, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -482,7 +482,7 @@ public class SAAdLoader_LoadAd_Test {
         SALoader loader = new SALoader(context, executor, true, 1000, clockMock);
 
         // then
-        loader.loadAd(1006, session, additionalOptions, response -> {
+        loader.loadAd(1006, session, additionalOptions, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -508,7 +508,7 @@ public class SAAdLoader_LoadAd_Test {
         }};
 
         // then
-        loader.loadAd(1006, session, additionalOptions, response -> {
+        loader.loadAd(1006, session, additionalOptions, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);
@@ -540,7 +540,7 @@ public class SAAdLoader_LoadAd_Test {
         }};
 
         // then
-        loader.loadAd(1006, session, additionalOptions, response -> {
+        loader.loadAd(1006, session, additionalOptions, null, response -> {
 
             assertNotNull(response);
             assertNotNull(response.ads);

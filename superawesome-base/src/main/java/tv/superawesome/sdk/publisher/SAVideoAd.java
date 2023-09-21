@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.util.Log;
 import java.io.File;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import java.util.Collections;
@@ -61,7 +63,21 @@ public class SAVideoAd {
      * @param context       the current context
      */
     public static void load(final int placementId, final Context context) {
-        load(placementId, context, Collections.emptyMap());
+        load(placementId, context, Collections.emptyMap(), null);
+    }
+
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
+     */
+    public static void load(final int placementId,
+                            final Context context,
+                            @NonNull final String openRtbPartnerId) {
+        load(placementId, context, Collections.emptyMap(), openRtbPartnerId);
     }
 
     /**
@@ -76,6 +92,23 @@ public class SAVideoAd {
     public static void load(final int placementId,
                             final Context context,
                             final Map<String, Object> options) {
+        load(placementId, context, options, null);
+    }
+
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     * @param options       a dictionary of data to send with an ad's requests and events.
+     *                      Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
+     */
+    public static void load(final int placementId,
+                            final Context context,
+                            final Map<String, Object> options,
+                            @Nullable final String openRtbPartnerId) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -103,7 +136,7 @@ public class SAVideoAd {
                 performanceMetrics.startTimingForLoadTime();
 
                 // after session is OK - start loading
-                loader.loadAd(placementId, session, options, response -> {
+                loader.loadAd(placementId, session, options, openRtbPartnerId, response -> {
 
                     if (response.status != 200) {
                         //
@@ -130,6 +163,7 @@ public class SAVideoAd {
                             if (first.isVpaid) {
                                 performanceMetrics.trackLoadTime();
                             }
+                            first.openRtbPartnerId = openRtbPartnerId;
                             ads.put(placementId, first);
                         }
                         // remove existing
@@ -174,7 +208,26 @@ public class SAVideoAd {
                             final int lineItemId,
                             final int creativeId,
                             final Context context) {
-        load(placementId, lineItemId, creativeId, context, Collections.emptyMap());
+        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), null);
+    }
+
+
+    /**
+     * Static method that loads an ad into the video queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param lineItemId    The id of the lineItem
+     * @param creativeId    The id of the creative
+     * @param context       the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
+     */
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            final Context context,
+                            @NonNull final String openRtbPartnerId) {
+        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), openRtbPartnerId);
     }
 
     /**
@@ -187,12 +240,14 @@ public class SAVideoAd {
      * @param context       the current context
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public static void load(final int placementId,
                             final int lineItemId,
                             final int creativeId,
                             final Context context,
-                            final Map<String, Object> options) {
+                            final Map<String, Object> options,
+                            @Nullable final String openRtbPartnerId) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -220,7 +275,7 @@ public class SAVideoAd {
                 performanceMetrics.startTimingForLoadTime();
 
                 // after session is OK - start loading
-                loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
+                loader.loadAd(placementId, lineItemId, creativeId, session, options, openRtbPartnerId, response -> {
 
                     if (response.status != 200) {
                         //
@@ -247,6 +302,7 @@ public class SAVideoAd {
                             if (first.isVpaid) {
                                 performanceMetrics.trackLoadTime();
                             }
+                            first.openRtbPartnerId = openRtbPartnerId;
                             ads.put(placementId, first);
                         }
                         // remove existing
