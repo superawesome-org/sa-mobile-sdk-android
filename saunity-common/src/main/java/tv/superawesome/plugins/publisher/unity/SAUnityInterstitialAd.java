@@ -60,12 +60,30 @@ public class SAUnityInterstitialAd {
     /**
      * Method that loads a new Interstitial AD (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdLoad(
-            Context context,
-            int placementId,
-            int configuration,
-            boolean test,
-            String encodedOptions) {
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context,
+                                                             int placementId,
+                                                             int configuration,
+                                                             boolean test,
+                                                             String encodedOptions) {
+        SuperAwesomeUnitySAInterstitialAdLoad(
+                context,
+                placementId,
+                configuration,
+                test,
+                encodedOptions,
+                null
+        );
+    }
+
+    /**
+     * Method that loads a new Interstitial AD (from Unity)
+     */
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context,
+                                                             int placementId,
+                                                             int configuration,
+                                                             boolean test,
+                                                             String openRtbPartnerId,
+                                                             String encodedOptions) {
         SAInterstitialAd.setTestMode(test);
 
         if (encodedOptions != null && !encodedOptions.isEmpty()) {
@@ -73,16 +91,16 @@ public class SAUnityInterstitialAd {
                 SAInterstitialAd.load(
                         placementId,
                         context,
-                        null,
+                        openRtbPartnerId,
                         SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                 );
             } catch (JSONException e) {
                 e.printStackTrace();
                 // Fallback to loading without options
-                SAInterstitialAd.load(placementId, context);
+                SAInterstitialAd.load(placementId, context, openRtbPartnerId, null);
             }
         } else {
-            SAInterstitialAd.load(placementId, context);
+            SAInterstitialAd.load(placementId, context, openRtbPartnerId, null);
         }
     }
 

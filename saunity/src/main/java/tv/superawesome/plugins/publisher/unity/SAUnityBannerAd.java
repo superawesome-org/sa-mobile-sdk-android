@@ -86,6 +86,28 @@ public class SAUnityBannerAd {
             boolean test,
             String encodedOptions)
     {
+        SuperAwesomeUnitySABannerAdLoad(context,
+                unityName,
+                placementId,
+                configuration,
+                test,
+                encodedOptions,
+                null
+        );
+    }
+
+    /**
+     * Method that loads a new Banner Ad (from Unity)
+     */
+
+    public static void SuperAwesomeUnitySABannerAdLoad(Context context,
+                                                       String unityName,
+                                                       int placementId,
+                                                       int configuration,
+                                                       boolean test,
+                                                       String openRtbPartnerId,
+                                                       String encodedOptions)
+    {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
@@ -95,15 +117,16 @@ public class SAUnityBannerAd {
                 try {
                     bannerAd.load(
                             placementId,
+                            openRtbPartnerId,
                             SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                     );
                 } catch (JSONException e) {
                     e.printStackTrace();
                     // Fallback to loading without options
-                    bannerAd.load(placementId);
+                    bannerAd.load(placementId, openRtbPartnerId);
                 }
             } else {
-                bannerAd.load(placementId);
+                bannerAd.load(placementId, openRtbPartnerId);
             }
         }
     }
