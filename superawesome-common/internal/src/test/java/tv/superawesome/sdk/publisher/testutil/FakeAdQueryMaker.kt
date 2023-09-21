@@ -55,6 +55,7 @@ class FakeAdQueryMaker : AdQueryMakerType {
                 w = 0,
                 h = 0,
                 timestamp = 0L,
+                openRtbPartnerId = null,
             ),
             options = null,
         )
@@ -85,6 +86,7 @@ class FakeAdQueryMaker : AdQueryMakerType {
                 noImage = false,
                 data = data?.let { encodeData(data) },
                 adRequestId = "test-id",
+                openRtbPartnerId = null,
             ),
             options = null,
         )

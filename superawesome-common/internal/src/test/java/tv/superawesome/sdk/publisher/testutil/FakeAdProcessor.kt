@@ -11,12 +11,12 @@ class FakeAdProcessor : AdProcessorType {
         placementId: Int,
         ad: Ad,
         requestOptions: Map<String, Any>?,
-    ): DataResult<AdResponse> =
-        DataResult.Success(
-            value = AdResponse(
-                placementId = placementId,
-                ad = ad,
-                requestOptions = requestOptions,
-            )
+        openRtbPartnerId: String?
+    ): DataResult<AdResponse> = DataResult.Success(
+        value = AdResponse(
+        placementId = placementId,
+        ad = ad,
+        requestOptions = requestOptions,
         )
+    )
 }

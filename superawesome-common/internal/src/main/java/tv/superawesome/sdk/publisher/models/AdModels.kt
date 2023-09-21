@@ -23,6 +23,7 @@ data class Ad(
     @SerialName("is_vpaid") val isVpaid: Boolean = false,
     @SerialName("rnd") val random: String?,
     @SerialName("ad_request_id") val adRequestId: String? = null,
+    val openRtbPartnerId: String? = null,
 ) {
     fun isCPICampaign(): Boolean = campaignType == CPI_CAMPAIGN_ID
 }
@@ -51,7 +52,8 @@ data class AdQuery(
     @SerialName("instl") val install: Int,
     val w: Int,
     val h: Int,
-    val timestamp: Long
+    val timestamp: Long,
+    val openRtbPartnerId: String?,
 )
 
 data class AdResponse(

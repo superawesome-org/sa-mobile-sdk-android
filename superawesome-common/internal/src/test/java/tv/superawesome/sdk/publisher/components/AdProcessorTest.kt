@@ -62,6 +62,7 @@ internal class AdProcessorTest {
         assertEquals(response.optValue?.baseUrl, exampleUrl)
         assertEquals(response.optValue?.html, exampleHtml)
         assertEquals(response.optValue?.referral, exampleParamString)
+        assertEquals(null, response.optValue?.ad?.openRtbPartnerId)
     }
 
     @Test
@@ -209,5 +210,22 @@ internal class AdProcessorTest {
         coVerify(exactly = 0) { vastParser.parse(redirectUrl) }
         coVerify { networkDataSource.getData(firstAdUrl) }
         coVerify(exactly = 0) { networkDataSource.getData(redirectUrl) }
+    }
+
+    @Test
+    fun `given an openRTBPartnerId, then it should be included in the response ad`() = runBlocking {
+        // Given
+        coEvery { htmlFormatter.formatImageIntoHtml(any()) } returns exampleHtml
+
+        // When
+        val response = adProcessor.process(
+            99,
+            makeFakeAd(CreativeFormatType.ImageWithLink),
+            null,
+            "12345"
+        )
+
+        // Then
+        assertEquals("12345", response.optValue?.ad?.openRtbPartnerId)
     }
 }
