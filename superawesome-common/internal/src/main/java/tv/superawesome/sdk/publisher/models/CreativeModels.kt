@@ -12,7 +12,6 @@ data class Creative(
     val details: CreativeDetail,
     val bumper: Boolean? = null,
     val referral: CreativeReferral? = null,
-    val isKSF: Boolean = false
 )
 
 @Serializable
