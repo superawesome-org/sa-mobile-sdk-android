@@ -70,13 +70,33 @@ public class SAUnityBannerAd {
     /**
      * Method that loads a new Banner Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdLoad(
-            Context context,
-            String unityName,
-            int placementId,
-            int configuration,
-            boolean test,
-            String encodedOptions) {
+    public static void SuperAwesomeUnitySABannerAdLoad(Context context,
+                                                       String unityName,
+                                                       int placementId,
+                                                       int configuration,
+                                                       boolean test,
+                                                       String encodedOptions) {
+        SuperAwesomeUnitySABannerAdLoad(
+                context,
+                unityName,
+                placementId,
+                configuration,
+                test,
+                encodedOptions,
+                null
+        );
+
+    }
+    /**
+     * Method that loads a new Banner Ad (from Unity)
+     */
+    public static void SuperAwesomeUnitySABannerAdLoad(Context context,
+                                                       String unityName,
+                                                       int placementId,
+                                                       int configuration,
+                                                       boolean test,
+                                                       String openRtbPartnerId,
+                                                       String encodedOptions) {
         if (bannerAdHashMap.containsKey(unityName)) {
             BannerView bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setTestMode(test);
@@ -85,16 +105,16 @@ public class SAUnityBannerAd {
                 try {
                     bannerAd.load(
                             placementId,
-                            null,
+                            openRtbPartnerId,
                             SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                     );
                 } catch (JSONException e) {
                     e.printStackTrace();
                     // Fallback to loading without options
-                    bannerAd.load(placementId);
+                    bannerAd.load(placementId, openRtbPartnerId, null);
                 }
             } else {
-                bannerAd.load(placementId);
+                bannerAd.load(placementId, openRtbPartnerId, null);
             }
         }
     }
