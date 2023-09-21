@@ -5,23 +5,23 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".ui.interstitial.InterstitialActivity"
+            android:name="tv.superawesome.sdk.publisher.ui.interstitial.InterstitialActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
         <activity
-            android:name=".ui.fullscreen.FullScreenActivity"
+            android:name="tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
         <activity
-            android:name=".ui.video.VideoActivity"
+            android:name="tv.superawesome.sdk.publisher.ui.video.VideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
         <activity
-            android:name=".ui.managed.ManagedAdActivity"
+            android:name="tv.superawesome.sdk.publisher.ui.managed.ManagedAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
