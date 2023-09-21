@@ -64,12 +64,12 @@ public class SAUnityInterstitialAd {
     /**
      * Method that loads a new Interstitial AD (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdLoad(
-            Context context,
-            int placementId,
-            int configuration,
-            boolean test,
-            String encodedOptions) {
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context,
+                                                             int placementId,
+                                                             int configuration,
+                                                             boolean test,
+                                                             String openRtbPartnerId,
+                                                             String encodedOptions) {
         SAInterstitialAd.setTestMode(test);
         SAInterstitialAd.setConfiguration(SAConfiguration.fromValue(configuration));
 
@@ -78,16 +78,35 @@ public class SAUnityInterstitialAd {
                 SAInterstitialAd.load(
                         placementId,
                         context,
+                        openRtbPartnerId,
                         SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                 );
             } catch (JSONException e) {
                 e.printStackTrace();
                 // Fallback to loading without options
-                SAInterstitialAd.load(placementId, context);
+                SAInterstitialAd.load(placementId, context, openRtbPartnerId);
             }
         } else {
-            SAInterstitialAd.load(placementId, context);
+            SAInterstitialAd.load(placementId, context, openRtbPartnerId);
         }
+    }
+
+    /**
+     * Method that loads a new Interstitial AD (from Unity)
+     */
+    public static void SuperAwesomeUnitySAInterstitialAdLoad(Context context,
+                                                             int placementId,
+                                                             int configuration,
+                                                             boolean test,
+                                                             String encodedOptions) {
+        SuperAwesomeUnitySAInterstitialAdLoad(
+                context,
+                placementId,
+                configuration,
+                test,
+                encodedOptions,
+                null
+        );
     }
 
     /**

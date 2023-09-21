@@ -66,6 +66,27 @@ public class SAUnityVideoAd {
                                                       boolean test,
                                                       int playback,
                                                       String encodedOptions) {
+        SuperAwesomeUnitySAVideoAdLoad(
+                context,
+                placementId,
+                configuration,
+                test,
+                playback,
+                encodedOptions,
+                null
+        );
+    }
+
+    /**
+     * Method that loads a new Video Ad (from Unity)
+     */
+    public static void SuperAwesomeUnitySAVideoAdLoad(Context context,
+                                                      int placementId,
+                                                      int configuration,
+                                                      boolean test,
+                                                      int playback,
+                                                      String openRtbPartnerId,
+                                                      String encodedOptions) {
         SAVideoAd.setTestMode(test);
         setPlayback(playback);
 
@@ -74,16 +95,16 @@ public class SAUnityVideoAd {
                 SAVideoAd.load(
                         placementId,
                         context,
-                        null,
+                        openRtbPartnerId,
                         SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                 );
             } catch (JSONException e) {
                 e.printStackTrace();
                 // Fallback to loading without options
-                SAVideoAd.load(placementId, context);
+                SAVideoAd.load(placementId, context, openRtbPartnerId, null);
             }
         } else {
-            SAVideoAd.load(placementId, context);
+            SAVideoAd.load(placementId, context, openRtbPartnerId, null);
         }
     }
 
