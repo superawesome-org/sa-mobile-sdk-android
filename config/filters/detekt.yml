@@ -4,6 +4,8 @@ complexity:
     thresholdInClasses: 20
   CognitiveComplexMethod:
     ignoreFunction: ["writeToParcel"]
+  ComplexInterface:
+    threshold: 16
 
 
 comments:
