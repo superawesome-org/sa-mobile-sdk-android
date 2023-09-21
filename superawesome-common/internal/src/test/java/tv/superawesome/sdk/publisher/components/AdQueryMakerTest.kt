@@ -105,6 +105,27 @@ internal class AdQueryMakerTest : BaseTest() {
     }
 
     @Test
+    fun test_adQuery_withOpenRtbPartnerId() {
+        // Given
+        val request = DefaultAdRequest(false, 10, 20, 30, 40, 50, 60, 70,  openRtbPartnerId = "12345")
+        coEvery { idGeneratorType.findDauId() } returns 99
+        every { sdkInfoType.version } returns "sdk_version"
+        every { sdkInfoType.bundle } returns "sdk_bundle"
+        every { sdkInfoType.name } returns "sdk_name"
+        every { numberGeneratorType.nextIntForCache() } returns 33
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { deviceType.genericType } returns DeviceCategory.TABLET
+        every { locale.toString() } returns "en_en"
+        every { timeProvider.millis() } returns 12345678912345
+
+        // When
+        val baseQuery = runBlocking { queryMaker.makeAdQuery(request).parameters }
+
+        // Then
+        assertEquals("12345", baseQuery.openRtbPartnerId)
+    }
+
+    @Test
     fun test_clickQuery() {
         // Given
         val ad = mockk<Ad>(relaxed = true) {
@@ -112,6 +133,7 @@ internal class AdQueryMakerTest : BaseTest() {
             every { lineItemId } returns 30
             every { random } returns "33"
             every { adRequestId } returns "test-id"
+            every { openRtbPartnerId } returns "12345"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
@@ -134,6 +156,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(true, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
         assertEquals("test-id", baseQuery.adRequestId)
+        assertEquals("12345", baseQuery.openRtbPartnerId)
     }
 
     @Test
@@ -144,6 +167,7 @@ internal class AdQueryMakerTest : BaseTest() {
             every { lineItemId } returns 30
             every { random } returns "33"
             every { adRequestId } returns "test-id"
+            every { openRtbPartnerId } returns "12345"
         }
         val request = AdResponse(10, ad)
         every { sdkInfoType.version } returns "sdk_version"
@@ -166,6 +190,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(null, baseQuery.noImage)
         assertEquals(null, baseQuery.data)
         assertEquals("test-id", baseQuery.adRequestId)
+        assertEquals("12345", baseQuery.openRtbPartnerId)
     }
 
     @Test
@@ -176,6 +201,7 @@ internal class AdQueryMakerTest : BaseTest() {
             every { lineItemId } returns 30
             every { random } returns "33"
             every { adRequestId } returns "test-id"
+            every { openRtbPartnerId } returns "12345"
         }
         val request = AdResponse(10, ad)
         val data = EventData(10, 30, 20, EventType.ParentalGateClose)
@@ -199,6 +225,7 @@ internal class AdQueryMakerTest : BaseTest() {
         assertEquals(null, baseQuery.noImage)
         assertEquals("encoded_uri", baseQuery.data)
         assertEquals("test-id", baseQuery.adRequestId)
+        assertEquals("12345", baseQuery.openRtbPartnerId)
     }
 
     @Test

@@ -69,17 +69,21 @@ public class InternalBannerView @JvmOverloads constructor(
         super.onRestoreInstanceState(restoreState)
     }
 
-    public override fun load(placementId: Int, options: Map<String, Any>?) {
+    public override fun load(
+        placementId: Int,
+        options: Map<String, Any>?,
+        openRtbPartnerId: String?
+    ) {
         logger.info("load($placementId)")
         this.placementId = placementId
         if (isAdPlayedBefore()) {
             close()
         }
-        controller.load(placementId, makeAdRequest(options))
+        controller.load(placementId, makeAdRequest(options, openRtbPartnerId))
     }
 
     public fun load(placementId: Int) {
-        load(placementId, options = null)
+        load(placementId, options = null, openRtbPartnerId = null)
     }
 
     public override fun load(
@@ -87,20 +91,28 @@ public class InternalBannerView @JvmOverloads constructor(
         lineItemId: Int,
         creativeId: Int,
         options: Map<String, Any>?,
+        openRtbPartnerId: String?,
     ) {
         logger.info("load($placementId, $lineItemId, $creativeId)")
         this.placementId = placementId
         if (isAdPlayedBefore()) {
             close()
         }
-        controller.load(placementId, lineItemId, creativeId, makeAdRequest(options))
+        controller.load(
+            placementId,
+            lineItemId,
+            creativeId,
+            makeAdRequest(options, openRtbPartnerId)
+        )
     }
 
     public fun load(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-    ) { load(placementId, lineItemId, creativeId, options = null) }
+    ) {
+        load(placementId, lineItemId, creativeId, options = null, openRtbPartnerId = null)
+    }
 
     /**
      * Plays an already existing loaded ad, or fail.
@@ -257,17 +269,22 @@ public class InternalBannerView @JvmOverloads constructor(
         logger.info("BannerView.onDetachedFromWindow")
     }
 
-    private fun makeAdRequest(options: Map<String, Any>?): AdRequest = DefaultAdRequest(
-        test = controller.config.testEnabled,
-        pos = AdRequest.Position.AboveTheFold.value,
-        skip = AdRequest.Skip.No.value,
-        playbackMethod = DefaultAdRequest.PlaybackSoundOnScreen,
-        startDelay = AdRequest.StartDelay.PreRoll.value,
-        install = AdRequest.FullScreen.Off.value,
-        w = width,
-        h = height,
-        options = options,
-    )
+    private fun makeAdRequest(
+        options: Map<String, Any>?,
+        openRtbPartnerId: String?
+    ): AdRequest =
+        DefaultAdRequest(
+            test = controller.config.testEnabled,
+            pos = AdRequest.Position.AboveTheFold.value,
+            skip = AdRequest.Skip.No.value,
+            playbackMethod = DefaultAdRequest.PlaybackSoundOnScreen,
+            startDelay = AdRequest.StartDelay.PreRoll.value,
+            install = AdRequest.FullScreen.Off.value,
+            w = width,
+            h = height,
+            openRtbPartnerId = openRtbPartnerId,
+            options = options,
+        )
 
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
         this.placementId = placementId

@@ -25,6 +25,7 @@ data class EventQuery(
     @SerialName("no_image") val noImage: Boolean?,
     val data: String?,
     val adRequestId: String?,
+    val openRtbPartnerId: String?,
 )
 
 @Serializable

@@ -110,5 +110,6 @@ class AdRepositoryTest : MockServerTest() {
         override val w: Int = 0
         override val h: Int = 0
         override val options: Map<String, Any>? = null
+        override val openRtbPartnerId: String? = null
     }
 }

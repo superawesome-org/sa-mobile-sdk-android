@@ -222,6 +222,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         w = 0,
         h = 0,
         timestamp = 0L,
+        openRtbPartnerId = null,
     )
 
     private fun getEventQuery() = EventQuery(
@@ -236,5 +237,6 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         noImage = null,
         data = null,
         adRequestId = "test-id",
+        openRtbPartnerId = null,
     )
 }

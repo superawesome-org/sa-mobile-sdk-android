@@ -25,8 +25,12 @@ public class BannerView @JvmOverloads constructor(
         view.visibility = VISIBLE
     }
 
-    public override fun load(placementId: Int, options: Map<String, Any>?) {
-        view.load(placementId, options)
+    public override fun load(
+        placementId: Int,
+        options: Map<String, Any>?,
+        openRtbPartnerId: String?,
+    ) {
+        view.load(placementId, options, openRtbPartnerId)
     }
 
     /**
@@ -35,7 +39,7 @@ public class BannerView @JvmOverloads constructor(
      * @param placementId Awesome Ads ID for ad data to be loaded
      */
     public fun load(placementId: Int) {
-        load(placementId, options = null)
+        load(placementId, options = null, openRtbPartnerId = null)
     }
 
     public override fun load(
@@ -43,8 +47,9 @@ public class BannerView @JvmOverloads constructor(
         lineItemId: Int,
         creativeId: Int,
         options: Map<String, Any>?,
+        openRtbPartnerId: String?,
     ) {
-        view.load(placementId, lineItemId, creativeId, options)
+        view.load(placementId, lineItemId, creativeId, options, openRtbPartnerId)
     }
 
     /**
@@ -60,7 +65,7 @@ public class BannerView @JvmOverloads constructor(
         lineItemId: Int,
         creativeId: Int,
     ) {
-        load(placementId, lineItemId, creativeId, options = null)
+        load(placementId, lineItemId, creativeId, options = null, openRtbPartnerId = null)
     }
 
     /**

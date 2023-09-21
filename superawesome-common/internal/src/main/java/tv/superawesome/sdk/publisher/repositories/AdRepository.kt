@@ -26,7 +26,12 @@ class AdRepository(
     override suspend fun getAd(placementId: Int, request: AdRequest): DataResult<AdResponse> =
         withContext(Dispatchers.IO) {
             when (val result = dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request))) {
-                is DataResult.Success -> adProcessor.process(placementId, result.value, request.options)
+                is DataResult.Success -> adProcessor.process(
+                    placementId,
+                    result.value,
+                    request.options,
+                    request.openRtbPartnerId
+                )
                 is DataResult.Failure -> result
             }
         }
@@ -41,7 +46,12 @@ class AdRepository(
             val result =
                 dataSource.getAd(placementId, lineItemId, creativeId, adQueryMaker.makeAdQuery(request))
         ) {
-            is DataResult.Success -> adProcessor.process(placementId, result.value, request.options)
+            is DataResult.Success -> adProcessor.process(
+                placementId,
+                result.value,
+                request.options,
+                request.openRtbPartnerId,
+            )
             is DataResult.Failure -> result
         }
     }
