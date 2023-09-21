@@ -11,6 +11,7 @@ import android.content.Context;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -241,5 +242,39 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
 
         assertNotNull(query.opt("key4"));
         assertEquals(4, query.opt("key4"));
+    }
+
+    @Test
+    public void test_SAAdLoader_GetAwesomeAdsQuery_WithOpenRTBPartnerId () {
+        // given
+        Context context = mock(Context.class);
+        SASession session = mock(SASession.class);
+        SAClock clockMock = mock(SAClock.class);
+
+        // when
+        when(session.getTestMode()).thenReturn(true);
+        when(session.getVersion()).thenReturn("1.0.0");
+        when(session.getCachebuster()).thenReturn(123456);
+        when(session.getPackageName()).thenReturn("superawesome.tv.saadloaderdemo");
+        when(session.getAppName()).thenReturn("SAAdLoaderDemo");
+        when(session.getDauId()).thenReturn(654321);
+        when(session.getConnectionType()).thenReturn(SAUtils.SAConnectionType.wifi);
+        when(session.getLang()).thenReturn("en_GB");
+        when(session.getDevice()).thenReturn("phone");
+        when(session.getPos()).thenReturn(SARTBPosition.FULLSCREEN);
+        when(session.getSkip()).thenReturn(SARTBSkip.NO_SKIP);
+        when(session.getPlaybackMethod()).thenReturn(SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN);
+        when(session.getStartDelay()).thenReturn(SARTBStartDelay.PRE_ROLL);
+        when(session.getInstl()).thenReturn(SARTBInstl.FULLSCREEN);
+        when(session.getWidth()).thenReturn(320);
+        when(session.getHeight()).thenReturn(240);
+        when(clockMock.getTimestamp()).thenReturn(123L);
+
+        SALoader loader = new SALoader(context, clockMock);
+
+        // then
+        JSONObject query = loader.getAwesomeAdsQuery(session, Collections.emptyMap(),"123456");
+
+        assertEquals("123456", query.opt("openRtbPartnerId"));
     }
 }

@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import java.util.Collections;
@@ -186,7 +188,27 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param context       the current context
      */
     public static void load(final int placementId, Context context) {
-        load(placementId, context, Collections.emptyMap());
+        load(placementId, context, Collections.emptyMap(), null);
+    }
+
+    /**
+     * Static method that loads an ad into the interstitial queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param context       the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
+     */
+    public static void load(final int placementId,
+                            Context context,
+                            @NonNull final String openRtbPartnerId) {
+        load(placementId, context, Collections.emptyMap(), openRtbPartnerId);
+    }
+
+    public static void load(final int placementId,
+                            Context context,
+                            final Map<String, Object> options) {
+        load(placementId, context, options, null);
     }
 
     /**
@@ -197,10 +219,12 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param context       the current context
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public static void load(final int placementId,
                             Context context,
-                            final Map<String, Object> options) {
+                            final Map<String, Object> options,
+                            @Nullable final String openRtbPartnerId) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -240,7 +264,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             session.prepareSession(() -> {
 
                 // after session is prepared, start loading
-                loader.loadAd(placementId, session, options, response -> {
+                loader.loadAd(placementId, session, options, openRtbPartnerId, response -> {
 
                     if (response.status != 200) {
                         //
@@ -258,7 +282,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                     else {
                         // put the correct value
                         if (response.isValid()) {
-                            ads.put(placementId, response.ads.get(0));
+                            SAAd adResponse = response.ads.get(0);
+                            adResponse.openRtbPartnerId = openRtbPartnerId;
+                            ads.put(placementId, adResponse);
                         }
                         // remove existing
                         else {
@@ -302,7 +328,25 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                             final int lineItemId,
                             final int creativeId,
                             Context context) {
-        load(placementId, lineItemId, creativeId, context, Collections.emptyMap());
+        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), null);
+    }
+
+    /**
+     * Static method that loads an ad into the interstitial queue.
+     * Ads can only be loaded once and then can be reloaded after they've been played.
+     *
+     * @param placementId   the Ad placement id to load data for
+     * @param lineItemId    The id of the lineItem
+     * @param creativeId    The id of the creative
+     * @param context       the current context.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
+     */
+    public static void load(final int placementId,
+                            final int lineItemId,
+                            final int creativeId,
+                            Context context,
+                            @NonNull final String openRtbPartnerId) {
+        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), openRtbPartnerId);
     }
 
     /**
@@ -315,12 +359,14 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param context       the current context
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public static void load(final int placementId,
                             final int lineItemId,
                             final int creativeId,
                             Context context,
-                            final Map<String, Object> options) {
+                            final Map<String, Object> options,
+                            @Nullable final String openRtbPartnerId) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -360,7 +406,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             session.prepareSession(() -> {
 
                 // after session is prepared, start loading
-                loader.loadAd(placementId, lineItemId, creativeId, session, options, response -> {
+                loader.loadAd(placementId, lineItemId, creativeId, session, options, openRtbPartnerId, response -> {
 
                     if (response.status != 200) {
                         //
@@ -378,7 +424,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                     else {
                         // put the correct value
                         if (response.isValid()) {
-                            ads.put(placementId, response.ads.get(0));
+                            SAAd adResponse = response.ads.get(0);
+                            adResponse.openRtbPartnerId = openRtbPartnerId;
+                            ads.put(placementId, adResponse);
                         }
                         // remove existing
                         else {
