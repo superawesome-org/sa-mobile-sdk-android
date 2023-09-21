@@ -1,13 +1,20 @@
 package tv.superawesome.demoapp.main
 
+import CustomRecyclerViewAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
+import tv.superawesome.demoapp.gestures.DeleteGesture
+import tv.superawesome.demoapp.management.AddPlacementDialogFragment
 import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.settings.DataStore
@@ -15,13 +22,12 @@ import tv.superawesome.demoapp.settings.SettingsDialogFragment
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.AwesomeAds
-import tv.superawesome.sdk.publisher.network.Environment
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
 import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
 
 @Suppress("TooManyFunctions")
 class MainActivity : FragmentActivity() {
-    private lateinit var adapter: CustomListAdapter
+    private lateinit var adapter: CustomRecyclerViewAdapter
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
@@ -56,7 +62,15 @@ class MainActivity : FragmentActivity() {
                 updateSettings()
             }
         }
+        binding.addPlacementButton.setOnClickListener {
+            val dialog = AddPlacementDialogFragment()
+            dialog.show(supportFragmentManager, "addPlacement")
+            dialog.onSubmitListener = {
+                viewModel.insertPlacementItem(it)
+            }
+        }
         binding.settingsButton.contentDescription = "AdList.Buttons.Settings"
+        binding.addPlacementButton.contentDescription = "AdList.Buttons.AddPlacement"
     }
 
     private fun initUI() {
@@ -76,12 +90,46 @@ class MainActivity : FragmentActivity() {
         }
     }
 
+    private fun setupListView() {
+        val layoutManager = LinearLayoutManager(this)
+        val touchHelper = ItemTouchHelper(object: DeleteGesture() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                super.onSwiped(viewHolder, direction)
+                when(direction) {
+                    ItemTouchHelper.LEFT -> viewModel.removePlacementItem(
+                        viewHolder.adapterPosition
+                    )
+                }
+            }
+        })
+
+        adapter = CustomRecyclerViewAdapter()
+        adapter.setOnItemClickListener {
+            when (it.type) {
+                FeatureType.BANNER -> onBannerClick(it)
+                FeatureType.INTERSTITIAL -> onInterstitialClick(it)
+                FeatureType.VIDEO -> onVideoClick(it)
+            }
+        }
+
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                baseContext,
+                layoutManager.orientation
+            )
+        )
+        touchHelper.attachToRecyclerView(binding.recyclerView)
+    }
+
     private fun setListeners() {
-        binding.bannerView.setListener { placementId, event ->
+        SAVideoAd.setListener { placementId, event ->
             updateMessage(placementId, event)
+            Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
 
             if (event == SAEvent.adLoaded && isPlayEnabled()) {
-                binding.bannerView.play()
+                SAVideoAd.play(placementId, this)
             }
         }
 
@@ -94,26 +142,12 @@ class MainActivity : FragmentActivity() {
             }
         }
 
-        SAVideoAd.setListener { placementId, event ->
+        binding.bannerView.setListener { placementId, event ->
             updateMessage(placementId, event)
-            Log.i(TAG, "SAVideoAd event ${event.name} thread:${Thread.currentThread()}")
+            Log.i(TAG, "bannerView event ${event.name} thread:${Thread.currentThread()}")
 
             if (event == SAEvent.adLoaded && isPlayEnabled()) {
-                SAVideoAd.play(placementId, this)
-            }
-        }
-    }
-
-    private fun setupListView() {
-        adapter = CustomListAdapter(this)
-        binding.listView.adapter = adapter
-
-        binding.listView.setOnItemClickListener { _, _, position, _ ->
-            val item = adapter.getItem(position)
-            when (item.type) {
-                FeatureType.BANNER -> onBannerClick(item)
-                FeatureType.INTERSTITIAL -> onInterstitialClick(item)
-                FeatureType.VIDEO -> onVideoClick(item)
+                binding.bannerView.play()
             }
         }
     }

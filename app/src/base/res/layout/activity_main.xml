@@ -53,8 +53,8 @@
         android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
 
-    <ListView
-        android:id="@+id/listView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
@@ -72,7 +72,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <tv.superawesome.sdk.publisher.SABannerAd
-            android:id="@+id/bannerView2"
+            android:id="@+id/bannerView"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@color/color_primary"
