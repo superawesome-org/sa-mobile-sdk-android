@@ -34,14 +34,6 @@ class MainActivity : FragmentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val environment = when(intent.getStringExtra("environment")) {
-            SDKEnvironment.UITesting.name -> SDKEnvironment.UITesting
-            SDKEnvironment.Staging.name -> SDKEnvironment.Staging
-            else -> SDKEnvironment.Production
-        }
-
-        MyApplication.initSDK(application, environment)
-
         initUI()
 
         observeSettings()
