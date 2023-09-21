@@ -18,6 +18,7 @@ import kotlinx.serialization.Transient
  * @property w width of the ad, in pixels.
  * @property h height of the ad, in pixels.
  * @property options any extra options.
+ * @property openRtbPartnerId an optional openRTB partner id to be included in the request.
  */
 @Serializable
 data class DefaultAdRequest(
@@ -29,7 +30,8 @@ data class DefaultAdRequest(
     @SerialName("instl") override val install: Int,
     override val w: Int,
     override val h: Int,
-    @Transient override val options: Map<String, Any>? = null
+    @Transient override val options: Map<String, Any>? = null,
+    override val openRtbPartnerId: String? = null,
 ) : AdRequest {
 
     /**

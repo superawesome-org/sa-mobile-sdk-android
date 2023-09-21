@@ -20,6 +20,8 @@ public interface AdRequest {
     public val w: Int
     /** Height in pixels. */
     public val h: Int
+    /** Open RTB Partner ID. */
+    public val openRtbPartnerId: String?
     /** Extra options. */
     public val options: Map<String, Any>?
 

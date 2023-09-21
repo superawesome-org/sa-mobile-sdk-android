@@ -16,8 +16,13 @@ public interface AdView {
      * @param placementId Awesome Ads ID for ad data to be loaded
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
-    public fun load(placementId: Int, options: Map<String, Any>? = null)
+    public fun load(
+        placementId: Int,
+        options: Map<String, Any>? = null,
+        openRtbPartnerId: String? = null,
+    )
 
     /**
      * Loads an ad into the interstitial queue.
@@ -28,12 +33,14 @@ public interface AdView {
      * @param creativeId id of the Creative
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public fun load(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-        options: Map<String, Any>? = null
+        options: Map<String, Any>? = null,
+        openRtbPartnerId: String? = null,
     )
 
     /**

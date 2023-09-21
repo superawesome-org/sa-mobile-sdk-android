@@ -38,12 +38,18 @@ public object SAVideoAd {
      * @param context the current context.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     @JvmStatic
     @JvmOverloads
-    public fun load(placementId: Int, context: Context, options: Map<String, Any>? = null) {
+    public fun load(
+        placementId: Int,
+        context: Context,
+        options: Map<String, Any>? = null,
+        openRtbPartnerId: String? = null,
+    ) {
         logger.info("load($placementId)")
-        controller.load(placementId, makeAdRequest(context, options))
+        controller.load(placementId, makeAdRequest(context, options, openRtbPartnerId))
     }
 
     /**
@@ -56,17 +62,25 @@ public object SAVideoAd {
      * @param context the current context.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     @JvmStatic
     @JvmOverloads
+    @Suppress("LongParameterList")
     public fun load(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
         context: Context,
         options: Map<String, Any>? = null,
+        openRtbPartnerId: String? = null,
     ) {
-        controller.load(placementId, lineItemId, creativeId, makeAdRequest(context, options))
+        controller.load(
+            placementId,
+            lineItemId,
+            creativeId,
+            makeAdRequest(context, options, openRtbPartnerId)
+        )
     }
 
     /**
@@ -377,7 +391,11 @@ public object SAVideoAd {
     @JvmStatic
     public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
 
-    private fun makeAdRequest(context: Context, options: Map<String, Any>?): AdRequest {
+    private fun makeAdRequest(
+        context: Context,
+        options: Map<String, Any>?,
+        openRtbPartnerId: String? = null,
+    ): AdRequest {
         val width: Int
         val height: Int
 
@@ -412,6 +430,7 @@ public object SAVideoAd {
             install = AdRequest.FullScreen.On.value,
             w = width,
             h = height,
+            openRtbPartnerId = openRtbPartnerId,
             options = options,
         )
     }

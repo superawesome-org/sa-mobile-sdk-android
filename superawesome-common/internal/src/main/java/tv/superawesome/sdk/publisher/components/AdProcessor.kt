@@ -12,7 +12,12 @@ import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 
 interface AdProcessorType {
-    suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse>
+    suspend fun process(
+        placementId: Int,
+        ad: Ad,
+        requestOptions: Map<String, Any>?,
+        openRtbPartnerId: String? = null,
+    ): DataResult<AdResponse>
 }
 
 class AdProcessor(
@@ -22,8 +27,17 @@ class AdProcessor(
     private val encoder: EncoderType,
 ) : AdProcessorType {
     @Suppress("NestedBlockDepth", "ReturnCount")
-    override suspend fun process(placementId: Int, ad: Ad, requestOptions: Map<String, Any>?): DataResult<AdResponse> {
-        val response = AdResponse(placementId, ad, requestOptions)
+    override suspend fun process(
+        placementId: Int,
+        ad: Ad,
+        requestOptions: Map<String, Any>?,
+        openRtbPartnerId: String?,
+    ): DataResult<AdResponse> {
+        val response = AdResponse(
+            placementId,
+            ad.copy(openRtbPartnerId = openRtbPartnerId),
+            requestOptions
+        )
 
         when (ad.creative.format) {
             CreativeFormatType.ImageWithLink -> {

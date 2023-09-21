@@ -49,6 +49,7 @@ class AdQueryMaker(
             install = request.install,
             w = request.w,
             h = request.h,
+            openRtbPartnerId = request.openRtbPartnerId,
             timestamp = timeProvider.millis(),
         ),
         options = buildOptions(requestOptions = request.options)
@@ -67,6 +68,7 @@ class AdQueryMaker(
             noImage = null,
             data = null,
             adRequestId = adResponse.ad.adRequestId,
+            openRtbPartnerId = adResponse.ad.openRtbPartnerId,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
@@ -84,6 +86,7 @@ class AdQueryMaker(
             noImage = true,
             data = null,
             adRequestId = adResponse.ad.adRequestId,
+            openRtbPartnerId = adResponse.ad.openRtbPartnerId,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
@@ -101,6 +104,7 @@ class AdQueryMaker(
             noImage = null,
             data = null,
             adRequestId = adResponse.ad.adRequestId,
+            openRtbPartnerId = adResponse.ad.openRtbPartnerId,
         ),
         options = buildOptions(requestOptions = adResponse.requestOptions)
     )
@@ -119,6 +123,7 @@ class AdQueryMaker(
                 noImage = null,
                 data = encodeData(eventData),
                 adRequestId = adResponse.ad.adRequestId,
+                openRtbPartnerId = adResponse.ad.openRtbPartnerId,
             ),
             options = buildOptions(requestOptions = adResponse.requestOptions)
         )
