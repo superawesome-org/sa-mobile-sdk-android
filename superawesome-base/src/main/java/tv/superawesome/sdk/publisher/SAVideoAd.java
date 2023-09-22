@@ -63,7 +63,7 @@ public class SAVideoAd {
      * @param context       the current context
      */
     public static void load(final int placementId, final Context context) {
-        load(placementId, context, Collections.emptyMap(), null);
+        load(placementId, context, null, Collections.emptyMap());
     }
 
     /**
@@ -77,7 +77,7 @@ public class SAVideoAd {
     public static void load(final int placementId,
                             final Context context,
                             @NonNull final String openRtbPartnerId) {
-        load(placementId, context, Collections.emptyMap(), openRtbPartnerId);
+        load(placementId, context, openRtbPartnerId, Collections.emptyMap());
     }
 
     /**
@@ -92,7 +92,7 @@ public class SAVideoAd {
     public static void load(final int placementId,
                             final Context context,
                             final Map<String, Object> options) {
-        load(placementId, context, options, null);
+        load(placementId, context, null, options);
     }
 
     /**
@@ -101,14 +101,14 @@ public class SAVideoAd {
      *
      * @param placementId   the Ad placement id to load data for
      * @param context       the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
-     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public static void load(final int placementId,
                             final Context context,
-                            final Map<String, Object> options,
-                            @Nullable final String openRtbPartnerId) {
+                            @Nullable final String openRtbPartnerId,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -208,7 +208,7 @@ public class SAVideoAd {
                             final int lineItemId,
                             final int creativeId,
                             final Context context) {
-        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), null);
+        load(placementId, lineItemId, creativeId, context, null, Collections.emptyMap());
     }
 
 
@@ -227,7 +227,7 @@ public class SAVideoAd {
                             final int creativeId,
                             final Context context,
                             @NonNull final String openRtbPartnerId) {
-        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), openRtbPartnerId);
+        load(placementId, lineItemId, creativeId, context, openRtbPartnerId, Collections.emptyMap());
     }
 
     /**
@@ -238,16 +238,16 @@ public class SAVideoAd {
      * @param lineItemId    The id of the lineItem
      * @param creativeId    The id of the creative
      * @param context       the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
-     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public static void load(final int placementId,
                             final int lineItemId,
                             final int creativeId,
                             final Context context,
-                            final Map<String, Object> options,
-                            @Nullable final String openRtbPartnerId) {
+                            @Nullable final String openRtbPartnerId,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {

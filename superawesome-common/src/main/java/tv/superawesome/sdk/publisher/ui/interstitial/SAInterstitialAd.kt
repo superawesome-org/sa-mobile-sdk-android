@@ -35,17 +35,17 @@ public object SAInterstitialAd {
      *
      * @param placementId the Ad placement id to load data for
      * @param context the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
-     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     @JvmStatic
     @JvmOverloads
     public fun load(
         placementId: Int,
         context: Context,
-        options: Map<String, Any>? = null,
         openRtbPartnerId: String? = null,
+        options: Map<String, Any>? = null,
     ) {
         controller.load(placementId, makeAdRequest(context, options, openRtbPartnerId))
     }
@@ -58,9 +58,9 @@ public object SAInterstitialAd {
      * @param lineItemId
      * @param creativeId id of the Creative
      * @param context the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
-     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     @JvmStatic
     @JvmOverloads
@@ -70,8 +70,8 @@ public object SAInterstitialAd {
         lineItemId: Int,
         creativeId: Int,
         context: Context,
-        options: Map<String, Any>? = null,
         openRtbPartnerId: String? = null,
+        options: Map<String, Any>? = null,
     ) {
         controller.load(
             placementId,

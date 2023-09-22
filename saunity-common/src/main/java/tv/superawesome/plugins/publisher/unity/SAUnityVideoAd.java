@@ -74,6 +74,7 @@ public class SAUnityVideoAd {
                 SAVideoAd.load(
                         placementId,
                         context,
+                        null,
                         SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                 );
             } catch (JSONException e) {

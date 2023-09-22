@@ -133,7 +133,7 @@ public class SABannerAd extends FrameLayout {
      * @param placementId Awesome Ads ID for ad data to be loaded.
      */
     public void load(final int placementId) {
-        load(placementId, Collections.emptyMap(), null);
+        load(placementId, null, Collections.emptyMap());
     }
 
     /**
@@ -144,7 +144,7 @@ public class SABannerAd extends FrameLayout {
      * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public void load(final int placementId, @NonNull final String openRtbPartnerId) {
-        load(placementId, Collections.emptyMap(), openRtbPartnerId);
+        load(placementId, openRtbPartnerId, Collections.emptyMap());
     }
 
     /**
@@ -156,7 +156,7 @@ public class SABannerAd extends FrameLayout {
      *                    Supports String or Int values.
      */
     public void load(final int placementId, final Map<String, Object> options) {
-        load(placementId, options, null);
+        load(placementId, null, options);
     }
 
     /**
@@ -169,8 +169,8 @@ public class SABannerAd extends FrameLayout {
      *                    Supports String or Int values.
      */
     public void load(final int placementId,
-                     final Map<String, Object> options,
-                     @Nullable final String openRtbPartnerId) {
+                     @Nullable final String openRtbPartnerId,
+                     final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {

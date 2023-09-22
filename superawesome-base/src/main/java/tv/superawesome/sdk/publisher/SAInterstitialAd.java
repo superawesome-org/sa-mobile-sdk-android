@@ -188,7 +188,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param context       the current context
      */
     public static void load(final int placementId, Context context) {
-        load(placementId, context, Collections.emptyMap(), null);
+        load(placementId, context, null, Collections.emptyMap());
     }
 
     /**
@@ -202,13 +202,13 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     public static void load(final int placementId,
                             Context context,
                             @NonNull final String openRtbPartnerId) {
-        load(placementId, context, Collections.emptyMap(), openRtbPartnerId);
+        load(placementId, context, openRtbPartnerId, Collections.emptyMap());
     }
 
     public static void load(final int placementId,
                             Context context,
                             final Map<String, Object> options) {
-        load(placementId, context, options, null);
+        load(placementId, context, null, options);
     }
 
     /**
@@ -217,14 +217,14 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      *
      * @param placementId   the Ad placement id to load data for
      * @param context       the current context
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param options       a dictionary of data to send with an ad's requests and events.
      *                      Supports String or Int values.
-     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public static void load(final int placementId,
                             Context context,
-                            final Map<String, Object> options,
-                            @Nullable final String openRtbPartnerId) {
+                            @Nullable final String openRtbPartnerId,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {
@@ -328,7 +328,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                             final int lineItemId,
                             final int creativeId,
                             Context context) {
-        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), null);
+        load(placementId, lineItemId, creativeId, context, null, Collections.emptyMap());
     }
 
     /**
@@ -346,7 +346,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                             final int creativeId,
                             Context context,
                             @NonNull final String openRtbPartnerId) {
-        load(placementId, lineItemId, creativeId, context, Collections.emptyMap(), openRtbPartnerId);
+        load(placementId, lineItemId, creativeId, context, openRtbPartnerId, Collections.emptyMap());
     }
 
     /**
@@ -365,8 +365,8 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                             final int lineItemId,
                             final int creativeId,
                             Context context,
-                            final Map<String, Object> options,
-                            @Nullable final String openRtbPartnerId) {
+                            @Nullable final String openRtbPartnerId,
+                            final Map<String, Object> options) {
 
         // very late init of the AwesomeAds SDK
         try {

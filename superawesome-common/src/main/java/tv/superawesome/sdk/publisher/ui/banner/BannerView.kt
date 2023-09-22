@@ -27,10 +27,10 @@ public class BannerView @JvmOverloads constructor(
 
     public override fun load(
         placementId: Int,
-        options: Map<String, Any>?,
         openRtbPartnerId: String?,
+        options: Map<String, Any>?,
     ) {
-        view.load(placementId, options, openRtbPartnerId)
+        view.load(placementId, openRtbPartnerId, options)
     }
 
     /**
@@ -46,10 +46,10 @@ public class BannerView @JvmOverloads constructor(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-        options: Map<String, Any>?,
         openRtbPartnerId: String?,
+        options: Map<String, Any>?,
     ) {
-        view.load(placementId, lineItemId, creativeId, options, openRtbPartnerId)
+        view.load(placementId, lineItemId, creativeId, openRtbPartnerId, options)
     }
 
     /**
