@@ -14,14 +14,14 @@ public interface AdView {
      * Loads a new SAAd object corresponding to a given placement Id.
      *
      * @param placementId Awesome Ads ID for ad data to be loaded
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
-     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public fun load(
         placementId: Int,
-        options: Map<String, Any>? = null,
         openRtbPartnerId: String? = null,
+        options: Map<String, Any>? = null,
     )
 
     /**
@@ -31,16 +31,16 @@ public interface AdView {
      * @param placementId the Ad placement id to load data for
      * @param lineItemId
      * @param creativeId id of the Creative
+     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      * @param options: an optional dictionary of data to send with an ad's requests and events.
      * Supports String or Int values.
-     * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
     public fun load(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-        options: Map<String, Any>? = null,
         openRtbPartnerId: String? = null,
+        options: Map<String, Any>? = null,
     )
 
     /**
