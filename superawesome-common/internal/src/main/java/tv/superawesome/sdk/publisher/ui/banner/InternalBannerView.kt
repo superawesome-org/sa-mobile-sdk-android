@@ -71,8 +71,8 @@ public class InternalBannerView @JvmOverloads constructor(
 
     public override fun load(
         placementId: Int,
+        openRtbPartnerId: String?,
         options: Map<String, Any>?,
-        openRtbPartnerId: String?
     ) {
         logger.info("load($placementId)")
         this.placementId = placementId
@@ -90,8 +90,8 @@ public class InternalBannerView @JvmOverloads constructor(
         placementId: Int,
         lineItemId: Int,
         creativeId: Int,
-        options: Map<String, Any>?,
         openRtbPartnerId: String?,
+        options: Map<String, Any>?,
     ) {
         logger.info("load($placementId, $lineItemId, $creativeId)")
         this.placementId = placementId

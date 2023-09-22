@@ -147,9 +147,10 @@ class MainActivity : FragmentActivity() {
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
+                "12345"
             )
         } else {
-            binding.bannerView.load(item.placementId)
+            binding.bannerView.load(item.placementId, "12345")
         }
     }
 

@@ -85,6 +85,7 @@ public class SAUnityBannerAd {
                 try {
                     bannerAd.load(
                             placementId,
+                            null,
                             SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                     );
                 } catch (JSONException e) {
