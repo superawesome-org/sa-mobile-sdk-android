@@ -21,6 +21,10 @@ public class SAVideoEvents {
   private boolean isMidpointHandled = false;
   private boolean isThirdQuartileHandled = false;
 
+  private int lastTick = 0;
+
+  private static final int TICK = 5000;
+
   public SAVideoEvents(SAEvents events, Listener listener) {
     this.events = events;
     this.listener = listener;
@@ -43,7 +47,8 @@ public class SAVideoEvents {
       events.checkViewableStatusForVideo(
           player,
           isViewable -> {
-            if (isViewable) {
+            if (isViewable && hasTicked(time)) {
+              lastTick = time;
               events.triggerDwellTime();
             }
           });
@@ -96,5 +101,9 @@ public class SAVideoEvents {
       // send events
       events.triggerVASTThirdQuartileEvent();
     }
+  }
+
+  private boolean hasTicked(int time) {
+    return (time - lastTick) / TICK == 1;
   }
 }
