@@ -68,7 +68,6 @@ public class SAVideoEvents {
             isViewable -> {
               if (isViewable) {
                 events.triggerViewableImpressionEvent();
-                events.triggerDwellTime();
                 if (listener != null) {
                   listener.hasBeenVisible();
                 }
