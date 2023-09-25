@@ -41,15 +41,11 @@ class MainActivity : FragmentActivity() {
         setContentView(binding.root)
 
         intent.getStringExtra(AD_LOAD_OPTIONS)?.let { param ->
-            try {
+            additionalLoadOptions = try {
                 val json = JSONObject(param)
-                val options = mutableMapOf<String, Any>()
-                json.keys().forEach { key ->
-                    options[key] = json[key]
-                }
-                additionalLoadOptions = options
+                json.keys().asSequence().associateWith { key -> json[key] }
             } catch (e: Exception) {
-                additionalLoadOptions = mapOf(ADDITIONAL_OPTIONS to param)
+                mapOf(ADDITIONAL_OPTIONS to param)
             }
         }
 
