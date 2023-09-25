@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.json.JSONObject
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.demoapp.databinding.ActivityMainBinding
@@ -32,10 +33,25 @@ class MainActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private var additionalLoadOptions: Map<String, Any>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        intent.getStringExtra(AD_LOAD_OPTIONS)?.let { param ->
+            try {
+                val json = JSONObject(param)
+                val options = mutableMapOf<String, Any>()
+                json.keys().forEach { key ->
+                    options[key] = json[key]
+                }
+                additionalLoadOptions = options
+            } catch (e: Exception) {
+                additionalLoadOptions = mapOf(ADDITIONAL_OPTIONS to param)
+            }
+        }
 
         val environment = when(intent.getStringExtra("environment")) {
             SDKEnvironment.UITesting.name -> SDKEnvironment.UITesting
@@ -158,9 +174,11 @@ class MainActivity : FragmentActivity() {
                 item.placementId,
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
+                null,
+                additionalLoadOptions,
             )
         } else {
-            binding.bannerView.load(item.placementId)
+            binding.bannerView.load(item.placementId, null, additionalLoadOptions)
         }
     }
 
@@ -171,9 +189,16 @@ class MainActivity : FragmentActivity() {
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
                 this,
+                null,
+                additionalLoadOptions
             )
         } else {
-            SAInterstitialAd.load(item.placementId, this)
+            SAInterstitialAd.load(
+                item.placementId,
+                this,
+                null,
+                additionalLoadOptions,
+            )
         }
     }
 
@@ -184,9 +209,11 @@ class MainActivity : FragmentActivity() {
                 item.lineItemId ?: 0,
                 item.creativeId ?: 0,
                 this,
+                null,
+                additionalLoadOptions,
             )
         } else {
-            SAVideoAd.load(item.placementId, this)
+            SAVideoAd.load(item.placementId, this, null, additionalLoadOptions)
         }
     }
 
@@ -232,6 +259,11 @@ class MainActivity : FragmentActivity() {
         val originalMessage =binding. subtitleTextView.text
         val message = "$originalMessage $placementId $event"
         binding.subtitleTextView.text = message
+    }
+
+    private companion object {
+        const val AD_LOAD_OPTIONS = "AD_LOAD_OPTIONS"
+        const val ADDITIONAL_OPTIONS = "additionalOptions"
     }
 }
 
