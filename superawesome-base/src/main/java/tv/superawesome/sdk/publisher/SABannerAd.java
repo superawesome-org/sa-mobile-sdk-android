@@ -15,9 +15,14 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
@@ -40,7 +45,7 @@ import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.sdk.publisher.base.R;
 
-public class SABannerAd extends FrameLayout {
+public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver {
 
     interface SABannerAdListener {
         void hasBeenVisible();
@@ -50,6 +55,7 @@ public class SABannerAd extends FrameLayout {
 
     // constants
     private final int BANNER_BACKGROUND = Color.rgb(224, 224, 224);
+    private final long DWELL_DELAY = 5000L;
 
     // private vars w/ exposed setters & getters
     private boolean isParentalGateEnabled = false;
@@ -78,6 +84,8 @@ public class SABannerAd extends FrameLayout {
 
     // Utils
     private final SAClock clock;
+
+    private Timer dwellTimer;
 
     /**
      * Constructor with context
@@ -390,6 +398,7 @@ public class SABannerAd extends FrameLayout {
                     // this is called after the HTML data is loaded and is where all
                     // events are fired
                     case Web_Loaded: {
+                        startDwellTimer();
 
                         // send viewable impression
                         events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
@@ -624,6 +633,8 @@ public class SABannerAd extends FrameLayout {
 
         // close ad
         isClosed = true;
+
+        cancelDwellTimer();
     }
 
     /**
@@ -698,6 +709,54 @@ public class SABannerAd extends FrameLayout {
         } else {
             bumperCallback.invoke();
         }
+    }
+
+    private void startDwellTimer() {
+        // Start Lifecycle observer so we can track activity state.
+        ((LifecycleOwner) getContext()).getLifecycle().addObserver(this);
+
+        if (dwellTimer != null) {
+            return;
+        }
+
+        dwellTimer = new Timer();
+
+        dwellTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Lifecycle.State state = ((LifecycleOwner) getContext()).getLifecycle().getCurrentState();
+                // If the activity is not resumed, probably that the banner isn't visible.
+                // We can skip sending dwellTime.
+                if (!state.isAtLeast(Lifecycle.State.RESUMED)) {
+                    return;
+                }
+
+                events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
+                    if (success) {
+                        events.triggerDwellTime();
+                    }
+                });
+            }
+        }, DWELL_DELAY, DWELL_DELAY);
+    }
+
+    private void cancelDwellTimer() {
+        if (dwellTimer != null) {
+            dwellTimer.cancel();
+            dwellTimer = null;
+        }
+    }
+
+    @Override
+    public void onStop(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onStop(owner);
+        cancelDwellTimer();
+    }
+
+    @Override
+    public void onStart(@NonNull LifecycleOwner owner) {
+        DefaultLifecycleObserver.super.onStart(owner);
+        startDwellTimer();
     }
 
     /**********************************************************************************************
