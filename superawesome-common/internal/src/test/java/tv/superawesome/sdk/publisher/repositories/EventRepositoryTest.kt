@@ -128,7 +128,7 @@ class EventRepositoryTest : MockServerTest() {
 
     @Test
     fun `when sending dwell time, it should return the request result`() = runTest {
-        testEvent(EventType.DwellTime) { sut.oneSecondDwellTime(fakeAdResponse()) }
+        testEvent(EventType.DwellTime) { sut.dwellTime(fakeAdResponse()) }
     }
 
     private suspend fun <T : Any> testEvent(
