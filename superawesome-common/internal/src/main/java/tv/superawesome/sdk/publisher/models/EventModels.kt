@@ -34,6 +34,7 @@ data class EventData(
     @SerialName("line_item") val lineItem: Int,
     val creative: Int,
     val type: EventType,
+    val value: Int? = null,
 )
 
 @Serializable

@@ -18,7 +18,7 @@ interface EventRepositoryType {
     suspend fun parentalGateSuccess(adResponse: AdResponse): DataResult<Unit>
     suspend fun parentalGateFail(adResponse: AdResponse): DataResult<Unit>
     suspend fun viewableImpression(adResponse: AdResponse): DataResult<Unit>
-    suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Unit>
+    suspend fun dwellTime(adResponse: AdResponse): DataResult<Unit>
 }
 
 class EventRepository(
@@ -40,13 +40,18 @@ class EventRepository(
             dataSource.videoClick(adQueryMaker.makeVideoClickQuery(adResponse))
         }
 
-    private suspend fun customEvent(type: EventType, adResponse: AdResponse): DataResult<Unit> =
+    private suspend fun customEvent(
+        type: EventType,
+        adResponse: AdResponse,
+        value: Int? = null,
+    ): DataResult<Unit> =
         withContext(Dispatchers.IO) {
             val data = EventData(
                 adResponse.placementId,
                 adResponse.ad.lineItemId,
                 adResponse.ad.creative.id,
                 type,
+                value = value,
             )
             dataSource.event(adQueryMaker.makeEventQuery(adResponse, data))
         }
@@ -66,6 +71,6 @@ class EventRepository(
     override suspend fun viewableImpression(adResponse: AdResponse): DataResult<Unit> =
         customEvent(EventType.ViewableImpression, adResponse)
 
-    override suspend fun oneSecondDwellTime(adResponse: AdResponse): DataResult<Unit> =
-        customEvent(EventType.DwellTime, adResponse)
+    override suspend fun dwellTime(adResponse: AdResponse): DataResult<Unit> =
+        customEvent(EventType.DwellTime, adResponse, value = 5)
 }

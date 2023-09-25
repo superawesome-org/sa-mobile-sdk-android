@@ -38,6 +38,7 @@ public class VideoEvents(
     private var isMidpointHandled = false
     private var isThirdQuartileHandled = false
     private var viewableDetector: ViewableDetectorType? = null
+    private var lastTick = 0
 
     public fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
         // Do nothing
@@ -53,13 +54,8 @@ public class VideoEvents(
 
     @Suppress("MagicNumber")
     public fun time(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
-        if (viewableDetector?.isVisible == null) {
-            viewableDetector?.isVisible = {
-                scope.launch {
-                    eventRepository.oneSecondDwellTime(adResponse)
-                }
-            }
-        }
+        handleDwellTime(time, videoPlayer)
+
         // Start
         if (time >= 1 && !isStartHandled) {
             isStartHandled = true
@@ -104,5 +100,22 @@ public class VideoEvents(
             // send events
             scope.launch { vastEventRepository.thirdQuartile() }
         }
+    }
+
+    private fun handleDwellTime(time: Int, videoPlayer: IVideoPlayer?) {
+        if (videoPlayer is ViewGroup) {
+            viewableDetector?.start(videoPlayer, VIDEO_MAX_TICK_COUNT) {
+                if (hasTicked(time)) {
+                    lastTick = time
+                    scope.launch { eventRepository.dwellTime(adResponse) }
+                }
+            }
+        }
+    }
+
+    private fun hasTicked(time: Int) = (time - lastTick) / TICK == 1
+
+    companion object {
+        private const val TICK = 5000
     }
 }
