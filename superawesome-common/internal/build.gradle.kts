@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.koin.android)
     implementation(libs.retrofit)
     implementation(libs.okhttp.logging.interceptor)
