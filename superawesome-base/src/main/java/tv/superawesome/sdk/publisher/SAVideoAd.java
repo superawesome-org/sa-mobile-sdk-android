@@ -391,6 +391,8 @@ public class SAVideoAd {
             // try to start the activity
             if (adL.creative.format == SACreativeFormat.video && context != null) {
                 if (adL.isVpaid) {
+                    // Start the timer
+                    performanceMetrics.startTimerForRenderTime();
                     ads.remove(placementId);
                     Intent intent = SAManagedAdActivity.newInstance(context, placementId, adL, adL.creative.details.tag);
                     ManagedAdConfig config = new ManagedAdConfig(

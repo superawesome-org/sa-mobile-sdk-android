@@ -287,6 +287,7 @@ class SAManagedAdActivity : Activity(),
         viewableDetector.start(view, videoMaxTickCount) {
             events.triggerViewableImpressionEvent()
         }
+        performanceMetrics.trackRenderTime()
     }
 
     override fun webViewOnError() = adFailedToShow()

@@ -12,12 +12,13 @@ import tv.superawesome.lib.sametrics.models.SAPerformanceTimer;
 import tv.superawesome.lib.sasession.session.ISASession;
 
 public class SAPerformanceMetrics {
-  private Executor executor;
+  private final Executor executor;
   private ISASession session;
 
-  private SAPerformanceTimer closeButtonPressedTimer = new SAPerformanceTimer();
-  private SAPerformanceTimer dwellTimeTimer = new SAPerformanceTimer();
-  private SAPerformanceTimer loadTimeTimer = new SAPerformanceTimer();
+  private final SAPerformanceTimer closeButtonPressedTimer = new SAPerformanceTimer();
+  private final SAPerformanceTimer dwellTimeTimer = new SAPerformanceTimer();
+  private final SAPerformanceTimer loadTimeTimer = new SAPerformanceTimer();
+  private final SAPerformanceTimer renderTimeTimer = new SAPerformanceTimer();
 
   public SAPerformanceMetrics() {
     this(Executors.newSingleThreadExecutor());
@@ -76,6 +77,22 @@ public class SAPerformanceMetrics {
         closeButtonPressedTimer.delta(new Date().getTime()),
         SAPerformanceMetricName.CloseButtonPressTime,
         SAPerformanceMetricType.Gauge
+    );
+
+    sendPerformanceMetric(model, session);
+  }
+
+  public void startTimerForRenderTime() {
+    renderTimeTimer.start(new Date().getTime());
+  }
+
+  public void trackRenderTime() {
+    if (renderTimeTimer.getStartTime() == 0L) { return; }
+
+    SAPerformanceMetricModel model = new SAPerformanceMetricModel(
+      renderTimeTimer.delta(new Date().getTime()),
+      SAPerformanceMetricName.RenderTime,
+      SAPerformanceMetricType.Gauge
     );
 
     sendPerformanceMetric(model, session);
