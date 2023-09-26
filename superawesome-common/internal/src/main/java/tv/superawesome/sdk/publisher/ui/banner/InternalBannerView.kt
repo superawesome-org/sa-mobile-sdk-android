@@ -11,6 +11,11 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.R
@@ -20,6 +25,7 @@ import tv.superawesome.sdk.publisher.components.TimeProviderType
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
+import tv.superawesome.sdk.publisher.models.DwellTimer
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
@@ -35,18 +41,21 @@ public class InternalBannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), AdView, KoinComponent {
+) : FrameLayout(context, attrs, defStyleAttr), AdView, KoinComponent, DefaultLifecycleObserver {
 
     internal val controller: AdControllerType by inject()
     private val imageProvider: ImageProviderType by inject()
     private val logger: Logger by inject()
     private val timeProvider: TimeProviderType by inject()
     private val viewableDetector: ViewableDetectorType by inject()
+    private val dwellViewableDetector: ViewableDetectorType by inject()
+    private val dwellTimer = DwellTimer(DWELL_DELAY, CoroutineScope(Dispatchers.Default))
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
     private var hasBeenVisible: VoidBlock? = null
+
 
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
@@ -152,6 +161,7 @@ public class InternalBannerView @JvmOverloads constructor(
         viewableDetector.cancel()
         removeWebView()
         controller.close()
+        cancelDwellTimer()
     }
 
     /**
@@ -243,6 +253,7 @@ public class InternalBannerView @JvmOverloads constructor(
                     controller.triggerViewableImpression(placementId)
                     hasBeenVisible?.let { it() }
                 }
+                startDwellTimer()
             }
 
             override fun webViewOnError() = controller.adFailedToShow()
@@ -286,9 +297,41 @@ public class InternalBannerView @JvmOverloads constructor(
             options = options,
         )
 
+    private fun startDwellTimer() {
+        val lifecycleOwner = context as LifecycleOwner
+        lifecycleOwner.lifecycle.addObserver(this)
+
+        dwellTimer.start {
+            val state = lifecycleOwner.lifecycle.currentState
+            if (state.isAtLeast(Lifecycle.State.RESUMED)) {
+                dwellViewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
+                    controller.triggerDwellTime()
+                }
+            }
+        }
+    }
+
+    private fun cancelDwellTimer() {
+        dwellTimer.stop()
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        startDwellTimer()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        cancelDwellTimer()
+    }
+
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
         this.placementId = placementId
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible
+    }
+
+    companion object {
+        private const val DWELL_DELAY = 5000L
     }
 }
