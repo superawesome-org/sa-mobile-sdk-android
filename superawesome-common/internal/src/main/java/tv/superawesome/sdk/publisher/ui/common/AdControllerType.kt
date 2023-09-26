@@ -23,6 +23,11 @@ interface AdControllerType {
     fun triggerImpressionEvent(placementId: Int)
     fun triggerViewableImpression(placementId: Int)
 
+    /**
+     * Triggers the dwell time event for a placement.
+     */
+    fun triggerDwellTime()
+
     fun load(placementId: Int, request: AdRequest)
     fun load(placementId: Int, lineItemId: Int, creativeId: Int, request: AdRequest)
     fun play(placementId: Int): AdResponse?

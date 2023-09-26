@@ -374,6 +374,14 @@ class AdController(
         scope.launch { currentAdResponse?.let { eventRepository.viewableImpression(it) } }
     }
 
+    override fun triggerDwellTime() {
+        scope.launch {
+            currentAdResponse?.let { adResponse ->
+                eventRepository.dwellTime(adResponse)
+            }
+        }
+    }
+
     override fun clearCache() {
         adStore.clear()
     }
