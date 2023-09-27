@@ -37,6 +37,12 @@ class AdViewJavaScriptBridge(private val listener: Listener) {
     @JavascriptInterface
     fun adPaused() = tryListener { listener.adPaused() }
 
+    /**
+     * JS interface that enables calling `webSDKReady` from a web view.
+     */
+    @JavascriptInterface
+    fun webSDKReady() = tryListener { listener.webSDKReady() }
+
     private fun tryListener(block: () -> Unit) {
         try {
             block()
@@ -45,6 +51,7 @@ class AdViewJavaScriptBridge(private val listener: Listener) {
         }
     }
 
+    @Suppress("TooManyFunctions")
     interface Listener {
         fun adLoaded()
 
@@ -67,5 +74,10 @@ class AdViewJavaScriptBridge(private val listener: Listener) {
         fun adPlaying()
 
         fun adPaused()
+
+        /**
+         * Callback for when the WebSDK has finished loading and is ready.
+         */
+        fun webSDKReady()
     }
 }
