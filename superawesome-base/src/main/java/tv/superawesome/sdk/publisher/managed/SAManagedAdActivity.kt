@@ -39,6 +39,7 @@ class SAManagedAdActivity : Activity(),
     private var shownHandler = Handler(Looper.getMainLooper())
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
+    private var ad: SAAd? = null
     private lateinit var events: SAEvents
     private lateinit var performanceMetrics: SAPerformanceMetrics
     private lateinit var viewableDetector: SAViewableDetector
@@ -100,7 +101,8 @@ class SAManagedAdActivity : Activity(),
             else -> Unit // Hidden by default
         }
 
-        val ad: SAAd = intent.getParcelableExtra(AD_KEY) ?: return
+        ad = intent.getParcelableExtra(AD_KEY)
+        val ad = ad ?: return
 
         videoClick = SAVideoClick(
             ad,
@@ -237,7 +239,7 @@ class SAManagedAdActivity : Activity(),
 
     override fun webSDKReady() {
         listener?.onEvent(placementId, SAEvent.webSDKReady)
-        performanceMetrics.trackRenderTime()
+        ad?.run(performanceMetrics::trackRenderTime)
     }
 
     private fun showCloseButton() {
@@ -246,7 +248,7 @@ class SAManagedAdActivity : Activity(),
     }
 
     private fun onCloseAction() {
-        performanceMetrics.trackCloseButtonPressed()
+        ad?.run(performanceMetrics::trackCloseButtonPressed)
         if (config?.shouldShowCloseWarning == true && !completed) {
             adView.pauseVideo()
             SACloseWarning.setListener(object : SACloseWarning.Interface {
@@ -265,7 +267,7 @@ class SAManagedAdActivity : Activity(),
 
     private fun close() {
         if (!isFinishing) {
-            performanceMetrics.trackDwellTime()
+            ad?.run(performanceMetrics::trackDwellTime)
             listener?.onEvent(this.placementId, SAEvent.adClosed)
             finish()
         }
