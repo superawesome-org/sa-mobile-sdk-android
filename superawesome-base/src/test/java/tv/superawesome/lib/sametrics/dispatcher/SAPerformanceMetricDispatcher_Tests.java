@@ -18,8 +18,11 @@ import tv.superawesome.lib.saevents.mocks.executors.MockExecutor;
 import tv.superawesome.lib.saevents.mocks.session.MockSession;
 import tv.superawesome.lib.sametrics.models.SAPerformanceMetricModel;
 import tv.superawesome.lib.sametrics.models.SAPerformanceMetricName;
+import tv.superawesome.lib.sametrics.models.SAPerformanceMetricTags;
 import tv.superawesome.lib.sametrics.models.SAPerformanceMetricType;
+import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.sasession.session.ISASession;
+import tv.superawesome.lib.sautils.SAUtils;
 
 public class SAPerformanceMetricDispatcher_Tests {
 
@@ -47,7 +50,15 @@ public class SAPerformanceMetricDispatcher_Tests {
     SAPerformanceMetricModel model = new SAPerformanceMetricModel(
         15L,
         SAPerformanceMetricName.CloseButtonPressTime,
-        SAPerformanceMetricType.Gauge
+        SAPerformanceMetricType.Gauge,
+        new SAPerformanceMetricTags(
+                1,
+                2,
+                3,
+                SACreativeFormat.rich,
+                "1.0.0",
+                SAUtils.SAConnectionType.cellular_4g
+        )
     );
 
     // when

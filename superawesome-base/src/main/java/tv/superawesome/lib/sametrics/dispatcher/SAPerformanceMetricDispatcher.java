@@ -49,11 +49,26 @@ public class SAPerformanceMetricDispatcher {
   }
 
   public JSONObject getQuery() {
+    String tags;
+    try {
+      tags = SAUtils.encodeDictAsJsonDict(SAJsonParser.newObject(
+              "placementId", String.valueOf(metric.metricTags.placementId),
+              "lineItemId", String.valueOf(metric.metricTags.lineItemId),
+              "creativeId", String.valueOf(metric.metricTags.creativeId),
+              "format", metric.metricTags.format,
+              "sdkVersion", metric.metricTags.sdkVersion,
+              "connectionType", String.valueOf(metric.metricTags.connectionType.ordinal())
+      ));
+    } catch (NullPointerException e) {
+      tags = null;
+    }
+
     try {
       return SAJsonParser.newObject(
           "value", metric.value,
           "metricName", metric.metricName.label,
-          "metricType", metric.metricType.label
+          "metricType", metric.metricType.label,
+          "metricTags", tags
       );
     } catch (Exception e) {
       return new JSONObject();
