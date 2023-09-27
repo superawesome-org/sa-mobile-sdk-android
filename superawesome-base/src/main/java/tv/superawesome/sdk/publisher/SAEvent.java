@@ -4,6 +4,8 @@
  */
 package tv.superawesome.sdk.publisher;
 
+import androidx.annotation.NonNull;
+
 /**
  * This enum holds all the possible callback values that an ad sends during its lifetime
  *  - adLoaded:         ad was loaded successfully and is ready to be displayed
@@ -20,65 +22,81 @@ package tv.superawesome.sdk.publisher;
  */
 public enum SAEvent {
     adLoaded {
+        @NonNull
         @Override
         public String toString() {
             return "adLoaded";
         }
     },
     adEmpty {
+        @NonNull
         @Override
         public String toString() {
             return "adEmpty";
         }
     },
     adFailedToLoad {
+        @NonNull
         @Override
         public String toString() {
             return "adFailedToLoad";
         }
     },
     adAlreadyLoaded {
+        @NonNull
         @Override
         public String toString() {
             return "adAlreadyLoaded";
         }
     },
     adShown {
+        @NonNull
         @Override
         public String toString() {
             return "adShown";
         }
     },
     adFailedToShow {
+        @NonNull
         @Override
         public String toString() {
             return "adFailedToShow";
         }
     },
     adClicked {
+        @NonNull
         @Override
         public String toString() {
             return "adClicked";
         }
     },
     adEnded {
+        @NonNull
         @Override
         public String toString() {
             return "adEnded";
         }
     },
     adClosed {
+        @NonNull
         @Override
         public String toString() {
             return "adClosed";
         }
     },
     adPaused {
+        @NonNull
         @Override
         public String toString() { return "adPaused"; }
     },
     adPlaying {
+        @NonNull
         @Override
         public String toString() { return "adPlaying"; }
+    },
+    webSDKReady {
+        @NonNull
+        @Override
+        public String toString() { return "webSDKReady"; }
     }
 }
