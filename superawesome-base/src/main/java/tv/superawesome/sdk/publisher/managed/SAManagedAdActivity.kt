@@ -237,6 +237,7 @@ class SAManagedAdActivity : Activity(),
 
     override fun webSDKReady() {
         listener?.onEvent(placementId, SAEvent.webSDKReady)
+        performanceMetrics.trackRenderTime()
     }
 
     private fun showCloseButton() {
@@ -291,7 +292,6 @@ class SAManagedAdActivity : Activity(),
         viewableDetector.start(view, videoMaxTickCount) {
             events.triggerViewableImpressionEvent()
         }
-        performanceMetrics.trackRenderTime()
     }
 
     override fun webViewOnError() = adFailedToShow()
