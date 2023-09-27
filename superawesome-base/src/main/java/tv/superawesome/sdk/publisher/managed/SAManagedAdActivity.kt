@@ -235,6 +235,10 @@ class SAManagedAdActivity : Activity(),
         listener?.onEvent(this.placementId, SAEvent.adPaused)
     }
 
+    override fun webSDKReady() {
+        listener?.onEvent(placementId, SAEvent.webSDKReady)
+    }
+
     private fun showCloseButton() {
         closeButton.visibility = View.VISIBLE
         performanceMetrics.startTimingForCloseButtonPressed()
