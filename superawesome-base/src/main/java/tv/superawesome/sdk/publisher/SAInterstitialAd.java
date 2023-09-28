@@ -518,6 +518,11 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             // try to start the activity
             if (adL.creative.format != SACreativeFormat.video && context != null) {
 
+                if (adL.creative.format == SACreativeFormat.rich || adL.creative.format == SACreativeFormat.tag) {
+                    // Start tracking render time for Rich Media
+                    performanceMetrics.startTimerForRenderTime();
+                }
+
                 // create intent
                 Intent intent = new Intent(context, SAInterstitialAd.class);
                 intent.putExtra("ad", adL.writeToJson().toString());
@@ -694,6 +699,10 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     @VisibleForTesting
     private static void clearCache() {
         ads.clear();
+    }
+
+    public static SAPerformanceMetrics getPerformanceMetrics() {
+        return performanceMetrics;
     }
 
     @NonNull
