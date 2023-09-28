@@ -27,35 +27,35 @@ import tv.superawesome.sdk.publisher.SAVersion;
 public class SASession implements ISASession {
 
     // constants
-    private final static String      DEV_URL = "https://ads.dev.superawesome.tv/v2";
-    private final static String      PRODUCTION_URL = "https://ads.superawesome.tv/v2";
-    private final static String      STAGING_URL = "https://ads.staging.superawesome.tv/v2";
-    private final static String      UITESTING_URL = "http://localhost:8080";
-    private final static String      DEVICE_PHONE = "phone";
-    private final static String      DEVICE_TABLET = "tablet";
+    private final static String DEV_URL = "https://ads.dev.superawesome.tv/v2";
+    private final static String PRODUCTION_URL = "https://ads.superawesome.tv/v2";
+    private final static String STAGING_URL = "https://ads.staging.superawesome.tv/v2";
+    private final static String UITESTING_URL = "http://localhost:8080";
+    private final static String DEVICE_PHONE = "phone";
+    private final static String DEVICE_TABLET = "tablet";
 
     // the current frequency capper
-    private final ISACapper                capper;
+    private final ISACapper capper;
 
     // private state members
-    private String                   baseUrl;
-    private boolean                  testEnabled;
-    private int                      dauId;
-    private String                   version;
-    private final String                   packageName;
-    private final String                   appName;
-    private final SAUtils.SAConnectionType connectionType;
-    private String                   lang;
-    private final String                   device;
-    private final String                   userAgent;
-    private SAConfiguration          configuration;
-    private SARTBInstl               instl;
-    private SARTBPosition            pos;
-    private SARTBSkip                skip;
-    private SARTBStartDelay          startDelay;
-    private SARTBPlaybackMethod      playbackMethod;
-    private int                      width;
-    private int                      height;
+    private  Context context;
+    private String baseUrl;
+    private boolean testEnabled;
+    private int dauId;
+    private String version;
+    private final String packageName;
+    private final String appName;
+    private String lang;
+    private final String device;
+    private final String userAgent;
+    private SAConfiguration configuration;
+    private SARTBInstl instl;
+    private SARTBPosition pos;
+    private SARTBSkip skip;
+    private SARTBStartDelay startDelay;
+    private SARTBPlaybackMethod playbackMethod;
+    private int width;
+    private int height;
 
 
     /**
@@ -64,6 +64,8 @@ public class SASession implements ISASession {
      * @param context current context (activity or fragment)
      */
     public SASession(Context context) {
+        this.context = context;
+
         // create the capper
         capper = new SACapper(context);
 
@@ -74,7 +76,6 @@ public class SASession implements ISASession {
         setVersion(SAVersion.getSDKVersion(SAUtils.getPluginName(context)));
         packageName = context != null ? context.getPackageName() : "unknown";
         appName = context != null ? SAUtils.getAppLabel(context) : "unknown";
-        connectionType = context != null ? SAUtils.getNetworkConnectivity(context) : SAUtils.SAConnectionType.unknown;
         lang = Locale.getDefault().toString();
         device = SAUtils.getSystemSize() == SAUtils.SASystemSize.phone ? DEVICE_PHONE : DEVICE_TABLET;
         instl = SARTBInstl.FULLSCREEN;
@@ -245,7 +246,7 @@ public class SASession implements ISASession {
 
     @Override
     public SAUtils.SAConnectionType getConnectionType () {
-        return connectionType;
+        return SAUtils.getNetworkConnectivity(context);
     }
 
     @Override
