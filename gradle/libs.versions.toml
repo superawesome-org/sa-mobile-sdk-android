@@ -47,12 +47,12 @@ retrofit-serialization-converter = "0.8.0"
 chucker = "3.5.0"
 
 # Google Play Services
-google-play-services-ads = "21.5.0"
+google-play-services-ads = "22.4.0"
 google-play-services-ads-identifier = "18.0.1"
 
 # IronSource
 ironsource-adapters-superawesome = "4.1.7"
-ironsource-mediator = "7.3.1.1"
+ironsource-mediator = "7.5.1"
 
 # Test
 jUnit4 = "4.13.2"
