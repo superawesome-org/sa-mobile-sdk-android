@@ -20,6 +20,9 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,8 +49,9 @@ import tv.superawesome.sdk.publisher.state.CloseButtonState;
  * interstitial / fullscreen type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdListener {
+public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdListener, LifecycleOwner {
 
+    private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
     private SABannerAd              interstitialBanner = null;
     private ImageButton             closeButton = null;
     private static CloseButtonState closeButtonState = SADefaults.defaultCloseButtonStateInterstitial();
@@ -690,5 +694,11 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     @VisibleForTesting
     private static void clearCache() {
         ads.clear();
+    }
+
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
     }
 }
