@@ -435,6 +435,10 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
                     // this is actually a fragment event notifying the banner class that
                     // the fragment has started
                     case Web_Started: {
+                        if (ad.creative.format == SACreativeFormat.rich || ad.creative.format == SACreativeFormat.tag) {
+                            // Track render time for Rich media interstitials
+                            SAInterstitialAd.getPerformanceMetrics().trackRenderTime(ad);
+                        }
                         Resources res = context.getResources();
                         padlock = new ImageButton(context);
                         padlock.setImageBitmap(SAImageUtils.createPadlockBitmap());
