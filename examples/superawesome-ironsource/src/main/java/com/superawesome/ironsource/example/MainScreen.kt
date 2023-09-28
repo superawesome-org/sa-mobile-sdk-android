@@ -1,6 +1,5 @@
 package com.superawesome.ironsource.example
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,9 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.ironsource.mediationsdk.IronSource
 import com.ironsource.mediationsdk.model.Placement
-import com.ironsource.sdk.utils.SDKUtils
 import kotlinx.coroutines.flow.StateFlow
 import tv.superawesome.sdk.publisher.SAVersion
 
@@ -37,10 +34,11 @@ fun MainScreen(
 ) {
     val isRewardedVideoLoaded by rewardedVideoLoadedState.collectAsState()
     val isInterstitialAdLoaded by interstitialLoadedState.collectAsState()
-    val rewardDialog by placementReward.collectAsState()
+    val reward by placementReward.collectAsState()
 
-    if (rewardDialog != null) {
-        RewardDialog(onDismissDialog)
+    val placement = reward
+    if (placement != null) {
+        RewardDialog(placement, onDismissDialog)
     }
 
     Column(
@@ -123,6 +121,7 @@ private fun MainMenu(
 
 @Composable
 private fun RewardDialog(
+    placement: Placement,
     onDismissDialog: () -> Unit,
 ) {
     AlertDialog(
@@ -136,7 +135,11 @@ private fun RewardDialog(
             Text(text = "Reward dialog")
         },
         text = {
-            Text(text = "You have received a reward")
+            Column {
+                Text(text = "You have received a reward")
+                Text(text = "Reward name: ${placement.rewardName}")
+                Text(text = "Reward amount: ${placement.rewardAmount}")
+            }
         }
     )
 }
