@@ -73,7 +73,7 @@ public class SAUtils {
      *  - unknown
      *  - ethernet
      *  - wifi
-     *  - cellular_unknown, 2g, 3g, 4g,
+     *  - cellular_unknown, 2g, 3g, 4g, 5g
      */
     public enum SAConnectionType {
         unknown {
@@ -116,6 +116,12 @@ public class SAUtils {
             @Override
             public String toString() {
                 return "cellular_4g";
+            }
+        },
+        cellular_5g {
+            @Override
+            public String toString() {
+                return "cellular_5g";
             }
         }
     }
@@ -395,17 +401,17 @@ public class SAUtils {
         NetworkInfo info = cm.getActiveNetworkInfo();
 
         // unknown case
-        if(info == null || !info.isConnected()) {
+        if (info == null || !info.isConnected()) {
             return SAConnectionType.unknown;
         }
 
         // wifi case
-        if(info.getType() == ConnectivityManager.TYPE_WIFI) {
+        if (info.getType() == ConnectivityManager.TYPE_WIFI) {
             return SAConnectionType.wifi;
         }
 
         // mobile case
-        if(info.getType() == ConnectivityManager.TYPE_MOBILE) {
+        if (info.getType() == ConnectivityManager.TYPE_MOBILE) {
             int networkType = info.getSubtype();
             switch (networkType) {
                 case TelephonyManager.NETWORK_TYPE_GPRS:
@@ -426,6 +432,8 @@ public class SAUtils {
                     return SAConnectionType.cellular_3g;
                 case TelephonyManager.NETWORK_TYPE_LTE:    //api<11 : replace by 13
                     return SAConnectionType.cellular_4g;
+                case TelephonyManager.NETWORK_TYPE_NR:
+                    return SAConnectionType.cellular_5g;
                 default:
                     return SAConnectionType.unknown;
             }

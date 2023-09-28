@@ -22,8 +22,8 @@ class DwellTimeEvent(
     }
 
     @Suppress("MagicNumber")
-    override fun getQuery(): JSONObject? {
-        return try {
+    override fun getQuery(): JSONObject? =
+        try {
             SAJsonParser.newObject(
                 "type", "viewTime",
                 "placement", ad.placementId,
@@ -46,5 +46,4 @@ class DwellTimeEvent(
         } catch (e: Exception) {
             JSONObject()
         }
-    }
 }
