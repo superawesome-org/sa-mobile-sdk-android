@@ -29,6 +29,7 @@ import kotlin.jvm.functions.Function0;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.sametrics.SAPerformanceMetrics;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
@@ -68,6 +69,8 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
     private final SASession session;
     private final SAEvents events;
     private final SALoader loader;
+
+    private final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
 
     // private subviews
     private SAWebPlayer webPlayer;
@@ -214,6 +217,9 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
 
         session.prepareSession(() -> {
 
+            performanceMetrics.setSession(session);
+            performanceMetrics.startTimingForLoadTime();
+
             // after session is OK, prepare
             loader.loadAd(placementId, session, options, openRtbPartnerId, response -> {
 
@@ -228,6 +234,8 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
                     if (response.isValid()) {
                         SAAd adResponse = response.ads.get(0);
                         adResponse.openRtbPartnerId = openRtbPartnerId;
+
+                        performanceMetrics.trackLoadTime(adResponse);
                         setAd(adResponse);
                     } else {
                         setAd(null);
@@ -323,36 +331,41 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
             // do nothing
         }
 
-        session.prepareSession(() ->
+        session.prepareSession(() -> {
 
-                // after session is OK, prepare
-                loader.loadAd(placementId, lineItemId, creativeId, session, options, openRtbPartnerId, response -> {
+            performanceMetrics.setSession(session);
+            performanceMetrics.startTimingForLoadTime();
 
-                    if (response.status != 200) {
-                        if (listener != null) {
-                            listener.onEvent(placementId, SAEvent.adFailedToLoad);
-                        } else {
-                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
-                        }
+            // after session is OK, prepare
+            loader.loadAd(placementId, lineItemId, creativeId, session, options, openRtbPartnerId, response -> {
+
+                if (response.status != 200) {
+                    if (listener != null) {
+                        listener.onEvent(placementId, SAEvent.adFailedToLoad);
                     } else {
-                        canPlay = response.isValid();
-                        if (response.isValid()) {
-                            SAAd adResponse = response.ads.get(0);
-                            adResponse.openRtbPartnerId = openRtbPartnerId;
-                            setAd(adResponse);
-                        } else {
-                            setAd(null);
-                        }
-                        if (listener != null) {
-                            SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
-                            listener.onEvent(placementId, eventToSend);
-                            Log.d("SABannerAd", "Event callback: " + eventToSend);
-                        } else {
-                            Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
-                        }
+                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been: adFailedToLoad");
                     }
-                })
-        );
+                } else {
+                    canPlay = response.isValid();
+                    if (response.isValid()) {
+                        SAAd adResponse = response.ads.get(0);
+                        adResponse.openRtbPartnerId = openRtbPartnerId;
+
+                        performanceMetrics.trackLoadTime(ad);
+                        setAd(adResponse);
+                    } else {
+                        setAd(null);
+                    }
+                    if (listener != null) {
+                        SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
+                        listener.onEvent(placementId, eventToSend);
+                        Log.d("SABannerAd", "Event callback: " + eventToSend);
+                    } else {
+                        Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been either adLoaded or adEmpty");
+                    }
+                }
+            });
+        });
     }
 
     /**
