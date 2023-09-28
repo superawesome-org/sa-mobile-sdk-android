@@ -27,6 +27,7 @@ import java.util.Map;
 
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.sametrics.SAPerformanceMetrics;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACreativeFormat;
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
@@ -69,6 +70,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static boolean          isBackButtonEnabled = SADefaults.defaultBackButton();
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
+    private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -263,6 +265,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
 
             session.prepareSession(() -> {
 
+                performanceMetrics.setSession(session);
+                performanceMetrics.startTimingForLoadTime();
+
                 // after session is prepared, start loading
                 loader.loadAd(placementId, session, options, openRtbPartnerId, response -> {
 
@@ -284,6 +289,8 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                         if (response.isValid()) {
                             SAAd adResponse = response.ads.get(0);
                             adResponse.openRtbPartnerId = openRtbPartnerId;
+
+                            performanceMetrics.trackLoadTime(adResponse);
                             ads.put(placementId, adResponse);
                         }
                         // remove existing
@@ -405,6 +412,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
 
             session.prepareSession(() -> {
 
+                performanceMetrics.setSession(session);
+                performanceMetrics.startTimingForLoadTime();
+
                 // after session is prepared, start loading
                 loader.loadAd(placementId, lineItemId, creativeId, session, options, openRtbPartnerId, response -> {
 
@@ -426,6 +436,8 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                         if (response.isValid()) {
                             SAAd adResponse = response.ads.get(0);
                             adResponse.openRtbPartnerId = openRtbPartnerId;
+
+                            performanceMetrics.trackLoadTime(adResponse);
                             ads.put(placementId, adResponse);
                         }
                         // remove existing
