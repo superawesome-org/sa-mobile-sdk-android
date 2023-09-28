@@ -159,11 +159,9 @@ public class SAVideoAd {
 
                         // put the correct value
                         if (isValid) {
-                            // Can be removed when we want to track this for all video ad types
-                            if (first.isVpaid) {
-                                performanceMetrics.trackLoadTime(first);
-                            }
                             first.openRtbPartnerId = openRtbPartnerId;
+
+                            performanceMetrics.trackLoadTime(first);
                             ads.put(placementId, first);
                         }
                         // remove existing
@@ -298,11 +296,9 @@ public class SAVideoAd {
 
                         // put the correct value
                         if (isValid) {
-                            // Can be removed when we want to track this for all video ad types
-                            if (first.isVpaid) {
-                                performanceMetrics.trackLoadTime(first);
-                            }
                             first.openRtbPartnerId = openRtbPartnerId;
+
+                            performanceMetrics.trackLoadTime(first);
                             ads.put(placementId, first);
                         }
                         // remove existing
