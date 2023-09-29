@@ -1,3 +1,10 @@
+## [9.2.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.0...v9.2.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* **unity:** missing library import causing build issues ([7a3d6a0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7a3d6a09b8aca1e74455b687ed01ac95c9117aa4))
+
 # [9.2.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.2...v9.2.0) (2023-09-29)
 
 
