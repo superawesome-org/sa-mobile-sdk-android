@@ -1,3 +1,29 @@
+# [9.2.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.2...v9.2.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* **ad:** adjust openRtbPartnerId param order in all ad load calls ([6ef3599](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/6ef35994d35eb4688f4d8fdfc40be2a7bf735756))
+* **events:** Add dwell time event to banners and interstitials ([de18b65](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/de18b6519616ad840762bb8f53f50ab16a5a5ec4))
+* **events:** Dwell time being sent twice at the 2 second mark ([fe1bec7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fe1bec7e18761612ce4ced127d48bce46dc1a4df))
+* **events:** Reduce dwell time event tick to every 5 seconds ([1454a4d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1454a4d9af474ddd84ccbfc07f3c1e056e31abf5))
+* **events:** Reduce dwell time event tick to every 5 seconds (common) ([d6ec827](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d6ec827dd01c2a778d6f3550fa05cad54dded0da))
+* **Google:** Updated Google Play Ad Services to 22.4.0 to add Kotlin 1.9.0 support ([#447](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/447)) ([385f1dd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/385f1dde7ec5a47be12e15ad6af9062666c12331))
+* **interstitial:** crash when opening interstitial ([e6d9883](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e6d98839a6b47b5c02a0c53a0632b8a5045c38ee))
+* **metrics:** add load time metric for banners and interstitials ([1e74057](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1e7405762bb5719a646197d7c6dab64aa846b8ab))
+* **metrics:** add metric tags to all performance metrics ([f545dbb](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f545dbbc6c8c4ac5e6a1349480d9a5afc9aea79b))
+* **metrics:** add render time for rich media interstitials ([da749f1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/da749f18d4cdba5b6bb8c08c141626f357ce90e5))
+* **metrics:** Add render time metrics to VPAID ([7368f17](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7368f172dc16fbbc9aeb13b0a6be6c64f3e8b0c5))
+* **metrics:** enable load metrics for all video types ([e22931c](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e22931c2ebaa98bdaa1c2f2b687353f077da8275))
+* **SafeAd:** Resized Safe ad to be smaller ([#408](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/408)) ([051b47d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/051b47d9a3e81389e6d78e631512ed5d9a2eb209))
+
+
+### Features
+
+* **ad:** Add optional openRTBPartnerId to ad load methods on the Unity SDK. ([ebaa02a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ebaa02a105a5cbebe0ca75c3e01cb5b9bdd82ed5))
+* **ad:** Add optional openRTBPartnerId to ad load methods. ([e9e2b05](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e9e2b05cc1930885ecec3314ed878c450e4b0bd8))
+* **analytics:** added the ad request id to event and impression requests ([#421](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/421)) ([e851c81](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e851c81731f829fc5fe24004520d814f5ef12d01))
+
 ## [9.1.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.1...v9.1.2) (2023-08-23)
 
 
