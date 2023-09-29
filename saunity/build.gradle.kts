@@ -17,4 +17,5 @@ android {
 
 dependencies {
     implementation(project(":superawesome-base"))
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 }
