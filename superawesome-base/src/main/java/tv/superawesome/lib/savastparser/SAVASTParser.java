@@ -134,7 +134,8 @@ public class SAVASTParser {
                     case unknown:
                     case ethernet:
                     case wifi:
-                    case cellular_4g: {
+                    case cellular_4g:
+                    case cellular_5g: {
                         ad.url = maxMedia != null ? maxMedia.url : null;
                         break;
                     }

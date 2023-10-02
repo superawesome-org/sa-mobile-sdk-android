@@ -1,10 +1,16 @@
 package tv.superawesome.sdk.publisher.models
 
+import kotlinx.serialization.json.Json
 import org.junit.Test
 import tv.superawesome.sdk.publisher.base.BaseTest
 import kotlin.test.assertEquals
 
 internal class PerformanceMetricTest : BaseTest() {
+
+    val json = Json {
+        allowStructuredMapKeys = true
+        ignoreUnknownKeys = true
+    }
 
     @Test
     fun test_metricName() {
@@ -44,16 +50,25 @@ internal class PerformanceMetricTest : BaseTest() {
         val value = 10L
         val metricName = PerformanceMetricName.LoadTime
         val metricType = PerformanceMetricType.Gauge
+        val metricTags = PerformanceMetricTags(
+            placementId = 1,
+            lineItemId = 2,
+            creativeId = 3,
+            format = CreativeFormatType.Tag,
+            sdkVersion = "1.0",
+            connectionType = 2,
+        )
 
         // When
-        val metric = PerformanceMetric(value, metricName, metricType)
+        val metric = PerformanceMetric(value, metricName, metricType, metricTags)
         val expectedMap = mapOf(
             "value" to 10L,
             "metricName" to "sa.ad.sdk.performance.load.time.android",
-            "metricType" to "gauge"
+            "metricType" to "gauge",
+            "metricTags" to "{\"placementId\":1,\"lineItemId\":2,\"creativeId\":3,\"format\":\"tag\",\"sdkVersion\":\"1.0\",\"connectionType\":2}",
         )
 
         // Then
-        assertEquals(expectedMap, metric.build())
+        assertEquals(expectedMap, metric.build(json))
     }
 }
