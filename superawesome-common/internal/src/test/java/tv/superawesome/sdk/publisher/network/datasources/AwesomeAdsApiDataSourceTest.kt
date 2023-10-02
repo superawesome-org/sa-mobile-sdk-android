@@ -15,11 +15,13 @@ import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.AdQuery
 import tv.superawesome.sdk.publisher.models.AdQueryBundle
 import tv.superawesome.sdk.publisher.models.ConnectionType
+import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.EventQuery
 import tv.superawesome.sdk.publisher.models.EventQueryBundle
 import tv.superawesome.sdk.publisher.models.EventType
 import tv.superawesome.sdk.publisher.models.PerformanceMetric
 import tv.superawesome.sdk.publisher.models.PerformanceMetricName
+import tv.superawesome.sdk.publisher.models.PerformanceMetricTags
 import tv.superawesome.sdk.publisher.models.PerformanceMetricType
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.network.DataResult
@@ -50,7 +52,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         .create(AwesomeAdsApi::class.java)
 
 
-    val sut = AwesomeAdsApiDataSource(api)
+    val sut = AwesomeAdsApiDataSource(api, json)
 
     @Test
     fun `when fetching ads it should return Success on 200`() = runTest {
@@ -157,7 +159,12 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
     fun `when sending a performance metric, it should return success`() = runTest {
         // When
         mockServer.enqueue(MockResponse().setResponseCode(200))
-        val metric = PerformanceMetric(0, PerformanceMetricName.LoadTime, PerformanceMetricType.Timing)
+        val metric = PerformanceMetric(
+            0,
+            PerformanceMetricName.LoadTime,
+            PerformanceMetricType.Timing,
+            PerformanceMetricTags(1, 2, 3, CreativeFormatType.Tag, "1.0", 1)
+        )
 
         // When
         val result = sut.performance(metric)
@@ -170,7 +177,12 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
     fun `when sending a performance metric, it should return failure if connection fails`() = runTest {
         // When
         mockServer.enqueue(MockResponse().setResponseCode(500))
-        val metric = PerformanceMetric(0, PerformanceMetricName.LoadTime, PerformanceMetricType.Timing)
+        val metric = PerformanceMetric(
+            0,
+            PerformanceMetricName.LoadTime,
+            PerformanceMetricType.Timing,
+            PerformanceMetricTags(1, 2, 3, CreativeFormatType.Tag, "1.0", 1)
+        )
 
         // When
         val result = sut.performance(metric)

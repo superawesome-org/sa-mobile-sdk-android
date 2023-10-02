@@ -8,10 +8,12 @@ import tv.superawesome.sdk.publisher.models.AdQueryBundle
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.ConnectionType
+import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.EventData
 import tv.superawesome.sdk.publisher.models.EventQuery
 import tv.superawesome.sdk.publisher.models.EventQueryBundle
 import tv.superawesome.sdk.publisher.models.EventType
+import tv.superawesome.sdk.publisher.models.PerformanceMetricTags
 import java.net.URLEncoder
 
 class FakeAdQueryMaker : AdQueryMakerType {
@@ -71,6 +73,16 @@ class FakeAdQueryMaker : AdQueryMakerType {
 
     override fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle =
         makeEventQuery(type = null, data = eventData)
+
+    override fun makePerformanceTags(adResponse: AdResponse): PerformanceMetricTags =
+        PerformanceMetricTags(
+            1,
+            2,
+            3,
+            CreativeFormatType.Tag,
+            "1.0",
+            1,
+        )
 
     private fun makeEventQuery(type: EventType?, data: EventData? = null) =
         EventQueryBundle(
