@@ -7,23 +7,23 @@
         <activity
             android:name="tv.superawesome.sdk.publisher.ui.interstitial.InterstitialActivity"
             android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
             android:name="tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity"
             android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
             android:name="tv.superawesome.sdk.publisher.ui.video.VideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
             android:name="tv.superawesome.sdk.publisher.ui.managed.ManagedAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 </manifest>
