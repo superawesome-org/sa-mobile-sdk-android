@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Test
 import retrofit2.Retrofit
+import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.PerformanceMetric
 import tv.superawesome.sdk.publisher.models.PerformanceMetricName
 import tv.superawesome.sdk.publisher.models.PerformanceMetricType
@@ -17,6 +18,8 @@ import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
+import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
+import tv.superawesome.sdk.publisher.testutil.FakeFactory
 import tv.superawesome.sdk.publisher.testutil.decodeParams
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
@@ -43,9 +46,11 @@ class PerformanceRepositoryTest : MockServerTest() {
         .build()
         .create(AwesomeAdsApi::class.java)
 
-    private val datasource = AwesomeAdsApiDataSource(api)
+    private val datasource = AwesomeAdsApiDataSource(api, json)
 
-    private val sut = PerformanceRepository(datasource)
+    private val adQueryMaker = FakeAdQueryMaker()
+
+    private val sut = PerformanceRepository(datasource, adQueryMaker)
     @Test
     fun `when sending metrics, it should send and return success`() = runTest {
         // Given
@@ -53,7 +58,8 @@ class PerformanceRepositoryTest : MockServerTest() {
         val metric = PerformanceMetric(
             0L,
             PerformanceMetricName.LoadTime,
-            PerformanceMetricType.Timing
+            PerformanceMetricType.Timing,
+            adQueryMaker.makePerformanceTags(FakeFactory.makeFakeAdResponse())
         )
 
         // When
@@ -70,7 +76,8 @@ class PerformanceRepositoryTest : MockServerTest() {
         val metric = PerformanceMetric(
             0L,
             PerformanceMetricName.LoadTime,
-            PerformanceMetricType.Timing
+            PerformanceMetricType.Timing,
+            adQueryMaker.makePerformanceTags(FakeFactory.makeFakeAdResponse())
         )
 
         // When
@@ -85,8 +92,9 @@ class PerformanceRepositoryTest : MockServerTest() {
         testTracking(
             PerformanceMetricName.DwellTime,
             PerformanceMetricType.Gauge,
-            100L
-        ) { value -> sut.trackDwellTime(value) }
+            100L,
+            FakeFactory.makeFakeAdResponse(),
+        ) { value, adResponse -> sut.trackDwellTime(value, adResponse) }
     }
 
     @Test
@@ -94,8 +102,9 @@ class PerformanceRepositoryTest : MockServerTest() {
         testTracking(
             PerformanceMetricName.LoadTime,
             PerformanceMetricType.Gauge,
-            100L
-        ) { value -> sut.trackLoadTime(value) }
+            100L,
+            FakeFactory.makeFakeAdResponse(),
+        ) { value, adResponse -> sut.trackLoadTime(value, adResponse) }
     }
 
     @Test
@@ -103,21 +112,23 @@ class PerformanceRepositoryTest : MockServerTest() {
         testTracking(
             PerformanceMetricName.CloseButtonPressTime,
             PerformanceMetricType.Gauge,
-            100L
-        ) { value -> sut.trackCloseButtonPressed(value) }
+            100L,
+            FakeFactory.makeFakeAdResponse(),
+        ) { value, adResponse -> sut.trackCloseButtonPressed(value, adResponse) }
     }
 
     private suspend fun testTracking(
         metricName: PerformanceMetricName,
         metricType: PerformanceMetricType,
         value: Long,
-        block: suspend (Long) -> Unit,
+        adResponse: AdResponse,
+        block: suspend (Long, AdResponse) -> Unit,
     ) {
         // Given
         mockServer.enqueue(MockResponse().setResponseCode(200))
 
         // When
-        block(value)
+        block(value, adResponse)
 
         // Then
         val request = mockServer.takeRequest()

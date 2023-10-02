@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.testutil
 
 import tv.superawesome.sdk.publisher.models.Ad
+import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.Creative
 import tv.superawesome.sdk.publisher.models.CreativeDetail
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
@@ -57,5 +58,10 @@ internal object FakeFactory {
         midPointEvents = listOf("$url/midpoint"),
         thirdQuartileEvents = listOf("$url/thirdQuartile"),
         clickTrackingEvents = listOf("$url/clickTracking", "$url/clickTracking2"),
+    )
+
+    fun makeFakeAdResponse() = AdResponse(
+        placementId = 1,
+        ad = makeFakeAd(CreativeFormatType.Tag),
     )
 }
