@@ -1,13 +1,20 @@
 package tv.superawesome.sdk.publisher.models
 
-data class PerformanceMetric(val value: Long,
-                                      val metricName: PerformanceMetricName,
-                                      val metricType: PerformanceMetricType) {
-  fun build(): Map<String, Any> {
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+
+data class PerformanceMetric(
+    val value: Long,
+    val metricName: PerformanceMetricName,
+    val metricType: PerformanceMetricType,
+    val metricTags: PerformanceMetricTags,
+) {
+  fun build(json: Json): Map<String, Any> {
     return mapOf(
         "value" to value,
         "metricName" to metricName.value,
-        "metricType" to metricType.value
+        "metricType" to metricType.value,
+        "metricTags" to json.encodeToString(PerformanceMetricTags.serializer(), metricTags),
     )}
 }
 
@@ -36,3 +43,13 @@ enum class PerformanceMetricType(val value: String) {
 
   Timing("timing")
 }
+
+@Serializable
+data class PerformanceMetricTags(
+    val placementId: Int,
+    val lineItemId: Int,
+    val creativeId: Int,
+    val format: CreativeFormatType,
+    val sdkVersion: String,
+    val connectionType: Int,
+)

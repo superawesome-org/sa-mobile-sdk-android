@@ -66,9 +66,12 @@ class AdController(
     override fun trackLoadTime() {
         if (loadTimeTimer.startTime == 0L) return
         scope.launch {
-            performanceRepository.trackLoadTime(
-                loadTimeTimer.delta(timeProvider.millis())
-            )
+            currentAdResponse?.let { adResponse ->
+                performanceRepository.trackLoadTime(
+                    loadTimeTimer.delta(timeProvider.millis()),
+                    adResponse,
+                )
+            }
         }
     }
 
@@ -79,9 +82,12 @@ class AdController(
     override fun trackDwellTime() {
         if (dwellTimeTimer.startTime == 0L) return
         scope.launch {
-            performanceRepository.trackDwellTime(
-                dwellTimeTimer.delta(timeProvider.millis())
-            )
+            currentAdResponse?.let { adResponse ->
+                performanceRepository.trackDwellTime(
+                    dwellTimeTimer.delta(timeProvider.millis()),
+                    adResponse,
+                )
+            }
         }
     }
 
@@ -92,9 +98,12 @@ class AdController(
     override fun trackCloseButtonPressed() {
         if (closeButtonPressedTimer.startTime == 0L) return
         scope.launch {
-            performanceRepository.trackCloseButtonPressed(
-                closeButtonPressedTimer.delta(timeProvider.millis())
-            )
+            currentAdResponse?.let { adResponse ->
+                performanceRepository.trackCloseButtonPressed(
+                    closeButtonPressedTimer.delta(timeProvider.millis()),
+                    adResponse,
+                )
+            }
         }
     }
 
@@ -387,6 +396,7 @@ class AdController(
     }
 
     private fun onSuccess(response: AdResponse) {
+        currentAdResponse = response
         if (response.ad.creative.format == CreativeFormatType.Video &&
             response.ad.creative.details.tag == null &&
             response.ad.creative.details.vast == null)  {

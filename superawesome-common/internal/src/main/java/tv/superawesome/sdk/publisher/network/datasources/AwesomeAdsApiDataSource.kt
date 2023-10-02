@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.network.datasources
 
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.AdQueryBundle
 import tv.superawesome.sdk.publisher.models.EventQueryBundle
@@ -29,8 +30,10 @@ interface AwesomeAdsApiDataSourceType {
 
 @ExperimentalSerializationApi
 @Suppress("TooGenericExceptionCaught")
-class AwesomeAdsApiDataSource(private val awesomeAdsApi: AwesomeAdsApi) :
-    AwesomeAdsApiDataSourceType {
+class AwesomeAdsApiDataSource(
+    private val awesomeAdsApi: AwesomeAdsApi,
+    private val json: Json,
+): AwesomeAdsApiDataSourceType {
 
     override suspend fun getAd(placementId: Int, query: AdQueryBundle): DataResult<Ad> = try {
         DataResult.Success(
@@ -97,7 +100,7 @@ class AwesomeAdsApiDataSource(private val awesomeAdsApi: AwesomeAdsApi) :
     override suspend fun performance(metric: PerformanceMetric): DataResult<Unit> = try {
         DataResult.Success(
             awesomeAdsApi.performance(
-                metric.build()
+                metric.build(json)
             )
         )
     } catch (exception: Exception) {

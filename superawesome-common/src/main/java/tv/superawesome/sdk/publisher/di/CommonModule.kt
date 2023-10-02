@@ -117,9 +117,9 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         )
     }
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
-    single<PerformanceRepositoryType> { PerformanceRepository(get()) }
+    single<PerformanceRepositoryType> { PerformanceRepository(get(), get()) }
 
-    single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get()) }
+    single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get(), get()) }
 
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<tv.superawesome.sdk.publisher.components.AdProcessorType> {
