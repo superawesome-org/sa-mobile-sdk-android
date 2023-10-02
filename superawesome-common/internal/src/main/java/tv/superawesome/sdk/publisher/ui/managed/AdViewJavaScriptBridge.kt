@@ -37,6 +37,9 @@ internal class AdViewJavaScriptBridge(private val listener: Listener, private va
     @JavascriptInterface
     fun adPaused() = tryListener { listener.adPaused() }
 
+    @JavascriptInterface
+    fun webSDKReady() = tryListener { listener.webSDKReady() }
+
     @Suppress("TooGenericExceptionCaught")
     private fun tryListener(block: () -> Unit) {
         try {
@@ -69,5 +72,7 @@ internal class AdViewJavaScriptBridge(private val listener: Listener, private va
         fun adPlaying()
 
         fun adPaused()
+
+        fun webSDKReady()
     }
 }
