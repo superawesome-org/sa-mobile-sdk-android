@@ -94,6 +94,7 @@ public object SAVideoAd {
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
         val adResponse = controller.peekAdResponse(placementId)
+        controller.startTimingForLoadTime()
         val intent = if (adResponse?.ad?.isVpaid == true) {
             ManagedAdActivity.newInstance(
                 context = context,

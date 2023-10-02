@@ -46,7 +46,7 @@ class EventRepositoryTest : MockServerTest() {
         .create(AwesomeAdsApi::class.java)
 
     private val sut = EventRepository(
-        dataSource = AwesomeAdsApiDataSource(api),
+        dataSource = AwesomeAdsApiDataSource(api, json),
         adQueryMaker = FakeAdQueryMaker(),
     )
 
