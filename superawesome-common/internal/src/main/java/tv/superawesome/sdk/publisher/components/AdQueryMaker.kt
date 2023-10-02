@@ -136,12 +136,12 @@ class AdQueryMaker(
 
     override fun makePerformanceTags(adResponse: AdResponse): PerformanceMetricTags =
         PerformanceMetricTags(
-            placementId = adResponse.placementId,
-            lineItemId = adResponse.ad.lineItemId,
-            creativeId = adResponse.ad.creative.id,
-            format = adResponse.ad.creative.format,
+            placementId = adResponse.placementId.toString(),
+            lineItemId = adResponse.ad.lineItemId.toString(),
+            creativeId = adResponse.ad.creative.id.toString(),
+            format = adResponse.ad.creative.format.toString(),
             sdkVersion = sdkInfoType.version,
-            connectionType = connectionProvider.findConnectionType().ordinal,
+            connectionType = connectionProvider.findConnectionType().ordinal.toString(),
         )
 
     private fun encodeData(eventData: EventData): String =
