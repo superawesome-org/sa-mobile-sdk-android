@@ -46,10 +46,10 @@ enum class PerformanceMetricType(val value: String) {
 
 @Serializable
 data class PerformanceMetricTags(
-    val placementId: Int,
-    val lineItemId: Int,
-    val creativeId: Int,
-    val format: CreativeFormatType,
+    val placementId: String,
+    val lineItemId: String,
+    val creativeId: String,
+    val format: String,
     val sdkVersion: String,
-    val connectionType: Int,
+    val connectionType: String,
 )
