@@ -397,10 +397,7 @@ class AdController(
         logger.success("onSuccess thread:${Thread.currentThread()} adResponse:$response")
         adStore.put(response)
         delegate?.onEvent(response.placementId, SAEvent.adLoaded)
-        // Can be removed when we want to track this for all ad types
-        if (response.isVpaid()) {
-            trackLoadTime()
-        }
+        trackLoadTime()
     }
 
     private fun onFailure(placementId: Int, error: Throwable) {
