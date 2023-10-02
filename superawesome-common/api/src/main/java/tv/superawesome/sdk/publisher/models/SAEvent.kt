@@ -40,4 +40,7 @@ public enum class SAEvent {
 
     /** Triggered once when the video ad is playing or resumes. */
     adPlaying,
+
+    /** Triggered when the WebSDK has loaded and is ready. */
+    webSDKReady,
 }

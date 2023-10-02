@@ -199,6 +199,10 @@ class ManagedAdActivity :
         listener?.onEvent(this.placementId, SAEvent.adPaused)
     }
 
+    override fun webSDKReady() = runOnUiThread {
+        listener?.onEvent(placementId, SAEvent.webSDKReady)
+    }
+
     // AdControllerType.VideoPlayerListener
 
     override fun didRequestVideoPause() {
