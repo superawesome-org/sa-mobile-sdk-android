@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.ui.fullscreen
 
-import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import org.koin.android.ext.android.inject
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
@@ -21,7 +21,7 @@ import tv.superawesome.sdk.publisher.ui.common.Config
 /**
  * A full screen activity used to play ad placements.
  */
-open class FullScreenActivity : Activity() {
+open class FullScreenActivity : AppCompatActivity() {
 
     internal val imageProvider: ImageProviderType by inject()
     internal val logger: Logger by inject()
