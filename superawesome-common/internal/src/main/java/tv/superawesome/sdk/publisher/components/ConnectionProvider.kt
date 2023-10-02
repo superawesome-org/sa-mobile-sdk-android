@@ -38,6 +38,7 @@ class ConnectionProvider(private val context: Context) : ConnectionProviderType 
         TelephonyManager.NETWORK_TYPE_TD_SCDMA -> ConnectionType.Cellular3g
         TelephonyManager.NETWORK_TYPE_LTE,
         TelephonyManager.NETWORK_TYPE_IWLAN -> ConnectionType.Cellular4g
+        TelephonyManager.NETWORK_TYPE_NR -> ConnectionType.Cellular5g
         else -> ConnectionType.Unknown
     }
 
