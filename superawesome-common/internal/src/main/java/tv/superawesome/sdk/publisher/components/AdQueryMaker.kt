@@ -9,6 +9,7 @@ import tv.superawesome.sdk.publisher.models.EventData
 import tv.superawesome.sdk.publisher.models.EventQuery
 import tv.superawesome.sdk.publisher.models.EventQueryBundle
 import tv.superawesome.sdk.publisher.models.EventType
+import tv.superawesome.sdk.publisher.models.PerformanceMetricTags
 import java.util.Locale
 
 interface AdQueryMakerType {
@@ -17,6 +18,11 @@ interface AdQueryMakerType {
     fun makeClickQuery(adResponse: AdResponse): EventQueryBundle
     fun makeVideoClickQuery(adResponse: AdResponse): EventQueryBundle
     fun makeEventQuery(adResponse: AdResponse, eventData: EventData): EventQueryBundle
+
+    /**
+     * Makes performance tags from the given [adResponse].
+     */
+    fun makePerformanceTags(adResponse: AdResponse): PerformanceMetricTags
 }
 
 @Suppress("LongParameterList")
@@ -126,6 +132,16 @@ class AdQueryMaker(
                 openRtbPartnerId = adResponse.ad.openRtbPartnerId,
             ),
             options = buildOptions(requestOptions = adResponse.requestOptions)
+        )
+
+    override fun makePerformanceTags(adResponse: AdResponse): PerformanceMetricTags =
+        PerformanceMetricTags(
+            placementId = adResponse.placementId,
+            lineItemId = adResponse.ad.lineItemId,
+            creativeId = adResponse.ad.creative.id,
+            format = adResponse.ad.creative.format,
+            sdkVersion = sdkInfoType.version,
+            connectionType = connectionProvider.findConnectionType().ordinal,
         )
 
     private fun encodeData(eventData: EventData): String =

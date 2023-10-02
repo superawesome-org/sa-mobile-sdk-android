@@ -45,7 +45,7 @@ class AdRepositoryTest : MockServerTest() {
         .create(AwesomeAdsApi::class.java)
 
     private val sut = AdRepository(
-        dataSource = AwesomeAdsApiDataSource(api),
+        dataSource = AwesomeAdsApiDataSource(api, json),
         adQueryMaker = FakeAdQueryMaker(),
         adProcessor = FakeAdProcessor(),
     )
