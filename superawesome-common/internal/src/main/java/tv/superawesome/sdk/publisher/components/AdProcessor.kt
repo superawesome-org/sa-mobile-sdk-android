@@ -8,7 +8,6 @@ import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.VastAd
 import tv.superawesome.sdk.publisher.models.VastType
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 
 interface AdProcessorType {
@@ -17,7 +16,7 @@ interface AdProcessorType {
         ad: Ad,
         requestOptions: Map<String, Any>?,
         openRtbPartnerId: String? = null,
-    ): DataResult<AdResponse>
+    ): AdResponse
 }
 
 class AdProcessor(
@@ -32,7 +31,7 @@ class AdProcessor(
         ad: Ad,
         requestOptions: Map<String, Any>?,
         openRtbPartnerId: String?,
-    ): DataResult<AdResponse> {
+    ): AdResponse {
         val response = AdResponse(
             placementId,
             ad.copy(openRtbPartnerId = openRtbPartnerId),
@@ -65,12 +64,16 @@ class AdProcessor(
                         response.vast = handleVast(url, null)
                         response.baseUrl = response.vast?.url?.baseUrl
                         response.vast?.url?.let {
-                            when (val downloadFileResult = networkDataSource.downloadFile(it)) {
-                                is DataResult.Success -> response.filePath =
-                                    downloadFileResult.value
-                                is DataResult.Failure -> return downloadFileResult
-                            }
-                        } ?: return DataResult.Failure(Exception("empty url"))
+                            networkDataSource.downloadFile(it).fold(
+                                onSuccess = { filePath ->
+                                    response.filePath = filePath
+                                },
+                                onFailure = { exception ->
+                                    throw exception
+                                }
+                            )
+                        } ?: throw NullPointerException("empty url")
+
                     }
                 }
         }
@@ -79,20 +82,23 @@ class AdProcessor(
             response.referral = encoder.encodeUrlParamsFromObject(it.toMap())
         }
 
-        return DataResult.Success(response)
+        return response
     }
 
     @Suppress("ReturnCount")
-    private suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? {
-        val result = networkDataSource.getData(url)
-        if (result is DataResult.Success) {
-            val vast = vastParser.parse(result.value)
-            if (vast?.type == VastType.Wrapper && vast.redirect != null) {
-                val mergedVast = vast.merge(initialVast)
-                return handleVast(vast.redirect, mergedVast)
+    private suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? =
+        networkDataSource.getData(url).fold(
+            onSuccess = {
+                val vast = vastParser.parse(it)
+                if (vast?.type == VastType.Wrapper && vast.redirect != null) {
+                    val mergedVast = vast.merge(initialVast)
+                    handleVast(vast.redirect, mergedVast)
+                } else {
+                    vast
+                }
+            },
+            onFailure = {
+                initialVast
             }
-            return vast
-        }
-        return initialVast
-    }
+        )
 }

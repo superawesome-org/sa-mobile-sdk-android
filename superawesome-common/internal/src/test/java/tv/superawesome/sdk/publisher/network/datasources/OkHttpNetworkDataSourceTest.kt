@@ -11,12 +11,11 @@ import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Test
 import tv.superawesome.sdk.publisher.extensions.toMD5
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.testutil.TestLogger
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
+import kotlin.test.assertTrue
 import kotlin.test.fail
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -41,8 +40,8 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
         val result = sut.getData(mockServer.url("/").toString())
 
         // Then
-        assertIs<DataResult.Success<String>>(result)
-        assertEquals("1234", result.value)
+        assertTrue(result.isSuccess)
+        assertEquals("1234", result.getOrNull())
     }
 
     @Test
@@ -54,7 +53,7 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
         val result = sut.getData(mockServer.url("/").toString())
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
     @Test
@@ -71,13 +70,13 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
         val result = sut.downloadFile(url)
 
         // Then
-        assertIs<DataResult.Success<String>>(result)
+        assertTrue(result.isSuccess)
         if (file != null) {
-            assertEquals("${file.absolutePath}/${url.toMD5()}.txt", result.value)
+            assertEquals("${file.absolutePath}/${url.toMD5()}.txt", result.getOrNull())
         } else {
             fail("Temp file is null")
         }
-        assertEquals("1234", File(result.value).readText())
+        assertEquals("1234", File(result.getOrThrow()).readText())
     }
 
     @Test
@@ -90,7 +89,7 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
         val result = sut.downloadFile(url)
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
     @Test
@@ -104,6 +103,6 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
         val result = sut.downloadFile(url)
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 }
