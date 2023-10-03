@@ -49,7 +49,7 @@ data class PerformanceMetricTags(
     val placementId: String,
     val lineItemId: String,
     val creativeId: String,
-    val format: String,
+    val format: CreativeFormatType,
     val sdkVersion: String,
     val connectionType: String,
 )

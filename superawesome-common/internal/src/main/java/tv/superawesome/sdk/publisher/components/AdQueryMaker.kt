@@ -139,7 +139,7 @@ class AdQueryMaker(
             placementId = adResponse.placementId.toString(),
             lineItemId = adResponse.ad.lineItemId.toString(),
             creativeId = adResponse.ad.creative.id.toString(),
-            format = adResponse.ad.creative.format.toString(),
+            format = adResponse.ad.creative.format,
             sdkVersion = sdkInfoType.version,
             connectionType = connectionProvider.findConnectionType().ordinal.toString(),
         )

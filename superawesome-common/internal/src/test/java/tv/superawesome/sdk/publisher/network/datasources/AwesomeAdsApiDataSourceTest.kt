@@ -163,7 +163,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
             0,
             PerformanceMetricName.LoadTime,
             PerformanceMetricType.Timing,
-            PerformanceMetricTags(1, 2, 3, CreativeFormatType.Tag, "1.0", 1)
+            PerformanceMetricTags("1", "2", "3", CreativeFormatType.Tag, "1.0", "1")
         )
 
         // When
@@ -181,7 +181,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
             0,
             PerformanceMetricName.LoadTime,
             PerformanceMetricType.Timing,
-            PerformanceMetricTags(1, 2, 3, CreativeFormatType.Tag, "1.0", 1)
+            PerformanceMetricTags("1", "2", "3", CreativeFormatType.Tag, "1.0", "1")
         )
 
         // When
