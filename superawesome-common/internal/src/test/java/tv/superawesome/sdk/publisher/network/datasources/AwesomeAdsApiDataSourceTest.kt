@@ -11,7 +11,6 @@ import okhttp3.internal.closeQuietly
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Test
 import retrofit2.Retrofit
-import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.AdQuery
 import tv.superawesome.sdk.publisher.models.AdQueryBundle
 import tv.superawesome.sdk.publisher.models.ConnectionType
@@ -24,11 +23,10 @@ import tv.superawesome.sdk.publisher.models.PerformanceMetricName
 import tv.superawesome.sdk.publisher.models.PerformanceMetricTags
 import tv.superawesome.sdk.publisher.models.PerformanceMetricType
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.enqueueResponse
 import tv.superawesome.sdk.publisher.testutil.ResourceReader
 import java.util.concurrent.TimeUnit
-import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class, ExperimentalCoroutinesApi::class)
 class AwesomeAdsApiDataSourceTest : MockServerTest() {
@@ -64,7 +62,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = sut.getAd(1234, adQueryBundle)
 
         // Then
-        assertIs<DataResult.Success<Ad>>(result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -77,7 +75,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = sut.getAd(1234, 1234, 1234, adQueryBundle)
 
         // Then
-        assertIs<DataResult.Success<Ad>>(result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -90,7 +88,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = sut.getAd(1234, 1234, 1234, adQueryBundle)
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
     @Test
@@ -108,8 +106,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = sut.getAd(1234, adQueryBundle)
 
         // Then
-        println(result)
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
 
         // Finally
         mockServer.closeQuietly()
@@ -170,7 +167,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = sut.performance(metric)
 
         // Then
-        assertIs<DataResult.Success<Unit>>(result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -188,11 +185,11 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = sut.performance(metric)
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
 
-    private suspend fun <T : Any> testSuccess(block: suspend (EventQueryBundle) -> DataResult<T>) {
+    private suspend fun <T : Any> testSuccess(block: suspend (EventQueryBundle) -> Result<T>) {
         // Given
         mockServer.enqueue(MockResponse().setResponseCode(200))
         val eventBundle = EventQueryBundle(getEventQuery(), null)
@@ -201,10 +198,10 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = block(eventBundle)
 
         // Then
-        assertIs<DataResult.Success<T>>(result)
+        assertTrue(result.isSuccess)
     }
 
-    private suspend fun <T : Any> testFailure(block: suspend (EventQueryBundle) -> DataResult<T>) {
+    private suspend fun <T : Any> testFailure(block: suspend (EventQueryBundle) -> Result<T>) {
         // Given
         mockServer.enqueue(MockResponse().setResponseCode(500))
         val eventBundle = EventQueryBundle(getEventQuery(), null)
@@ -213,7 +210,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         val result = block(eventBundle)
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
     private fun getAdQuery() = AdQuery(

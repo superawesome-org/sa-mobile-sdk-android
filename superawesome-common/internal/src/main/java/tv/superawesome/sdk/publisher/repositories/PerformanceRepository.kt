@@ -7,14 +7,13 @@ import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.PerformanceMetric
 import tv.superawesome.sdk.publisher.models.PerformanceMetricName
 import tv.superawesome.sdk.publisher.models.PerformanceMetricType
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSourceType
 
 interface PerformanceRepositoryType {
     suspend fun trackLoadTime(duration: Long, adResponse: AdResponse)
     suspend fun trackDwellTime(duration: Long, adResponse: AdResponse)
     suspend fun trackCloseButtonPressed(duration: Long, adResponse: AdResponse)
-    suspend fun sendMetric(metric: PerformanceMetric): DataResult<Unit>
+    suspend fun sendMetric(metric: PerformanceMetric): Result<Unit>
 }
 
 class PerformanceRepository(
@@ -52,7 +51,7 @@ class PerformanceRepository(
         sendMetric(metric)
     }
 
-    override suspend fun sendMetric(metric: PerformanceMetric): DataResult<Unit> =
+    override suspend fun sendMetric(metric: PerformanceMetric): Result<Unit> =
         withContext(Dispatchers.IO) {
             dataSource.performance(metric)
         }

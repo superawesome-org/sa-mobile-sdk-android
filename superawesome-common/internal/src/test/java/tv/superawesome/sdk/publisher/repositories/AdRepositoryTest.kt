@@ -14,14 +14,12 @@ import tv.superawesome.sdk.publisher.network.enqueueResponse
 import tv.superawesome.sdk.publisher.testutil.FakeAdProcessor
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
 import tv.superawesome.sdk.publisher.models.AdRequest
-import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalSerializationApi::class)
 class AdRepositoryTest : MockServerTest() {
@@ -59,8 +57,8 @@ class AdRepositoryTest : MockServerTest() {
         val result = sut.getAd(1234, fakeAdRequest())
 
         // Then
-        assertIs<DataResult.Success<AdResponse>>(result)
-        assertEquals(1234, result.value.placementId)
+        assertTrue(result.isSuccess)
+        assertEquals(1234, result.getOrNull()?.placementId)
     }
 
     @Test
@@ -72,8 +70,8 @@ class AdRepositoryTest : MockServerTest() {
         val result = sut.getAd(1234, 9, 99, fakeAdRequest())
 
         // Then
-        assertIs<DataResult.Success<AdResponse>>(result)
-        assertEquals(1234, result.value.placementId)
+        assertTrue(result.isSuccess)
+        assertEquals(1234, result.getOrNull()?.placementId)
     }
 
     @Test
@@ -85,7 +83,7 @@ class AdRepositoryTest : MockServerTest() {
         val result = sut.getAd(1234, fakeAdRequest())
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
     @Test
@@ -97,7 +95,7 @@ class AdRepositoryTest : MockServerTest() {
         val result = sut.getAd(1234, 9, 99, fakeAdRequest())
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
     private fun fakeAdRequest() = object : AdRequest {

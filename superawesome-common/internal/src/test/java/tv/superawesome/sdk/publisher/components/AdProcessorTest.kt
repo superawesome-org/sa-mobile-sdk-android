@@ -4,7 +4,8 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -12,15 +13,16 @@ import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.VastType
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleHtml
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleParamString
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleUrl
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleVastUrl
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.makeFakeAd
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.makeVastAd
-import kotlin.test.assertTrue
+import kotlin.test.assertFails
+import kotlin.test.assertNull
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class AdProcessorTest {
 
     @MockK
@@ -35,12 +37,12 @@ internal class AdProcessorTest {
     @MockK
     private lateinit var encoder: EncoderType
 
-    private lateinit var adProcessor: tv.superawesome.sdk.publisher.components.AdProcessor
+    private lateinit var adProcessor: AdProcessor
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        adProcessor = tv.superawesome.sdk.publisher.components.AdProcessor(
+        adProcessor = AdProcessor(
             htmlFormatter,
             vastParser,
             networkDataSource,
@@ -50,7 +52,7 @@ internal class AdProcessorTest {
     }
 
     @Test
-    fun `ensure image with link processes correctly`() = runBlocking {
+    fun `ensure image with link processes correctly`() = runTest {
         // Given
         coEvery { htmlFormatter.formatImageIntoHtml(any()) } returns exampleHtml
 
@@ -58,15 +60,14 @@ internal class AdProcessorTest {
         val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.ImageWithLink), null)
 
         // Then
-        assertEquals(response.isSuccess, true)
-        assertEquals(response.optValue?.baseUrl, exampleUrl)
-        assertEquals(response.optValue?.html, exampleHtml)
-        assertEquals(response.optValue?.referral, exampleParamString)
-        assertEquals(null, response.optValue?.ad?.openRtbPartnerId)
+        assertEquals(response.baseUrl, exampleUrl)
+        assertEquals(response.html, exampleHtml)
+        assertEquals(response.referral, exampleParamString)
+        assertNull(response.ad.openRtbPartnerId)
     }
 
     @Test
-    fun `ensure rich media processes correctly`() = runBlocking {
+    fun `ensure rich media processes correctly`() = runTest {
         // Given
         coEvery { htmlFormatter.formatRichMediaIntoHtml(99, any()) } returns exampleHtml
 
@@ -74,14 +75,13 @@ internal class AdProcessorTest {
         val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.RichMedia), null)
 
         // Then
-        assertEquals(response.isSuccess, true)
-        assertEquals(response.optValue?.baseUrl, exampleUrl)
-        assertEquals(response.optValue?.html, exampleHtml)
-        assertEquals(response.optValue?.referral, exampleParamString)
+        assertEquals(response.baseUrl, exampleUrl)
+        assertEquals(response.html, exampleHtml)
+        assertEquals(response.referral, exampleParamString)
     }
 
     @Test
-    fun `ensure tag processes correctly`() = runBlocking {
+    fun `ensure tag processes correctly`() = runTest {
         // Given
         coEvery { htmlFormatter.formatTagIntoHtml(any()) } returns exampleHtml
 
@@ -89,65 +89,64 @@ internal class AdProcessorTest {
         val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Tag), null)
 
         // Then
-        assertEquals(response.isSuccess, true)
-        assertEquals(response.optValue?.baseUrl, Constants.defaultSuperAwesomeUrl)
-        assertEquals(response.optValue?.html, exampleHtml)
-        assertEquals(response.optValue?.referral, exampleParamString)
+        assertEquals(response.baseUrl, Constants.defaultSuperAwesomeUrl)
+        assertEquals(response.html, exampleHtml)
+        assertEquals(response.referral, exampleParamString)
     }
 
     @Test
-    fun `ensure video processes correctly`() = runBlocking {
+    fun `ensure video processes correctly`() = runTest {
         // Given
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(exampleVastUrl)
-        coEvery { networkDataSource.getData(any()) } returns DataResult.Success("")
+        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(exampleVastUrl)
+        coEvery { networkDataSource.getData(any()) } returns Result.success("")
         coEvery { vastParser.parse(any()) } returns makeVastAd(exampleUrl)
 
         // When
         val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Video), null)
 
         // Then
-        assertTrue(response.isSuccess)
-        assertEquals(exampleUrl, response.optValue?.baseUrl)
+        assertEquals(exampleUrl, response.baseUrl)
     }
 
     @Test
-    fun `video with no url returns failure`() = runBlocking {
+    fun `video with no url returns failure`() = runTest {
         // Given
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(exampleVastUrl)
-        coEvery { networkDataSource.getData(any()) } returns DataResult.Success("")
+        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(exampleVastUrl)
+        coEvery { networkDataSource.getData(any()) } returns Result.success("")
         coEvery { vastParser.parse(any()) } returns makeVastAd(null)
 
-        // When
-        val response = adProcessor.process(99, makeFakeAd(CreativeFormatType.Video), null)
+        val exception = assertFails {
+            // When
+            adProcessor.process(99, makeFakeAd(CreativeFormatType.Video), null)
+        }
 
         // Then
-        assertTrue(response.isFailure)
-        assertEquals((response as DataResult.Failure).error.message, "empty url")
+        assertEquals(exception.message, "empty url")
     }
 
     // handle vast tests
     @Test
-    fun `network request is failed then return failure`() = runBlocking {
+    fun `network request is failed then return failure`() = runTest {
         // Given
         val ad = makeFakeAd(CreativeFormatType.Video)
-        coEvery { networkDataSource.getData(any()) } returns DataResult.Failure(Exception())
-
-        // When
-        val result = adProcessor.process(1, ad, null)
+        coEvery { networkDataSource.getData(any()) } returns Result.failure(Exception())
 
         // Then
-        assertTrue(result.isFailure)
+        assertFails {
+            // When
+            adProcessor.process(1, ad, null)
+        }
     }
 
     @Test
-    fun `network request successful with no redirect then return success`() = runBlocking {
+    fun `network request successful with no redirect then return success`() = runTest {
         // Given
         val ad = makeFakeAd(CreativeFormatType.Video)
         val passedVastAd = makeVastAd()
         val filePath = "filePath"
 
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success(filePath)
-        coEvery { networkDataSource.getData(any()) } returns DataResult.Success(filePath)
+        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(filePath)
+        coEvery { networkDataSource.getData(any()) } returns Result.success(filePath)
 
         coEvery { vastParser.parse(any()) } returns passedVastAd
 
@@ -155,11 +154,11 @@ internal class AdProcessorTest {
         val result = adProcessor.process(1, ad, null)
 
         // Then
-        assertTrue(result.isSuccess)
+        assertEquals(result.filePath, filePath)
     }
 
     @Test
-    fun `Given Wrapped vast ad then redirect url called`() = runBlocking {
+    fun `Given Wrapped vast ad then redirect url called`() = runTest {
         // Given
         val firstAdUrl = "wwww.first.com"
         val redirectUrl = "www.second.com"
@@ -168,10 +167,10 @@ internal class AdProcessorTest {
         val firstVast = makeVastAd(type = VastType.Wrapper, redirect = redirectUrl)
         val redirectVast = makeVastAd(type = VastType.Wrapper, redirect = null)
 
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success("filePath")
+        coEvery { networkDataSource.downloadFile(any()) } returns Result.success("filePath")
 
-        coEvery { networkDataSource.getData(firstAdUrl) } returns DataResult.Success(firstAdUrl)
-        coEvery { networkDataSource.getData(redirectUrl) } returns DataResult.Success(redirectUrl)
+        coEvery { networkDataSource.getData(firstAdUrl) } returns Result.success(firstAdUrl)
+        coEvery { networkDataSource.getData(redirectUrl) } returns Result.success(redirectUrl)
 
         coEvery { vastParser.parse(firstAdUrl) } returns firstVast
         coEvery { vastParser.parse(redirectUrl) } returns redirectVast
@@ -186,7 +185,7 @@ internal class AdProcessorTest {
     }
 
     @Test
-    fun `Given Inline vast ad then redirect url not called`() = runBlocking {
+    fun `Given Inline vast ad then redirect url not called`() = runTest {
         // Given
         val firstAdUrl = "wwww.first.com"
         val redirectUrl = "www.second.com"
@@ -195,10 +194,10 @@ internal class AdProcessorTest {
         val firstVast = makeVastAd(type = VastType.InLine, redirect = redirectUrl)
         val redirectVast = makeVastAd(type = VastType.Wrapper, redirect = null)
 
-        coEvery { networkDataSource.downloadFile(any()) } returns DataResult.Success("filePath")
+        coEvery { networkDataSource.downloadFile(any()) } returns Result.success("filePath")
 
-        coEvery { networkDataSource.getData(firstAdUrl) } returns DataResult.Success(firstAdUrl)
-        coEvery { networkDataSource.getData(redirectUrl) } returns DataResult.Success(redirectUrl)
+        coEvery { networkDataSource.getData(firstAdUrl) } returns Result.success(firstAdUrl)
+        coEvery { networkDataSource.getData(redirectUrl) } returns Result.success(redirectUrl)
 
         coEvery { vastParser.parse(firstAdUrl) } returns firstVast
         coEvery { vastParser.parse(redirectUrl) } returns redirectVast
@@ -213,7 +212,7 @@ internal class AdProcessorTest {
     }
 
     @Test
-    fun `given an openRTBPartnerId, then it should be included in the response ad`() = runBlocking {
+    fun `given an openRTBPartnerId, then it should be included in the response ad`() = runTest {
         // Given
         coEvery { htmlFormatter.formatImageIntoHtml(any()) } returns exampleHtml
 
@@ -226,6 +225,6 @@ internal class AdProcessorTest {
         )
 
         // Then
-        assertEquals("12345", response.optValue?.ad?.openRtbPartnerId)
+        assertEquals("12345", response.ad.openRtbPartnerId)
     }
 }
