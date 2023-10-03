@@ -22,7 +22,6 @@ import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.PerformanceTimer
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.repositories.AdRepositoryType
 import tv.superawesome.sdk.publisher.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.repositories.PerformanceRepositoryType
@@ -329,10 +328,14 @@ class AdController(
         startTimingForLoadTime()
 
         scope.launch {
-            when (val result = adRepository.getAd(placementId, request)) {
-                is DataResult.Success -> onSuccess(result.value)
-                is DataResult.Failure -> onFailure(placementId, result.error)
-            }
+            adRepository.getAd(placementId, request).fold(
+                onSuccess = { adResponse ->
+                    onSuccess(adResponse)
+                },
+                onFailure = { error ->
+                    onFailure(placementId, error)
+                }
+            )
         }
     }
 
@@ -347,10 +350,14 @@ class AdController(
         startTimingForLoadTime()
 
         scope.launch {
-            when (val result = adRepository.getAd(placementId, lineItemId, creativeId, request)) {
-                is DataResult.Success -> onSuccess(result.value)
-                is DataResult.Failure -> onFailure(placementId, result.error)
-            }
+            adRepository.getAd(placementId, lineItemId, creativeId, request).fold(
+                onSuccess = { adResponse ->
+                    onSuccess(adResponse)
+                },
+                onFailure = { error ->
+                    onFailure(placementId, error)
+                }
+            )
         }
     }
 
@@ -367,14 +374,11 @@ class AdController(
 
     override fun triggerImpressionEvent(placementId: Int) {
         scope.launch {
-            currentAdResponse?.let {
-                when (val result = eventRepository.impression(it)) {
-                    is DataResult.Success -> logger.success("triggerImpressionEvent.Success")
-                    is DataResult.Failure -> logger.error(
-                        "triggerImpressionEvent.Success",
-                        result.error
-                    )
-                }
+            currentAdResponse?.let { adResponse ->
+                eventRepository.impression(adResponse).fold(
+                    onSuccess = { logger.success("triggerImpressionEvent.Success") },
+                    onFailure = { logger.error("triggerImpressionEvent.Failure", it) }
+                )
             }
         }
     }

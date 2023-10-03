@@ -15,7 +15,6 @@ import tv.superawesome.sdk.publisher.models.PerformanceMetric
 import tv.superawesome.sdk.publisher.models.PerformanceMetricName
 import tv.superawesome.sdk.publisher.models.PerformanceMetricType
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
@@ -23,7 +22,7 @@ import tv.superawesome.sdk.publisher.testutil.FakeFactory
 import tv.superawesome.sdk.publisher.testutil.decodeParams
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalSerializationApi::class, ExperimentalCoroutinesApi::class)
 class PerformanceRepositoryTest : MockServerTest() {
@@ -66,7 +65,7 @@ class PerformanceRepositoryTest : MockServerTest() {
         val result = sut.sendMetric(metric)
 
         // Then
-        assertIs<DataResult.Success<Unit>>(result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -84,7 +83,7 @@ class PerformanceRepositoryTest : MockServerTest() {
         val result = sut.sendMetric(metric)
 
         // Then
-        assertIs<DataResult.Failure>(result)
+        assertTrue(result.isFailure)
     }
 
     @Test

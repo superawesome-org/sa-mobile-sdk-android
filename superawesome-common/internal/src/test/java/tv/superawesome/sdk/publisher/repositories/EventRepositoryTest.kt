@@ -15,14 +15,13 @@ import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.EventData
 import tv.superawesome.sdk.publisher.models.EventType
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
-import tv.superawesome.sdk.publisher.network.DataResult
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
 import tv.superawesome.sdk.publisher.testutil.decodeDataParams
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalSerializationApi::class)
 class EventRepositoryTest : MockServerTest() {
@@ -66,7 +65,7 @@ class EventRepositoryTest : MockServerTest() {
 
         assertEquals("impressionDownloaded", type)
         assertEquals(expected, endpoint)
-        assertIs<DataResult.Success<Unit>>(result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -82,7 +81,7 @@ class EventRepositoryTest : MockServerTest() {
         val endpoint = mockServer.takeRequest().requestUrl?.pathSegments
 
         assertEquals(expected, endpoint)
-        assertIs<DataResult.Success<Unit>>(result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -98,7 +97,7 @@ class EventRepositoryTest : MockServerTest() {
         val endpoint = mockServer.takeRequest().requestUrl?.pathSegments
 
         assertEquals(expected, endpoint)
-        assertIs<DataResult.Success<Unit>>(result)
+        assertTrue(result.isSuccess)
     }
 
     @Test
@@ -133,7 +132,7 @@ class EventRepositoryTest : MockServerTest() {
 
     private suspend fun <T : Any> testEvent(
         eventType: EventType,
-        block: suspend () -> DataResult<T>,
+        block: suspend () -> Result<T>,
     ) {
         // Given
         mockServer.enqueue(MockResponse().setResponseCode(200))
@@ -149,7 +148,7 @@ class EventRepositoryTest : MockServerTest() {
 
         assertEquals(expected, endpoint)
         assertEquals(eventType, eventData?.type)
-        assertIs<DataResult.Success<Unit>>(result)
+        assertTrue(result.isSuccess)
     }
 
     private fun fakeAdResponse() = AdResponse(

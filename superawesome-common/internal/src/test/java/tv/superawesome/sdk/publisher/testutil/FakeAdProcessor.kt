@@ -3,7 +3,6 @@ package tv.superawesome.sdk.publisher.testutil
 import tv.superawesome.sdk.publisher.components.AdProcessorType
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.AdResponse
-import tv.superawesome.sdk.publisher.network.DataResult
 
 class FakeAdProcessor : AdProcessorType {
 
@@ -12,11 +11,9 @@ class FakeAdProcessor : AdProcessorType {
         ad: Ad,
         requestOptions: Map<String, Any>?,
         openRtbPartnerId: String?
-    ): DataResult<AdResponse> = DataResult.Success(
-        value = AdResponse(
+    ): AdResponse = AdResponse(
         placementId = placementId,
         ad = ad,
         requestOptions = requestOptions,
-        )
     )
 }
