@@ -140,10 +140,14 @@ jobs:
       - *set_keylist_android
       - run:
           name: Run unit tests for superawesome_common
-          command: bundle exec fastlane run_all_tests module:superawesome-common
+          command: |
+            bundle exec fastlane run_all_tests module:superawesome-common
+            bundle exec fastlane run_all_tests module:superawesome-common:internal
       - run:
           name: Copy test results to temp folder
-          command: find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+          command: |
+            find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+            find $PWD/superawesome-common/internal/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
   
