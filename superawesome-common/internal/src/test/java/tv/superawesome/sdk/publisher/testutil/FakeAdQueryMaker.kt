@@ -76,12 +76,12 @@ class FakeAdQueryMaker : AdQueryMakerType {
 
     override fun makePerformanceTags(adResponse: AdResponse): PerformanceMetricTags =
         PerformanceMetricTags(
-            1,
-            2,
-            3,
+            "1",
+            "2",
+            "3",
             CreativeFormatType.Tag,
             "1.0",
-            1,
+            "1",
         )
 
     private fun makeEventQuery(type: EventType?, data: EventData? = null) =
