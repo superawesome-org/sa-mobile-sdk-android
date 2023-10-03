@@ -4,8 +4,11 @@ package tv.superawesome.sdk.publisher.ui.interstitial
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.annotation.VisibleForTesting
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.CloseButtonState
@@ -13,7 +16,7 @@ import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.Orientation
 import tv.superawesome.sdk.publisher.models.SAInterface
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
+import tv.superawesome.sdk.publisher.ad.AdManager
 
 /**
  * Interstitial ads are full-screen ads that cover the interface of their host app.
@@ -27,7 +30,8 @@ public object SAInterstitialAd {
     private var orientation: Orientation = Constants.defaultOrientation
     private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
 
-    private val controller: AdControllerType by inject(AdControllerType::class.java)
+    private val adManager: AdManager by inject(AdManager::class.java)
+    private val scope: CoroutineScope by inject(CoroutineScope::class.java)
 
     /**
      * Loads an ad into the interstitial queue.
@@ -47,7 +51,10 @@ public object SAInterstitialAd {
         openRtbPartnerId: String? = null,
         options: Map<String, Any>? = null,
     ) {
-        controller.load(placementId, makeAdRequest(context, options, openRtbPartnerId))
+        scope.launch {
+            Log.d("MATHEUS", "Lading ad $placementId")
+            adManager.load(placementId, makeAdRequest(context, options, openRtbPartnerId))
+        }
     }
 
     /**
@@ -73,12 +80,14 @@ public object SAInterstitialAd {
         openRtbPartnerId: String? = null,
         options: Map<String, Any>? = null,
     ) {
-        controller.load(
-            placementId,
-            lineItemId,
-            creativeId,
-            makeAdRequest(context, options, openRtbPartnerId)
-        )
+        scope.launch {
+            adManager.load(
+                placementId,
+                lineItemId,
+                creativeId,
+                makeAdRequest(context, options, openRtbPartnerId)
+            )
+        }
     }
 
     /**
@@ -89,7 +98,7 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun play(placementId: Int, context: Context) {
-        InterstitialActivity.start(placementId, context)
+        InterstitialActivity.start(placementId, adManager.adConfig, context)
     }
 
     /**
@@ -99,7 +108,7 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun setListener(value: SAInterface) {
-        controller.delegate = value
+        adManager.listener = value
     }
 
     /**
@@ -197,7 +206,7 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun setParentalGate(value: Boolean) {
-        controller.config.isParentalGateEnabled = value
+        adManager.adConfig.isParentalGateEnabled = value
     }
 
     /**
@@ -207,7 +216,7 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun setBumperPage(value: Boolean) {
-        controller.config.isBumperPageEnabled = value
+        adManager.adConfig.isBumperPageEnabled = value
     }
 
     /**
@@ -217,7 +226,7 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun setTestMode(value: Boolean) {
-        controller.config.testEnabled = value
+        adManager.adConfig.testEnabled = value
     }
 
     /**
@@ -247,7 +256,7 @@ public object SAInterstitialAd {
      * @return true or false.
      */
     @JvmStatic
-    public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
+    public fun hasAdAvailable(placementId: Int): Boolean = adManager.hasAdAvailable(placementId)
 
     /**
      * Method that enables the close button to display immediately without a delay.
@@ -256,7 +265,7 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun enableCloseButtonNoDelay() {
-        controller.config.closeButtonState = CloseButtonState.VisibleImmediately
+        adManager.adConfig.closeButtonState = CloseButtonState.VisibleImmediately
     }
 
     /**
@@ -264,7 +273,7 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun enableCloseButton() {
-        controller.config.closeButtonState = CloseButtonState.VisibleWithDelay
+        adManager.adConfig.closeButtonState = CloseButtonState.VisibleWithDelay
     }
 
     private fun makeAdRequest(
@@ -285,7 +294,7 @@ public object SAInterstitialAd {
         }
 
         return DefaultAdRequest(
-            test = controller.config.testEnabled,
+            test = adManager.adConfig.testEnabled,
             pos = AdRequest.Position.FullScreen.value,
             skip = AdRequest.Skip.Yes.value,
             playbackMethod = DefaultAdRequest.PlaybackSoundOnScreen,
@@ -301,6 +310,7 @@ public object SAInterstitialAd {
     @VisibleForTesting
     @JvmStatic
     private fun clearCache() {
-        controller.clearCache()
+        // TODO
+     //   controller.clearCache()
     }
 }

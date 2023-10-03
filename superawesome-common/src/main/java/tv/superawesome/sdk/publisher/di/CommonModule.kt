@@ -1,7 +1,12 @@
 package tv.superawesome.sdk.publisher.di
 
 import android.content.res.Resources
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import tv.superawesome.sdk.publisher.components.AdQueryMaker
 import tv.superawesome.sdk.publisher.components.AdQueryMakerType
@@ -50,8 +55,13 @@ import tv.superawesome.sdk.publisher.repositories.PreferencesRepository
 import tv.superawesome.sdk.publisher.repositories.PreferencesRepositoryType
 import tv.superawesome.sdk.publisher.repositories.VastEventRepository
 import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
-import tv.superawesome.sdk.publisher.ui.common.AdController
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
+import tv.superawesome.sdk.publisher.ad.AdController
+import tv.superawesome.sdk.publisher.ad.AdControllerType
+import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.AdPerformanceTrackerHandler
+import tv.superawesome.sdk.publisher.ad.DefaultAdManager
+import tv.superawesome.sdk.publisher.ad.DefaultAdPerformanceTrackerHandler
+import tv.superawesome.sdk.publisher.ad.NewAdControllerFactory
 import tv.superawesome.sdk.publisher.ui.common.BumperPage
 import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.ui.common.ParentalGate
@@ -137,4 +147,11 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     // Vast
     single<VastParserType> { VastParser(get(), get()) }
     single<XmlParserType> { XmlParser() }
+
+    // New ad controllers
+    single { CoroutineScope(Dispatchers.Default) }
+    singleOf(::NewAdControllerFactory)
+    factoryOf(::DefaultAdManager) {
+        bind<AdManager>()
+    }
 }
