@@ -51,12 +51,12 @@ internal class PerformanceMetricTest : BaseTest() {
         val metricName = PerformanceMetricName.LoadTime
         val metricType = PerformanceMetricType.Gauge
         val metricTags = PerformanceMetricTags(
-            placementId = 1,
-            lineItemId = 2,
-            creativeId = 3,
+            placementId = "1",
+            lineItemId = "2",
+            creativeId = "3",
             format = CreativeFormatType.Tag,
             sdkVersion = "1.0",
-            connectionType = 2,
+            connectionType = "2",
         )
 
         // When
@@ -65,7 +65,7 @@ internal class PerformanceMetricTest : BaseTest() {
             "value" to 10L,
             "metricName" to "sa.ad.sdk.performance.load.time.android",
             "metricType" to "gauge",
-            "metricTags" to "{\"placementId\":1,\"lineItemId\":2,\"creativeId\":3,\"format\":\"tag\",\"sdkVersion\":\"1.0\",\"connectionType\":2}",
+            "metricTags" to "{\"placementId\":\"1\",\"lineItemId\":\"2\",\"creativeId\":\"3\",\"format\":\"tag\",\"sdkVersion\":\"1.0\",\"connectionType\":\"2\"}",
         )
 
         // Then
