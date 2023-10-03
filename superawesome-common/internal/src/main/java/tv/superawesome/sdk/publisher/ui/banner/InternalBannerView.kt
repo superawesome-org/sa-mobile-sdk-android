@@ -11,11 +11,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.common.R
@@ -29,7 +33,10 @@ import tv.superawesome.sdk.publisher.models.DwellTimer
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
+import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.components.AdStoreType
+import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.INTERSTITIAL_MAX_TICK_COUNT
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 
@@ -43,18 +50,27 @@ public class InternalBannerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), AdView, KoinComponent, DefaultLifecycleObserver {
 
-    internal val controller: AdControllerType by inject()
+    internal val adManager: AdManager by inject()
     private val imageProvider: ImageProviderType by inject()
     private val logger: Logger by inject()
     private val timeProvider: TimeProviderType by inject()
     private val viewableDetector: ViewableDetectorType by inject()
     private val dwellViewableDetector: ViewableDetectorType by inject()
     private val dwellTimer = DwellTimer(DWELL_DELAY, CoroutineScope(Dispatchers.Default))
+    private val adStore: AdStoreType by inject()
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
     private var hasBeenVisible: VoidBlock? = null
+
+    private val scope = if (context is AppCompatActivity) {
+        context.lifecycleScope
+    } else {
+        MainScope()
+    }
+
+    lateinit var controller: NewAdController
 
 
     init {
@@ -88,7 +104,10 @@ public class InternalBannerView @JvmOverloads constructor(
         if (isAdPlayedBefore()) {
             close()
         }
-        controller.load(placementId, makeAdRequest(options, openRtbPartnerId))
+
+        scope.launch {
+            adManager.load(placementId, makeAdRequest(options, openRtbPartnerId))
+        }
     }
 
     public fun load(placementId: Int) {
@@ -107,12 +126,15 @@ public class InternalBannerView @JvmOverloads constructor(
         if (isAdPlayedBefore()) {
             close()
         }
-        controller.load(
-            placementId,
-            lineItemId,
-            creativeId,
-            makeAdRequest(options, openRtbPartnerId)
-        )
+
+        scope.launch {
+            adManager.load(
+                placementId,
+                lineItemId,
+                creativeId,
+                makeAdRequest(options, openRtbPartnerId)
+            )
+        }
     }
 
     public fun load(
@@ -128,11 +150,12 @@ public class InternalBannerView @JvmOverloads constructor(
      */
     public override fun play() {
         logger.info("play($placementId)")
-        val adResponse = controller.play(placementId)
-        val data = adResponse?.getDataPair()
+        controller = adManager.getController(placementId)
+        adManager.removeController(placementId)
+        val data = controller.adResponse.getDataPair()
 
         if (data == null) {
-            controller.adFailedToShow()
+            controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
             return
         }
 
@@ -150,13 +173,14 @@ public class InternalBannerView @JvmOverloads constructor(
      * @param delegate the callback delegate.
      */
     public override fun setListener(delegate: SAInterface) {
-        controller.delegate = delegate
+        adManager.listener = delegate
     }
 
     /**
      * Gets called in order to close the banner ad, remove any fragments, etc.
      */
     public override fun close() {
+        adManager.removeController(placementId)
         hasBeenVisible = null
         viewableDetector.cancel()
         removeWebView()
@@ -167,32 +191,32 @@ public class InternalBannerView @JvmOverloads constructor(
     /**
      * Returns whether an ad is available.
      */
-    public override fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
+    public override fun hasAdAvailable(): Boolean = adManager.hasAdAvailable(placementId)
 
     /**
      * Returns whether the ad is closed.
      */
-    public override fun isClosed(): Boolean = controller.closed
+    public override fun isClosed(): Boolean = controller.isAdClosed
 
     /**
      * Sets parental gate enabled.
      */
     public override fun setParentalGate(value: Boolean) {
-        controller.config.isParentalGateEnabled = value
+        adManager.adConfig.isParentalGateEnabled = value
     }
 
     /**
      * Sets bumper page enabled.
      */
     public override fun setBumperPage(value: Boolean) {
-        controller.config.isBumperPageEnabled = value
+        adManager.adConfig.isBumperPageEnabled = value
     }
 
     /**
      * Sets the test mode.
      */
     public override fun setTestMode(value: Boolean) {
-        controller.config.testEnabled = value
+        adManager.adConfig.testEnabled = value
     }
 
     /**
@@ -229,7 +253,7 @@ public class InternalBannerView @JvmOverloads constructor(
         )
         padlockButton.contentDescription = "Safe Ad Logo"
 
-        padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
+        padlockButton.setOnClickListener { controller.handleSafeAdClick(context) }
 
         webView?.addView(padlockButton)
 
@@ -246,18 +270,23 @@ public class InternalBannerView @JvmOverloads constructor(
         )
         webView.listener = object : CustomWebView.Listener {
             override fun webViewOnStart() {
-                controller.adShown()
+                controller.listener?.onEvent(placementId, SAEvent.adShown)
                 viewableDetector.cancel()
-                controller.triggerImpressionEvent(placementId)
+                scope.launch { controller.triggerImpressionEvent() }
                 viewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
-                    controller.triggerViewableImpression(placementId)
+                    scope.launch { controller.triggerViewableImpression() }
                     hasBeenVisible?.let { it() }
                 }
                 startDwellTimer()
             }
 
-            override fun webViewOnError() = controller.adFailedToShow()
-            override fun webViewOnClick(url: String) = controller.handleAdTap(url, context)
+            override fun webViewOnError() {
+                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
+            }
+
+            override fun webViewOnClick(url: String) {
+                controller.handleAdClick(url, context)
+            }
         }
 
         addView(webView)
@@ -285,7 +314,7 @@ public class InternalBannerView @JvmOverloads constructor(
         openRtbPartnerId: String?
     ): AdRequest =
         DefaultAdRequest(
-            test = controller.config.testEnabled,
+            test = adManager.adConfig.testEnabled,
             pos = AdRequest.Position.AboveTheFold.value,
             skip = AdRequest.Skip.No.value,
             playbackMethod = DefaultAdRequest.PlaybackSoundOnScreen,
@@ -305,7 +334,7 @@ public class InternalBannerView @JvmOverloads constructor(
             val state = lifecycleOwner.lifecycle.currentState
             if (state.isAtLeast(Lifecycle.State.RESUMED)) {
                 dwellViewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
-                    controller.triggerDwellTime()
+                    scope.launch { controller.triggerDwellTime() }
                 }
             }
         }
@@ -326,6 +355,7 @@ public class InternalBannerView @JvmOverloads constructor(
     }
 
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
+        logger.info("MATHEUS ->>>>> Configure $placementId")
         this.placementId = placementId
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible

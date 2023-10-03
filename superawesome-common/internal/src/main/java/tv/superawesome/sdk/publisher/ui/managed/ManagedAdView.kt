@@ -13,6 +13,10 @@ import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import tv.superawesome.sdk.publisher.components.ImageProviderType
@@ -23,8 +27,10 @@ import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.CustomWebView
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
-import tv.superawesome.sdk.publisher.ui.common.Config
+import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.models.SAEvent
 
 /**
  * The view that displays the ad.
@@ -37,7 +43,7 @@ public class ManagedAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), KoinComponent {
 
-    internal val controller: AdControllerType by inject()
+    internal val adManager: AdManager by inject()
     private val imageProvider: ImageProviderType by inject()
     private val timeProvider: TimeProviderType by inject()
     private val logger: Logger by inject()
@@ -45,6 +51,13 @@ public class ManagedAdView @JvmOverloads constructor(
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
+    private var scope = if (context is AppCompatActivity) {
+        context.lifecycleScope
+    } else {
+        MainScope()
+    }
+
+    internal lateinit var controller: NewAdController
 
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
@@ -66,7 +79,6 @@ public class ManagedAdView @JvmOverloads constructor(
         webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener, logger), JS_BRIDGE_NAME)
         val updatedHTML = html.replace("_TIMESTAMP_", timeProvider.millis().toString())
         webView?.loadDataWithBaseURL(baseUrl, updatedHTML, MIME_TYPE, ENCODING, null)
-        controller.play(placementId)
     }
 
     override fun onSaveInstanceState(): Parcelable = Bundle().apply {
@@ -90,16 +102,16 @@ public class ManagedAdView @JvmOverloads constructor(
      * @param delegate the ad listener.
      */
     public fun setListener(delegate: SAInterface) {
-        controller.delegate = delegate
+        adManager.listener = delegate
     }
 
     /**
      * Sets the ad configuration.
      *
-     * @param config the [Config] object to configure the ad.
+     * @param adConfig the [AdConfig] object to configure the ad.
      */
-    public fun setConfig(config: Config) {
-        controller.config = config
+    public fun setConfig(adConfig: AdConfig) {
+        adManager.adConfig.copyFrom(adConfig)
     }
 
     /**
@@ -108,8 +120,6 @@ public class ManagedAdView @JvmOverloads constructor(
     public fun close() {
         removeWebView()
         controller.close()
-        controller.videoListener = null
-        controller.delegate = null
     }
 
     /**
@@ -117,14 +127,14 @@ public class ManagedAdView @JvmOverloads constructor(
      *
      * @return true or false
      */
-    public fun hasAdAvailable(): Boolean = controller.hasAdAvailable(placementId)
+    public fun hasAdAvailable(): Boolean = adManager.hasAdAvailable(placementId)
 
     /**
      * Gets whether the ad is closed.
      *
      * @return `true` if the ad is closed, `false` otherwise.
      */
-    public fun isClosed(): Boolean = controller.closed
+    public fun isClosed(): Boolean = controller.isAdClosed
 
     /**
      * Enables showing the parental gate.
@@ -188,7 +198,7 @@ public class ManagedAdView @JvmOverloads constructor(
      * @param value `true` to enable back button, `false` to disable it.
      */
     public fun setBackButton(value: Boolean) {
-        controller.config.isBackButtonEnabled = value
+        controller.adConfig.isBackButtonEnabled = value
     }
 
     /**
@@ -211,7 +221,7 @@ public class ManagedAdView @JvmOverloads constructor(
      * @param value `true` to show the parental gate, `false` otherwise.
      */
     public fun setParentalGate(value: Boolean) {
-        controller.config.isParentalGateEnabled = value
+        controller.adConfig.isParentalGateEnabled = value
     }
 
     /**
@@ -220,7 +230,7 @@ public class ManagedAdView @JvmOverloads constructor(
      * @param value `true` to show the bumper page, `false` otherwise.
      */
     public fun setBumperPage(value: Boolean) {
-        controller.config.isBumperPageEnabled = value
+        controller.adConfig.isBumperPageEnabled = value
     }
 
     /**
@@ -229,7 +239,7 @@ public class ManagedAdView @JvmOverloads constructor(
      * @param value `true` to enable test mode, `false` otherwise.
      */
     public fun setTestMode(value: Boolean) {
-        controller.config.testEnabled = value
+        controller.adConfig.testEnabled = value
     }
 
     /**
@@ -238,7 +248,7 @@ public class ManagedAdView @JvmOverloads constructor(
      * @param value `true` enables the close button, `false` disables it.
      */
     public fun setCloseButton(value: Boolean) {
-        controller.config.closeButtonState =
+        controller.adConfig.closeButtonState =
             if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
     }
 
@@ -299,7 +309,7 @@ public class ManagedAdView @JvmOverloads constructor(
         padlockButton.setPadding(0, 2.toPx, 0, 0)
         padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
 
-        padlockButton.setOnClickListener { controller.handleSafeAdTap(context) }
+        padlockButton.setOnClickListener { controller.handleSafeAdClick(context) }
 
         webView?.addView(padlockButton)
 
@@ -325,9 +335,17 @@ public class ManagedAdView @JvmOverloads constructor(
         webView.settings.javaScriptEnabled = true
 
         webView.listener = object : CustomWebView.Listener {
-            override fun webViewOnStart() = controller.triggerImpressionEvent(placementId)
-            override fun webViewOnError() = controller.adFailedToShow()
-            override fun webViewOnClick(url: String) = controller.handleAdTap(url, context)
+            override fun webViewOnStart() {
+                scope.launch {
+                    controller.triggerImpressionEvent()
+                }
+            }
+            override fun webViewOnError() {
+                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
+            }
+            override fun webViewOnClick(url: String) {
+                controller.handleAdClick(url, context)
+            }
         }
 
         addView(webView)

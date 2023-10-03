@@ -31,8 +31,8 @@ import tv.superawesome.sdk.publisher.models.Creative
 import tv.superawesome.sdk.publisher.models.CreativeDetail
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
-import tv.superawesome.sdk.publisher.ui.common.Config
+import tv.superawesome.sdk.publisher.ad.AdControllerType
+import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -62,7 +62,7 @@ class BannerViewTests: KoinTest {
     )
 
     private val controller = spyk<AdControllerType>().apply {
-        every { config } returns Config()
+        every { adConfig } returns AdConfig()
         every { play(placementId) } returns AdResponse(
             placementId = placementId,
             ad = Ad(
@@ -150,7 +150,7 @@ class BannerViewTests: KoinTest {
         // then
         verify(exactly = 1) {
             saLogger.info("load(1234)")
-            controller.config
+            controller.adConfig
             controller.load(placementId, adRequest)
         }
         confirmVerified(saLogger)
@@ -165,7 +165,7 @@ class BannerViewTests: KoinTest {
         // then
         verify(exactly = 1) {
             saLogger.info("load(1234, 123, 12)")
-            controller.config
+            controller.adConfig
             controller.load(placementId, lineItemId, creativeId, adRequest)
         }
         confirmVerified(saLogger)
@@ -185,7 +185,7 @@ class BannerViewTests: KoinTest {
         verify(exactly = 1) {
             saLogger.info("load(1234)")
             controller.load(placementId, adRequest)
-            controller.config
+            controller.adConfig
             saLogger.info("play(1234)")
             controller.play(placementId)
             controller.shouldShowPadlock
@@ -211,7 +211,7 @@ class BannerViewTests: KoinTest {
         verify(exactly = 1) {
             saLogger.info("load(1234)")
             controller.load(placementId, adRequest)
-            controller.config
+            controller.adConfig
             saLogger.info("play(1234)")
             controller.play(placementId)
             controller.shouldShowPadlock
@@ -243,7 +243,7 @@ class BannerViewTests: KoinTest {
         verify(exactly = 2) {
             saLogger.info("load(1234)")
             controller.load(placementId, adRequest)
-            controller.config
+            controller.adConfig
             saLogger.info("play(1234)")
             controller.play(placementId)
             controller.shouldShowPadlock
@@ -327,7 +327,7 @@ class BannerViewTests: KoinTest {
         sut.setParentalGate(isParentGateEnabled)
 
         // then
-        assertTrue(controller.config.isParentalGateEnabled)
+        assertTrue(controller.adConfig.isParentalGateEnabled)
     }
 
     @Test
@@ -339,7 +339,7 @@ class BannerViewTests: KoinTest {
         sut.setParentalGate(isParentGateEnabled)
 
         // then
-        assertFalse(controller.config.isParentalGateEnabled)
+        assertFalse(controller.adConfig.isParentalGateEnabled)
     }
 
     @Test
@@ -348,7 +348,7 @@ class BannerViewTests: KoinTest {
         sut.enableParentalGate()
 
         // then
-        assertTrue(controller.config.isParentalGateEnabled)
+        assertTrue(controller.adConfig.isParentalGateEnabled)
     }
 
     @Test
@@ -357,7 +357,7 @@ class BannerViewTests: KoinTest {
         sut.disableParentalGate()
 
         // then
-        assertFalse(controller.config.isParentalGateEnabled)
+        assertFalse(controller.adConfig.isParentalGateEnabled)
     }
 
     @Test
@@ -369,7 +369,7 @@ class BannerViewTests: KoinTest {
         sut.setBumperPage(isBumperPageEnabled)
 
         // then
-        assertTrue(controller.config.isBumperPageEnabled)
+        assertTrue(controller.adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -381,7 +381,7 @@ class BannerViewTests: KoinTest {
         sut.setBumperPage(isBumperPageEnabled)
 
         // then
-        assertFalse(controller.config.isBumperPageEnabled)
+        assertFalse(controller.adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -390,7 +390,7 @@ class BannerViewTests: KoinTest {
         sut.enableBumperPage()
 
         // then
-        assertTrue(controller.config.isBumperPageEnabled)
+        assertTrue(controller.adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -399,7 +399,7 @@ class BannerViewTests: KoinTest {
         sut.disableBumperPage()
 
         // then
-        assertFalse(controller.config.isBumperPageEnabled)
+        assertFalse(controller.adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -411,7 +411,7 @@ class BannerViewTests: KoinTest {
         sut.setTestMode(isTestEnabled)
 
         // then
-        assertTrue(controller.config.testEnabled)
+        assertTrue(controller.adConfig.testEnabled)
     }
 
     @Test
@@ -423,7 +423,7 @@ class BannerViewTests: KoinTest {
         sut.setTestMode(isTestEnabled)
 
         // then
-        assertFalse(controller.config.testEnabled)
+        assertFalse(controller.adConfig.testEnabled)
     }
 
     @Test
@@ -432,7 +432,7 @@ class BannerViewTests: KoinTest {
         sut.enableTestMode()
 
         // then
-        assertTrue(controller.config.testEnabled)
+        assertTrue(controller.adConfig.testEnabled)
     }
 
     @Test
@@ -441,7 +441,7 @@ class BannerViewTests: KoinTest {
         sut.disableTestMode()
 
         // then
-        assertFalse(controller.config.testEnabled)
+        assertFalse(controller.adConfig.testEnabled)
     }
 
     @Test
