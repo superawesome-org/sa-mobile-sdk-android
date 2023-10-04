@@ -55,12 +55,8 @@ import tv.superawesome.sdk.publisher.repositories.PreferencesRepository
 import tv.superawesome.sdk.publisher.repositories.PreferencesRepositoryType
 import tv.superawesome.sdk.publisher.repositories.VastEventRepository
 import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
-import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.ad.AdControllerType
 import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.AdPerformanceTrackerHandler
 import tv.superawesome.sdk.publisher.ad.DefaultAdManager
-import tv.superawesome.sdk.publisher.ad.DefaultAdPerformanceTrackerHandler
 import tv.superawesome.sdk.publisher.ad.NewAdControllerFactory
 import tv.superawesome.sdk.publisher.ui.common.BumperPage
 import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
@@ -105,7 +101,6 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
         )
     }
 
-    factory<AdControllerType> { AdController(get(), get(), get(), get(), get(), get()) }
     factory { ParentalGate(get()) }
     factory<BumperPage> { DefaultBumperPage() }
     factory<ViewableDetectorType> { ViewableDetector(get()) }
