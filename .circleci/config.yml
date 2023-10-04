@@ -184,8 +184,8 @@ jobs:
             VERSION_PROPERTIES=superawesome-base/src/main/resources/version.properties
             NEW_VERSION_PROPERTIES=superawesome-common/src/main/resources/newVersion.properties
 
-            if [[ ( ! -z "$NEXT_RELEASE_NUMBER" ) && ( -f "$VERSION_PROPERTIES" ) ]]; then
-
+            if [[ ( ! -z "$NEXT_RELEASE_NUMBER" ) && ( -f "$VERSION_PROPERTIES" ) ]]; 
+            then
               echo "****** Current Base release version ******"
               cat $VERSION_PROPERTIES
 
@@ -258,7 +258,8 @@ jobs:
             echo "PREVIOUS_VERSION ${PREVIOUS_VERSION}"
             echo "Changes Found ${CHANGES}"
 
-            export LINKS="[SuperAwesome AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome/${CLEAN_CURRENT_VERSION}/superawesome-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Base AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-base/${CLEAN_CURRENT_VERSION}/superawesome-base-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Common AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-common/${CLEAN_CURRENT_VERSION}/superawesome-common-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome AdMob AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saadmob/${CLEAN_CURRENT_VERSION}/saadmob-${CLEAN_CURRENT_VERSION}.aar)\n[SuperAwesome Unity AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saunity/${CLEAN_CURRENT_VERSION}/saunity-${CLEAN_CURRENT_VERSION}.aar)"
+            export NEW_LINE=$'\n'
+            export LINKS="[SuperAwesome AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome/${CLEAN_CURRENT_VERSION}/superawesome-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome Base AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-base/${CLEAN_CURRENT_VERSION}/superawesome-base-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome Common AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-common/${CLEAN_CURRENT_VERSION}/superawesome-common-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome AdMob AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saadmob/${CLEAN_CURRENT_VERSION}/saadmob-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome Unity AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saunity/${CLEAN_CURRENT_VERSION}/saunity-${CLEAN_CURRENT_VERSION}.aar)"
 
             # checkout docs repo
             git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git
@@ -373,7 +374,8 @@ jobs:
           no_output_timeout: 30m
           command: |
             export GIT_LOG_TEST=`git log --since="24 hours ago"`
-            if [ ! -z "$GIT_LOG_TEST" ]; then
+            if [ ! -z "$GIT_LOG_TEST" ]; 
+            then
               SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
               echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
               source $BASH_ENV
@@ -383,6 +385,8 @@ jobs:
               git add apps/android/app-production-debug.apk
               git commit -m "Updated Android Native SDK Mobile Test App to ${RELEASE_NUMBER}"
               git push https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git develop
+            else
+              echo "No updates in the past 24 hours, skipping Smoke Test build"
             fi
 
 workflows:
