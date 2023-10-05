@@ -42,8 +42,6 @@ open class FullScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        logger.info("MATHEUS ->>>> onCreate")
-
         initParentUI()
         initChildUI()
 

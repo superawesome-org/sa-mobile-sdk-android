@@ -38,8 +38,10 @@ import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.NewAdController
 import tv.superawesome.sdk.publisher.components.AdStoreType
 import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.INTERSTITIAL_MAX_TICK_COUNT
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 
 /**
  * View that shows banner ads.
@@ -254,7 +256,9 @@ public class InternalBannerView @JvmOverloads constructor(
         )
         padlockButton.contentDescription = "Safe Ad Logo"
 
-        padlockButton.setOnClickListener { controller.handleSafeAdClick(context) }
+        padlockButton.clickWithThrottling {
+            controller.handleSafeAdClick(context)
+        }
 
         webView?.addView(padlockButton)
 
@@ -270,6 +274,7 @@ public class InternalBannerView @JvmOverloads constructor(
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         webView.listener = object : CustomWebView.Listener {
+            private val debouncer = ClickThrottler()
             override fun webViewOnStart() {
                 controller.listener?.onEvent(placementId, SAEvent.adShown)
                 viewableDetector.cancel()
@@ -286,7 +291,9 @@ public class InternalBannerView @JvmOverloads constructor(
             }
 
             override fun webViewOnClick(url: String) {
-                controller.handleAdClick(url, context)
+                debouncer.onClick {
+                    controller.handleAdClick(url, context)
+                }
             }
         }
 

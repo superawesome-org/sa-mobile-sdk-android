@@ -154,8 +154,6 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     }
     factory { (placementId: Int) ->
         val adStore = get<AdStoreType>()
-        Log.d("MATHEUS", "adStore $adStore")
-        Log.d("MATHEUS", "peek($placementId) = ${adStore.peek(placementId)}")
         adStore.peek(placementId) ?: error("Ad not found")
     }
 }

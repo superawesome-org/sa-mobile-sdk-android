@@ -23,6 +23,7 @@ import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.NewAdController
 import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayer
@@ -220,10 +221,10 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         val chrome = AdVideoPlayerControllerView(this)
         chrome.shouldShowPadlock(controller.shouldShowPadlock)
         chrome.setShouldShowSmallClickButton(adConfig.shouldShowSmallClick)
-        chrome.setClickListener {
+        chrome.clickWithThrottling {
             controller.handleVastAdClick(this)
         }
-        chrome.padlock.setOnClickListener { controller.handleSafeAdClick(this) }
+        chrome.padlock.clickWithThrottling { controller.handleSafeAdClick(this) }
         videoPlayer.setControllerView(chrome)
     }
 
