@@ -32,6 +32,8 @@ import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.NewAdController
 import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
+import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 
 /**
  * The view that displays the ad.
@@ -55,7 +57,9 @@ public class ManagedAdView @JvmOverloads constructor(
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
     private var padlockButton: ImageButton? = null
-    private var scope = if (context is AppCompatActivity) {
+
+    private val clickThrottler = ClickThrottler()
+    private val scope = if (context is AppCompatActivity) {
         context.lifecycleScope
     } else {
         MainScope()
@@ -311,7 +315,9 @@ public class ManagedAdView @JvmOverloads constructor(
         padlockButton.setPadding(0, 2.toPx, 0, 0)
         padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
 
-        padlockButton.setOnClickListener { controller.handleSafeAdClick(context) }
+        padlockButton.clickWithThrottling {
+            controller.handleSafeAdClick(context)
+        }
 
         webView?.addView(padlockButton)
 
@@ -337,6 +343,7 @@ public class ManagedAdView @JvmOverloads constructor(
         webView.settings.javaScriptEnabled = true
 
         webView.listener = object : CustomWebView.Listener {
+            private val clickThrottler = ClickThrottler()
             override fun webViewOnStart() {
                 scope.launch {
                     controller.triggerImpressionEvent()
@@ -346,7 +353,7 @@ public class ManagedAdView @JvmOverloads constructor(
                 controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
             }
             override fun webViewOnClick(url: String) {
-                controller.handleAdClick(url, context)
+                clickThrottler.onClick { controller.handleAdClick(url, context) }
             }
         }
 

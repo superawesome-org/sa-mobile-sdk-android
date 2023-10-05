@@ -26,7 +26,6 @@ class DefaultAdManager(
         placementId: Int,
         adRequest: AdRequest,
     ) = doLoad(placementId) {
-        logger.info("MATHEUS ->> load $placementId")
         adRepository.getAd(
             placementId = placementId,
             request = adRequest,
