@@ -35,7 +35,7 @@ import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
 import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.components.AdStoreType
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
@@ -67,7 +67,7 @@ public class InternalBannerView @JvmOverloads constructor(
     private var padlockButton: ImageButton? = null
     private var hasBeenVisible: VoidBlock? = null
 
-    private lateinit var controller: NewAdController
+    private lateinit var controller: AdController
 
     private val scope = if (context is AppCompatActivity) {
         context.lifecycleScope

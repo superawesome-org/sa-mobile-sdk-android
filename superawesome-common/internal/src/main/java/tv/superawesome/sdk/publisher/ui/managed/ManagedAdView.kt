@@ -30,7 +30,7 @@ import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
@@ -50,7 +50,7 @@ public class ManagedAdView @JvmOverloads constructor(
     private val imageProvider: ImageProviderType by inject()
     private val timeProvider: TimeProviderType by inject()
     private val logger: Logger by inject()
-    private val controller: NewAdController by inject {
+    private val controller: AdController by inject {
         parametersOf(placementId)
     }
 

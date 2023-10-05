@@ -19,7 +19,7 @@ import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.network.Environment
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.common.VIDEO_MAX_TICK_COUNT
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
@@ -41,7 +41,7 @@ class ManagedAdActivity :
     private val adManager: AdManager by inject()
     private val environment: Environment by inject()
     private val viewableDetector: ViewableDetectorType by inject()
-    private val controller: NewAdController by inject {
+    private val controller: AdController by inject {
         parametersOf(placementId)
     }
 

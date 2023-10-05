@@ -18,7 +18,7 @@ import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 
-class DefaultNewAdController(
+class DefaultAdController(
     override val adResponse: AdResponse,
     override val adConfig: AdConfig,
     override val listener: SAInterface?,
@@ -26,7 +26,7 @@ class DefaultNewAdController(
     private val logger: Logger,
     private val adEventHandler: AdEventHandler,
     private val adPerformanceTrackerHandler: AdPerformanceTrackerHandler,
-) : NewAdController,
+) : AdController,
     AdEventHandler by adEventHandler,
     AdPerformanceTrackerHandler by adPerformanceTrackerHandler {
 

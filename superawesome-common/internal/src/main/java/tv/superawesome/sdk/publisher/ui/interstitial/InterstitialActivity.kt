@@ -14,8 +14,7 @@ import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.InternalBannerView
-import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 
 /**
@@ -26,7 +25,7 @@ import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 public class InterstitialActivity : FullScreenActivity(), SAInterface {
     private lateinit var interstitialBanner: InternalBannerView
 
-    private val controller by inject<NewAdController> {
+    private val controller by inject<AdController> {
         parametersOf(placementId)
     }
 

@@ -23,7 +23,7 @@ interface AdManager {
 
     fun hasAdAvailable(placementId: Int): Boolean
 
-    fun getController(placementId: Int): NewAdController
+    fun getController(placementId: Int): AdController
 
     fun removeController(placementId: Int)
 }

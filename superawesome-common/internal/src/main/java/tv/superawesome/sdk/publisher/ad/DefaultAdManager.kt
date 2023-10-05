@@ -14,7 +14,7 @@ import tv.superawesome.sdk.publisher.repositories.AdRepositoryType
 class DefaultAdManager(
     private val adRepository: AdRepositoryType,
     private val logger: Logger,
-    private val adControllerFactory: NewAdControllerFactory,
+    private val adControllerFactory: AdControllerFactory,
     private val adStore: AdStoreType,
 ) : AdManager {
 
@@ -48,7 +48,7 @@ class DefaultAdManager(
 
     override fun hasAdAvailable(placementId: Int): Boolean = adStore.peek(placementId) != null
 
-    override fun getController(placementId: Int): NewAdController =
+    override fun getController(placementId: Int): AdController =
         adStore.peek(placementId) ?: error("Ad not loaded")
 
     override fun removeController(placementId: Int) {
