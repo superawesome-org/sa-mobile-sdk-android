@@ -22,6 +22,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
@@ -64,14 +65,13 @@ public class InternalBannerView @JvmOverloads constructor(
     private var padlockButton: ImageButton? = null
     private var hasBeenVisible: VoidBlock? = null
 
+    private lateinit var controller: NewAdController
+
     private val scope = if (context is AppCompatActivity) {
         context.lifecycleScope
     } else {
         MainScope()
     }
-
-    lateinit var controller: NewAdController
-
 
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
@@ -150,8 +150,7 @@ public class InternalBannerView @JvmOverloads constructor(
      */
     public override fun play() {
         logger.info("play($placementId)")
-        controller = adManager.getController(placementId)
-        adManager.removeController(placementId)
+        controller = getKoin().get { parametersOf(placementId) }
         val data = controller.adResponse.getDataPair()
 
         if (data == null) {
@@ -165,6 +164,8 @@ public class InternalBannerView @JvmOverloads constructor(
         val bodyHtml = data.second
             .replace("_TIMESTAMP_", timeProvider.millis().toString())
         webView?.loadHTML(data.first, bodyHtml)
+
+        adManager.removeController(placementId)
     }
 
     /**
@@ -355,7 +356,6 @@ public class InternalBannerView @JvmOverloads constructor(
     }
 
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
-        logger.info("MATHEUS ->>>>> Configure $placementId")
         this.placementId = placementId
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible

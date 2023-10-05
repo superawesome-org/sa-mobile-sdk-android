@@ -9,6 +9,8 @@ import android.view.View
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.getKoin
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.models.AdRequest
@@ -33,8 +35,6 @@ public object SAVideoAd {
     private val adManager: AdManager by inject(AdManager::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val scope: CoroutineScope by inject(CoroutineScope::class.java)
-
-    private var controller: NewAdController? = null
 
     /**
      * Loads an ad into the queue.
@@ -91,6 +91,8 @@ public object SAVideoAd {
                 makeAdRequest(context, options, openRtbPartnerId)
             )
         }
+
+        getKoin().createScope<NewAdController>(scopeId = placementId.toString())
     }
 
     /**
@@ -103,10 +105,12 @@ public object SAVideoAd {
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
-        controller = adManager.getController(placementId)
-        val adResponse = controller?.adResponse
-        controller?.startTimerForLoadTime()
-        val intent = if (adResponse?.ad?.isVpaid == true) {
+        val controller = getKoin().get<NewAdController> {
+            parametersOf(placementId)
+        }
+        val adResponse = controller.adResponse
+        controller.startTimerForLoadTime()
+        val intent = if (adResponse.ad.isVpaid) {
             ManagedAdActivity.newInstance(
                 context = context,
                 placementId = placementId,
@@ -116,15 +120,15 @@ public object SAVideoAd {
             )
         } else {
 
-            if (adResponse?.filePath == null) {
-                controller?.listener?.onEvent(placementId, SAEvent.adFailedToShow)
+            if (adResponse.filePath == null) {
+                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
                 return
             }
 
             try {
                 Uri.fromFile(File(adResponse.filePath))
             } catch (error: Exception) {
-                controller?.listener?.onEvent(placementId, SAEvent.adFailedToShow)
+                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
                 return
             }
 

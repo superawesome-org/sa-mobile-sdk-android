@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
@@ -14,6 +15,7 @@ import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.InternalBannerView
 import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.NewAdController
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 
 /**
@@ -24,7 +26,9 @@ import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 public class InterstitialActivity : FullScreenActivity(), SAInterface {
     private lateinit var interstitialBanner: InternalBannerView
 
-    private val adManager by inject<AdManager>()
+    private val controller by inject<NewAdController> {
+        parametersOf(placementId)
+    }
 
     override fun initChildUI() {
         interstitialBanner = InternalBannerView(this)
@@ -34,9 +38,9 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         interstitialBanner.setColor(false)
-        interstitialBanner.setTestMode(adManager.adConfig.testEnabled)
-        interstitialBanner.setBumperPage(adManager.adConfig.isBumperPageEnabled)
-        interstitialBanner.setParentalGate(adManager.adConfig.isParentalGateEnabled)
+//        interstitialBanner.setTestMode(adManager.adConfig.testEnabled)
+//        interstitialBanner.setBumperPage(adManager.adConfig.isBumperPageEnabled)
+//        interstitialBanner.setParentalGate(adManager.adConfig.isParentalGateEnabled)
         interstitialBanner.setListener(this)
         interstitialBanner.contentDescription = "Ad content"
 
@@ -47,7 +51,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     }
 
     override fun playContent() {
-        interstitialBanner.configure(placementId, adManager.listener) {
+        interstitialBanner.configure(placementId, controller.listener) {
             closeButton.visibility = View.VISIBLE
         }
         interstitialBanner.play()
@@ -59,7 +63,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     }
 
     override fun onEvent(placementId: Int, event: SAEvent) {
-        adManager.listener?.onEvent(placementId, event)
+        controller.listener?.onEvent(placementId, event)
         if (event == SAEvent.adFailedToShow) {
             close()
         }
