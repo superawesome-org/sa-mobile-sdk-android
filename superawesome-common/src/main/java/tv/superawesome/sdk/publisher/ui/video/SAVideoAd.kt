@@ -20,7 +20,7 @@ import tv.superawesome.sdk.publisher.models.Orientation
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.managed.ManagedAdActivity
 import java.io.File
 
@@ -92,7 +92,7 @@ public object SAVideoAd {
             )
         }
 
-        getKoin().createScope<NewAdController>(scopeId = placementId.toString())
+        getKoin().createScope<AdController>(scopeId = placementId.toString())
     }
 
     /**
@@ -105,7 +105,7 @@ public object SAVideoAd {
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
-        val controller = getKoin().get<NewAdController> {
+        val controller = getKoin().get<AdController> {
             parametersOf(placementId)
         }
         val adResponse = controller.adResponse

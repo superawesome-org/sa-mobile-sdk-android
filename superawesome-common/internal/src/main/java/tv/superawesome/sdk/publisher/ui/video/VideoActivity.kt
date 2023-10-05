@@ -21,7 +21,7 @@ import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.NewAdController
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
@@ -45,7 +45,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     private var volumeButton: ImageButton? = null
 
     private lateinit var videoPlayer: VideoPlayer
-    private lateinit var controller: NewAdController
+    private lateinit var controller: AdController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         controller = adManager.getController(placementId)

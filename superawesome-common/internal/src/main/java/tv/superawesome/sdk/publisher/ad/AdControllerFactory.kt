@@ -9,7 +9,7 @@ import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.repositories.PerformanceRepositoryType
 
-class NewAdControllerFactory(
+class AdControllerFactory(
     private val numberGenerator: NumberGeneratorType,
     private val logger: Logger,
     private val dataSource: NetworkDataSourceType,
@@ -22,7 +22,7 @@ class NewAdControllerFactory(
         adResponse: AdResponse,
         adConfig: AdConfig,
         listener: SAInterface?,
-    ): NewAdController {
+    ): AdController {
         val defaultAdEventHandler = DefaultAdEventHandler(eventRepository, adResponse)
 
         val adEventHandler = if (adResponse.isVideo()) {
@@ -35,7 +35,7 @@ class NewAdControllerFactory(
             performanceRepository, timeProvider, adResponse
         )
 
-        return DefaultNewAdController(
+        return DefaultAdController(
             adResponse = adResponse,
             adConfig = adConfig,
             listener = listener,

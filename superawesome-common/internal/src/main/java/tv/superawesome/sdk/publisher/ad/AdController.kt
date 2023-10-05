@@ -5,7 +5,7 @@ import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 
-interface NewAdController : AdEventHandler, AdPerformanceTrackerHandler {
+interface AdController : AdEventHandler, AdPerformanceTrackerHandler {
 
     override val adResponse: AdResponse
 

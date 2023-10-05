@@ -1,7 +1,6 @@
 package tv.superawesome.sdk.publisher.di
 
 import android.content.res.Resources
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -58,9 +57,7 @@ import tv.superawesome.sdk.publisher.repositories.VastEventRepository
 import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.DefaultAdManager
-import tv.superawesome.sdk.publisher.ad.DefaultNewAdController
-import tv.superawesome.sdk.publisher.ad.NewAdController
-import tv.superawesome.sdk.publisher.ad.NewAdControllerFactory
+import tv.superawesome.sdk.publisher.ad.AdControllerFactory
 import tv.superawesome.sdk.publisher.ui.common.BumperPage
 import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.ui.common.ParentalGate
@@ -148,7 +145,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
 
     // New ad controllers
     single { CoroutineScope(Dispatchers.Default) }
-    singleOf(::NewAdControllerFactory)
+    singleOf(::AdControllerFactory)
     factoryOf(::DefaultAdManager) {
         bind<AdManager>()
     }
