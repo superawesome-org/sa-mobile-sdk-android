@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAEvent
@@ -40,6 +41,9 @@ class ManagedAdActivity :
     private val adManager: AdManager by inject()
     private val environment: Environment by inject()
     private val viewableDetector: ViewableDetectorType by inject()
+    private val controller: NewAdController by inject {
+        parametersOf(placementId)
+    }
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
@@ -50,14 +54,10 @@ class ManagedAdActivity :
     }
 
     private lateinit var adView: ManagedAdView
-    private lateinit var controller: NewAdController
 
     override fun initChildUI() {
-        controller = adManager.getController(placementId)
-
         adView = ManagedAdView(this)
-        adView.controller = controller
-        adView.controller.videoPlayerListener = this
+        controller.videoPlayerListener = this
         adView.id = numberGenerator.nextIntForCache()
         adView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -65,9 +65,9 @@ class ManagedAdActivity :
         )
         adView.setConfig(adConfig)
         adView.setColor(false)
-        adView.setTestMode(adConfig.testEnabled)
-        adView.setBumperPage(adConfig.isBumperPageEnabled)
-        adView.setParentalGate(adConfig.isParentalGateEnabled)
+//        adView.setTestMode(adConfig.testEnabled)
+//        adView.setBumperPage(adConfig.isBumperPageEnabled)
+//        adView.setParentalGate(adConfig.isParentalGateEnabled)
 
         parentLayout.addView(adView)
 
@@ -101,7 +101,7 @@ class ManagedAdActivity :
     }
 
     public override fun playContent() {
-        listener = adView.controller.listener
+        listener = adManager.listener
         adView.configure(placementId, listener)
         adView.load(placementId, html, baseUrl, this)
     }

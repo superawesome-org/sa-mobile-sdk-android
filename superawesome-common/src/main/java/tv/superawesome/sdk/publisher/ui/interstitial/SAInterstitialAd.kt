@@ -52,7 +52,6 @@ public object SAInterstitialAd {
         options: Map<String, Any>? = null,
     ) {
         scope.launch {
-            Log.d("MATHEUS", "Lading ad $placementId")
             adManager.load(placementId, makeAdRequest(context, options, openRtbPartnerId))
         }
     }

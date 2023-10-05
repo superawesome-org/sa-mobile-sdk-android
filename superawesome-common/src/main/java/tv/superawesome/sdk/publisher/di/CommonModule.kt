@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.di
 
 import android.content.res.Resources
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -57,6 +58,8 @@ import tv.superawesome.sdk.publisher.repositories.VastEventRepository
 import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.DefaultAdManager
+import tv.superawesome.sdk.publisher.ad.DefaultNewAdController
+import tv.superawesome.sdk.publisher.ad.NewAdController
 import tv.superawesome.sdk.publisher.ad.NewAdControllerFactory
 import tv.superawesome.sdk.publisher.ui.common.BumperPage
 import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
@@ -148,5 +151,11 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     singleOf(::NewAdControllerFactory)
     factoryOf(::DefaultAdManager) {
         bind<AdManager>()
+    }
+    factory { (placementId: Int) ->
+        val adStore = get<AdStoreType>()
+        Log.d("MATHEUS", "adStore $adStore")
+        Log.d("MATHEUS", "peek($placementId) = ${adStore.peek(placementId)}")
+        adStore.peek(placementId) ?: error("Ad not found")
     }
 }

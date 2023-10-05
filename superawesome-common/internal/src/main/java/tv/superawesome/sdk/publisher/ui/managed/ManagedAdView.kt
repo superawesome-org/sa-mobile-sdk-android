@@ -19,6 +19,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
@@ -47,6 +48,9 @@ public class ManagedAdView @JvmOverloads constructor(
     private val imageProvider: ImageProviderType by inject()
     private val timeProvider: TimeProviderType by inject()
     private val logger: Logger by inject()
+    private val controller: NewAdController by inject {
+        parametersOf(placementId)
+    }
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
@@ -56,8 +60,6 @@ public class ManagedAdView @JvmOverloads constructor(
     } else {
         MainScope()
     }
-
-    internal lateinit var controller: NewAdController
 
     init {
         setColor(Constants.defaultBackgroundColorEnabled)

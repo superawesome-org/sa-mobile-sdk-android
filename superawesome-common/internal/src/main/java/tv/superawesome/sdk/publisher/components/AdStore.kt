@@ -1,8 +1,6 @@
 package tv.superawesome.sdk.publisher.components
 
-import android.util.Log
 import tv.superawesome.sdk.publisher.ad.NewAdController
-import tv.superawesome.sdk.publisher.models.AdResponse
 
 interface AdStoreType {
     fun put(adController: NewAdController)
@@ -23,7 +21,6 @@ class AdStore : AdStoreType {
     }
 
     override fun consume(placementId: Int): NewAdController? {
-        Log.d("MATHEUS", "consume, placements: $data")
         val item = data[placementId]
         if (data[placementId] != null) {
             data.remove(placementId)
