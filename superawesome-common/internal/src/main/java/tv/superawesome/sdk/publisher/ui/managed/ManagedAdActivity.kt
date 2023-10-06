@@ -63,11 +63,6 @@ class ManagedAdActivity :
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        adView.setConfig(adConfig)
-        adView.setColor(false)
-//        adView.setTestMode(adConfig.testEnabled)
-//        adView.setBumperPage(adConfig.isBumperPageEnabled)
-//        adView.setParentalGate(adConfig.isParentalGateEnabled)
 
         parentLayout.addView(adView)
 

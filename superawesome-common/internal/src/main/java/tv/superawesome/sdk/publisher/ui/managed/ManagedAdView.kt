@@ -46,7 +46,7 @@ public class ManagedAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), KoinComponent {
 
-    internal val adManager: AdManager by inject()
+    private val adManager: AdManager by inject()
     private val imageProvider: ImageProviderType by inject()
     private val timeProvider: TimeProviderType by inject()
     private val logger: Logger by inject()
@@ -111,14 +111,6 @@ public class ManagedAdView @JvmOverloads constructor(
         adManager.listener = delegate
     }
 
-    /**
-     * Sets the ad configuration.
-     *
-     * @param adConfig the [AdConfig] object to configure the ad.
-     */
-    public fun setConfig(adConfig: AdConfig) {
-        adManager.adConfig.copyFrom(adConfig)
-    }
 
     /**
      * Closes the banner ad, remove any fragments, etc.
@@ -128,156 +120,7 @@ public class ManagedAdView @JvmOverloads constructor(
         controller.close()
     }
 
-    /**
-     * Determines if an ad is available.
-     *
-     * @return true or false
-     */
-    public fun hasAdAvailable(): Boolean = adManager.hasAdAvailable(placementId)
-
-    /**
-     * Gets whether the ad is closed.
-     *
-     * @return `true` if the ad is closed, `false` otherwise.
-     */
-    public fun isClosed(): Boolean = controller.isAdClosed
-
-    /**
-     * Enables showing the parental gate.
-     */
-    public fun enableParentalGate() {
-        setParentalGate(true)
-    }
-
-    /**
-     * Disables showing the parental gate.
-     */
-    public fun disableParentalGate() {
-        setParentalGate(false)
-    }
-
-    /**
-     * Enables showing the bumper page.
-     */
-    public fun enableBumperPage() {
-        setBumperPage(true)
-    }
-
-    /**
-     * Disables showing the bumper page.
-     */
-    public fun disableBumperPage() {
-        setBumperPage(false)
-    }
-
-    /**
-     * Enables test mode.
-     */
-    public fun enableTestMode() {
-        setTestMode(true)
-    }
-
-    /**
-     * Disables test mode.
-     */
-    public fun disableTestMode() {
-        setTestMode(false)
-    }
-
-    /**
-     * Sets the background color to transparent.
-     */
-    public fun setColorTransparent() {
-        setColor(true)
-    }
-
-    /**
-     * Sets the background color to gray.
-     */
-    public fun setColorGray() {
-        setColor(false)
-    }
-
-    /**
-     * Sets the back button state.
-     *
-     * @param value `true` to enable back button, `false` to disable it.
-     */
-    public fun setBackButton(value: Boolean) {
-        controller.adConfig.isBackButtonEnabled = value
-    }
-
-    /**
-     * Enables the back button.
-     */
-    public fun enableBackButton() {
-        setBackButton(true)
-    }
-
-    /**
-     * Disables the back button.
-     */
-    public fun disableBackButton() {
-        setBackButton(false)
-    }
-
-    /**
-     * Sets whether the parental gate should show.
-     *
-     * @param value `true` to show the parental gate, `false` otherwise.
-     */
-    public fun setParentalGate(value: Boolean) {
-        controller.adConfig.isParentalGateEnabled = value
-    }
-
-    /**
-     * Sets whether bumper page should show.
-     *
-     * @param value `true` to show the bumper page, `false` otherwise.
-     */
-    public fun setBumperPage(value: Boolean) {
-        controller.adConfig.isBumperPageEnabled = value
-    }
-
-    /**
-     * Sets the test mode.
-     *
-     * @param value `true` to enable test mode, `false` otherwise.
-     */
-    public fun setTestMode(value: Boolean) {
-        controller.adConfig.testEnabled = value
-    }
-
-    /**
-     * Sets the close button state.
-     *
-     * @param value `true` enables the close button, `false` disables it.
-     */
-    public fun setCloseButton(value: Boolean) {
-        controller.adConfig.closeButtonState =
-            if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
-    }
-
-    /**
-     * Enables the close button.
-     */
-    public fun enableCloseButton() {
-        setCloseButton(true)
-    }
-
-    /**
-     * Disables the close button.
-     */
-    public fun disableCloseButton() {
-        setCloseButton(false)
-    }
-
-    /**
-     * Sets the background color.
-     *
-     * @param value `true` makes it transparent, while `false` makes it gray.
-     */
-    public fun setColor(value: Boolean) {
+    private fun setColor(value: Boolean) {
         if (value) {
             setBackgroundColor(Color.TRANSPARENT)
         } else {
