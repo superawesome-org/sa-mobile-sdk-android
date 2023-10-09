@@ -97,19 +97,6 @@ class AdConfig : Parcelable {
         parcel.writeByte((if (shouldMuteOnStart) 1 else 0).toByte())
     }
 
-    fun copyFrom(other: AdConfig) {
-        testEnabled = other.testEnabled
-        isParentalGateEnabled = other.isParentalGateEnabled
-        isBumperPageEnabled = other.isBumperPageEnabled
-        shouldShowSmallClick = other.shouldShowSmallClick
-        shouldShowCloseWarning = other.shouldShowCloseWarning
-        isBackButtonEnabled = other.isBackButtonEnabled
-        shouldCloseAtEnd = other.shouldCloseAtEnd
-        closeButtonState = other.closeButtonState
-        orientation = other.orientation
-        shouldMuteOnStart = other.shouldMuteOnStart
-    }
-
     /**
      * Parcelable creator object.
      */

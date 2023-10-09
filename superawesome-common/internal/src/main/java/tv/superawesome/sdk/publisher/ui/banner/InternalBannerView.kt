@@ -36,7 +36,7 @@ import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.components.AdStoreType
+import tv.superawesome.sdk.publisher.components.AdControllerStore
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.INTERSTITIAL_MAX_TICK_COUNT
@@ -60,7 +60,7 @@ public class InternalBannerView @JvmOverloads constructor(
     private val viewableDetector: ViewableDetectorType by inject()
     private val dwellViewableDetector: ViewableDetectorType by inject()
     private val dwellTimer = DwellTimer(DWELL_DELAY, CoroutineScope(Dispatchers.Default))
-    private val adStore: AdStoreType by inject()
+    private val adStore: AdControllerStore by inject()
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null

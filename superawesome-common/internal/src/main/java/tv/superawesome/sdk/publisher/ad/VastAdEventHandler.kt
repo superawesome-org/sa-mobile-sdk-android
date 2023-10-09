@@ -5,7 +5,10 @@ import tv.superawesome.sdk.publisher.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.repositories.VastEventRepository
 import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
 
-class VideoAdEventHandler(
+/**
+ * Event handler for VAST ads.
+ */
+class VastAdEventHandler(
     private val dataSource: NetworkDataSourceType,
     private val eventRepository: EventRepositoryType,
     private val defaultAdEventHandler: DefaultAdEventHandler,

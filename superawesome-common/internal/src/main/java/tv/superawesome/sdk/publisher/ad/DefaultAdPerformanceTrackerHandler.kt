@@ -5,6 +5,9 @@ import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.PerformanceTimer
 import tv.superawesome.sdk.publisher.repositories.PerformanceRepositoryType
 
+/**
+ * Default ad performance tracker handler, should work with any type of ad.
+ */
 class DefaultAdPerformanceTrackerHandler(
     private val performanceRepository: PerformanceRepositoryType,
     private val timeProvider: TimeProviderType,

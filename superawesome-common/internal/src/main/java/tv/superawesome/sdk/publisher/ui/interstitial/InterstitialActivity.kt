@@ -36,11 +36,6 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        interstitialBanner.setColor(false)
-//        interstitialBanner.setTestMode(adManager.adConfig.testEnabled)
-//        interstitialBanner.setBumperPage(adManager.adConfig.isBumperPageEnabled)
-//        interstitialBanner.setParentalGate(adManager.adConfig.isParentalGateEnabled)
-        interstitialBanner.setListener(this)
         interstitialBanner.contentDescription = "Ad content"
 
         parentLayout.addView(interstitialBanner)
@@ -73,6 +68,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
          * Starts the activity.
          *
          * @param placementId ad placement identifier.
+         * @param adConfig the ad configuration.
          * @param context an activity context.
          */
         fun start(placementId: Int, adConfig: AdConfig, context: Context) {

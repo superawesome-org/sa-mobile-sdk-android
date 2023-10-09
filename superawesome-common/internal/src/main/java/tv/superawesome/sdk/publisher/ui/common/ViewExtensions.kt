@@ -1,10 +1,12 @@
 package tv.superawesome.sdk.publisher.ui.common
 
 import android.os.SystemClock
-import android.util.Log
 import android.view.View
 import tv.superawesome.sdk.publisher.models.Constants
 
+/**
+ * Extension for view that creates a [View.OnClickListener] with throttling mechanism.
+ */
 fun View.clickWithThrottling(
     throttleTime: Long = Constants.defaultClickThresholdInMs,
     action: () -> Unit

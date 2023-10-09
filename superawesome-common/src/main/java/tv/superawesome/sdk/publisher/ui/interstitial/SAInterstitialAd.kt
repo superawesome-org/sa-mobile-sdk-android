@@ -4,7 +4,6 @@ package tv.superawesome.sdk.publisher.ui.interstitial
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineScope
@@ -309,7 +308,6 @@ public object SAInterstitialAd {
     @VisibleForTesting
     @JvmStatic
     private fun clearCache() {
-        // TODO
-     //   controller.clearCache()
+        adManager.clearCache()
     }
 }

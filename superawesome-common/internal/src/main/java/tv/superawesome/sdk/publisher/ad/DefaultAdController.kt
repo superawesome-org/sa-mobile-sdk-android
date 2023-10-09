@@ -18,11 +18,15 @@ import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.ui.common.ParentalGate
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 
+/**
+ * Default ad controller, should work for any ad type.
+ */
+@Suppress("LongParameterList")
 class DefaultAdController(
     override val adResponse: AdResponse,
-    override val adConfig: AdConfig,
     override val listener: SAInterface?,
     private val numberGenerator: NumberGeneratorType,
+    private val adConfig: AdConfig,
     private val logger: Logger,
     private val adEventHandler: AdEventHandler,
     private val adPerformanceTrackerHandler: AdPerformanceTrackerHandler,

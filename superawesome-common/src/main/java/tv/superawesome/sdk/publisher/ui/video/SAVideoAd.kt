@@ -91,8 +91,6 @@ public object SAVideoAd {
                 makeAdRequest(context, options, openRtbPartnerId)
             )
         }
-
-        getKoin().createScope<AdController>(scopeId = placementId.toString())
     }
 
     /**
@@ -454,7 +452,6 @@ public object SAVideoAd {
     @VisibleForTesting
     @JvmStatic
     private fun clearCache() {
-        // TODO
-        //controller.clearCache()
+        adManager.clearCache()
     }
 }
