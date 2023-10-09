@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okio.BufferedSource
 import okio.buffer
 import okio.sink
 import tv.superawesome.sdk.publisher.components.Logger
@@ -60,7 +59,7 @@ class OkHttpNetworkDataSource(
             val sink = downloadedFile.sink().buffer()
             response.body()?.source()?.let {
                 sink.writeAll(it)
-            } ?: throw Exception("Body Empty")
+            } ?: throw NullPointerException("Empty Body")
             withContext(Dispatchers.IO) {
                 sink.close()
             }
