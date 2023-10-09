@@ -3,6 +3,10 @@ package tv.superawesome.sdk.publisher.ad
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.repositories.EventRepositoryType
 
+/**
+ * Default ad event handler, should work for any type of ad.
+ * For VAST, use [VastAdEventHandler].
+ */
 class DefaultAdEventHandler(
     private val eventRepository: EventRepositoryType,
     override val adResponse: AdResponse,
@@ -13,7 +17,7 @@ class DefaultAdEventHandler(
     }
 
     override suspend fun videoClick() {
-        /* no-op */
+        eventRepository.videoClick(adResponse)
     }
 
     override suspend fun triggerDwellTime() {

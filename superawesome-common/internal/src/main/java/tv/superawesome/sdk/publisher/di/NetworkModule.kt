@@ -61,5 +61,5 @@ fun networkModule(baseUrl: String) = module {
         val retrofit: Retrofit = get()
         retrofit.create(AwesomeAdsApi::class.java)
     }
-    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), get(), get()) }
+    single<NetworkDataSourceType> { OkHttpNetworkDataSource(get(), androidContext().cacheDir, get()) }
 }

@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.network.datasources
 
-import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -29,7 +28,7 @@ interface NetworkDataSourceType {
 
 class OkHttpNetworkDataSource(
     private val client: OkHttpClient,
-    private val applicationContext: Context,
+    private val cacheDir: File,
     private val logger: Logger,
 ) : NetworkDataSourceType {
     override suspend fun getData(url: String): Result<String> {
@@ -53,7 +52,7 @@ class OkHttpNetworkDataSource(
             val response = client.newCall(request).execute()
 
             val urlFileItem = UrlFileItem(url)
-            val downloadedFile = File(applicationContext.cacheDir, urlFileItem.fileName)
+            val downloadedFile = File(cacheDir, urlFileItem.fileName)
 
 
             val sink = downloadedFile.sink().buffer()

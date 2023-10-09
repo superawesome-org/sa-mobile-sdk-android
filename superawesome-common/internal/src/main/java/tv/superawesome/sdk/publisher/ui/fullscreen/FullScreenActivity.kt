@@ -3,7 +3,6 @@ package tv.superawesome.sdk.publisher.ui.fullscreen
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton

@@ -40,15 +40,16 @@ import java.io.File
 class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     private val control: IVideoPlayerController by inject()
     private val adManager: AdManager by inject()
+    private val controller: AdController by inject {
+        parametersOf(placementId)
+    }
     private var videoEvents: VideoEvents? = null
     private var completed = false
     private var volumeButton: ImageButton? = null
 
     private lateinit var videoPlayer: VideoPlayer
-    private lateinit var controller: AdController
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        controller = adManager.getController(placementId)
         logger.info("onCreate")
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

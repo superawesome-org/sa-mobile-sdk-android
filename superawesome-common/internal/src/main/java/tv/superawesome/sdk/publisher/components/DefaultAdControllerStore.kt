@@ -2,18 +2,37 @@ package tv.superawesome.sdk.publisher.components
 
 import tv.superawesome.sdk.publisher.ad.AdController
 
-interface AdStoreType {
+/**
+ * Store definition for [AdController]s.
+ */
+interface AdControllerStore {
+
+    /**
+     * Puts an [AdController] in the store.
+     */
     fun put(adController: AdController)
+
+    /**
+     * Consumes an [AdController] from the store, if it exists and removes it from the store
+     * or returns `null`.
+     */
     fun consume(placementId: Int): AdController?
 
-    /** Peeks the content inside the store without consuming it. */
+    /**
+     * Peeks the content inside the store without consuming it.
+     */
     fun peek(placementId: Int): AdController?
 
-    /** Clears cache. */
+    /**
+     * Clears cache.
+     */
     fun clear()
 }
 
-class AdStore : AdStoreType {
+/**
+ * Default implementation of an [AdControllerStore].
+ */
+class DefaultAdControllerStore : AdControllerStore {
     private val data = HashMap<Int, AdController>()
 
     override fun put(adController: AdController) {
