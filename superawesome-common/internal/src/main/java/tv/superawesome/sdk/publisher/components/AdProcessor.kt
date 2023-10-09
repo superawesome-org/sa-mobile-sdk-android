@@ -89,13 +89,15 @@ class AdProcessor(
     private suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? =
         networkDataSource.getData(url).fold(
             onSuccess = {
-                val vast = vastParser.parse(it)
-                if (vast?.type == VastType.Wrapper && vast.redirect != null) {
-                    val mergedVast = vast.merge(initialVast)
-                    handleVast(vast.redirect, mergedVast)
-                } else {
-                    vast
-                }
+                it?.let {
+                    val vast = vastParser.parse(it)
+                    if (vast?.type == VastType.Wrapper && vast.redirect != null) {
+                        val mergedVast = vast.merge(initialVast)
+                        handleVast(vast.redirect, mergedVast)
+                    } else {
+                        vast
+                    }
+                } ?: initialVast
             },
             onFailure = {
                 initialVast

@@ -38,9 +38,10 @@ compose-ui = "1.4.3"
 koin = "3.4.0"
 
 # Retrofit / OkHttp
-okhttp = "4.10.0"
-okhttp-loggingInterceptor = "5.0.0-alpha.2"
-retrofit = "2.9.0"
+okio = "3.6.0"
+okhttp = "3.12.13" # Keep this as 3.12.13 for API 19 compatibility
+okhttp-loggingInterceptor = "3.12.13" # Keep this as 3.12.13 for API 19 compatibility
+retrofit = "2.6.4" # Keep this as 2.6.0 for API 19 compatibility
 retrofit-serialization-converter = "0.8.0"
 
 # Chucker
@@ -137,6 +138,7 @@ koin-test-junit = { module = "io.insert-koin:koin-test-junit4", version.ref = "k
 
 # Retrofit / OkHttp
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp-loggingInterceptor" }
 retrofit-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-serialization-converter" }

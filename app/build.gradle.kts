@@ -10,7 +10,6 @@ android {
 
     defaultConfig {
         applicationId = "tv.superawesome.demoapp"
-
         testInstrumentationRunner = "tv.superawesome.demoapp.runner.UITestRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
         multiDexEnabled = true

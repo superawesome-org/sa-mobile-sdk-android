@@ -151,11 +151,7 @@ internal fun WebView.setupWebView() {
     scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
     isFocusableInTouchMode = false
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        settings.mediaPlaybackRequiresUserGesture = false
-    }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        WebView.setWebContentsDebuggingEnabled(true)
-    }
+    settings.mediaPlaybackRequiresUserGesture = false
+    WebView.setWebContentsDebuggingEnabled(true)
     settings.javaScriptEnabled = true
 }
