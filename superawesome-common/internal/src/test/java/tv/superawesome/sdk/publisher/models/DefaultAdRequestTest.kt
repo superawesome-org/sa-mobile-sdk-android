@@ -7,7 +7,7 @@ import org.junit.Test
 class DefaultAdRequestTest {
 
     @Test
-    fun `DefaultAdRequest propertyString contains expected values `() = runTest {
+    fun `DefaultAdRequest propertyString contains expected values`() = runTest {
         // Given
         val sut = DefaultAdRequest(
             false,

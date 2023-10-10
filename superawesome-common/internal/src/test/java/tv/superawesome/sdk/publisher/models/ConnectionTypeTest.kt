@@ -7,7 +7,7 @@ import org.junit.Test
 class ConnectionTypeTest {
 
     @Test
-    fun `ConnectionType quality for CellularUnknown is minimum `() = runTest {
+    fun `ConnectionType quality for CellularUnknown is minimum`() = runTest {
         // Given
         val sut = ConnectionType.CellularUnknown
 
@@ -16,7 +16,7 @@ class ConnectionTypeTest {
     }
 
     @Test
-    fun `ConnectionType quality for Cellular2g is minimum `() = runTest {
+    fun `ConnectionType quality for Cellular2g is minimum`() = runTest {
         // Given
         val sut = ConnectionType.Cellular2g
 
@@ -25,7 +25,7 @@ class ConnectionTypeTest {
     }
 
     @Test
-    fun `ConnectionType quality for Ethernet is maximum `() = runTest {
+    fun `ConnectionType quality for Ethernet is maximum`() = runTest {
         // Given
         val sut = ConnectionType.Ethernet
 
@@ -34,7 +34,7 @@ class ConnectionTypeTest {
     }
 
     @Test
-    fun `ConnectionType quality for Cellular4g is maximum `() = runTest {
+    fun `ConnectionType quality for Cellular4g is maximum`() = runTest {
         // Given
         val sut = ConnectionType.Cellular4g
 
@@ -43,7 +43,7 @@ class ConnectionTypeTest {
     }
 
     @Test
-    fun `ConnectionType quality for Cellular5g is maximum `() = runTest {
+    fun `ConnectionType quality for Cellular5g is maximum`() = runTest {
         // Given
         val sut = ConnectionType.Cellular5g
 
@@ -52,7 +52,7 @@ class ConnectionTypeTest {
     }
 
     @Test
-    fun `ConnectionType quality for Wifi is maximum `() = runTest {
+    fun `ConnectionType quality for Wifi is maximum`() = runTest {
         // Given
         val sut = ConnectionType.Wifi
 
@@ -61,7 +61,7 @@ class ConnectionTypeTest {
     }
 
     @Test
-    fun `ConnectionType quality for Unknown is maximum `() = runTest {
+    fun `ConnectionType quality for Unknown is maximum`() = runTest {
         // Given
         val sut = ConnectionType.Unknown
 

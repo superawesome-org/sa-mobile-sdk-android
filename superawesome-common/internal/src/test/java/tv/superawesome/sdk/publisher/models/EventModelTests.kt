@@ -48,7 +48,11 @@ class EventModelTests {
             "rnd=123, " +
             "type=viewable_impression, " +
             "no_image=false, " +
-            "data=%7B%22placement%22%3A10%2C%22line_item%22%3A30%2C%22creative%22%3A20%2C%22type%22%3A%22viewable_impression%22%7D, " +
+            "data=%7B%22placement%22%3A10%2C%22" +
+            "line_item%22%3A30%2C%22" +
+            "creative%22%3A20%2C%22" +
+            "type%22%3A%22" +
+            "viewable_impression%22%7D, " +
             "adRequestId=test-id, " +
             "key1=value1, " +
             "key2=2}",

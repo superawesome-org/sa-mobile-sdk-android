@@ -6,7 +6,7 @@ import org.junit.Test
 
 class CreativeModelsTest {
     @Test
-    fun `CreativeReferral toMap contains expected values `() = runTest {
+    fun `CreativeReferral toMap contains expected values`() = runTest {
         // Given
         val sut = CreativeReferral(
             utmSource = 1,

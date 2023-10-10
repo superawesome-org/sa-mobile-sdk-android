@@ -51,7 +51,7 @@ class AdModelsTest: BaseTest() {
     @InjectMockKs
     lateinit var queryMaker: AdQueryMaker
     @Test
-    fun `ad isCPICampaign is true when expected `() = runTest {
+    fun `ad isCPICampaign is true when expected`() = runTest {
         // Given
         val creative = mockk<Creative>(relaxed = true)
         val sut = Ad(
@@ -67,7 +67,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `ad isCPICampaign is false when expected `() = runTest {
+    fun `ad isCPICampaign is false when expected`() = runTest {
         // Given
         val creative = mockk<Creative>(relaxed = true)
         val sut = Ad(
@@ -135,7 +135,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVpaid is true when expected `() = runTest {
+    fun `AdResponse isVpaid is true when expected`() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -148,7 +148,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVpaid is false when expected `() = runTest {
+    fun `AdResponse isVpaid is false when expected`() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -161,7 +161,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVideo is true when expected `() = runTest {
+    fun `AdResponse isVideo is true when expected`() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -174,7 +174,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVideo is false when expected `() = runTest {
+    fun `AdResponse isVideo is false when expected`() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -187,7 +187,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse showPadlock is true when expected `() = runTest {
+    fun `AdResponse showPadlock is true when expected`() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -200,7 +200,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse showPadlock is false when expected `() = runTest {
+    fun `AdResponse showPadlock is false when expected`() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -213,7 +213,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse dataPair returns expected result `() = runTest {
+    fun `AdResponse dataPair returns expected result`() = runTest {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
