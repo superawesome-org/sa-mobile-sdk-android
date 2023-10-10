@@ -11,6 +11,7 @@ import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import tv.superawesome.sdk.publisher.network.datasources.OkHttpNetworkDataSource
 import tv.superawesome.sdk.publisher.testutil.FakeFactory
 import tv.superawesome.sdk.publisher.testutil.TestLogger
+import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -25,9 +26,9 @@ class VastEventRepositoryTest : MockServerTest() {
         .writeTimeout(100, TimeUnit.MILLISECONDS)
         .build()
 
-    private val context = mockk<Context>()
+    private val file = File.createTempFile("file", null).parentFile
 
-    private val datasource = OkHttpNetworkDataSource(client, context, TestLogger())
+    private val datasource = OkHttpNetworkDataSource(client, file, TestLogger())
 
     private val vastAd = FakeFactory.makeVastAd(mockServer.url("vast").toString())
 

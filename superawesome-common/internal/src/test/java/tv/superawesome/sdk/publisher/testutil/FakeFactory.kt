@@ -1,5 +1,7 @@
 package tv.superawesome.sdk.publisher.testutil
 
+import io.mockk.mockk
+import tv.superawesome.sdk.publisher.ad.DefaultAdController
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.Creative

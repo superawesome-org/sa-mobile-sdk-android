@@ -1,5 +1,6 @@
 package tv.superawesome.sdk.publisher.network.datasources
 
+import kotlinx.coroutines.delay
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.models.Ad
@@ -35,7 +36,15 @@ class AwesomeAdsApiDataSource(
 ): AwesomeAdsApiDataSourceType {
 
     override suspend fun getAd(placementId: Int, query: AdQueryBundle): Result<Ad> =
-        runCatching { awesomeAdsApi.ad(placementId, query.build()) }
+        runCatching {
+            println("getAd($placementId)##")
+            val a = awesomeAdsApi.ad(placementId, query.build())
+            println("getAd($a)$$")
+            delay(2000)
+            a
+        }.also {
+            println(it.isFailure)
+        }
 
     override suspend fun getAd(
         placementId: Int, lineItemId: Int, creativeId: Int, query: AdQueryBundle
