@@ -125,7 +125,8 @@ class AdModelsTest: BaseTest() {
             "ct=7, " +
             "lang=en_en, " +
             "device=PHONE, " +
-            "pos=10, skip=20, " +
+            "pos=10, " +
+            "skip=20, " +
             "playbackmethod=30, " +
             "startdelay=40, " +
             "instl=50, " +
