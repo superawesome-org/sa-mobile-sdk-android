@@ -67,7 +67,7 @@ public class InternalBannerView @JvmOverloads constructor(
     private var padlockButton: ImageButton? = null
     private var hasBeenVisible: VoidBlock? = null
 
-    private lateinit var controller: AdController
+    private var controller: AdController? = null
 
     private val scope = if (context is AppCompatActivity) {
         context.lifecycleScope
@@ -134,7 +134,7 @@ public class InternalBannerView @JvmOverloads constructor(
                 placementId,
                 lineItemId,
                 creativeId,
-                makeAdRequest(options, openRtbPartnerId)
+                makeAdRequest(options, openRtbPartnerId),
             )
         }
     }
@@ -152,11 +152,17 @@ public class InternalBannerView @JvmOverloads constructor(
      */
     public override fun play() {
         logger.info("play($placementId)")
-        controller = getKoin().get { parametersOf(placementId) }
-        val data = controller.adResponse.getDataPair()
+        controller = try {
+            getKoin().get { parametersOf(placementId) }
+        } catch (e: Throwable) {
+            logger.error("Ad not loaded")
+            null
+        }
+        val data = controller?.adResponse?.getDataPair()
 
         if (data == null) {
-            controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
+            val listener = controller?.listener ?: adManager.listener
+            listener?.onEvent(placementId, SAEvent.adFailedToShow)
             return
         }
 
@@ -187,7 +193,7 @@ public class InternalBannerView @JvmOverloads constructor(
         hasBeenVisible = null
         viewableDetector.cancel()
         removeWebView()
-        controller.close()
+        controller?.close()
         cancelDwellTimer()
     }
 
@@ -199,7 +205,7 @@ public class InternalBannerView @JvmOverloads constructor(
     /**
      * Returns whether the ad is closed.
      */
-    public override fun isClosed(): Boolean = controller.isAdClosed
+    public override fun isClosed(): Boolean = controller?.isAdClosed ?: true
 
     /**
      * Sets parental gate enabled.
@@ -236,7 +242,7 @@ public class InternalBannerView @JvmOverloads constructor(
     }
 
     private fun showPadlockIfNeeded() {
-        if (!controller.shouldShowPadlock || webView == null) return
+        if (controller?.shouldShowPadlock == false || webView == null) return
 
         val padlockButton = ImageButton(context)
         padlockButton.setImageBitmap(imageProvider.padlockImage())
@@ -257,7 +263,7 @@ public class InternalBannerView @JvmOverloads constructor(
         padlockButton.contentDescription = "Safe Ad Logo"
 
         padlockButton.clickWithThrottling {
-            controller.handleSafeAdClick(context)
+            controller?.handleSafeAdClick(context)
         }
 
         webView?.addView(padlockButton)
@@ -276,23 +282,23 @@ public class InternalBannerView @JvmOverloads constructor(
         webView.listener = object : CustomWebView.Listener {
             private val debouncer = ClickThrottler()
             override fun webViewOnStart() {
-                controller.listener?.onEvent(placementId, SAEvent.adShown)
+                controller?.listener?.onEvent(placementId, SAEvent.adShown)
                 viewableDetector.cancel()
-                scope.launch { controller.triggerImpressionEvent() }
+                scope.launch { controller?.triggerImpressionEvent() }
                 viewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
-                    scope.launch { controller.triggerViewableImpression() }
+                    scope.launch { controller?.triggerViewableImpression() }
                     hasBeenVisible?.let { it() }
                 }
                 startDwellTimer()
             }
 
             override fun webViewOnError() {
-                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
+                controller?.listener?.onEvent(placementId, SAEvent.adFailedToShow)
             }
 
             override fun webViewOnClick(url: String) {
                 debouncer.onClick {
-                    controller.handleAdClick(url, context)
+                    controller?.handleAdClick(url, context)
                 }
             }
         }
@@ -342,7 +348,7 @@ public class InternalBannerView @JvmOverloads constructor(
             val state = lifecycleOwner.lifecycle.currentState
             if (state.isAtLeast(Lifecycle.State.RESUMED)) {
                 dwellViewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
-                    scope.launch { controller.triggerDwellTime() }
+                    scope.launch { controller?.triggerDwellTime() }
                 }
             }
         }

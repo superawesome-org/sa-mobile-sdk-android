@@ -61,7 +61,7 @@ class DefaultAdManager(
 
     private suspend fun doLoad(
         placementId: Int,
-        loader: suspend () -> Result<AdResponse>
+        loader: suspend () -> Result<AdResponse>,
     ) {
         if (hasAdAvailable(placementId)) {
             withContext(Dispatchers.Main) {

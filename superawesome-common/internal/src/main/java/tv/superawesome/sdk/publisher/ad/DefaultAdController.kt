@@ -80,7 +80,6 @@ class DefaultAdController(
         handleAdClick(destinationUrl, context)
     }
 
-
     private fun onAdClicked(url: String, context: Context) {
         logger.info("onAdClicked $url")
 
