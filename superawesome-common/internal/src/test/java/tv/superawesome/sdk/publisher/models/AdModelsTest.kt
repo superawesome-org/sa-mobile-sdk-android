@@ -65,6 +65,7 @@ class AdModelsTest: BaseTest() {
             random = "123"
         )
 
+        // Then
         assertTrue(sut.isCPICampaign())
     }
 
@@ -81,6 +82,7 @@ class AdModelsTest: BaseTest() {
             random = "123"
         )
 
+        // Then
         assertFalse(sut.isCPICampaign())
     }
 

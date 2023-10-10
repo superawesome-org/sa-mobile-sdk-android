@@ -6,7 +6,7 @@ import org.junit.Test
 import tv.superawesome.sdk.publisher.testutil.FakeFactory
 
 class VastModelsTest {
-    
+
     @Test
     fun `Merging VastAds results in a VastAd with the expected values`() = runTest {
         // Given
