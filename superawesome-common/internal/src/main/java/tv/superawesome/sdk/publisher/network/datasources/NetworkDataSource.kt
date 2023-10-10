@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.buffer
 import okio.sink
+import tv.superawesome.sdk.publisher.ad.AdExceptions
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.models.UrlFileItem
 import java.io.File
@@ -50,22 +51,23 @@ class OkHttpNetworkDataSource(
         return try {
             val request = Request.Builder().url(url).build()
             val response = client.newCall(request).execute()
+            if (response.isSuccessful) {
+                val urlFileItem = UrlFileItem(url)
+                val downloadedFile = File(cacheDir, urlFileItem.fileName)
 
-            val urlFileItem = UrlFileItem(url)
-            val downloadedFile = File(cacheDir, urlFileItem.fileName)
-
-
-            val sink = downloadedFile.sink().buffer()
-            sink.writeAll(response.body!!.source())
-            withContext(Dispatchers.IO) {
-                sink.close()
+                val sink = downloadedFile.sink().buffer()
+                sink.writeAll(response.body!!.source())
+                withContext(Dispatchers.IO) {
+                    sink.close()
+                }
+                logger.success("File download successful with path: ${downloadedFile.absolutePath}")
+                Result.success(downloadedFile.absolutePath)
+            } else {
+                Result.failure(Exception("Response code: ${response.code}"))
             }
-
-            logger.success("File download successful with path: ${downloadedFile.absolutePath}")
-            Result.success(downloadedFile.absolutePath)
         } catch (e: Exception) {
             logger.error("File download error", e)
-            Result.failure(Error(e.localizedMessage))
+            Result.failure(e)
         }
     }
 }

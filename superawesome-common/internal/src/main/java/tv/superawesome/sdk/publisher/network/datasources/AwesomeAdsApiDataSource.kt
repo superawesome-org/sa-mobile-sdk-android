@@ -36,15 +36,7 @@ class AwesomeAdsApiDataSource(
 ): AwesomeAdsApiDataSourceType {
 
     override suspend fun getAd(placementId: Int, query: AdQueryBundle): Result<Ad> =
-        runCatching {
-            println("getAd($placementId)##")
-            val a = awesomeAdsApi.ad(placementId, query.build())
-            println("getAd($a)$$")
-            delay(2000)
-            a
-        }.also {
-            println(it.isFailure)
-        }
+        runCatching { awesomeAdsApi.ad(placementId, query.build()) }
 
     override suspend fun getAd(
         placementId: Int, lineItemId: Int, creativeId: Int, query: AdQueryBundle

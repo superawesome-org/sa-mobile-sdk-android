@@ -6,28 +6,19 @@ import android.graphics.drawable.ColorDrawable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import okhttp3.mockwebserver.MockResponse
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
-import org.koin.core.parameter.parametersOf
 import org.koin.test.KoinTest
-import org.koin.test.get
-import org.koin.test.inject
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
-import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.di.testCommonModule
@@ -36,6 +27,7 @@ import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import tv.superawesome.sdk.publisher.network.enqueueResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -47,8 +39,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
 
     private lateinit var sut: InternalBannerView
 
-    private val dispatcher = UnconfinedTestDispatcher()
-    private val adManager by inject<AdManager>()
+    private val dispatcher = StandardTestDispatcher()
 
     @Before
     override fun setup() {
@@ -68,32 +59,35 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
     }
 
     @Test
-    fun `load banner loads ad successfully with no options`() {
+    fun `load banner loads ad successfully with no options`() = runTest {
         // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
         val placementId = 1000
 
         // when
         sut.load(placementId)
-        sut.play()
+        sut.getJob()?.join()
 
         // then
-        assertTrue(adManager.hasAdAvailable(placementId))
+        assertTrue(sut.getManager().hasAdAvailable(placementId))
     }
 
     @Test
-    fun `load banner loads ad successfully with lineItemId and creativeId and no options`() {
+    fun `load banner loads ad successfully with lineItemId and creativeId and no options`() = runTest {
         // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
         val placementId = 2000
 
         // when
         sut.load(placementId, 1234, 1234)
+        sut.getJob()?.join()
 
         // then
-        assertTrue(adManager.hasAdAvailable(placementId))
+        assertTrue(sut.getManager().hasAdAvailable(placementId))
     }
 
     @Test
-    fun `banner can be configured with a delegate that is called on successful loading of the ad`() {
+    fun `banner can be configured with a delegate that is called on successful loading of the ad`() = runTest {
         // given
         val placementId = 3000
         val listener = SAInterface { actualPlacementId, event ->
@@ -105,29 +99,32 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         // when
         sut.configure(placementId, listener) {}
         sut.load(placementId)
+        sut.getJob()?.join()
     }
 
     @Test
     fun `banner will close correctly`() = runTest {
         // given
-        mockServer.enqueueResponse("mock_ad_response_1.json", 200)
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
         sut.load(1234)
-        advanceUntilIdle()
+        sut.getJob()?.join()
         sut.play()
 
         // when
         sut.close()
 
         // then
+        assertNotNull(sut.getController())
         assertTrue(sut.isClosed())
     }
 
     @Test
-    fun `banner hasAdAvailable returns what the controller specifies when true`() {
+    fun `banner hasAdAvailable returns true if ad was loaded`() = runTest {
         // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
         val placementId = 4000
         sut.load(placementId)
-
+        sut.getJob()?.join()
         // when
         val result = sut.hasAdAvailable()
 
@@ -136,7 +133,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
     }
 
     @Test
-    fun `banner hasAdAvailable returns what the controller specifies when false`() {
+    fun `banner hasAdAvailable returns false if ad wasn't loaded`() {
         // when
         val result = sut.hasAdAvailable()
 
@@ -145,25 +142,32 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
     }
 
     @Test
-    fun `banner isClosed returns what the controller specifies when true`() {
+    fun `banner isClosed returns true if ad has been closed`() = runTest {
         // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
         val placementId = 5000
         sut.load(placementId)
-        val controller = get<AdController> { parametersOf(placementId) }
-        controller.close()
+        sut.getJob()?.join()
+        sut.play()
+        val controller = sut.getController()
+        controller?.close()
 
         // when
         val result = sut.isClosed()
 
         // then
+        assertNotNull(controller)
         assertTrue(result)
     }
 
     @Test
-    fun `banner isClosed returns what the controller specifies when false`() {
+    fun `banner isClosed returns false if ad hasn't been closed`() = runTest {
         // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
         val placementId = 6000
         sut.load(placementId)
+        sut.getJob()?.join()
+        sut.play()
 
         // when
         val result = sut.isClosed()
@@ -174,26 +178,20 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
 
     @Test
     fun `banner setParentGate sets the config value to true`() {
-        // given
-        val isParentGateEnabled = true
-
         // when
-        sut.setParentalGate(isParentGateEnabled)
+        sut.setParentalGate(true)
 
         // then
-        assertTrue(adManager.adConfig.isParentalGateEnabled)
+        assertTrue(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
     fun `banner setParentGate sets the config value to false`() {
-        // given
-        val isParentGateEnabled = false
-
         // when
-        sut.setParentalGate(isParentGateEnabled)
+        sut.setParentalGate(false)
 
         // then
-        assertFalse(adManager.adConfig.isParentalGateEnabled)
+        assertFalse(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
@@ -202,7 +200,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.enableParentalGate()
 
         // then
-        assertTrue(adManager.adConfig.isParentalGateEnabled)
+        assertTrue(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
@@ -211,7 +209,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.disableParentalGate()
 
         // then
-        assertFalse(adManager.adConfig.isParentalGateEnabled)
+        assertFalse(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
@@ -223,7 +221,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.setBumperPage(isBumperPageEnabled)
 
         // then
-        assertTrue(adManager.adConfig.isBumperPageEnabled)
+        assertTrue(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -235,7 +233,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.setBumperPage(isBumperPageEnabled)
 
         // then
-        assertFalse(adManager.adConfig.isBumperPageEnabled)
+        assertFalse(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -244,7 +242,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.enableBumperPage()
 
         // then
-        assertTrue(adManager.adConfig.isBumperPageEnabled)
+        assertTrue(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -253,7 +251,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.disableBumperPage()
 
         // then
-        assertFalse(adManager.adConfig.isBumperPageEnabled)
+        assertFalse(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
@@ -265,7 +263,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.setTestMode(isTestEnabled)
 
         // then
-        assertTrue(adManager.adConfig.testEnabled)
+        assertTrue(sut.getManager().adConfig.testEnabled)
     }
 
     @Test
@@ -277,7 +275,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.setTestMode(isTestEnabled)
 
         // then
-        assertFalse(adManager.adConfig.testEnabled)
+        assertFalse(sut.getManager().adConfig.testEnabled)
     }
 
     @Test
@@ -286,7 +284,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.enableTestMode()
 
         // then
-        assertTrue(adManager.adConfig.testEnabled)
+        assertTrue(sut.getManager().adConfig.testEnabled)
     }
 
     @Test
@@ -295,7 +293,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         sut.disableTestMode()
 
         // then
-        assertFalse(adManager.adConfig.testEnabled)
+        assertFalse(sut.getManager().adConfig.testEnabled)
     }
 
     @Test

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -18,7 +19,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -68,11 +71,11 @@ public class InternalBannerView @JvmOverloads constructor(
     private var hasBeenVisible: VoidBlock? = null
 
     private var controller: AdController? = null
+    private var loadJob: Job? = null
 
     private val scope = if (context is AppCompatActivity) {
         context.lifecycleScope
     } else {
-        println("mainscope")
         CoroutineScope(Dispatchers.Main)
     }
 
@@ -108,7 +111,7 @@ public class InternalBannerView @JvmOverloads constructor(
             close()
         }
 
-        scope.launch {
+        loadJob = scope.launch {
             adManager.load(placementId, makeAdRequest(options, openRtbPartnerId))
         }
     }
@@ -130,7 +133,7 @@ public class InternalBannerView @JvmOverloads constructor(
             close()
         }
 
-        scope.launch {
+        loadJob = scope.launch {
             adManager.load(
                 placementId,
                 lineItemId,
@@ -191,6 +194,8 @@ public class InternalBannerView @JvmOverloads constructor(
      */
     public override fun close() {
         adManager.removeController(placementId)
+        loadJob?.cancel()
+        loadJob = null
         hasBeenVisible = null
         viewableDetector.cancel()
         removeWebView()
@@ -374,6 +379,15 @@ public class InternalBannerView @JvmOverloads constructor(
         delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible
     }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getManager() = adManager
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getController() = controller
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun getJob() = loadJob
 
     companion object {
         private const val DWELL_DELAY = 5000L
