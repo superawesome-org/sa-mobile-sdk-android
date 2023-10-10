@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.buffer
 import okio.sink
+import tv.superawesome.sdk.publisher.ad.AdExceptions
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.models.UrlFileItem
 import java.io.File
@@ -55,14 +56,14 @@ class OkHttpNetworkDataSource(
             val downloadedFile = File(cacheDir, urlFileItem.fileName)
 
             val sink = downloadedFile.sink().buffer()
-            sink.writeAll(response.body()!!.source())
+            sink.writeAll(response.body!!.source())
             withContext(Dispatchers.IO) {
                 sink.close()
             }
             logger.success("File download successful with path: ${downloadedFile.absolutePath}")
             downloadedFile.absolutePath
         } else {
-            throw Exception("Response code: ${response.code()}")
+            throw Exception("Response code: ${response.code}")
         }
     }
 }

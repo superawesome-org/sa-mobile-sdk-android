@@ -63,7 +63,6 @@ class DefaultAdManager(
         placementId: Int,
         loader: suspend () -> Result<AdResponse>,
     ) {
-        println("doLoad($placementId)")
         if (hasAdAvailable(placementId)) {
             withContext(Dispatchers.Main) {
                 listener?.onEvent(placementId, SAEvent.adAlreadyLoaded)
