@@ -53,7 +53,7 @@ class AdModelsTest: BaseTest() {
     lateinit var queryMaker: AdQueryMaker
 
     @Test
-    fun `ad isCPICampaign is true when expected`() = runTest {
+    fun `Ad isCPICampaign is true when expected`() = runTest {
         // Given
         val creative = mockk<Creative>(relaxed = true)
         val sut = Ad(
@@ -70,7 +70,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `ad isCPICampaign is false when expected`() = runTest {
+    fun `Ad isCPICampaign is false when expected`() = runTest {
         // Given
         val creative = mockk<Creative>(relaxed = true)
         val sut = Ad(
