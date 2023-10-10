@@ -5,6 +5,7 @@ import org.junit.Assert
 import org.junit.Test
 
 class CreativeModelsTest {
+
     @Test
     fun `CreativeReferral toMap contains expected values`() = runTest {
         // Given

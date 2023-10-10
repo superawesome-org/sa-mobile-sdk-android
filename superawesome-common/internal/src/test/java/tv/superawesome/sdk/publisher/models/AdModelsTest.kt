@@ -24,6 +24,7 @@ import tv.superawesome.sdk.publisher.components.TimeProviderType
 import java.util.Locale
 
 class AdModelsTest: BaseTest() {
+
     @MockK
     lateinit var sdkInfoType: SdkInfoType
 
@@ -50,6 +51,7 @@ class AdModelsTest: BaseTest() {
 
     @InjectMockKs
     lateinit var queryMaker: AdQueryMaker
+
     @Test
     fun `ad isCPICampaign is true when expected`() = runTest {
         // Given

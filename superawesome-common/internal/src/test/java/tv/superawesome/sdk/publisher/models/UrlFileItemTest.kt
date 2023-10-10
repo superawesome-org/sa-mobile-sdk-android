@@ -6,6 +6,7 @@ import org.junit.Test
 import tv.superawesome.sdk.publisher.extensions.toMD5
 
 class UrlFileItemTest {
+
     @Test
     fun `UrlFileItem fileName output is as expected`() = runTest {
         // Given
