@@ -152,6 +152,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     factoryOf(::DefaultAdManager) {
         bind<AdManager>()
     }
+
     factory { (placementId: Int) ->
         val adStore = get<AdControllerStore>()
         adStore.peek(placementId) ?: error("Ad not found")

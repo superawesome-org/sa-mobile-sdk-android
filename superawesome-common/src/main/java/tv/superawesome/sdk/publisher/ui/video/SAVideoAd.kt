@@ -88,7 +88,7 @@ public object SAVideoAd {
                 placementId,
                 lineItemId,
                 creativeId,
-                makeAdRequest(context, options, openRtbPartnerId)
+                makeAdRequest(context, options, openRtbPartnerId),
             )
         }
     }
