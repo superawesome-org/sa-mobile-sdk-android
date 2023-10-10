@@ -8,8 +8,6 @@ import io.mockk.mockk
 import org.junit.Test
 import tv.superawesome.sdk.publisher.base.BaseTest
 import tv.superawesome.sdk.publisher.models.Platform
-import tv.superawesome.sdk.publisher.components.Encoder
-import tv.superawesome.sdk.publisher.components.SdkInfo
 import java.util.*
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals

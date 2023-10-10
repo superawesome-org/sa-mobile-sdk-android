@@ -24,6 +24,7 @@ class AdRepository(
 ) : AdRepositoryType {
     override suspend fun getAd(placementId: Int, request: AdRequest): Result<AdResponse> =
         withContext(Dispatchers.IO) {
+            println("getAd($placementId)")
             dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request)).map { ad ->
                 adProcessor.process(placementId, ad, request.options, request.openRtbPartnerId)
             }

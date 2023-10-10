@@ -47,7 +47,9 @@ class DefaultAdControllerStore : AdControllerStore {
         return item
     }
 
-    override fun peek(placementId: Int): AdController? = data[placementId]
+    override fun peek(placementId: Int): AdController? = data[placementId].also {
+        println(data)
+    }
 
     override fun clear() {
         data.clear()

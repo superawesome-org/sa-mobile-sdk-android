@@ -9,12 +9,12 @@ open class MockServerTest {
     protected val mockServer = MockWebServer()
 
     @Before
-    fun setup() {
+    open fun setup() {
         mockServer.start()
     }
 
     @After
-    fun tearDown() {
+    open fun tearDown() {
         mockServer.shutdown()
     }
 }

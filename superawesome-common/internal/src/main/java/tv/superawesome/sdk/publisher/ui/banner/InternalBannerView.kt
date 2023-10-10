@@ -72,7 +72,8 @@ public class InternalBannerView @JvmOverloads constructor(
     private val scope = if (context is AppCompatActivity) {
         context.lifecycleScope
     } else {
-        MainScope()
+        println("mainscope")
+        CoroutineScope(Dispatchers.Main)
     }
 
     init {
