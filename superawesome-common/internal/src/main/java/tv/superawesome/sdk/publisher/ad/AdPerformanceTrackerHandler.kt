@@ -42,4 +42,14 @@ interface AdPerformanceTrackerHandler {
      * Submits ths timer for close button pressed in its current state.
      */
     suspend fun trackCloseButtonPressed()
+
+    /**
+     * Starts the timer for render time.
+     */
+    fun startTimerForRenderTime()
+
+    /**
+     * Submits the timer for render time in its current state.
+     */
+    suspend fun trackRenderTime()
 }
