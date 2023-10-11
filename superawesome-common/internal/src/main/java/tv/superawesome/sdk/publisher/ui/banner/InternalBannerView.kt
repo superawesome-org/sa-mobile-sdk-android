@@ -17,16 +17,18 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import tv.superawesome.sdk.publisher.ad.AdController
+import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.common.R
+import tv.superawesome.sdk.publisher.components.AdControllerStore
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
@@ -34,13 +36,10 @@ import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.DwellTimer
+import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
-import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.components.AdControllerStore
-import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.INTERSTITIAL_MAX_TICK_COUNT
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
@@ -79,6 +78,10 @@ public class InternalBannerView @JvmOverloads constructor(
         CoroutineScope(Dispatchers.Main)
     }
 
+    private val coroutineContext = CoroutineExceptionHandler { _, throwable ->
+        logger.error("Error occurred ${throwable.message}")
+    }
+
     init {
         setColor(Constants.defaultBackgroundColorEnabled)
         isSaveEnabled = true
@@ -111,7 +114,7 @@ public class InternalBannerView @JvmOverloads constructor(
             close()
         }
 
-        loadJob = scope.launch {
+        loadJob = scope.launch(coroutineContext) {
             adManager.load(placementId, makeAdRequest(options, openRtbPartnerId))
         }
     }
@@ -133,7 +136,7 @@ public class InternalBannerView @JvmOverloads constructor(
             close()
         }
 
-        loadJob = scope.launch {
+        loadJob = scope.launch(coroutineContext) {
             adManager.load(
                 placementId,
                 lineItemId,
@@ -158,8 +161,8 @@ public class InternalBannerView @JvmOverloads constructor(
         logger.info("play($placementId)")
         controller = try {
             getKoin().get { parametersOf(placementId) }
-        } catch (e: Throwable) {
-            logger.error("Ad not loaded")
+        } catch (e: IllegalStateException) {
+            logger.error("Ad not loaded", e)
             null
         }
         val data = controller?.adResponse?.getDataPair()

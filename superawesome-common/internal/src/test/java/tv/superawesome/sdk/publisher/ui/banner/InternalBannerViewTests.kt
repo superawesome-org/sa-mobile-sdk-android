@@ -3,6 +3,7 @@ package tv.superawesome.sdk.publisher.ui.banner
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -89,17 +90,23 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
     @Test
     fun `banner can be configured with a delegate that is called on successful loading of the ad`() = runTest {
         // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
         val placementId = 3000
-        val listener = SAInterface { actualPlacementId, event ->
-            // then
-            assertEquals(placementId, actualPlacementId)
-            assertEquals(SAEvent.adLoaded, event)
+        var event: SAEvent = SAEvent.webSDKReady
+        var actualPlacementId = 0
+        val listener = SAInterface { p, e ->
+            event = e
+            actualPlacementId = p
         }
 
         // when
         sut.configure(placementId, listener) {}
         sut.load(placementId)
         sut.getJob()?.join()
+
+        // then
+        assertEquals(placementId, actualPlacementId)
+        assertEquals(SAEvent.adLoaded, event)
     }
 
     @Test

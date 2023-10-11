@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.network.datasources
 
-import kotlinx.coroutines.delay
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.models.Ad
