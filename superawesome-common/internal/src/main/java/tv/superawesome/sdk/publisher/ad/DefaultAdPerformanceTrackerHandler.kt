@@ -18,7 +18,7 @@ class DefaultAdPerformanceTrackerHandler(
     private val dwellTimeTimer by lazy { PerformanceTimer() }
     private val closeButtonPressedTimer by lazy { PerformanceTimer() }
     private val renderTimer by lazy { PerformanceTimer() }
-    
+
     override fun startTimerForLoadTime() {
         loadTimeTimer.start(timeProvider.millis())
     }
