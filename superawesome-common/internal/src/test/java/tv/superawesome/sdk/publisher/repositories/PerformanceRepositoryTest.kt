@@ -1,55 +1,49 @@
 package tv.superawesome.sdk.publisher.repositories
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
-import retrofit2.Retrofit
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.test.KoinTest
+import org.koin.test.inject
+import tv.superawesome.sdk.publisher.di.testCommonModule
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.PerformanceMetric
 import tv.superawesome.sdk.publisher.models.PerformanceMetricName
 import tv.superawesome.sdk.publisher.models.PerformanceMetricType
-import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
-import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
+import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSourceType
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
 import tv.superawesome.sdk.publisher.testutil.FakeFactory
 import tv.superawesome.sdk.publisher.testutil.decodeParams
-import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-@OptIn(ExperimentalSerializationApi::class, ExperimentalCoroutinesApi::class)
-class PerformanceRepositoryTest : MockServerTest() {
+@OptIn(ExperimentalCoroutinesApi::class)
+class PerformanceRepositoryTest : MockServerTest(), KoinTest {
 
-    private val client = OkHttpClient.Builder()
-        .connectTimeout(100, TimeUnit.MILLISECONDS)
-        .readTimeout(100, TimeUnit.MILLISECONDS)
-        .writeTimeout(100, TimeUnit.MILLISECONDS)
-        .build()
-
-    private val json = Json {
-        allowStructuredMapKeys = true
-        ignoreUnknownKeys = true
-    }
-
-    private val api = Retrofit.Builder()
-        .baseUrl(mockServer.url("/"))
-        .client(client)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-        .build()
-        .create(AwesomeAdsApi::class.java)
-
-    private val datasource = AwesomeAdsApiDataSource(api, json)
-
+    private val dataSource by inject<AwesomeAdsApiDataSourceType>()
     private val adQueryMaker = FakeAdQueryMaker()
 
-    private val sut = PerformanceRepository(datasource, adQueryMaker)
+    private val sut by lazy { PerformanceRepository(dataSource, adQueryMaker) }
+
+    @Before
+    override fun setup() {
+        super.setup()
+        startKoin { modules(testCommonModule(mockServer)) }
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+        stopKoin()
+    }
+
     @Test
     fun `when sending metrics, it should send and return success`() = runTest {
         // Given
@@ -114,6 +108,16 @@ class PerformanceRepositoryTest : MockServerTest() {
             100L,
             FakeFactory.makeFakeAdResponse(),
         ) { value, adResponse -> sut.trackCloseButtonPressed(value, adResponse) }
+    }
+
+    @Test
+    fun `when sending track render time, it should send the correct params`() = runTest {
+        testTracking(
+            PerformanceMetricName.RenderTime,
+            PerformanceMetricType.Gauge,
+            100L,
+            FakeFactory.makeFakeAdResponse(),
+        ) { value, adResponse -> sut.trackRenderTime(value, adResponse) }
     }
 
     private suspend fun testTracking(

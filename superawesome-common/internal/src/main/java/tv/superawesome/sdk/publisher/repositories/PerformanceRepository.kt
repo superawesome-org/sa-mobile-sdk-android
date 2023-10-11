@@ -13,6 +13,14 @@ interface PerformanceRepositoryType {
     suspend fun trackLoadTime(duration: Long, adResponse: AdResponse)
     suspend fun trackDwellTime(duration: Long, adResponse: AdResponse)
     suspend fun trackCloseButtonPressed(duration: Long, adResponse: AdResponse)
+
+    /**
+     * Tracks the render time of an Ad.
+     *
+     * @param duration how much time has passed.
+     * @param adResponse the ad being tracked.
+     */
+    suspend fun trackRenderTime(duration: Long, adResponse: AdResponse)
     suspend fun sendMetric(metric: PerformanceMetric): Result<Unit>
 }
 
@@ -45,6 +53,16 @@ class PerformanceRepository(
         val metric = PerformanceMetric(
             duration,
             PerformanceMetricName.CloseButtonPressTime,
+            PerformanceMetricType.Gauge,
+            adQueryMaker.makePerformanceTags(adResponse),
+        )
+        sendMetric(metric)
+    }
+
+    override suspend fun trackRenderTime(duration: Long, adResponse: AdResponse) {
+        val metric = PerformanceMetric(
+            duration,
+            PerformanceMetricName.RenderTime,
             PerformanceMetricType.Gauge,
             adQueryMaker.makePerformanceTags(adResponse),
         )
