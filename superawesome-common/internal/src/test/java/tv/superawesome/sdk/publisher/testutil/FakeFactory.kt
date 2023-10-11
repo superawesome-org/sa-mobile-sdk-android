@@ -7,6 +7,7 @@ import tv.superawesome.sdk.publisher.models.CreativeDetail
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.CreativeReferral
 import tv.superawesome.sdk.publisher.models.VastAd
+import tv.superawesome.sdk.publisher.models.VastMedia
 import tv.superawesome.sdk.publisher.models.VastType
 
 
@@ -42,14 +43,15 @@ internal object FakeFactory {
     fun makeVastAd(
         url: String? = "www.here.com",
         redirect: String? = null,
-        type: VastType = VastType.Invalid
+        type: VastType = VastType.Invalid,
+        media: VastMedia? = null
     ) = VastAd(
         url,
         type = type,
         errorEvents = listOf("$url/error"),
         impressionEvents = listOf("$url/impression"),
         redirect = redirect,
-        media = emptyList(),
+        media = media?.let { listOf(it) } ?: listOf(),
         clickThroughUrl = "$url/clickThrough",
         creativeViewEvents = listOf("$url/creativeView"),
         startEvents = listOf("$url/start"),
