@@ -32,6 +32,7 @@ import tv.superawesome.sdk.publisher.components.AdControllerStore
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
+import tv.superawesome.sdk.publisher.extensions.isRichMedia
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
@@ -176,6 +177,10 @@ public class InternalBannerView @JvmOverloads constructor(
         addWebView()
         showPadlockIfNeeded()
 
+        if (controller?.adResponse?.isRichMedia == true) {
+            controller?.startTimerForRenderTime()
+        }
+
         val bodyHtml = data.second
             .replace("_TIMESTAMP_", timeProvider.millis().toString())
         webView?.loadHTML(data.first, bodyHtml)
@@ -293,7 +298,10 @@ public class InternalBannerView @JvmOverloads constructor(
             override fun webViewOnStart() {
                 controller?.listener?.onEvent(placementId, SAEvent.adShown)
                 viewableDetector.cancel()
-                scope.launch { controller?.triggerImpressionEvent() }
+                scope.launch {
+                    controller?.triggerImpressionEvent()
+                    controller?.trackRenderTime()
+                }
                 viewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
                     scope.launch { controller?.triggerViewableImpression() }
                     hasBeenVisible?.let { it() }
