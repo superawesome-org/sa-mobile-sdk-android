@@ -109,6 +109,7 @@ public object SAVideoAd {
         val adResponse = controller.adResponse
         controller.startTimerForLoadTime()
         val intent = if (adResponse.ad.isVpaid) {
+            controller.startTimerForRenderTime()
             ManagedAdActivity.newInstance(
                 context = context,
                 placementId = placementId,
