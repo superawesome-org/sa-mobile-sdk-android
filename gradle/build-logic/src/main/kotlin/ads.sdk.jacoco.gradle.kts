@@ -48,6 +48,7 @@ tasks.register("jacocoTestReport", JacocoReport::class) {
         "**/*_MembersInjector.class",
         "**/*_Factory*.*",
         "**/*_Provide*Factory*.*",
+        "**/*serializer.*"
     )
 
     val javaTree = fileTree(
