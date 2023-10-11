@@ -17,6 +17,7 @@ class DefaultAdPerformanceTrackerHandler(
     private val loadTimeTimer by lazy { PerformanceTimer() }
     private val dwellTimeTimer by lazy { PerformanceTimer() }
     private val closeButtonPressedTimer by lazy { PerformanceTimer() }
+    private val renderTimer by lazy { PerformanceTimer() }
 
     override fun startTimerForLoadTime() {
         loadTimeTimer.start(timeProvider.millis())
@@ -45,6 +46,16 @@ class DefaultAdPerformanceTrackerHandler(
     override suspend fun trackCloseButtonPressed() {
         trackTimer(closeButtonPressedTimer) { time ->
             performanceRepository.trackCloseButtonPressed(time, adResponse)
+        }
+    }
+
+    override fun startTimerForRenderTime() {
+        renderTimer.start(timeProvider.millis())
+    }
+
+    override suspend fun trackRenderTime() {
+        trackTimer(renderTimer) { time ->
+            performanceRepository.trackRenderTime(time, adResponse)
         }
     }
 
