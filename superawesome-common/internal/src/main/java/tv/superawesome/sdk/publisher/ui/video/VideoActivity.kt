@@ -19,13 +19,17 @@ import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
-import tv.superawesome.sdk.publisher.ui.common.Config
+import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.AdController
+import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayer
+import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 import java.io.File
 
 /**
@@ -33,9 +37,12 @@ import java.io.File
  * A subclass of the Android "Activity" class.
  */
 @Suppress("TooManyFunctions")
-class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener {
-    private val controller: AdControllerType by inject()
+class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     private val control: IVideoPlayerController by inject()
+    private val adManager: AdManager by inject()
+    private val controller: AdController by inject {
+        parametersOf(placementId)
+    }
     private var videoEvents: VideoEvents? = null
     private var completed = false
     private var volumeButton: ImageButton? = null
@@ -45,7 +52,6 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
     override fun onCreate(savedInstanceState: Bundle?) {
         logger.info("onCreate")
         super.onCreate(savedInstanceState)
-        controller.config = config
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
@@ -55,7 +61,7 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
     }
 
     override fun initChildUI() {
-        controller.videoListener = this
+        controller.videoPlayerListener = this
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
         val params = RelativeLayout.LayoutParams(size, size)
 
@@ -68,7 +74,7 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
         parentLayout.addView(videoPlayer)
 
         closeButton.visibility =
-            if (config.closeButtonState == CloseButtonState.VisibleImmediately) {
+            if (adConfig.closeButtonState == CloseButtonState.VisibleImmediately) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -79,7 +85,7 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
         videoPlayer.setListener(object : IVideoPlayer.Listener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
                 videoEvents?.prepare(player, time, duration)
-                controller.adShown()
+                controller.listener?.onEvent(placementId, SAEvent.adShown)
             }
 
             override fun onTimeUpdated(player: IVideoPlayer, time: Int, duration: Int) {
@@ -91,9 +97,9 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
                 videoEvents?.complete(player, time, duration)
                 closeButton.visibility = View.VISIBLE
 
-                controller.adEnded()
+                controller.listener?.onEvent(placementId, SAEvent.adEnded)
 
-                if (config.shouldCloseAtEnd) {
+                if (adConfig.shouldCloseAtEnd) {
                     close()
                 }
             }
@@ -105,7 +111,7 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
                 duration: Int,
             ) {
                 videoEvents?.error(player, time, duration)
-                controller.adFailedToShow()
+                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
                 close()
             }
         })
@@ -113,23 +119,21 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
 
     @Suppress("TooGenericExceptionCaught")
     public override fun playContent() {
-        controller.play(placementId)?.let {
-            addChrome()
-            it.vast?.let { _ ->
-                videoEvents = get(parameters = { parametersOf(it) })
-                videoEvents?.listener = object : VideoEvents.Listener {
-                    override fun hasBeenVisible() {
-                        closeButton.visibility =
-                            if (config.closeButtonState.isVisible()) View.VISIBLE else View.GONE
-                    }
+        addChrome()
+        controller.adResponse.vast?.let { _ ->
+            videoEvents = get(parameters = { parametersOf(controller.adResponse) })
+            videoEvents?.listener = object : VideoEvents.Listener {
+                override fun hasBeenVisible() {
+                    closeButton.visibility =
+                        if (adConfig.closeButtonState.isVisible()) View.VISIBLE else View.GONE
                 }
-                val filePath = it.filePath ?: ""
-                try {
-                    val fileUri = Uri.fromFile(File(filePath))
-                    control.playAsync(this, fileUri)
-                } catch (exception: Exception) {
-                    logger.error("File $filePath does not exist on disk. Will not play!", exception)
-                }
+            }
+            val filePath = controller.adResponse.filePath ?: ""
+            try {
+                val fileUri = Uri.fromFile(File(filePath))
+                control.playAsync(this, fileUri)
+            } catch (exception: Exception) {
+                logger.error("File $filePath does not exist on disk. Will not play!", exception)
             }
         }
     }
@@ -147,7 +151,7 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
 
     private fun initVolumeButton() {
         val button = ImageButton(this)
-        button.visibility = if (config.shouldMuteOnStart) View.VISIBLE else View.GONE
+        button.visibility = if (adConfig.shouldMuteOnStart) View.VISIBLE else View.GONE
         button.setBackgroundColor(Color.TRANSPARENT)
         button.setPadding(0, 0, 0, 0)
         button.scaleType = ImageView.ScaleType.FIT_XY
@@ -161,13 +165,13 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
         button.setOnClickListener { close() }
 
         volumeButton = button
-        setMuted(config.shouldMuteOnStart)
+        setMuted(adConfig.shouldMuteOnStart)
 
         parentLayout.addView(button)
     }
 
     private fun onCloseAction() {
-        if (config.shouldShowCloseWarning && !completed) {
+        if (adConfig.shouldShowCloseWarning && !completed) {
             control.pause()
             CloseWarningDialog.setListener(object : CloseWarningDialog.Interface {
                 override fun onResumeSelected() {
@@ -185,16 +189,16 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
     }
 
     override fun onBackPressed() {
-        if (config.isBackButtonEnabled) {
+        if (adConfig.isBackButtonEnabled) {
             onCloseAction()
         }
     }
 
     override fun close() {
+        adManager.removeController(placementId)
         CloseWarningDialog.close()
         controller.close()
-        controller.videoListener = null
-        controller.delegate = null
+        controller.videoPlayerListener = null
         videoPlayer.destroy()
         super.close()
     }
@@ -217,11 +221,11 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
     private fun addChrome() {
         val chrome = AdVideoPlayerControllerView(this)
         chrome.shouldShowPadlock(controller.shouldShowPadlock)
-        chrome.setShouldShowSmallClickButton(config.shouldShowSmallClick)
-        chrome.setClickListener {
-            controller.handleAdTapForVast(this)
+        chrome.setShouldShowSmallClickButton(adConfig.shouldShowSmallClick)
+        chrome.clickWithThrottling {
+            controller.handleVastAdClick(this)
         }
-        chrome.padlock.setOnClickListener { controller.handleSafeAdTap(this) }
+        chrome.padlock.clickWithThrottling { controller.handleSafeAdClick(this) }
         videoPlayer.setControllerView(chrome)
     }
 
@@ -236,10 +240,10 @@ class VideoActivity : FullScreenActivity(), AdControllerType.VideoPlayerListener
     }
 
     companion object {
-        public fun newInstance(context: Context, placementId: Int, config: Config): Intent =
+        public fun newInstance(context: Context, placementId: Int, adConfig: AdConfig): Intent =
             Intent(context, VideoActivity::class.java).apply {
                 putExtra(Constants.Keys.placementId, placementId)
-                putExtra(Constants.Keys.config, config)
+                putExtra(Constants.Keys.config, adConfig)
             }
     }
 }

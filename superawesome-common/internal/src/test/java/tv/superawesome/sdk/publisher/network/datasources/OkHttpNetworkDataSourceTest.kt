@@ -27,9 +27,9 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
         .writeTimeout(1, TimeUnit.SECONDS)
         .build()
 
-    private val context = mockk<Context>()
+    private val file = File.createTempFile("file", null).parentFile
 
-    val sut = OkHttpNetworkDataSource(client, context, TestLogger())
+    val sut = OkHttpNetworkDataSource(client, file, TestLogger())
 
     @Test
     fun `when calling getData, it should return the response body`() = runTest {
@@ -59,10 +59,6 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
     @Test
     fun `when downloading file, it a file must be written and it should return the file path`() = runTest {
         // Given
-        val file = withContext(Dispatchers.IO) {
-            File.createTempFile("file", null)
-        }.parentFile
-        every { context.cacheDir } returns file
         mockServer.enqueue(MockResponse().setBody("1234"))
         val url = mockServer.url("/file.txt").toString()
 
@@ -97,8 +93,9 @@ class OkHttpNetworkDataSourceTest : MockServerTest() {
         // Given
         mockServer.enqueue(MockResponse().setBody("1234"))
         val url = mockServer.url("/file").toString()
-        every { context.cacheDir } returns  File(".")
+        val file = File(".")
 
+        val sut = OkHttpNetworkDataSource(client, file, TestLogger())
         // When
         val result = sut.downloadFile(url)
 

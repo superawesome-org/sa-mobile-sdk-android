@@ -16,7 +16,7 @@ import tv.superawesome.sdk.publisher.components.NumberGeneratorType
 import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.Orientation
-import tv.superawesome.sdk.publisher.ui.common.Config
+import tv.superawesome.sdk.publisher.ad.AdConfig
 
 /**
  * A full screen activity used to play ad placements.
@@ -34,8 +34,8 @@ open class FullScreenActivity : AppCompatActivity() {
         intent?.getIntExtra(Constants.Keys.placementId, 0) ?: 0
     }
 
-    internal val config: Config by lazy {
-        intent.getParcelableExtra(Constants.Keys.config) ?: Config()
+    internal val adConfig: AdConfig by lazy {
+        intent.getParcelableExtra(Constants.Keys.config) ?: AdConfig()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +95,7 @@ open class FullScreenActivity : AppCompatActivity() {
         }
 
         // make sure direction is locked.
-        requestedOrientation = when (config.orientation) {
+        requestedOrientation = when (adConfig.orientation) {
             Orientation.Any -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             Orientation.Portrait -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             Orientation.Landscape -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -103,7 +103,7 @@ open class FullScreenActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (config.isBackButtonEnabled) {
+        if (adConfig.isBackButtonEnabled) {
             close()
             super.onBackPressed()
         }

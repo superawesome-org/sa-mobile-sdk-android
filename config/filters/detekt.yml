@@ -45,7 +45,7 @@ style:
 potential-bugs:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
   LateinitUsage:
-    ignoreOnClassesPattern: '.*Activity'
+    ignoreOnClassesPattern: '.*(Activity|View)'
 
 naming:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]

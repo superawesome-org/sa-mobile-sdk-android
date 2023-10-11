@@ -8,34 +8,42 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.network.Environment
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
-import tv.superawesome.sdk.publisher.ui.common.Config
+import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.common.VIDEO_MAX_TICK_COUNT
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
+import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 import java.lang.ref.WeakReference
 
 @Suppress("TooManyFunctions")
 class ManagedAdActivity :
     FullScreenActivity(),
     AdViewJavaScriptBridge.Listener,
-    AdControllerType.VideoPlayerListener
-{
+    VideoPlayerListener {
+
     private var listener: SAInterface? = null
     private var timeOutRunnable: Runnable? = null
     private var timeOutHandler = Handler(Looper.getMainLooper())
     private var completed: Boolean = false
 
-    private val controller: AdControllerType by inject()
+    private val adManager: AdManager by inject()
     private val environment: Environment by inject()
     private val viewableDetector: ViewableDetectorType by inject()
+    private val controller: AdController by inject {
+        parametersOf(placementId)
+    }
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
@@ -49,21 +57,16 @@ class ManagedAdActivity :
 
     override fun initChildUI() {
         adView = ManagedAdView(this)
-        adView.controller.videoListener = this
+        controller.videoPlayerListener = this
         adView.id = numberGenerator.nextIntForCache()
         adView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        adView.setConfig(config)
-        adView.setColor(false)
-        adView.setTestMode(config.testEnabled)
-        adView.setBumperPage(config.isBumperPageEnabled)
-        adView.setParentalGate(config.isParentalGateEnabled)
 
         parentLayout.addView(adView)
 
-        when (config.closeButtonState) {
+        when (adConfig.closeButtonState) {
             CloseButtonState.VisibleImmediately -> showCloseButton()
             CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
             CloseButtonState.Hidden -> Unit // Hidden by default
@@ -93,15 +96,20 @@ class ManagedAdActivity :
     }
 
     public override fun playContent() {
-        listener = controller.delegate
+        listener = adManager.listener
         adView.configure(placementId, listener)
         adView.load(placementId, html, baseUrl, this)
     }
 
-    public override fun onCloseButtonPressed() = controller.trackCloseButtonPressed()
+    public override fun onCloseButtonPressed() {
+        lifecycleScope.launch {
+            controller.trackCloseButtonPressed()
+        }
+    }
 
     public override fun close() {
-        if (config.shouldShowCloseWarning && !completed) {
+        adManager.removeController(placementId)
+        if (adConfig.shouldShowCloseWarning && !completed) {
             adView.pauseVideo()
             CloseWarningDialog.setListener(object : CloseWarningDialog.Interface {
                 override fun onResumeSelected() {
@@ -119,7 +127,7 @@ class ManagedAdActivity :
     }
 
     private fun closeActivity() {
-        controller.trackDwellTime()
+        lifecycleScope.launch { controller.trackDwellTime() }
         if (!isFinishing) {
             listener?.onEvent(this.placementId, SAEvent.adClosed)
         }
@@ -130,7 +138,7 @@ class ManagedAdActivity :
 
     private fun showCloseButton() {
         closeButton.visibility = View.VISIBLE
-        controller.startTimingForCloseButtonPressed()
+        controller.startTimerForCloseButtonPressed()
     }
 
     override fun adLoaded() = runOnUiThread {
@@ -152,14 +160,16 @@ class ManagedAdActivity :
     }
 
     override fun adShown() = runOnUiThread {
-        controller.startTimingForDwellTime()
+        controller.startTimerForDwellTime()
         val weak = WeakReference(this)
         viewableDetector.cancel()
         viewableDetector.start(adView, VIDEO_MAX_TICK_COUNT) {
             val weakThis = weak.get()
             weakThis?.cancelCloseButtonTimeoutRunnable()
-            weakThis?.controller?.triggerViewableImpression(placementId)
-            if (weakThis?.config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
+            lifecycleScope.launch {
+                weakThis?.controller?.triggerViewableImpression()
+            }
+            if (weakThis?.adConfig?.closeButtonState == CloseButtonState.VisibleWithDelay) {
                 weakThis.showCloseButton()
             }
         }
@@ -180,9 +190,9 @@ class ManagedAdActivity :
     override fun adEnded() = runOnUiThread {
         completed = true
         listener?.onEvent(this.placementId, SAEvent.adEnded)
-        if (config.shouldCloseAtEnd) {
+        if (adConfig.shouldCloseAtEnd) {
             close()
-        } else if(config.closeButtonState == CloseButtonState.Hidden) {
+        } else if(adConfig.closeButtonState == CloseButtonState.Hidden) {
             showCloseButton()
         }
     }
@@ -220,16 +230,16 @@ class ManagedAdActivity :
         fun newInstance(
             context: Context,
             placementId: Int,
-            config: Config,
+            adConfig: AdConfig,
             html: String,
-            baseUrl: String?): Intent =
-            Intent(context, ManagedAdActivity::class.java).apply {
-                putExtra(Constants.Keys.placementId, placementId)
-                putExtra(Constants.Keys.config, config)
-                putExtra(Constants.Keys.html, html)
-                baseUrl?.let {
-                    putExtra(Constants.Keys.baseUrl, it)
-                }
+            baseUrl: String?
+        ): Intent = Intent(context, ManagedAdActivity::class.java).apply {
+            putExtra(Constants.Keys.placementId, placementId)
+            putExtra(Constants.Keys.config, adConfig)
+            putExtra(Constants.Keys.html, html)
+            baseUrl?.let {
+                putExtra(Constants.Keys.baseUrl, it)
             }
+        }
     }
 }
