@@ -1,6 +1,7 @@
 package tv.superawesome.demoapp.main
 
 import CustomRecyclerViewAdapter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.security.ProviderInstaller
 import org.json.JSONObject
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.demoapp.SDKEnvironment
@@ -37,6 +42,8 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkTls()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -64,6 +71,20 @@ class MainActivity : FragmentActivity() {
 
         initButtons()
         updateSettings()
+    }
+
+    private fun checkTls() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                ProviderInstaller.installIfNeeded(this)
+            } catch (e: GooglePlayServicesRepairableException) {
+                GoogleApiAvailability.getInstance()
+                    .showErrorNotification(this, e.connectionStatusCode)
+                return
+            } catch (e: GooglePlayServicesNotAvailableException) {
+                return
+            }
+        }
     }
 
     private fun initButtons() {

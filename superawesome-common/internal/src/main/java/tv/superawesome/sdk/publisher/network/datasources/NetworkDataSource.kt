@@ -26,47 +26,44 @@ interface NetworkDataSourceType {
     suspend fun downloadFile(url: String): Result<String>
 }
 
-
 class OkHttpNetworkDataSource(
     private val client: OkHttpClient,
     private val applicationContext: Context,
     private val logger: Logger,
 ) : NetworkDataSourceType {
-    override suspend fun getData(url: String): Result<String> {
+
+    @Suppress("TooGenericExceptionThrown")
+    override suspend fun getData(url: String): Result<String> = runCatching {
         logger.info("getData:url: $url")
         val request = Request.Builder().url(url).build()
         val response = client.newCall(request).execute()
-        return if (response.isSuccessful) {
+        if (response.isSuccessful) {
             // Safe to assume that body is non-null since it's
             // from a Response returned from `execute()`.
-            Result.success(response.body!!.string())
+            response.body()!!.string()
         } else {
-            Result.failure(Error("Could not GET data from $url"))
+            throw Exception("Response code: ${response.code()}")
         }
     }
 
-    @Suppress("TooGenericExceptionCaught")
-    override suspend fun downloadFile(url: String): Result<String> {
+    @Suppress("TooGenericExceptionThrown")
+    override suspend fun downloadFile(url: String): Result<String> = runCatching {
         logger.info("downloadFile")
-        return try {
-            val request = Request.Builder().url(url).build()
-            val response = client.newCall(request).execute()
-
+        val request = Request.Builder().url(url).build()
+        val response = client.newCall(request).execute()
+        if (response.isSuccessful) {
             val urlFileItem = UrlFileItem(url)
             val downloadedFile = File(applicationContext.cacheDir, urlFileItem.fileName)
 
-
             val sink = downloadedFile.sink().buffer()
-            sink.writeAll(response.body!!.source())
+            sink.writeAll(response.body()!!.source())
             withContext(Dispatchers.IO) {
                 sink.close()
             }
-
             logger.success("File download successful with path: ${downloadedFile.absolutePath}")
-            Result.success(downloadedFile.absolutePath)
-        } catch (e: Exception) {
-            logger.error("File download error", e)
-            Result.failure(Error(e.localizedMessage))
+            downloadedFile.absolutePath
+        } else {
+            throw Exception("Response code: ${response.code()}")
         }
     }
 }

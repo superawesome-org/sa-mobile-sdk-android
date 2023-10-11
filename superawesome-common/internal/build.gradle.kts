@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.koin.android)
     implementation(libs.retrofit)
+    implementation(libs.okio)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit.serialization.converter)
     debugImplementation(libs.chucker.debug)
