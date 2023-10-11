@@ -23,7 +23,9 @@ class DefaultAdPerformanceTrackerHandler(
     }
 
     override suspend fun trackLoadTime() {
-        trackTimer(loadTimeTimer)
+        trackTimer(loadTimeTimer) { time ->
+            performanceRepository.trackLoadTime(time, adResponse)
+        }
     }
 
     override fun startTimerForDwellTime() {
@@ -31,7 +33,9 @@ class DefaultAdPerformanceTrackerHandler(
     }
 
     override suspend fun trackDwellTime() {
-        trackTimer(dwellTimeTimer)
+        trackTimer(dwellTimeTimer) { time ->
+            performanceRepository.trackDwellTime(time, adResponse)
+        }
     }
 
     override fun startTimerForCloseButtonPressed() {
@@ -39,14 +43,13 @@ class DefaultAdPerformanceTrackerHandler(
     }
 
     override suspend fun trackCloseButtonPressed() {
-        trackTimer(closeButtonPressedTimer)
+        trackTimer(closeButtonPressedTimer) { time ->
+            performanceRepository.trackCloseButtonPressed(time, adResponse)
+        }
     }
 
-    private suspend fun trackTimer(timer: PerformanceTimer) {
+    private suspend fun trackTimer(timer: PerformanceTimer, tracker: suspend (Long) -> Unit) {
         if (timer.startTime == 0L) return
-        performanceRepository.trackLoadTime(
-            timer.delta(timeProvider.millis()),
-            adResponse,
-        )
+        tracker(timeProvider.millis() - timer.startTime)
     }
 }
