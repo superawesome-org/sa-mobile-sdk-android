@@ -5,7 +5,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertTrue
@@ -53,7 +52,7 @@ class AdModelsTest: BaseTest() {
     lateinit var queryMaker: AdQueryMaker
 
     @Test
-    fun `Ad isCPICampaign is true when expected`() = runTest {
+    fun `Ad isCPICampaign is true when expected`() {
         // Given
         val creative = mockk<Creative>(relaxed = true)
         val sut = Ad(
@@ -70,7 +69,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `Ad isCPICampaign is false when expected`() = runTest {
+    fun `Ad isCPICampaign is false when expected`() {
         // Given
         val creative = mockk<Creative>(relaxed = true)
         val sut = Ad(
@@ -112,7 +111,7 @@ class AdModelsTest: BaseTest() {
         every { timeProvider.millis() } returns 12345
 
         // When
-        val sut = runBlocking { queryMaker.makeAdQuery(request) }
+        val sut = queryMaker.makeAdQuery(request)
 
         // Then
         assertEquals("" +
@@ -140,7 +139,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVpaid is true when expected`() = runTest {
+    fun `AdResponse isVpaid is true when expected`() {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -153,7 +152,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVpaid is false when expected`() = runTest {
+    fun `AdResponse isVpaid is false when expected`() {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -166,7 +165,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVideo is true when expected`() = runTest {
+    fun `AdResponse isVideo is true when expected`() {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -179,7 +178,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse isVideo is false when expected`() = runTest {
+    fun `AdResponse isVideo is false when expected`() {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -192,7 +191,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse showPadlock is true when expected`() = runTest {
+    fun `AdResponse showPadlock is true when expected`() {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -205,7 +204,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse showPadlock is false when expected`() = runTest {
+    fun `AdResponse showPadlock is false when expected`() {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)
@@ -218,7 +217,7 @@ class AdModelsTest: BaseTest() {
     }
 
     @Test
-    fun `AdResponse dataPair returns expected result`() = runTest {
+    fun `AdResponse dataPair returns expected result`() {
         // Given
         val ad = mockk<Ad>(relaxed = true)
         val sut = AdResponse(10, ad)

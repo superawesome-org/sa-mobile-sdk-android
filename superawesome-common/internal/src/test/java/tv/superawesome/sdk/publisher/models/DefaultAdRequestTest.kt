@@ -1,13 +1,12 @@
 package tv.superawesome.sdk.publisher.models
 
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
 class DefaultAdRequestTest {
 
     @Test
-    fun `DefaultAdRequest propertyString contains expected values`() = runTest {
+    fun `DefaultAdRequest propertyString contains expected values`() {
         // Given
         val sut = DefaultAdRequest(
             false,

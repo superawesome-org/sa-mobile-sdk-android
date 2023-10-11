@@ -1,13 +1,12 @@
 package tv.superawesome.sdk.publisher.models
 
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 
 class CreativeModelsTest {
 
     @Test
-    fun `CreativeReferral toMap contains expected values`() = runTest {
+    fun `CreativeReferral toMap contains expected values`() {
         // Given
         val sut = CreativeReferral(
             utmSource = 1,

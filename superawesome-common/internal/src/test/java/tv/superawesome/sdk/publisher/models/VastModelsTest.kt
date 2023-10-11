@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.models
 
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 import tv.superawesome.sdk.publisher.testutil.FakeFactory
@@ -8,7 +7,7 @@ import tv.superawesome.sdk.publisher.testutil.FakeFactory
 class VastModelsTest {
 
     @Test
-    fun `Merging VastAds results in a VastAd with the expected values`() = runTest {
+    fun `Merging VastAds results in a VastAd with the expected values`() {
         // Given
         val media1 = VastMedia(
             type = "video/mp4",

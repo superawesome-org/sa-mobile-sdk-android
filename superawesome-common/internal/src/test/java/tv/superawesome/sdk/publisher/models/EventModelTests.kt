@@ -1,6 +1,5 @@
 package tv.superawesome.sdk.publisher.models
 
-import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import org.junit.Assert
 import org.junit.Test
@@ -9,7 +8,7 @@ import java.net.URLEncoder
 class EventModelTests {
 
     @Test
-    fun `EventQueryBundle merges options to query correctly`() = runTest {
+    fun `EventQueryBundle merges options to query correctly`() {
         // Given
         val options = mapOf("key1" to "value1", "key2" to 2)
         val data = EventData(10, 30, 20, EventType.ViewableImpression)
