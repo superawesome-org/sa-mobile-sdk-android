@@ -3,7 +3,7 @@ package tv.superawesome.sdk.publisher.components
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
-internal class Encoder : EncoderType {
+class Encoder : EncoderType {
     @Suppress("SwallowedException")
     override fun encodeUri(string: String?): String =
         if (string.isNullOrEmpty()) {

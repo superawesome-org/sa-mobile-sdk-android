@@ -17,6 +17,7 @@ import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
+import tv.superawesome.sdk.publisher.testutil.fakeAdRequest
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -96,18 +97,5 @@ class AdRepositoryTest : MockServerTest() {
 
         // Then
         assertTrue(result.isFailure)
-    }
-
-    private fun fakeAdRequest() = object : AdRequest {
-        override val test: Boolean = false
-        override val pos: Int = 0
-        override val skip: Int = 0
-        override val playbackMethod: Int = 0
-        override val startDelay: Int = 0
-        override val install: Int = 0
-        override val w: Int = 0
-        override val h: Int = 0
-        override val options: Map<String, Any>? = null
-        override val openRtbPartnerId: String? = null
     }
 }

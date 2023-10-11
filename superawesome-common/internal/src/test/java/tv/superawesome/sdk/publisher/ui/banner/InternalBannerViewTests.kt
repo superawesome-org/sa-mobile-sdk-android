@@ -3,307 +3,135 @@ package tv.superawesome.sdk.publisher.ui.banner
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import io.mockk.confirmVerified
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.spyk
-import io.mockk.verify
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
-import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
-import tv.superawesome.sdk.publisher.components.ImageProviderType
-import tv.superawesome.sdk.publisher.components.Logger
-import tv.superawesome.sdk.publisher.components.TimeProviderType
-import tv.superawesome.sdk.publisher.models.Ad
-import tv.superawesome.sdk.publisher.models.AdRequest
-import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.models.Creative
-import tv.superawesome.sdk.publisher.models.CreativeDetail
-import tv.superawesome.sdk.publisher.models.CreativeFormatType
-import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.SAInterface
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
-import tv.superawesome.sdk.publisher.ui.common.Config
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.di.testCommonModule
+import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
+import tv.superawesome.sdk.publisher.network.enqueueResponse
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
-class InternalBannerViewTests: KoinTest {
+class InternalBannerViewTests: MockServerTest(), KoinTest {
 
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
 
     private lateinit var sut: InternalBannerView
 
-    private val placementId = 1234
-    private val lineItemId = 123
-    private val creativeId = 12
-    private val adRequest = DefaultAdRequest(
-        test = false,
-        pos = AdRequest.Position.AboveTheFold.value,
-        skip = AdRequest.Skip.No.value,
-        playbackMethod = DefaultAdRequest.PlaybackSoundOnScreen,
-        startDelay = AdRequest.StartDelay.PreRoll.value,
-        install = AdRequest.FullScreen.Off.value,
-        w = 0,
-        h = 0,
-        options = null,
-    )
-
-    private val controller = spyk<AdControllerType>().apply {
-        every { config } returns Config()
-        every { play(placementId) } returns AdResponse(
-            placementId = placementId,
-            ad = Ad(
-                campaignType = 0,
-                showPadlock = false,
-                lineItemId = 123,
-                test = false,
-                creative = Creative(
-                    id = 1234590,
-                    name = null,
-                    format = CreativeFormatType.ImageWithLink,
-                    clickUrl = null,
-                    details = CreativeDetail(
-                        url = null,
-                        image = null,
-                        video = null,
-                        placementFormat = "",
-                        tag = null,
-                        width = 0,
-                        height = 0,
-                        duration = 0,
-                        vast = null,
-                    ),
-                    bumper = false,
-                    referral = null,
-                ),
-                isVpaid = false,
-                random = "",
-            ),
-            requestOptions = null,
-            html = "<html><p></p></html>",
-            vast = null,
-            baseUrl = "https://someurl.com",
-            filePath = null,
-            referral = null,
-        )
-    }
-    private val imageProvider = mockk<ImageProviderType>(relaxed = true)
-    private val saLogger = spyk<Logger>()
-    private val timeProvider = mockk<TimeProviderType>(relaxed = true)
-    private val viewableDetector = spyk<ViewableDetectorType>()
+    private val dispatcher = StandardTestDispatcher()
 
     @Before
-    fun setUp() {
-        startKoin {
-            modules(
-                module {
-                    single { controller }
-                    single { imageProvider }
-                    single { saLogger }
-                    single { timeProvider }
-                    single { viewableDetector }
-                }
-            )
-        }
+    override fun setup() {
+        super.setup()
+        Dispatchers.setMain(dispatcher)
+        startKoin { modules(testCommonModule(mockServer)) }
         activityController = Robolectric.buildActivity(Activity::class.java)
         activity = activityController.get()
         sut = InternalBannerView(activity)
     }
 
     @After
-    fun cleanup() {
+    override fun tearDown() {
+        super.tearDown()
         stopKoin()
+        Dispatchers.resetMain()
     }
 
     @Test
-    fun `load banner loads ad successfully with no options`() {
+    fun `load banner loads ad successfully with no options`() = runTest {
         // given
-        val placementId = 1234
-        val adRequest = DefaultAdRequest(
-            test = false,
-            pos = AdRequest.Position.AboveTheFold.value,
-            skip = AdRequest.Skip.No.value,
-            playbackMethod = DefaultAdRequest.PlaybackSoundOnScreen,
-            startDelay = AdRequest.StartDelay.PreRoll.value,
-            install = AdRequest.FullScreen.Off.value,
-            w = 0,
-            h = 0,
-            options = null,
-        )
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
+        val placementId = 1000
 
         // when
         sut.load(placementId)
+        sut.getJob()?.join()
 
         // then
-        verify(exactly = 1) {
-            saLogger.info("load(1234)")
-            controller.config
-            controller.load(placementId, adRequest)
-        }
-        confirmVerified(saLogger)
-        confirmVerified(controller)
+        assertTrue(sut.getManager().hasAdAvailable(placementId))
     }
 
     @Test
-    fun `load banner loads ad successfully with lineItemId and creativeId and no options`() {
-        // when
-        sut.load(placementId, lineItemId, creativeId)
-
-        // then
-        verify(exactly = 1) {
-            saLogger.info("load(1234, 123, 12)")
-            controller.config
-            controller.load(placementId, lineItemId, creativeId, adRequest)
-        }
-        confirmVerified(saLogger)
-        confirmVerified(controller)
-    }
-
-    @Test
-    fun `play banner is successful with showPadlockIfNeeded false`() {
+    fun `load banner loads ad successfully with lineItemId and creativeId and no options`() = runTest {
         // given
-        every { controller.shouldShowPadlock } returns false
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
+        val placementId = 2000
 
         // when
+        sut.load(placementId, 1234, 1234)
+        sut.getJob()?.join()
+
+        // then
+        assertTrue(sut.getManager().hasAdAvailable(placementId))
+    }
+
+    @Test
+    fun `banner can be configured with a delegate that is called on successful loading of the ad`() = runTest {
+        // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
+        val placementId = 3000
+        var event: SAEvent = SAEvent.webSDKReady
+        var actualPlacementId = 0
+        val listener = SAInterface { p, e ->
+            event = e
+            actualPlacementId = p
+        }
+
+        // when
+        sut.configure(placementId, listener) {}
         sut.load(placementId)
+        sut.getJob()?.join()
+
+        // then
+        assertEquals(placementId, actualPlacementId)
+        assertEquals(SAEvent.adLoaded, event)
+    }
+
+    @Test
+    fun `banner will close correctly`() = runTest {
+        // given
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
+        sut.load(1234)
+        sut.getJob()?.join()
         sut.play()
 
-        // then
-        verify(exactly = 1) {
-            saLogger.info("load(1234)")
-            controller.load(placementId, adRequest)
-            controller.config
-            saLogger.info("play(1234)")
-            controller.play(placementId)
-            controller.shouldShowPadlock
-        }
-        verify(exactly = 0) {
-            controller.adFailedToShow()
-        }
-        confirmVerified(saLogger)
-        confirmVerified(controller)
-        confirmVerified(viewableDetector)
-    }
-
-    @Test
-    fun `play banner is successful with showPadlockIfNeeded true`() {
-        // given
-        every { controller.shouldShowPadlock } returns true
-
-        // when
-        sut.load(placementId)
-        sut.play()
-
-        // then
-        verify(exactly = 1) {
-            saLogger.info("load(1234)")
-            controller.load(placementId, adRequest)
-            controller.config
-            saLogger.info("play(1234)")
-            controller.play(placementId)
-            controller.shouldShowPadlock
-        }
-        verify(exactly = 0) {
-            controller.adFailedToShow()
-        }
-        confirmVerified(saLogger)
-        confirmVerified(controller)
-        confirmVerified(viewableDetector)
-    }
-
-    @Test
-    fun `banner can be configured with a delegate that is called on successful loading of the ad`() {
-        // given
-        val delegate = spyk<SAInterface>()
-        every { controller.shouldShowPadlock } returns true
-
-        // when
-        sut.configure(placementId, delegate, hasBeenVisible = {})
-        sut.load(placementId)
-        sut.play()
-
-        // then
-        verify(exactly = 1) {
-            controller.delegate = delegate
-            saLogger.info("load(1234)")
-            controller.load(placementId, adRequest)
-            controller.config
-            saLogger.info("play(1234)")
-            controller.play(placementId)
-            controller.shouldShowPadlock
-        }
-        verify(exactly = 0) {
-            controller.adFailedToShow()
-        }
-        confirmVerified(saLogger)
-        confirmVerified(controller)
-        confirmVerified(viewableDetector)
-    }
-
-    @Test
-    fun `banner will clear itself if loading an ad for the second time`() {
-        // given
-        every { controller.shouldShowPadlock } returns true
-
-        // when
-        sut.load(placementId)
-        sut.play()
-        sut.load(placementId)
-        sut.play()
-
-        // then
-        verify(exactly = 1) {
-            controller.close()
-            viewableDetector.cancel()
-        }
-        verify(exactly = 2) {
-            saLogger.info("load(1234)")
-            controller.load(placementId, adRequest)
-            controller.config
-            saLogger.info("play(1234)")
-            controller.play(placementId)
-            controller.shouldShowPadlock
-        }
-        verify(exactly = 0) {
-            controller.adFailedToShow()
-        }
-        confirmVerified(saLogger)
-        confirmVerified(controller)
-        confirmVerified(viewableDetector)
-    }
-
-    @Test
-    fun `banner will close correctly`() {
         // when
         sut.close()
 
         // then
-        verify(exactly = 1) {
-            controller.close()
-            viewableDetector.cancel()
-        }
-        confirmVerified(controller)
-        confirmVerified(viewableDetector)
+        assertNotNull(sut.getController())
+        assertTrue(sut.isClosed())
     }
 
     @Test
-    fun `banner hasAdAvailable returns what the controller specifies when true`() {
+    fun `banner hasAdAvailable returns true if ad was loaded`() = runTest {
         // given
-        every { controller.hasAdAvailable(any()) } returns true
-
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
+        val placementId = 4000
+        sut.load(placementId)
+        sut.getJob()?.join()
         // when
         val result = sut.hasAdAvailable()
 
@@ -312,10 +140,7 @@ class InternalBannerViewTests: KoinTest {
     }
 
     @Test
-    fun `banner hasAdAvailable returns what the controller specifies when false`() {
-        // given
-        every { controller.hasAdAvailable(any()) } returns false
-
+    fun `banner hasAdAvailable returns false if ad wasn't loaded`() {
         // when
         val result = sut.hasAdAvailable()
 
@@ -324,21 +149,32 @@ class InternalBannerViewTests: KoinTest {
     }
 
     @Test
-    fun `banner isClosed returns what the controller specifies when true`() {
+    fun `banner isClosed returns true if ad has been closed`() = runTest {
         // given
-        every { controller.closed } returns true
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
+        val placementId = 5000
+        sut.load(placementId)
+        sut.getJob()?.join()
+        sut.play()
+        val controller = sut.getController()
+        controller?.close()
 
         // when
         val result = sut.isClosed()
 
         // then
+        assertNotNull(controller)
         assertTrue(result)
     }
 
     @Test
-    fun `banner isClosed returns what the controller specifies when false`() {
+    fun `banner isClosed returns false if ad hasn't been closed`() = runTest {
         // given
-        every { controller.closed } returns false
+        mockServer.enqueueResponse("mock_ad_response_banner.json", 200)
+        val placementId = 6000
+        sut.load(placementId)
+        sut.getJob()?.join()
+        sut.play()
 
         // when
         val result = sut.isClosed()
@@ -348,49 +184,43 @@ class InternalBannerViewTests: KoinTest {
     }
 
     @Test
-    fun `banner setParentGate sets the controller value to true`() {
-        // given
-        val isParentGateEnabled = true
-
+    fun `banner setParentGate sets the config value to true`() {
         // when
-        sut.setParentalGate(isParentGateEnabled)
+        sut.setParentalGate(true)
 
         // then
-        assertTrue(controller.config.isParentalGateEnabled)
+        assertTrue(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
-    fun `banner setParentGate sets the controller value to false`() {
-        // given
-        val isParentGateEnabled = false
-
+    fun `banner setParentGate sets the config value to false`() {
         // when
-        sut.setParentalGate(isParentGateEnabled)
+        sut.setParentalGate(false)
 
         // then
-        assertFalse(controller.config.isParentalGateEnabled)
+        assertFalse(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
-    fun `banner enableParentGate sets the controller value to true`() {
+    fun `banner enableParentGate sets the config value to true`() {
         // when
         sut.enableParentalGate()
 
         // then
-        assertTrue(controller.config.isParentalGateEnabled)
+        assertTrue(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
-    fun `banner disableParentGate sets the controller value to false`() {
+    fun `banner disableParentGate sets the config value to false`() {
         // when
         sut.disableParentalGate()
 
         // then
-        assertFalse(controller.config.isParentalGateEnabled)
+        assertFalse(sut.getManager().adConfig.isParentalGateEnabled)
     }
 
     @Test
-    fun `banner setBumperPage sets the controller value to true`() {
+    fun `banner setBumperPage sets the config value to true`() {
         // given
         val isBumperPageEnabled = true
 
@@ -398,11 +228,11 @@ class InternalBannerViewTests: KoinTest {
         sut.setBumperPage(isBumperPageEnabled)
 
         // then
-        assertTrue(controller.config.isBumperPageEnabled)
+        assertTrue(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
-    fun `banner setBumperPage sets the controller value to false`() {
+    fun `banner setBumperPage sets the config value to false`() {
         // given
         val isBumperPageEnabled = false
 
@@ -410,29 +240,29 @@ class InternalBannerViewTests: KoinTest {
         sut.setBumperPage(isBumperPageEnabled)
 
         // then
-        assertFalse(controller.config.isBumperPageEnabled)
+        assertFalse(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
-    fun `banner enableBumperPage sets the controller value to true`() {
+    fun `banner enableBumperPage sets the config value to true`() {
         // when
         sut.enableBumperPage()
 
         // then
-        assertTrue(controller.config.isBumperPageEnabled)
+        assertTrue(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
-    fun `banner disableBumperPage sets the controller value to false`() {
+    fun `banner disableBumperPage sets the config value to false`() {
         // when
         sut.disableBumperPage()
 
         // then
-        assertFalse(controller.config.isBumperPageEnabled)
+        assertFalse(sut.getManager().adConfig.isBumperPageEnabled)
     }
 
     @Test
-    fun `banner setTestMode sets the controller value to true`() {
+    fun `banner setTestMode sets the config value to true`() {
         // given
         val isTestEnabled = true
 
@@ -440,11 +270,11 @@ class InternalBannerViewTests: KoinTest {
         sut.setTestMode(isTestEnabled)
 
         // then
-        assertTrue(controller.config.testEnabled)
+        assertTrue(sut.getManager().adConfig.testEnabled)
     }
 
     @Test
-    fun `banner setTestMode sets the controller value to false`() {
+    fun `banner setTestMode sets the config value to false`() {
         // given
         val isTestEnabled = false
 
@@ -452,7 +282,7 @@ class InternalBannerViewTests: KoinTest {
         sut.setTestMode(isTestEnabled)
 
         // then
-        assertFalse(controller.config.testEnabled)
+        assertFalse(sut.getManager().adConfig.testEnabled)
     }
 
     @Test
@@ -461,7 +291,7 @@ class InternalBannerViewTests: KoinTest {
         sut.enableTestMode()
 
         // then
-        assertTrue(controller.config.testEnabled)
+        assertTrue(sut.getManager().adConfig.testEnabled)
     }
 
     @Test
@@ -470,7 +300,7 @@ class InternalBannerViewTests: KoinTest {
         sut.disableTestMode()
 
         // then
-        assertFalse(controller.config.testEnabled)
+        assertFalse(sut.getManager().adConfig.testEnabled)
     }
 
     @Test
