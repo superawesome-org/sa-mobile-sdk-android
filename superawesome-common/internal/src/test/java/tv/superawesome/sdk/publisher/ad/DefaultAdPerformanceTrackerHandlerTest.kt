@@ -70,6 +70,14 @@ class DefaultAdPerformanceTrackerHandlerTest : MockServerTest(), KoinTest {
         }
     }
 
+    @Test
+    fun `tracking render time`() = runTest {
+        checkTrackedTime(PerformanceMetricName.RenderTime) {
+            sut.startTimerForRenderTime()
+            sut.trackRenderTime()
+        }
+    }
+
     private suspend fun checkTrackedTime(metricName: PerformanceMetricName, tracker: suspend () -> Unit) {
         // arrange
         mockServer.enqueue(MockResponse().setResponseCode(200))
