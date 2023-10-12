@@ -13,9 +13,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +22,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.common.R
@@ -42,8 +40,9 @@ import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
-import tv.superawesome.sdk.publisher.ui.common.INTERSTITIAL_MAX_TICK_COUNT
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.ui.common.ContinuousViewableDetector
+import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
+import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 
 /**
@@ -54,16 +53,18 @@ public class InternalBannerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), AdView, KoinComponent, DefaultLifecycleObserver {
+) : FrameLayout(context, attrs, defStyleAttr), AdView, KoinComponent {
 
     internal val adManager: AdManager by inject()
     private val imageProvider: ImageProviderType by inject()
     private val logger: Logger by inject()
     private val timeProvider: TimeProviderType by inject()
-    private val viewableDetector: ViewableDetectorType by inject()
-    private val dwellViewableDetector: ViewableDetectorType by inject()
-    private val dwellTimer = DwellTimer(DWELL_DELAY, CoroutineScope(Dispatchers.Default))
+    private val viewableDetector: ViewableDetector by inject(named<SingleShotViewableDetector>())
+    private val dwellViewableDetector: ViewableDetector by inject(named<ContinuousViewableDetector>())
     private val adStore: AdControllerStore by inject()
+    private val dwellTimer by lazy {
+        DwellTimer(ticksNeeded = (DWELL_DELAY / ViewableDetector.DELAY_MILLIS).toInt())
+    }
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
@@ -206,9 +207,9 @@ public class InternalBannerView @JvmOverloads constructor(
         loadJob = null
         hasBeenVisible = null
         viewableDetector.cancel()
+        dwellViewableDetector.cancel()
         removeWebView()
         controller?.close()
-        cancelDwellTimer()
     }
 
     /**
@@ -302,7 +303,7 @@ public class InternalBannerView @JvmOverloads constructor(
                     controller?.triggerImpressionEvent()
                     controller?.trackRenderTime()
                 }
-                viewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
+                viewableDetector.start(this@InternalBannerView, ViewableDetector.INTERSTITIAL_MAX_TICK_COUNT) {
                     scope.launch { controller?.triggerViewableImpression() }
                     hasBeenVisible?.let { it() }
                 }
@@ -358,31 +359,11 @@ public class InternalBannerView @JvmOverloads constructor(
         )
 
     private fun startDwellTimer() {
-        val lifecycleOwner = context as LifecycleOwner
-        lifecycleOwner.lifecycle.addObserver(this)
-
-        dwellTimer.start {
-            val state = lifecycleOwner.lifecycle.currentState
-            if (state.isAtLeast(Lifecycle.State.RESUMED)) {
-                dwellViewableDetector.start(this@InternalBannerView, INTERSTITIAL_MAX_TICK_COUNT) {
-                    scope.launch { controller?.triggerDwellTime() }
-                }
+        dwellViewableDetector.start(this@InternalBannerView, ViewableDetector.INTERSTITIAL_MAX_TICK_COUNT) {
+            dwellTimer.tick {
+                scope.launch { controller?.trackDwellTime() }
             }
         }
-    }
-
-    private fun cancelDwellTimer() {
-        dwellTimer.stop()
-    }
-
-    override fun onStart(owner: LifecycleOwner) {
-        super.onStart(owner)
-        startDwellTimer()
-    }
-
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        cancelDwellTimer()
     }
 
     internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
