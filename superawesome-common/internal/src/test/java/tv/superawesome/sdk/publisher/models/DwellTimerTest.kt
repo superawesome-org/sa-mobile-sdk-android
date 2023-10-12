@@ -10,19 +10,61 @@ import kotlin.test.assertEquals
 class DwellTimerTest {
 
     @Test
-    fun `when starting, execute callback after delay`() = runTest {
+    fun `given 3 ticks needed, when ticking, trigger callback after 3 ticks`() = runTest {
         // Given
-        val sut = DwellTimer(2000L, this)
+        val sut = DwellTimer(3)
         var value = 0
+        val action: () -> Unit = {
+            value++
+        }
 
         // When
-        sut.start {
-            value = 1
-        }
-        advanceTimeBy(2200L)
-        sut.stop()
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
 
         // Then
         assertEquals(1, value)
+    }
+
+    @Test
+    fun `given 3 ticks needed, when ticking, trigger callback once after 5 ticks`() = runTest {
+        // Given
+        val sut = DwellTimer(3)
+        var value = 0
+        val action: () -> Unit = {
+            value++
+        }
+
+        // When
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
+
+        // Then
+        assertEquals(1, value)
+    }
+
+    @Test
+    fun `given 3 ticks needed, when ticking, trigger callback twice after 6 ticks`() = runTest {
+        // Given
+        val sut = DwellTimer(3)
+        var value = 0
+        val action: () -> Unit = {
+            value++
+        }
+
+        // When
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
+        sut.tick(action)
+
+        // Then
+        assertEquals(2, value)
     }
 }
