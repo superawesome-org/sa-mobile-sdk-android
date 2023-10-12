@@ -7,16 +7,23 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import tv.superawesome.sdk.publisher.ad.AdControllerFactory
+import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.DefaultAdControllerFactory
+import tv.superawesome.sdk.publisher.ad.DefaultAdManager
+import tv.superawesome.sdk.publisher.components.AdControllerStore
+import tv.superawesome.sdk.publisher.components.AdProcessor
+import tv.superawesome.sdk.publisher.components.AdProcessorType
 import tv.superawesome.sdk.publisher.components.AdQueryMaker
 import tv.superawesome.sdk.publisher.components.AdQueryMakerType
-import tv.superawesome.sdk.publisher.components.DefaultAdControllerStore
-import tv.superawesome.sdk.publisher.components.AdControllerStore
 import tv.superawesome.sdk.publisher.components.ConnectionProvider
 import tv.superawesome.sdk.publisher.components.ConnectionProviderType
 import tv.superawesome.sdk.publisher.components.DateProvider
 import tv.superawesome.sdk.publisher.components.DateProviderType
+import tv.superawesome.sdk.publisher.components.DefaultAdControllerStore
 import tv.superawesome.sdk.publisher.components.DefaultLogger
 import tv.superawesome.sdk.publisher.components.Device
 import tv.superawesome.sdk.publisher.components.DeviceType
@@ -56,16 +63,12 @@ import tv.superawesome.sdk.publisher.repositories.PreferencesRepository
 import tv.superawesome.sdk.publisher.repositories.PreferencesRepositoryType
 import tv.superawesome.sdk.publisher.repositories.VastEventRepository
 import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
-import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.DefaultAdManager
-import tv.superawesome.sdk.publisher.ad.DefaultAdControllerFactory
-import tv.superawesome.sdk.publisher.components.AdProcessor
-import tv.superawesome.sdk.publisher.components.AdProcessorType
 import tv.superawesome.sdk.publisher.ui.common.BumperPage
+import tv.superawesome.sdk.publisher.ui.common.ContinuousViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.ui.common.ParentalGate
+import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 import tv.superawesome.sdk.publisher.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.ui.video.VideoEvents
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayerController
@@ -106,7 +109,8 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
 
     factory { ParentalGate(get()) }
     factory<BumperPage> { DefaultBumperPage() }
-    factory<ViewableDetectorType> { ViewableDetector(get()) }
+    factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector(get()) }.bind<ViewableDetector>()
+    factory(named<ContinuousViewableDetector>()) { ContinuousViewableDetector() }.bind<ViewableDetector>()
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
     factory { (adResponse: AdResponse) ->

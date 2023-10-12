@@ -4,6 +4,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import okhttp3.mockwebserver.MockWebServer
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import tv.superawesome.sdk.publisher.ad.AdControllerFactory
 import tv.superawesome.sdk.publisher.ad.AdManager
@@ -43,8 +44,9 @@ import tv.superawesome.sdk.publisher.testutil.FakeAdControllerFactory
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
 import tv.superawesome.sdk.publisher.testutil.FakeConnectionProvider
 import tv.superawesome.sdk.publisher.testutil.TestLogger
+import tv.superawesome.sdk.publisher.ui.common.ContinuousViewableDetector
+import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
 
 @OptIn(ExperimentalSerializationApi::class)
 fun testCommonModule(mockWebServer: MockWebServer) = module {
@@ -62,7 +64,8 @@ fun testCommonModule(mockWebServer: MockWebServer) = module {
     factory<ConnectionProviderType> { FakeConnectionProvider() }
     factory<XmlParserType> { XmlParser() }
     factory<VastParserType> { VastParser(get(), get()) }
-    factory<ViewableDetectorType> { ViewableDetector(get()) }
+    factory<ViewableDetector>(named<SingleShotViewableDetector>()) { SingleShotViewableDetector(get()) }
+    factory<ViewableDetector>(named<ContinuousViewableDetector>()) { ContinuousViewableDetector() }
     factory<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get(), get())}
 
     single<AdQueryMakerType> { FakeAdQueryMaker() }
