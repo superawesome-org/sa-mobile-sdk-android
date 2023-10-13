@@ -101,7 +101,7 @@ class SAManagedAdActivity : Activity(),
 
         when (config?.closeButtonState) {
             CloseButtonState.VisibleImmediately -> showCloseButton()
-            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            CloseButtonState.VisibleWithDelay -> Unit
             else -> Unit // Hidden by default
         }
 
@@ -130,7 +130,7 @@ class SAManagedAdActivity : Activity(),
         failSafeTimer.delegate =
             object : SAFailSafeTimerDelegate {
                 override fun failSafeDidTimeOut() {
-                    closeButton.visibility = View.VISIBLE
+                    showCloseButton()
                     listener?.onEvent(ad.placementId, SAEvent.adEnded)
                     Log.d("VPAID FSTIMER", ad.placementId.toString())
                 }
@@ -159,22 +159,11 @@ class SAManagedAdActivity : Activity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
         viewableDetector.cancel()
         failSafeTimer.stop()
         config = null
         videoClick = null
-    }
-
-    private fun setUpCloseButtonTimeoutRunnable() {
-        cancelCloseButtonTimeoutRunnable()
-        val weak = WeakReference(this)
-        timeOutRunnable = Runnable {
-            val weakThis = weak.get() ?: return@Runnable
-            weakThis.showCloseButton()
-        }
-        timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
 
     private fun setUpCloseButtonShownRunnable() {
@@ -219,7 +208,6 @@ class SAManagedAdActivity : Activity(),
 
     override fun adShown() = runOnUiThread {
         performanceMetrics.startTimingForDwellTime()
-        cancelCloseButtonTimeoutRunnable()
         if (config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
             setUpCloseButtonShownRunnable()
         }
