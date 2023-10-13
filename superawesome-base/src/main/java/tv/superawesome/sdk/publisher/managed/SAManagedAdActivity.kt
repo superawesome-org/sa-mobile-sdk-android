@@ -225,6 +225,7 @@ class SAManagedAdActivity : Activity(),
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
         failSafeTimer.stop()
+        Log.d("VPAID FSTIMER ADSHOWN", this.placementId.toString())
     }
 
     override fun adFailedToShow() = runOnUiThread {

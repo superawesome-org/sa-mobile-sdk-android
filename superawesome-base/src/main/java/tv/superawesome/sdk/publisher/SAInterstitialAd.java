@@ -157,7 +157,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         failSafeTimer.setDelegate(() -> {
             closeButton.setVisibility(View.VISIBLE);
             listener.onEvent(ad.placementId, SAEvent.adEnded);
-            Log.d("INTERSTITIAL FSTIMER", String.valueOf(ad.placementId));
+            Log.d("INSTL FSTIMER", String.valueOf(ad.placementId));
         });
 
         // finally play!
@@ -713,7 +713,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     @Override
     public void hasShown() {
         failSafeTimer.stop();
-        Log.d("FAILSAFETIMER", "ADSHOWN");
+        Log.d("INSTL FSTIMER ADSHOWN", String.valueOf(this.ad.placementId));
     }
 
     @Override
