@@ -50,7 +50,9 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
 
     interface SABannerAdListener {
         void hasBeenVisible();
-
+        void didStart();
+        void didStop();
+        void hasShown();
         void failedToShow();
     }
 
@@ -425,6 +427,9 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
                         // call listener
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adShown);
+                            if (bannerListener != null) {
+                                bannerListener.hasShown();
+                            }
                             Log.d("SABannerAd", "Event callback: " + SAEvent.adShown);
                         } else {
                             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
@@ -768,12 +773,18 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
     public void onStop(@NonNull LifecycleOwner owner) {
         DefaultLifecycleObserver.super.onStop(owner);
         cancelDwellTimer();
+        if (bannerListener != null) {
+            bannerListener.didStop();
+        }
     }
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
         DefaultLifecycleObserver.super.onStart(owner);
         startDwellTimer();
+        if (bannerListener != null) {
+            bannerListener.didStart();
+        }
     }
 
     /**********************************************************************************************

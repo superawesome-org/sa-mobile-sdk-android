@@ -40,6 +40,8 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.satiming.SAFailSafeTimer;
+import tv.superawesome.lib.satiming.SAFailSafeTimerDelegate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -75,6 +77,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
+    private static final SAFailSafeTimer failSafeTimer = new SAFailSafeTimer();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -152,8 +155,15 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         parent.addView(closeButton);
         setContentView(parent);
 
+        failSafeTimer.setDelegate(() -> {
+            closeButton.setVisibility(View.VISIBLE);
+            listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
+            Log.d("FAILSAFETIMER", String.valueOf(ad.placementId));
+        });
+
         // finally play!
         interstitialBanner.play(this);
+        failSafeTimer.startFailSafeTimer();
     }
 
     /**
@@ -689,6 +699,22 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void didStart() {
+        failSafeTimer.pauseFailSafeTimer();
+    }
+
+    @Override
+    public void didStop() {
+        failSafeTimer.pauseFailSafeTimer();
+    }
+
+    @Override
+    public void hasShown() {
+        failSafeTimer.stopFailSafeTimer();
+        Log.d("FAILSAFETIMER", "ADSHOWN");
     }
 
     @Override
