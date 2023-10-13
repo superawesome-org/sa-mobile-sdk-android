@@ -41,7 +41,6 @@ import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.satiming.SAFailSafeTimer;
-import tv.superawesome.lib.satiming.SAFailSafeTimerDelegate;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -157,13 +156,13 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
 
         failSafeTimer.setDelegate(() -> {
             closeButton.setVisibility(View.VISIBLE);
-            listener.onEvent(ad.placementId, SAEvent.adFailedToLoad);
-            Log.d("FAILSAFETIMER", String.valueOf(ad.placementId));
+            listener.onEvent(ad.placementId, SAEvent.adEnded);
+            Log.d("INTERSTITIAL FSTIMER", String.valueOf(ad.placementId));
         });
 
         // finally play!
         interstitialBanner.play(this);
-        failSafeTimer.startFailSafeTimer();
+        failSafeTimer.start();
     }
 
     /**
@@ -703,17 +702,17 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
 
     @Override
     public void didStart() {
-        failSafeTimer.pauseFailSafeTimer();
+        failSafeTimer.start();
     }
 
     @Override
     public void didStop() {
-        failSafeTimer.pauseFailSafeTimer();
+        failSafeTimer.pause();
     }
 
     @Override
     public void hasShown() {
-        failSafeTimer.stopFailSafeTimer();
+        failSafeTimer.stop();
         Log.d("FAILSAFETIMER", "ADSHOWN");
     }
 

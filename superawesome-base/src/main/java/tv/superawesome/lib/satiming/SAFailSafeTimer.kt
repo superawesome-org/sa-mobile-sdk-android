@@ -19,7 +19,7 @@ class SAFailSafeTimer(private var timeInterval: Long = 15000) {
     val timerDidFire: Boolean
         get() = timerHasFired
 
-    fun startFailSafeTimer() {
+    fun start() {
         clearTimer()
         startTime = System.currentTimeMillis()
         if (timeInterval <= 0L) return
@@ -28,19 +28,19 @@ class SAFailSafeTimer(private var timeInterval: Long = 15000) {
             override fun onTick(millisUntilFinished: Long) = Unit
 
             override fun onFinish() {
-                stopFailSafeTimer()
+                stop()
                 delegate?.failSafeDidTimeOut()
             }
         }
         timer?.start()
     }
 
-    fun pauseFailSafeTimer() {
+    fun pause() {
         clearTimer()
         timeInterval -= deductedTime
     }
 
-    fun stopFailSafeTimer() {
+    fun stop() {
         timeInterval = 0
         clearTimer()
     }

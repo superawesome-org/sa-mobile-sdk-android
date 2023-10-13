@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
@@ -16,6 +17,8 @@ import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.sametrics.SAPerformanceMetrics
 import tv.superawesome.lib.samodelspace.saad.SAAd
+import tv.superawesome.lib.satiming.SAFailSafeTimer
+import tv.superawesome.lib.satiming.SAFailSafeTimerDelegate
 import tv.superawesome.lib.sautils.SAImageUtils
 import tv.superawesome.lib.sautils.SAUtils
 import tv.superawesome.lib.sautils.SAViewableDetector
@@ -40,6 +43,7 @@ class SAManagedAdActivity : Activity(),
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
     private var ad: SAAd? = null
+    private var failSafeTimer = SAFailSafeTimer()
     private lateinit var events: SAEvents
     private lateinit var performanceMetrics: SAPerformanceMetrics
     private lateinit var viewableDetector: SAViewableDetector
@@ -122,11 +126,23 @@ class SAManagedAdActivity : Activity(),
                 }
             }
         }
+
+        failSafeTimer.delegate =
+            object : SAFailSafeTimerDelegate {
+                override fun failSafeDidTimeOut() {
+                    closeButton.visibility = View.VISIBLE
+                    listener?.onEvent(ad.placementId, SAEvent.adEnded)
+                    Log.d("VPAID FSTIMER", ad.placementId.toString())
+                }
+            }
+
+        failSafeTimer.start()
     }
 
     override fun onStart() {
         super.onStart()
         listener = SAVideoAd.getListener()
+        failSafeTimer.start()
     }
 
     override fun onRestart() {
@@ -137,6 +153,7 @@ class SAManagedAdActivity : Activity(),
     override fun onStop() {
         super.onStop()
         adView.pauseVideo()
+        failSafeTimer.stop()
         listener = null
     }
 
@@ -145,6 +162,7 @@ class SAManagedAdActivity : Activity(),
         cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
         viewableDetector.cancel()
+        failSafeTimer.stop()
         config = null
         videoClick = null
     }
