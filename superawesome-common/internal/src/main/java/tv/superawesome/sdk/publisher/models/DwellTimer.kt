@@ -1,41 +1,18 @@
 package tv.superawesome.sdk.publisher.models
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-
 /**
- * Launches a dwell timer on a given [coroutineScope], executed every [delay] ms until it's
- * cancelled.
+ * A simple ticker that triggers an action once a certain number of [ticksNeeded] ticked.
  */
 class DwellTimer(
-    private val delay: Long,
-    private val coroutineScope: CoroutineScope,
+    private val ticksNeeded: Int,
 ) {
 
-    private var job: Job? = null
+    private var ticks = 0
 
-    /**
-     * Starts a new dwell timer, executing [callback] every [delay] ms.
-     */
-    fun start(callback: () -> Unit) {
-        if (job != null) return
-
-        job = coroutineScope.launch {
-            while (isActive) {
-                delay(delay)
-                callback()
-            }
+    fun tick(action: () -> Unit) {
+        ticks++
+        if (ticks % ticksNeeded == 0) {
+            action()
         }
-    }
-
-    /**
-     * Stops the dwell timer.
-     */
-    fun stop() {
-        job?.cancel()
-        job = null
     }
 }

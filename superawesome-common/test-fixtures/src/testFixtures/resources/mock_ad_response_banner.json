@@ -1,0 +1,33 @@
+{
+  "creative": {
+    "id": 4906,
+    "format": "image_with_link",
+    "details": {
+      "url": "https://url.com",
+      "image": "https://image.jpg",
+      "video": "",
+      "placement_format": "image_with_link",
+      "tag": null,
+      "width": 600,
+      "height": 480,
+      "transcodedVideos": null,
+      "duration": 32,
+      "vast": null
+    },
+    "click_url": "https://superawesome.tv"
+  },
+  "advertiserId": 1,
+  "publisherId": 1,
+  "is_fill": false,
+  "is_fallback": false,
+  "campaign_type": 0,
+  "is_house": false,
+  "moat": 0.2,
+  "safe_ad_approved": true,
+  "show_padlock": true,
+  "line_item_id": 931,
+  "test": false,
+  "app": 1484,
+  "device": "web",
+  "rnd": null
+}

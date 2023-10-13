@@ -7,6 +7,10 @@ import android.content.Context
 import android.net.Uri
 import android.view.View
 import androidx.annotation.VisibleForTesting
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.getKoin
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.models.AdRequest
@@ -15,7 +19,8 @@ import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.Orientation
 import tv.superawesome.sdk.publisher.models.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
-import tv.superawesome.sdk.publisher.ui.common.AdControllerType
+import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.managed.ManagedAdActivity
 import java.io.File
 
@@ -27,8 +32,9 @@ import java.io.File
  */
 @Suppress("TooManyFunctions")
 public object SAVideoAd {
-    private val controller: AdControllerType by inject(AdControllerType::class.java)
+    private val adManager: AdManager by inject(AdManager::class.java)
     private val logger: Logger by inject(Logger::class.java)
+    private val scope: CoroutineScope by inject(CoroutineScope::class.java)
 
     /**
      * Loads an ad into the queue.
@@ -49,7 +55,9 @@ public object SAVideoAd {
         options: Map<String, Any>? = null,
     ) {
         logger.info("load($placementId)")
-        controller.load(placementId, makeAdRequest(context, options, openRtbPartnerId))
+        scope.launch {
+            adManager.load(placementId, makeAdRequest(context, options, openRtbPartnerId))
+        }
     }
 
     /**
@@ -75,12 +83,14 @@ public object SAVideoAd {
         openRtbPartnerId: String? = null,
         options: Map<String, Any>? = null,
     ) {
-        controller.load(
-            placementId,
-            lineItemId,
-            creativeId,
-            makeAdRequest(context, options, openRtbPartnerId)
-        )
+        scope.launch {
+            adManager.load(
+                placementId,
+                lineItemId,
+                creativeId,
+                makeAdRequest(context, options, openRtbPartnerId),
+            )
+        }
     }
 
     /**
@@ -93,31 +103,35 @@ public object SAVideoAd {
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     public fun play(placementId: Int, context: Context) {
         logger.info("play($placementId)")
-        val adResponse = controller.peekAdResponse(placementId)
-        controller.startTimingForLoadTime()
-        val intent = if (adResponse?.ad?.isVpaid == true) {
+        val controller = getKoin().get<AdController> {
+            parametersOf(placementId)
+        }
+        val adResponse = controller.adResponse
+        controller.startTimerForLoadTime()
+        val intent = if (adResponse.ad.isVpaid) {
+            controller.startTimerForRenderTime()
             ManagedAdActivity.newInstance(
                 context = context,
                 placementId = placementId,
-                config = controller.config,
+                adConfig = adManager.adConfig,
                 html = adResponse.html ?: "",
                 baseUrl = adResponse.baseUrl,
             )
         } else {
 
-            if (adResponse?.filePath == null) {
-                controller.delegate?.onEvent(placementId, SAEvent.adFailedToShow)
+            if (adResponse.filePath == null) {
+                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
                 return
             }
 
             try {
                 Uri.fromFile(File(adResponse.filePath))
             } catch (error: Exception) {
-                controller.delegate?.onEvent(placementId, SAEvent.adFailedToShow)
+                controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
                 return
             }
 
-            VideoActivity.newInstance(context, placementId, controller.config)
+            VideoActivity.newInstance(context, placementId, adManager.adConfig)
         }
         context.startActivity(intent)
     }
@@ -129,7 +143,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setListener(value: SAInterface) {
-        controller.delegate = value
+        adManager.listener = value
     }
 
     /**
@@ -139,7 +153,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setPlaybackMode(mode: AdRequest.StartDelay) {
-        controller.config.startDelay = mode
+        adManager.adConfig.startDelay = mode
     }
 
     /**
@@ -213,7 +227,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setSmallClick(value: Boolean) {
-        controller.config.shouldShowSmallClick = value
+        adManager.adConfig.shouldShowSmallClick = value
     }
 
     /**
@@ -223,7 +237,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setCloseAtEnd(value: Boolean) {
-        controller.config.shouldCloseAtEnd = value
+        adManager.adConfig.shouldCloseAtEnd = value
     }
 
     /**
@@ -233,7 +247,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setCloseButton(value: Boolean) {
-        controller.config.closeButtonState =
+        adManager.adConfig.closeButtonState =
             if (value) CloseButtonState.VisibleWithDelay else CloseButtonState.Hidden
     }
 
@@ -260,7 +274,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun enableCloseButtonNoDelay() {
-        controller.config.closeButtonState = CloseButtonState.VisibleImmediately
+        adManager.adConfig.closeButtonState = CloseButtonState.VisibleImmediately
     }
 
     /**
@@ -280,7 +294,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setCloseButtonWarning(value: Boolean) {
-        controller.config.shouldShowCloseWarning = value
+        adManager.adConfig.shouldShowCloseWarning = value
     }
 
     /**
@@ -314,7 +328,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setParentalGate(value: Boolean) {
-        controller.config.isParentalGateEnabled = value
+        adManager.adConfig.isParentalGateEnabled = value
     }
 
     /**
@@ -324,7 +338,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setBumperPage(value: Boolean) {
-        controller.config.isBumperPageEnabled = value
+        adManager.adConfig.isBumperPageEnabled = value
     }
 
     /**
@@ -334,7 +348,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setTestMode(value: Boolean) {
-        controller.config.testEnabled = value
+        adManager.adConfig.testEnabled = value
     }
 
     /**
@@ -344,7 +358,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setBackButton(value: Boolean) {
-        controller.config.isBackButtonEnabled = value
+        adManager.adConfig.isBackButtonEnabled = value
     }
 
     /**
@@ -354,7 +368,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setOrientation(value: Orientation) {
-        controller.config.orientation = value
+        adManager.adConfig.orientation = value
     }
 
     /**
@@ -364,7 +378,7 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun setMuteOnStart(mute: Boolean) {
-        controller.config.shouldMuteOnStart = mute
+        adManager.adConfig.shouldMuteOnStart = mute
     }
 
     /**
@@ -390,7 +404,7 @@ public object SAVideoAd {
      * @return true or false.
      */
     @JvmStatic
-    public fun hasAdAvailable(placementId: Int): Boolean = controller.hasAdAvailable(placementId)
+    public fun hasAdAvailable(placementId: Int): Boolean = adManager.hasAdAvailable(placementId)
 
     private fun makeAdRequest(
         context: Context,
@@ -409,13 +423,13 @@ public object SAVideoAd {
             height = 0
         }
 
-        val skip = if (controller.config.closeButtonState.isVisible()) {
+        val skip = if (adManager.adConfig.closeButtonState.isVisible()) {
             AdRequest.Skip.Yes.value
         } else {
             AdRequest.Skip.No.value
         }
 
-        val playbackMethod = if (controller.config.shouldMuteOnStart) {
+        val playbackMethod = if (adManager.adConfig.shouldMuteOnStart) {
             DefaultAdRequest.PlaybackSoundOffScreen
         } else {
             DefaultAdRequest.PlaybackSoundOffScreen
@@ -423,7 +437,7 @@ public object SAVideoAd {
 
 
         return DefaultAdRequest(
-            test = controller.config.testEnabled,
+            test = adManager.adConfig.testEnabled,
             pos = AdRequest.Position.FullScreen.value,
             skip = skip,
             playbackMethod = playbackMethod,
@@ -439,6 +453,6 @@ public object SAVideoAd {
     @VisibleForTesting
     @JvmStatic
     private fun clearCache() {
-        controller.clearCache()
+        adManager.clearCache()
     }
 }

@@ -1,4 +1,4 @@
-package tv.superawesome.sdk.publisher.ui.common
+package tv.superawesome.sdk.publisher.ad
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -10,7 +10,7 @@ import tv.superawesome.sdk.publisher.models.Orientation
 /**
  * Ad presentation configuration holder.
  */
-class Config : Parcelable {
+class AdConfig : Parcelable {
 
     /** Enabled for testing. */
     var testEnabled: Boolean
@@ -100,10 +100,10 @@ class Config : Parcelable {
     /**
      * Parcelable creator object.
      */
-    companion object CREATOR : Parcelable.Creator<Config> {
+    companion object CREATOR : Parcelable.Creator<AdConfig> {
 
-        override fun createFromParcel(parcel: Parcel): Config = Config(parcel)
+        override fun createFromParcel(parcel: Parcel): AdConfig = AdConfig(parcel)
 
-        override fun newArray(size: Int): Array<Config?> = arrayOfNulls(size)
+        override fun newArray(size: Int): Array<AdConfig?> = arrayOfNulls(size)
     }
 }

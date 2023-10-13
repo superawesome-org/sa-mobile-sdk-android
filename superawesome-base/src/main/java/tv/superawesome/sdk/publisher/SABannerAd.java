@@ -15,20 +15,16 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import tv.superawesome.lib.saadloader.SALoader;
 import tv.superawesome.lib.sabumperpage.SABumperPage;
 import tv.superawesome.lib.saevents.SAEvents;
+import tv.superawesome.lib.saevents.SAViewableModule;
 import tv.superawesome.lib.sametrics.SAPerformanceMetrics;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.samodelspace.saad.SACampaignType;
@@ -46,7 +42,7 @@ import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sawebplayer.SAWebPlayer;
 import tv.superawesome.sdk.publisher.base.R;
 
-public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver {
+public class SABannerAd extends FrameLayout {
 
     interface SABannerAdListener {
         void hasBeenVisible();
@@ -90,7 +86,8 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
     // Utils
     private final SAClock clock;
 
-    private Timer dwellTimer;
+    private SAViewableModule dwellViewableDetector;
+    private DwellTimer dwellTimer = new DwellTimer((int) DWELL_DELAY / SAViewableModule.DELAY);
 
     /**
      * Constructor with context
@@ -137,6 +134,9 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
         setBumperPage(SADefaults.defaultBumperPage());
         setConfiguration(SADefaults.defaultConfiguration());
         setTestMode(SADefaults.defaultTestMode());
+
+        // Set dwell timer listener
+        dwellTimer.setListener(events::triggerDwellTime);
     }
 
     /**
@@ -734,56 +734,17 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
     }
 
     private void startDwellTimer() {
-        // Start Lifecycle observer so we can track activity state.
-        ((LifecycleOwner) getContext()).getLifecycle().addObserver(this);
-
-        if (dwellTimer != null) {
-            return;
-        }
-
-        dwellTimer = new Timer();
-
-        dwellTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Lifecycle.State state = ((LifecycleOwner) getContext()).getLifecycle().getCurrentState();
-                // If the activity is not resumed, probably that the banner isn't visible.
-                // We can skip sending dwellTime.
-                if (!state.isAtLeast(Lifecycle.State.RESUMED)) {
-                    return;
-                }
-
-                events.checkViewableStatusForDisplay(SABannerAd.this, success -> {
-                    if (success) {
-                        events.triggerDwellTime();
-                    }
-                });
+        dwellViewableDetector = new SAViewableModule();
+        dwellViewableDetector.checkViewableStatusContinually(this, 1, (visible) -> {
+            if (visible) {
+                dwellTimer.tick();
             }
-        }, DWELL_DELAY, DWELL_DELAY);
+        });
     }
 
     private void cancelDwellTimer() {
-        if (dwellTimer != null) {
-            dwellTimer.cancel();
-            dwellTimer = null;
-        }
-    }
-
-    @Override
-    public void onStop(@NonNull LifecycleOwner owner) {
-        DefaultLifecycleObserver.super.onStop(owner);
-        cancelDwellTimer();
-        if (bannerListener != null) {
-            bannerListener.didStop();
-        }
-    }
-
-    @Override
-    public void onStart(@NonNull LifecycleOwner owner) {
-        DefaultLifecycleObserver.super.onStart(owner);
-        startDwellTimer();
-        if (bannerListener != null) {
-            bannerListener.didStart();
+        if (dwellViewableDetector != null) {
+            dwellViewableDetector.cancelViewableStatusCheck();
         }
     }
 
@@ -868,6 +829,34 @@ public class SABannerAd extends FrameLayout implements DefaultLifecycleObserver 
             setBackgroundColor(Color.TRANSPARENT);
         } else {
             setBackgroundColor(BANNER_BACKGROUND);
+        }
+    }
+
+    private static class DwellTimer {
+
+        private final int ticksNeeded;
+        private int ticks = 0;
+        private Listener listener;
+
+        public DwellTimer(int ticksNeeded) {
+            this.ticksNeeded = ticksNeeded;
+        }
+
+        public void setListener(Listener listener) {
+            this.listener = listener;
+        }
+
+        public void tick() {
+            ticks++;
+            if (ticks % ticksNeeded == 0) {
+                if (listener != null) {
+                    listener.onTick();
+                }
+            }
+        }
+
+        private interface Listener {
+            void onTick();
         }
     }
 }

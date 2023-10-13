@@ -10,11 +10,12 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.repositories.EventRepositoryType
 import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
-import tv.superawesome.sdk.publisher.ui.common.VIDEO_MAX_TICK_COUNT
-import tv.superawesome.sdk.publisher.ui.common.ViewableDetectorType
+import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
+import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayer
 
 public class VideoEvents(
@@ -37,7 +38,7 @@ public class VideoEvents(
     private var isFirstQuartileHandled = false
     private var isMidpointHandled = false
     private var isThirdQuartileHandled = false
-    private var viewableDetector: ViewableDetectorType? = null
+    private var viewableDetector: ViewableDetector? = null
     private var lastTick = 0
 
     public fun prepare(videoPlayer: IVideoPlayer?, time: Int, duration: Int) {
@@ -71,9 +72,9 @@ public class VideoEvents(
         if (time >= 2000 && !is2SHandled) {
             is2SHandled = true
             viewableDetector?.cancel()
-            viewableDetector = get()
+            viewableDetector = get(named<SingleShotViewableDetector>())
             if (videoPlayer is ViewGroup) {
-                viewableDetector?.start(videoPlayer, VIDEO_MAX_TICK_COUNT) {
+                viewableDetector?.start(videoPlayer, ViewableDetector.VIDEO_MAX_TICK_COUNT) {
                     scope.launch { eventRepository.viewableImpression(adResponse) }
                     listener?.hasBeenVisible()
                 }
@@ -104,7 +105,7 @@ public class VideoEvents(
 
     private fun handleDwellTime(time: Int, videoPlayer: IVideoPlayer?) {
         if (videoPlayer is ViewGroup) {
-            viewableDetector?.start(videoPlayer, VIDEO_MAX_TICK_COUNT) {
+            viewableDetector?.start(videoPlayer, ViewableDetector.VIDEO_MAX_TICK_COUNT) {
                 if (hasTicked(time)) {
                     lastTick = time
                     scope.launch { eventRepository.dwellTime(adResponse) }
