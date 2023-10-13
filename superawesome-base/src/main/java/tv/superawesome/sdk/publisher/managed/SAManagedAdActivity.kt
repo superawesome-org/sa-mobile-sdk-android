@@ -224,6 +224,7 @@ class SAManagedAdActivity : Activity(),
             setUpCloseButtonShownRunnable()
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
+        failSafeTimer.stop()
     }
 
     override fun adFailedToShow() = runOnUiThread {
