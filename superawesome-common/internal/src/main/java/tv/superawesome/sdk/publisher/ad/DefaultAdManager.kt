@@ -7,7 +7,7 @@ import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.extensions.isValidVastAd
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.AdResponse
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.repositories.AdRepositoryType
 

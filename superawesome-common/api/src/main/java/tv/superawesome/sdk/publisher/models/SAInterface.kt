@@ -1,5 +1,7 @@
 package tv.superawesome.sdk.publisher.models
 
+import tv.superawesome.sdk.publisher.SAEvent
+
 /**
  * A callback interface to receive events from the SDK.
  *

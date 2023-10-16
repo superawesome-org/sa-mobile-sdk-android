@@ -3,7 +3,6 @@ package tv.superawesome.sdk.publisher.ui.banner
 import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -24,7 +23,7 @@ import org.robolectric.android.controller.ActivityController
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.di.testCommonModule
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import tv.superawesome.sdk.publisher.network.enqueueResponse
 import kotlin.test.assertEquals

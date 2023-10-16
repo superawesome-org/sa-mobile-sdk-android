@@ -35,7 +35,7 @@ import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.DwellTimer
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView

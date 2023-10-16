@@ -22,7 +22,7 @@ import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
