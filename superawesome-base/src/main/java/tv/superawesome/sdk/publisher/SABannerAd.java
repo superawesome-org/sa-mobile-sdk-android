@@ -46,8 +46,6 @@ public class SABannerAd extends FrameLayout {
 
     interface SABannerAdListener {
         void hasBeenVisible();
-        void didStart();
-        void didStop();
         void hasShown();
         void failedToShow();
     }
