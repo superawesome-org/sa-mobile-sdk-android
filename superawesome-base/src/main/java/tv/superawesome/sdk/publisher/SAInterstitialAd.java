@@ -179,6 +179,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * Method that closes the interstitial ad
      */
     private void close () {
+        failSafeTimer.stop();
         // close the banner as well
         interstitialBanner.close();
         interstitialBanner.setAd(null);
@@ -708,6 +709,13 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         super.onStop();
         Log.d("INSTL FSTIMER ONSTOP", String.valueOf(this.ad.placementId));
         failSafeTimer.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("INSTL FSTIMER ONDESTROY", String.valueOf(this.ad.placementId));
+        failSafeTimer.stop();
     }
 
     @Override

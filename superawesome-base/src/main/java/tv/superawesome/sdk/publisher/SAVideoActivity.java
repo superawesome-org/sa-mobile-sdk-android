@@ -200,6 +200,7 @@ public class SAVideoActivity extends Activity implements
     protected void onDestroy() {
         SAParentalGate.close();
         SACloseWarning.close();
+        failSafeTimer.stop();
         super.onDestroy();
     }
 
@@ -321,6 +322,7 @@ public class SAVideoActivity extends Activity implements
     private void close() {
 
         videoEvents.listener = null;
+        failSafeTimer.stop();
 
         // call listener
         if (listenerRef != null) {
