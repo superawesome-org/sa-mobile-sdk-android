@@ -180,6 +180,11 @@ public class SAVideoActivity extends Activity implements
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         SAParentalGate.close();
         SACloseWarning.close();

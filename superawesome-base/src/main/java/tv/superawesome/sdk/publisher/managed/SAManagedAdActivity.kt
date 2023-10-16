@@ -25,6 +25,7 @@ import tv.superawesome.lib.sautils.SAViewableDetector
 import tv.superawesome.lib.sautils.videoMaxTickCount
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterface
+import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVideoAd
 import tv.superawesome.sdk.publisher.SAVideoClick
 import tv.superawesome.sdk.publisher.state.CloseButtonState
@@ -143,6 +144,7 @@ class SAManagedAdActivity : Activity(),
         super.onStart()
         listener = SAVideoAd.getListener()
         failSafeTimer.start()
+        Log.d("VPAID FSTIMER ONSTART", this.placementId.toString())
     }
 
     override fun onRestart() {
@@ -153,8 +155,9 @@ class SAManagedAdActivity : Activity(),
     override fun onStop() {
         super.onStop()
         adView.pauseVideo()
-        failSafeTimer.stop()
+        failSafeTimer.pause()
         listener = null
+        Log.d("VPAID FSTIMER ONSTOP", this.placementId.toString())
     }
 
     override fun onDestroy() {

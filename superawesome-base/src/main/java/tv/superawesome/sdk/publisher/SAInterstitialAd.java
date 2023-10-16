@@ -699,12 +699,14 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     @Override
     public void onStart() {
         super.onStart();
+        Log.d("INSTL FSTIMER ONSTART", String.valueOf(this.ad.placementId));
         failSafeTimer.start();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
+        Log.d("INSTL FSTIMER ONSTOP", String.valueOf(this.ad.placementId));
         failSafeTimer.pause();
     }
 
