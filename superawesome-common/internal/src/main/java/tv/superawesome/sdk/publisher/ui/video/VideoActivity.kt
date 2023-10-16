@@ -16,12 +16,11 @@ import android.widget.RelativeLayout
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.ad.AdConfig
-import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
@@ -40,9 +39,7 @@ import java.io.File
 class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     private val control: IVideoPlayerController by inject()
     private val adManager: AdManager by inject()
-    private val controller: AdController by inject {
-        parametersOf(placementId)
-    }
+
     private var videoEvents: VideoEvents? = null
     private var completed = false
     private var volumeButton: ImageButton? = null
@@ -86,6 +83,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
                 videoEvents?.prepare(player, time, duration)
                 controller.listener?.onEvent(placementId, SAEvent.adShown)
+                closeButtonFailsafeTimer.stop()
             }
 
             override fun onTimeUpdated(player: IVideoPlayer, time: Int, duration: Int) {

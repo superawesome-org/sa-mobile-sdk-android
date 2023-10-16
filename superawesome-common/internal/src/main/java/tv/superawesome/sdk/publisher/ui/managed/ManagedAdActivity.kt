@@ -11,16 +11,14 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
+import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.network.Environment
-import tv.superawesome.sdk.publisher.ad.AdConfig
-import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
@@ -42,9 +40,6 @@ class ManagedAdActivity :
     private val adManager: AdManager by inject()
     private val environment: Environment by inject()
     private val viewableDetector: ViewableDetector by inject(named<SingleShotViewableDetector>())
-    private val controller: AdController by inject {
-        parametersOf(placementId)
-    }
 
     private val html by lazy {
         intent.getStringExtra(Constants.Keys.html) ?: ""
@@ -59,7 +54,7 @@ class ManagedAdActivity :
     override fun initChildUI() {
         adView = ManagedAdView(this)
         controller.videoPlayerListener = this
-        adView.id = numberGenerator.nextIntForCache()
+        adView.id = View.generateViewId()
         adView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -175,6 +170,7 @@ class ManagedAdActivity :
             }
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
+        closeButtonFailsafeTimer.stop()
     }
 
     override fun adFailedToShow() = runOnUiThread {
