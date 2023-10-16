@@ -15,7 +15,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.network.Environment
 import tv.superawesome.sdk.publisher.ad.AdConfig
