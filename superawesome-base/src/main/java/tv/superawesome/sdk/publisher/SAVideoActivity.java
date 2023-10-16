@@ -169,6 +169,16 @@ public class SAVideoActivity extends Activity implements
             control.playAsync(this, fileUri);
         } catch (Exception ignored) {
         }
+
+        failSafeTimer.setDelegate(() -> {
+            closeButton.setVisibility(View.VISIBLE);
+            if (listenerRef != null) {
+                listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
+                Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
+            }
+            Log.d("SAVideoActivity FSTIMER", String.valueOf(ad.placementId));
+        });
+        failSafeTimer.start();
     }
 
     @Override
@@ -177,11 +187,13 @@ public class SAVideoActivity extends Activity implements
         if (control.getCurrentIVideoPosition() > 0) {
             control.start();
         }
+        failSafeTimer.start();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        failSafeTimer.pause();
     }
 
     @Override
@@ -233,6 +245,7 @@ public class SAVideoActivity extends Activity implements
             listenerRef.onEvent(ad.placementId, SAEvent.adShown);
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown);
         }
+        failSafeTimer.stop();
     }
 
     @Override
@@ -297,7 +310,7 @@ public class SAVideoActivity extends Activity implements
 
     private void setMuted(Boolean muted) {
         volumeButton.setImageBitmap(
-                muted ? SAImageUtils.createVolumeOffBitmap() : SAImageUtils.createVolumeOnBitmap()
+            muted ? SAImageUtils.createVolumeOffBitmap() : SAImageUtils.createVolumeOnBitmap()
         );
         control.setMuted(muted);
     }
