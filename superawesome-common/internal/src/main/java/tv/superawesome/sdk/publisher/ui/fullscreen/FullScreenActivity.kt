@@ -9,14 +9,20 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.AdController
+import tv.superawesome.sdk.publisher.components.CoroutineTimer
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
-import tv.superawesome.sdk.publisher.components.NumberGeneratorType
+import tv.superawesome.sdk.publisher.components.TimeProviderType
 import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.Orientation
-import tv.superawesome.sdk.publisher.ad.AdConfig
 
 /**
  * A full screen activity used to play ad placements.
@@ -25,7 +31,7 @@ open class FullScreenActivity : AppCompatActivity() {
 
     internal val imageProvider: ImageProviderType by inject()
     internal val logger: Logger by inject()
-    internal val numberGenerator: NumberGeneratorType by inject()
+    private val timeProvider: TimeProviderType by inject()
 
     internal lateinit var parentLayout: RelativeLayout
     internal lateinit var closeButton: ImageButton
@@ -38,8 +44,23 @@ open class FullScreenActivity : AppCompatActivity() {
         intent.getParcelableExtra(Constants.Keys.config) ?: AdConfig()
     }
 
+    protected lateinit var controller: AdController
+
+    val closeButtonFailsafeTimer = CoroutineTimer(CLOSE_BUTTON_DELAY, timeProvider, lifecycleScope) {
+        closeButton.visibility = View.VISIBLE
+        closeButton.setOnClickListener {
+            controller.listener?.onEvent(placementId, SAEvent.adEnded)
+            onCloseButtonPressed()
+            close()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        controller = get {
+            parametersOf(placementId)
+        }
 
         initParentUI()
         initChildUI()
@@ -49,6 +70,22 @@ open class FullScreenActivity : AppCompatActivity() {
         setContentView(parentLayout)
 
         playContent()
+        closeButtonFailsafeTimer.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        closeButtonFailsafeTimer.pause()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        closeButtonFailsafeTimer.resume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        closeButtonFailsafeTimer.stop()
     }
 
     /**
@@ -70,7 +107,7 @@ open class FullScreenActivity : AppCompatActivity() {
     private fun initParentUI() {
         // create the parent relative layout
         parentLayout = RelativeLayout(this)
-        parentLayout.id = numberGenerator.nextIntForCache()
+        parentLayout.id = View.generateViewId()
         parentLayout.layoutParams = RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             RelativeLayout.LayoutParams.MATCH_PARENT
@@ -122,5 +159,9 @@ open class FullScreenActivity : AppCompatActivity() {
             finish()
         }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
+
+    companion object {
+        private const val CLOSE_BUTTON_DELAY = 15_000L
     }
 }

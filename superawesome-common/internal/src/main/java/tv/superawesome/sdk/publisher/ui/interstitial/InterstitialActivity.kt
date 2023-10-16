@@ -6,15 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
-import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.InternalBannerView
-import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 
 /**
@@ -22,16 +17,12 @@ import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
  * interstitial / fullscreen type Ad.
  * A subclass of the Android "Activity" class.
  */
-public class InterstitialActivity : FullScreenActivity(), SAInterface {
+public class InterstitialActivity : FullScreenActivity() {
     private lateinit var interstitialBanner: InternalBannerView
-
-    private val controller by inject<AdController> {
-        parametersOf(placementId)
-    }
 
     override fun initChildUI() {
         interstitialBanner = InternalBannerView(this)
-        interstitialBanner.id = numberGenerator.nextIntForCache()
+        interstitialBanner.id = View.generateViewId()
         interstitialBanner.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -45,7 +36,7 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     }
 
     override fun playContent() {
-        interstitialBanner.configure(placementId, controller.listener) {
+        interstitialBanner.configure(placementId) {
             closeButton.visibility = View.VISIBLE
         }
         interstitialBanner.play()
@@ -54,13 +45,6 @@ public class InterstitialActivity : FullScreenActivity(), SAInterface {
     override fun close() {
         interstitialBanner.close()
         super.close()
-    }
-
-    override fun onEvent(placementId: Int, event: SAEvent) {
-        controller.listener?.onEvent(placementId, event)
-        if (event == SAEvent.adFailedToShow) {
-            close()
-        }
     }
 
     companion object {

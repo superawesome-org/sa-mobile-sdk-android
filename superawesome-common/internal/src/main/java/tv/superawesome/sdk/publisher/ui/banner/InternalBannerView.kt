@@ -2,6 +2,7 @@
 
 package tv.superawesome.sdk.publisher.ui.banner
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -44,6 +45,7 @@ import tv.superawesome.sdk.publisher.ui.common.ContinuousViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
+import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 
 /**
  * View that shows banner ads.
@@ -167,6 +169,7 @@ public class InternalBannerView @JvmOverloads constructor(
             logger.error("Ad not loaded", e)
             null
         }
+
         val data = controller?.adResponse?.getDataPair()
 
         if (data == null) {
@@ -308,6 +311,12 @@ public class InternalBannerView @JvmOverloads constructor(
                     hasBeenVisible?.let { it() }
                 }
                 startDwellTimer()
+
+                // Disable close button failsafe since we've loaded the ad successfully.
+                val activity = context as? Activity
+                if (activity is FullScreenActivity) {
+                    activity.closeButtonFailsafeTimer.stop()
+                }
             }
 
             override fun webViewOnError() {
@@ -366,9 +375,8 @@ public class InternalBannerView @JvmOverloads constructor(
         }
     }
 
-    internal fun configure(placementId: Int, delegate: SAInterface?, hasBeenVisible: VoidBlock) {
+    internal fun configure(placementId: Int, hasBeenVisible: VoidBlock) {
         this.placementId = placementId
-        delegate?.let { setListener(it) }
         this.hasBeenVisible = hasBeenVisible
     }
 
