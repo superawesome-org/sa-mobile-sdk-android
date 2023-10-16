@@ -11,7 +11,7 @@ import tv.superawesome.sdk.publisher.models.CloseButtonState;
 import tv.superawesome.sdk.publisher.models.Orientation;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.models.SAInterface;
-import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd;
+import tv.superawesome.sdk.publisher.SAInterstitialAd;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity

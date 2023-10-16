@@ -1,9 +1,10 @@
-@file:Suppress("RedundantVisibilityModifier", "unused")
+@file:Suppress("RedundantVisibilityModifier", "unused", "StringLiteralDuplication")
 
-package tv.superawesome.sdk.publisher.ui.interstitial
+package tv.superawesome.sdk.publisher
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +17,7 @@ import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.Orientation
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ui.interstitial.InterstitialActivity
 
 /**
  * Interstitial ads are full-screen ads that cover the interface of their host app.
@@ -272,6 +274,24 @@ public object SAInterstitialAd {
     @JvmStatic
     public fun enableCloseButton() {
         adManager.adConfig.closeButtonState = CloseButtonState.VisibleWithDelay
+    }
+
+    @Suppress("UndocumentedPublicFunction")
+    @Deprecated("Deprecated, please set configuration using AwesomeAds.init(). Will be removed in the next version")
+    public fun setConfigurationProduction() {
+        Log.w("SAInterstitialAd", "Set environment during initialization on AwesomeAds.init()")
+    }
+
+    @Suppress("UndocumentedPublicFunction")
+    @Deprecated("Deprecated, please set configuration using AwesomeAds.init(). Will be removed in the next version")
+    public fun setConfigurationDev() {
+        Log.w("SAInterstitialAd", "Set environment during initialization on AwesomeAds.init()")
+    }
+
+    @Suppress("UndocumentedPublicFunction")
+    @Deprecated("Deprecated, please set configuration using AwesomeAds.init(). Will be removed in the next version")
+    public fun setConfigurationStaging() {
+        Log.w("SAInterstitialAd", "Set environment during initialization on AwesomeAds.init()")
     }
 
     private fun makeAdRequest(
