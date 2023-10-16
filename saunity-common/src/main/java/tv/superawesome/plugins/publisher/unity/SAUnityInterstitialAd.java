@@ -9,7 +9,7 @@ import tv.superawesome.plugins.publisher.unity.util.OrientationExtensionsKt;
 import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.models.CloseButtonState;
 import tv.superawesome.sdk.publisher.models.Orientation;
-import tv.superawesome.sdk.publisher.models.SAEvent;
+import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.models.SAInterface;
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd;
 

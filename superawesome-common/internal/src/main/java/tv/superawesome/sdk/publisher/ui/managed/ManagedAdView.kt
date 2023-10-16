@@ -29,7 +29,7 @@ import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 
