@@ -702,8 +702,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     }
 
     /**
-     * LifeCycle Methods
+     // LifeCycle Methods
      */
+
     @Override
     public void onStart() {
         super.onStart();
@@ -725,6 +726,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     /**
      * SABannerAdListener Methods
      */
+
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(View.VISIBLE);
