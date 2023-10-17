@@ -17,15 +17,16 @@ import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.sametrics.SAPerformanceMetrics
 import tv.superawesome.lib.samodelspace.saad.SAAd
+import tv.superawesome.lib.satiming.SACountDownTimerFactory
 import tv.superawesome.lib.satiming.SAFailSafeTimer
 import tv.superawesome.lib.satiming.SAFailSafeTimerDelegate
+import tv.superawesome.lib.satiming.SAFailSafeTimerListener
 import tv.superawesome.lib.sautils.SAImageUtils
 import tv.superawesome.lib.sautils.SAUtils
 import tv.superawesome.lib.sautils.SAViewableDetector
 import tv.superawesome.lib.sautils.videoMaxTickCount
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterface
-import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVideoAd
 import tv.superawesome.sdk.publisher.SAVideoClick
 import tv.superawesome.sdk.publisher.state.CloseButtonState
@@ -44,7 +45,6 @@ class SAManagedAdActivity : Activity(),
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
     private var ad: SAAd? = null
-    private var failSafeTimer = SAFailSafeTimer()
     private lateinit var events: SAEvents
     private lateinit var performanceMetrics: SAPerformanceMetrics
     private lateinit var viewableDetector: SAViewableDetector
@@ -85,6 +85,8 @@ class SAManagedAdActivity : Activity(),
 
         return@lazy closeButton
     }
+
+    private val failSafeTimer = SAFailSafeTimer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,14 +130,13 @@ class SAManagedAdActivity : Activity(),
             }
         }
 
-        failSafeTimer.delegate =
-            object : SAFailSafeTimerDelegate {
-                override fun failSafeDidTimeOut() {
-                    showCloseButton()
-                    listener?.onEvent(ad.placementId, SAEvent.adEnded)
-                    Log.d("VPAID FSTIMER", ad.placementId.toString())
-                }
+        failSafeTimer.listener = object: SAFailSafeTimerListener {
+            override fun failSafeDidTimeOut() {
+                showCloseButton()
+                listener?.onEvent(ad.placementId, SAEvent.adEnded)
+                Log.d("VPAID FSTIMER DELEGATE", ad.placementId.toString())
             }
+        }
 
         failSafeTimer.start()
     }
@@ -165,6 +166,7 @@ class SAManagedAdActivity : Activity(),
         cancelCloseButtonShownRunnable()
         viewableDetector.cancel()
         failSafeTimer.stop()
+        Log.d("VPAID FSTIMER ONDESTROY", this.placementId.toString())
         config = null
         videoClick = null
     }

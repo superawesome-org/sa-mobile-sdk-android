@@ -72,7 +72,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
-    private static final SAFailSafeTimer failSafeTimer = new SAFailSafeTimer();
+    private SAFailSafeTimer failSafeTimer = new SAFailSafeTimer();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -150,15 +150,16 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         parent.addView(closeButton);
         setContentView(parent);
 
-        failSafeTimer.setDelegate(() -> {
+        failSafeTimer.setListener(() -> {
             closeButton.setVisibility(View.VISIBLE);
             listener.onEvent(ad.placementId, SAEvent.adEnded);
-            Log.d("INSTL FSTIMER", String.valueOf(ad.placementId));
+            Log.d("INSTL FSTIMER DELEGATE", String.valueOf(ad.placementId));
         });
 
         // finally play!
         interstitialBanner.play(this);
         failSafeTimer.start();
+        Log.d("INSTL FSTIMER START", String.valueOf(this.ad.placementId));
     }
 
     /**
@@ -179,6 +180,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * Method that closes the interstitial ad
      */
     private void close () {
+        Log.d("INSTL FSTIMER STOP", String.valueOf(this.ad.placementId));
         failSafeTimer.stop();
         // close the banner as well
         interstitialBanner.close();

@@ -170,13 +170,13 @@ public class SAVideoActivity extends Activity implements
         } catch (Exception ignored) {
         }
 
-        failSafeTimer.setDelegate(() -> {
+        failSafeTimer.setListener(() -> {
             closeButton.setVisibility(View.VISIBLE);
             if (listenerRef != null) {
                 listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
                 Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
             }
-            Log.d("SAVideoActivity FSTIMER", String.valueOf(ad.placementId));
+            Log.d("VIDEO FSTIMER DELEGATE", String.valueOf(ad.placementId));
         });
         failSafeTimer.start();
     }
@@ -188,12 +188,14 @@ public class SAVideoActivity extends Activity implements
             control.start();
         }
         failSafeTimer.start();
+        Log.d("VIDEO FSTIMER ONSTART", String.valueOf(this.ad.placementId));
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         failSafeTimer.pause();
+        Log.d("VIDEO FSTIMER ONSTOP", String.valueOf(this.ad.placementId));
     }
 
     @Override
@@ -201,6 +203,7 @@ public class SAVideoActivity extends Activity implements
         SAParentalGate.close();
         SACloseWarning.close();
         failSafeTimer.stop();
+        Log.d("VIDEO FSTIMER ONDESTROY", String.valueOf(this.ad.placementId));
         super.onDestroy();
     }
 
@@ -247,6 +250,7 @@ public class SAVideoActivity extends Activity implements
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown);
         }
         failSafeTimer.stop();
+        Log.d("VIDEO FSTIMER STOP", String.valueOf(this.ad.placementId));
     }
 
     @Override
@@ -323,6 +327,7 @@ public class SAVideoActivity extends Activity implements
 
         videoEvents.listener = null;
         failSafeTimer.stop();
+        Log.d("VIDEO FSTIMER CLOSE", String.valueOf(this.ad.placementId));
 
         // call listener
         if (listenerRef != null) {

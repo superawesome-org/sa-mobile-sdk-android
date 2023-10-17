@@ -2,46 +2,41 @@ package tv.superawesome.lib.satiming
 
 import android.os.CountDownTimer
 
-interface SAFailSafeTimerDelegate {
+interface SAFailSafeTimerListener {
     fun failSafeDidTimeOut()
 }
 
-class SAFailSafeTimer(private var timeInterval: Long = 15000) {
+class SAFailSafeTimer(private var timeout: Long = 15000L, private val interval: Long = 1000L) {
 
-    var delegate: SAFailSafeTimerDelegate? = null
+    var listener: SAFailSafeTimerListener? = null
 
-    private var startTime: Long = 0
-    private var timerHasFired: Boolean = false
+    private var startTime: Long = 0L
     private var timer: CountDownTimer? = null
     private val deductedTime: Long
         get() = System.currentTimeMillis() - startTime
 
-    val timerDidFire: Boolean
-        get() = timerHasFired
-
     fun start() {
         clearTimer()
         startTime = System.currentTimeMillis()
-        if (timeInterval <= 0L) return
+        if (timeout <= 0L) return
 
-        timer = object: CountDownTimer(timeInterval, 1000) {
+        timer = object: CountDownTimer(timeout, interval) {
             override fun onTick(millisUntilFinished: Long) = Unit
 
             override fun onFinish() {
                 stop()
-                delegate?.failSafeDidTimeOut()
+                listener?.failSafeDidTimeOut()
             }
-        }
-        timer?.start()
+        }.start()
     }
 
     fun pause() {
         clearTimer()
-        timeInterval -= deductedTime
+        timeout -= deductedTime
     }
 
     fun stop() {
-        timeInterval = 0
+        timeout = 0
         clearTimer()
     }
 
