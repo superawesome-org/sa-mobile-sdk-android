@@ -15,8 +15,10 @@ import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.ConnectionType
+import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.EventData
 import tv.superawesome.sdk.publisher.models.EventType
+import tv.superawesome.sdk.publisher.testutil.FakeFactory
 import java.util.Locale
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
@@ -524,6 +526,36 @@ internal class AdQueryMakerTest : BaseTest() {
                     "key4=4}",
             query.toString()
         )
+    }
+
+    @Test
+    fun `makePerformanceTags returns PerformanceMetricTags`() {
+        // Arrange
+        val adResponse = FakeFactory.makeFakeAdResponse()
+
+        // Act
+        val output = queryMaker.makePerformanceTags(adResponse)
+
+        // Assert
+        assertEquals("1", output.placementId)
+        assertEquals("123", output.lineItemId)
+        assertEquals("10", output.creativeId)
+        assertEquals(CreativeFormatType.Tag, output.format)
+        assertEquals("0", output.connectionType)
+    }
+
+    @Test
+    fun `makeImpressionQuery returns an EventQueryBundle`() {
+        // Arrange
+        val adResponse = FakeFactory.makeFakeAdResponse()
+
+        // Act
+        val output = queryMaker.makeImpressionQuery(adResponse)
+
+        // Assert
+        assertEquals(10, output.parameters.creative)
+        assertEquals(123, output.parameters.lineItem)
+        assertEquals(1, output.parameters.placement)
     }
 
     private fun verifyOptions(options: Map<String, Any>, expectedOptions: Map<String, Any>) {

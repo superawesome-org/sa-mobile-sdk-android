@@ -61,6 +61,12 @@ internal class ConnectionProviderTest : BaseTest() {
         whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_GSM, ConnectionType.Cellular2g)
         whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_HSPA, ConnectionType.Cellular3g)
         whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_LTE, ConnectionType.Cellular4g)
+        whenTelephonyCapability(TelephonyManager.NETWORK_TYPE_NR, ConnectionType.Cellular5g)
+    }
+
+    @Test
+    fun test_connectionType_unknown() {
+        whenTelephonyCapability(-1, ConnectionType.Unknown)
     }
 
     private fun whenNetworkType(networkCapability: Int, expected: ConnectionType) {

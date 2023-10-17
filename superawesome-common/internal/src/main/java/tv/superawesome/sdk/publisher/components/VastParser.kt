@@ -41,36 +41,45 @@ class VastParser(
                 it.textContent
             }
             val trackingElements = parser.findAll(creative, "Tracking")
-            val creativeViews =
-                trackingElements.filterAttribute("creativeView")
-                    .mapNotNull { it.textContent }
-            val start = trackingElements.filterAttribute("start")
-                .mapNotNull { it.textContent }
-            val firstQuartile =
-                trackingElements.filterAttribute("firstQuartile")
-                    .mapNotNull { it.textContent }
-            val midPoint = trackingElements.filterAttribute("midpoint")
-                .mapNotNull { it.textContent }
-            val thirdQuartile =
-                trackingElements.filterAttribute("thirdQuartile")
-                    .mapNotNull { it.textContent }
-            val complete = trackingElements.filterAttribute("complete")
+
+            val creativeViews = trackingElements
+                .filterAttribute("creativeView")
                 .mapNotNull { it.textContent }
 
-            val media = parser.findAll(creative, "MediaFile").filter {
-                it.getAttribute("type")?.contains("mp4") == true
-            }.map {
-                val bitrate = it.getAttribute("bitrate")?.toIntOrNull() ?: 0
-                val width = it.getAttribute("width")?.toIntOrNull() ?: 0
-                val height = it.getAttribute("height")?.toIntOrNull() ?: 0
-                VastMedia(
-                    it.getAttribute("type"),
-                    it.textContent.replace(" ", ""),
-                    bitrate,
-                    width,
-                    height
-                )
-            }
+            val start = trackingElements
+                .filterAttribute("start")
+                .mapNotNull { it.textContent }
+
+            val firstQuartile = trackingElements
+                .filterAttribute("firstQuartile")
+                .mapNotNull { it.textContent }
+
+            val midPoint = trackingElements
+                .filterAttribute("midpoint")
+                .mapNotNull { it.textContent }
+
+            val thirdQuartile = trackingElements
+                .filterAttribute("thirdQuartile")
+                .mapNotNull { it.textContent }
+
+            val complete = trackingElements
+                .filterAttribute("complete")
+                .mapNotNull { it.textContent }
+
+            val media = parser.findAll(creative, "MediaFile")
+                .filter { it.getAttribute("type")?.contains("mp4") == true }
+                .map {
+                    val bitrate = it.getAttribute("bitrate")?.toIntOrNull() ?: 0
+                    val width = it.getAttribute("width")?.toIntOrNull() ?: 0
+                    val height = it.getAttribute("height")?.toIntOrNull() ?: 0
+                    VastMedia(
+                        it.getAttribute("type"),
+                        it.textContent.replace(" ", ""),
+                        bitrate,
+                        width,
+                        height
+                    )
+                }
 
             val sortedMedia = media.sortedBy { it.bitrate }
 
