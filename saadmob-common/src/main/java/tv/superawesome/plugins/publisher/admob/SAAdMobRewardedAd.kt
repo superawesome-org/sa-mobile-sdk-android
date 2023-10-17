@@ -8,7 +8,7 @@ import com.google.android.gms.ads.mediation.MediationRewardedAdConfiguration
 import com.google.android.gms.ads.rewarded.RewardItem
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
-import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
+import tv.superawesome.sdk.publisher.SAVideoAd
 
 class SAAdMobRewardedAd(
     private val adConfiguration: MediationRewardedAdConfiguration,

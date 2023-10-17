@@ -9,6 +9,7 @@ package tv.superawesome.lib.sasession.defines;
  * - PRODUCTION
  * - STAGING
  */
+@Deprecated
 public enum SAConfiguration {
     DEV(-1),
     PRODUCTION(0),
