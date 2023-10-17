@@ -37,6 +37,7 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.satiming.SAFailSafeTimer;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -71,6 +72,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
+    private SAFailSafeTimer failSafeTimer = new SAFailSafeTimer();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -148,8 +150,18 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         parent.addView(closeButton);
         setContentView(parent);
 
+        failSafeTimer.setListener(() -> {
+            // Override the close button click behaviour when showing the close button as
+            // a fail safe
+            closeButton.setOnClickListener(v -> failSafeClose());
+            closeButton.setVisibility(View.VISIBLE);
+            Log.d("INSTL FSTIMER DELEGATE", String.valueOf(ad.placementId));
+        });
+
         // finally play!
         interstitialBanner.play(this);
+        failSafeTimer.start();
+        Log.d("INSTL FSTIMER START", String.valueOf(this.ad.placementId));
     }
 
     /**
@@ -178,6 +190,8 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * Method that closes the interstitial ad
      */
     private void close() {
+        Log.d("INSTL FSTIMER STOP", String.valueOf(this.ad.placementId));
+        failSafeTimer.stop();
         // close the banner as well
         interstitialBanner.close();
         interstitialBanner.setAd(null);
@@ -465,6 +479,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                     }
                 });
             });
+
         }
         // else if the ad data for the placement exists in the "ads" hash map, then notify the
         // user that it already exists and he should just play it
@@ -692,6 +707,33 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("INSTL FSTIMER ONSTART", String.valueOf(this.ad.placementId));
+        failSafeTimer.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("INSTL FSTIMER ONSTOP", String.valueOf(this.ad.placementId));
+        failSafeTimer.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("INSTL FSTIMER ONDESTROY", String.valueOf(this.ad.placementId));
+        failSafeTimer.stop();
+    }
+
+    @Override
+    public void hasShown() {
+        failSafeTimer.stop();
+        Log.d("INSTL FSTIMER ADSHOWN", String.valueOf(this.ad.placementId));
     }
 
     @Override
