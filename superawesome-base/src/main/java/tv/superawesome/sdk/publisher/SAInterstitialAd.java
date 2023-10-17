@@ -167,6 +167,14 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     }
 
     /**
+     * Method that closes the ad via the fail safe timer
+     */
+    private void failSafeClose() {
+        listener.onEvent(ad.placementId, SAEvent.adEnded);
+        close();
+    }
+
+    /**
      * Method that closes the interstitial ad
      */
     private void close() {
