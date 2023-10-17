@@ -2,13 +2,10 @@ package tv.superawesome.lib.satiming
 
 import android.os.CountDownTimer
 
-interface SAFailSafeTimerListener {
-    fun failSafeDidTimeOut()
-}
+class SAFailSafeTimer(private var timeout: Long = 15000L,
+                      private val interval: Long = 1000L) {
 
-class SAFailSafeTimer(private var timeout: Long = 15000L, private val interval: Long = 1000L) {
-
-    var listener: SAFailSafeTimerListener? = null
+    var listener: Listener? = null
 
     private var startTime: Long = 0L
     private var timer: CountDownTimer? = null
@@ -43,5 +40,9 @@ class SAFailSafeTimer(private var timeout: Long = 15000L, private val interval: 
     private fun clearTimer() {
         timer?.cancel()
         timer = null
+    }
+
+    interface Listener {
+        fun failSafeDidTimeOut()
     }
 }

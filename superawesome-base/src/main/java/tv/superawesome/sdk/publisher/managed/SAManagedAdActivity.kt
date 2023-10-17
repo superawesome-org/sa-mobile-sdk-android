@@ -17,10 +17,8 @@ import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.sametrics.SAPerformanceMetrics
 import tv.superawesome.lib.samodelspace.saad.SAAd
-import tv.superawesome.lib.satiming.SACountDownTimerFactory
 import tv.superawesome.lib.satiming.SAFailSafeTimer
-import tv.superawesome.lib.satiming.SAFailSafeTimerDelegate
-import tv.superawesome.lib.satiming.SAFailSafeTimerListener
+import tv.superawesome.lib.satiming.SAFailSafeTimer.Listener
 import tv.superawesome.lib.sautils.SAImageUtils
 import tv.superawesome.lib.sautils.SAUtils
 import tv.superawesome.lib.sautils.SAViewableDetector
@@ -130,7 +128,7 @@ class SAManagedAdActivity : Activity(),
             }
         }
 
-        failSafeTimer.listener = object: SAFailSafeTimerListener {
+        failSafeTimer.listener = object: Listener {
             override fun failSafeDidTimeOut() {
                 showCloseButton()
                 listener?.onEvent(ad.placementId, SAEvent.adEnded)
