@@ -128,7 +128,7 @@ class SAManagedAdActivity : Activity(),
         }
 
         failSafeTimer.listener = object: Listener {
-            override fun failSafeDidTimeOut() {
+            override fun didTimeOut() {
                 // Override the close button click behaviour when showing the close button as
                 // a fail safe
                 closeButton.setOnClickListener {

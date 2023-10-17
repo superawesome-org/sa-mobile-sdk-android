@@ -29,7 +29,7 @@ class SACountDownTimer(private var timeout: Long = 15000L,
 
             override fun onFinish() {
                 stop()
-                listener?.failSafeDidTimeOut()
+                listener?.didTimeOut()
             }
         }.start()
     }
@@ -64,6 +64,6 @@ class SACountDownTimer(private var timeout: Long = 15000L,
         /**
          * A method that is called when the timer has reached the end of the countdown.
          */
-        fun failSafeDidTimeOut()
+        fun didTimeOut()
     }
 }
