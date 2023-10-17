@@ -58,10 +58,12 @@ class SAFailSafeTimer(private var timeout: Long = 15000L,
     }
 
     /**
-     * This interface provides a method that is called when the timer has reached the end of the
-     * countdown.
+     * A listener interface for the timer
      */
     interface Listener {
+        /**
+         * A method that is called when the timer has reached the end of the countdown.
+         */
         fun failSafeDidTimeOut()
     }
 }
