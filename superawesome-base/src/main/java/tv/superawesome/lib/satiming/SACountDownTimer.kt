@@ -5,8 +5,8 @@ import android.os.CountDownTimer
 /**
  * This class provides a countdown timer that calls the Listener back onFinish.
  */
-class SACountDownTimer(private var timeout: Long = 15000L,
-                       private val interval: Long = 1000L) {
+class SACountDownTimer(private var timeout: Long = 15_000L,
+                       private val interval: Long = 1_000L) {
 
     /**
      * The listener for the timer.
