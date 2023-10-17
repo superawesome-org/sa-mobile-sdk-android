@@ -1,7 +1,5 @@
 package tv.superawesome.sdk.publisher.testutil
 
-import io.mockk.mockk
-import tv.superawesome.sdk.publisher.ad.DefaultAdController
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.Creative
@@ -40,6 +38,31 @@ internal object FakeFactory {
             )
         ),
         random = ""
+    )
+
+    fun makeFakeVpaidAd(vastUrl: String = exampleVastUrl) = Ad(
+        campaignType = 123,
+        showPadlock = false,
+        lineItemId = 123,
+        test = false,
+        creative = Creative(
+            id = 10,
+            format = CreativeFormatType.Video,
+            referral = CreativeReferral(),
+            details = CreativeDetail(
+                url = exampleUrl,
+                video = "",
+                placementFormat = "video",
+                width = 1,
+                height = 1,
+                duration = 1,
+                image = exampleUrl,
+                vast = vastUrl,
+                tag = "<html><script src='http://test.com/ad.js'/></html>"
+            )
+        ),
+        random = "",
+        isVpaid = true,
     )
 
     fun makeVastAd(

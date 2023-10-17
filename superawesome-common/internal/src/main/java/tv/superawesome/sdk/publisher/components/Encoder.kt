@@ -3,14 +3,14 @@ package tv.superawesome.sdk.publisher.components
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
-class Encoder : EncoderType {
+class Encoder(private val charset: String = "UTF-8"): EncoderType {
     @Suppress("SwallowedException")
     override fun encodeUri(string: String?): String =
         if (string.isNullOrEmpty()) {
             ""
         } else {
             try {
-                URLEncoder.encode(string, "UTF-8")
+                URLEncoder.encode(string, charset)
             } catch (e: UnsupportedEncodingException) {
                 ""
             }
