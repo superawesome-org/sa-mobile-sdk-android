@@ -2,6 +2,10 @@ package tv.superawesome.lib.satiming
 
 import android.os.CountDownTimer
 
+/**
+ * This class provides a countdown timer that calls the Listener back onFinish.
+ * Designed to be used with a fail safe timeout of 15000 milliseconds.
+ */
 class SAFailSafeTimer(private var timeout: Long = 15000L,
                       private val interval: Long = 1000L) {
 
@@ -12,6 +16,9 @@ class SAFailSafeTimer(private var timeout: Long = 15000L,
     private val deductedTime: Long
         get() = System.currentTimeMillis() - startTime
 
+    /**
+     * This method starts the countdown timer. It will also clear any previously started timer.
+     */
     fun start() {
         clearTimer()
         startTime = System.currentTimeMillis()
@@ -27,11 +34,19 @@ class SAFailSafeTimer(private var timeout: Long = 15000L,
         }.start()
     }
 
+    /**
+     * This method simulates a pause action by clearing the current timer and storing the remaining
+     * milliseconds of the countdown which are used as the timeout of a new timer when start is
+     * called again.
+     */
     fun pause() {
         clearTimer()
         timeout -= deductedTime
     }
 
+    /**
+     * This method clears the current timer and sets the timeout to 0.
+     */
     fun stop() {
         timeout = 0
         clearTimer()
@@ -42,6 +57,10 @@ class SAFailSafeTimer(private var timeout: Long = 15000L,
         timer = null
     }
 
+    /**
+     * This interface provides a method that is called when the timer has reached the end of the
+     * countdown.
+     */
     interface Listener {
         fun failSafeDidTimeOut()
     }
