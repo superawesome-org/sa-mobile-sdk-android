@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.superawesome.composeexample.R
 import com.superawesome.composeexample.models.PlacementItem
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ui.banner.BannerView
 
 @Composable
@@ -21,7 +21,7 @@ fun AdBannerView(
 ) {
     Column(modifier = modifier) {
         AndroidView(factory = { ctx ->
-            BannerView(ctx).apply {
+            SABannerAd(ctx).apply {
                 layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                 setListener { _, event ->
                     when (event) {

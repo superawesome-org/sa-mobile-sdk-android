@@ -14,8 +14,8 @@ import java.util.HashMap;
 
 import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.plugins.publisher.unity.util.SAScreenUtil;
-import tv.superawesome.sdk.publisher.models.SAEvent;
-import tv.superawesome.sdk.publisher.ui.banner.BannerView;
+import tv.superawesome.sdk.publisher.SAEvent;
+import tv.superawesome.sdk.publisher.SABannerAd;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity
@@ -23,13 +23,13 @@ import tv.superawesome.sdk.publisher.ui.banner.BannerView;
 public class SAUnityBannerAd {
 
     // hash map containing banner ads
-    private static final HashMap<String, BannerView> bannerAdHashMap = new HashMap<>();
+    private static final HashMap<String, SABannerAd> bannerAdHashMap = new HashMap<>();
 
     /**
      * Method that creates a new banner ad (from Unity)
      */
     public static void SuperAwesomeUnitySABannerAdCreate(Context context, final String unityName) {
-        BannerView bannerAd = new BannerView(context);
+        SABannerAd bannerAd = new SABannerAd(context);
         bannerAd.setId(View.generateViewId());
 
         bannerAd.setListener((placementId, event) -> {
@@ -98,7 +98,7 @@ public class SAUnityBannerAd {
                                                        String openRtbPartnerId,
                                                        String encodedOptions) {
         if (bannerAdHashMap.containsKey(unityName)) {
-            BannerView bannerAd = bannerAdHashMap.get(unityName);
+            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setTestMode(test);
 
             if (encodedOptions != null && !encodedOptions.isEmpty()) {
@@ -124,7 +124,7 @@ public class SAUnityBannerAd {
      */
     public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable(Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
-            BannerView bannerAd = bannerAdHashMap.get(unityName);
+            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             return bannerAd != null && bannerAd.hasAdAvailable();
         }
         return false;
@@ -141,7 +141,7 @@ public class SAUnityBannerAd {
             Activity activity = (Activity) context;
 
             // get banner ad
-            final BannerView bannerAd = bannerAdHashMap.get(unityName);
+            final SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setParentalGate(isParentalGateEnabled);
             bannerAd.setBumperPage(isBumperPageEnabled);
             bannerAd.setColor(color);
@@ -183,7 +183,7 @@ public class SAUnityBannerAd {
      */
     public static void SuperAwesomeUnitySABannerAdClose(Context context, String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
-            BannerView bannerAd = bannerAdHashMap.get(unityName);
+            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             if (bannerAd != null) {
                 bannerAd.close();
                 bannerAd.setVisibility(View.GONE);

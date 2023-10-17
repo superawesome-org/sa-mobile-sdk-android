@@ -12,7 +12,7 @@ import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.NumberGeneratorType
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.common.DefaultBumperPage
 import tv.superawesome.sdk.publisher.ui.common.ParentalGate

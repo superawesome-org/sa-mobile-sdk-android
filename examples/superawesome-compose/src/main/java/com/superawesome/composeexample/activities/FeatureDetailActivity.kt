@@ -27,9 +27,9 @@ import com.superawesome.composeexample.ui.theme.SAMobileSDKAndroidTheme
 import com.superawesome.composeexample.views.AdBannerView
 import com.superawesome.composeexample.views.FeatureToggles
 import com.superawesome.composeexample.views.PlacementsList
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
-import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
+import tv.superawesome.sdk.publisher.SAVideoAd
 
 class FeatureDetailActivity : ComponentActivity() {
 

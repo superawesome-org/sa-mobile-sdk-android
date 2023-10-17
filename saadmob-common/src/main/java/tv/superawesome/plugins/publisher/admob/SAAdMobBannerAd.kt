@@ -6,15 +6,15 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback
 import com.google.android.gms.ads.mediation.MediationBannerAd
 import com.google.android.gms.ads.mediation.MediationBannerAdCallback
 import com.google.android.gms.ads.mediation.MediationBannerAdConfiguration
-import tv.superawesome.sdk.publisher.models.SAEvent
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
-import tv.superawesome.sdk.publisher.ui.banner.BannerView
+import tv.superawesome.sdk.publisher.SABannerAd
 
 class SAAdMobBannerAd(
     private val adConfiguration: MediationBannerAdConfiguration,
     private var mediationAdLoadCallback: MediationAdLoadCallback<MediationBannerAd, MediationBannerAdCallback>
 ) : MediationBannerAd, SAInterface {
-    private var bannerAd: BannerView? = null
+    private var bannerAd: SABannerAd? = null
     private var adCallback: MediationBannerAdCallback? = null
     private var loadedPlacementId = 0
     private var adLoaded = false
@@ -26,7 +26,7 @@ class SAAdMobBannerAd(
         loadedPlacementId =
             adConfiguration.serverParameters.getString(SAAdMobExtras.PARAMETER)?.toIntOrNull() ?: 0
 
-        bannerAd = BannerView(context)
+        bannerAd = SABannerAd(context)
         bannerAd?.id = View.generateViewId()
 
         val extras = SAAdMobExtras.readBundle(adConfiguration.mediationExtras)

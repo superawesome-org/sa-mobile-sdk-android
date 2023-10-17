@@ -10,8 +10,8 @@ import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.models.AdRequest;
 import tv.superawesome.sdk.publisher.models.CloseButtonState;
 import tv.superawesome.sdk.publisher.models.Orientation;
-import tv.superawesome.sdk.publisher.models.SAEvent;
-import tv.superawesome.sdk.publisher.ui.video.SAVideoAd;
+import tv.superawesome.sdk.publisher.SAEvent;
+import tv.superawesome.sdk.publisher.SAVideoAd;
 
 /**
  * Class that holds a number of static methods used to communicate with Unity

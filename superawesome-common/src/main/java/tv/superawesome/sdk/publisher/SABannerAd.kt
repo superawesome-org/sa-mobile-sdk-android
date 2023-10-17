@@ -1,18 +1,21 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
 
-package tv.superawesome.sdk.publisher.ui.banner
+package tv.superawesome.sdk.publisher
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.FrameLayout
+import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.AdView
+import tv.superawesome.sdk.publisher.ui.banner.InternalBannerView
 
 /**
  * View that shows banner ads.
  */
 @Suppress("TooManyFunctions")
-public class BannerView @JvmOverloads constructor(
+public class SABannerAd @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -75,6 +78,16 @@ public class BannerView @JvmOverloads constructor(
         view.play()
     }
 
+    @Deprecated(
+        message = "Use the new play function, this will be removed in next version",
+        replaceWith = ReplaceWith("play()"),
+        level = DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun play(context: Context) {
+        play()
+    }
+
     /**
      * Registers a callback to be called for certain events.
      *
@@ -129,5 +142,38 @@ public class BannerView @JvmOverloads constructor(
      */
     public override fun setColor(value: Boolean) {
        view.setColor(value)
+    }
+
+    @Deprecated(
+        message = "Kept for compatibility, it has no function and it will be removed in the next version",
+        level = DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun setConfiguration(value: SAConfiguration) {
+        Log.w(
+            "SABannerAd",
+            "Function deprecated, please set the configuration via AwesomeAds.init()"
+        )
+    }
+
+    @Deprecated(
+        message = "Kept for compatibility, it has no function and it will be removed in the next version",
+        level = DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun setBannerListener(value: SAConfiguration) {
+        Log.w(
+            "SABannerAd",
+            "Function deprecated, please set listener using setListener(SAInterface)"
+        )
+    }
+
+    @Deprecated(
+        message = "Kept for compatibility, it has no function and it will be removed in the next version",
+        level = DeprecationLevel.WARNING,
+    )
+    internal interface SABannerAdListener {
+        fun hasBeenVisible()
+        fun failedToShow()
     }
 }

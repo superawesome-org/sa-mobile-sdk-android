@@ -1,4 +1,4 @@
-package tv.superawesome.sdk.publisher.models
+package tv.superawesome.sdk.publisher
 
 /**
  * This enum holds all the possible callback values that an ad sends during its lifetime.
