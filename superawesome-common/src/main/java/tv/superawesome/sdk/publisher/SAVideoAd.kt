@@ -1,10 +1,11 @@
-@file:Suppress("RedundantVisibilityModifier", "unused")
+@file:Suppress("RedundantVisibilityModifier", "unused", "StringLiteralDuplication")
 
-package tv.superawesome.sdk.publisher.ui.video
+package tv.superawesome.sdk.publisher
 
 import android.app.Activity
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineScope
@@ -12,16 +13,18 @@ import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.getKoin
 import org.koin.java.KoinJavaComponent.inject
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.lib.sasession.defines.SARTBStartDelay
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.Orientation
-import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.managed.ManagedAdActivity
+import tv.superawesome.sdk.publisher.ui.video.VideoActivity
 import java.io.File
 
 /**
@@ -156,6 +159,24 @@ public object SAVideoAd {
         adManager.adConfig.startDelay = mode
     }
 
+    @JvmStatic
+    @Deprecated(
+        "Replaced by setPlaybackMode(AdRequest.StartDelay), will be removed in the next version",
+        level = DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction", "MaxLineLength")
+    public fun setPlaybackMode(mode: SARTBStartDelay) {
+        Log.w("SAVideoAd", "Function setPlaybackMode(SARTBStartDelay) is deprecated and will be removed in the next version")
+        setPlaybackMode(
+            when (mode) {
+                SARTBStartDelay.POST_ROLL -> AdRequest.StartDelay.PostRoll
+                SARTBStartDelay.GENERIC_MID_ROLL -> AdRequest.StartDelay.GenericMidRoll
+                SARTBStartDelay.PRE_ROLL -> AdRequest.StartDelay.PreRoll
+                SARTBStartDelay.MID_ROLL -> AdRequest.StartDelay.MidRoll
+            }
+        )
+    }
+
     /**
      * Enables showing the parental gate.
      */
@@ -230,6 +251,24 @@ public object SAVideoAd {
         adManager.adConfig.shouldShowSmallClick = value
     }
 
+    @JvmStatic
+    @Deprecated(
+        message = "Will be removed in the next version",
+        replaceWith = ReplaceWith("setSmallClick(true)"),
+        DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun enableSmallClickButton() { setSmallClick(true) }
+
+    @JvmStatic
+    @Deprecated(
+        message = "Will be removed in the next version",
+        replaceWith = ReplaceWith("setSmallClick(false)"),
+        DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun disableSmallClickButton() { setSmallClick(false) }
+
     /**
      * Sets whether the ad should close at the end of the video.
      *
@@ -239,6 +278,24 @@ public object SAVideoAd {
     public fun setCloseAtEnd(value: Boolean) {
         adManager.adConfig.shouldCloseAtEnd = value
     }
+
+    @JvmStatic
+    @Deprecated(
+        message = "Will be removed in the next version",
+        replaceWith = ReplaceWith("setCloseAtEnd(true)"),
+        DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun enableCloseAtEnd() { setCloseAtEnd(true) }
+
+    @JvmStatic
+    @Deprecated(
+        message = "Will be removed in the next version",
+        replaceWith = ReplaceWith("setCloseAtEnd(false)"),
+        DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun disableCloseAtEnd() { setCloseAtEnd(false) }
 
     /**
      * Sets the close button visibility.
@@ -319,6 +376,23 @@ public object SAVideoAd {
     @JvmStatic
     public fun setOrientationLandscape() {
         setOrientation(Orientation.Landscape)
+    }
+
+    @JvmStatic
+    @Deprecated(
+        message = "Will be removed in the next version, replace with specific setOrientationX",
+        level = DeprecationLevel.WARNING,
+    )
+    @Suppress("UndocumentedPublicFunction")
+    public fun setOrientation(orientation: SAOrientation) {
+        Log.w("SAVideoAd", "setOrientation(SAOrientation) is deprecated and will be removed in the next version")
+        setOrientation(
+            when (orientation) {
+                SAOrientation.ANY -> Orientation.Any
+                SAOrientation.PORTRAIT -> Orientation.Portrait
+                SAOrientation.LANDSCAPE -> Orientation.Landscape
+            }
+        )
     }
 
     /**
@@ -405,6 +479,30 @@ public object SAVideoAd {
      */
     @JvmStatic
     public fun hasAdAvailable(placementId: Int): Boolean = adManager.hasAdAvailable(placementId)
+
+    @Suppress("UndocumentedPublicFunction")
+    @Deprecated("Deprecated, please set configuration using AwesomeAds.init(). Will be removed in the next version")
+    public fun setConfigurationProduction() {
+        Log.w("SAInterstitialAd", "Set environment during initialization on AwesomeAds.init()")
+    }
+
+    @Suppress("UndocumentedPublicFunction")
+    @Deprecated("Deprecated, please set configuration using AwesomeAds.init(). Will be removed in the next version")
+    public fun setConfigurationDev() {
+        Log.w("SAInterstitialAd", "Set environment during initialization on AwesomeAds.init()")
+    }
+
+    @Suppress("UndocumentedPublicFunction")
+    @Deprecated("Deprecated, please set configuration using AwesomeAds.init(). Will be removed in the next version")
+    public fun setConfigurationStaging() {
+        Log.w("SAInterstitialAd", "Set environment during initialization on AwesomeAds.init()")
+    }
+
+    @Suppress("UndocumentedPublicFunction")
+    @Deprecated("Deprecated, please set configuration using AwesomeAds.init(). Will be removed in the next version")
+    public fun setConfiguration(value: SAConfiguration) {
+        Log.w("SAInterstitialAd", "Set environment during initialization on AwesomeAds.init()")
+    }
 
     private fun makeAdRequest(
         context: Context,
