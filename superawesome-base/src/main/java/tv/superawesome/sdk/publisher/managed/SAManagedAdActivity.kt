@@ -130,8 +130,12 @@ class SAManagedAdActivity : Activity(),
 
         failSafeTimer.listener = object: Listener {
             override fun failSafeDidTimeOut() {
+                // Override the close button click behaviour when showing the close button as
+                // a fail safe
+                closeButton.setOnClickListener {
+                    failSafeCloseAction()
+                }
                 showCloseButton()
-                listener?.onEvent(ad.placementId, SAEvent.adEnded)
                 Log.d("VPAID FSTIMER DELEGATE", ad.placementId.toString())
             }
         }
@@ -177,11 +181,6 @@ class SAManagedAdActivity : Activity(),
             weakThis.showCloseButton()
         }
         shownRunnable?.let { shownHandler.postDelayed(it, CLOSE_BUTTON_SHOWN_TIME_INTERVAL) }
-    }
-
-    private fun cancelCloseButtonTimeoutRunnable() {
-        timeOutRunnable?.let { timeOutHandler.removeCallbacks(it) }
-        timeOutRunnable = null
     }
 
     private fun cancelCloseButtonShownRunnable() {
@@ -258,6 +257,15 @@ class SAManagedAdActivity : Activity(),
         performanceMetrics.startTimingForCloseButtonPressed()
     }
 
+    /**
+     * Method that closes the ad via the fail safe timer
+     */
+    private fun failSafeCloseAction() {
+        listener?.onEvent(placementId, SAEvent.adEnded)
+        ad?.run(performanceMetrics::trackCloseButtonPressed)
+        close()
+    }
+
     private fun onCloseAction() {
         ad?.run(performanceMetrics::trackCloseButtonPressed)
         if (config?.shouldShowCloseWarning == true && !completed) {
@@ -320,7 +328,6 @@ class SAManagedAdActivity : Activity(),
         const val CONFIG_KEY = "CONFIG"
 
         private const val CLOSE_BUTTON_SHOWN_TIME_INTERVAL = 2000L
-        private const val CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL = 12000L
 
         @JvmStatic
         fun newInstance(context: Context, placementId: Int, ad: SAAd, html: String): Intent =

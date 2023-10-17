@@ -151,8 +151,10 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         setContentView(parent);
 
         failSafeTimer.setListener(() -> {
+            // Override the close button click behaviour when showing the close button as
+            // a fail safe
+            closeButton.setOnClickListener(v -> failSafeClose());
             closeButton.setVisibility(View.VISIBLE);
-            listener.onEvent(ad.placementId, SAEvent.adEnded);
             Log.d("INSTL FSTIMER DELEGATE", String.valueOf(ad.placementId));
         });
 
@@ -177,9 +179,17 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     }
 
     /**
+     * Method that closes the ad via the fail safe timer
+     */
+    private void failSafeClose() {
+        listener.onEvent(ad.placementId, SAEvent.adEnded);
+        close();
+    }
+
+    /**
      * Method that closes the interstitial ad
      */
-    private void close () {
+    private void close() {
         Log.d("INSTL FSTIMER STOP", String.valueOf(this.ad.placementId));
         failSafeTimer.stop();
         // close the banner as well

@@ -171,11 +171,10 @@ public class SAVideoActivity extends Activity implements
         }
 
         failSafeTimer.setListener(() -> {
+            // Override the close button click behaviour when showing the close button as
+            // a fail safe
+            closeButton.setOnClickListener(v -> failSafeCloseAction());
             closeButton.setVisibility(View.VISIBLE);
-            if (listenerRef != null) {
-                listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
-                Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
-            }
             Log.d("VIDEO FSTIMER DELEGATE", String.valueOf(ad.placementId));
         });
         failSafeTimer.start();
@@ -250,7 +249,7 @@ public class SAVideoActivity extends Activity implements
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown);
         }
         failSafeTimer.stop();
-        Log.d("VIDEO FSTIMER STOP", String.valueOf(this.ad.placementId));
+        Log.d("VIDEO FSTIMER ADSHOWN", String.valueOf(this.ad.placementId));
     }
 
     @Override
@@ -289,6 +288,16 @@ public class SAVideoActivity extends Activity implements
     // Custom private methods
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Method that closes the ad via the fail safe timer
+     */
+    private void failSafeCloseAction() {
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
+            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
+        }
+        close();
+    }
     private void onCloseAction() {
         if (videoConfig.shouldShowCloseWarning && !completed) {
             control.pause();
