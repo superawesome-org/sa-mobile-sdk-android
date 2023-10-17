@@ -37,7 +37,6 @@ class SAManagedAdActivity : Activity(),
     private var config: ManagedAdConfig? = null
     private var timeOutRunnable: Runnable? = null
     private var shownRunnable: Runnable? = null
-    private var timeOutHandler = Handler(Looper.getMainLooper())
     private var shownHandler = Handler(Looper.getMainLooper())
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
@@ -142,7 +141,7 @@ class SAManagedAdActivity : Activity(),
     }
 
     /**
-    // Lifecycle Methods
+    // Lifecycle Methods.
      */
 
     override fun onStart() {
@@ -256,7 +255,7 @@ class SAManagedAdActivity : Activity(),
     }
 
     /**
-     * Method that closes the ad via the fail safe timer
+     * Method that closes the ad via the fail safe timer.
      */
     private fun failSafeCloseAction() {
         listener?.onEvent(placementId, SAEvent.adEnded)

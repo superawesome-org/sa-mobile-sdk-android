@@ -16,7 +16,6 @@ class SACountDownTimer(private var timeout: Long = 15000L,
 
     private var startTime: Long = 0L
     private var timer: CountDownTimer? = null
-    private val originalTimeout = timeout
     private val deductedTime: Long
         get() = System.currentTimeMillis() - startTime
 
