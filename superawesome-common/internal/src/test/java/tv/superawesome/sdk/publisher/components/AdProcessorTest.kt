@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import tv.superawesome.sdk.publisher.extensions.extractURLs
 import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
@@ -18,6 +19,7 @@ import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleParamString
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleUrl
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleVastUrl
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.makeFakeAd
+import tv.superawesome.sdk.publisher.testutil.FakeFactory.makeFakeVpaidAd
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.makeVastAd
 import kotlin.test.assertFails
 import kotlin.test.assertNull
@@ -106,6 +108,20 @@ internal class AdProcessorTest {
 
         // Then
         assertEquals(exampleUrl, response.baseUrl)
+    }
+
+    @Test
+    fun `ensure vpaid processes correctly`() = runTest {
+        // Given
+        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(exampleVastUrl)
+        coEvery { networkDataSource.getData(any()) } returns Result.success("")
+
+        // When
+        val response = adProcessor.process(99, makeFakeVpaidAd(), null)
+
+        // Then
+        assertEquals("<html><script src='http://test.com/ad.js'/></html>", response.html)
+        assertEquals("http://test.com", response.baseUrl)
     }
 
     @Test
