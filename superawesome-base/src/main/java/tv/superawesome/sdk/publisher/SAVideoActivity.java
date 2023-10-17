@@ -175,7 +175,6 @@ public class SAVideoActivity extends Activity implements
             // a fail safe
             closeButton.setOnClickListener(v -> failSafeCloseAction());
             closeButton.setVisibility(View.VISIBLE);
-            Log.d("VIDEO FSTIMER DELEGATE", String.valueOf(ad.placementId));
         });
         failSafeTimer.start();
     }
@@ -187,14 +186,12 @@ public class SAVideoActivity extends Activity implements
             control.start();
         }
         failSafeTimer.start();
-        Log.d("VIDEO FSTIMER ONSTART", String.valueOf(this.ad.placementId));
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         failSafeTimer.pause();
-        Log.d("VIDEO FSTIMER ONSTOP", String.valueOf(this.ad.placementId));
     }
 
     @Override
@@ -202,7 +199,6 @@ public class SAVideoActivity extends Activity implements
         SAParentalGate.close();
         SACloseWarning.close();
         failSafeTimer.stop();
-        Log.d("VIDEO FSTIMER ONDESTROY", String.valueOf(this.ad.placementId));
         super.onDestroy();
     }
 
@@ -249,7 +245,6 @@ public class SAVideoActivity extends Activity implements
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown);
         }
         failSafeTimer.stop();
-        Log.d("VIDEO FSTIMER ADSHOWN", String.valueOf(this.ad.placementId));
     }
 
     @Override
@@ -336,7 +331,6 @@ public class SAVideoActivity extends Activity implements
 
         videoEvents.listener = null;
         failSafeTimer.stop();
-        Log.d("VIDEO FSTIMER CLOSE", String.valueOf(this.ad.placementId));
 
         // call listener
         if (listenerRef != null) {

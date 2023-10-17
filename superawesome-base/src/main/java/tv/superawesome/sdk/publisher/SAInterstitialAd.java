@@ -155,13 +155,11 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             // a fail safe
             closeButton.setOnClickListener(v -> failSafeClose());
             closeButton.setVisibility(View.VISIBLE);
-            Log.d("INSTL FSTIMER DELEGATE", String.valueOf(ad.placementId));
         });
 
         // finally play!
         interstitialBanner.play(this);
         failSafeTimer.start();
-        Log.d("INSTL FSTIMER START", String.valueOf(this.ad.placementId));
     }
 
     /**
@@ -190,7 +188,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * Method that closes the interstitial ad
      */
     private void close() {
-        Log.d("INSTL FSTIMER STOP", String.valueOf(this.ad.placementId));
         failSafeTimer.stop();
         // close the banner as well
         interstitialBanner.close();
@@ -712,28 +709,24 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("INSTL FSTIMER ONSTART", String.valueOf(this.ad.placementId));
         failSafeTimer.start();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d("INSTL FSTIMER ONSTOP", String.valueOf(this.ad.placementId));
         failSafeTimer.pause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("INSTL FSTIMER ONDESTROY", String.valueOf(this.ad.placementId));
         failSafeTimer.stop();
     }
 
     @Override
     public void hasShown() {
         failSafeTimer.stop();
-        Log.d("INSTL FSTIMER ADSHOWN", String.valueOf(this.ad.placementId));
     }
 
     @Override

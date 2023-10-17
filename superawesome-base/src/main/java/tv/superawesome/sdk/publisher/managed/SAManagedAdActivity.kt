@@ -136,7 +136,6 @@ class SAManagedAdActivity : Activity(),
                     failSafeCloseAction()
                 }
                 showCloseButton()
-                Log.d("VPAID FSTIMER DELEGATE", ad.placementId.toString())
             }
         }
 
@@ -147,7 +146,6 @@ class SAManagedAdActivity : Activity(),
         super.onStart()
         listener = SAVideoAd.getListener()
         failSafeTimer.start()
-        Log.d("VPAID FSTIMER ONSTART", this.placementId.toString())
     }
 
     override fun onRestart() {
@@ -160,7 +158,6 @@ class SAManagedAdActivity : Activity(),
         adView.pauseVideo()
         failSafeTimer.pause()
         listener = null
-        Log.d("VPAID FSTIMER ONSTOP", this.placementId.toString())
     }
 
     override fun onDestroy() {
@@ -168,7 +165,6 @@ class SAManagedAdActivity : Activity(),
         cancelCloseButtonShownRunnable()
         viewableDetector.cancel()
         failSafeTimer.stop()
-        Log.d("VPAID FSTIMER ONDESTROY", this.placementId.toString())
         config = null
         videoClick = null
     }
