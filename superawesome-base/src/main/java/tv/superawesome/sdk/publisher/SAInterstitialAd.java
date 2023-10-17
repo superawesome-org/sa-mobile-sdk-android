@@ -701,11 +701,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         orientation = value;
     }
 
-    @Override
-    public void hasBeenVisible() {
-        closeButton.setVisibility(View.VISIBLE);
-    }
-
+    /**
+     * LifeCycle Methods
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -722,6 +720,14 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     public void onDestroy() {
         super.onDestroy();
         failSafeTimer.stop();
+    }
+
+    /**
+     * SABannerAdListener Methods
+     */
+    @Override
+    public void hasBeenVisible() {
+        closeButton.setVisibility(View.VISIBLE);
     }
 
     @Override
