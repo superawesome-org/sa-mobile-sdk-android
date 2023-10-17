@@ -179,6 +179,10 @@ public class SAVideoActivity extends Activity implements
         failSafeTimer.start();
     }
 
+    /**
+     // Lifecycle Methods
+     */
+
     @Override
     protected void onStart() {
         super.onStart();

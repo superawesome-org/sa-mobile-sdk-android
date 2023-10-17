@@ -702,7 +702,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     }
 
     /**
-     // LifeCycle Methods
+     // Lifecycle Methods
      */
 
     @Override

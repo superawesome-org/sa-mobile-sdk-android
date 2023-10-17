@@ -142,6 +142,10 @@ class SAManagedAdActivity : Activity(),
         failSafeTimer.start()
     }
 
+    /**
+    // Lifecycle Methods
+     */
+
     override fun onStart() {
         super.onStart()
         listener = SAVideoAd.getListener()
