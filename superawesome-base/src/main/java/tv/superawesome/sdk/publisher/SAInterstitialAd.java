@@ -37,7 +37,7 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
-import tv.superawesome.lib.satiming.SAFailSafeTimer;
+import tv.superawesome.lib.satiming.SACountDownTimer;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -72,7 +72,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
-    private SAFailSafeTimer failSafeTimer = new SAFailSafeTimer();
+    private SACountDownTimer failSafeTimer = new SACountDownTimer();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.

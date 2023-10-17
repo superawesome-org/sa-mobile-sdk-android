@@ -4,10 +4,10 @@ import android.os.CountDownTimer
 
 /**
  * This class provides a countdown timer that calls the Listener back onFinish.
- * Designed to be used with a fail safe timeout of 15000 milliseconds.
+ * Designed to be used with a timeout of 15000 milliseconds.
  */
-class SAFailSafeTimer(private var timeout: Long = 15000L,
-                      private val interval: Long = 1000L) {
+class SACountDownTimer(private var timeout: Long = 15000L,
+                       private val interval: Long = 1000L) {
 
     var listener: Listener? = null
 

@@ -27,7 +27,7 @@ import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
-import tv.superawesome.lib.satiming.SAFailSafeTimer;
+import tv.superawesome.lib.satiming.SACountDownTimer;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -61,7 +61,7 @@ public class SAVideoActivity extends Activity implements
     private VideoPlayer videoPlayer = null;
 
     private Boolean completed = false;
-    private SAFailSafeTimer failSafeTimer = new SAFailSafeTimer();
+    private SACountDownTimer failSafeTimer = new SACountDownTimer();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.

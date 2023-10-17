@@ -16,8 +16,8 @@ import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.sametrics.SAPerformanceMetrics
 import tv.superawesome.lib.samodelspace.saad.SAAd
-import tv.superawesome.lib.satiming.SAFailSafeTimer
-import tv.superawesome.lib.satiming.SAFailSafeTimer.Listener
+import tv.superawesome.lib.satiming.SACountDownTimer
+import tv.superawesome.lib.satiming.SACountDownTimer.Listener
 import tv.superawesome.lib.sautils.SAImageUtils
 import tv.superawesome.lib.sautils.SAUtils
 import tv.superawesome.lib.sautils.SAViewableDetector
@@ -83,7 +83,7 @@ class SAManagedAdActivity : Activity(),
         return@lazy closeButton
     }
 
-    private val failSafeTimer = SAFailSafeTimer()
+    private val failSafeTimer = SACountDownTimer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
