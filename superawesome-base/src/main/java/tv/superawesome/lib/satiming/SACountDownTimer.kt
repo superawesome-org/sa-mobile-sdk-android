@@ -8,6 +8,10 @@ import android.os.CountDownTimer
 class SACountDownTimer(private var timeout: Long = 15000L,
                        private val interval: Long = 1000L) {
 
+    /**
+     * The listener for the timer.
+     * Set this to perform an action when the timer has finished counting down.
+     */
     var listener: Listener? = null
 
     private var startTime: Long = 0L
