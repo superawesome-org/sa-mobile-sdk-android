@@ -136,8 +136,6 @@ class SAManagedAdActivity : Activity(),
                 showCloseButton()
             }
         }
-
-        failSafeTimer.start()
     }
 
     /**

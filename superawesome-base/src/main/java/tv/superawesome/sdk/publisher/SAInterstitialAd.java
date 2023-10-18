@@ -159,7 +159,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
 
         // finally play!
         interstitialBanner.play(this);
-        failSafeTimer.start();
     }
 
     /**

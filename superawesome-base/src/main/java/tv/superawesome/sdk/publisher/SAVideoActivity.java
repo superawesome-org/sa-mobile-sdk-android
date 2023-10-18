@@ -176,7 +176,6 @@ public class SAVideoActivity extends Activity implements
             closeButton.setOnClickListener(v -> failSafeCloseAction());
             closeButton.setVisibility(View.VISIBLE);
         });
-        failSafeTimer.start();
     }
 
     /**
