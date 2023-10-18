@@ -28,8 +28,8 @@ import tv.superawesome.demoapp.settings.SettingsDialogFragment
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.AwesomeAds
-import tv.superawesome.sdk.publisher.ui.interstitial.SAInterstitialAd
-import tv.superawesome.sdk.publisher.ui.video.SAVideoAd
+import tv.superawesome.sdk.publisher.SAInterstitialAd
+import tv.superawesome.sdk.publisher.SAVideoAd
 
 @Suppress("TooManyFunctions")
 class MainActivity : FragmentActivity() {
