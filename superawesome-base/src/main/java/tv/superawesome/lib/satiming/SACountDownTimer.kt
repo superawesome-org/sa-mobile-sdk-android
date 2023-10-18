@@ -1,6 +1,7 @@
 package tv.superawesome.lib.satiming
 
 import android.os.CountDownTimer
+import java.lang.Long.max
 
 /**
  * This class provides a countdown timer that calls the Listener back onFinish.
@@ -25,8 +26,7 @@ class SACountDownTimer(private var timeout: Long = 15_000L,
     fun start() {
         clearTimer()
         startTime = System.currentTimeMillis()
-        if (timeout <= 0L) return
-
+        if (timeout == 0L) return
         timer = object: CountDownTimer(timeout, interval) {
             override fun onTick(millisUntilFinished: Long) = Unit
 
@@ -45,7 +45,7 @@ class SACountDownTimer(private var timeout: Long = 15_000L,
      */
     fun pause() {
         clearTimer()
-        timeout -= deductedTime
+        timeout = max(0L, timeout - deductedTime)
     }
 
     /**
