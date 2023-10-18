@@ -46,7 +46,7 @@ public class SABannerAd extends FrameLayout {
 
     interface SABannerAdListener {
         void hasBeenVisible();
-
+        void hasShown();
         void failedToShow();
     }
 
@@ -425,6 +425,9 @@ public class SABannerAd extends FrameLayout {
                         // call listener
                         if (listener != null) {
                             listener.onEvent(ad.placementId, SAEvent.adShown);
+                            if (bannerListener != null) {
+                                bannerListener.hasShown();
+                            }
                             Log.d("SABannerAd", "Event callback: " + SAEvent.adShown);
                         } else {
                             Log.w("AwesomeAds", "Banner Ad listener not implemented. Event would have been adShown");
