@@ -5,6 +5,7 @@ package tv.superawesome.sdk.publisher
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.FrameLayout
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.models.SAInterface
@@ -24,6 +25,7 @@ public class SABannerAd @JvmOverloads constructor(
     private val view = InternalBannerView(context, attrs, defStyleAttr)
 
     init {
+        view.id = View.generateViewId()
         addView(view)
         view.visibility = VISIBLE
     }

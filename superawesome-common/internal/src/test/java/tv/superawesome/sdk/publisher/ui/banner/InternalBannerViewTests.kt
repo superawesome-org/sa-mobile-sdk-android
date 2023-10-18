@@ -103,7 +103,7 @@ class InternalBannerViewTests: MockServerTest(), KoinTest {
         }
 
         // when
-        sut.configure(placementId, listener) {}
+        sut.configure(placementId) {}
         sut.load(placementId)
         sut.getJob()?.join()
 

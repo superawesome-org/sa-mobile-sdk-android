@@ -29,7 +29,7 @@ fun networkModule(baseUrl: String) = module {
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         OkHttpClient().newBuilder()
-            .addNetworkInterceptor(retryInterceptor)
+            .addInterceptor(retryInterceptor)
             .addInterceptor(headerInterceptor)
             .addInterceptor(
                 ChuckerInterceptor.Builder(androidContext())
