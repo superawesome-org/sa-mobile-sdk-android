@@ -180,7 +180,6 @@ public class SAVideoAd {
                     }
                 });
             });
-
         }
         // else if the ad data for the placement exists in the "ads" hash map, then notify the
         // user that it already exists and he should just play it

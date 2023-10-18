@@ -16,6 +16,8 @@ import tv.superawesome.lib.saclosewarning.SACloseWarning
 import tv.superawesome.lib.saevents.SAEvents
 import tv.superawesome.lib.sametrics.SAPerformanceMetrics
 import tv.superawesome.lib.samodelspace.saad.SAAd
+import tv.superawesome.lib.satiming.SACountDownTimer
+import tv.superawesome.lib.satiming.SACountDownTimer.Listener
 import tv.superawesome.lib.sautils.SAImageUtils
 import tv.superawesome.lib.sautils.SAUtils
 import tv.superawesome.lib.sautils.SAViewableDetector
@@ -35,7 +37,6 @@ class SAManagedAdActivity : Activity(),
     private var config: ManagedAdConfig? = null
     private var timeOutRunnable: Runnable? = null
     private var shownRunnable: Runnable? = null
-    private var timeOutHandler = Handler(Looper.getMainLooper())
     private var shownHandler = Handler(Looper.getMainLooper())
     private var videoClick: SAVideoClick? = null
     private var completed: Boolean = false
@@ -81,6 +82,8 @@ class SAManagedAdActivity : Activity(),
         return@lazy closeButton
     }
 
+    private val failSafeTimer = SACountDownTimer()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         events = SAVideoAd.getEvents()
@@ -97,7 +100,7 @@ class SAManagedAdActivity : Activity(),
 
         when (config?.closeButtonState) {
             CloseButtonState.VisibleImmediately -> showCloseButton()
-            CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
+            CloseButtonState.VisibleWithDelay -> Unit
             else -> Unit // Hidden by default
         }
 
@@ -122,11 +125,27 @@ class SAManagedAdActivity : Activity(),
                 }
             }
         }
+
+        failSafeTimer.listener = object: Listener {
+            override fun didTimeOut() {
+                // Override the close button click behaviour when showing the close button as
+                // a fail safe
+                closeButton.setOnClickListener {
+                    failSafeCloseAction()
+                }
+                showCloseButton()
+            }
+        }
     }
+
+    /**
+    // Lifecycle Methods.
+     */
 
     override fun onStart() {
         super.onStart()
         listener = SAVideoAd.getListener()
+        failSafeTimer.start()
     }
 
     override fun onRestart() {
@@ -137,26 +156,17 @@ class SAManagedAdActivity : Activity(),
     override fun onStop() {
         super.onStop()
         adView.pauseVideo()
+        failSafeTimer.pause()
         listener = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        cancelCloseButtonTimeoutRunnable()
         cancelCloseButtonShownRunnable()
         viewableDetector.cancel()
+        failSafeTimer.stop()
         config = null
         videoClick = null
-    }
-
-    private fun setUpCloseButtonTimeoutRunnable() {
-        cancelCloseButtonTimeoutRunnable()
-        val weak = WeakReference(this)
-        timeOutRunnable = Runnable {
-            val weakThis = weak.get() ?: return@Runnable
-            weakThis.showCloseButton()
-        }
-        timeOutRunnable?.let { timeOutHandler.postDelayed(it, CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL) }
     }
 
     private fun setUpCloseButtonShownRunnable() {
@@ -167,11 +177,6 @@ class SAManagedAdActivity : Activity(),
             weakThis.showCloseButton()
         }
         shownRunnable?.let { shownHandler.postDelayed(it, CLOSE_BUTTON_SHOWN_TIME_INTERVAL) }
-    }
-
-    private fun cancelCloseButtonTimeoutRunnable() {
-        timeOutRunnable?.let { timeOutHandler.removeCallbacks(it) }
-        timeOutRunnable = null
     }
 
     private fun cancelCloseButtonShownRunnable() {
@@ -201,11 +206,11 @@ class SAManagedAdActivity : Activity(),
 
     override fun adShown() = runOnUiThread {
         performanceMetrics.startTimingForDwellTime()
-        cancelCloseButtonTimeoutRunnable()
         if (config?.closeButtonState == CloseButtonState.VisibleWithDelay) {
             setUpCloseButtonShownRunnable()
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
+        failSafeTimer.stop()
     }
 
     override fun adFailedToShow() = runOnUiThread {
@@ -245,6 +250,15 @@ class SAManagedAdActivity : Activity(),
     private fun showCloseButton() {
         closeButton.visibility = View.VISIBLE
         performanceMetrics.startTimingForCloseButtonPressed()
+    }
+
+    /**
+     * Method that closes the ad via the fail safe timer.
+     */
+    private fun failSafeCloseAction() {
+        listener?.onEvent(placementId, SAEvent.adEnded)
+        ad?.run(performanceMetrics::trackCloseButtonPressed)
+        close()
     }
 
     private fun onCloseAction() {
@@ -309,7 +323,6 @@ class SAManagedAdActivity : Activity(),
         const val CONFIG_KEY = "CONFIG"
 
         private const val CLOSE_BUTTON_SHOWN_TIME_INTERVAL = 2000L
-        private const val CLOSE_BUTTON_TIMEOUT_TIME_INTERVAL = 12000L
 
         @JvmStatic
         fun newInstance(context: Context, placementId: Int, ad: SAAd, html: String): Intent =

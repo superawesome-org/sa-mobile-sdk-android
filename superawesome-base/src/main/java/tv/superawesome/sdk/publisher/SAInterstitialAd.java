@@ -37,6 +37,7 @@ import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.lib.sasession.session.SASession;
+import tv.superawesome.lib.satiming.SACountDownTimer;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -71,6 +72,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
+    private SACountDownTimer failSafeTimer = new SACountDownTimer();
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -148,6 +150,13 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         parent.addView(closeButton);
         setContentView(parent);
 
+        failSafeTimer.setListener(() -> {
+            // Override the close button click behaviour when showing the close button as
+            // a fail safe
+            closeButton.setOnClickListener(v -> failSafeClose());
+            closeButton.setVisibility(View.VISIBLE);
+        });
+
         // finally play!
         interstitialBanner.play(this);
     }
@@ -167,9 +176,18 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     }
 
     /**
+     * Method that closes the ad via the fail safe timer
+     */
+    private void failSafeClose() {
+        listener.onEvent(ad.placementId, SAEvent.adEnded);
+        close();
+    }
+
+    /**
      * Method that closes the interstitial ad
      */
-    private void close () {
+    private void close() {
+        failSafeTimer.stop();
         // close the banner as well
         interstitialBanner.close();
         interstitialBanner.setAd(null);
@@ -682,9 +700,40 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         orientation = value;
     }
 
+    /**
+     // Lifecycle Methods.
+     */
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        failSafeTimer.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        failSafeTimer.pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        failSafeTimer.stop();
+    }
+
+    /**
+     * SABannerAdListener Methods.
+     */
+
     @Override
     public void hasBeenVisible() {
         closeButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hasShown() {
+        failSafeTimer.stop();
     }
 
     @Override
