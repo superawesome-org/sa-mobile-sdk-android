@@ -16,12 +16,12 @@ import android.widget.RelativeLayout
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 import tv.superawesome.sdk.publisher.ui.dialog.CloseWarningDialog
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
@@ -77,7 +77,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
                 View.GONE
             }
 
-        closeButton.setOnClickListener { onCloseAction() }
+        closeButton.setOnClickListener { onCloseButtonPressed() }
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
@@ -168,7 +168,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         parentLayout.addView(button)
     }
 
-    private fun onCloseAction() {
+    override fun onCloseButtonPressed() {
         if (adConfig.shouldShowCloseWarning && !completed) {
             control.pause()
             CloseWarningDialog.setListener(object : CloseWarningDialog.Interface {
@@ -186,9 +186,10 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         }
     }
 
+
     override fun onBackPressed() {
         if (adConfig.isBackButtonEnabled) {
-            onCloseAction()
+            onCloseButtonPressed()
         }
     }
 
