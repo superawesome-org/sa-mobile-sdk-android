@@ -5,6 +5,7 @@ data class TestData(val placement: String, val fileName: String) {
         val videoDirect = TestData("87969", "video_direct_success.json")
         val videoVast = TestData("88406", "video_vast_success.json")
         val videoVpaid = TestData("89056", "video_vpaid_success.json")
+        val failingVideoVpaid = TestData("89056", "video_vpaid_failure.json")
         val videoVpaidPJ = TestData("90636", "video_vpaid_popjam_success.json")
         val videoVpaidGreyBox = TestData("96690", "video_vpaid_grey_box_success.json")
         val videoPadlock = TestData("87969", "padlock/video_direct_success_padlock_enabled.json")

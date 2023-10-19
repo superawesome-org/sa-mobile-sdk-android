@@ -36,6 +36,17 @@ object WireMockHelper {
         stubPlacements()
     }
 
+    fun stubFailingVPAIDJavaScript() {
+        stubFor(
+            get(urlPathMatching("/vpaid/failing_vpaid"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readBytes("video_vpaid_failure_javascript.js"))
+                )
+        )
+    }
+
     private fun stubPlacements() {
         stubFor(
             get(urlPathMatching("/placements.json"))
