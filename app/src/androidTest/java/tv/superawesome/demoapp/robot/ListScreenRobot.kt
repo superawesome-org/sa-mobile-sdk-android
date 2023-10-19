@@ -1,21 +1,24 @@
 package tv.superawesome.demoapp.robot
 
 import android.graphics.Color
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.anyOf
 import org.junit.Assert
 import tv.superawesome.demoapp.R
 import tv.superawesome.demoapp.main.MainActivity
 import tv.superawesome.demoapp.model.TestData
-import tv.superawesome.demoapp.util.AdapterUtil.withPlacementId
 import tv.superawesome.demoapp.util.ScreenshotUtil
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
@@ -71,9 +74,9 @@ class ListScreenRobot : BaseRobot() {
     }
 
     private fun clickPlacementById(placementId: String) {
-        Thread.sleep(200)
-        onData(withPlacementId(placementId)).inAdapterView(withId(R.id.listView))
-            .perform(click())
+        onView(withId(R.id.recyclerView))
+            .perform(RecyclerViewActions.actionOnItem<ViewHolder>
+                (hasDescendant(withText(containsString(placementId))), click()))
     }
 
     fun tapOnPlacement(testData: TestData) {

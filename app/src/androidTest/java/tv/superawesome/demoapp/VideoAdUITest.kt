@@ -23,6 +23,7 @@ import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.WireMockHelper.stubFailingVPAIDJavaScript
 import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
@@ -818,6 +819,32 @@ class VideoAdUITest {
                 tapOnClose()
             }
 
+            checkForEvent(testData, SAEvent.adEnded)
+            checkForEvent(testData, SAEvent.adClosed)
+        }
+    }
+
+    @Test
+    fun test_failing_vpaid_ad_eventually_shows_close_button() {
+        val testData = TestData.failingVideoVpaid
+
+        stubFailingVPAIDJavaScript()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnDisableCloseAtEnd()
+                    tapOnCloseHidden()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndTapOnClose()
+            }
+
+            // expected events are dispatched
             checkForEvent(testData, SAEvent.adEnded)
             checkForEvent(testData, SAEvent.adClosed)
         }
