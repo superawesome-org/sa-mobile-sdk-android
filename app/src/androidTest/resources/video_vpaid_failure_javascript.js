@@ -2,7 +2,7 @@ var AwesomeAds = (function(window){
 	window['awesomeads_host'] = "https://eu-west-1-ads.superawesome.tv";
 	window['cdnUrl'] = "http://ads-ads-main-awesomeads.sacdn.net";
 	window['isHTTPS'] = "";
-	window['aa_sdkVersion'] = "android_9.2.1_admob";
+	window['aa_sdkVersion'] = "android_9.2.1";
 	window['awesomeads_interstitial'] = "true";
 	window['awesomeads_skippable'] = "true";
 	window['awesomeads_smallclick'] = "false";
@@ -52,7 +52,7 @@ var params = {
   openRtbPartnerId: 0
 }
 
-new AwesomeDisplay(89056, null, null, false, {"programmaticUuid":null,"creative":{"id":510371,"format":"video","details":{"transcodedVideos":[],"url":"","image":"","video":"","placement_format":"video","width":600,"height":480,"duration":0,"tag":"https://ad.doubleclick.net/ddm/pfadx/N977474.3516915POPJAM/B28023562.339741090;sz=0x0;ord=1697649628194;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER];dc_vast=3;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ltd=","_tag":"tag","vast":"https://eu-west-1-ads.superawesome.tv/v2/video/vast/89056/182932/510371/?sdkVersion=android_9.2.1_admob&rnd=eda67f37-796a-402c-8b45-f0f8f19261b3&dauid=864654151&bundle=tv.superawesome.demoapp&device=tablet&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk&tip=eyJhbGciOiJIUzI1NiJ9.ODEuMTEwLjI0OS4w.JID_ookEWOeYqark_ZJ8RGhOQaLYYq2UodGzzmzy0oQ&lang=en_US&ct=2"},"isKSF":true},"advertiserId":4,"publisherId":4,"is_fill":false,"is_fallback":false,"campaign_type":0,"is_house":true,"safe_ad_approved":false,"show_padlock":false,"line_item_id":182932,"moat":0.1,"test":false,"campaign_id":48202,"app":41037,"device":"tablet","aua":"eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk","tip":"eyJhbGciOiJIUzI1NiJ9.ODEuMTEwLjI0OS4w.JID_ookEWOeYqark_ZJ8RGhOQaLYYq2UodGzzmzy0oQ","is_vpaid":true,"rnd":"904b862a-97f0-4895-b98f-f023f379b00c","show":""}, params)
+new AwesomeDisplay(89056, null, null, false, {"programmaticUuid":null,"creative":{"id":510371,"format":"video","details":{"transcodedVideos":[],"url":"","image":"","video":"","placement_format":"video","width":600,"height":480,"duration":0,"tag":"","_tag":"tag","vast":""},"isKSF":true},"advertiserId":4,"publisherId":4,"is_fill":false,"is_fallback":false,"campaign_type":0,"is_house":true,"safe_ad_approved":false,"show_padlock":false,"line_item_id":182932,"moat":0.1,"test":false,"campaign_id":48202,"app":41037,"device":"tablet","aua":"","tip":"","is_vpaid":true,"rnd":"904b862a-97f0-4895-b98f-f023f379b00c","show":""}, params)
 
 
 .write();
