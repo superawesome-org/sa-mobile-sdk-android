@@ -2,7 +2,6 @@ package tv.superawesome.sdk.publisher.repositories
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.ExperimentalSerializationApi
 import okhttp3.mockwebserver.MockResponse
 import org.junit.After
 import org.junit.Before
@@ -118,6 +117,16 @@ class PerformanceRepositoryTest : MockServerTest(), KoinTest {
             100L,
             FakeFactory.makeFakeAdResponse(),
         ) { value, adResponse -> sut.trackRenderTime(value, adResponse) }
+    }
+
+    @Test
+    fun `when sending close button fallback, it should send the correct params`() = runTest {
+        testTracking(
+            PerformanceMetricName.CloseButtonFallback,
+            PerformanceMetricType.Increment,
+            1,
+            FakeFactory.makeFakeAdResponse(),
+        ) { _, adResponse -> sut.trackCloseButtonFallbackShown(adResponse) }
     }
 
     private suspend fun testTracking(

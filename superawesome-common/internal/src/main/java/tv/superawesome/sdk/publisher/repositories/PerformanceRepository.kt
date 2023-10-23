@@ -15,6 +15,13 @@ interface PerformanceRepositoryType {
     suspend fun trackCloseButtonPressed(duration: Long, adResponse: AdResponse)
 
     /**
+     * Tracks whenever the close button fallback is shown due to a failure to load the ad.
+     *
+     * @param adResponse the ad being tracked.
+     */
+    suspend fun trackCloseButtonFallbackShown(adResponse: AdResponse)
+
+    /**
      * Tracks the render time of an Ad.
      *
      * @param duration how much time has passed.
@@ -54,6 +61,16 @@ class PerformanceRepository(
             duration,
             PerformanceMetricName.CloseButtonPressTime,
             PerformanceMetricType.Gauge,
+            adQueryMaker.makePerformanceTags(adResponse),
+        )
+        sendMetric(metric)
+    }
+
+    override suspend fun trackCloseButtonFallbackShown(adResponse: AdResponse) {
+        val metric = PerformanceMetric(
+            1,
+            PerformanceMetricName.CloseButtonFallback,
+            PerformanceMetricType.Increment,
             adQueryMaker.makePerformanceTags(adResponse),
         )
         sendMetric(metric)
