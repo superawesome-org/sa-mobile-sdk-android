@@ -52,4 +52,9 @@ interface AdPerformanceTrackerHandler {
      * Submits the timer for render time in its current state.
      */
     suspend fun trackRenderTime()
+
+    /**
+     * Submits a metric for close button fallback.
+     */
+    suspend fun trackCloseButtonFallbackShown()
 }

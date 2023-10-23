@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -51,6 +52,7 @@ abstract class FullScreenActivity : AppCompatActivity() {
             onCloseButtonPressed()
             close()
         }
+        lifecycleScope.launch { controller.trackCloseButtonFallbackShown() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

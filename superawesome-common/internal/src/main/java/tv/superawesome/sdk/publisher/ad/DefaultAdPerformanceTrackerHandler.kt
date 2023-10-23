@@ -59,6 +59,10 @@ class DefaultAdPerformanceTrackerHandler(
         }
     }
 
+    override suspend fun trackCloseButtonFallbackShown() {
+        performanceRepository.trackCloseButtonFallbackShown(adResponse)
+    }
+
     private suspend fun trackTimer(timer: PerformanceTimer, tracker: suspend (Long) -> Unit) {
         if (timer.startTime == 0L) return
         tracker(timeProvider.millis() - timer.startTime)
