@@ -19,29 +19,31 @@ data class PerformanceMetric(
 }
 
 enum class PerformanceMetricName(val value: String) {
-  CloseButtonPressTime("sa.ad.sdk.close.button.press.time.android"),
+    CloseButtonPressTime("sa.ad.sdk.close.button.press.time.android"),
 
-  DwellTime("sa.ad.sdk.dwell.time.android"),
+    CloseButtonFallback("sa.ad.sdk.performance.fallback.close.shown.android"),
 
-  LoadTime("sa.ad.sdk.performance.load.time.android"),
+    DwellTime("sa.ad.sdk.dwell.time.android"),
 
-  RenderTime("sa.ad.sdk.performance.render.time.android")
+    LoadTime("sa.ad.sdk.performance.load.time.android"),
+
+    RenderTime("sa.ad.sdk.performance.render.time.android")
 }
 
 enum class PerformanceMetricType(val value: String) {
-  Gauge( "gauge"),
+    Gauge("gauge"),
 
-  Increment("increment"),
+    Increment("increment"),
 
-  DecrementBy("decrementBy"),
+    DecrementBy("decrementBy"),
 
-  Decrement("decrement"),
+    Decrement("decrement"),
 
-  Histogram("histogram"),
+    Histogram("histogram"),
 
-  IncrementBy("incrementBy"),
+    IncrementBy("incrementBy"),
 
-  Timing("timing")
+    Timing("timing")
 }
 
 @Serializable

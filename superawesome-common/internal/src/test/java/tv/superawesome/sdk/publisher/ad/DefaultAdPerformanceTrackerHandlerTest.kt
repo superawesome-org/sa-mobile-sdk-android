@@ -78,6 +78,21 @@ class DefaultAdPerformanceTrackerHandlerTest : MockServerTest(), KoinTest {
         }
     }
 
+    @Test
+    fun `track close button shown`() = runTest {
+        // arrange
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+
+        // act
+        sut.trackCloseButtonFallbackShown()
+
+        // assert
+        val request = mockServer.takeRequest()
+
+        assertEquals(PerformanceMetricName.CloseButtonFallback.value, request.requestUrl?.queryParameter("metricName"))
+        assertEquals("1", request.requestUrl?.queryParameter("value"))
+    }
+
     private suspend fun checkTrackedTime(metricName: PerformanceMetricName, tracker: suspend () -> Unit) {
         // arrange
         mockServer.enqueue(MockResponse().setResponseCode(200))
