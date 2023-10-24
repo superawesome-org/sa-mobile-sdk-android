@@ -93,6 +93,8 @@ class AdProcessor(
                 if (vast?.type == VastType.Wrapper && vast.redirect != null) {
                     val mergedVast = vast.merge(initialVast)
                     handleVast(vast.redirect, mergedVast)
+                } else if (vast?.type == VastType.InLine && initialVast != null) {
+                    vast.merge(initialVast)
                 } else {
                     vast
                 }

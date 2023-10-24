@@ -140,7 +140,13 @@ class DefaultAdController(
         logger.info("navigate to url: $url")
 
         listener?.onEvent(placementId, SAEvent.adClicked)
-        scope.launch { adEventHandler.click() }
+        scope.launch {
+            if (adResponse.isVideo()) {
+                videoClick()
+            } else {
+                click()
+            }
+        }
 
         // Append CPI data
         val referrer = adResponse.referral
