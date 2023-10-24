@@ -145,11 +145,6 @@ class SAVideoClick internal constructor(
         // send vast click tracking events
         events.triggerVASTClickTrackingEvent()
 
-        // send only in case of CPI where we'll use the direct click url
-        if (ad?.campaignType == SACampaignType.CPI) {
-            events.triggerVASTClickThroughEvent()
-        }
-
         // if it's a CPI campaign
         destination += if (ad.campaignType == SACampaignType.CPI) "&referrer=" + ad.creative.referral.writeToReferralQuery() else ""
 
