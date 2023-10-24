@@ -14,15 +14,10 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 import tv.superawesome.sdk.publisher.di.testCommonModule
 import tv.superawesome.sdk.publisher.models.AdResponse
-import tv.superawesome.sdk.publisher.models.EventData
-import tv.superawesome.sdk.publisher.models.EventType
 import tv.superawesome.sdk.publisher.models.VastAd
-import tv.superawesome.sdk.publisher.models.VastType
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
 import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.repositories.EventRepositoryType
-import tv.superawesome.sdk.publisher.repositories.VastEventRepositoryType
-import tv.superawesome.sdk.publisher.testutil.decodeDataParams
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -30,12 +25,14 @@ class VastAdEventHandlerTest : MockServerTest(), KoinTest {
 
     private val eventRepository by inject<EventRepositoryType>()
     private val dataSource by inject<NetworkDataSourceType>()
+    private val vastAd = mockk<VastAd> {
+        every { clickTrackingEvents } returns listOf(mockServer.url("vastClick").toString())
+        every { clickThroughUrl } returns null
+    }
     private val adResponse = AdResponse(
         placementId = 12345,
         ad = mockk(relaxed = true),
-        vast = mockk {
-            every { clickTrackingEvents } returns listOf(mockServer.url("vastClick").toString())
-        }
+        vast = vastAd,
     )
 
     private val sut by lazy {
@@ -59,19 +56,30 @@ class VastAdEventHandlerTest : MockServerTest(), KoinTest {
     }
 
     @Test
-    fun `videoClick and vast events are sent on videoClick()`() = runTest {
+    fun `vast click events are sent on videoClick`() = runTest {
         // arrange
-        mockServer.enqueue(MockResponse().setResponseCode(200))
         mockServer.enqueue(MockResponse().setResponseCode(200))
 
         // act
         sut.videoClick()
 
         // assert
-        val endpoint = mockServer.takeRequest().requestUrl?.pathSegments
-        assertEquals(listOf("video", "click"), endpoint)
-
         val endpointVast = mockServer.takeRequest().requestUrl?.pathSegments
         assertEquals(listOf("vastClick"), endpointVast)
+    }
+
+    @Test
+    fun `video click event is sent if there is no vast click urls`() = runTest {
+        // arrange
+        every { vastAd.clickTrackingEvents } returns emptyList()
+        every { vastAd.clickThroughUrl } returns null
+        mockServer.enqueue(MockResponse().setResponseCode(200))
+
+        // act
+        sut.videoClick()
+
+        // assert
+        val endpointVast = mockServer.takeRequest().requestUrl?.pathSegments
+        assertEquals(listOf("video", "click"), endpointVast)
     }
 }
