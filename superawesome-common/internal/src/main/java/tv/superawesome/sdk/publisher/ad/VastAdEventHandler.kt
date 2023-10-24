@@ -21,7 +21,13 @@ class VastAdEventHandler(
     }
 
     override suspend fun videoClick() {
-        eventRepository.videoClick(adResponse)
         vastEventRepository?.clickTracking()
+        if (!containsVASTClickUrls()) {
+            eventRepository.videoClick(adResponse)
+        }
     }
+
+    private fun containsVASTClickUrls() = adResponse.vast?.let { vastAd ->
+        !vastAd.clickThroughUrl.isNullOrEmpty() || vastAd.clickTrackingEvents.isNotEmpty()
+    } ?: false
 }
