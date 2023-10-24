@@ -145,6 +145,11 @@ class SAVideoClick internal constructor(
         // send vast click tracking events
         events.triggerVASTClickTrackingEvent()
 
+        // Send video click if the ad doesn't have clickThrough URL
+        if (!containsVASTClickURLs()) {
+            events.triggerClickEvent()
+        }
+
         // if it's a CPI campaign
         destination += if (ad.campaignType == SACampaignType.CPI) "&referrer=" + ad.creative.referral.writeToReferralQuery() else ""
 
@@ -155,6 +160,12 @@ class SAVideoClick internal constructor(
             Log.d("SuperAwesome", "Couldn't start browser in SAVideoClick: " + e.message)
         }
     }
+
+    private fun containsVASTClickURLs(): Boolean =
+        ad.creative.details.media.vastAd.events.any { vastEvent ->
+            vastEvent.event.contains("vast_click_through") ||
+                    vastEvent.event.contains("vast_click_tracking")
+        }
 }
 
 const val PADLOCK_URL = "https://ads.superawesome.tv/v2/safead"
