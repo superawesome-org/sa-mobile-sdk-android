@@ -134,6 +134,7 @@ class SAManagedAdActivity : Activity(),
                     failSafeCloseAction()
                 }
                 showCloseButton()
+                performanceMetrics.trackCloseButtonFallbackShown(ad)
             }
         }
     }
