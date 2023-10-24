@@ -221,9 +221,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         val chrome = AdVideoPlayerControllerView(this)
         chrome.shouldShowPadlock(controller.shouldShowPadlock)
         chrome.setShouldShowSmallClickButton(adConfig.shouldShowSmallClick)
-        chrome.clickWithThrottling {
-            controller.handleVastAdClick(this)
-        }
+        chrome.clickWithThrottling { controller.handleVastAdClick(this) }
         chrome.padlock.clickWithThrottling { controller.handleSafeAdClick(this) }
         videoPlayer.setControllerView(chrome)
     }
