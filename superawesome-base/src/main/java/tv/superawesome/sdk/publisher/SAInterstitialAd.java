@@ -155,6 +155,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             // a fail safe
             closeButton.setOnClickListener(v -> failSafeClose());
             closeButton.setVisibility(View.VISIBLE);
+            performanceMetrics.trackCloseButtonFallbackShown(ad);
         });
 
         // finally play!
