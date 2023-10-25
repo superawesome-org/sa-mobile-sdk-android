@@ -32,6 +32,7 @@ class DefaultAdManager(
         adRepository.getAd(
             placementId = placementId,
             request = adRequest,
+            adConfig = adConfig,
         )
     }
 
@@ -46,6 +47,7 @@ class DefaultAdManager(
             lineItemId = lineItemId,
             creativeId = creativeId,
             request = adRequest,
+            adConfig = adConfig,
         )
     }
 
