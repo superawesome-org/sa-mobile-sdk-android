@@ -2,14 +2,20 @@
 package tv.superawesome.sdk.publisher.components
 
 import android.app.Activity
+import android.graphics.Color
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.junit.Test
+import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.base.BaseTest
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
@@ -24,6 +30,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalSerializationApi::class)
 internal class AdQueryMakerTest : BaseTest() {
     @MockK
     lateinit var timeProvider: TimeProviderType
@@ -42,9 +49,6 @@ internal class AdQueryMakerTest : BaseTest() {
 
     @MockK
     lateinit var idGeneratorType: IdGeneratorType
-
-    @MockK
-    lateinit var encoderType: EncoderType
 
     @MockK
     lateinit var json: Json
@@ -67,10 +71,12 @@ internal class AdQueryMakerTest : BaseTest() {
     @BeforeTest
     fun prepare() {
         QueryAdditionalOptions.Companion.instance = null
+        mockkStatic(Color::class)
+        every { Color.rgb(any<Int>(), any<Int>(), any<Int>()) } returns 0
     }
 
     @Test
-    fun test_adQuery() {
+    fun test_adQuery() = runTest {
         // Given
         val request = DefaultAdRequest(false, 10, 20, 30, 40, 50, 60, 70)
         coEvery { idGeneratorType.findDauId() } returns 99
@@ -84,7 +90,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val baseQuery = runBlocking { queryMaker.makeAdQuery(request).parameters }
+        val baseQuery = queryMaker.makeAdQuery(request, AdConfig()).parameters
 
         // Then
         assertEquals(false, baseQuery.test)
@@ -107,7 +113,7 @@ internal class AdQueryMakerTest : BaseTest() {
     }
 
     @Test
-    fun test_adQuery_withOpenRtbPartnerId() {
+    fun test_adQuery_withOpenRtbPartnerId() = runTest {
         // Given
         val request = DefaultAdRequest(false, 10, 20, 30, 40, 50, 60, 70,  openRtbPartnerId = "12345")
         coEvery { idGeneratorType.findDauId() } returns 99
@@ -121,7 +127,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val baseQuery = runBlocking { queryMaker.makeAdQuery(request).parameters }
+        val baseQuery = queryMaker.makeAdQuery(request, AdConfig()).parameters
 
         // Then
         assertEquals("12345", baseQuery.openRtbPartnerId)
@@ -231,7 +237,7 @@ internal class AdQueryMakerTest : BaseTest() {
     }
 
     @Test
-    fun test_adQuery_with_no_options() {
+    fun test_adQuery_with_no_options() = runBlocking {
         // Given
         val request = DefaultAdRequest(
             false,
@@ -247,14 +253,14 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val query = queryMaker.makeAdQuery(request, AdConfig())
 
         // Then
         assertTrue(query.options.isNullOrEmpty())
     }
 
     @Test
-    fun test_adQuery_with_initial_options_only() {
+    fun test_adQuery_with_initial_options_only() = runTest {
         // Given
         QueryAdditionalOptions.Companion.instance =
             QueryAdditionalOptions(initialOptions)
@@ -274,14 +280,14 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val query = queryMaker.makeAdQuery(request, AdConfig())
 
         // Then
         verifyOptions(query.options!!, initialOptions)
     }
 
     @Test
-    fun test_adQuery_with_additional_options_only() {
+    fun test_adQuery_with_additional_options_only() = runTest {
         // Given
         val request = DefaultAdRequest(
             false,
@@ -297,14 +303,14 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val query = queryMaker.makeAdQuery(request, AdConfig())
 
         // Then
         verifyOptions(query.options!!, additionalOptions)
     }
 
     @Test
-    fun test_adQuery_with_initial_options_and_additional_options() {
+    fun test_adQuery_with_initial_options_and_additional_options() = runTest {
         // Given
         QueryAdditionalOptions.Companion.instance =
             QueryAdditionalOptions(initialOptions)
@@ -323,14 +329,14 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val query = queryMaker.makeAdQuery(request, AdConfig())
 
         // Then
         verifyOptions(query.options!!, combinedOptions)
     }
 
     @Test
-    fun test_adQuery_additional_options_can_override_initial_options_when_keys_conflict() {
+    fun test_adQuery_additional_options_can_override_initial_options_when_keys_conflict() = runTest {
 
         // Given
         QueryAdditionalOptions.Companion.instance =
@@ -352,7 +358,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val query = queryMaker.makeAdQuery(request, AdConfig())
 
         // Then
         val expectedOptions = mapOf("key1" to "x", "key2" to 2)
@@ -360,7 +366,7 @@ internal class AdQueryMakerTest : BaseTest() {
     }
 
     @Test
-    fun test_adQuery_unsuitable_types_are_not_included() {
+    fun test_adQuery_unsuitable_types_are_not_included() = runTest {
 
         // Given
         QueryAdditionalOptions.Companion.instance =
@@ -382,7 +388,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request) }
+        val query = queryMaker.makeAdQuery(request, AdConfig())
 
         // Then
         val expectedOptions = mapOf("key1" to "value1", "key2" to 2, "key4" to 4)
@@ -390,7 +396,7 @@ internal class AdQueryMakerTest : BaseTest() {
     }
 
     @Test
-    fun test_built_adQuery_without_additional_options_builds_original_adQuery_only() {
+    fun test_built_adQuery_without_additional_options_builds_original_adQuery_only() = runTest {
         // Given
         val request = DefaultAdRequest(
             false,
@@ -406,51 +412,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
-
-        // Then
-        assertEquals(
-            "" +
-                    "{test=false, " +
-                    "sdkVersion=, " +
-                    "rnd=0, " +
-                    "bundle=, " +
-                    "name=, " +
-                    "dauid=0, " +
-                    "ct=6, " +
-                    "lang=en_en, " +
-                    "device=, " +
-                    "pos=10, " +
-                    "skip=20, " +
-                    "playbackmethod=30, " +
-                    "startdelay=40, " +
-                    "instl=50, " +
-                    "w=60, " +
-                    "h=70, " +
-                    "timestamp=0}",
-            query.toString()
-        )
-    }
-
-    @Test
-    fun test_built_adQuery_with_additional_options_builds_original_adQuery_with_additional_options() {
-        // Given
-        val request = DefaultAdRequest(
-            false,
-            10,
-            20,
-            30,
-            40,
-            50,
-            60,
-            70,
-            options = additionalOptions
-        )
-        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
-        every { locale.toString() } returns "en_en"
-
-        // When
-        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
+        val query = queryMaker.makeAdQuery(request, AdConfig()).build()
 
         // Then
         assertEquals(
@@ -472,6 +434,53 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
+                    "publisherConfiguration={\"closeButton\":2,\"orientation\":\"Any\",\"parentalGateOn\":false,\"bumperPageOn\":false}" +
+                    "}",
+            query.toString()
+        )
+    }
+
+    @Test
+    fun test_built_adQuery_with_additional_options_builds_original_adQuery_with_additional_options() = runTest {
+        // Given
+        val request = DefaultAdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            options = additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = queryMaker.makeAdQuery(request, AdConfig()).build()
+
+        // Then
+        assertEquals(
+            "" +
+                    "{test=false, " +
+                    "sdkVersion=, " +
+                    "rnd=0, " +
+                    "bundle=, " +
+                    "name=, " +
+                    "dauid=0, " +
+                    "ct=6, " +
+                    "lang=en_en, " +
+                    "device=, " +
+                    "pos=10, " +
+                    "skip=20, " +
+                    "playbackmethod=30, " +
+                    "startdelay=40, " +
+                    "instl=50, " +
+                    "w=60, " +
+                    "h=70, " +
+                    "timestamp=0, " +
+                    "publisherConfiguration={\"closeButton\":2,\"orientation\":\"Any\",\"parentalGateOn\":false,\"bumperPageOn\":false}, " +
                     "key3=value3, " +
                     "key4=4}",
             query.toString()
@@ -479,7 +488,7 @@ internal class AdQueryMakerTest : BaseTest() {
     }
 
     @Test
-    fun test_built_adQuery_with_initial_and_additional_options_builds_original_adQuery_with_initial_and_additional_options() {
+    fun test_built_adQuery_with_initial_and_additional_options_builds_original_adQuery_with_initial_and_additional_options() = runTest {
         // Given
         QueryAdditionalOptions.Companion.instance =
             QueryAdditionalOptions(initialOptions)
@@ -498,7 +507,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = runBlocking { queryMaker.makeAdQuery(request).build() }
+        val query = queryMaker.makeAdQuery(request, AdConfig()).build()
 
         // Then
         assertEquals(
@@ -520,6 +529,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
+                    "publisherConfiguration={\"closeButton\":2,\"orientation\":\"Any\",\"parentalGateOn\":false,\"bumperPageOn\":false}, " +
                     "key1=value1, " +
                     "key2=2, " +
                     "key3=value3, " +

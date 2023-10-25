@@ -1,16 +1,22 @@
 package tv.superawesome.sdk.publisher.models
 
+import android.graphics.Color
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
+import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.base.BaseTest
 import tv.superawesome.sdk.publisher.components.AdQueryMaker
 import tv.superawesome.sdk.publisher.components.ConnectionProviderType
@@ -22,6 +28,7 @@ import tv.superawesome.sdk.publisher.components.SdkInfoType
 import tv.superawesome.sdk.publisher.components.TimeProviderType
 import java.util.Locale
 
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalSerializationApi::class)
 class AdModelsTest: BaseTest() {
 
     @MockK
@@ -50,6 +57,12 @@ class AdModelsTest: BaseTest() {
 
     @InjectMockKs
     lateinit var queryMaker: AdQueryMaker
+
+    @Before
+    fun setup() {
+        mockkStatic(Color::class)
+        every { Color.rgb(any<Int>(), any<Int>(), any<Int>()) } returns 0
+    }
 
     @Test
     fun `Ad isCPICampaign is true when expected`() {
@@ -111,7 +124,7 @@ class AdModelsTest: BaseTest() {
         every { timeProvider.millis() } returns 12345
 
         // When
-        val sut = queryMaker.makeAdQuery(request)
+        val sut = queryMaker.makeAdQuery(request, AdConfig())
 
         // Then
         assertEquals("" +
@@ -132,6 +145,7 @@ class AdModelsTest: BaseTest() {
             "w=60, " +
             "h=70, " +
             "timestamp=12345, " +
+            "publisherConfiguration={\"closeButton\":2,\"orientation\":\"Any\",\"parentalGateOn\":false,\"bumperPageOn\":false}, " +
             "key1=value1, " +
             "key2=2}",
             sut.build().toString()

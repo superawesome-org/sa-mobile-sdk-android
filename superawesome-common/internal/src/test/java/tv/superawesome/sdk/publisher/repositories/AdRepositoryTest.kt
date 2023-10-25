@@ -1,6 +1,9 @@
 package tv.superawesome.sdk.publisher.repositories
 
+import android.graphics.Color
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import io.mockk.every
+import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -8,12 +11,13 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
+import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
+import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.network.enqueueResponse
 import tv.superawesome.sdk.publisher.testutil.FakeAdProcessor
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
-import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
@@ -49,13 +53,20 @@ class AdRepositoryTest : MockServerTest() {
         adProcessor = FakeAdProcessor(),
     )
 
+    @Before
+    override fun setup() {
+        super.setup()
+        mockkStatic(Color::class)
+        every { Color.rgb(any<Int>(), any<Int>(), any<Int>()) } returns 0
+    }
+
     @Test
     fun `when getAd is called, return the processed ad`() = runTest {
         // Given
         mockServer.enqueueResponse("mock_ad_response_1.json", 200)
 
         // When
-        val result = sut.getAd(1234, fakeAdRequest())
+        val result = sut.getAd(1234, fakeAdRequest(), AdConfig())
 
         // Then
         assertTrue(result.isSuccess)
@@ -68,7 +79,7 @@ class AdRepositoryTest : MockServerTest() {
         mockServer.enqueueResponse("mock_ad_response_1.json", 200)
 
         // When
-        val result = sut.getAd(1234, 9, 99, fakeAdRequest())
+        val result = sut.getAd(1234, 9, 99, fakeAdRequest(),  AdConfig())
 
         // Then
         assertTrue(result.isSuccess)
@@ -81,7 +92,7 @@ class AdRepositoryTest : MockServerTest() {
         mockServer.enqueue(MockResponse().setResponseCode(404))
 
         // When
-        val result = sut.getAd(1234, fakeAdRequest())
+        val result = sut.getAd(1234, fakeAdRequest(),  AdConfig())
 
         // Then
         assertTrue(result.isFailure)
@@ -93,7 +104,7 @@ class AdRepositoryTest : MockServerTest() {
         mockServer.enqueue(MockResponse().setResponseCode(404))
 
         // When
-        val result = sut.getAd(1234, 9, 99, fakeAdRequest())
+        val result = sut.getAd(1234, 9, 99, fakeAdRequest(),  AdConfig())
 
         // Then
         assertTrue(result.isFailure)

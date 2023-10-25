@@ -54,6 +54,7 @@ data class AdQuery(
     val h: Int,
     val timestamp: Long,
     val openRtbPartnerId: String?,
+    val publisherConfiguration: String?,
 )
 
 data class AdResponse(

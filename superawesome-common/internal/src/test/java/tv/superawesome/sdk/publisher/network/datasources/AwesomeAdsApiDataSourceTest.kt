@@ -232,6 +232,7 @@ class AwesomeAdsApiDataSourceTest : MockServerTest() {
         h = 0,
         timestamp = 0L,
         openRtbPartnerId = null,
+        publisherConfiguration = null,
     )
 
     private fun getEventQuery() = EventQuery(
