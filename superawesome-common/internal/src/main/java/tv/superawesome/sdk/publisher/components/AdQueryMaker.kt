@@ -1,6 +1,7 @@
 package tv.superawesome.sdk.publisher.components
 
 import kotlinx.serialization.json.Json
+import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.models.AdQuery
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.AdQueryBundle
@@ -10,10 +11,11 @@ import tv.superawesome.sdk.publisher.models.EventQuery
 import tv.superawesome.sdk.publisher.models.EventQueryBundle
 import tv.superawesome.sdk.publisher.models.EventType
 import tv.superawesome.sdk.publisher.models.PerformanceMetricTags
+import tv.superawesome.sdk.publisher.models.PublisherConfiguration
 import java.util.Locale
 
 interface AdQueryMakerType {
-    suspend fun makeAdQuery(request: AdRequest): AdQueryBundle
+    suspend fun makeAdQuery(request: AdRequest, adConfig: AdConfig): AdQueryBundle
     fun makeImpressionQuery(adResponse: AdResponse): EventQueryBundle
     fun makeClickQuery(adResponse: AdResponse): EventQueryBundle
     fun makeVideoClickQuery(adResponse: AdResponse): EventQueryBundle
@@ -37,7 +39,10 @@ class AdQueryMaker(
     private val timeProvider: TimeProviderType,
 ) : AdQueryMakerType {
 
-    override suspend fun makeAdQuery(request: AdRequest): AdQueryBundle = AdQueryBundle(
+    override suspend fun makeAdQuery(
+        request: AdRequest,
+        adConfig: AdConfig,
+    ): AdQueryBundle = AdQueryBundle(
         AdQuery(
             test = request.test,
             sdkVersion = sdkInfoType.version,
@@ -57,6 +62,7 @@ class AdQueryMaker(
             h = request.h,
             openRtbPartnerId = request.openRtbPartnerId,
             timestamp = timeProvider.millis(),
+            publisherConfiguration = PublisherConfiguration.fromAdConfig(adConfig).toJsonString(),
         ),
         options = buildOptions(requestOptions = request.options)
     )
