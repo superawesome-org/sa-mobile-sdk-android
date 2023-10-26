@@ -12,9 +12,9 @@ import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.repositories.AdRepositoryType
 
 /**
- * Default ad manager, creates any type of ad.
+ * Base ad manager, creates any type of ad.
  */
-class DefaultAdManager(
+abstract class BaseAdManager(
     private val adRepository: AdRepositoryType,
     private val logger: Logger,
     private val adControllerFactory: AdControllerFactory,
@@ -23,7 +23,7 @@ class DefaultAdManager(
 
     override var listener: SAInterface? = null
 
-    override val adConfig: AdConfig = AdConfig()
+    abstract override val adConfig: AdConfig
 
     override suspend fun load(
         placementId: Int,

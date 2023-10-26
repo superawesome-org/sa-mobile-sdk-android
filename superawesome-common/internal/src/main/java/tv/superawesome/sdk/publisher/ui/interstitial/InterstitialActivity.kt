@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
-import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.ui.banner.InternalBannerView
@@ -55,7 +55,7 @@ public class InterstitialActivity : FullScreenActivity() {
          * @param adConfig the ad configuration.
          * @param context an activity context.
          */
-        fun start(placementId: Int, adConfig: AdConfig, context: Context) {
+        fun start(placementId: Int, adConfig: FullScreenAdConfig, context: Context) {
             val intent = Intent(context, InterstitialActivity::class.java)
             intent.putExtra(Constants.Keys.placementId, placementId)
             intent.putExtra(Constants.Keys.config, adConfig)

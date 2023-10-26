@@ -37,6 +37,7 @@ import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.DwellTimer
 import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.ad.BannerAdManager
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
@@ -229,21 +230,24 @@ public class InternalBannerView @JvmOverloads constructor(
      * Sets parental gate enabled.
      */
     public override fun setParentalGate(value: Boolean) {
-        adManager.adConfig.isParentalGateEnabled = value
+        val manager = adManager as? BannerAdManager ?: return
+        manager.adConfig.isParentalGateEnabled = value
     }
 
     /**
      * Sets bumper page enabled.
      */
     public override fun setBumperPage(value: Boolean) {
-        adManager.adConfig.isBumperPageEnabled = value
+        val manager = adManager as? BannerAdManager ?: return
+        manager.adConfig.isBumperPageEnabled = value
     }
 
     /**
      * Sets the test mode.
      */
     public override fun setTestMode(value: Boolean) {
-        adManager.adConfig.testEnabled = value
+        val manager = adManager as? BannerAdManager ?: return
+        manager.adConfig.testEnabled = value
     }
 
     /**
