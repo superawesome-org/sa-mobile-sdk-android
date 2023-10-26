@@ -7,6 +7,8 @@ package tv.superawesome.lib.sasession.session;
 import android.content.Context;
 import android.os.Looper;
 
+import androidx.annotation.Nullable;
+
 import java.util.Locale;
 
 import tv.superawesome.lib.sasession.capper.ISACapper;
@@ -17,8 +19,11 @@ import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
 import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.publisher.PublisherConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.SAOrientation;
 import tv.superawesome.sdk.publisher.SAVersion;
+import tv.superawesome.sdk.publisher.state.CloseButtonState;
 
 /**
  * Class that manages an AwesomeAds session, containing all variables needed to setup loading for
@@ -38,7 +43,7 @@ public class SASession implements ISASession {
     private final ISACapper capper;
 
     // private state members
-    private  Context context;
+    private final Context context;
     private String baseUrl;
     private boolean testEnabled;
     private int dauId;
@@ -54,6 +59,7 @@ public class SASession implements ISASession {
     private SARTBSkip skip;
     private SARTBStartDelay startDelay;
     private SARTBPlaybackMethod playbackMethod;
+    private PublisherConfiguration publisherConfiguration;
     private int width;
     private int height;
 
@@ -202,6 +208,19 @@ public class SASession implements ISASession {
         }
     }
 
+    public void setPublisherConfiguration(@Nullable CloseButtonState closeButtonState,
+                                          @Nullable SAOrientation orientation,
+                                          boolean parentalGateOn,
+                                          boolean bumperPageOn) {
+
+        publisherConfiguration = new PublisherConfiguration(
+                closeButtonState != null ? closeButtonState.getValue() : null,
+                orientation,
+                parentalGateOn,
+                bumperPageOn
+        );
+    }
+
     /**
      * Getters
      */
@@ -287,6 +306,11 @@ public class SASession implements ISASession {
     @Override
     public SARTBPlaybackMethod getPlaybackMethod() {
         return playbackMethod;
+    }
+
+    @Override
+    public PublisherConfiguration getPublisherConfiguration() {
+        return publisherConfiguration;
     }
 
     @Override
