@@ -6,9 +6,11 @@ import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
 import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.publisher.PublisherConfiguration;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
+import tv.superawesome.sdk.publisher.SAOrientation;
 
 /**
  * Created by gabriel.coman on 10/05/2018.
@@ -112,6 +114,11 @@ public class MockSession implements ISASession {
     @Override
     public SARTBPlaybackMethod getPlaybackMethod() {
         return SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN;
+    }
+
+    @Override
+    public PublisherConfiguration getPublisherConfiguration() {
+        return new PublisherConfiguration(0, SAOrientation.ANY, false, false);
     }
 
     @Override

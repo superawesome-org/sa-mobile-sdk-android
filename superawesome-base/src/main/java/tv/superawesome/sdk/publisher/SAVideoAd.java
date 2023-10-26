@@ -129,6 +129,7 @@ public class SAVideoAd {
 
             // create a current session
             final SASession session = getNewSession(context);
+            session.setPublisherConfiguration(closeButtonState, orientation, isParentalGateEnabled, isBumperPageEnabled);
 
             session.prepareSession(() -> {
 

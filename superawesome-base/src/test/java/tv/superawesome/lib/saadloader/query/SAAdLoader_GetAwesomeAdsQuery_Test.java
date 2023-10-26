@@ -21,6 +21,7 @@ import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
 import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.publisher.PublisherConfiguration;
 import tv.superawesome.lib.sasession.session.SASession;
 import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -32,6 +33,7 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         Context context = mock(Context.class);
         SASession session = mock(SASession.class);
         SAClock clockMock = mock(SAClock.class);
+        PublisherConfiguration publisherConfiguration = mock(PublisherConfiguration.class);
 
         // when
         when(session.getTestMode()).thenReturn(true);
@@ -51,6 +53,8 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         when(session.getWidth()).thenReturn(320);
         when(session.getHeight()).thenReturn(240);
         when(clockMock.getTimestamp()).thenReturn(123L);
+        when(session.getPublisherConfiguration()).thenReturn(publisherConfiguration);
+        when(publisherConfiguration.toJsonString()).thenReturn("");
 
         SALoader loader = new SALoader(context, clockMock);
 
@@ -58,7 +62,7 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         JSONObject query = loader.getAwesomeAdsQuery(session);
 
         assertNotNull(query);
-        assertEquals(17, query.length());
+        assertEquals(18, query.length());
 
         assertNotNull(query.opt("test"));
         assertEquals(true, query.opt("test"));
@@ -146,6 +150,8 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         Context context = mock(Context.class);
         SASession session = mock(SASession.class);
         SAClock clockMock = mock(SAClock.class);
+        PublisherConfiguration publisherConfiguration = mock(PublisherConfiguration.class);
+
         Map<String, Object> requestOptions = new HashMap<String, Object>() {{
             put("key1", "value1");
             put("key2", 2);
@@ -171,6 +177,8 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         when(session.getWidth()).thenReturn(320);
         when(session.getHeight()).thenReturn(240);
         when(clockMock.getTimestamp()).thenReturn(123L);
+        when(session.getPublisherConfiguration()).thenReturn(publisherConfiguration);
+        when(publisherConfiguration.toJsonString()).thenReturn("");
 
         SALoader loader = new SALoader(context, clockMock);
 
@@ -178,7 +186,7 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         JSONObject query = loader.getAwesomeAdsQuery(session, requestOptions);
 
         assertNotNull(query);
-        assertEquals(21, query.length());
+        assertEquals(22, query.length());
 
         assertNotNull(query.opt("test"));
         assertEquals(true, query.opt("test"));
@@ -250,6 +258,7 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         Context context = mock(Context.class);
         SASession session = mock(SASession.class);
         SAClock clockMock = mock(SAClock.class);
+        PublisherConfiguration publisherConfiguration = mock(PublisherConfiguration.class);
 
         // when
         when(session.getTestMode()).thenReturn(true);
@@ -269,12 +278,13 @@ public class SAAdLoader_GetAwesomeAdsQuery_Test {
         when(session.getWidth()).thenReturn(320);
         when(session.getHeight()).thenReturn(240);
         when(clockMock.getTimestamp()).thenReturn(123L);
+        when(session.getPublisherConfiguration()).thenReturn(publisherConfiguration);
+        when(publisherConfiguration.toJsonString()).thenReturn("");
 
         SALoader loader = new SALoader(context, clockMock);
 
         // then
         JSONObject query = loader.getAwesomeAdsQuery(session, Collections.emptyMap(),"123456");
-
         assertEquals("123456", query.opt("openRtbPartnerId"));
     }
 }
