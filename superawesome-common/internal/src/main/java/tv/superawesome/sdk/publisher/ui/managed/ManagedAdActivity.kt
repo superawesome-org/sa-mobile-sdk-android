@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
-import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
@@ -230,7 +230,7 @@ class ManagedAdActivity :
         fun newInstance(
             context: Context,
             placementId: Int,
-            adConfig: AdConfig,
+            adConfig: FullScreenAdConfig,
             html: String,
             baseUrl: String?
         ): Intent = Intent(context, ManagedAdActivity::class.java).apply {

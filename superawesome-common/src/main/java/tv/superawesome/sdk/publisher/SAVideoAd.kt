@@ -15,14 +15,14 @@ import org.koin.java.KoinJavaComponent.getKoin
 import org.koin.java.KoinJavaComponent.inject
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay
+import tv.superawesome.sdk.publisher.ad.AdController
+import tv.superawesome.sdk.publisher.ad.FullScreenAdManager
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.Orientation
 import tv.superawesome.sdk.publisher.models.SAInterface
-import tv.superawesome.sdk.publisher.ad.AdManager
-import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ui.managed.ManagedAdActivity
 import tv.superawesome.sdk.publisher.ui.video.VideoActivity
 import java.io.File
@@ -35,7 +35,7 @@ import java.io.File
  */
 @Suppress("TooManyFunctions")
 public object SAVideoAd {
-    private val adManager: AdManager by inject(AdManager::class.java)
+    private val adManager: FullScreenAdManager by inject(FullScreenAdManager::class.java)
     private val logger: Logger by inject(Logger::class.java)
     private val scope: CoroutineScope by inject(CoroutineScope::class.java)
 

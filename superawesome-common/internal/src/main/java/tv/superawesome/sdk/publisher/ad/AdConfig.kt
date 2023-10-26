@@ -7,38 +7,51 @@ import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.Orientation
 
+interface AdConfig {
+    /** Enabled for testing. */
+    val testEnabled: Boolean
+
+    /** Should show parental age gate before showing the ad. */
+    val isParentalGateEnabled: Boolean
+
+    /** Should show a bumper page before opening the ad. */
+    val isBumperPageEnabled: Boolean
+
+    /** Should show small button. */
+    val shouldShowSmallClick: Boolean
+
+    /** Should show a warning before closing the ad. */
+    val shouldShowCloseWarning: Boolean?
+
+    /** Should the back button be enabled. */
+    val isBackButtonEnabled: Boolean?
+
+    /** Ad should close automatically at the end. */
+    val shouldCloseAtEnd: Boolean?
+
+    /** Ad should be muted on start. */
+    val shouldMuteOnStart: Boolean?
+    val closeButtonState: CloseButtonState?
+    val orientation: Orientation?
+    val startDelay: AdRequest.StartDelay?
+}
+
 /**
  * Ad presentation configuration holder.
  */
-class AdConfig : Parcelable {
+class FullScreenAdConfig : Parcelable, AdConfig {
 
-    /** Enabled for testing. */
-    var testEnabled: Boolean
-
-    /** Should show parental age gate before showing the ad. */
-    var isParentalGateEnabled: Boolean
-
-    /** Should show a bumper page before opening the ad. */
-    var isBumperPageEnabled: Boolean
-
-    /** Should show small button. */
-    var shouldShowSmallClick: Boolean
-
-    /** Should show a warning before closing the ad. */
-    var shouldShowCloseWarning: Boolean
-
-    /** Should the back button be enabled. */
-    var isBackButtonEnabled: Boolean
-
-    /** Ad should close automatically at the end. */
-    var shouldCloseAtEnd: Boolean
-
-    /** Ad should be muted on start. */
-    var shouldMuteOnStart: Boolean
-
-    var closeButtonState: CloseButtonState
-    var orientation: Orientation
-    var startDelay: AdRequest.StartDelay
+    override var testEnabled: Boolean
+    override var isParentalGateEnabled: Boolean
+    override var isBumperPageEnabled: Boolean
+    override var shouldShowSmallClick: Boolean
+    override var shouldShowCloseWarning: Boolean
+    override var isBackButtonEnabled: Boolean
+    override var shouldCloseAtEnd: Boolean
+    override var shouldMuteOnStart: Boolean
+    override var closeButtonState: CloseButtonState
+    override var orientation: Orientation
+    override var startDelay: AdRequest.StartDelay
 
     @Suppress("LongParameterList")
     constructor(
@@ -100,10 +113,65 @@ class AdConfig : Parcelable {
     /**
      * Parcelable creator object.
      */
-    companion object CREATOR : Parcelable.Creator<AdConfig> {
+    companion object CREATOR : Parcelable.Creator<FullScreenAdConfig> {
 
-        override fun createFromParcel(parcel: Parcel): AdConfig = AdConfig(parcel)
+        override fun createFromParcel(parcel: Parcel): FullScreenAdConfig = FullScreenAdConfig(parcel)
 
-        override fun newArray(size: Int): Array<AdConfig?> = arrayOfNulls(size)
+        override fun newArray(size: Int): Array<FullScreenAdConfig?> = arrayOfNulls(size)
+    }
+}
+
+/**
+ * Ad presentation configuration holder.
+ */
+class BannerAdConfig : Parcelable, AdConfig {
+
+    override var testEnabled: Boolean
+    override var isParentalGateEnabled: Boolean
+    override var isBumperPageEnabled: Boolean
+    override var shouldShowSmallClick: Boolean
+    override val shouldShowCloseWarning: Boolean? = null
+    override val isBackButtonEnabled: Boolean? = null
+    override val shouldCloseAtEnd: Boolean? = null
+    override val shouldMuteOnStart: Boolean? = null
+    override val closeButtonState: CloseButtonState? = null
+    override val orientation: Orientation? = null
+    override val startDelay: AdRequest.StartDelay? = null
+
+    @Suppress("LongParameterList")
+    constructor(
+        testEnabled: Boolean = Constants.defaultTestMode,
+        isParentalGateEnabled: Boolean = Constants.defaultParentalGate,
+        isBumperPageEnabled: Boolean = Constants.defaultBumperPage,
+        shouldShowSmallClick: Boolean = Constants.defaultSmallClick,
+    ) {
+        this.testEnabled = testEnabled
+        this.isParentalGateEnabled = isParentalGateEnabled
+        this.isBumperPageEnabled = isBumperPageEnabled
+        this.shouldShowSmallClick = shouldShowSmallClick
+    }
+
+    constructor(parcel: Parcel) {
+        testEnabled = parcel.readByte().toInt() != 0
+        isParentalGateEnabled = parcel.readByte().toInt() != 0
+        isBumperPageEnabled = parcel.readByte().toInt() != 0
+        shouldShowSmallClick = parcel.readByte().toInt() != 0
+    }
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(parcel: Parcel, i: Int) {
+        parcel.writeByte((if (testEnabled) 1 else 0).toByte())
+        parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
+        parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
+        parcel.writeByte((if (shouldShowSmallClick) 1 else 0).toByte())
+    }
+
+    /**
+     * Parcelable creator object.
+     */
+    companion object CREATOR : Parcelable.Creator<BannerAdConfig> {
+        override fun createFromParcel(parcel: Parcel): BannerAdConfig = BannerAdConfig(parcel)
+        override fun newArray(size: Int): Array<BannerAdConfig?> = arrayOfNulls(size)
     }
 }

@@ -14,7 +14,7 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.components.CoroutineTimer
 import tv.superawesome.sdk.publisher.components.ImageProviderType
@@ -40,8 +40,8 @@ open class FullScreenActivity : AppCompatActivity() {
         intent?.getIntExtra(Constants.Keys.placementId, 0) ?: 0
     }
 
-    internal val adConfig: AdConfig by lazy {
-        intent.getParcelableExtra(Constants.Keys.config) ?: AdConfig()
+    internal val adConfig: FullScreenAdConfig by lazy {
+        intent.getParcelableExtra(Constants.Keys.config) ?: FullScreenAdConfig()
     }
 
     protected lateinit var controller: AdController

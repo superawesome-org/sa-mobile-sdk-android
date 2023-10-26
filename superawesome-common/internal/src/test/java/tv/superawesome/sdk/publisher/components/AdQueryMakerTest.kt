@@ -15,7 +15,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.junit.Test
-import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.base.BaseTest
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
@@ -90,7 +90,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val baseQuery = queryMaker.makeAdQuery(request, AdConfig()).parameters
+        val baseQuery = queryMaker.makeAdQuery(request, FullScreenAdConfig()).parameters
 
         // Then
         assertEquals(false, baseQuery.test)
@@ -127,7 +127,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val baseQuery = queryMaker.makeAdQuery(request, AdConfig()).parameters
+        val baseQuery = queryMaker.makeAdQuery(request, FullScreenAdConfig()).parameters
 
         // Then
         assertEquals("12345", baseQuery.openRtbPartnerId)
@@ -253,7 +253,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig())
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
 
         // Then
         assertTrue(query.options.isNullOrEmpty())
@@ -280,7 +280,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig())
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
 
         // Then
         verifyOptions(query.options!!, initialOptions)
@@ -303,7 +303,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig())
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
 
         // Then
         verifyOptions(query.options!!, additionalOptions)
@@ -329,7 +329,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig())
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
 
         // Then
         verifyOptions(query.options!!, combinedOptions)
@@ -358,7 +358,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig())
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
 
         // Then
         val expectedOptions = mapOf("key1" to "x", "key2" to 2)
@@ -388,7 +388,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig())
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
 
         // Then
         val expectedOptions = mapOf("key1" to "value1", "key2" to 2, "key4" to 4)
@@ -412,7 +412,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig()).build()
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig()).build()
 
         // Then
         assertEquals(
@@ -458,7 +458,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig()).build()
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig()).build()
 
         // Then
         assertEquals(
@@ -507,7 +507,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = queryMaker.makeAdQuery(request, AdConfig()).build()
+        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig()).build()
 
         // Then
         assertEquals(

@@ -17,7 +17,7 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.CloseButtonState
@@ -237,7 +237,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     }
 
     companion object {
-        public fun newInstance(context: Context, placementId: Int, adConfig: AdConfig): Intent =
+        public fun newInstance(context: Context, placementId: Int, adConfig: FullScreenAdConfig): Intent =
             Intent(context, VideoActivity::class.java).apply {
                 putExtra(Constants.Keys.placementId, placementId)
                 putExtra(Constants.Keys.config, adConfig)
