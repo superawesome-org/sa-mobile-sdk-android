@@ -1,11 +1,15 @@
 package tv.superawesome.lib.saadloader.mocks.session;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
 import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
 import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.publisher.PublisherConfiguration;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sasession.session.SASessionInterface;
 import tv.superawesome.lib.sautils.SAUtils;
@@ -112,6 +116,13 @@ public class MockSession implements ISASession {
     @Override
     public SARTBPlaybackMethod getPlaybackMethod() {
         return SARTBPlaybackMethod.WITH_SOUND_ON_SCREEN;
+    }
+
+    @Override
+    public PublisherConfiguration getPublisherConfiguration() {
+        PublisherConfiguration mock = mock(PublisherConfiguration.class);
+        when(mock.toJsonString()).thenReturn("");
+        return mock;
     }
 
     @Override

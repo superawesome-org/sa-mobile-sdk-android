@@ -207,6 +207,7 @@ public class SABannerAd extends FrameLayout {
         session.setInstl(SARTBInstl.NOT_FULLSCREEN);
         session.setSkip(SARTBSkip.NO_SKIP);
         session.setStartDelay(SARTBStartDelay.PRE_ROLL);
+        session.setPublisherConfiguration(null, null, isParentalGateEnabled, isBumperPageEnabled);
 
         try {
             session.setWidth(getWidth());

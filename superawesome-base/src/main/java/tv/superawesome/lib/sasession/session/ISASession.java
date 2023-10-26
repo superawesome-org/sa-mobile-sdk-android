@@ -1,13 +1,12 @@
 package tv.superawesome.lib.sasession.session;
 
-import android.content.Context;
-
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
 import tv.superawesome.lib.sasession.defines.SARTBInstl;
 import tv.superawesome.lib.sasession.defines.SARTBPlaybackMethod;
 import tv.superawesome.lib.sasession.defines.SARTBPosition;
 import tv.superawesome.lib.sasession.defines.SARTBSkip;
 import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
+import tv.superawesome.lib.sasession.publisher.PublisherConfiguration;
 import tv.superawesome.lib.sautils.SAUtils;
 
 /**
@@ -33,6 +32,7 @@ public interface ISASession {
     SARTBSkip getSkip();
     SARTBStartDelay getStartDelay();
     SARTBPlaybackMethod getPlaybackMethod();
+    PublisherConfiguration getPublisherConfiguration();
     int getWidth();
     int getHeight();
 }

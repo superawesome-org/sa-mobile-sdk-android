@@ -138,7 +138,8 @@ public class SALoader {
                     "w", session.getWidth(),
                     "h", session.getHeight(),
                     "timestamp", clock.getTimestamp(),
-                    "openRtbPartnerId", openRtbPartnerId
+                    "openRtbPartnerId", openRtbPartnerId,
+                    "publisherConfiguration", session.getPublisherConfiguration().toJsonString()
                     // "preload", true
             );
             if (requestOptions != null) {
@@ -146,6 +147,7 @@ public class SALoader {
             }
             return query;
         } catch (Exception e) {
+            e.printStackTrace();
             return new JSONObject();
         }
     }
