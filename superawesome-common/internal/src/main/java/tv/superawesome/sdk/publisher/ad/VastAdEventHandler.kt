@@ -22,12 +22,15 @@ class VastAdEventHandler(
 
     override suspend fun videoClick() {
         vastEventRepository?.clickTracking()
-        if (!containsVASTClickUrls()) {
+        if (!doesAdContainVASTClickThroughUrlWithVideoClickEvent()) {
             eventRepository.videoClick(adResponse)
         }
     }
 
-    private fun containsVASTClickUrls() = adResponse.vast?.let { vastAd ->
-        !vastAd.clickThroughUrl.isNullOrEmpty() || vastAd.clickTrackingEvents.isNotEmpty()
-    } ?: false
+    @Suppress("FunctionMaxLength")
+    private fun doesAdContainVASTClickThroughUrlWithVideoClickEvent() =
+        adResponse.vast?.let { vastAd ->
+            !vastAd.clickThroughUrl.isNullOrEmpty() &&
+                    vastAd.clickThroughUrl.contains("/video/click")
+        } ?: false
 }
