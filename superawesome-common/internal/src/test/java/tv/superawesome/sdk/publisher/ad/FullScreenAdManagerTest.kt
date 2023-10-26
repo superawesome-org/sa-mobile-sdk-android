@@ -34,7 +34,7 @@ import tv.superawesome.sdk.publisher.testutil.fakeAdRequest
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DefaultAdManagerTest : MockServerTest(), KoinTest {
+class FullScreenAdManagerTest : MockServerTest(), KoinTest {
 
     private val adRepository by inject<AdRepositoryType>()
     private val adControllerFactory by inject<AdControllerFactory>()
@@ -43,7 +43,7 @@ class DefaultAdManagerTest : MockServerTest(), KoinTest {
     private val dispatcher = StandardTestDispatcher()
 
     private val sut by lazy {
-        DefaultAdManager(adRepository, TestLogger(), adControllerFactory, adControllerStore)
+        FullScreenAdManager(adRepository, TestLogger(), adControllerFactory, adControllerStore)
     }
 
     @Before

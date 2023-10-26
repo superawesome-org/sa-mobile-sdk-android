@@ -8,12 +8,10 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdControllerFactory
 import tv.superawesome.sdk.publisher.di.testCommonModule
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.network.datasources.MockServerTest
-import tv.superawesome.sdk.publisher.testutil.FakeAdControllerFactory
 import kotlin.test.assertEquals
 
 internal class DefaultAdControllerStoreTest : MockServerTest(), KoinTest {

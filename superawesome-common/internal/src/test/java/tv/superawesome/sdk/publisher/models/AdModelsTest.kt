@@ -16,7 +16,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import tv.superawesome.sdk.publisher.ad.AdConfig
+import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.base.BaseTest
 import tv.superawesome.sdk.publisher.components.AdQueryMaker
 import tv.superawesome.sdk.publisher.components.ConnectionProviderType
@@ -124,7 +124,7 @@ class AdModelsTest: BaseTest() {
         every { timeProvider.millis() } returns 12345
 
         // When
-        val sut = queryMaker.makeAdQuery(request, AdConfig())
+        val sut = queryMaker.makeAdQuery(request, FullScreenAdConfig())
 
         // Then
         assertEquals("" +

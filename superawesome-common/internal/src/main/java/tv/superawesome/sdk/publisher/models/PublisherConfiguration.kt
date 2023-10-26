@@ -12,8 +12,8 @@ import tv.superawesome.sdk.publisher.ad.AdConfig
 @Serializable
 data class PublisherConfiguration(
     @SerialName("closeButton")
-    val closeButtonState: Int,
-    val orientation: Orientation,
+    val closeButtonState: Int?,
+    val orientation: Orientation?,
     val parentalGateOn: Boolean,
     val bumperPageOn: Boolean,
 ) {
@@ -30,7 +30,7 @@ data class PublisherConfiguration(
          */
         fun fromAdConfig(adConfig: AdConfig): PublisherConfiguration =
             PublisherConfiguration(
-                closeButtonState = adConfig.closeButtonState.value,
+                closeButtonState = adConfig.closeButtonState?.value,
                 orientation = adConfig.orientation,
                 parentalGateOn = adConfig.isParentalGateEnabled,
                 bumperPageOn = adConfig.isBumperPageEnabled,

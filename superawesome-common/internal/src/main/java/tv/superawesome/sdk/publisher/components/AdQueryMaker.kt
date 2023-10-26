@@ -3,8 +3,8 @@ package tv.superawesome.sdk.publisher.components
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.models.AdQuery
-import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.AdQueryBundle
+import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.AdResponse
 import tv.superawesome.sdk.publisher.models.EventData
 import tv.superawesome.sdk.publisher.models.EventQuery
