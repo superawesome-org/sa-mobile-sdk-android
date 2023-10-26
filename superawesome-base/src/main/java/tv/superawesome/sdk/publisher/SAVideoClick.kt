@@ -146,7 +146,7 @@ class SAVideoClick internal constructor(
         events.triggerVASTClickTrackingEvent()
 
         // Send video click if the ad doesn't have clickThrough URL
-        if (!containsVASTClickURLs()) {
+        if (!doesAdContainVASTClickThroughUrlWithVideoClickEvent()) {
             events.triggerClickEvent()
         }
 
@@ -161,10 +161,11 @@ class SAVideoClick internal constructor(
         }
     }
 
-    private fun containsVASTClickURLs(): Boolean =
+    @Suppress("FunctionMaxLength")
+    private fun doesAdContainVASTClickThroughUrlWithVideoClickEvent(): Boolean =
         ad.creative.details.media.vastAd.events.any { vastEvent ->
-            vastEvent.event.contains("vast_click_through") ||
-                    vastEvent.event.contains("vast_click_tracking")
+            vastEvent.event.contains("vast_click_through") &&
+                    vastEvent.URL.contains("/video/click")
         }
 }
 
