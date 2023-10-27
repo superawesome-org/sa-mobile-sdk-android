@@ -215,7 +215,7 @@ public class SASession implements ISASession {
 
         publisherConfiguration = new PublisherConfiguration(
                 closeButtonState != null ? closeButtonState.getValue() : null,
-                orientation,
+                orientation != null ? orientation.ordinal() : null,
                 parentalGateOn,
                 bumperPageOn
         );

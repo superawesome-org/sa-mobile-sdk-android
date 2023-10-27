@@ -13,7 +13,7 @@ import tv.superawesome.sdk.publisher.ad.AdConfig
 data class PublisherConfiguration(
     @SerialName("closeButton")
     val closeButtonState: Int?,
-    val orientation: Orientation?,
+    val orientation: Int?,
     val parentalGateOn: Boolean,
     val bumperPageOn: Boolean,
 ) {
@@ -31,7 +31,7 @@ data class PublisherConfiguration(
         fun fromAdConfig(adConfig: AdConfig): PublisherConfiguration =
             PublisherConfiguration(
                 closeButtonState = adConfig.closeButtonState?.value,
-                orientation = adConfig.orientation,
+                orientation = adConfig.orientation?.ordinal,
                 parentalGateOn = adConfig.isParentalGateEnabled,
                 bumperPageOn = adConfig.isBumperPageEnabled,
             )
