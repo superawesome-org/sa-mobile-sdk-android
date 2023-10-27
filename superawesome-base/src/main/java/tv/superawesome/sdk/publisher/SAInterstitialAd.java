@@ -272,7 +272,10 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             session.setInstl(SARTBInstl.FULLSCREEN);
             session.setSkip(SARTBSkip.SKIP);
             session.setStartDelay(SARTBStartDelay.PRE_ROLL);
-            session.setPublisherConfiguration(closeButtonState, orientation, isParentalGateEnabled, isBumperPageEnabled);
+            session.setPublisherConfiguration(isParentalGateEnabled,
+                    isBumperPageEnabled,
+                    orientation,
+                    closeButtonState);
 
             try {
                 SAUtils.SASize size = SAUtils.getRealScreenSize((Activity) context, false);

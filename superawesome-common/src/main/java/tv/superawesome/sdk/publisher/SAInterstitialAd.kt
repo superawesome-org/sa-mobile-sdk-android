@@ -10,7 +10,7 @@ import androidx.annotation.VisibleForTesting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
-import tv.superawesome.sdk.publisher.ad.FullScreenAdManager
+import tv.superawesome.sdk.publisher.ad.InterstitialAdManager
 import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
@@ -31,7 +31,7 @@ public object SAInterstitialAd {
     private var orientation: Orientation = Constants.defaultOrientation
     private var backButtonEnabled: Boolean = Constants.defaultBackButtonEnabled
 
-    private val adManager: FullScreenAdManager by inject(FullScreenAdManager::class.java)
+    private val adManager: InterstitialAdManager by inject(InterstitialAdManager::class.java)
     private val scope: CoroutineScope by inject(CoroutineScope::class.java)
 
     /**

@@ -1,7 +1,6 @@
 package tv.superawesome.sdk.publisher.testutil
 
 import tv.superawesome.sdk.publisher.ad.AdConfig
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.ad.AdControllerFactory
 import tv.superawesome.sdk.publisher.ad.DefaultAdController
