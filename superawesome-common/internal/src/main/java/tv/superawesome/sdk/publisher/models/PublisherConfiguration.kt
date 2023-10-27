@@ -1,7 +1,6 @@
 package tv.superawesome.sdk.publisher.models
 
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.ad.AdConfig
@@ -20,8 +19,7 @@ data class PublisherConfiguration(
     val muteOnStart: Boolean?,
     val showMore: Boolean?,
     val startDelay: Int?,
-    val closeButton: Int?,
-    val backButtonEnabled: Boolean?,
+    val closeButtonState: Int?,
 ) {
 
     /**
@@ -49,8 +47,7 @@ data class PublisherConfiguration(
                 muteOnStart = adConfig.shouldMuteOnStart,
                 showMore = adConfig.shouldShowSmallClick,
                 startDelay = adConfig.startDelay?.value,
-                closeButton = adConfig.closeButtonState?.value,
-                backButtonEnabled = adConfig.isBackButtonEnabled
+                closeButtonState = adConfig.closeButtonState?.value,
             )
     }
 }

@@ -39,7 +39,65 @@ interface AdConfig {
 /**
  * Ad presentation configuration holder.
  */
-class FullScreenAdConfig : Parcelable, AdConfig {
+class InterstitialAdConfig : Parcelable, AdConfig {
+
+    override var testEnabled: Boolean
+    override var isParentalGateEnabled: Boolean
+    override var isBumperPageEnabled: Boolean
+    override var closeButtonState: CloseButtonState
+    override var orientation: Orientation
+    override val shouldShowSmallClick: Boolean? = null
+    override val shouldShowCloseWarning: Boolean? = null
+    override val isBackButtonEnabled: Boolean? = null
+    override val shouldCloseAtEnd: Boolean? = null
+    override val shouldMuteOnStart: Boolean? = null
+    override val startDelay: AdRequest.StartDelay? = null
+
+    @Suppress("LongParameterList")
+    constructor(
+        testEnabled: Boolean = Constants.defaultTestMode,
+        isParentalGateEnabled: Boolean = Constants.defaultParentalGate,
+        isBumperPageEnabled: Boolean = Constants.defaultBumperPage,
+        closeButtonState: CloseButtonState = Constants.defaultCloseButtonState,
+        orientation: Orientation = Constants.defaultOrientation,
+    ) {
+        this.testEnabled = testEnabled
+        this.isParentalGateEnabled = isParentalGateEnabled
+        this.isBumperPageEnabled = isBumperPageEnabled
+        this.closeButtonState = closeButtonState
+        this.orientation = orientation
+    }
+
+    constructor(parcel: Parcel) {
+        testEnabled = parcel.readByte().toInt() != 0
+        isParentalGateEnabled = parcel.readByte().toInt() != 0
+        isBumperPageEnabled = parcel.readByte().toInt() != 0
+        closeButtonState = CloseButtonState.fromInt(parcel.readInt())
+        orientation = Orientation.fromValue(parcel.readInt()) ?: Orientation.Any
+    }
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(parcel: Parcel, i: Int) {
+        parcel.writeByte((if (testEnabled) 1 else 0).toByte())
+        parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
+        parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
+        parcel.writeInt(closeButtonState.value)
+        parcel.writeInt(orientation.ordinal)
+    }
+
+    /**
+     * Parcelable creator object.
+     */
+    companion object CREATOR : Parcelable.Creator<InterstitialAdConfig> {
+
+        override fun createFromParcel(parcel: Parcel): InterstitialAdConfig = InterstitialAdConfig(parcel)
+
+        override fun newArray(size: Int): Array<InterstitialAdConfig?> = arrayOfNulls(size)
+    }
+}
+
+class VideoAdConfig : Parcelable, AdConfig {
 
     override var testEnabled: Boolean
     override var isParentalGateEnabled: Boolean
@@ -49,7 +107,7 @@ class FullScreenAdConfig : Parcelable, AdConfig {
     override var isBackButtonEnabled: Boolean
     override var shouldCloseAtEnd: Boolean
     override var shouldMuteOnStart: Boolean
-     override var closeButtonState: CloseButtonState
+    override var closeButtonState: CloseButtonState
     override var orientation: Orientation
     override var startDelay: AdRequest.StartDelay
 
@@ -113,11 +171,11 @@ class FullScreenAdConfig : Parcelable, AdConfig {
     /**
      * Parcelable creator object.
      */
-    companion object CREATOR : Parcelable.Creator<FullScreenAdConfig> {
+    companion object CREATOR : Parcelable.Creator<VideoAdConfig> {
 
-        override fun createFromParcel(parcel: Parcel): FullScreenAdConfig = FullScreenAdConfig(parcel)
+        override fun createFromParcel(parcel: Parcel): VideoAdConfig = VideoAdConfig(parcel)
 
-        override fun newArray(size: Int): Array<FullScreenAdConfig?> = arrayOfNulls(size)
+        override fun newArray(size: Int): Array<VideoAdConfig?> = arrayOfNulls(size)
     }
 }
 
@@ -143,7 +201,6 @@ class BannerAdConfig : Parcelable, AdConfig {
         testEnabled: Boolean = Constants.defaultTestMode,
         isParentalGateEnabled: Boolean = Constants.defaultParentalGate,
         isBumperPageEnabled: Boolean = Constants.defaultBumperPage,
-        shouldShowSmallClick: Boolean = Constants.defaultSmallClick,
     ) {
         this.testEnabled = testEnabled
         this.isParentalGateEnabled = isParentalGateEnabled

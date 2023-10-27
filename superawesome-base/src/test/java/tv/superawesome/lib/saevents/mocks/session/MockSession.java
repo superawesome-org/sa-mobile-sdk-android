@@ -117,7 +117,7 @@ public class MockSession implements ISASession {
 
     @Override
     public PublisherConfiguration getPublisherConfiguration() {
-        return new PublisherConfiguration(0, 0, false, false);
+        return new PublisherConfiguration(false, false, false, 0, false, false, false, 0, 0);
     }
 
     @Override

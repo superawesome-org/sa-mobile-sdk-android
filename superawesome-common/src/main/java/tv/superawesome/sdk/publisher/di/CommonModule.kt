@@ -11,10 +11,10 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import tv.superawesome.sdk.publisher.ad.AdControllerFactory
-import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.BannerAdManager
 import tv.superawesome.sdk.publisher.ad.DefaultAdControllerFactory
-import tv.superawesome.sdk.publisher.ad.FullScreenAdManager
+import tv.superawesome.sdk.publisher.ad.InterstitialAdManager
+import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.components.AdControllerStore
 import tv.superawesome.sdk.publisher.components.AdProcessor
 import tv.superawesome.sdk.publisher.components.AdProcessorType
@@ -155,12 +155,9 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single { CoroutineScope(Dispatchers.Default) }
     singleOf(::DefaultAdControllerFactory) { bind<AdControllerFactory>() }
 
-    factoryOf(::FullScreenAdManager) {
-        bind<AdManager>()
-    }
-    factoryOf(::BannerAdManager) {
-        bind<AdManager>()
-    }
+    factoryOf(::InterstitialAdManager)
+    factoryOf(::VideoAdManager)
+    factoryOf(::BannerAdManager)
 
     factory { (placementId: Int) ->
         val adStore = get<AdControllerStore>()

@@ -9,8 +9,7 @@ import org.koin.dsl.module
 import tv.superawesome.sdk.publisher.ad.AdControllerFactory
 import tv.superawesome.sdk.publisher.ad.AdManager
 import tv.superawesome.sdk.publisher.ad.BannerAdManager
-import tv.superawesome.sdk.publisher.ad.BaseAdManager
-import tv.superawesome.sdk.publisher.ad.FullScreenAdManager
+import tv.superawesome.sdk.publisher.ad.InterstitialAdManager
 import tv.superawesome.sdk.publisher.components.AdControllerStore
 import tv.superawesome.sdk.publisher.components.AdProcessor
 import tv.superawesome.sdk.publisher.components.AdProcessorType
@@ -77,7 +76,7 @@ fun testCommonModule(mockWebServer: MockWebServer) = module {
     factoryOf(::PerformanceRepository) { bind<PerformanceRepositoryType>() }
     factoryOf(::AdRepository) { bind<AdRepositoryType>() }
     factoryOf(::FakeAdControllerFactory) { bind<AdControllerFactory>() }
-    factoryOf(::FullScreenAdManager) { bind<AdManager>() }
+    factoryOf(::InterstitialAdManager) { bind<AdManager>() }
     factoryOf(::BannerAdManager) { bind<AdManager>() }
 
     factory { (placementId: Int) ->

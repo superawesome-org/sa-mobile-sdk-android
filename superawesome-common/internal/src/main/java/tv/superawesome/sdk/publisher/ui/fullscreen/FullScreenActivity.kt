@@ -14,7 +14,7 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
+import tv.superawesome.sdk.publisher.ad.AdConfig
 import tv.superawesome.sdk.publisher.ad.AdController
 import tv.superawesome.sdk.publisher.components.CoroutineTimer
 import tv.superawesome.sdk.publisher.components.ImageProviderType
@@ -27,7 +27,7 @@ import tv.superawesome.sdk.publisher.models.Orientation
 /**
  * A full screen activity used to play ad placements.
  */
-open class FullScreenActivity : AppCompatActivity() {
+abstract class FullScreenActivity : AppCompatActivity() {
 
     internal val imageProvider: ImageProviderType by inject()
     internal val logger: Logger by inject()
@@ -40,9 +40,7 @@ open class FullScreenActivity : AppCompatActivity() {
         intent?.getIntExtra(Constants.Keys.placementId, 0) ?: 0
     }
 
-    internal val adConfig: FullScreenAdConfig by lazy {
-        intent.getParcelableExtra(Constants.Keys.config) ?: FullScreenAdConfig()
-    }
+    abstract val adConfig: AdConfig
 
     protected lateinit var controller: AdController
 
@@ -136,11 +134,12 @@ open class FullScreenActivity : AppCompatActivity() {
             Orientation.Any -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             Orientation.Portrait -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             Orientation.Landscape -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            null -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
 
     override fun onBackPressed() {
-        if (adConfig.isBackButtonEnabled) {
+        if (adConfig.isBackButtonEnabled == true) {
             close()
             super.onBackPressed()
         }

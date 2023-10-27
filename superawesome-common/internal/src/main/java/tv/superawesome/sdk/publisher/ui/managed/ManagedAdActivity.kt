@@ -4,6 +4,7 @@ package tv.superawesome.sdk.publisher.ui.managed
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -12,11 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
-import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.ad.VideoAdConfig
+import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
-import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.network.Environment
 import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
@@ -37,7 +38,7 @@ class ManagedAdActivity :
     private var timeOutHandler = Handler(Looper.getMainLooper())
     private var completed: Boolean = false
 
-    private val adManager: AdManager by inject()
+    private val adManager: VideoAdManager by inject()
     private val environment: Environment by inject()
     private val viewableDetector: ViewableDetector by inject(named<SingleShotViewableDetector>())
 
@@ -50,6 +51,14 @@ class ManagedAdActivity :
     }
 
     private lateinit var adView: ManagedAdView
+
+    override val adConfig: VideoAdConfig by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(Constants.Keys.config, VideoAdConfig::class.java)
+        } else {
+            intent.getParcelableExtra(Constants.Keys.config)
+        } ?: VideoAdConfig()
+    }
 
     override fun initChildUI() {
         adView = ManagedAdView(this)
@@ -230,7 +239,7 @@ class ManagedAdActivity :
         fun newInstance(
             context: Context,
             placementId: Int,
-            adConfig: FullScreenAdConfig,
+            adConfig: VideoAdConfig,
             html: String,
             baseUrl: String?
         ): Intent = Intent(context, ManagedAdActivity::class.java).apply {

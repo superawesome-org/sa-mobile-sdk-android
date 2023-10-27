@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -17,8 +18,8 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
-import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.VideoAdConfig
+import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
@@ -38,13 +39,23 @@ import java.io.File
 @Suppress("TooManyFunctions")
 class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     private val control: IVideoPlayerController by inject()
-    private val adManager: AdManager by inject()
+    private val adManager: VideoAdManager by inject()
 
     private var videoEvents: VideoEvents? = null
     private var completed = false
     private var volumeButton: ImageButton? = null
 
     private lateinit var videoPlayer: VideoPlayer
+
+    override val adConfig: VideoAdConfig by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(Constants.Keys.config, VideoAdConfig::class.java)
+        } else {
+            intent.getParcelableExtra(Constants.Keys.config)
+        } ?: run {
+            VideoAdConfig()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         logger.info("onCreate")
@@ -237,7 +248,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     }
 
     companion object {
-        public fun newInstance(context: Context, placementId: Int, adConfig: FullScreenAdConfig): Intent =
+        public fun newInstance(context: Context, placementId: Int, adConfig: VideoAdConfig): Intent =
             Intent(context, VideoActivity::class.java).apply {
                 putExtra(Constants.Keys.placementId, placementId)
                 putExtra(Constants.Keys.config, adConfig)

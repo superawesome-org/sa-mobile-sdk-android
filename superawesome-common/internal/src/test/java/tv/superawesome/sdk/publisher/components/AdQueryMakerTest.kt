@@ -15,7 +15,9 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.junit.Test
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
+import tv.superawesome.sdk.publisher.ad.BannerAdConfig
+import tv.superawesome.sdk.publisher.ad.InterstitialAdConfig
+import tv.superawesome.sdk.publisher.ad.VideoAdConfig
 import tv.superawesome.sdk.publisher.base.BaseTest
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
@@ -90,7 +92,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val baseQuery = queryMaker.makeAdQuery(request, FullScreenAdConfig()).parameters
+        val baseQuery = queryMaker.makeAdQuery(request, InterstitialAdConfig()).parameters
 
         // Then
         assertEquals(false, baseQuery.test)
@@ -127,7 +129,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { timeProvider.millis() } returns 12345678912345
 
         // When
-        val baseQuery = queryMaker.makeAdQuery(request, FullScreenAdConfig()).parameters
+        val baseQuery = queryMaker.makeAdQuery(request, InterstitialAdConfig()).parameters
 
         // Then
         assertEquals("12345", baseQuery.openRtbPartnerId)
@@ -253,7 +255,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
+        val query = queryMaker.makeAdQuery(request, InterstitialAdConfig())
 
         // Then
         assertTrue(query.options.isNullOrEmpty())
@@ -280,7 +282,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
+        val query = queryMaker.makeAdQuery(request, InterstitialAdConfig())
 
         // Then
         verifyOptions(query.options!!, initialOptions)
@@ -303,7 +305,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
+        val query = queryMaker.makeAdQuery(request, InterstitialAdConfig())
 
         // Then
         verifyOptions(query.options!!, additionalOptions)
@@ -329,7 +331,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
+        val query = queryMaker.makeAdQuery(request, InterstitialAdConfig())
 
         // Then
         verifyOptions(query.options!!, combinedOptions)
@@ -358,7 +360,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
+        val query = queryMaker.makeAdQuery(request, InterstitialAdConfig())
 
         // Then
         val expectedOptions = mapOf("key1" to "x", "key2" to 2)
@@ -388,7 +390,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig())
+        val query = queryMaker.makeAdQuery(request, InterstitialAdConfig())
 
         // Then
         val expectedOptions = mapOf("key1" to "value1", "key2" to 2, "key4" to 4)
@@ -412,7 +414,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig()).build()
+        val query = queryMaker.makeAdQuery(request, VideoAdConfig()).build()
 
         // Then
         assertEquals(
@@ -434,7 +436,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
-                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButton\":2,\"backButtonEnabled\":true}" +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButtonState\":2}" +
                     "}",
             query.toString()
         )
@@ -458,7 +460,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig()).build()
+        val query = queryMaker.makeAdQuery(request, VideoAdConfig()).build()
 
         // Then
         assertEquals(
@@ -480,7 +482,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
-                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButton\":2,\"backButtonEnabled\":true}, " +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButtonState\":2}, " +
                     "key3=value3, " +
                     "key4=4}",
             query.toString()
@@ -507,7 +509,7 @@ internal class AdQueryMakerTest : BaseTest() {
         every { locale.toString() } returns "en_en"
 
         // When
-        val query = queryMaker.makeAdQuery(request, FullScreenAdConfig()).build()
+        val query = queryMaker.makeAdQuery(request, VideoAdConfig()).build()
 
         // Then
         assertEquals(
@@ -529,7 +531,109 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
-                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButton\":2,\"backButtonEnabled\":true}, " +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButtonState\":2}, " +
+                    "key1=value1, " +
+                    "key2=2, " +
+                    "key3=value3, " +
+                    "key4=4}",
+            query.toString()
+        )
+    }
+
+    @Test
+    fun test_built_adQuery_with_interstitial_adConfig() = runTest {
+        // Given
+        QueryAdditionalOptions.Companion.instance =
+            QueryAdditionalOptions(initialOptions)
+        val request = DefaultAdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            options = additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = queryMaker.makeAdQuery(request, InterstitialAdConfig()).build()
+
+        // Then
+        assertEquals(
+            "" +
+                    "{test=false, " +
+                    "sdkVersion=, " +
+                    "rnd=0, " +
+                    "bundle=, " +
+                    "name=, " +
+                    "dauid=0, " +
+                    "ct=6, " +
+                    "lang=en_en, " +
+                    "device=, " +
+                    "pos=10, " +
+                    "skip=20, " +
+                    "playbackmethod=30, " +
+                    "startdelay=40, " +
+                    "instl=50, " +
+                    "w=60, " +
+                    "h=70, " +
+                    "timestamp=0, " +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"orientation\":0,\"closeButtonState\":2}, " +
+                    "key1=value1, " +
+                    "key2=2, " +
+                    "key3=value3, " +
+                    "key4=4}",
+            query.toString()
+        )
+    }
+
+    @Test
+    fun test_built_adQuery_with_banner_adConfig() = runTest {
+        // Given
+        QueryAdditionalOptions.Companion.instance =
+            QueryAdditionalOptions(initialOptions)
+        val request = DefaultAdRequest(
+            false,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            options = additionalOptions
+        )
+        every { connectionProviderType.findConnectionType() } returns ConnectionType.Cellular4g
+        every { locale.toString() } returns "en_en"
+
+        // When
+        val query = queryMaker.makeAdQuery(request, BannerAdConfig()).build()
+
+        // Then
+        assertEquals(
+            "" +
+                    "{test=false, " +
+                    "sdkVersion=, " +
+                    "rnd=0, " +
+                    "bundle=, " +
+                    "name=, " +
+                    "dauid=0, " +
+                    "ct=6, " +
+                    "lang=en_en, " +
+                    "device=, " +
+                    "pos=10, " +
+                    "skip=20, " +
+                    "playbackmethod=30, " +
+                    "startdelay=40, " +
+                    "instl=50, " +
+                    "w=60, " +
+                    "h=70, " +
+                    "timestamp=0, " +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false}, " +
                     "key1=value1, " +
                     "key2=2, " +
                     "key3=value3, " +
