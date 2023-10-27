@@ -434,7 +434,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
-                    "publisherConfiguration={\"closeButton\":2,\"orientation\":0,\"parentalGateOn\":false,\"bumperPageOn\":false}" +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButton\":2,\"backButtonEnabled\":true}" +
                     "}",
             query.toString()
         )
@@ -480,7 +480,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
-                    "publisherConfiguration={\"closeButton\":2,\"orientation\":0,\"parentalGateOn\":false,\"bumperPageOn\":false}, " +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButton\":2,\"backButtonEnabled\":true}, " +
                     "key3=value3, " +
                     "key4=4}",
             query.toString()
@@ -529,7 +529,7 @@ internal class AdQueryMakerTest : BaseTest() {
                     "w=60, " +
                     "h=70, " +
                     "timestamp=0, " +
-                    "publisherConfiguration={\"closeButton\":2,\"orientation\":0,\"parentalGateOn\":false,\"bumperPageOn\":false}, " +
+                    "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButton\":2,\"backButtonEnabled\":true}, " +
                     "key1=value1, " +
                     "key2=2, " +
                     "key3=value3, " +
