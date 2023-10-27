@@ -14,7 +14,7 @@ import okhttp3.mockwebserver.MockResponse
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
+import tv.superawesome.sdk.publisher.ad.InterstitialAdConfig
 import tv.superawesome.sdk.publisher.network.enqueueResponse
 import tv.superawesome.sdk.publisher.testutil.FakeAdProcessor
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
@@ -66,7 +66,7 @@ class AdRepositoryTest : MockServerTest() {
         mockServer.enqueueResponse("mock_ad_response_1.json", 200)
 
         // When
-        val result = sut.getAd(1234, fakeAdRequest(), FullScreenAdConfig())
+        val result = sut.getAd(1234, fakeAdRequest(), InterstitialAdConfig())
 
         // Then
         assertTrue(result.isSuccess)
@@ -79,7 +79,7 @@ class AdRepositoryTest : MockServerTest() {
         mockServer.enqueueResponse("mock_ad_response_1.json", 200)
 
         // When
-        val result = sut.getAd(1234, 9, 99, fakeAdRequest(),  FullScreenAdConfig())
+        val result = sut.getAd(1234, 9, 99, fakeAdRequest(),  InterstitialAdConfig())
 
         // Then
         assertTrue(result.isSuccess)
@@ -92,7 +92,7 @@ class AdRepositoryTest : MockServerTest() {
         mockServer.enqueue(MockResponse().setResponseCode(404))
 
         // When
-        val result = sut.getAd(1234, fakeAdRequest(),  FullScreenAdConfig())
+        val result = sut.getAd(1234, fakeAdRequest(),  InterstitialAdConfig())
 
         // Then
         assertTrue(result.isFailure)
@@ -104,7 +104,7 @@ class AdRepositoryTest : MockServerTest() {
         mockServer.enqueue(MockResponse().setResponseCode(404))
 
         // When
-        val result = sut.getAd(1234, 9, 99, fakeAdRequest(),  FullScreenAdConfig())
+        val result = sut.getAd(1234, 9, 99, fakeAdRequest(),  InterstitialAdConfig())
 
         // Then
         assertTrue(result.isFailure)

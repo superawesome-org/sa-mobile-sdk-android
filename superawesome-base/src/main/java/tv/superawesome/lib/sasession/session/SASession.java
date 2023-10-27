@@ -7,7 +7,7 @@ package tv.superawesome.lib.sasession.session;
 import android.content.Context;
 import android.os.Looper;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import java.util.Locale;
 
@@ -208,16 +208,60 @@ public class SASession implements ISASession {
         }
     }
 
-    public void setPublisherConfiguration(@Nullable CloseButtonState closeButtonState,
-                                          @Nullable SAOrientation orientation,
-                                          boolean parentalGateOn,
+    public void setPublisherConfiguration(boolean parentalGateOn,
+                                          boolean bumperPageOn,
+                                          boolean closeWarning,
+                                          @NonNull SAOrientation orientation,
+                                          boolean closeAtEnd,
+                                          boolean muteOnStart,
+                                          boolean showMore,
+                                          @NonNull SARTBStartDelay startDelay,
+                                          @NonNull CloseButtonState closeButtonState) {
+
+        publisherConfiguration = new PublisherConfiguration(
+                parentalGateOn,
+                bumperPageOn,
+                closeWarning,
+                orientation.ordinal(),
+                closeAtEnd,
+                muteOnStart,
+                showMore,
+                startDelay.getValue(),
+                closeButtonState.getValue()
+        );
+    }
+
+    public void setPublisherConfiguration(boolean parentalGateOn,
+                                          boolean bumperPageOn,
+                                          @NonNull SAOrientation orientation,
+                                          @NonNull CloseButtonState closeButtonState) {
+
+        publisherConfiguration = new PublisherConfiguration(
+                parentalGateOn,
+                bumperPageOn,
+                null,
+                orientation.ordinal(),
+                null,
+                null,
+                null,
+                null,
+                closeButtonState.getValue()
+        );
+    }
+
+    public void setPublisherConfiguration(boolean parentalGateOn,
                                           boolean bumperPageOn) {
 
         publisherConfiguration = new PublisherConfiguration(
-                closeButtonState != null ? closeButtonState.getValue() : null,
-                orientation != null ? orientation.ordinal() : null,
                 parentalGateOn,
-                bumperPageOn
+                bumperPageOn,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
         );
     }
 

@@ -2,7 +2,6 @@ package tv.superawesome.sdk.publisher.testutil
 
 import kotlinx.serialization.json.Json
 import tv.superawesome.sdk.publisher.ad.AdConfig
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
 import tv.superawesome.sdk.publisher.components.AdQueryMakerType
 import tv.superawesome.sdk.publisher.components.EncoderType
 import tv.superawesome.sdk.publisher.models.AdQuery

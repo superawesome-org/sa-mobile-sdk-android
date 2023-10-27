@@ -11,12 +11,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
+import tv.superawesome.sdk.publisher.ad.VideoAdConfig
 import tv.superawesome.sdk.publisher.base.BaseTest
 import tv.superawesome.sdk.publisher.components.AdQueryMaker
 import tv.superawesome.sdk.publisher.components.ConnectionProviderType
@@ -124,7 +124,7 @@ class AdModelsTest: BaseTest() {
         every { timeProvider.millis() } returns 12345
 
         // When
-        val sut = queryMaker.makeAdQuery(request, FullScreenAdConfig())
+        val sut = queryMaker.makeAdQuery(request, VideoAdConfig())
 
         // Then
         assertEquals("" +
@@ -145,7 +145,7 @@ class AdModelsTest: BaseTest() {
             "w=60, " +
             "h=70, " +
             "timestamp=12345, " +
-            "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButton\":2,\"backButtonEnabled\":true}, " +
+            "publisherConfiguration={\"parentalGateOn\":false,\"bumperPageOn\":false,\"closeWarning\":false,\"orientation\":0,\"closeAtEnd\":true,\"muteOnStart\":false,\"showMore\":false,\"startDelay\":0,\"closeButtonState\":2}, " +
             "key1=value1, " +
             "key2=2}",
             sut.build().toString()

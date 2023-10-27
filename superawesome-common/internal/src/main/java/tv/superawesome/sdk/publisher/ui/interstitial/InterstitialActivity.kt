@@ -4,9 +4,10 @@ package tv.superawesome.sdk.publisher.ui.interstitial
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.View
 import android.view.ViewGroup
-import tv.superawesome.sdk.publisher.ad.FullScreenAdConfig
+import tv.superawesome.sdk.publisher.ad.InterstitialAdConfig
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.ui.banner.InternalBannerView
@@ -19,6 +20,14 @@ import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
  */
 public class InterstitialActivity : FullScreenActivity() {
     private lateinit var interstitialBanner: InternalBannerView
+
+    override val adConfig: InterstitialAdConfig by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(Constants.Keys.config, InterstitialAdConfig::class.java)
+        } else {
+            intent.getParcelableExtra(Constants.Keys.config)
+        } ?: InterstitialAdConfig()
+    }
 
     override fun initChildUI() {
         interstitialBanner = InternalBannerView(this)
@@ -55,7 +64,7 @@ public class InterstitialActivity : FullScreenActivity() {
          * @param adConfig the ad configuration.
          * @param context an activity context.
          */
-        fun start(placementId: Int, adConfig: FullScreenAdConfig, context: Context) {
+        fun start(placementId: Int, adConfig: InterstitialAdConfig, context: Context) {
             val intent = Intent(context, InterstitialActivity::class.java)
             intent.putExtra(Constants.Keys.placementId, placementId)
             intent.putExtra(Constants.Keys.config, adConfig)

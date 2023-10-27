@@ -24,8 +24,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.BannerAdManager
 import tv.superawesome.sdk.publisher.common.R
 import tv.superawesome.sdk.publisher.components.AdControllerStore
 import tv.superawesome.sdk.publisher.components.ImageProviderType
@@ -36,8 +37,6 @@ import tv.superawesome.sdk.publisher.models.AdRequest
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.DefaultAdRequest
 import tv.superawesome.sdk.publisher.models.DwellTimer
-import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.ad.BannerAdManager
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.models.VoidBlock
 import tv.superawesome.sdk.publisher.ui.AdView
@@ -58,7 +57,7 @@ public class InternalBannerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), AdView, KoinComponent {
 
-    internal val adManager: AdManager by inject()
+    private val adManager: BannerAdManager by inject()
     private val imageProvider: ImageProviderType by inject()
     private val logger: Logger by inject()
     private val timeProvider: TimeProviderType by inject()
@@ -230,24 +229,21 @@ public class InternalBannerView @JvmOverloads constructor(
      * Sets parental gate enabled.
      */
     public override fun setParentalGate(value: Boolean) {
-        val manager = adManager as? BannerAdManager ?: return
-        manager.adConfig.isParentalGateEnabled = value
+        adManager.adConfig.isParentalGateEnabled = value
     }
 
     /**
      * Sets bumper page enabled.
      */
     public override fun setBumperPage(value: Boolean) {
-        val manager = adManager as? BannerAdManager ?: return
-        manager.adConfig.isBumperPageEnabled = value
+        adManager.adConfig.isBumperPageEnabled = value
     }
 
     /**
      * Sets the test mode.
      */
     public override fun setTestMode(value: Boolean) {
-        val manager = adManager as? BannerAdManager ?: return
-        manager.adConfig.testEnabled = value
+        adManager.adConfig.testEnabled = value
     }
 
     /**
