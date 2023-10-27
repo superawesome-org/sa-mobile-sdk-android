@@ -18,7 +18,7 @@ interface AdConfig {
     val isBumperPageEnabled: Boolean
 
     /** Should show small button. */
-    val shouldShowSmallClick: Boolean
+    val shouldShowSmallClick: Boolean?
 
     /** Should show a warning before closing the ad. */
     val shouldShowCloseWarning: Boolean?
@@ -49,7 +49,7 @@ class FullScreenAdConfig : Parcelable, AdConfig {
     override var isBackButtonEnabled: Boolean
     override var shouldCloseAtEnd: Boolean
     override var shouldMuteOnStart: Boolean
-    override var closeButtonState: CloseButtonState
+     override var closeButtonState: CloseButtonState
     override var orientation: Orientation
     override var startDelay: AdRequest.StartDelay
 
@@ -129,7 +129,7 @@ class BannerAdConfig : Parcelable, AdConfig {
     override var testEnabled: Boolean
     override var isParentalGateEnabled: Boolean
     override var isBumperPageEnabled: Boolean
-    override var shouldShowSmallClick: Boolean
+    override val shouldShowSmallClick: Boolean? = null
     override val shouldShowCloseWarning: Boolean? = null
     override val isBackButtonEnabled: Boolean? = null
     override val shouldCloseAtEnd: Boolean? = null
@@ -148,14 +148,12 @@ class BannerAdConfig : Parcelable, AdConfig {
         this.testEnabled = testEnabled
         this.isParentalGateEnabled = isParentalGateEnabled
         this.isBumperPageEnabled = isBumperPageEnabled
-        this.shouldShowSmallClick = shouldShowSmallClick
     }
 
     constructor(parcel: Parcel) {
         testEnabled = parcel.readByte().toInt() != 0
         isParentalGateEnabled = parcel.readByte().toInt() != 0
         isBumperPageEnabled = parcel.readByte().toInt() != 0
-        shouldShowSmallClick = parcel.readByte().toInt() != 0
     }
 
     override fun describeContents(): Int = 0
@@ -164,7 +162,6 @@ class BannerAdConfig : Parcelable, AdConfig {
         parcel.writeByte((if (testEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
-        parcel.writeByte((if (shouldShowSmallClick) 1 else 0).toByte())
     }
 
     /**
