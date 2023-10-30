@@ -38,14 +38,6 @@ references:
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-sdk.sh
   
-  # set secrets in the Android app
-  set_keylist_android: &set_keylist_android
-    run:
-      name: Android keys json
-      command: |
-        echo "Setting Android keys JSON config file + create missing dirs"
-        echo "IronSource app key"
-  
   bootstrap_android_app: &bootstrap_android_app
     run:
       name: Bootstrap
@@ -83,7 +75,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - *set_keylist_android
       - run:
           name: Detekt
           command: ./gradlew detekt
@@ -118,7 +109,6 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
-      - *set_keylist_android
       - run:
           name: Run unit tests for superawesome_base
           command: bundle exec fastlane run_all_tests module:superawesome-base
@@ -137,7 +127,6 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
-      - *set_keylist_android
       - run:
           name: Run unit tests for superawesome_common
           command: |
@@ -237,7 +226,6 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
-      - *set_keylist_android
       - run:
           name: Push Superawesome-All to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome modulePkgName:SuperAwesome
@@ -291,7 +279,6 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
-      - *set_keylist_android
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-base modulePkgName:SuperAwesome-Base
@@ -305,7 +292,6 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
-      - *set_keylist_android
       - run:
           name: Push Superawesome-Base to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:superawesome-common modulePkgName:SuperAwesome-Common
@@ -319,7 +305,6 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
-      - *set_keylist_android
       - run:
           name: Push Superawesome-AdMob to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saadmob modulePkgName:SuperAwesome-AdMob
@@ -333,7 +318,6 @@ jobs:
       - *configure_google_services
       - *clone_scripts_repo
       - *bootstrap_android_sdk
-      - *set_keylist_android
       - run:
           name: Push Superawesome-Unity to the S3 Repo
           command: bundle exec fastlane sdk_push isMultiplatform:false isPrivateRepo:false modulePkgIdentifier:tv.superawesome.sdk.publisher moduleRelease:saunity modulePkgName:SuperAwesome-Unity
@@ -388,6 +372,49 @@ jobs:
             else
               echo "No updates in the past 24 hours, skipping Smoke Test build"
             fi
+
+  android_build_production:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *load_env_vars
+      - *clone_scripts_repo
+      - *bootstrap_android_app
+      - *download_android_versioning_plugin
+      - *fix_android_version_name
+      - run:
+          name: Assemble [PROD] AAB
+          command: SA_ANDROID_APPS_PATH_TO_KEY_STORE_FILE=$PWD/temp_files/key_store.jks SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_PRODUCTION SA_ANDROID_APPS_PACKAGE_NAME=$SA_ANDROID_APPS_PACKAGE_NAME_PRODUCTION bundle exec fastlane bundle_aab path_to_project:'app' validateRemoteVersion:true
+      - run:
+          name: Create outputs dir
+          command: |
+            mkdir $PWD/temp_apk_build_outputs
+            mv $PWD/app/build/outputs/bundle/"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"Release/app-"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"-release.aab $PWD/temp_apk_build_outputs
+      - run:
+          name: Create mapping dir
+          command: |
+            mkdir $PWD/temp_mapping
+            mv $PWD/app/build/outputs/mapping/"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"Release/* $PWD/temp_mapping
+      - store_artifacts:
+          path: temp_mapping
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "temp_apk_build_outputs"
+
+  android_prod_store:
+    <<: *android_config
+    steps:
+      - attach_workspace:
+          at: .
+      - *load_env_vars
+      - *clone_scripts_repo
+      - *bootstrap_android_app
+      - run:
+          name: Push the [PRODUCTION] app to the store
+          command: SA_ANDROID_APPS_PATH_TO_JSON_FILE=$PWD/temp_files/google_temp.json SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_PRODUCTION SA_ANDROID_APPS_PATH_TO_APK=$PWD/temp_apk_build_outputs/app-"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"-release.aab SA_ANDROID_APPS_PACKAGE_NAME=$SA_ANDROID_APPS_PACKAGE_NAME_PRODUCTION bundle exec fastlane upload_to_google_store upload:internal main_app_folder:'app' prefix_path_binaries:'app/build/outputs/bundle'
+
 
 workflows:
   version: 2.1
@@ -451,6 +478,27 @@ workflows:
           requires:
             - checkout_code
             - generate_github_token
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+      - android_build_production:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+            - generate_github_token
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+      - android_prod_store:
+          context: MOBILE_ANDROID_APPS
+          requires:
+            - android_build_production
           filters:
             branches:
               ignore: develop
