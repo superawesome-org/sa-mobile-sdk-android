@@ -485,7 +485,7 @@ workflows:
               ignore: /^v.*/
 
       - android_build_production:
-          context: MOBILE_ANDROID_SDKS
+          context: MOBILE_ANDROID_APPS
           requires:
             - checkout_code
             - generate_github_token
