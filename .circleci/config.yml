@@ -9,7 +9,7 @@ references:
 
   android_config: &android_config
     docker:
-      - image: cimg/android:2023.08.1-browsers
+      - image: cimg/android:2023.10.2-browsers
     resource_class: medium+
     environment:
       FL_OUTPUT_DIR: output
