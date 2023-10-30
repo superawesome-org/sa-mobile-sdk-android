@@ -385,7 +385,7 @@ jobs:
       - *fix_android_version_name
       - run:
           name: Assemble [PROD] AAB
-          command: SA_ANDROID_APPS_PATH_TO_KEY_STORE_FILE=$PWD/temp_files/key_store.jks FAST_PATH_APP=true SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_PRODUCTION SA_ANDROID_APPS_PACKAGE_NAME=$SA_ANDROID_APPS_PACKAGE_NAME_PRODUCTION bundle exec fastlane bundle_aab path_to_project:'app' validateRemoteVersion:true
+          command: SA_ANDROID_APPS_PATH_TO_JSON_FILE=$PWD/temp_files/google_temp.json SA_ANDROID_APPS_PATH_TO_KEY_STORE_FILE=$PWD/temp_files/key_store.jks FAST_PATH_APP=true SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_PRODUCTION SA_ANDROID_APPS_PACKAGE_NAME=$SA_ANDROID_APPS_PACKAGE_NAME_PRODUCTION bundle exec fastlane bundle_aab path_to_project:'app' validateRemoteVersion:true
       - run:
           name: Create outputs dir
           command: |
