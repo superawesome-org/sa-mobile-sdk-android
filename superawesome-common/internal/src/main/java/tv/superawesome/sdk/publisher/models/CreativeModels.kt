@@ -43,7 +43,8 @@ data class CreativeDetail(
     val width: Int,
     val height: Int,
     val duration: Int,
-    var vast: String? = null,
+    val vast: String? = null,
+    val vastXml: String? = null,
 )
 
 @Serializable

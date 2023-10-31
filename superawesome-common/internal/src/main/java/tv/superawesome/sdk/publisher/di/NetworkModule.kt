@@ -5,7 +5,9 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import mockwebserver3.MockWebServer
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -20,6 +22,9 @@ import tv.superawesome.sdk.publisher.network.interceptors.RetryInterceptor
 @OptIn(ExperimentalSerializationApi::class)
 fun networkModule(baseUrl: String) = module {
 
+    // Mock Server to test VAST XML
+    single { MockWebServer() }
+
     single { HeaderInterceptor(get()) }
     single { RetryInterceptor(maxRetries = 5, get()) }
     single {
@@ -31,15 +36,15 @@ fun networkModule(baseUrl: String) = module {
         OkHttpClient().newBuilder()
             .addInterceptor(retryInterceptor)
             .addInterceptor(headerInterceptor)
-            .addInterceptor(
-                ChuckerInterceptor.Builder(androidContext())
-                    .collector(ChuckerCollector(androidContext()))
-                    .maxContentLength(length = 250_000L)
-                    .redactHeaders(emptySet())
-                    .alwaysReadResponseBody(false)
-                    .build()
-            )
-            .addInterceptor(httpLoggingInterceptor)
+//           // .addInterceptor(
+//                ChuckerInterceptor.Builder(androidContext())
+//                    .collector(ChuckerCollector(androidContext()))
+//                    .maxContentLength(length = 250_000L)
+//                    .redactHeaders(emptySet())
+//                    .alwaysReadResponseBody(false)
+//                    .build()
+//            )
+//            .addInterceptor(httpLoggingInterceptor)
             .build()
     }
 
@@ -52,9 +57,9 @@ fun networkModule(baseUrl: String) = module {
     single {
         val json: Json = get()
         Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(get<MockWebServer>().url("/"))
             .client(get())
-            .addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
     single {

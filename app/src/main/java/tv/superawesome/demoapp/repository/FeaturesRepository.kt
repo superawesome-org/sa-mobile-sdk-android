@@ -23,10 +23,10 @@ class FeaturesRepository(
         val response = okHttpClient.newCall(request).execute()
 
         return if (response.isSuccessful) {
-            val features = Json.decodeFromString<Features>(response.body()?.string() ?: "")
+            val features = Json.decodeFromString<Features>(response.body?.string() ?: "")
             DataResult.Success(features.features)
         } else {
-            DataResult.Failure(Error("Could not GET data from ${FEATURES_JSON_URL}"))
+            DataResult.Failure(Error("Could not GET data from $FEATURES_JSON_URL"))
         }
     }
 

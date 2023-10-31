@@ -4,6 +4,7 @@ import android.content.res.Resources
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -132,7 +133,9 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<PreferencesRepositoryType> { PreferencesRepository(get()) }
     single<PerformanceRepositoryType> { PerformanceRepository(get(), get()) }
 
-    single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get(), get()) }
+    single<AwesomeAdsApiDataSourceType> {
+        AwesomeAdsApiDataSource(get(), get(), get(), androidContext())
+    }
 
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> {
