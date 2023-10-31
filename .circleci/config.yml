@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  token-gen: superawesomeltd/sa-gha-token-gen-orb@0.0.6
+  token-gen: superawesomeltd/sa-gha-token-generator@1.1.1
 
 references:
   sa_config: &sa_config
@@ -30,7 +30,7 @@ references:
     run:
       name: Clone scripts repo
       command: |-
-        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
   
   bootstrap_android_sdk: &bootstrap_android_sdk
     run:
