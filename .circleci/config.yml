@@ -48,6 +48,7 @@ references:
     run:
       name: Setup Secrets
       command: |
+        mkdir temp_files
         echo "${SA_ANDROID_DEMO_APP_KEYSTORE_ENC}" | base64 -di > "temp_files/${SA_ANDROID_DEMO_APP_KEYSTORE_NAME}"
   
   download_android_versioning_plugin: &download_android_versioning_plugin
@@ -396,7 +397,6 @@ jobs:
       - run:
           name: Create outputs dir
           command: |
-            mkdir $PWD/temp_apk_build_outputs
             mv $PWD/app/build/outputs/bundle/"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"Release/app-"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"-release.aab $PWD/temp_apk_build_outputs
       - run:
           name: Create mapping dir
