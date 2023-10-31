@@ -496,7 +496,7 @@ workflows:
               ignore: /^v.*/
 
       - android_prod_store:
-          context: MOBILE_ANDROID_APPS
+          context: MOBILE_ANDROID_SDKS
           requires:
             - android_build_production
           filters:
