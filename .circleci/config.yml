@@ -43,6 +43,13 @@ references:
       name: Bootstrap
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-app.sh
+
+  setup_secrets: &setup_secrets
+    run:
+      name: Setup Secrets
+      command: |
+        mkdir temp_files
+        echo "${SA_ANDROID_DEMO_APP_KEYSTORE_ENC}" | base64 -di > "temp_files/${SA_ANDROID_DEMO_APP_KEYSTORE_NAME}"
   
   download_android_versioning_plugin: &download_android_versioning_plugin
     run:
@@ -380,6 +387,7 @@ jobs:
           at: .
       - *load_env_vars
       - *clone_scripts_repo
+      - *setup_secrets
       - *bootstrap_android_app
       - *download_android_versioning_plugin
       - *fix_android_version_name
@@ -410,6 +418,7 @@ jobs:
           at: .
       - *load_env_vars
       - *clone_scripts_repo
+      - *setup_secrets
       - *bootstrap_android_app
       - run:
           name: Push the [PRODUCTION] app to the store
