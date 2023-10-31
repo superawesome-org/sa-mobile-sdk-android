@@ -48,7 +48,6 @@ references:
     run:
       name: Setup Secrets
       command: |
-        mkdir temp_files
         echo "${SA_ANDROID_DEMO_APP_KEYSTORE_ENC}" | base64 -di > "temp_files/${SA_ANDROID_DEMO_APP_KEYSTORE_NAME}"
   
   download_android_versioning_plugin: &download_android_versioning_plugin
