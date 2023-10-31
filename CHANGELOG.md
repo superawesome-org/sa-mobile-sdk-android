@@ -1,3 +1,12 @@
+## [9.2.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.1...v9.2.2) (2023-10-31)
+
+
+### Bug Fixes
+
+* **banner:** crash when parent activity doesn't implement LifecycleOwner ([47e4f6e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/47e4f6e49fc9828e2003e2b0f719bd7c77c60ab0))
+* **ConnectionType:** Added 5g connection type to common. ([#450](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/450)) ([979a0f6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/979a0f68607195c9ad5a239ec3e7674e12f192b4))
+* **JSBridge:** Added webSDKReady event to the JS Bridge. ([#451](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/451)) ([03d45b1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/03d45b1ce0c017ae00e0406b954c774e24760bd0))
+
 ## [9.2.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.0...v9.2.1) (2023-09-29)
 
 
