@@ -48,7 +48,6 @@ references:
     run:
       name: Setup Secrets
       command: |
-        mkdir temp_files
         echo "${SA_ANDROID_DEMO_APP_KEYSTORE_ENC}" | base64 -di > "temp_files/${SA_ANDROID_DEMO_APP_KEYSTORE_NAME}"
   
   download_android_versioning_plugin: &download_android_versioning_plugin
@@ -387,8 +386,8 @@ jobs:
           at: .
       - *load_env_vars
       - *clone_scripts_repo
-      - *setup_secrets
       - *bootstrap_android_app
+      - *setup_secrets
       - *download_android_versioning_plugin
       - *fix_android_version_name
       - run:
@@ -401,7 +400,6 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - "temp_files"
             - "temp_apk_build_outputs"
 
   android_prod_store:
@@ -468,7 +466,7 @@ workflows:
               ignore: /^v.*/
 
       - android_prod_store:
-          context: MOBILE_ANDROID_SDKS
+          context: MOBILE_ANDROID_APPS
           requires:
             - android_build_production
           filters:
@@ -518,7 +516,7 @@ workflows:
               ignore: /^v.*/
 
       - android_prod_store:
-          context: MOBILE_ANDROID_SDKS
+          context: MOBILE_ANDROID_APPS
           requires:
             - android_build_production
           filters:
