@@ -398,13 +398,6 @@ jobs:
           name: Create outputs dir
           command: |
             mv $PWD/app/build/outputs/bundle/"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"Release/app-"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"-release.aab $PWD/temp_apk_build_outputs
-      - run:
-          name: Create mapping dir
-          command: |
-            mkdir $PWD/temp_mapping
-            mv $PWD/app/build/outputs/mapping/"${SA_ANDROID_APPS_BUILD_TASK_PRODUCTION}"Release/* $PWD/temp_mapping
-      - store_artifacts:
-          path: temp_mapping
       - persist_to_workspace:
           root: .
           paths:
@@ -425,10 +418,10 @@ jobs:
 
 workflows:
   version: 2.1
-  nightly:
+  thursday:
     triggers:
       - schedule:
-          cron: "0 23 * * 1-5"
+          cron: "0 23 * * 4"
           filters:
             branches:
               only:
@@ -456,6 +449,27 @@ workflows:
           requires:
             - checkout_code
             - generate_github_token
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - android_build_production:
+          context: MOBILE_ANDROID_APPS
+          requires:
+            - checkout_code
+            - generate_github_token
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - android_prod_store:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - android_build_production
           filters:
             branches:
               only: develop
