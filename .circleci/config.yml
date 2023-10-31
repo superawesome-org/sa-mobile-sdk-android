@@ -410,6 +410,7 @@ jobs:
           at: .
       - *load_env_vars
       - *clone_scripts_repo
+      - *setup_secrets
       - *bootstrap_android_app
       - run:
           name: Push the [PRODUCTION] app to the store
