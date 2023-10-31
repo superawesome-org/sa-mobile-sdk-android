@@ -39,9 +39,9 @@ class OkHttpNetworkDataSource(
         if (response.isSuccessful) {
             // Safe to assume that body is non-null since it's
             // from a Response returned from `execute()`.
-            response.body()!!.string()
+            response.body!!.string()
         } else {
-            throw Exception("Response code: ${response.code()}")
+            throw Exception("Response code: ${response.code}")
         }
     }
 
@@ -55,14 +55,14 @@ class OkHttpNetworkDataSource(
             val downloadedFile = File(cacheDir, urlFileItem.fileName)
 
             val sink = downloadedFile.sink().buffer()
-            sink.writeAll(response.body()!!.source())
+            sink.writeAll(response.body!!.source())
             withContext(Dispatchers.IO) {
                 sink.close()
             }
             logger.success("File download successful with path: ${downloadedFile.absolutePath}")
             downloadedFile.absolutePath
         } else {
-            throw Exception("Response code: ${response.code()}")
+            throw Exception("Response code: ${response.code}")
         }
     }
 }

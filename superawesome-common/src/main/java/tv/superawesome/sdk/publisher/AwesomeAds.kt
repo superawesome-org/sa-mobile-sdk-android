@@ -2,14 +2,17 @@ package tv.superawesome.sdk.publisher
 
 import android.app.Application
 import android.content.Context
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
+import tv.superawesome.sdk.publisher.components.QueryAdditionalOptions
 import tv.superawesome.sdk.publisher.components.SdkInfoType
 import tv.superawesome.sdk.publisher.di.createCommonModule
-import tv.superawesome.sdk.publisher.models.DefaultConfiguration
 import tv.superawesome.sdk.publisher.models.Configuration
-import tv.superawesome.sdk.publisher.components.QueryAdditionalOptions
+import tv.superawesome.sdk.publisher.models.DefaultConfiguration
+
 
 /**
  * The AwesomeAds Publisher SDK (Software Development Kit) enables you to add COPPA-compliant
@@ -17,6 +20,11 @@ import tv.superawesome.sdk.publisher.components.QueryAdditionalOptions
  */
 public object AwesomeAds {
     private var app: KoinApplication? = null
+
+    init {
+        val policy = ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+    }
 
     /**
      * Initialization of AwesomeAds SDK.
@@ -97,7 +105,7 @@ public object AwesomeAds {
     public fun init(
         applicationContext: Context,
         configuration: Configuration,
-        options: Map<String, Any>
+        options: Map<String, Any>,
     ) {
         if (app == null) {
             QueryAdditionalOptions.instance = QueryAdditionalOptions(options)
@@ -115,7 +123,7 @@ public object AwesomeAds {
 
     private fun buildKoinApplication(
         applicationContext: Context,
-        configuration: Configuration
+        configuration: Configuration,
     ): KoinApplication =
         startKoin {
             androidContext(applicationContext)

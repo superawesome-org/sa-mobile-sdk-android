@@ -1,7 +1,10 @@
 package tv.superawesome.sdk.publisher.network.datasources
 
+import android.content.Context
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import mockwebserver3.MockResponse
+import mockwebserver3.MockWebServer
 import tv.superawesome.sdk.publisher.models.Ad
 import tv.superawesome.sdk.publisher.models.AdQueryBundle
 import tv.superawesome.sdk.publisher.models.EventQueryBundle
@@ -32,7 +35,29 @@ interface AwesomeAdsApiDataSourceType {
 class AwesomeAdsApiDataSource(
     private val awesomeAdsApi: AwesomeAdsApi,
     private val json: Json,
+    private val mockWebServer: MockWebServer,
+    private val context: Context,
 ): AwesomeAdsApiDataSourceType {
+
+    init {
+        context.assets.open("json.json").use { inputStream ->
+            val vast = String(inputStream.readBytes())
+            mockWebServer.enqueue(
+                MockResponse()
+                    .setResponseCode(200)
+                    .setBody(vast)
+            )
+        }
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200))
+
+    }
 
     override suspend fun getAd(placementId: Int, query: AdQueryBundle): Result<Ad> =
         runCatching { awesomeAdsApi.ad(placementId, query.build()) }
