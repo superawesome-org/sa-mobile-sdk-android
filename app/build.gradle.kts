@@ -10,6 +10,9 @@ android {
 
     defaultConfig {
         applicationId = "tv.superawesome.demoapp"
+        versionCode = 1
+        versionName = "9.1.2"
+
         testInstrumentationRunner = "tv.superawesome.demoapp.runner.UITestRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
         multiDexEnabled = true
