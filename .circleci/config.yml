@@ -44,12 +44,6 @@ references:
       command: |
         ${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}/bootstrap/bootstrap-mobile-android-app.sh
 
-  setup_secrets: &setup_secrets
-    run:
-      name: Setup Secrets
-      command: |
-        echo "${SA_ANDROID_DEMO_APP_KEYSTORE_ENC}" | base64 -di > "temp_files/${SA_ANDROID_DEMO_APP_KEYSTORE_NAME}"
-  
   download_android_versioning_plugin: &download_android_versioning_plugin
     run:
       name: Download Plugin for versioning in fastlane
@@ -387,12 +381,11 @@ jobs:
       - *load_env_vars
       - *clone_scripts_repo
       - *bootstrap_android_app
-      - *setup_secrets
       - *download_android_versioning_plugin
       - *fix_android_version_name
       - run:
           name: Assemble [PROD] AAB
-          command: SA_ANDROID_APPS_PATH_TO_JSON_FILE=$PWD/temp_files/google_temp.json SA_ANDROID_APPS_PATH_TO_KEY_STORE_FILE=$PWD/temp_files/$SA_ANDROID_DEMO_APP_KEYSTORE_NAME FAST_PATH_APP=true SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_PRODUCTION SA_ANDROID_APPS_PACKAGE_NAME=$SA_ANDROID_APPS_PACKAGE_NAME_PRODUCTION bundle exec fastlane bundle_aab path_to_project:'app' validateRemoteVersion:true
+          command: SA_ANDROID_APPS_PATH_TO_JSON_FILE=$PWD/temp_files/google_temp.json SA_ANDROID_APPS_PATH_TO_KEY_STORE_FILE=$PWD/temp_files/upload-keystore.jks FAST_PATH_APP=true SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_PRODUCTION SA_ANDROID_APPS_PACKAGE_NAME=$SA_ANDROID_APPS_PACKAGE_NAME_PRODUCTION bundle exec fastlane bundle_aab path_to_project:'app' validateRemoteVersion:true
       - run:
           name: Create outputs dir
           command: |
@@ -495,6 +488,17 @@ workflows:
 
       - lint_check:
           context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+            - generate_github_token
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+      - android_build_production:
+          context: MOBILE_ANDROID_APPS
           requires:
             - checkout_code
             - generate_github_token
