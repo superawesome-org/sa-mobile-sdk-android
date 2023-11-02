@@ -518,8 +518,7 @@ public class SABannerAd extends FrameLayout {
 
                         if (destination != null) {
                             Runnable runner = () -> click(destination);
-                            runner.run();
-                            // showParentalGateIfNeededWithCompletion(context, runner);
+                            showParentalGateIfNeededWithCompletion(context, runner);
                         }
 
                         break;
