@@ -50,6 +50,7 @@
     "vpaid":false,
     "click_url": "http://localhost:8080/vast/clickthrough"
   },
+  "rnd": "1234",
   "is_fill":false,
   "is_fallback":false,
   "moat":0.1,
