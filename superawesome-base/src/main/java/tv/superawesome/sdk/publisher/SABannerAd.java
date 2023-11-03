@@ -353,7 +353,7 @@ public class SABannerAd extends FrameLayout {
                         SAAd adResponse = response.ads.get(0);
                         adResponse.openRtbPartnerId = openRtbPartnerId;
 
-                        performanceMetrics.trackLoadTime(ad);
+                        performanceMetrics.trackLoadTime(adResponse);
                         setAd(adResponse);
                     } else {
                         setAd(null);
