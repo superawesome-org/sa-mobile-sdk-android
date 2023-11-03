@@ -180,8 +180,6 @@ class BannerUITest {
                     waitForDisplay()
                 }
             }
-
-            waitForDisplay()
         }
     }
 

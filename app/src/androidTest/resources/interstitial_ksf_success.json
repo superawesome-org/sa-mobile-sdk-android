@@ -35,6 +35,7 @@
     "click_url": "undefined",
     "isKSF": true
   },
+  "rnd": "1234",
   "is_fill": false,
   "is_fallback": false,
   "moat": 0.1,
