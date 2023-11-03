@@ -1,3 +1,12 @@
+## [9.2.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.2...v9.2.3) (2023-11-03)
+
+
+### Bug Fixes
+
+* **config:** app crash when loading banner with multi id ([620c6c6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/620c6c62081f7f9a7e1ee91f5f78c5d10de13bf2))
+* **config:** publisher configuration null when loading multi id ([b078e5d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b078e5de44156851c8f79ebe956fa9f9bade7c51))
+* **parental-gate:** parental gate not showing banner/interstitials ([3405bd8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3405bd8f1f828f68aadacd7d22573dd9841c0e9f))
+
 ## [9.2.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.1...v9.2.2) (2023-10-31)
 
 
