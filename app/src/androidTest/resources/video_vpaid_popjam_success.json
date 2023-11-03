@@ -18,6 +18,7 @@
     },
     "isKSF": true
   },
+  "rnd": "1234",
   "advertiserId": 407,
   "publisherId": 407,
   "is_fill": false,

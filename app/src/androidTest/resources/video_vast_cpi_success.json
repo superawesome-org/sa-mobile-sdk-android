@@ -13,6 +13,7 @@
       "vast": "http://localhost:8080/vast/tag"
     }
   },
+  "rnd": "1234",
   "advertiserId": 4,
   "publisherId": 4,
   "is_fill": false,
