@@ -60,20 +60,12 @@ class AdProcessor(
                     }
                     response.html = ad.creative.details.tag
                 } else {
-                    ad.creative.details.vast?.let { url ->
-                        response.vast = handleVast(url, null)
-                        response.baseUrl = response.vast?.url?.baseUrl
-                        response.vast?.url?.let {
-                            networkDataSource.downloadFile(it).fold(
-                                onSuccess = { filePath ->
-                                    response.filePath = filePath
-                                },
-                                onFailure = { exception ->
-                                    throw exception
-                                }
-                            )
-                        } ?: throw NullPointerException("empty url")
-
+                    if (ad.creative.details.vastXml != null) {
+                        val vast = handleVastXml(ad.creative.details.vastXml)
+                        fillResponse(response, vast)
+                    } else if (ad.creative.details.vast != null) {
+                        val vast = handleVast(ad.creative.details.vast, null)
+                        fillResponse(response, vast)
                     }
                 }
         }
@@ -85,7 +77,41 @@ class AdProcessor(
         return response
     }
 
-    @Suppress("ReturnCount")
+    private suspend fun fillResponse(response: AdResponse, vastAd: VastAd?) {
+        response.vast = vastAd
+        response.baseUrl = response.vast?.url?.baseUrl
+        response.vast?.url?.let { fileUrl ->
+            networkDataSource.downloadFile(fileUrl).fold(
+                onSuccess = { filePath ->
+                    response.filePath = filePath
+                },
+                onFailure = { exception -> throw exception }
+            )
+        }
+    }
+
+    private suspend fun handleVastXml(xml: String): VastAd? {
+        val vast = vastParser.parse(xml)
+
+        suspend fun handleWrapper(url: String, initialVast: VastAd): VastAd? {
+            val merged = networkDataSource.getData(url).map { newXml ->
+                vastParser.parse(newXml)?.merge(initialVast)
+            }.getOrNull()
+
+            return if (merged?.type == VastType.Wrapper && merged.redirect != null) {
+                handleWrapper(merged.redirect, merged)
+            } else {
+                merged
+            }
+        }
+
+        return if (vast?.type == VastType.Wrapper && vast.redirect != null) {
+            handleWrapper(vast.redirect, vast)
+        } else {
+            vast
+        }
+    }
+
     private suspend fun handleVast(url: String, initialVast: VastAd?): VastAd? =
         networkDataSource.getData(url).fold(
             onSuccess = {
