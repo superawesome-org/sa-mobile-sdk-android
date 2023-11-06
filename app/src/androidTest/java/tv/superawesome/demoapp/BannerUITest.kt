@@ -336,7 +336,6 @@ class BannerUITest {
 
             bannerRobot {
                 tapOnAd()
-
                 verifyUrlPathNotCalled("/click")
             }
 
