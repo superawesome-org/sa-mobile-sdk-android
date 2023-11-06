@@ -26,6 +26,7 @@ public class VideoEvents(
         fun hasBeenVisible()
     }
 
+    private val dwellViewableDetector: ViewableDetector by inject(named<SingleShotViewableDetector>())
     private val vastEventRepository: VastEventRepositoryType by inject {
         parametersOf(adResponse.vast)
     }
@@ -105,7 +106,7 @@ public class VideoEvents(
 
     private fun handleDwellTime(time: Int, videoPlayer: IVideoPlayer?) {
         if (videoPlayer is ViewGroup) {
-            viewableDetector?.start(videoPlayer, ViewableDetector.VIDEO_MAX_TICK_COUNT) {
+            dwellViewableDetector.start(videoPlayer, ViewableDetector.VIDEO_MAX_TICK_COUNT) {
                 if (hasTicked(time)) {
                     lastTick = time
                     scope.launch { eventRepository.dwellTime(adResponse) }
