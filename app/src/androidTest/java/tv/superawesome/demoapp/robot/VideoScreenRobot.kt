@@ -20,6 +20,10 @@ class VideoScreenRobot : BaseRobot() {
         Thread.sleep(5000)
     }
 
+    fun waitForDwellTime() {
+        Thread.sleep(5000)
+    }
+
     fun waitForAdEnds() {
         Thread.sleep(20000)
     }

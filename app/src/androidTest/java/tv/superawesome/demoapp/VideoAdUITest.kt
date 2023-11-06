@@ -222,6 +222,10 @@ class VideoAdUITest {
             }
 
             tapOnPlacement(testData)
+            videoScreenRobot {
+                waitForAdEnds()
+                tapOnClose()
+            }
 
             checkForEvent(testData, SAEvent.adEnded)
         }
@@ -586,6 +590,7 @@ class VideoAdUITest {
             videoScreenRobot {
                 waitForDisplay()
                 waitForImpression()
+                waitForDwellTime()
 
                 verifyUrlPathCalledWithQueryParam(
                     "/event",
@@ -629,6 +634,7 @@ class VideoAdUITest {
             videoScreenRobot {
                 waitForDisplay()
                 waitForImpression()
+                waitForDwellTime()
 
                 verifyUrlPathCalledWithQueryParam(
                     "/event",
@@ -748,7 +754,6 @@ class VideoAdUITest {
 
                 videoWarningRobot {
                     checkVisible()
-
                     tapOnClose()
                 }
             }
@@ -769,6 +774,7 @@ class VideoAdUITest {
                 settingsScreenRobot {
                     tapOnEnableVideoWarnDialog()
                     tapOnDisableCloseAtEnd()
+                    tapOnCloseNoDelay()
                 }
             }
             tapOnPlacement(testData)
