@@ -153,24 +153,16 @@ class ListScreenRobot : BaseRobot() {
     }
 
     private fun scrollListToPlacementWithString(string: String) {
-//        onView(withId(R.id.recyclerView))
-//            .perform(
-//                RecyclerViewActions.scrollTo<ViewHolder>(
-//                    hasDescendant(
-//                        withText(
-//                            containsString(string)
-//                        )
-//                    )
-//                )
-//            )
-
         onView(withId(R.id.recyclerView))
             .perform(
-                RecyclerViewActions.scrollToPosition<ViewHolder>(
-                    18
+                RecyclerViewActions.scrollTo<ViewHolder>(
+                    hasDescendant(
+                        withText(
+                            containsString(string)
+                        )
+                    )
                 )
             )
-        Thread.sleep(1000)
     }
 }
 
