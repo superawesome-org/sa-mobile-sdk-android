@@ -307,7 +307,7 @@ class BannerUITest {
 
     @Test
     fun test_external_webpage_opening_on_click() {
-        val testData = TestData.bannerSuccessNoClickthrough
+        val testData = TestData.bannerSuccess
         IntentsHelper.stubIntentsForUrl()
 
         listScreenRobot {
