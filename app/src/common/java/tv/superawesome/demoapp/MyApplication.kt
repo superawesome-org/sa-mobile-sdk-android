@@ -26,17 +26,15 @@ class MyApplication : MultiDexApplication() {
     }
 
     fun setupUITest() {
-        environment = SDKEnvironment.UITesting
+        HasEnvironment.environment = SDKEnvironment.UITesting
     }
 
     companion object {
-        var environment: SDKEnvironment = SDKEnvironment.Production
-            private set
 
         val flavor = SDKFlavor.COMMON
 
         fun initSDK(application: Application, environment: SDKEnvironment) {
-            this.environment = environment
+            HasEnvironment.environment = environment
 
             val env = when (environment) {
                 SDKEnvironment.Production -> Environment.Production
