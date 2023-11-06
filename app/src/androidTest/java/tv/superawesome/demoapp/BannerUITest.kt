@@ -23,6 +23,7 @@ import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathNotCalled
 import tv.superawesome.sdk.publisher.SAEvent
 
 @RunWith(AndroidJUnit4::class)
@@ -350,6 +351,24 @@ class BannerUITest {
             }
 
             checkForEvent(testData, SAEvent.adClicked)
+        }
+    }
+
+    @Test
+    fun test_banner_with_no_clickthrough() {
+        val testData = TestData.bannerSuccessNoClickthrough
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                tapOnAd()
+                verifyUrlPathNotCalled("/click")
+            }
+
+            checkEventNotSent(testData, SAEvent.adClicked)
         }
     }
 

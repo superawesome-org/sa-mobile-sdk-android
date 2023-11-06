@@ -115,9 +115,9 @@ class ListScreenRobot : BaseRobot() {
     }
 
     /**
-     * Checks if the event is not occurred
+     * Checks if the event has not occurred
      */
-    fun checkNotForEvent(placement: TestData, event: SAEvent) {
+    fun checkEventNotSent(placement: TestData, event: SAEvent) {
         onView(withId(R.id.subtitleTextView))
             .check(matches(not(withSubstring("${placement.placementId} ${event.name}"))))
     }
