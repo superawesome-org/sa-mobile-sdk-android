@@ -46,7 +46,7 @@ class BannerUITest {
     }
 
     @Test
-    fun test_adLoading() {
+    fun test_adLoading_placementId() {
         val testData = TestData.bannerSuccess
 
         listScreenRobot {
@@ -63,7 +63,24 @@ class BannerUITest {
     }
 
     @Test
-    fun test_adFailure() {
+    fun test_adLoading_placementId_lineItemId_creativeId() {
+        val testData = TestData.bannerMultiSuccess
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+        }
+    }
+
+    @Test
+    fun test_adFailure_placementId() {
         val testData = TestData.bannerSuccess
 
         listScreenRobot {
@@ -75,8 +92,20 @@ class BannerUITest {
     }
 
     @Test
+    fun test_adFailure_placementId_lineItemId_creativeId() {
+        val testData = TestData.bannerMultiSuccess
+
+        listScreenRobot {
+            launchActivityWithFailureStub(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_adNotFound() {
-        val testData = TestData("88001", "not_found.json")
+        val testData = TestData(placementId = "88001", fileName = "not_found.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -167,7 +196,7 @@ class BannerUITest {
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
-        val testData = TestData("88001", "banner_enabled_success.json")
+        val testData = TestData(placementId = "88001", fileName = "banner_enabled_success.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)

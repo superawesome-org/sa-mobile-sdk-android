@@ -60,8 +60,14 @@ class InterstitialUITest {
     }
 
     @Test
-    fun test_standard_adLoading() {
+    fun test_standard_adLoading_placementId() {
         val testData = TestData.interstitialStandard
+        testAdLoading(testData, TestColors.bannerYellow)
+    }
+
+    @Test
+    fun test_standard_adLoading_placementId_lineItemId_creativeId() {
+        val testData = TestData.interstitialStandardMulti
         testAdLoading(testData, TestColors.bannerYellow)
     }
 
@@ -87,7 +93,7 @@ class InterstitialUITest {
     }
 
     @Test
-    fun test_adFailure() {
+    fun test_adFailure_placementId() {
         val testData = TestData.interstitialKsf
 
         listScreenRobot {
@@ -99,8 +105,20 @@ class InterstitialUITest {
     }
 
     @Test
+    fun test_adFailure_placementId_lineItemId_creativeId() {
+        val testData = TestData.interstitialStandardMulti
+
+        listScreenRobot {
+            launchActivityWithFailureStub(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_adNotFound() {
-        val testData = TestData("87970", "not_found.json")
+        val testData = TestData(placementId = "87970", fileName = "not_found.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -113,7 +131,7 @@ class InterstitialUITest {
     @Test
     fun test_standard_safeAdVisible() {
         val testData =
-            TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
+            TestData(placementId = "87892", fileName = "padlock/interstitial_standard_success_padlock_enabled.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -127,7 +145,7 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_CloseButton() {
-        val testData = TestData("87892", "interstitial_standard_success.json")
+        val testData = TestData(placementId = "87892", fileName = "interstitial_standard_success.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -194,7 +212,10 @@ class InterstitialUITest {
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
-        val testData = TestData("87892", "interstitial_standard_enabled_success.json")
+        val testData = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_enabled_success.json",
+        )
         IntentsHelper.stubIntentsForUrl()
 
         listScreenRobot {
@@ -216,8 +237,10 @@ class InterstitialUITest {
 
     @Test
     fun test_parental_gate_for_safe_ad_click() {
-        val testData =
-            TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
+        val testData = TestData(
+            placementId = "87892",
+            fileName = "padlock/interstitial_standard_success_padlock_enabled.json",
+        )
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
@@ -427,8 +450,10 @@ class InterstitialUITest {
     }
 
     private fun openParentalGate() {
-        val testData =
-            TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
+        val testData = TestData(
+            placementId = "87892",
+            fileName = "padlock/interstitial_standard_success_padlock_enabled.json",
+        )
 
         listScreenRobot {
             launchWithSuccessStub(testData) {

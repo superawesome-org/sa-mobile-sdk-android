@@ -2,6 +2,7 @@ package tv.superawesome.demoapp.robot
 
 import android.content.Intent
 import android.graphics.Color
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
@@ -30,13 +31,15 @@ import tv.superawesome.demoapp.util.waitUntil
 import tv.superawesome.sdk.publisher.SAEvent
 
 class ListScreenRobot : BaseRobot() {
+
+
+
     private fun launchActivityWithSuccessStub(
-        placement: String,
-        fileName: String,
+        testData: TestData,
         settings: (() -> Unit)? = null
     ) {
         WireMockHelper.stubCommonPaths()
-        WireMockHelper.stubSuccess(placement, fileName)
+        WireMockHelper.stubSuccess(testData)
 
         launchActivity<MainActivity>(
             intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
@@ -60,16 +63,12 @@ class ListScreenRobot : BaseRobot() {
     }
 
     fun launchWithSuccessStub(testData: TestData, settings: (() -> Unit)? = null) {
-        launchActivityWithSuccessStub(testData.placement, testData.fileName, settings)
+        launchActivityWithSuccessStub(testData, settings)
     }
 
     fun launchActivityWithFailureStub(testData: TestData) {
-        launchActivityWithFailureStub(testData.placement)
-    }
-
-    private fun launchActivityWithFailureStub(placement: String) {
         WireMockHelper.stubCommonPaths()
-        WireMockHelper.stubFailure(placement)
+        WireMockHelper.stubFailure(testData)
 
         launchActivity<MainActivity>()
 
@@ -78,14 +77,28 @@ class ListScreenRobot : BaseRobot() {
         }
     }
 
-    private fun clickPlacementById(placementId: String) {
+    private fun clickPlacementWithString(string: String) {
         onView(withId(R.id.recyclerView))
-            .perform(RecyclerViewActions.actionOnItem<ViewHolder>
-                (hasDescendant(withText(containsString(placementId))), click()))
+            .perform(
+                RecyclerViewActions.actionOnItem<ViewHolder>(
+                    hasDescendant(
+                        withText(
+                            containsString(string)
+                        )
+                    ),
+                    click()
+                )
+            )
     }
 
     fun tapOnPlacement(testData: TestData) {
-        clickPlacementById(testData.placement)
+        val matchString = if (testData.isMultiData) {
+            "${testData.placementId} - ${testData.lineItemId} - ${testData.creativeId}"
+        } else {
+            testData.placementId
+        }
+        scrollListToPlacementWithString(matchString)
+        clickPlacementWithString(matchString)
     }
 
     fun checkAdHasBeenLoadedShownClickedClosed(placement: TestData) {
@@ -98,7 +111,7 @@ class ListScreenRobot : BaseRobot() {
     fun checkForEvent(placement: TestData, event: SAEvent) {
         onView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
-            .perform(waitUntil(withSubstring("${placement.placement} ${event.name}")))
+            .perform(waitUntil(withSubstring("${placement.placementId} ${event.name}")))
     }
 
     /**
@@ -106,7 +119,7 @@ class ListScreenRobot : BaseRobot() {
      */
     fun checkNotForEvent(placement: TestData, event: SAEvent) {
         onView(withId(R.id.subtitleTextView))
-            .check(matches(not(withSubstring("${placement.placement} ${event.name}"))))
+            .check(matches(not(withSubstring("${placement.placementId} ${event.name}"))))
     }
 
     fun checkForAnyEvent(placement: TestData, event: SAEvent, event2: SAEvent) {
@@ -115,8 +128,8 @@ class ListScreenRobot : BaseRobot() {
             .perform(
                 waitUntil(
                     anyOf(
-                        withSubstring("${placement.placement} ${event.name}"),
-                        withSubstring("${placement.placement} ${event2.name}")
+                        withSubstring("${placement.placementId} ${event.name}"),
+                        withSubstring("${placement.placementId} ${event2.name}")
                     )
                 )
             )
@@ -137,6 +150,19 @@ class ListScreenRobot : BaseRobot() {
                 color
             )
         )
+    }
+
+    private fun scrollListToPlacementWithString(string: String) {
+        onView(withId(R.id.recyclerView))
+            .perform(
+                RecyclerViewActions.scrollTo<ViewHolder>(
+                    hasDescendant(
+                        withText(
+                            containsString(string)
+                        )
+                    )
+                )
+            )
     }
 }
 

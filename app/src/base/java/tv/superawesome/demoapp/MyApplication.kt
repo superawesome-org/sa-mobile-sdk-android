@@ -20,13 +20,10 @@ class MyApplication : MultiDexApplication() {
     }
 
     fun setupUITest() {
-        environment = SDKEnvironment.UITesting
+        HasEnvironment.environment = SDKEnvironment.UITesting
     }
 
     companion object {
-        var environment: SDKEnvironment = SDKEnvironment.Production
-            private set
-
         val flavor = SDKFlavor.BASE
     }
 }
