@@ -110,7 +110,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
 
     factory { ParentalGate(get()) }
     factory<BumperPage> { DefaultBumperPage() }
-    factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector(get()) }.bind<ViewableDetector>()
+    factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector() }.bind<ViewableDetector>()
     factory(named<ContinuousViewableDetector>()) { ContinuousViewableDetector() }.bind<ViewableDetector>()
     factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
