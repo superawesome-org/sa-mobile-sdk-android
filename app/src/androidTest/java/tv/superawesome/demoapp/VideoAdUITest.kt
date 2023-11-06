@@ -79,7 +79,7 @@ class VideoAdUITest {
             }
 
             checkForEvent(testData, SAEvent.adClosed)
-            checkNotForEvent(testData, SAEvent.adEnded)
+            checkEventNotSent(testData, SAEvent.adEnded)
         }
     }
 

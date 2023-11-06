@@ -119,6 +119,10 @@ object WireMockHelper {
         verify(anyRequestedFor(urlPathMatching(urlPath)))
     }
 
+    fun verifyUrlPathNotCalled(urlPath: String) {
+        verify(exactly(0), anyRequestedFor(urlPathMatching(urlPath)))
+    }
+
     fun verifyUrlPathCalledWithQueryParam(
         urlPath: String,
         queryParamKey: String,
