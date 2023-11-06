@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp.settings
 
+import tv.superawesome.demoapp.HasEnvironment
 import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.lib.sasession.defines.SAConfiguration
@@ -97,7 +98,7 @@ data class SettingsData(
 
 object DataStore {
     var data = SettingsData(
-        environment = when (MyApplication.environment) {
+        environment = when (HasEnvironment.environment) {
             SDKEnvironment.Production -> SAConfiguration.PRODUCTION
             SDKEnvironment.Staging -> SAConfiguration.STAGING
             SDKEnvironment.UITesting -> SAConfiguration.UITESTING
@@ -120,7 +121,7 @@ object DataStore {
 
     fun reset() {
         data = SettingsData(
-            environment = when (MyApplication.environment) {
+            environment = when (HasEnvironment.environment) {
                 SDKEnvironment.Production -> SAConfiguration.PRODUCTION
                 SDKEnvironment.Staging -> SAConfiguration.STAGING
                 SDKEnvironment.UITesting -> SAConfiguration.UITESTING

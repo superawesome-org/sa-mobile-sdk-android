@@ -266,7 +266,7 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_vast_adLoading() {
+    fun test_vast_adLoading_placementId() {
         val testData = TestData.videoVast
         testAdLoading(testData, TestColors.vastYellow)
 
@@ -276,8 +276,24 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_vpaid_adLoading() {
+    fun test_vast_adLoading_placementId_lineItemId_creativeId() {
+        val testData = TestData.videoVastMulti
+        testAdLoading(testData, TestColors.vastYellow)
+
+        listScreenRobot {
+            checkForEvent(testData, SAEvent.adShown)
+        }
+    }
+
+    @Test
+    fun test_vpaid_adLoading_placementId() {
         val testData = TestData.videoVpaid
+        testAdLoading(testData, TestColors.vpaidYellow)
+    }
+
+    @Test
+    fun test_vpaid_adLoading_placementId_lineItemId_creativeId() {
+        val testData = TestData.videoVpaidMulti
         testAdLoading(testData, TestColors.vpaidYellow)
     }
 
@@ -305,7 +321,7 @@ class VideoAdUITest {
 
     @Test
     fun test_adNotFound() {
-        val testData = TestData("87969", "not_found.json")
+        val testData = TestData(placementId = "87969", fileName = "not_found.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -331,7 +347,10 @@ class VideoAdUITest {
 
     @Test
     fun test_vast_safeAdVisible() {
-        val testData = TestData("88406", "padlock/video_vast_success_padlock_enabled.json")
+        val testData = TestData(
+            placementId = "88406",
+            fileName = "padlock/video_vast_success_padlock_enabled.json",
+        )
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -386,7 +405,10 @@ class VideoAdUITest {
 
         // Given bumper page is enabled from api
         IntentsHelper.stubIntentsForVast()
-        val testData = TestData("87969", "video_direct_enabled_success.json")
+        val testData = TestData(
+            placementId = "87969",
+            fileName = "video_direct_enabled_success.json",
+        )
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
@@ -442,7 +464,10 @@ class VideoAdUITest {
 
     @Test
     fun test_parental_gate_for_ad_click() {
-        val testData = TestData("87969", "padlock/video_direct_success_padlock_enabled.json")
+        val testData = TestData(
+            placementId = "87969",
+            fileName = "padlock/video_direct_success_padlock_enabled.json",
+        )
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
@@ -685,7 +710,7 @@ class VideoAdUITest {
     fun test_vast_click_event() {
         if (DataStore.data.useBaseModule) return
         // Given CPI Vast Ad
-        val testData = TestData("88406", "video_vast_cpi_success.json")
+        val testData = TestData(placementId = "88406", fileName = "video_vast_cpi_success.json")
         val url = "https://www.superawesome.com/&referrer=null"
         IntentsHelper.stubIntentsForUrl(url)
 

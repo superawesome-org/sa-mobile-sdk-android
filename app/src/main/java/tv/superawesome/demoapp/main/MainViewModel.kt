@@ -10,6 +10,10 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import okhttp3.ConnectionSpec
+import okhttp3.TlsVersion
+import tv.superawesome.demoapp.HasEnvironment
+import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.demoapp.caching.UserPlacementsCache
 import tv.superawesome.demoapp.model.FeatureItem
 import tv.superawesome.demoapp.model.FeatureType
@@ -18,7 +22,16 @@ import tv.superawesome.demoapp.repository.FeaturesRepository
 import java.lang.Integer.max
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val featuresRepository: FeaturesRepository = FeaturesRepository()
+    private val featuresRepository: FeaturesRepository = FeaturesRepository(
+        environment = HasEnvironment.environment,
+        connectionSpec = if (HasEnvironment.environment == SDKEnvironment.UITesting) {
+            ConnectionSpec.Builder(ConnectionSpec.CLEARTEXT).build()
+        } else {
+            ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                .tlsVersions(TlsVersion.TLS_1_2)
+                .build()
+        }
+    )
     private val userPlacementsCache = UserPlacementsCache(application.applicationContext)
     private val userPlacements: List<PlacementItem>?
         get() = items.value?.filter { it.isUserCreated }

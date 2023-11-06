@@ -1,22 +1,35 @@
 package tv.superawesome.demoapp.util
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import tv.superawesome.demoapp.model.TestData
 
 object WireMockHelper {
-    fun stubSuccess(placement: String, fileName: String) {
+    fun stubSuccess(testData: TestData) {
+        var path = "/ad/${testData.placementId}"
+
+        if (testData.isMultiData) {
+            path = "/ad/${testData.placementId}/${testData.lineItemId}/${testData.creativeId}"
+        }
+
         stubFor(
-            get(urlPathMatching("/ad/$placement"))
+            get(urlPathMatching(path))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(FileUtils.readFile(fileName))
+                        .withBody(FileUtils.readFile(testData.fileName))
                 )
         )
     }
 
-    fun stubFailure(placement: String) {
+    fun stubFailure(testData: TestData) {
+        var path = "/ad/${testData.placementId}"
+
+        if (testData.isMultiData) {
+            path = "/ad/${testData.placementId}/${testData.lineItemId}/${testData.creativeId}"
+        }
+
         stubFor(
-            get(urlPathMatching("/ad/$placement"))
+            get(urlPathMatching(path))
                 .willReturn(
                     aResponse()
                         .withStatus(400)
