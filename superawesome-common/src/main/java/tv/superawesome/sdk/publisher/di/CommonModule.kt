@@ -112,7 +112,6 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     factory<BumperPage> { DefaultBumperPage() }
     factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector() }.bind<ViewableDetector>()
     factory(named<ContinuousViewableDetector>()) { ContinuousViewableDetector() }.bind<ViewableDetector>()
-    factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
     factory { (adResponse: AdResponse) ->
         VideoEvents(
@@ -137,6 +136,7 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> {
         AdProcessor(
+            get(),
             get(),
             get(),
             get(),
