@@ -72,8 +72,6 @@ import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.ui.video.VideoEvents
-import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayerController
-import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerController
 import java.util.Calendar
 import java.util.Locale
 

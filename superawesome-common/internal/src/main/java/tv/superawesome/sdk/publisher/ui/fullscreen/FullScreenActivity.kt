@@ -115,6 +115,7 @@ abstract class FullScreenActivity : AppCompatActivity() {
 
         // close button
         closeButton = ImageButton(this)
+        closeButton.id = View.generateViewId()
         closeButton.visibility = View.GONE
         closeButton.setImageBitmap(imageProvider.closeImage())
         closeButton.setBackgroundColor(Color.TRANSPARENT)

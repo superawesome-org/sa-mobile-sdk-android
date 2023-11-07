@@ -3,7 +3,6 @@
 package tv.superawesome.sdk.publisher.ui.managed
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -21,8 +20,9 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
@@ -30,11 +30,8 @@ import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.CustomWebView
-import tv.superawesome.sdk.publisher.SAEvent
-import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
-import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 
 /**
  * The view that displays the ad.

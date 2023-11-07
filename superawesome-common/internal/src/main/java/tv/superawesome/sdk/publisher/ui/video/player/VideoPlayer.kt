@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.SurfaceHolder
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup

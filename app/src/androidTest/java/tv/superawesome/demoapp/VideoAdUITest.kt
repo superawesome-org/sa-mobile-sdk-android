@@ -121,6 +121,7 @@ class VideoAdUITest {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitForDisplay()
                 tapOnClose()
             }
 
@@ -262,12 +263,10 @@ class VideoAdUITest {
 
             videoScreenRobot {
                 waitForDisplay(color)
-
                 waitAndTapOnClose()
             }
 
             checkForEvent(testData, SAEvent.adLoaded)
-
         }
     }
 
@@ -750,6 +749,7 @@ class VideoAdUITest {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitForDwellTime()
                 waitAndTapOnClose()
 
                 videoWarningRobot {
@@ -774,7 +774,6 @@ class VideoAdUITest {
                 settingsScreenRobot {
                     tapOnEnableVideoWarnDialog()
                     tapOnDisableCloseAtEnd()
-                    tapOnCloseNoDelay()
                 }
             }
             tapOnPlacement(testData)
@@ -788,7 +787,7 @@ class VideoAdUITest {
                     tapOnResume()
                 }
 
-                waitForAdEnds()
+                waitForPJAdEnd()
 
                 waitAndTapOnClose()
             }
@@ -874,6 +873,7 @@ class VideoAdUITest {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitFailsafeTime()
                 waitAndTapOnClose()
             }
 

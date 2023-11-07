@@ -24,6 +24,7 @@ class AdProcessor(
     private val vastParser: VastParserType,
     private val networkDataSource: NetworkDataSourceType,
     private val encoder: EncoderType,
+    private val logger: Logger,
 ) : AdProcessorType {
     @Suppress("NestedBlockDepth", "ReturnCount")
     override suspend fun process(
@@ -69,10 +70,10 @@ class AdProcessor(
                                     response.filePath = filePath
                                 },
                                 onFailure = { exception ->
-                                    throw exception
+                                    logger.error("Error downloading file", exception)
                                 }
                             )
-                        } ?: throw NullPointerException("empty url")
+                        } ?: logger.info("Empty Url")
 
                     }
                 }
