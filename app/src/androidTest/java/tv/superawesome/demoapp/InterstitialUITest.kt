@@ -26,8 +26,10 @@ import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathNotCalled
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
+import java.lang.reflect.InvocationTargetException
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -44,12 +46,11 @@ class InterstitialUITest {
 
         val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
-        ads.invoke(null)
-
-        val base =
-            tv.superawesome.sdk.publisher.SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
-        base.isAccessible = true
-        base.invoke(null)
+        try {
+            ads.invoke(null)
+        } catch (e: InvocationTargetException) {
+            /* no-op */
+        }
 
         wireMockRule.resetAll()
     }
@@ -445,6 +446,24 @@ class InterstitialUITest {
 
             interstitialScreenRobot {
                 checkCloseAppearsDelayed()
+            }
+        }
+    }
+
+    @Test
+    fun test_interstitial_with_no_clickthrough() {
+        val testData = TestData.interstitialStandardNoClickthrough
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnAd()
+                // The banner is still visible
+                waitForDisplay(TestColors.bannerYellow)
+                verifyUrlPathNotCalled("/click")
             }
         }
     }
