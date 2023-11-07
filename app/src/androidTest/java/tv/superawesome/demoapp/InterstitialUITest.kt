@@ -14,6 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.robot.bannerRobot
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
@@ -446,6 +447,24 @@ class InterstitialUITest {
             interstitialScreenRobot {
                 checkCloseAppearsDelayed()
             }
+        }
+    }
+
+    @Test
+    fun test_load_interstitial_with_additional_options() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        interstitialScreenRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
         }
     }
 
