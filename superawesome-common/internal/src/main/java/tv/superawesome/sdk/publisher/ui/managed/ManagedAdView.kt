@@ -189,15 +189,7 @@ public class ManagedAdView @JvmOverloads constructor(
         webView.listener = object : CustomWebView.Listener {
             private val clickThrottler = ClickThrottler()
             override fun webViewOnStart() {
-                scope.launch {
-                    controller.triggerImpressionEvent()
-                }
-
-                // Disable close button failsafe since we've loaded the ad successfully.
-                val activity = context as? Activity
-                if (activity is FullScreenActivity) {
-                    activity.closeButtonFailsafeTimer.stop()
-                }
+                scope.launch { controller.triggerImpressionEvent() }
             }
             override fun webViewOnError() {
                 controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
