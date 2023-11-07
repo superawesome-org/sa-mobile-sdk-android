@@ -31,6 +31,7 @@ import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
@@ -46,7 +47,7 @@ public class ManagedAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), KoinComponent {
 
-    private val adManager: AdManager by inject()
+    private val adManager: VideoAdManager by inject()
     private val imageProvider: ImageProviderType by inject()
     private val timeProvider: TimeProviderType by inject()
     private val logger: Logger by inject()

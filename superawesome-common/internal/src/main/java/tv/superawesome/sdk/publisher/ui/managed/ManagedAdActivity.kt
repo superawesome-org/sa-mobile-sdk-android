@@ -101,7 +101,7 @@ class ManagedAdActivity :
     }
 
     public override fun playContent() {
-        listener = adManager.listener
+        listener = controller.listener
         adView.configure(placementId, listener)
         adView.load(placementId, html, baseUrl, this)
     }
