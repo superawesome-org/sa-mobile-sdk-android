@@ -14,6 +14,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
+import tv.superawesome.demoapp.robot.interstitialScreenRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
@@ -872,6 +873,42 @@ class VideoAdUITest {
             // expected events are dispatched
             checkForEvent(testData, SAEvent.adEnded)
             checkForEvent(testData, SAEvent.adClosed)
+        }
+    }
+
+    @Test
+    fun test_load_video_with_additional_options() {
+        val testData = TestData.videoVast
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        interstitialScreenRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
+        }
+    }
+
+    @Test
+    fun test_load_iv_with_additional_options() {
+        val testData = TestData.videoVpaidGreyBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        interstitialScreenRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
         }
     }
 
