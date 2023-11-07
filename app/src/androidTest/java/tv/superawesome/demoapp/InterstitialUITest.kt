@@ -468,6 +468,23 @@ class InterstitialUITest {
         }
     }
 
+    fun test_load_interstitial_with_additional_options() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        interstitialScreenRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
+        }
+    }
+
     private fun openParentalGate() {
         val testData = TestData(
             placementId = "87892",
