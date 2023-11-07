@@ -28,6 +28,14 @@ class VideoScreenRobot : BaseRobot() {
         Thread.sleep(20000)
     }
 
+    fun waitForPJAdEnd() {
+        Thread.sleep(35000)
+    }
+
+    fun waitFailsafeTime() {
+        Thread.sleep(15000)
+    }
+
     fun tapOnAd() {
         onView(withContentDescription("Ad content"))
             .perform(click())
