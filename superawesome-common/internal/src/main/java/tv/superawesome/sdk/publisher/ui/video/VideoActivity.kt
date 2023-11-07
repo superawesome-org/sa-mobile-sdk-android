@@ -29,6 +29,7 @@ import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayer
+import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerController
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 import java.io.File
 
@@ -38,7 +39,6 @@ import java.io.File
  */
 @Suppress("TooManyFunctions")
 class VideoActivity : FullScreenActivity(), VideoPlayerListener {
-    private val control: IVideoPlayerController by inject()
     private val adManager: VideoAdManager by inject()
 
     private var videoEvents: VideoEvents? = null
@@ -46,6 +46,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     private var volumeButton: ImageButton? = null
 
     private lateinit var videoPlayer: VideoPlayer
+    private lateinit var control: IVideoPlayerController
 
     override val adConfig: VideoAdConfig by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -76,10 +77,12 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         // Video Player
         videoPlayer = VideoPlayer(this)
         videoPlayer.layoutParams = params
-        videoPlayer.setController(control)
         videoPlayer.setBackgroundColor(Color.BLACK)
         videoPlayer.contentDescription = "Ad content"
         parentLayout.addView(videoPlayer)
+
+        control = VideoPlayerController(videoPlayer)
+        videoPlayer.setController(control)
 
         closeButton.visibility =
             if (adConfig.closeButtonState == CloseButtonState.VisibleImmediately) {
