@@ -138,7 +138,6 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
             get(),
             get(),
             get(),
-            get(),
         )
     }
     single<ImageProviderType> { ImageProvider() }

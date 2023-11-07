@@ -9,11 +9,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import tv.superawesome.sdk.publisher.extensions.extractURLs
-import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.VastType
+import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleHtml
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleParamString
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleUrl
@@ -137,7 +136,7 @@ internal class AdProcessorTest {
         }
 
         // Then
-        assertEquals(exception.message, "empty url")
+        assertEquals(exception.message, "Empty url")
     }
 
     // handle vast tests
