@@ -34,7 +34,7 @@ class AdRepository(
         adConfig: AdConfig,
     ): Result<AdResponse> =
         withContext(Dispatchers.IO) {
-            dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request, adConfig)).map { ad ->
+            dataSource.getAd(placementId, adQueryMaker.makeAdQuery(request, adConfig)).mapCatching { ad ->
                 adProcessor.process(placementId, ad, request.options, request.openRtbPartnerId)
             }
         }
@@ -51,7 +51,7 @@ class AdRepository(
             lineItemId,
             creativeId,
             adQueryMaker.makeAdQuery(request, adConfig)
-        ).map { ad ->
+        ).mapCatching { ad ->
             adProcessor.process(placementId, ad, request.options, request.openRtbPartnerId)
         }
     }
