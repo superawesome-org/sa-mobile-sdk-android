@@ -461,7 +461,7 @@ class InterstitialUITest {
 
             interstitialScreenRobot {
                 tapOnAd()
-                // The banner is still visible
+                // The interstitial is still visible
                 waitForDisplay(TestColors.bannerYellow)
                 verifyUrlPathNotCalled("/click")
             }
