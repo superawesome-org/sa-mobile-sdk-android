@@ -81,6 +81,12 @@ object WireMockHelper {
                 )
         )
 
+        stubPathForFile(
+            route = "interstitial_yellow.png",
+            filePath = "interstitial_yellow.png",
+            mimeType = "image/png"
+        )
+
         stubFor(
             get(urlPathMatching("interstitial_yellow.png"))
                 .willReturn(
@@ -122,6 +128,18 @@ object WireMockHelper {
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
+    }
+
+    private fun stubPathForFile(route: String, filePath: String, mimeType: String) {
+        stubFor(
+            get(urlPathMatching(route))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", mimeType)
+                        .withBody(FileUtils.readBytes(filePath))
+                )
+        )
     }
 
     fun verifyUrlPathCalled(urlPath: String) {
