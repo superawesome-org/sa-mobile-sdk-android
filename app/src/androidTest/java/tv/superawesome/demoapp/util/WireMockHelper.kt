@@ -108,6 +108,15 @@ object WireMockHelper {
         )
 
         stubFor(
+            get(urlPathMatching("/vast/tag_no_clickthrough"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vast_success_tag_no_clickthrough.xml"))
+                )
+        )
+
+        stubFor(
             get(urlPathMatching("/vast/tag-grey-box"))
                 .willReturn(
                     aResponse()

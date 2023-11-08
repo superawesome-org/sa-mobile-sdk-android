@@ -24,12 +24,14 @@ import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.WireMockHelper
 import tv.superawesome.demoapp.util.WireMockHelper.stubFailingVPAIDJavaScript
 import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAVideoAd
+import java.lang.reflect.InvocationTargetException
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -47,12 +49,11 @@ class VideoAdUITest {
 
         val ads = SAVideoAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
-        ads.invoke(null)
-
-        val base =
-            tv.superawesome.sdk.publisher.SAVideoAd::class.java.getDeclaredMethod("clearCache")
-        base.isAccessible = true
-        base.invoke(null)
+        try {
+            ads.invoke(null)
+        } catch (e: InvocationTargetException) {
+            /* no-op */
+        }
 
         wireMockRule.resetAll()
     }
@@ -909,6 +910,24 @@ class VideoAdUITest {
                 "option1",
                 "123"
             )
+        }
+    }
+
+    @Test
+    fun test_vast_video_no_clickthrough() {
+        val testData = TestData.videoDirectNoClickthrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay()
+                tapOnAd()
+                // The video is still visible
+                waitForDisplay(TestColors.vastYellow)
+                WireMockHelper.verifyUrlPathNotCalled("/click")
+            }
         }
     }
 
