@@ -80,6 +80,15 @@ object WireMockHelper {
                         .withBody(FileUtils.readBytes("video_yellow.mp4"))
                 )
         )
+
+        stubFor(
+            get(urlPathMatching("interstitial_yellow.png"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readBytes("interstitial_yellow.png"))
+                )
+        )
     }
 
     private fun stubVASTPaths() {
