@@ -86,15 +86,6 @@ object WireMockHelper {
             filePath = "interstitial_yellow.png",
             mimeType = "image/png"
         )
-
-        stubFor(
-            get(urlPathMatching("interstitial_yellow.png"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readBytes("interstitial_yellow.png"))
-                )
-        )
     }
 
     private fun stubVASTPaths() {
