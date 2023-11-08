@@ -14,6 +14,10 @@ data class TestData(
             placementId = "87969",
             fileName = "video_direct_success.json",
         )
+        val videoDirectNoClickthrough = TestData(
+            placementId = "87969",
+            fileName = "video_direct_success_no_clickthrough.json",
+        )
         val videoPadlock = TestData(
             placementId = "87969",
             fileName = "padlock/video_direct_success_padlock_enabled.json",
