@@ -914,7 +914,7 @@ class VideoAdUITest {
     }
 
     @Test
-    fun test_video_no_clickthrough() {
+    fun test_vast_video_no_clickthrough() {
         val testData = TestData.videoDirectNoClickthrough
 
         listScreenRobot {
