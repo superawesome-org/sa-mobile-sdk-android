@@ -5,12 +5,13 @@ import android.content.Intent
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.SurfaceHolder
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.ViewParent
+import android.widget.RelativeLayout
 import android.widget.VideoView
-import androidx.media3.ui.PlayerView
 import java.lang.ref.WeakReference
 
 @Suppress("TooManyFunctions")
@@ -18,11 +19,12 @@ internal class VideoPlayer @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : PlayerView(context, attrs, defStyleAttr),
+) : RelativeLayout(context, attrs, defStyleAttr),
     IVideoPlayer,
+    SurfaceHolder.Callback,
     OnTouchListener {
 
-    override val surface: VideoView? = null
+    override var surface: VideoView? = null
 
     private var mode: FullscreenMode? = FullscreenMode.ANY
     private var canDismissOnRotateToPortrait = false
@@ -41,11 +43,14 @@ internal class VideoPlayer @JvmOverloads constructor(
     init {
         val size = LayoutParams.MATCH_PARENT
         val params = LayoutParams(size, size)
+        surface = VideoView(getContext())
+        surface?.id = VIDEO_VIEW_ID
+        surface?.holder?.addCallback(this)
+        surface?.layoutParams = params
+        addView(surface)
         id = VIDEO_VIEW_ID
         layoutParams = params
         setOnTouchListener(this)
-
-        useController = false
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -109,10 +114,29 @@ internal class VideoPlayer @JvmOverloads constructor(
 
     override fun destroy() {
         control?.setDisplay(null)
-        control?.reset()
-        player?.release()
+        control?.destroy()
         weakParent?.clear()
         weakParent = null
+    }
+
+    // //////////////////////////////////////////////////////////////////////////////////////////////
+    // SurfaceHolder.Callback
+    // //////////////////////////////////////////////////////////////////////////////////////////////
+    override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
+        try {
+            control?.setDisplay(surfaceHolder)
+            control?.takeIf { chrome?.isPlaying == true }?.start()
+        } catch (ignored: Exception) { /* N/A. */ }
+    }
+
+    override fun surfaceChanged(surfaceHolder: SurfaceHolder, i: Int, i1: Int, i2: Int) {
+        /* N/A. */
+    }
+
+    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
+        try {
+            control?.takeIf { it.isIVideoPlaying }?.pause()
+        } catch (ignored: Exception) { /* N/A. */ }
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
