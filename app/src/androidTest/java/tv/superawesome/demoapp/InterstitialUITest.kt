@@ -468,6 +468,7 @@ class InterstitialUITest {
         }
     }
 
+    @Test
     fun test_load_interstitial_with_additional_options() {
         val testData = TestData.interstitialStandard
 
@@ -482,6 +483,93 @@ class InterstitialUITest {
                 "option1",
                 "123"
             )
+        }
+    }
+
+    @Test
+    fun test_click_through_safe_ad_click() {
+        val testData = TestData.interstitialStandardPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough()
+            }
+        }
+    }
+
+    @Test
+    fun test_bumper_safe_ad_click() {
+        val testData = TestData.interstitialStandardPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.interstitialStandardPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_safe_ad_hidden_in_response() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogoInvisible()
+            }
         }
     }
 
