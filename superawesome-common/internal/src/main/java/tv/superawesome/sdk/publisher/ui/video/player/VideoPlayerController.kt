@@ -3,17 +3,29 @@ package tv.superawesome.sdk.publisher.ui.video.player
 import android.content.Context
 import android.net.Uri
 import android.os.CountDownTimer
+import android.os.Handler
 import android.util.Log
 import android.view.SurfaceHolder
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
+import androidx.media3.exoplayer.RenderersFactory
+import androidx.media3.exoplayer.audio.AudioRendererEventListener
+import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
+import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
+import androidx.media3.exoplayer.metadata.MetadataOutput
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.text.TextOutput
+import androidx.media3.exoplayer.video.MediaCodecVideoRenderer
+import androidx.media3.exoplayer.video.VideoRendererEventListener
+import androidx.media3.extractor.ExtractorsFactory
+import androidx.media3.extractor.mp4.Mp4Extractor
 
+@UnstableApi
 @Suppress("TooManyFunctions", "MagicNumber", "TooGenericExceptionCaught")
-class VideoPlayerController(playerView: IVideoPlayer) : IVideoPlayerController {
+class VideoPlayerController(private val playerView: IVideoPlayer) : IVideoPlayerController {
 
-    private val playerView = playerView as PlayerView
     private var player: ExoPlayer? = null
     private var listener: IVideoPlayerController.Listener? = null
     private var countDownTimer: CountDownTimer? = null
@@ -61,8 +73,37 @@ class VideoPlayerController(playerView: IVideoPlayer) : IVideoPlayerController {
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun play(context: Context, uri: Uri) {
         try {
-            player = ExoPlayer.Builder(context).build()
-                .also { playerView.player = it }
+            val videoRendererFactory = RenderersFactory {
+                handler: Handler,
+                videoRendererEventListener: VideoRendererEventListener,
+                audioRendererEventListener: AudioRendererEventListener,
+                _: TextOutput,
+                _: MetadataOutput ->
+                arrayOf(
+                    MediaCodecVideoRenderer(
+                        context,
+                        MediaCodecSelector.DEFAULT,
+                        0L,
+                        handler,
+                        videoRendererEventListener,
+                        0,
+                    ),
+                    MediaCodecAudioRenderer(
+                        context,
+                        MediaCodecSelector.DEFAULT,
+                        handler,
+                        audioRendererEventListener
+                    ),
+                )
+            }
+            val mp4ExtractorFactory = ExtractorsFactory { arrayOf(Mp4Extractor()) }
+            player = ExoPlayer.Builder(
+                context,
+                videoRendererFactory,
+                DefaultMediaSourceFactory(context, mp4ExtractorFactory)
+            ).build().apply {
+                setVideoSurfaceView(playerView.surface)
+            }
 
             val mediaItem = MediaItem.Builder()
                 .setUri(uri)
