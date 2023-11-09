@@ -72,6 +72,10 @@ data class TestData(
             placementId = "88001",
             fileName = "padlock/banner_success_padlock_enabled.json",
         )
+        val bannerPadlockHidden = TestData(
+            placementId = "88001",
+            fileName = "padlock/banner_success_padlock_disabled.json",
+        )
         val interstitialKsf = TestData(
             placementId = "87970",
             fileName = "interstitial_ksf_success.json",
