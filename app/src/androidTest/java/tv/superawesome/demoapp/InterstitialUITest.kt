@@ -262,6 +262,33 @@ class InterstitialUITest {
     }
 
     @Test
+    fun test_bumper_and_parental_gate_enabled() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnAd()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
     fun test_standard_adAlreadyLoaded_callback() {
         val testData = TestData.interstitialStandard
 
