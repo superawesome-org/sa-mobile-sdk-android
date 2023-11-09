@@ -237,6 +237,93 @@ class BannerUITest {
     }
 
     @Test
+    fun test_click_through_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough()
+            }
+        }
+    }
+
+    @Test
+    fun test_bumper_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_safe_ad_hidden_in_response() {
+        val testData = TestData.bannerPadlockHidden
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogoInvisible()
+            }
+        }
+    }
+
+    @Test
     fun test_adClosed_callback() {
         val testData = TestData.bannerSuccess
 
