@@ -84,6 +84,10 @@ data class TestData(
             placementId = "87892",
             fileName = "interstitial_standard_success.json",
         )
+        val interstitialStandardPadlock = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_padlock_enabled.json",
+        )
         val interstitialStandardNoClickthrough = TestData(
             placementId = "87892",
             fileName = "interstitial_standard_success_no_clickthrough.json",
