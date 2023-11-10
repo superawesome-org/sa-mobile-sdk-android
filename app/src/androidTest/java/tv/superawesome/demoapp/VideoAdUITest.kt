@@ -937,6 +937,26 @@ class VideoAdUITest {
         }
     }
 
+    @Test
+    fun test_direct_video_mute_on_start() {
+        val testData = TestData.videoDirectNoClickthrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnMuteOnStart()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkVideoIsMuted()
+                tapOnVolume()
+                checkVideoIsUnmuted()
+            }
+        }
+    }
+
     private fun openParentalGate() {
         val testData = TestData.videoDirect
 
