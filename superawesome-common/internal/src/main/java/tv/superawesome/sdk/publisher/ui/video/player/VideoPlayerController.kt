@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.CountDownTimer
 import android.os.Handler
-import android.util.Log
 import android.view.SurfaceHolder
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -206,12 +205,10 @@ class VideoPlayerController(private val playerView: IVideoPlayer) : IVideoPlayer
     // Timer
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun createTimer() {
-        Log.d("MATHEUS", "createTimer()")
         if (completed) return
         if (countDownTimer == null) {
             countDownTimer = object : CountDownTimer(iVideoDuration, 500) {
                 override fun onTick(remainingTime: Long) {
-                    Log.d("MATHEUS", "onTick remainignTime=$remainingTime $this")
                     listener?.onTimeUpdated(
                         this@VideoPlayerController,
                         currentIVideoPosition.toInt(),
