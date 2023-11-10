@@ -111,6 +111,7 @@ class VideoPlayerController(private val playerView: IVideoPlayer) : IVideoPlayer
             player?.setMediaItem(mediaItem)
             player?.playWhenReady = true
             player?.seekTo(0)
+            player?.volume = if (isMuted) 0f else 1f
             player?.addListener(playbackStateListener)
             player?.prepare()
         } catch (e: Exception) {

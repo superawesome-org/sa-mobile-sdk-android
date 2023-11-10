@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.media3.common.util.UnstableApi
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -33,6 +34,7 @@ import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerController
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 import java.io.File
 
+@UnstableApi
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
@@ -92,6 +94,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
             }
 
         closeButton.setOnClickListener { onCloseButtonPressed() }
+        initVolumeButton()
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
@@ -174,7 +177,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         button.layoutParams = buttonLayout
-        button.setOnClickListener { close() }
+        button.setOnClickListener { setMuted(!control.isMuted) }
 
         volumeButton = button
         setMuted(adConfig.shouldMuteOnStart)
