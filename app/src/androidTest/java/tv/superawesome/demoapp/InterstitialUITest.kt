@@ -6,6 +6,8 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.uiautomator.UiDevice
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
@@ -369,8 +371,8 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_ad_click_event() {
-        IntentsHelper.stubIntentsForVast()
-        val testData = TestData.interstitialStandard
+        IntentsHelper.stubIntentsForUrl()
+        val testData = TestData.interstitialStandardClickthrough
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -379,7 +381,7 @@ class InterstitialUITest {
             interstitialScreenRobot {
                 tapOnAd()
 
-                IntentsHelper.checkIntentsForVast()
+                IntentsHelper.checkIntentsForUrl()
                 waitAndTapOnClose()
             }
 
@@ -492,6 +494,27 @@ class InterstitialUITest {
                 waitForDisplay(TestColors.bannerYellow)
                 verifyUrlPathNotCalled("/click")
             }
+        }
+    }
+
+    @Test
+    fun test_interstitial_with_clickthrough_to_webpage_and_back() {
+        val testData = TestData.interstitialStandardClickthrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnAdDelayed()
+                // Exiting the browser takes us back to the app with the ad still showing
+                UiDevice.getInstance(getInstrumentation()).pressBack()
+                waitForDisplay(TestColors.bannerYellow)
+                waitAndTapOnClose()
+            }
+
+            verifyUrlPathCalled("/click")
+            checkForEvent(testData, SAEvent.adClicked)
         }
     }
 

@@ -47,6 +47,7 @@ object WireMockHelper {
         stubVASTPaths()
         stubAssets()
         stubPlacements()
+        stubMockWebsite()
     }
 
     fun stubFailingVPAIDJavaScript() {
@@ -91,11 +92,16 @@ object WireMockHelper {
                         .withBody(FileUtils.readBytes("video_yellow.mp4"))
                 )
         )
+    }
 
-        stubPathForFile(
-            route = "interstitial_yellow.png",
-            filePath = "interstitial_yellow.png",
-            mimeType = "image/png"
+    private fun stubMockWebsite() {
+        stubFor(
+            get(urlPathMatching("/mock_webpage"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readBytes("mock_webpage.html"))
+                )
         )
     }
 
@@ -139,18 +145,6 @@ object WireMockHelper {
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
-    }
-
-    private fun stubPathForFile(route: String, filePath: String, mimeType: String) {
-        stubFor(
-            get(urlPathMatching(route))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", mimeType)
-                        .withBody(FileUtils.readBytes(filePath))
-                )
-        )
     }
 
     fun verifyUrlPathCalled(urlPath: String) {
