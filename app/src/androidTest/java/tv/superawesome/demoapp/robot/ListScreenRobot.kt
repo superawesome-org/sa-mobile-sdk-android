@@ -36,8 +36,6 @@ import tv.superawesome.sdk.publisher.SAEvent
 
 class ListScreenRobot : BaseRobot() {
 
-
-
     private fun launchActivityWithSuccessStub(
         testData: TestData,
         additionalOptions: Map<String, Any>? = null,

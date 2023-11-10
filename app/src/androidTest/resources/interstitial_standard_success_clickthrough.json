@@ -48,7 +48,7 @@
     "bumper":false,
     "attributionType":1,
     "vpaid":false,
-    "click_url": null
+    "click_url": "http://localhost:8080/mock_webpage"
   },
   "rnd": "1234",
   "is_fill":false,

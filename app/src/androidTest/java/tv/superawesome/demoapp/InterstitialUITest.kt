@@ -63,13 +63,13 @@ class InterstitialUITest {
     @Test
     fun test_standard_adLoading_placementId() {
         val testData = TestData.interstitialStandard
-        testAdLoading(testData, TestColors.bannerYellow)
+        testAdLoading(testData, TestColors.vastYellow)
     }
 
     @Test
     fun test_standard_adLoading_placementId_lineItemId_creativeId() {
         val testData = TestData.interstitialStandardMulti
-        testAdLoading(testData, TestColors.bannerYellow)
+        testAdLoading(testData, TestColors.vastYellow)
     }
 
     @Test
@@ -342,8 +342,8 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_ad_click_event() {
-        IntentsHelper.stubIntentsForVast()
-        val testData = TestData.interstitialStandard
+        IntentsHelper.stubIntentsForUrl()
+        val testData = TestData.interstitialStandardClickthrough
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -352,7 +352,7 @@ class InterstitialUITest {
             interstitialScreenRobot {
                 tapOnAd()
 
-                IntentsHelper.checkIntentsForVast()
+                IntentsHelper.checkIntentsForUrl()
                 waitAndTapOnClose()
             }
 
@@ -462,7 +462,7 @@ class InterstitialUITest {
             interstitialScreenRobot {
                 tapOnAd()
                 // The interstitial is still visible
-                waitForDisplay(TestColors.bannerYellow)
+                waitForDisplay(TestColors.vastYellow)
                 verifyUrlPathNotCalled("/click")
             }
         }

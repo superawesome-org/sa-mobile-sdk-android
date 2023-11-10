@@ -31,7 +31,7 @@
       "duration": 10,
       "vast": "http://localhost:8080/vast/tag"
     },
-    "click_url": "https://www.superawesome.com/"
+    "click_url": "http://localhost:8080/mock_website"
   },
   "rnd": "1234",
   "advertiserId": 4,
