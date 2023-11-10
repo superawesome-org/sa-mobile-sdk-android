@@ -48,7 +48,6 @@ abstract class BaseUITest {
     @Before
     open fun setup() {
         Intents.init()
-
         wireMockRule.resetAll()
     }
 

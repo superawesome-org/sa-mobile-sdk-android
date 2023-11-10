@@ -87,7 +87,7 @@ object WireMockHelper {
     }
 
     private fun stubMockWebsite() {
-        stubPathForFile("/mock_webpage", "mock_webpage.html")
+        stubPathForFile("/mock_website", "mock_website.html")
     }
 
     private fun stubVASTPaths() {

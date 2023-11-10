@@ -9,7 +9,7 @@ import org.hamcrest.CoreMatchers
 
 object IntentsHelper {
 
-    private const val stubUrl = "http://localhost:8080/mock_webpage"
+    private const val stubUrl = "http://localhost:8080/mock_website"
     private const val stubUrlVastClickThrough = "http://localhost:8080/vast/clickthrough"
 
     fun stubIntentsForVast() {
