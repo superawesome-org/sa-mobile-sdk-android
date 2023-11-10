@@ -6,11 +6,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.junit.WireMockRule
-import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.TestData
@@ -19,7 +15,6 @@ import tv.superawesome.demoapp.robot.interstitialScreenRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
-import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
@@ -31,17 +26,11 @@ import tv.superawesome.sdk.publisher.SAInterstitialAd
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class InterstitialUITest {
-    @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
-
-    @get:Rule
-    val retryTestRule = RetryTestRule()
+class InterstitialUITest: BaseUITest() {
 
     @Before
-    fun setup() {
-        Intents.init()
-
+    override fun setup() {
+        super.setup()
         val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
         ads.invoke(null)
@@ -50,13 +39,6 @@ class InterstitialUITest {
             tv.superawesome.sdk.publisher.SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
         base.isAccessible = true
         base.invoke(null)
-
-        wireMockRule.resetAll()
-    }
-
-    @After
-    fun tearDown() {
-        Intents.release()
     }
 
     @Test

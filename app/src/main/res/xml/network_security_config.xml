@@ -6,6 +6,7 @@
             <!-- Trust user added CAs while debuggable only -->
             <certificates src="system" />
             <certificates src="user" />
+            <certificates src="@raw/localhost"/>
         </trust-anchors>
     </debug-overrides>
 </network-security-config>

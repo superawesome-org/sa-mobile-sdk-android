@@ -1,6 +1,7 @@
 package tv.superawesome.demoapp.util
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import tv.superawesome.demoapp.model.StubFile
 import tv.superawesome.demoapp.model.TestData
 
 object WireMockHelper {
@@ -19,6 +20,15 @@ object WireMockHelper {
                         .withBody(FileUtils.readFile(testData.fileName))
                 )
         )
+
+        for (stubFile in testData.additionalPaths) {
+            stubPathForFile(
+                route = stubFile.route,
+                filePath = stubFile.filePath,
+                mimeType = stubFile.mimeType,
+                useReadFile = stubFile.useReadFile,
+            )
+        }
     }
 
     fun stubFailure(testData: TestData) {
@@ -40,13 +50,22 @@ object WireMockHelper {
 
     fun stubCommonPaths() {
         stubForSuccess("/event")
+        stubForSuccess("/video/event")
+        stubForSuccess("/event_click")
         stubForSuccess("/impression")
+        stubForSuccess("/video/impression")
         stubForSuccess("/click")
+        stubForSuccess("/video/click")
         stubForSuccess("/video/tracking")
+        stubForSuccess("/video/error")
+        stubForSuccess("/safead")
+        stubForSuccess("/sdk/performance")
 
         stubVASTPaths()
         stubAssets()
         stubPlacements()
+        stubVPAIDImages()
+        stubVPAIDJS()
     }
 
     fun stubFailingVPAIDJavaScript() {
@@ -115,6 +134,87 @@ object WireMockHelper {
         stubForSuccess("/vast/clickthrough")
     }
 
+    private fun stubVPAIDImages() {
+        stubPathForFile(
+            "/images/play_red.png",
+            "images/play_red.png",
+            "image/png",
+        )
+        stubPathForFile(
+            "/images/sa_close.png",
+            "images/sa_close.png",
+            "image/png",
+        )
+        stubPathForFile(
+            "/images/sa_cronograph.png",
+            "images/sa_cronograph.png",
+            "image/png",
+        )
+        stubPathForFile(
+            "/images/sa_mark.png",
+            "images/sa_mark.png",
+            "image/png",
+        )
+        stubPathForFile(
+            "/images/sa_muted.png",
+            "images/sa_muted.png",
+            "image/png",
+        )
+        stubPathForFile(
+            "/images/sa_not_muted.png",
+            "images/sa_not_muted.png",
+            "image/png",
+        )
+        stubPathForFile(
+            "/images/watermark_2.png",
+            "images/watermark_2.png",
+            "image/png",
+        )
+    }
+
+    private fun stubVPAIDJS() {
+        stubPathForFile(
+            "/moat/moatvideo.js",
+            "js/moatvideo.js",
+            "text/javascript",
+        )
+        stubPathForFile(
+            "/videojs/inlinevideo.js",
+            "js/inlinevideo.js",
+            "text/javascript",
+        )
+        stubPathForFile(
+            "/videojs/es5-shim.js",
+            "js/es5-shim.js",
+            "text/javascript",
+        )
+        stubPathForFile(
+            "/videojs/video-js.min.css",
+            "js/video-js.min.css",
+            "text/css",
+        )
+        stubPathForFile(
+            "/videojs/video.min.js",
+            "js/video.min.js",
+            "text/javascript",
+        )
+        stubPathForFile(
+            "/videojs/vpaid/videojs_5.vast.vpaid.min.js",
+            "js/videojs_5.vast.vpaid.min.js",
+            "text/javascript",
+        )
+        stubPathForFile(
+            "/videojs/vpaid/videojs.vast.vpaid.min.css",
+            "js/videojs.vast.vpaid.min.css",
+            "text/css",
+        )
+        stubPathForFile(
+            "/videojs/vpaid/VPAIDFlash.swf",
+            "js/VPAIDFlash.swf",
+            "text/x-shockwave-flash",
+        )
+    }
+
     fun verifyUrlPathCalled(urlPath: String) {
         verify(anyRequestedFor(urlPathMatching(urlPath)))
     }
@@ -146,5 +246,25 @@ object WireMockHelper {
                         .withBody("")
                 )
         )
+    }
+
+    private fun stubPathForFile(
+        route: String,
+        filePath: String,
+        mimeType: String?,
+        useReadFile: Boolean = false,
+    ) {
+
+        var response = aResponse()
+            .withStatus(200)
+        if (useReadFile) {
+            response = response.withBody(FileUtils.readFile(filePath))
+        } else {
+            response = response.withBody(FileUtils.readBytes(filePath))
+        }
+
+        mimeType?.let { response = response.withHeader("Content-Type", mimeType) }
+
+        stubFor(get(urlPathMatching(route)).willReturn(response))
     }
 }

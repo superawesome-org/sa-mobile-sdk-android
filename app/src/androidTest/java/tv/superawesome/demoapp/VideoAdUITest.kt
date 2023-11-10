@@ -1,15 +1,10 @@
 package tv.superawesome.demoapp
 
 import android.graphics.Color
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.junit.WireMockRule
-import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.TestData
@@ -19,7 +14,6 @@ import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.robot.videoScreenRobot
 import tv.superawesome.demoapp.robot.videoWarningRobot
-import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.TestColors
@@ -32,18 +26,11 @@ import tv.superawesome.sdk.publisher.SAVideoAd
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class VideoAdUITest {
-
-    @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
-
-    @get:Rule
-    val retryTestRule = RetryTestRule()
+class VideoAdUITest: BaseUITest() {
 
     @Before
-    fun setup() {
-        Intents.init()
-
+    override fun setup() {
+        super.setup()
         val ads = SAVideoAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
         ads.invoke(null)
@@ -52,13 +39,6 @@ class VideoAdUITest {
             tv.superawesome.sdk.publisher.SAVideoAd::class.java.getDeclaredMethod("clearCache")
         base.isAccessible = true
         base.invoke(null)
-
-        wireMockRule.resetAll()
-    }
-
-    @After
-    fun tearDown() {
-        Intents.release()
     }
 
     @Test
@@ -741,6 +721,7 @@ class VideoAdUITest {
             }
             tapOnPlacement(testData)
 
+            Thread.sleep(100000000)
             videoScreenRobot {
                 waitAndTapOnClose()
 

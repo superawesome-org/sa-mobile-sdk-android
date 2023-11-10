@@ -1,13 +1,9 @@
 package tv.superawesome.demoapp
 
-import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.TestData
@@ -17,7 +13,6 @@ import tv.superawesome.demoapp.robot.deviceRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
-import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
@@ -27,23 +22,7 @@ import tv.superawesome.sdk.publisher.SAEvent
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class BannerUITest {
-    @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
-
-    @get:Rule
-    val retryTestRule = RetryTestRule()
-
-    @Before
-    fun setup() {
-        Intents.init()
-        wireMockRule.resetAll()
-    }
-
-    @After
-    fun tearDown() {
-        Intents.release()
-    }
+class BannerUITest: BaseUITest() {
 
     @Test
     fun test_adLoading_placementId() {
