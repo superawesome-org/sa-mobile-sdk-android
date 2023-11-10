@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.media3.common.util.UnstableApi
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -29,16 +30,17 @@ import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayer
 import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayerController
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayer
+import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerController
 import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerListener
 import java.io.File
 
+@UnstableApi
 /**
  * Class that abstracts away the process of loading & displaying a video type Ad.
  * A subclass of the Android "Activity" class.
  */
 @Suppress("TooManyFunctions")
 class VideoActivity : FullScreenActivity(), VideoPlayerListener {
-    private val control: IVideoPlayerController by inject()
     private val adManager: VideoAdManager by inject()
 
     private var videoEvents: VideoEvents? = null
@@ -46,6 +48,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     private var volumeButton: ImageButton? = null
 
     private lateinit var videoPlayer: VideoPlayer
+    private lateinit var control: IVideoPlayerController
 
     override val adConfig: VideoAdConfig by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -76,10 +79,12 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         // Video Player
         videoPlayer = VideoPlayer(this)
         videoPlayer.layoutParams = params
-        videoPlayer.setController(control)
         videoPlayer.setBackgroundColor(Color.BLACK)
         videoPlayer.contentDescription = "Ad content"
         parentLayout.addView(videoPlayer)
+
+        control = VideoPlayerController(videoPlayer)
+        videoPlayer.setController(control)
 
         closeButton.visibility =
             if (adConfig.closeButtonState == CloseButtonState.VisibleImmediately) {
@@ -89,6 +94,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
             }
 
         closeButton.setOnClickListener { onCloseButtonPressed() }
+        initVolumeButton()
 
         videoPlayer.setListener(object : IVideoPlayer.Listener {
             override fun onPrepared(player: IVideoPlayer, time: Int, duration: Int) {
@@ -152,6 +158,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     }
 
     private fun setMuted(muted: Boolean) {
+        volumeButton?.tag = if (muted) "MUTED" else "UNMUTED"
         volumeButton?.setImageBitmap(
             if (muted) imageProvider.volumeOff() else imageProvider.volumeOn()
         )
@@ -171,7 +178,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
         buttonLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         button.layoutParams = buttonLayout
-        button.setOnClickListener { close() }
+        button.setOnClickListener { setMuted(!control.isMuted) }
 
         volumeButton = button
         setMuted(adConfig.shouldMuteOnStart)

@@ -68,12 +68,9 @@ class AdProcessor(
                                 onSuccess = { filePath ->
                                     response.filePath = filePath
                                 },
-                                onFailure = { exception ->
-                                    throw exception
-                                }
+                                onFailure = { exception -> throw exception }
                             )
-                        } ?: throw NullPointerException("empty url")
-
+                        } ?: throw NullPointerException("Empty url")
                     }
                 }
         }

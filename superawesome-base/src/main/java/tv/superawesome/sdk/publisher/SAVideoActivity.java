@@ -322,6 +322,7 @@ public class SAVideoActivity extends Activity implements
     }
 
     private void setMuted(Boolean muted) {
+        volumeButton.setTag(muted ? "MUTED" : "UNMUTED");
         volumeButton.setImageBitmap(
             muted ? SAImageUtils.createVolumeOffBitmap() : SAImageUtils.createVolumeOnBitmap()
         );

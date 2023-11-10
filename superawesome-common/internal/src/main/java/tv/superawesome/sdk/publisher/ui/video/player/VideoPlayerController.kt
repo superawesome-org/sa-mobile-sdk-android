@@ -1,69 +1,126 @@
 package tv.superawesome.sdk.publisher.ui.video.player
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
-import android.media.MediaPlayer.OnErrorListener
-import android.media.MediaPlayer.OnPreparedListener
-import android.media.MediaPlayer.OnSeekCompleteListener
 import android.net.Uri
 import android.os.CountDownTimer
+import android.os.Handler
+import android.view.SurfaceHolder
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.RenderersFactory
+import androidx.media3.exoplayer.audio.AudioRendererEventListener
+import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
+import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
+import androidx.media3.exoplayer.metadata.MetadataOutput
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.text.TextOutput
+import androidx.media3.exoplayer.video.MediaCodecVideoRenderer
+import androidx.media3.exoplayer.video.VideoRendererEventListener
+import androidx.media3.extractor.ExtractorsFactory
+import androidx.media3.extractor.mp4.Mp4Extractor
 
+@UnstableApi
 @Suppress("TooManyFunctions", "MagicNumber", "TooGenericExceptionCaught")
-class VideoPlayerController :
-    MediaPlayer(),
-    IVideoPlayerController,
-    OnPreparedListener,
-    OnErrorListener,
-    OnCompletionListener,
-    OnSeekCompleteListener {
+class VideoPlayerController(private val playerView: IVideoPlayer) : IVideoPlayerController {
 
+    private var player: ExoPlayer? = null
     private var listener: IVideoPlayerController.Listener? = null
     private var countDownTimer: CountDownTimer? = null
     private var completed: Boolean = false
     private var prepared: Boolean = false
+    private var playbackState: Int = ExoPlayer.STATE_IDLE
 
-    override val isIVideoPlaying: Boolean = false
-    override val iVideoDuration: Int = 10
-    override val currentIVideoPosition: Int = 0
-    override var videoIVideoWidth: Int = 100
-        private set
-    override var videoIVideoHeight: Int = 100
-        private set
+    private val playbackStateListener: Player.Listener = object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            this@VideoPlayerController.playbackState = playbackState
+            when (playbackState) {
+                ExoPlayer.STATE_READY -> {
+                    listener?.onPrepared(this@VideoPlayerController)
+                    createTimer()
+                }
+                ExoPlayer.STATE_ENDED -> {
+                    listener?.onMediaComplete(
+                        this@VideoPlayerController,
+                        currentIVideoPosition.toInt(),
+                        iVideoDuration.toInt()
+                    )
+                    removeTimer()
+                }
+                else -> { /* no-op */ }
+            }
+        }
+    }
+
+    override val isIVideoPlaying: Boolean
+        get() = player?.isPlaying ?: false
+    override val iVideoDuration: Long
+        get() = player?.contentDuration ?: 10L
+    override val currentIVideoPosition: Long
+        get() = player?.currentPosition ?: 0L
+    override val videoIVideoWidth: Int
+        get() = player?.videoSize?.width ?: 100
+    override val videoIVideoHeight: Int
+        get() = player?.videoSize?.height ?: 100
 
     override var isMuted: Boolean = false
         private set
-
-    init {
-        setOnPreparedListener(this)
-        setOnCompletionListener(this)
-        setOnErrorListener(this)
-        setOnSeekCompleteListener(this)
-
-        setOnVideoSizeChangedListener { _, width, height ->
-            onVideoSizeChanged(width, height)
-        }
-    }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
     // Custom safe play & prepare method
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun play(context: Context, uri: Uri) {
         try {
-            setDataSource(context, uri)
-            prepare()
+            val videoRendererFactory = RenderersFactory {
+                handler: Handler,
+                videoRendererEventListener: VideoRendererEventListener,
+                audioRendererEventListener: AudioRendererEventListener,
+                _: TextOutput,
+                _: MetadataOutput ->
+                arrayOf(
+                    MediaCodecVideoRenderer(
+                        context,
+                        MediaCodecSelector.DEFAULT,
+                        0L,
+                        handler,
+                        videoRendererEventListener,
+                        0,
+                    ),
+                    MediaCodecAudioRenderer(
+                        context,
+                        MediaCodecSelector.DEFAULT,
+                        handler,
+                        audioRendererEventListener
+                    ),
+                )
+            }
+            val mp4ExtractorFactory = ExtractorsFactory { arrayOf(Mp4Extractor()) }
+            player = ExoPlayer.Builder(
+                context,
+                videoRendererFactory,
+                DefaultMediaSourceFactory(context, mp4ExtractorFactory)
+            ).build().apply {
+                setVideoSurfaceView(playerView.surface)
+            }
+
+            val mediaItem = MediaItem.Builder()
+                .setUri(uri)
+                .build()
+
+            player?.setMediaItem(mediaItem)
+            player?.playWhenReady = true
+            player?.seekTo(0)
+            player?.volume = if (isMuted) 0f else 1f
+            player?.addListener(playbackStateListener)
+            player?.prepare()
         } catch (e: Exception) {
             listener?.onError(this, e, 0, 0)
         }
     }
 
     override fun playAsync(context: Context, uri: Uri) {
-        try {
-            setDataSource(context, uri)
-            prepareAsync()
-        } catch (e: Exception) {
-            listener?.onError(this, e, 0, 0)
-        }
+        play(context, uri)
     }
 
     override fun start() {
@@ -73,16 +130,16 @@ class VideoPlayerController :
         }
         if (completed) {
             // if the video is completed then show the last frame only
-            seekTo(currentPosition)
+            seekTo(currentIVideoPosition.toInt())
             return
         }
-        super.start()
+        player?.play()
         createTimer()
     }
 
     override fun pause() {
         if (prepared) {
-            super.pause()
+            player?.pause()
         }
         removeTimer()
     }
@@ -92,10 +149,12 @@ class VideoPlayerController :
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun destroy() {
         try {
-            stop()
+            player?.stop()
             setDisplay(null)
-            release()
+            player?.release()
+            player?.removeListener(playbackStateListener)
             removeTimer()
+            player = null
         } catch (ignored: Throwable) {
         }
     }
@@ -106,7 +165,12 @@ class VideoPlayerController :
         try {
             removeTimer()
             if (prepared) {
-                super.reset()
+                player?.stop()
+                player?.seekTo(0)
+
+                if (playbackState == ExoPlayer.STATE_ENDED) {
+                    player?.playWhenReady = true
+                }
             }
         } catch (ignored: Exception) {
         }
@@ -118,13 +182,17 @@ class VideoPlayerController :
          * re-create timer if it has been destroyed
          */
         createTimer()
-        super.seekTo(position)
+        player?.seekTo(position.toLong())
     }
 
     override fun setMuted(muted: Boolean) {
         val volume = if (muted) 0f else 1f
-        setVolume(volume, volume)
+        player?.volume = volume
         isMuted = muted
+    }
+
+    override fun setDisplay(holder: SurfaceHolder?) {
+        /* no-op */
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,45 +203,17 @@ class VideoPlayerController :
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
-    // Media Player listeners
-    // //////////////////////////////////////////////////////////////////////////////////////////////
-    override fun onPrepared(mediaPlayer: MediaPlayer) {
-        prepared = true
-        createTimer()
-        listener?.onPrepared(this)
-    }
-
-    override fun onSeekComplete(mediaPlayer: MediaPlayer) {
-        listener?.onSeekComplete(this)
-    }
-
-    override fun onCompletion(mediaPlayer: MediaPlayer) {
-        completed = true
-        removeTimer()
-        // todo: add a "reset" here and see how it goes
-        listener?.onMediaComplete(this, currentPosition, duration)
-    }
-
-    // todo: why doesn't the video player stop at the error?
-    override fun onError(mediaPlayer: MediaPlayer, error: Int, payload: Int): Boolean {
-        removeTimer()
-        reset()
-        listener?.onError(this, Throwable("Error: $error payload: $payload"), 0, 0)
-        return false
-    }
-
-    // //////////////////////////////////////////////////////////////////////////////////////////////
     // Timer
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun createTimer() {
         if (completed) return
         if (countDownTimer == null) {
-            countDownTimer = object : CountDownTimer(duration.toLong(), 500) {
+            countDownTimer = object : CountDownTimer(iVideoDuration, 500) {
                 override fun onTick(remainingTime: Long) {
                     listener?.onTimeUpdated(
                         this@VideoPlayerController,
-                        currentPosition,
-                        duration
+                        currentIVideoPosition.toInt(),
+                        iVideoDuration.toInt()
                     )
                 }
 
@@ -188,10 +228,5 @@ class VideoPlayerController :
     override fun removeTimer() {
         countDownTimer?.cancel()
         countDownTimer = null
-    }
-
-    private fun onVideoSizeChanged(width: Int, height: Int) {
-        videoIVideoWidth = width
-        videoIVideoHeight = height
     }
 }

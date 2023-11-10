@@ -29,9 +29,9 @@
       "width": 600,
       "height": 480,
       "duration": 10,
-      "vast": "http://localhost:8080/vast/tag"
+      "vast": "http://localhost:8080/vast/tag_no_clickthrough"
     },
-    "click_url": "http://localhost:8080/mock_website"
+    "click_url": null
   },
   "rnd": "1234",
   "advertiserId": 4,

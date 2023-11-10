@@ -15,11 +15,14 @@ data class TestData(
             placementId = "87969",
             fileName = "video_direct_success.json",
         )
+        val videoDirectNoClickthrough = TestData(
+            placementId = "87969",
+            fileName = "video_direct_success_no_clickthrough.json",
+        )
         val videoPadlock = TestData(
             placementId = "87969",
             fileName = "padlock/video_direct_success_padlock_enabled.json",
         )
-
         val videoVast = TestData(
             placementId = "88406",
             fileName = "video_vast_success.json",
@@ -30,7 +33,6 @@ data class TestData(
             creativeId = "499385",
             fileName = "video_vast_success_multi.json",
         )
-
         val videoVpaid = TestData(
             placementId = "89056",
             fileName = "video_vpaid_success.json",
@@ -61,10 +63,13 @@ data class TestData(
             placementId = "96690",
             fileName = "video_vpaid_grey_box_success.json",
         )
-
         val bannerSuccess = TestData(
             placementId = "88001",
             fileName = "banner_success.json",
+        )
+        val bannerSuccessNoClickthrough = TestData(
+            placementId = "88001",
+            fileName = "banner_success_no_clickthrough.json"
         )
         val bannerMultiSuccess = TestData(
             placementId = "82088",
@@ -76,7 +81,10 @@ data class TestData(
             placementId = "88001",
             fileName = "padlock/banner_success_padlock_enabled.json",
         )
-
+        val bannerPadlockHidden = TestData(
+            placementId = "88001",
+            fileName = "padlock/banner_success_padlock_disabled.json",
+        )
         val interstitialKsf = TestData(
             placementId = "87970",
             fileName = "interstitial_ksf_success.json",
@@ -85,7 +93,18 @@ data class TestData(
             placementId = "87892",
             fileName = "interstitial_standard_success.json",
         )
-
+        val interstitialStandardPadlock = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_padlock_enabled.json",
+        )
+        val interstitialStandardNoClickthrough = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_success_no_clickthrough.json",
+        )
+        val interstitialStandardClickthrough = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_success_clickthrough.json",
+        )
         val interstitialStandardMulti = TestData(
             placementId = "82089",
             lineItemId = "176803",

@@ -66,6 +66,7 @@ object WireMockHelper {
         stubPlacements()
         stubVPAIDImages()
         stubVPAIDJS()
+        stubMockWebsite()
     }
 
     fun stubFailingVPAIDJavaScript() {
@@ -75,6 +76,17 @@ object WireMockHelper {
                     aResponse()
                         .withStatus(200)
                         .withBody(FileUtils.readBytes("video_vpaid_failure_javascript.js"))
+                )
+        )
+    }
+
+    fun stubVPAIDJavaScript() {
+        stubFor(
+            get(urlPathMatching("/vpaid/success_vpaid"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readBytes("video_vpaid_javascript.js"))
                 )
         )
     }
@@ -101,6 +113,17 @@ object WireMockHelper {
         )
     }
 
+    private fun stubMockWebsite() {
+        stubFor(
+            get(urlPathMatching("/mock_webpage"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readBytes("mock_webpage.html"))
+                )
+        )
+    }
+
     private fun stubVASTPaths() {
         stubFor(
             get(urlPathMatching("/vast/tag"))
@@ -117,6 +140,15 @@ object WireMockHelper {
                     aResponse()
                         .withStatus(200)
                         .withBody(FileUtils.readFile("video_vast_success_ad_tag.xml"))
+                )
+        )
+
+        stubFor(
+            get(urlPathMatching("/vast/tag_no_clickthrough"))
+                .willReturn(
+                    aResponse()
+                        .withStatus(200)
+                        .withBody(FileUtils.readFile("video_vast_success_tag_no_clickthrough.xml"))
                 )
         )
 
@@ -217,6 +249,10 @@ object WireMockHelper {
 
     fun verifyUrlPathCalled(urlPath: String) {
         verify(anyRequestedFor(urlPathMatching(urlPath)))
+    }
+
+    fun verifyUrlPathNotCalled(urlPath: String) {
+        verify(exactly(0), anyRequestedFor(urlPathMatching(urlPath)))
     }
 
     fun verifyUrlPathCalledWithQueryParam(

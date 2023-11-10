@@ -2,6 +2,7 @@ package tv.superawesome.demoapp.robot
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.core.app.ApplicationProvider
@@ -15,6 +16,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.anyOf
@@ -27,6 +30,7 @@ import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper
 import tv.superawesome.demoapp.util.isVisible
+import tv.superawesome.demoapp.util.toJsonElement
 import tv.superawesome.demoapp.util.waitUntil
 import tv.superawesome.sdk.publisher.SAEvent
 
@@ -34,14 +38,20 @@ class ListScreenRobot : BaseRobot() {
 
     private fun launchActivityWithSuccessStub(
         testData: TestData,
+        additionalOptions: Map<String, Any>? = null,
         settings: (() -> Unit)? = null
     ) {
         WireMockHelper.stubCommonPaths()
         WireMockHelper.stubSuccess(testData)
 
+        val options = additionalOptions?.mapValues { it.value.toJsonElement() }
+
         launchActivity<MainActivity>(
             intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-                .apply { putExtra("environment", "UITesting") }
+                .apply {
+                    putExtra("environment", "UITesting")
+                    putExtra("AD_LOAD_OPTIONS", Json.encodeToString(options))
+                }
         )
 
         settings?.let {
@@ -60,8 +70,12 @@ class ListScreenRobot : BaseRobot() {
         }
     }
 
-    fun launchWithSuccessStub(testData: TestData, settings: (() -> Unit)? = null) {
-        launchActivityWithSuccessStub(testData, settings)
+    fun launchWithSuccessStub(
+        testData: TestData,
+        additionalOptions: Map<String, Any>? = null,
+        settings: (() -> Unit)? = null,
+    ) {
+        launchActivityWithSuccessStub(testData, additionalOptions, settings)
     }
 
     fun launchActivityWithFailureStub(testData: TestData) {
@@ -113,9 +127,9 @@ class ListScreenRobot : BaseRobot() {
     }
 
     /**
-     * Checks if the event is not occurred
+     * Checks if the event has not occurred
      */
-    fun checkNotForEvent(placement: TestData, event: SAEvent) {
+    fun checkEventNotSent(placement: TestData, event: SAEvent) {
         onView(withId(R.id.subtitleTextView))
             .check(matches(not(withSubstring("${placement.placementId} ${event.name}"))))
     }

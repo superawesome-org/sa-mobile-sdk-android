@@ -12,13 +12,12 @@
       "width": 600,
       "height": 480,
       "duration": 0,
-      "tag": "<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n        <script>\n          function dispatchToAAJSBridge(eventType) {\n            if (window.SA_AD_JS_BRIDGE) {\n              try {\n                window.SA_AD_JS_BRIDGE[eventType]();\n              } catch (error) {\n                console.log('[AwesomeHtml]: dispatchToAAJSBridge error: ', error);\n              }\n            }\n          }\n        </script>\n    </header>\n    <body><script type=\"text/javascript\" onload=\"dispatchToAAJSBridge()\" onerror=\"dispatchToAAJSBridge('adFailedToLoad')\" src=\"https://127.0.0.1:8443/ad.js\"></script></body>\n    </html>",
+      "tag": "<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n        <script>\n          function dispatchToAAJSBridge(eventType) {\n            if (window.SA_AD_JS_BRIDGE) {\n              try {\n                window.SA_AD_JS_BRIDGE[eventType]();\n              } catch (error) {\n                console.log('[AwesomeHtml]: dispatchToAAJSBridge error: ', error);\n              }\n            }\n          }\n        </script>\n    </header>\n    <body><script type=\"text/javascript\" onload=\"dispatchToAAJSBridge()\" onerror=\"dispatchToAAJSBridge('adFailedToLoad')\" src=\"https://eu-west-1-ads.superawesome.tv/v2/ad.js?placement=90636&lineItemId=185516&creativeId=514375&sdkVersion=android_9.2.3_admob&rnd=1365902&bundle=tv.superawesome.demoapp&dauid=1836657331&ct=2&lang=en_US&device=tablet&pos=7&timestamp=_TIMESTAMP_&skip=1&playbackmethod=5&startdelay=0&instl=1&isProgrammatic=true&vpaid=true\"></script></body>\n    </html>",
       "_tag": "tag",
-      "vast": "http://localhost:8080/video/vast/90636/185516/514375/?sdkVersion=8.5.2&rnd=f41551a6-47c7-4b86-bf36-569843d4989d&dauid=28812812&bundle=com.superawesome.example&device=phone&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDEwKSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvODMuMC40MTAzLjk2IE1vYmlsZSBTYWZhcmkvNTM3LjM2.I_tn7-WYamd5_dlbbCVEZM0gj0A0s3akPbjkX2p2v6E&tip=eyJhbGciOiJIUzI1NiJ9.MzEuNTIuMjQ3LjA.4lsUemcECZfKK9cRSPTt7M3815ZOW6mMqQjNYllHrwQ&lang=en_GB&ct=2"
+      "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/90636/185516/514375/?sdkVersion=android_9.2.3_admob&rnd=3efc8d42-59e6-430b-910e-7a060894c74f&dauid=1836657331&bundle=tv.superawesome.demoapp&device=tablet&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk&tip=eyJhbGciOiJIUzI1NiJ9.ODYuMTkxLjIwMS4w.hcchmAKyBq8NVnAk7--X6zgD8T3iy9odX0xtxy4ReSs&lang=en_US&ct=2"
     },
     "isKSF": true
   },
-  "rnd": "1234",
   "advertiserId": 407,
   "publisherId": 407,
   "is_fill": false,
@@ -32,10 +31,10 @@
   "test": false,
   "campaign_id": 51164,
   "app": 43002,
-  "device": "phone",
-  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDEwKSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvODMuMC40MTAzLjk2IE1vYmlsZSBTYWZhcmkvNTM3LjM2.I_tn7-WYamd5_dlbbCVEZM0gj0A0s3akPbjkX2p2v6E",
-  "tip": "eyJhbGciOiJIUzI1NiJ9.MzEuNTIuMjQ3LjA.4lsUemcECZfKK9cRSPTt7M3815ZOW6mMqQjNYllHrwQ",
+  "device": "tablet",
+  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.ODYuMTkxLjIwMS4w.hcchmAKyBq8NVnAk7--X6zgD8T3iy9odX0xtxy4ReSs",
   "is_vpaid": true,
-  "rnd": "2182181299",
+  "rnd": "1365902",
   "show": ""
 }

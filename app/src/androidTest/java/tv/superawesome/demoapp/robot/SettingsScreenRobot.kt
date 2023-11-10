@@ -49,6 +49,11 @@ class SettingsScreenRobot {
             .perform(click())
     }
 
+    fun tapOnMuteOnStart() {
+        onView(withContentDescription("SettingsItem.Buttons.MuteEnable"))
+            .perform(click())
+    }
+
     fun openSettings() {
         onView(withId(R.id.settingsButton))
             .perform(waitUntil(ViewMatchers.isCompletelyDisplayed()), click())

@@ -18,6 +18,7 @@ import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathNotCalled
 import tv.superawesome.sdk.publisher.SAEvent
 
 @RunWith(AndroidJUnit4::class)
@@ -215,6 +216,93 @@ class BannerUITest: BaseUITest() {
     }
 
     @Test
+    fun test_click_through_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough()
+            }
+        }
+    }
+
+    @Test
+    fun test_bumper_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_safe_ad_hidden_in_response() {
+        val testData = TestData.bannerPadlockHidden
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogoInvisible()
+            }
+        }
+    }
+
+    @Test
     fun test_adClosed_callback() {
         val testData = TestData.bannerSuccess
 
@@ -329,6 +417,43 @@ class BannerUITest: BaseUITest() {
             }
 
             checkForEvent(testData, SAEvent.adClicked)
+        }
+    }
+
+    @Test
+    fun test_banner_with_no_clickthrough() {
+        val testData = TestData.bannerSuccessNoClickthrough
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                tapOnAd()
+                verifyUrlPathNotCalled("/click")
+            }
+
+            checkEventNotSent(testData, SAEvent.adClicked)
+        }
+    }
+
+    @Test
+    fun test_load_banner_with_additional_options() {
+        val testData = TestData.bannerSuccess
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        bannerRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
         }
     }
 

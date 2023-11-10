@@ -9,6 +9,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
+import tv.superawesome.demoapp.robot.interstitialScreenRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
@@ -17,12 +18,14 @@ import tv.superawesome.demoapp.robot.videoWarningRobot
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.TestColors
+import tv.superawesome.demoapp.util.WireMockHelper
 import tv.superawesome.demoapp.util.WireMockHelper.stubFailingVPAIDJavaScript
 import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAVideoAd
+import java.lang.reflect.InvocationTargetException
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -33,12 +36,11 @@ class VideoAdUITest: BaseUITest() {
         super.setup()
         val ads = SAVideoAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
-        ads.invoke(null)
-
-        val base =
-            tv.superawesome.sdk.publisher.SAVideoAd::class.java.getDeclaredMethod("clearCache")
-        base.isAccessible = true
-        base.invoke(null)
+        try {
+            ads.invoke(null)
+        } catch (e: InvocationTargetException) {
+            /* no-op */
+        }
     }
 
     @Test
@@ -59,7 +61,7 @@ class VideoAdUITest: BaseUITest() {
             }
 
             checkForEvent(testData, SAEvent.adClosed)
-            checkNotForEvent(testData, SAEvent.adEnded)
+            checkEventNotSent(testData, SAEvent.adEnded)
         }
     }
 
@@ -99,6 +101,7 @@ class VideoAdUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitForDisplay()
                 tapOnClose()
             }
 
@@ -200,6 +203,10 @@ class VideoAdUITest: BaseUITest() {
             }
 
             tapOnPlacement(testData)
+            videoScreenRobot {
+                waitForAdEnds()
+                tapOnClose()
+            }
 
             checkForEvent(testData, SAEvent.adEnded)
         }
@@ -236,12 +243,10 @@ class VideoAdUITest: BaseUITest() {
 
             videoScreenRobot {
                 waitForDisplay(color)
-
                 waitAndTapOnClose()
             }
 
             checkForEvent(testData, SAEvent.adLoaded)
-
         }
     }
 
@@ -564,6 +569,7 @@ class VideoAdUITest: BaseUITest() {
             videoScreenRobot {
                 waitForDisplay()
                 waitForImpression()
+                waitForDwellTime()
 
                 verifyUrlPathCalledWithQueryParam(
                     "/event",
@@ -607,6 +613,7 @@ class VideoAdUITest: BaseUITest() {
             videoScreenRobot {
                 waitForDisplay()
                 waitForImpression()
+                waitForDwellTime()
 
                 verifyUrlPathCalledWithQueryParam(
                     "/event",
@@ -723,11 +730,11 @@ class VideoAdUITest: BaseUITest() {
 
             Thread.sleep(100000000)
             videoScreenRobot {
+                waitForDwellTime()
                 waitAndTapOnClose()
 
                 videoWarningRobot {
                     checkVisible()
-
                     tapOnClose()
                 }
             }
@@ -761,7 +768,7 @@ class VideoAdUITest: BaseUITest() {
                     tapOnResume()
                 }
 
-                waitForAdEnds()
+                waitForPJAdEnd()
 
                 waitAndTapOnClose()
             }
@@ -847,12 +854,87 @@ class VideoAdUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitFailsafeTime()
                 waitAndTapOnClose()
             }
 
             // expected events are dispatched
             checkForEvent(testData, SAEvent.adEnded)
             checkForEvent(testData, SAEvent.adClosed)
+        }
+    }
+
+    @Test
+    fun test_load_video_with_additional_options() {
+        val testData = TestData.videoVast
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        interstitialScreenRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
+        }
+    }
+
+    @Test
+    fun test_load_iv_with_additional_options() {
+        val testData = TestData.videoVpaidGreyBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        interstitialScreenRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
+        }
+    }
+
+    @Test
+    fun test_vast_video_no_clickthrough() {
+        val testData = TestData.videoDirectNoClickthrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay()
+                tapOnAd()
+                // The video is still visible
+                waitForDisplay(TestColors.vastYellow)
+                WireMockHelper.verifyUrlPathNotCalled("/click")
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_mute_on_start() {
+        val testData = TestData.videoDirectNoClickthrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnMuteOnStart()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkVideoIsMuted()
+                tapOnVolume()
+                checkVideoIsUnmuted()
+            }
         }
     }
 

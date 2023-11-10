@@ -65,7 +65,7 @@ fun testCommonModule(mockWebServer: MockWebServer) = module {
     factory<ConnectionProviderType> { FakeConnectionProvider() }
     factory<XmlParserType> { XmlParser() }
     factory<VastParserType> { VastParser(get(), get()) }
-    factory<ViewableDetector>(named<SingleShotViewableDetector>()) { SingleShotViewableDetector(get()) }
+    factory<ViewableDetector>(named<SingleShotViewableDetector>()) { SingleShotViewableDetector() }
     factory<ViewableDetector>(named<ContinuousViewableDetector>()) { ContinuousViewableDetector() }
     factory<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get(), get())}
 
