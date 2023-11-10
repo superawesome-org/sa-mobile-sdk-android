@@ -72,8 +72,6 @@ import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.ui.video.VideoEvents
-import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayerController
-import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerController
 import java.util.Calendar
 import java.util.Locale
 
@@ -110,9 +108,8 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
 
     factory { ParentalGate(get()) }
     factory<BumperPage> { DefaultBumperPage() }
-    factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector(get()) }.bind<ViewableDetector>()
+    factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector() }.bind<ViewableDetector>()
     factory(named<ContinuousViewableDetector>()) { ContinuousViewableDetector() }.bind<ViewableDetector>()
-    factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
     factory { (adResponse: AdResponse) ->
         VideoEvents(

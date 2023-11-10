@@ -121,6 +121,7 @@ class VideoAdUITest {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitForDisplay()
                 tapOnClose()
             }
 
@@ -222,6 +223,10 @@ class VideoAdUITest {
             }
 
             tapOnPlacement(testData)
+            videoScreenRobot {
+                waitForAdEnds()
+                tapOnClose()
+            }
 
             checkForEvent(testData, SAEvent.adEnded)
         }
@@ -258,12 +263,10 @@ class VideoAdUITest {
 
             videoScreenRobot {
                 waitForDisplay(color)
-
                 waitAndTapOnClose()
             }
 
             checkForEvent(testData, SAEvent.adLoaded)
-
         }
     }
 
@@ -586,6 +589,7 @@ class VideoAdUITest {
             videoScreenRobot {
                 waitForDisplay()
                 waitForImpression()
+                waitForDwellTime()
 
                 verifyUrlPathCalledWithQueryParam(
                     "/event",
@@ -629,6 +633,7 @@ class VideoAdUITest {
             videoScreenRobot {
                 waitForDisplay()
                 waitForImpression()
+                waitForDwellTime()
 
                 verifyUrlPathCalledWithQueryParam(
                     "/event",
@@ -744,11 +749,11 @@ class VideoAdUITest {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitForDwellTime()
                 waitAndTapOnClose()
 
                 videoWarningRobot {
                     checkVisible()
-
                     tapOnClose()
                 }
             }
@@ -782,7 +787,7 @@ class VideoAdUITest {
                     tapOnResume()
                 }
 
-                waitForAdEnds()
+                waitForPJAdEnd()
 
                 waitAndTapOnClose()
             }
@@ -868,6 +873,7 @@ class VideoAdUITest {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitFailsafeTime()
                 waitAndTapOnClose()
             }
 

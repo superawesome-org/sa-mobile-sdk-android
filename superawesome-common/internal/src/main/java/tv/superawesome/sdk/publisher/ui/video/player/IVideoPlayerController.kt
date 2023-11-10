@@ -34,12 +34,12 @@ interface IVideoPlayerController {
     /**
      * Gets the total duration, in seconds, of the media control.
      */
-    val iVideoDuration: Int
+    val iVideoDuration: Long
 
     /**
      * Gets the current position, in seconds, of the media control.
      */
-    val currentIVideoPosition: Int
+    val currentIVideoPosition: Long
 
     /**
      * Plays the media in a synchronously.

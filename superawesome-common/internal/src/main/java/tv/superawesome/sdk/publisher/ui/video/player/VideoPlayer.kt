@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference
 
 @Suppress("TooManyFunctions")
 internal class VideoPlayer @JvmOverloads constructor(
-    context: Context?,
+    context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr),
@@ -48,6 +48,8 @@ internal class VideoPlayer @JvmOverloads constructor(
         surface?.holder?.addCallback(this)
         surface?.layoutParams = params
         addView(surface)
+        id = VIDEO_VIEW_ID
+        layoutParams = params
         setOnTouchListener(this)
     }
 
@@ -64,10 +66,6 @@ internal class VideoPlayer @JvmOverloads constructor(
     override fun setController(control: IVideoPlayerController) {
         this.control = control
         this.control?.setListener(this)
-        try {
-            this.control?.setDisplay(surface!!.holder)
-        } catch (ignored: Exception) { /* N/A */
-        }
     }
 
     override fun setControllerView(chrome: IVideoPlayerControllerView) {
@@ -115,10 +113,8 @@ internal class VideoPlayer @JvmOverloads constructor(
     }
 
     override fun destroy() {
-        control?.apply {
-            setDisplay(null)
-            reset()
-        }
+        control?.setDisplay(null)
+        control?.destroy()
         weakParent?.clear()
         weakParent = null
     }
@@ -149,7 +145,7 @@ internal class VideoPlayer @JvmOverloads constructor(
     override fun onPrepared(control: IVideoPlayerController) {
         control.start()
         chrome?.setPlaying()
-        listener?.onPrepared(this, control.currentIVideoPosition, control.iVideoDuration)
+        listener?.onPrepared(this, control.currentIVideoPosition.toInt(), control.iVideoDuration.toInt())
     }
 
     override fun onTimeUpdated(control: IVideoPlayerController, time: Int, duration: Int) {
