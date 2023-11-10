@@ -158,6 +158,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
     }
 
     private fun setMuted(muted: Boolean) {
+        volumeButton?.tag = if (muted) "MUTED" else "UNMUTED"
         volumeButton?.setImageBitmap(
             if (muted) imageProvider.volumeOff() else imageProvider.volumeOn()
         )
