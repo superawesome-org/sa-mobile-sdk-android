@@ -1,7 +1,14 @@
 package tv.superawesome.demoapp.util
 
-import com.github.tomakehurst.wiremock.client.WireMock.*
-import tv.superawesome.demoapp.model.StubFile
+import com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.containing
+import com.github.tomakehurst.wiremock.client.WireMock.exactly
+import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.matching
+import com.github.tomakehurst.wiremock.client.WireMock.stubFor
+import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
+import com.github.tomakehurst.wiremock.client.WireMock.verify
 import tv.superawesome.demoapp.model.TestData
 
 object WireMockHelper {
@@ -12,14 +19,7 @@ object WireMockHelper {
             path = "/ad/${testData.placementId}/${testData.lineItemId}/${testData.creativeId}"
         }
 
-        stubFor(
-            get(urlPathMatching(path))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readFile(testData.fileName))
-                )
-        )
+        stubPathForFile(path, testData.fileName, null, true)
 
         for (stubFile in testData.additionalPaths) {
             stubPathForFile(
@@ -66,101 +66,55 @@ object WireMockHelper {
         stubPlacements()
         stubVPAIDImages()
         stubVPAIDJS()
+        stubVPAIDJavaScript()
         stubMockWebsite()
     }
 
     fun stubFailingVPAIDJavaScript() {
-        stubFor(
-            get(urlPathMatching("/vpaid/failing_vpaid"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readBytes("video_vpaid_failure_javascript.js"))
-                )
-        )
+        stubPathForFile("/vpaid/failing_vpaid", "video_vpaid_javascript.js")
     }
 
-    fun stubVPAIDJavaScript() {
-        stubFor(
-            get(urlPathMatching("/vpaid/success_vpaid"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readBytes("video_vpaid_javascript.js"))
-                )
-        )
+    private fun stubVPAIDJavaScript() {
+        stubPathForFile("/vpaid/success_vpaid", "video_vpaid_javascript.js")
     }
 
     private fun stubPlacements() {
-        stubFor(
-            get(urlPathMatching("/placements.json"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readBytes("placements.json"))
-                )
-        )
+        stubPathForFile("/placements.json", "placements.json")
     }
 
     private fun stubAssets() {
-        stubFor(
-            get(urlPathMatching("/video/video_yellow.mp4"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readBytes("video_yellow.mp4"))
-                )
-        )
+        stubPathForFile("/video/video_yellow.mp4", "video_yellow.mp4")
     }
 
     private fun stubMockWebsite() {
-        stubFor(
-            get(urlPathMatching("/mock_webpage"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readBytes("mock_webpage.html"))
-                )
-        )
+        stubPathForFile("/mock_webpage", "mock_webpage.html")
     }
 
     private fun stubVASTPaths() {
-        stubFor(
-            get(urlPathMatching("/vast/tag"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readFile("video_vast_success_tag.xml"))
-                )
+        stubPathForFile(
+            "/vast/tag",
+            "video_vast_success_tag.xml",
+            null,
+            true,
         )
-
-        stubFor(
-            get(urlPathMatching("/vast/ad_tag"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readFile("video_vast_success_ad_tag.xml"))
-                )
+        stubPathForFile(
+            "/vast/ad_tag",
+            "video_vast_success_ad_tag.xml",
+            null,
+            true,
         )
-
-        stubFor(
-            get(urlPathMatching("/vast/tag_no_clickthrough"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readFile("video_vast_success_tag_no_clickthrough.xml"))
-                )
+        stubPathForFile(
+            "/vast/tag_no_clickthrough",
+            "video_vast_success_tag_no_clickthrough.xml",
+            null,
+            true,
         )
-
-        stubFor(
-            get(urlPathMatching("/vast/tag-grey-box"))
-                .willReturn(
-                    aResponse()
-                        .withStatus(200)
-                        .withBody(FileUtils.readFile("video_vpaid_grey_box_vast_tag.xml"))
-                )
+        stubPathForFile(
+            "/vast/tag-grey-box",
+            "video_vpaid_grey_box_vast_tag.xml",
+            null,
+            true,
         )
-
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
@@ -287,7 +241,7 @@ object WireMockHelper {
     private fun stubPathForFile(
         route: String,
         filePath: String,
-        mimeType: String?,
+        mimeType: String? = null,
         useReadFile: Boolean = false,
     ) {
 
