@@ -955,6 +955,31 @@ class VideoAdUITest {
     }
 
     @Test
+    fun test_direct_video_parental_gate_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
     fun test_direct_video_bumper_safe_ad_click() {
         val testData = TestData.videoPadlock
 
@@ -966,13 +991,14 @@ class VideoAdUITest {
             }
             tapOnPlacement(testData)
 
-            interstitialScreenRobot {
+            videoScreenRobot {
                 waitAndCheckSafeAdLogo()
                 tapOnSafeAdLogo()
 
                 bumperPageRobot {
                     checkIsVisible()
                 }
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
             }
         }
     }
@@ -990,7 +1016,7 @@ class VideoAdUITest {
             }
             tapOnPlacement(testData)
 
-            interstitialScreenRobot {
+            videoScreenRobot {
                 waitAndCheckSafeAdLogo()
                 tapOnSafeAdLogo()
 
@@ -1002,6 +1028,26 @@ class VideoAdUITest {
                 bumperPageRobot {
                     checkIsVisible()
                 }
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_safe_ad_hidden_in_response() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogoInvisible()
             }
         }
     }
