@@ -728,7 +728,6 @@ class VideoAdUITest: BaseUITest() {
             }
             tapOnPlacement(testData)
 
-            Thread.sleep(100000000)
             videoScreenRobot {
                 waitForDwellTime()
                 waitAndTapOnClose()
