@@ -2,8 +2,6 @@ package tv.superawesome.demoapp.robot
 
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
@@ -82,7 +80,12 @@ class ListScreenRobot : BaseRobot() {
         WireMockHelper.stubCommonPaths()
         WireMockHelper.stubFailure(testData)
 
-        launchActivity<MainActivity>()
+        launchActivity<MainActivity>(
+            intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+                .apply {
+                    putExtra("environment", "UITesting")
+                }
+        )
 
         settingsScreenRobot {
             applyCommonSettings()

@@ -414,7 +414,8 @@ public class SAVideoAd {
                             shouldShowCloseWarning,
                             isBackButtonEnabled,
                             shouldAutomaticallyCloseAtEnd,
-                            closeButtonState);
+                            closeButtonState,
+                            configuration);
                     intent.putExtra(SAManagedAdActivity.CONFIG_KEY, config);
 
                     context.startActivity(intent);

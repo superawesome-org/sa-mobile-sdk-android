@@ -13,7 +13,6 @@ import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.sanetwork.request.SANetwork;
 import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAUtils;
-import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
 import tv.superawesome.sdk.publisher.QueryBuilder;
 
 public class SAServerEvent {
