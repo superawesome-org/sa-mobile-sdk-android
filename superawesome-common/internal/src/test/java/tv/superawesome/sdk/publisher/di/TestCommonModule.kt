@@ -31,6 +31,8 @@ import tv.superawesome.sdk.publisher.components.TimeProviderType
 import tv.superawesome.sdk.publisher.components.UserAgentProviderType
 import tv.superawesome.sdk.publisher.components.VastParser
 import tv.superawesome.sdk.publisher.components.VastParserType
+import tv.superawesome.sdk.publisher.components.VideoCache
+import tv.superawesome.sdk.publisher.components.VideoCacheImpl
 import tv.superawesome.sdk.publisher.components.XmlParser
 import tv.superawesome.sdk.publisher.components.XmlParserType
 import tv.superawesome.sdk.publisher.network.datasources.AwesomeAdsApiDataSource
@@ -44,6 +46,7 @@ import tv.superawesome.sdk.publisher.repositories.PerformanceRepositoryType
 import tv.superawesome.sdk.publisher.testutil.FakeAdControllerFactory
 import tv.superawesome.sdk.publisher.testutil.FakeAdQueryMaker
 import tv.superawesome.sdk.publisher.testutil.FakeConnectionProvider
+import tv.superawesome.sdk.publisher.testutil.InMemoryPreferences
 import tv.superawesome.sdk.publisher.testutil.TestLogger
 import tv.superawesome.sdk.publisher.ui.common.ContinuousViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
@@ -71,6 +74,9 @@ fun testCommonModule(mockWebServer: MockWebServer) = module {
 
     single<AdQueryMakerType> { FakeAdQueryMaker() }
 
+    factory<VideoCache> {
+        VideoCacheImpl(InMemoryPreferences(), get(), TestLogger(), get())
+    }
     factoryOf(::AdProcessor) { bind<AdProcessorType>() }
     factoryOf(::EventRepository) { bind<EventRepositoryType>() }
     factoryOf(::PerformanceRepository) { bind<PerformanceRepositoryType>() }
