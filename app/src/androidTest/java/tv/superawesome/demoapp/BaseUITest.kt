@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp
 
+import android.content.Context
 import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
@@ -7,8 +8,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.rules.RetryTestRule
@@ -24,14 +23,19 @@ abstract class BaseUITest {
     val retryTestRule = RetryTestRule()
 
     @Rule
-    @JvmField val wireMockRule: WireMockRule
+    @JvmField
+    val wireMockRule: WireMockRule
 
     init {
         val context = InstrumentationRegistry.getInstrumentation().context
         val keyStoreFile = File(keyStorePath, keyStoreName)
-        val inStream = context.assets.open(keyStoreName)
-        val outStream = FileOutputStream(keyStoreFile)
-        FileUtils.copyFile(inStream, outStream)
+        if (!keyStoreFile.exists()) {
+            val inStream = context.assets.open(keyStoreName)
+            val outStream = FileOutputStream(keyStoreFile)
+            FileUtils.copyFile(inStream, outStream)
+            inStream.close()
+            outStream.close()
+        }
         wireMockRule = WireMockRule(
             WireMockConfiguration.wireMockConfig()
                 .port(httpPortNumber)
@@ -45,15 +49,17 @@ abstract class BaseUITest {
         )
     }
 
-    @Before
     open fun setup() {
         Intents.init()
         wireMockRule.resetAll()
     }
 
-    @After
     open fun tearDown() {
         Intents.release()
+        val keyStoreFile = File(keyStorePath, keyStoreName)
+        if (keyStoreFile.exists()) {
+            keyStoreFile.delete()
+        }
     }
 
     companion object {

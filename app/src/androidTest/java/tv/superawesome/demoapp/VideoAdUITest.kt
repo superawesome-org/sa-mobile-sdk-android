@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,6 +42,11 @@ class VideoAdUITest: BaseUITest() {
         } catch (e: InvocationTargetException) {
             /* no-op */
         }
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
     }
 
     @Test

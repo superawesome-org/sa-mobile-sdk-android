@@ -2,6 +2,8 @@ package tv.superawesome.demoapp
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.TestData
@@ -22,6 +24,16 @@ import tv.superawesome.sdk.publisher.SAEvent
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class BannerUITest: BaseUITest() {
+
+    @Before
+    override fun setup() {
+        super.setup()
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+    }
 
     @Test
     fun test_adLoading_placementId() {
