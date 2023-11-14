@@ -997,6 +997,7 @@ class VideoAdUITest {
 
                 bumperPageRobot {
                     checkIsVisible()
+                    waitForFinish()
                 }
                 checkClickThrough(Endpoints.stubUrlVastClickThrough)
             }
@@ -1027,7 +1028,9 @@ class VideoAdUITest {
 
                 bumperPageRobot {
                     checkIsVisible()
+                    waitForFinish()
                 }
+
                 checkClickThrough(Endpoints.stubUrlVastClickThrough)
             }
         }
