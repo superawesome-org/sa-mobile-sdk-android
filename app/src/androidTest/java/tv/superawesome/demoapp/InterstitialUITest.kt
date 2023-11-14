@@ -12,6 +12,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
@@ -535,7 +536,7 @@ class InterstitialUITest: BaseUITest() {
             interstitialScreenRobot {
                 waitAndCheckSafeAdLogo()
                 tapOnSafeAdLogo()
-                checkClickThrough()
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }

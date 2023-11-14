@@ -8,6 +8,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
@@ -919,6 +920,123 @@ class VideoAdUITest: BaseUITest() {
                 // The video is still visible
                 waitForDisplay(TestColors.vastYellow)
                 WireMockHelper.verifyUrlPathNotCalled("/click")
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_parental_gate_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_bumper_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_safe_ad_hidden_in_response() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogoInvisible()
             }
         }
     }
