@@ -271,7 +271,9 @@ class BannerUITest {
 
                 bumperPageRobot {
                     checkIsVisible()
+                    waitForFinish()
                 }
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
@@ -300,7 +302,9 @@ class BannerUITest {
 
                 bumperPageRobot {
                     checkIsVisible()
+                    waitForFinish()
                 }
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
