@@ -310,7 +310,7 @@ class BannerUITest {
     }
 
     @Test
-    fun test_safe_ad_hidden_in_response() {
+    fun test_direct_video_safe_ad_hidden_in_response() {
         val testData = TestData.bannerPadlockHidden
 
         listScreenRobot {
