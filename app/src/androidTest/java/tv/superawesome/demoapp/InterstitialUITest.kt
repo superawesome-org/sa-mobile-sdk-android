@@ -8,9 +8,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
@@ -42,6 +44,11 @@ class InterstitialUITest: BaseUITest() {
         } catch (e: InvocationTargetException) {
             /* no-op */
         }
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
     }
 
     @Test
@@ -529,7 +536,7 @@ class InterstitialUITest: BaseUITest() {
             interstitialScreenRobot {
                 waitAndCheckSafeAdLogo()
                 tapOnSafeAdLogo()
-                checkClickThrough()
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }

@@ -2,8 +2,11 @@ package tv.superawesome.demoapp
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bannerRobot
 import tv.superawesome.demoapp.robot.bumperPageRobot
@@ -22,6 +25,16 @@ import tv.superawesome.sdk.publisher.SAEvent
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class BannerUITest: BaseUITest() {
+
+    @Before
+    override fun setup() {
+        super.setup()
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+    }
 
     @Test
     fun test_adLoading_placementId() {
@@ -224,7 +237,7 @@ class BannerUITest: BaseUITest() {
             bannerRobot {
                 waitAndCheckSafeAdLogo()
                 tapOnSafeAdLogo()
-                checkClickThrough()
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
@@ -247,7 +260,9 @@ class BannerUITest: BaseUITest() {
 
                 bumperPageRobot {
                     checkIsVisible()
+                    waitForFinish()
                 }
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
@@ -276,13 +291,15 @@ class BannerUITest: BaseUITest() {
 
                 bumperPageRobot {
                     checkIsVisible()
+                    waitForFinish()
                 }
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
 
     @Test
-    fun test_safe_ad_hidden_in_response() {
+    fun test_direct_video_safe_ad_hidden_in_response() {
         val testData = TestData.bannerPadlockHidden
 
         listScreenRobot {
