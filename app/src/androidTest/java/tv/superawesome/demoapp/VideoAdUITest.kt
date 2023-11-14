@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
@@ -933,6 +934,74 @@ class VideoAdUITest {
                 // The video is still visible
                 waitForDisplay(TestColors.vastYellow)
                 WireMockHelper.verifyUrlPathNotCalled("/click")
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_bumper_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
             }
         }
     }

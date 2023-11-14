@@ -1,0 +1,7 @@
+package tv.superawesome.demoapp.model
+
+object Endpoints {
+    const val stubUrl = "http://localhost:8080/mock_webpage"
+    const val stubUrlVastClickThrough = "http://localhost:8080/vast/clickthrough"
+    const val safeAdClickthrough = "https://ads.superawesome.tv/v2/safead"
+}

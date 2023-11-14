@@ -10,6 +10,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bannerRobot
 import tv.superawesome.demoapp.robot.bumperPageRobot
@@ -247,7 +248,7 @@ class BannerUITest {
             bannerRobot {
                 waitAndCheckSafeAdLogo()
                 tapOnSafeAdLogo()
-                checkClickThrough()
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
