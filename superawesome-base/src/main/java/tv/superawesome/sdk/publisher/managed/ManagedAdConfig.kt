@@ -2,6 +2,7 @@ package tv.superawesome.sdk.publisher.managed
 
 import android.os.Parcel
 import android.os.Parcelable
+import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 internal class ManagedAdConfig : Parcelable {
@@ -11,7 +12,9 @@ internal class ManagedAdConfig : Parcelable {
     val isBackButtonEnabled: Boolean
     val autoCloseAtEnd: Boolean
     val closeButtonState: CloseButtonState
+    val environment: SAConfiguration
 
+    @Suppress("LongParameterList")
     constructor(
         isParentalGateEnabled: Boolean,
         isBumperPageEnabled: Boolean,
@@ -19,6 +22,7 @@ internal class ManagedAdConfig : Parcelable {
         isBackButtonEnabled: Boolean,
         autoCloseAtEnd: Boolean,
         closeButtonState: CloseButtonState,
+        environment: SAConfiguration,
     ) {
         this.isParentalGateEnabled = isParentalGateEnabled
         this.isBumperPageEnabled = isBumperPageEnabled
@@ -26,6 +30,7 @@ internal class ManagedAdConfig : Parcelable {
         this.isBackButtonEnabled = isBackButtonEnabled
         this.autoCloseAtEnd = autoCloseAtEnd
         this.closeButtonState = closeButtonState
+        this.environment = environment
     }
 
     constructor(input: Parcel) {
@@ -35,6 +40,7 @@ internal class ManagedAdConfig : Parcelable {
         isBackButtonEnabled = input.readByte().toInt() != 0
         autoCloseAtEnd = input.readByte().toInt() != 0
         closeButtonState = CloseButtonState.fromInt(input.readInt())
+        environment = SAConfiguration.fromOrdinal(input.readInt())
     }
 
     override fun describeContents(): Int = 0
@@ -46,6 +52,7 @@ internal class ManagedAdConfig : Parcelable {
         parcel.writeByte((if (isBackButtonEnabled) 1 else 0).toByte())
         parcel.writeByte((if (autoCloseAtEnd) 1 else 0).toByte())
         parcel.writeInt(closeButtonState.value)
+        parcel.writeInt(environment.ordinal)
     }
 
     companion object {

@@ -5,6 +5,7 @@ data class TestData(
     val lineItemId: String? = null,
     val creativeId: String? = null,
     val fileName: String,
+    val additionalPaths: List<StubFile> = listOf(),
 ) {
     val isMultiData: Boolean
         get() = lineItemId != null && creativeId != null
@@ -49,6 +50,14 @@ data class TestData(
         val videoVpaidPJ = TestData(
             placementId = "90636",
             fileName = "video_vpaid_popjam_success.json",
+            additionalPaths = listOf(
+                StubFile(
+                    route = "/ad.js",
+                    filePath = "js/pj_ad.js",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                ),
+            )
         )
         val videoVpaidGreyBox = TestData(
             placementId = "96690",
