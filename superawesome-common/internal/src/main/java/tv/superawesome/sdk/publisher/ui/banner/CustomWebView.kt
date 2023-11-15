@@ -13,6 +13,7 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.RequiresApi
 
 @SuppressLint("SetJavaScriptEnabled")
 public class CustomWebView @JvmOverloads constructor(
@@ -40,6 +41,7 @@ public class CustomWebView @JvmOverloads constructor(
         setWebContentsDebuggingEnabled(true)
 
         webViewClient = object : WebViewClient() {
+
             override fun onReceivedError(
                 view: WebView?,
                 request: WebResourceRequest,
@@ -67,38 +69,54 @@ public class CustomWebView @JvmOverloads constructor(
                 handleError(errorCode)
             }
 
+            @RequiresApi(Build.VERSION_CODES.N)
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?,
+            ): Boolean = handleUrlRedirect(request?.url?.toString())
+
             @Deprecated("Deprecated in Java")
             @Suppress("DEPRECATION")
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                if (finishedLoading) {
-                    val fullUrl = url ?: return false
-                    if (fullUrl.contains("sa-beta-ads-uploads-superawesome.netdna-ssl.com") &&
-                        fullUrl.contains("/iframes")
-                    ) {
-                        return false
-                    }
-                    listener?.webViewOnClick(fullUrl)
-                    return true
-                } else {
-                    return false
-                }
-            }
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean =
+                handleUrlRedirect(url)
 
             @Suppress("DEPRECATION")
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 errorHandled = false
-                if (shouldOverrideUrlLoading(view, url)) {
+                if (handleUrlRedirect(url)) {
                     view?.stopLoading()
                 }
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+                if (finishedLoading) return
                 finishedLoading = true
                 listener?.webViewOnStart()
             }
         }
+    }
+
+    private fun handleUrlRedirect(url: String?): Boolean {
+        return if (finishedLoading && isUrlClickThrough(url)) {
+            url?.let {
+                listener?.webViewOnClick(it)
+            } ?: false
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun isUrlClickThrough(url: String?): Boolean {
+        val fullUrl = url ?: return false
+        if (fullUrl.contains("sa-beta-ads-uploads-superawesome.netdna-ssl.com") &&
+            fullUrl.contains("/iframes")
+        ) {
+            return false
+        }
+        return true
     }
 
     private fun handleError(errorCode: Int) {
@@ -108,7 +126,6 @@ public class CustomWebView @JvmOverloads constructor(
             listener?.webViewOnError()
         }
     }
-
 
     override fun destroy() {
         super.destroy()
