@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.view.ViewParent
 import android.widget.RelativeLayout
 import android.widget.VideoView
-import tv.superawesome.sdk.publisher.SAEvent
 import java.lang.ref.WeakReference
 
 @Suppress("TooManyFunctions")
