@@ -975,9 +975,7 @@ class VideoAdUITest {
 
             videoScreenRobot {
                 device.pressHome()
-
-                waitForBackground()
-
+                device.waitForIdle()
                 device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
                 device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
 
