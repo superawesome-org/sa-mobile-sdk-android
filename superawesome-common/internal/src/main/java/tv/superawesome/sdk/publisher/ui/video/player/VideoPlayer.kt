@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.ViewParent
 import android.widget.RelativeLayout
 import android.widget.VideoView
+import tv.superawesome.sdk.publisher.SAEvent
 import java.lang.ref.WeakReference
 
 @Suppress("TooManyFunctions")
@@ -170,6 +171,14 @@ internal class VideoPlayer @JvmOverloads constructor(
     ) {
         chrome?.setError(error)
         listener?.onError(this, error, time, duration)
+    }
+
+    override fun onPlay(control: IVideoPlayerController) {
+        listener?.onPlay(this)
+    }
+
+    override fun onPause(control: IVideoPlayerController) {
+        listener?.onPause(this)
     }
 
     // //////////////////////////////////////////////////////////////////////////////////////////////
