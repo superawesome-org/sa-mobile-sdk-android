@@ -3,11 +3,10 @@ package tv.superawesome.lib.sabumperpage
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Handler
-import android.os.Looper
 
 class SABumperPage {
     private var dialog: BumperPageDialog? = null
-    private var handler = Handler(Looper.getMainLooper())
+    private var handler: Handler? = null
     private var runnable: Runnable? = null
     var onFinish: (() -> Unit)? = null
 
@@ -15,19 +14,21 @@ class SABumperPage {
         dialog?.dismiss()
         dialog = BumperPageDialog(context)
         dialog?.show()
-        setupTimer()
+        setupTimer(context)
     }
 
     fun stop() {
         dialog?.dismiss()
         dialog = null
-        runnable?.let { handler.removeCallbacks(it) }
+        handler?.let { uHandler ->
+            runnable?.let { uHandler.removeCallbacks(it) }
+        }
         runnable = null
     }
 
-    private fun setupTimer() {
+    private fun setupTimer(context: Context) {
         val countdown = intArrayOf(defaultBumperPageShowTimeInSec)
-        handler = Handler(Looper.getMainLooper())
+        handler = Handler(context.mainLooper)
         runnable = Runnable {
             if (countdown[0] <= 0) {
                 onFinish?.invoke()
@@ -35,10 +36,10 @@ class SABumperPage {
             } else {
                 countdown[0]--
                 dialog?.updateTimeLeft(countdown[0])
-                runnable?.let { handler.postDelayed(it, 1000) }
+                runnable?.let { handler?.postDelayed(it, 1000) }
             }
         }
-        runnable?.let { handler.postDelayed(it, 1000) }
+        runnable?.let { handler?.postDelayed(it, 1000) }
     }
 
     companion object {

@@ -37,11 +37,11 @@ open class BaseRobot {
             .check(isVisible())
     }
 
-    fun checkClickThrough() {
+    fun checkClickThrough(url: String) {
         intended(
             allOf(
                 hasAction(Intent.ACTION_VIEW),
-                hasData("https://ads.superawesome.tv/v2/safead"),
+                hasData(url),
             )
         )
     }

@@ -10,11 +10,12 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import androidx.test.espresso.matcher.ViewMatchers.*
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
@@ -23,7 +24,6 @@ import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.robot.videoScreenRobot
 import tv.superawesome.demoapp.robot.videoWarningRobot
-import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.TestColors
@@ -38,18 +38,11 @@ import java.lang.reflect.InvocationTargetException
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class VideoAdUITest {
-
-    @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
-
-    @get:Rule
-    val retryTestRule = RetryTestRule()
+class VideoAdUITest: BaseUITest() {
 
     @Before
-    fun setup() {
-        Intents.init()
-
+    override fun setup() {
+        super.setup()
         val ads = SAVideoAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
         try {
@@ -57,13 +50,11 @@ class VideoAdUITest {
         } catch (e: InvocationTargetException) {
             /* no-op */
         }
-
-        wireMockRule.resetAll()
     }
 
     @After
-    fun tearDown() {
-        Intents.release()
+    override fun tearDown() {
+        super.tearDown()
     }
 
     @Test
@@ -936,6 +927,123 @@ class VideoAdUITest {
                 // The video is still visible
                 waitForDisplay(TestColors.vastYellow)
                 WireMockHelper.verifyUrlPathNotCalled("/click")
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_parental_gate_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_bumper_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.videoPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+
+                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_safe_ad_hidden_in_response() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitAndCheckSafeAdLogoInvisible()
             }
         }
     }
