@@ -1095,6 +1095,28 @@ class VideoAdUITest: BaseUITest() {
         }
     }
 
+    @Test
+    fun test_vpaid_with_clickthrough_to_webpage_and_back() {
+        val testData = TestData.videoVpaid
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vpaidYellow)
+                tapOnAd()
+                // Exiting the browser takes us back to the app with the ad still showing
+                UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
+                waitForDisplay(TestColors.vpaidYellow)
+                waitAndTapOnClose()
+            }
+
+            verifyUrlPathCalled("/vast/clickthrough")
+            checkForEvent(testData, SAEvent.adClicked)
+        }
+    }
+
     private fun openParentalGate() {
         val testData = TestData.videoDirect
 
