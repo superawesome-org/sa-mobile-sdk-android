@@ -66,11 +66,6 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
-    override fun onPause() {
-        super.onPause()
-        control.pause()
-    }
-
     override fun initChildUI() {
         controller.videoPlayerListener = this
         val size = RelativeLayout.LayoutParams.MATCH_PARENT
@@ -128,6 +123,14 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
                 videoEvents?.error(player, time, duration)
                 controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)
                 close()
+            }
+
+            override fun onPlay(player: IVideoPlayer) {
+                controller.listener?.onEvent(placementId, SAEvent.adPlaying)
+            }
+
+            override fun onPause(player: IVideoPlayer) {
+                controller.listener?.onEvent(placementId, SAEvent.adPaused)
             }
         })
     }
@@ -203,7 +206,6 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
             close()
         }
     }
-
 
     override fun onBackPressed() {
         if (adConfig.isBackButtonEnabled) {
