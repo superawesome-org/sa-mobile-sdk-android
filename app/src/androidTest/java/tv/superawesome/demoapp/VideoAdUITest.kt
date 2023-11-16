@@ -1,9 +1,16 @@
 package tv.superawesome.demoapp
 
 import android.graphics.Color
+import android.view.KeyEvent
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
+import com.github.tomakehurst.wiremock.junit.WireMockRule
+import androidx.test.espresso.matcher.ViewMatchers.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -1057,6 +1064,33 @@ class VideoAdUITest: BaseUITest() {
                 checkVideoIsMuted()
                 tapOnVolume()
                 checkVideoIsUnmuted()
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_ad_background_pause_and_resume() {
+        val testData = TestData.videoDirect
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                device.pressHome()
+                device.waitForIdle()
+                device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
+                device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
+
+                waitAndTapOnClose()
+
+                checkForEvent(testData, SAEvent.adPaused)
+                checkForEvent(testData, SAEvent.adPlaying)
             }
         }
     }

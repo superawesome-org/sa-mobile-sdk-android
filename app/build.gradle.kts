@@ -75,6 +75,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.contrib)
     androidTestImplementation(libs.androidx.test.espresso.intents)
     androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestUtil(libs.androidx.test.orchestrator)
 
     // Mock Server
     androidTestImplementation(libs.wiremock) {

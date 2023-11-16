@@ -102,5 +102,19 @@ interface IVideoPlayer : IVideoPlayerController.Listener, IVideoPlayerController
          * @param duration the current total duration of the media.
          */
         fun onError(player: IVideoPlayer, error: Throwable, time: Int, duration: Int)
+
+        /**
+         * Called by the video player when playback starts.
+         *
+         * @param player current video player instance.
+         */
+        fun onPlay(player: IVideoPlayer)
+
+        /**
+         * Called by the video player when it is paused.
+         *
+         * @param player current video player instance.
+         */
+        fun onPause(player: IVideoPlayer)
     }
 }

@@ -172,6 +172,14 @@ internal class VideoPlayer @JvmOverloads constructor(
         listener?.onError(this, error, time, duration)
     }
 
+    override fun onPlay(control: IVideoPlayerController) {
+        listener?.onPlay(this)
+    }
+
+    override fun onPause(control: IVideoPlayerController) {
+        listener?.onPause(this)
+    }
+
     // //////////////////////////////////////////////////////////////////////////////////////////////
     // IVideoPlayerControllerView.Listener
     // //////////////////////////////////////////////////////////////////////////////////////////////

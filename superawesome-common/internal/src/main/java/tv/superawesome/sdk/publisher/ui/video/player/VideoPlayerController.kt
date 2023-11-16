@@ -37,6 +37,7 @@ class VideoPlayerController(private val playerView: IVideoPlayer) : IVideoPlayer
             this@VideoPlayerController.playbackState = playbackState
             when (playbackState) {
                 ExoPlayer.STATE_READY -> {
+                    prepared = true
                     listener?.onPrepared(this@VideoPlayerController)
                     createTimer()
                 }
@@ -134,12 +135,14 @@ class VideoPlayerController(private val playerView: IVideoPlayer) : IVideoPlayer
             return
         }
         player?.play()
+        listener?.onPlay(this)
         createTimer()
     }
 
     override fun pause() {
         if (prepared) {
             player?.pause()
+            listener?.onPause(this)
         }
         removeTimer()
     }
