@@ -18,9 +18,9 @@
       "transcodedVideos":[
 
       ],
-      "url":"http://localhost:8080/interstitial_yellow.png",
+      "url":"",
       "image": "http://localhost:8080/interstitial_yellow.png",
-      "video":"http://localhost:8080/interstitial_yellow.png",
+      "video":"",
       "placement_format":"mobile_display",
       "width":320,
       "height":480,

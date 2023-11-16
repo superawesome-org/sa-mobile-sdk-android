@@ -292,6 +292,7 @@ public class InternalBannerView @JvmOverloads constructor(
     }
 
     private fun addWebView() {
+
         removeWebView()
 
         val webView = CustomWebView(context)
@@ -339,6 +340,7 @@ public class InternalBannerView @JvmOverloads constructor(
 
     private fun removeWebView() {
         if (webView != null) {
+            webView?.listener = null
             webView?.destroy()
             removeView(webView)
             webView = null
