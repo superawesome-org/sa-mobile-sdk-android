@@ -161,5 +161,18 @@ interface IVideoPlayerController {
          * @param duration total duration of the media
          */
         fun onError(control: IVideoPlayerController, error: Throwable, time: Int, duration: Int)
+
+        /**
+         * Called by the IVideoPlayerController when playback is paused.
+         *
+         * @param control current media control instance
+         */
+        fun onPlay(control: IVideoPlayerController)
+        /**
+         * Called by the IVideoPlayerController when playback starts.
+         *
+         * @param control current media control instance
+         */
+        fun onPause(control: IVideoPlayerController)
     }
 }
