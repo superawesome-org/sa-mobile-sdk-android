@@ -450,6 +450,7 @@ class BannerUITest: BaseUITest() {
             bannerRobot {
                 waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
+
                 verifyUrlPathNotCalled("/click")
             }
 

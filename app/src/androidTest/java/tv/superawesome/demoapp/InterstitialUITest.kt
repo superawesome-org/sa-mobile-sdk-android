@@ -215,7 +215,7 @@ class InterstitialUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
 
                 bumperPageRobot {
                     waitForDisplay()
@@ -266,7 +266,7 @@ class InterstitialUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
 
                 parentalGateRobot {
                     checkVisible()
@@ -368,7 +368,7 @@ class InterstitialUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
 
                 IntentsHelper.checkIntentsForUrl()
                 waitAndTapOnClose()
@@ -422,6 +422,7 @@ class InterstitialUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAdDelayed()
             }
 
@@ -478,7 +479,7 @@ class InterstitialUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
                 // The interstitial is still visible
                 waitForDisplay(TestColors.bannerYellow)
                 verifyUrlPathNotCalled("/click")
@@ -627,7 +628,7 @@ class InterstitialUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
 
                 parentalGateRobot {
                     checkEventForOpen()
