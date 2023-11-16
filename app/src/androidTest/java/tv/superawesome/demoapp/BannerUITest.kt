@@ -133,8 +133,8 @@ class BannerUITest: BaseUITest() {
             }
             tapOnPlacement(testData)
 
-
             bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 bumperPageRobot {
@@ -165,6 +165,8 @@ class BannerUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             bannerRobot {
+
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 bumperPageRobot {
@@ -194,6 +196,7 @@ class BannerUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 bumperPageRobot {
@@ -375,7 +378,6 @@ class BannerUITest: BaseUITest() {
 
             bannerRobot {
                 waitForDisplay(TestColors.bannerYellow)
-
                 tapOnAd()
             }
 
@@ -425,6 +427,7 @@ class BannerUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 IntentsHelper.checkIntentsForUrl()
@@ -445,7 +448,9 @@ class BannerUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
+
                 verifyUrlPathNotCalled("/click")
             }
 
