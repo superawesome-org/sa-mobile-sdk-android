@@ -9,11 +9,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import tv.superawesome.sdk.publisher.extensions.extractURLs
-import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.CreativeFormatType
 import tv.superawesome.sdk.publisher.models.VastType
+import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleHtml
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleParamString
 import tv.superawesome.sdk.publisher.testutil.FakeFactory.exampleUrl
@@ -39,6 +38,9 @@ internal class AdProcessorTest {
     @MockK
     private lateinit var encoder: EncoderType
 
+    @MockK
+    private lateinit var videoCache: VideoCache
+
     private lateinit var adProcessor: AdProcessor
 
     @Before
@@ -48,6 +50,7 @@ internal class AdProcessorTest {
             htmlFormatter,
             vastParser,
             networkDataSource,
+            videoCache,
             encoder
         )
         coEvery { encoder.encodeUrlParamsFromObject(any()) } returns exampleParamString
@@ -99,7 +102,7 @@ internal class AdProcessorTest {
     @Test
     fun `ensure video processes correctly`() = runTest {
         // Given
-        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(exampleVastUrl)
+        coEvery { videoCache.get(any()) } returns exampleVastUrl
         coEvery { networkDataSource.getData(any()) } returns Result.success("")
         coEvery { vastParser.parse(any()) } returns makeVastAd(exampleUrl)
 
@@ -113,7 +116,7 @@ internal class AdProcessorTest {
     @Test
     fun `ensure vpaid processes correctly`() = runTest {
         // Given
-        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(exampleVastUrl)
+        coEvery { videoCache.get(any()) } returns exampleVastUrl
         coEvery { networkDataSource.getData(any()) } returns Result.success("")
 
         // When
@@ -127,7 +130,7 @@ internal class AdProcessorTest {
     @Test
     fun `video with no url returns failure`() = runTest {
         // Given
-        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(exampleVastUrl)
+        coEvery { videoCache.get(any()) } returns exampleVastUrl
         coEvery { networkDataSource.getData(any()) } returns Result.success("")
         coEvery { vastParser.parse(any()) } returns makeVastAd(null)
 
@@ -137,7 +140,7 @@ internal class AdProcessorTest {
         }
 
         // Then
-        assertEquals(exception.message, "empty url")
+        assertEquals(exception.message, "Empty url")
     }
 
     // handle vast tests
@@ -161,7 +164,7 @@ internal class AdProcessorTest {
         val passedVastAd = makeVastAd()
         val filePath = "filePath"
 
-        coEvery { networkDataSource.downloadFile(any()) } returns Result.success(filePath)
+        coEvery { videoCache.get(any()) } returns filePath
         coEvery { networkDataSource.getData(any()) } returns Result.success(filePath)
 
         coEvery { vastParser.parse(any()) } returns passedVastAd
@@ -183,7 +186,7 @@ internal class AdProcessorTest {
         val firstVast = makeVastAd(type = VastType.Wrapper, redirect = redirectUrl)
         val redirectVast = makeVastAd(type = VastType.Wrapper, redirect = null)
 
-        coEvery { networkDataSource.downloadFile(any()) } returns Result.success("filePath")
+        coEvery { videoCache.get(any()) } returns "filePath"
 
         coEvery { networkDataSource.getData(firstAdUrl) } returns Result.success(firstAdUrl)
         coEvery { networkDataSource.getData(redirectUrl) } returns Result.success(redirectUrl)
@@ -210,7 +213,7 @@ internal class AdProcessorTest {
         val firstVast = makeVastAd(type = VastType.InLine, redirect = redirectUrl)
         val redirectVast = makeVastAd(type = VastType.Wrapper, redirect = null)
 
-        coEvery { networkDataSource.downloadFile(any()) } returns Result.success("filePath")
+        coEvery { videoCache.get(any()) } returns "filePath"
 
         coEvery { networkDataSource.getData(firstAdUrl) } returns Result.success(firstAdUrl)
         coEvery { networkDataSource.getData(redirectUrl) } returns Result.success(redirectUrl)

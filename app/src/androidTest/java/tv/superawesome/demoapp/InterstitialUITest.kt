@@ -6,62 +6,60 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.junit.WireMockRule
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.uiautomator.UiDevice
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
-import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathNotCalled
 import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
+import java.lang.reflect.InvocationTargetException
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class InterstitialUITest {
-    @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
-
-    @get:Rule
-    val retryTestRule = RetryTestRule()
+class InterstitialUITest: BaseUITest() {
 
     @Before
-    fun setup() {
-        Intents.init()
-
+    override fun setup() {
+        super.setup()
         val ads = SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
         ads.isAccessible = true
-        ads.invoke(null)
-
-        val base =
-            tv.superawesome.sdk.publisher.SAInterstitialAd::class.java.getDeclaredMethod("clearCache")
-        base.isAccessible = true
-        base.invoke(null)
-
-        wireMockRule.resetAll()
+        try {
+            ads.invoke(null)
+        } catch (e: InvocationTargetException) {
+            /* no-op */
+        }
     }
 
     @After
-    fun tearDown() {
-        Intents.release()
+    override fun tearDown() {
+        super.tearDown()
     }
 
     @Test
-    fun test_standard_adLoading() {
+    fun test_standard_adLoading_placementId() {
         val testData = TestData.interstitialStandard
+        testAdLoading(testData, TestColors.bannerYellow)
+    }
+
+    @Test
+    fun test_standard_adLoading_placementId_lineItemId_creativeId() {
+        val testData = TestData.interstitialStandardMulti
         testAdLoading(testData, TestColors.bannerYellow)
     }
 
@@ -87,7 +85,7 @@ class InterstitialUITest {
     }
 
     @Test
-    fun test_adFailure() {
+    fun test_adFailure_placementId() {
         val testData = TestData.interstitialKsf
 
         listScreenRobot {
@@ -99,8 +97,20 @@ class InterstitialUITest {
     }
 
     @Test
+    fun test_adFailure_placementId_lineItemId_creativeId() {
+        val testData = TestData.interstitialStandardMulti
+
+        listScreenRobot {
+            launchActivityWithFailureStub(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_adNotFound() {
-        val testData = TestData("87970", "not_found.json")
+        val testData = TestData(placementId = "87970", fileName = "not_found.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -113,7 +123,7 @@ class InterstitialUITest {
     @Test
     fun test_standard_safeAdVisible() {
         val testData =
-            TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
+            TestData(placementId = "87892", fileName = "padlock/interstitial_standard_success_padlock_enabled.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -127,7 +137,7 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_CloseButton() {
-        val testData = TestData("87892", "interstitial_standard_success.json")
+        val testData = TestData(placementId = "87892", fileName = "interstitial_standard_success.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -194,7 +204,10 @@ class InterstitialUITest {
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
-        val testData = TestData("87892", "interstitial_standard_enabled_success.json")
+        val testData = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_enabled_success.json",
+        )
         IntentsHelper.stubIntentsForUrl()
 
         listScreenRobot {
@@ -202,7 +215,7 @@ class InterstitialUITest {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
 
                 bumperPageRobot {
                     waitForDisplay()
@@ -216,8 +229,10 @@ class InterstitialUITest {
 
     @Test
     fun test_parental_gate_for_safe_ad_click() {
-        val testData =
-            TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
+        val testData = TestData(
+            placementId = "87892",
+            fileName = "padlock/interstitial_standard_success_padlock_enabled.json",
+        )
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
@@ -232,6 +247,33 @@ class InterstitialUITest {
 
                 parentalGateRobot {
                     checkVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_bumper_and_parental_gate_enabled() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnAdDelayed()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+                bumperPageRobot {
+                    checkIsVisible()
                 }
             }
         }
@@ -318,17 +360,17 @@ class InterstitialUITest {
 
     @Test
     fun test_standard_ad_click_event() {
-        IntentsHelper.stubIntentsForVast()
-        val testData = TestData.interstitialStandard
+        IntentsHelper.stubIntentsForUrl()
+        val testData = TestData.interstitialStandardClickthrough
 
         listScreenRobot {
             launchWithSuccessStub(testData)
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
 
-                IntentsHelper.checkIntentsForVast()
+                IntentsHelper.checkIntentsForUrl()
                 waitAndTapOnClose()
             }
 
@@ -380,6 +422,7 @@ class InterstitialUITest {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAdDelayed()
             }
 
@@ -426,9 +469,155 @@ class InterstitialUITest {
         }
     }
 
+    @Test
+    fun test_interstitial_with_no_clickthrough() {
+        val testData = TestData.interstitialStandardNoClickthrough
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnAdDelayed()
+                // The interstitial is still visible
+                waitForDisplay(TestColors.bannerYellow)
+                verifyUrlPathNotCalled("/click")
+            }
+        }
+    }
+
+    @Test
+    fun test_interstitial_with_clickthrough_to_webpage_and_back() {
+        val testData = TestData.interstitialStandardClickthrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnAdDelayed()
+                // Exiting the browser takes us back to the app with the ad still showing
+                UiDevice.getInstance(getInstrumentation()).pressBack()
+                waitForDisplay(TestColors.bannerYellow)
+                waitAndTapOnClose()
+            }
+
+            verifyUrlPathCalled("/click")
+            checkForEvent(testData, SAEvent.adClicked)
+        }
+    }
+
+    @Test
+    fun test_load_interstitial_with_additional_options() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        interstitialScreenRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
+        }
+    }
+
+    @Test
+    fun test_click_through_safe_ad_click() {
+        val testData = TestData.interstitialStandardPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough(Endpoints.safeAdClickthrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_bumper_safe_ad_click() {
+        val testData = TestData.interstitialStandardPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.interstitialStandardPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun test_safe_ad_hidden_in_response() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitAndCheckSafeAdLogoInvisible()
+            }
+        }
+    }
+
     private fun openParentalGate() {
-        val testData =
-            TestData("87892", "padlock/interstitial_standard_success_padlock_enabled.json")
+        val testData = TestData(
+            placementId = "87892",
+            fileName = "padlock/interstitial_standard_success_padlock_enabled.json",
+        )
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
@@ -439,7 +628,7 @@ class InterstitialUITest {
             tapOnPlacement(testData)
 
             interstitialScreenRobot {
-                tapOnAd()
+                tapOnAdDelayed()
 
                 parentalGateRobot {
                     checkEventForOpen()

@@ -12,9 +12,9 @@
       "width": 600,
       "height": 480,
       "duration": 0,
-      "tag": "<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n    </header>\n    <body><script type=\"text/javascript\" src=\"https://eu-west-1-ads.superawesome.tv/v2/ad.js?placement=90636&lineItemId=185516&creativeId=514375&sdkVersion=android_9.0.0&rnd=e36136ed-5b8f-46eb-a6b9-e1ce703a5c7f&bundle=com.superawesome.example&dauid=28812812&ct=2&lang=en_GB&device=phone&pos=3&timestamp=_TIMESTAMP_&skip=0&playbackmethod=5&startdelay=0&instl=1&isProgrammatic=true&vpaid=true\"></script></body>\n    </html>",
+      "tag": "<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n        <script>\n          function dispatchToAAJSBridge(eventType) {\n            if (window.SA_AD_JS_BRIDGE) {\n              try {\n                window.SA_AD_JS_BRIDGE[eventType]();\n              } catch (error) {\n                console.log('[AwesomeHtml]: dispatchToAAJSBridge error: ', error);\n              }\n            }\n          }\n        </script>\n    </header>\n    <body><script type=\"text/javascript\" onload=\"dispatchToAAJSBridge()\" onerror=\"dispatchToAAJSBridge('adFailedToLoad')\" src=\"https://eu-west-1-ads.superawesome.tv/v2/ad.js?placement=90636&lineItemId=185516&creativeId=514375&sdkVersion=android_9.2.3_admob&rnd=1365902&bundle=tv.superawesome.demoapp&dauid=1836657331&ct=2&lang=en_US&device=tablet&pos=7&timestamp=_TIMESTAMP_&skip=1&playbackmethod=5&startdelay=0&instl=1&isProgrammatic=true&vpaid=true\"></script></body>\n    </html>",
       "_tag": "tag",
-      "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/90636/185516/514375/?sdkVersion=android_9.0.0&rnd=873dcf05-d9ec-43f4-9af2-592b766f12d7&dauid=28812812&bundle=com.superawesome.example&device=phone&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDEyOyBFQjIxMDEpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS8xMTAuMC4wLjAgTW9iaWxlIFNhZmFyaS81MzcuMzY.2IlDw1CIKX8wU-xEXnH_lX_9OkpnKMVrpqI8N1MHhTE&tip=eyJhbGciOiJIUzI1NiJ9.ODEuMTQ2LjI2LjA.QfRPBEvJHkkiPkAOkArH2-CgnVBgc0roWfoSQ4xGhxk&lang=en_GB&ct=2"
+      "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/90636/185516/514375/?sdkVersion=android_9.2.3_admob&rnd=3efc8d42-59e6-430b-910e-7a060894c74f&dauid=1836657331&bundle=tv.superawesome.demoapp&device=tablet&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk&tip=eyJhbGciOiJIUzI1NiJ9.ODYuMTkxLjIwMS4w.hcchmAKyBq8NVnAk7--X6zgD8T3iy9odX0xtxy4ReSs&lang=en_US&ct=2"
     },
     "isKSF": true
   },
@@ -31,8 +31,10 @@
   "test": false,
   "campaign_id": 51164,
   "app": 43002,
-  "device": "phone",
-  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDEyOyBFQjIxMDEpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS8xMTAuMC4wLjAgTW9iaWxlIFNhZmFyaS81MzcuMzY.2IlDw1CIKX8wU-xEXnH_lX_9OkpnKMVrpqI8N1MHhTE",
-  "tip": "eyJhbGciOiJIUzI1NiJ9.ODEuMTQ2LjI2LjA.QfRPBEvJHkkiPkAOkArH2-CgnVBgc0roWfoSQ4xGhxk",
-  "is_vpaid": true
+  "device": "tablet",
+  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.ODYuMTkxLjIwMS4w.hcchmAKyBq8NVnAk7--X6zgD8T3iy9odX0xtxy4ReSs",
+  "is_vpaid": true,
+  "rnd": "1365902",
+  "show": ""
 }

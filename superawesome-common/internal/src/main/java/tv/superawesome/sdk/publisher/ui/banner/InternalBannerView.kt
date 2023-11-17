@@ -260,8 +260,6 @@ public class InternalBannerView @JvmOverloads constructor(
     }
 
     private fun showPadlockIfNeeded() {
-        if (controller?.shouldShowPadlock == false || webView == null) return
-
         val padlockButton = ImageButton(context)
         padlockButton.setImageBitmap(imageProvider.padlockImage())
         padlockButton.setBackgroundColor(Color.TRANSPARENT)
@@ -286,10 +284,15 @@ public class InternalBannerView @JvmOverloads constructor(
 
         webView?.addView(padlockButton)
 
+        if (controller?.shouldShowPadlock == false || webView == null) {
+            padlockButton.visibility = GONE
+        }
+
         this.padlockButton = padlockButton
     }
 
     private fun addWebView() {
+
         removeWebView()
 
         val webView = CustomWebView(context)
@@ -337,6 +340,7 @@ public class InternalBannerView @JvmOverloads constructor(
 
     private fun removeWebView() {
         if (webView != null) {
+            webView?.listener = null
             webView?.destroy()
             removeView(webView)
             webView = null

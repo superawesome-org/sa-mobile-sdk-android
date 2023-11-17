@@ -1,15 +1,12 @@
 package tv.superawesome.demoapp
 
-import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
 import tv.superawesome.demoapp.robot.bannerRobot
 import tv.superawesome.demoapp.robot.bumperPageRobot
@@ -17,36 +14,30 @@ import tv.superawesome.demoapp.robot.deviceRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
 import tv.superawesome.demoapp.robot.settingsScreenRobot
-import tv.superawesome.demoapp.rules.RetryTestRule
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.IntentsHelper.stubIntents
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
+import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathNotCalled
 import tv.superawesome.sdk.publisher.SAEvent
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
-class BannerUITest {
-    @get:Rule
-    var wireMockRule = WireMockRule(wireMockConfig().port(8080), false)
-
-    @get:Rule
-    val retryTestRule = RetryTestRule()
+class BannerUITest: BaseUITest() {
 
     @Before
-    fun setup() {
-        Intents.init()
-        wireMockRule.resetAll()
+    override fun setup() {
+        super.setup()
     }
 
     @After
-    fun tearDown() {
-        Intents.release()
+    override fun tearDown() {
+        super.tearDown()
     }
 
     @Test
-    fun test_adLoading() {
+    fun test_adLoading_placementId() {
         val testData = TestData.bannerSuccess
 
         listScreenRobot {
@@ -63,7 +54,24 @@ class BannerUITest {
     }
 
     @Test
-    fun test_adFailure() {
+    fun test_adLoading_placementId_lineItemId_creativeId() {
+        val testData = TestData.bannerMultiSuccess
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+        }
+    }
+
+    @Test
+    fun test_adFailure_placementId() {
         val testData = TestData.bannerSuccess
 
         listScreenRobot {
@@ -75,8 +83,20 @@ class BannerUITest {
     }
 
     @Test
+    fun test_adFailure_placementId_lineItemId_creativeId() {
+        val testData = TestData.bannerMultiSuccess
+
+        listScreenRobot {
+            launchActivityWithFailureStub(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_adNotFound() {
-        val testData = TestData("88001", "not_found.json")
+        val testData = TestData(placementId = "88001", fileName = "not_found.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -113,8 +133,8 @@ class BannerUITest {
             }
             tapOnPlacement(testData)
 
-
             bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 bumperPageRobot {
@@ -145,6 +165,8 @@ class BannerUITest {
             tapOnPlacement(testData)
 
             bannerRobot {
+
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 bumperPageRobot {
@@ -167,21 +189,20 @@ class BannerUITest {
     @Test
     fun test_bumper_enabled_from_api() {
         // Given bumper page is enabled from api
-        val testData = TestData("88001", "banner_enabled_success.json")
+        val testData = TestData(placementId = "88001", fileName = "banner_enabled_success.json")
 
         listScreenRobot {
             launchWithSuccessStub(testData)
             tapOnPlacement(testData)
 
             bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 bumperPageRobot {
                     waitForDisplay()
                 }
             }
-
-            waitForDisplay()
         }
     }
 
@@ -204,6 +225,97 @@ class BannerUITest {
                 parentalGateRobot {
                     checkVisible()
                 }
+            }
+        }
+    }
+
+    @Test
+    fun test_click_through_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                checkClickThrough(Endpoints.safeAdClickthrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_bumper_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+                checkClickThrough(Endpoints.safeAdClickthrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_parental_gate_bumper_safe_ad_click() {
+        val testData = TestData.bannerPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+                checkClickThrough(Endpoints.safeAdClickthrough)
+            }
+        }
+    }
+
+    @Test
+    fun test_direct_video_safe_ad_hidden_in_response() {
+        val testData = TestData.bannerPadlockHidden
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitAndCheckSafeAdLogoInvisible()
             }
         }
     }
@@ -266,7 +378,6 @@ class BannerUITest {
 
             bannerRobot {
                 waitForDisplay(TestColors.bannerYellow)
-
                 tapOnAd()
             }
 
@@ -316,6 +427,7 @@ class BannerUITest {
             tapOnPlacement(testData)
 
             bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
                 tapOnAd()
 
                 IntentsHelper.checkIntentsForUrl()
@@ -323,6 +435,45 @@ class BannerUITest {
             }
 
             checkForEvent(testData, SAEvent.adClicked)
+        }
+    }
+
+    @Test
+    fun test_banner_with_no_clickthrough() {
+        val testData = TestData.bannerSuccessNoClickthrough
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            bannerRobot {
+                waitForDisplay(TestColors.bannerYellow)
+                tapOnAd()
+
+                verifyUrlPathNotCalled("/click")
+            }
+
+            checkEventNotSent(testData, SAEvent.adClicked)
+        }
+    }
+
+    @Test
+    fun test_load_banner_with_additional_options() {
+        val testData = TestData.bannerSuccess
+        IntentsHelper.stubIntentsForUrl()
+
+        listScreenRobot {
+            launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))
+            tapOnPlacement(testData)
+        }
+
+        bannerRobot {
+            verifyUrlPathCalledWithQueryParam(
+                "/ad/${testData.placementId}",
+                "option1",
+                "123"
+            )
         }
     }
 

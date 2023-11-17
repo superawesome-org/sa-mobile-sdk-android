@@ -1,0 +1,33 @@
+{
+  "programmaticUuid": null,
+  "creative": {
+    "id": 499385,
+    "format": "video",
+    "details": {
+      "placement_format": "video",
+      "tag": "https://ad.doubleclick.net/ddm/pfadx/N977474.3516915POPJAM/B28023562.339741090;sz=0x0;ord=1659365072607;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER];dc_vast=3;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ltd=",
+      "width": 600,
+      "height": 480,
+      "duration": 0,
+      "vast": "http://localhost:8080/vast/tag"
+    }
+  },
+  "rnd": "1234",
+  "advertiserId": 4,
+  "publisherId": 4,
+  "is_fill": false,
+  "is_fallback": false,
+  "campaign_type": 0,
+  "is_house": true,
+  "safe_ad_approved": false,
+  "show_padlock": false,
+  "line_item_id": 176803,
+  "moat": 0.1,
+  "test": false,
+  "campaign_id": 48202,
+  "app": 41037,
+  "device": "web",
+  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzgzLjAuNDEwMy45NyBTYWZhcmkvNTM3LjM2.fNi_jam5Bd9ip_c68rVpQWyuOY_Az3Jsv05mC2mCsnM",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.NS4xNzYuNC4w.TdOrpR7ZGEEQVxws5zjS3d6ia2M_Tbhgeodh2iZSRZY",
+  "is_vpaid": false
+}

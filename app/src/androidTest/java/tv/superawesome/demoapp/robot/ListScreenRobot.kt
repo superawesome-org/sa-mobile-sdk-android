@@ -1,7 +1,9 @@
 package tv.superawesome.demoapp.robot
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -12,6 +14,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withSubstring
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.anyOf
@@ -24,19 +28,29 @@ import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.WireMockHelper
 import tv.superawesome.demoapp.util.isVisible
+import tv.superawesome.demoapp.util.toJsonElement
 import tv.superawesome.demoapp.util.waitUntil
 import tv.superawesome.sdk.publisher.SAEvent
 
 class ListScreenRobot : BaseRobot() {
+
     private fun launchActivityWithSuccessStub(
-        placement: String,
-        fileName: String,
+        testData: TestData,
+        additionalOptions: Map<String, Any>? = null,
         settings: (() -> Unit)? = null
     ) {
         WireMockHelper.stubCommonPaths()
-        WireMockHelper.stubSuccess(placement, fileName)
+        WireMockHelper.stubSuccess(testData)
 
-        launchActivity<MainActivity>()
+        val options = additionalOptions?.mapValues { it.value.toJsonElement() }
+
+        launchActivity<MainActivity>(
+            intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+                .apply {
+                    putExtra("environment", "UITesting")
+                    putExtra("AD_LOAD_OPTIONS", Json.encodeToString(options))
+                }
+        )
 
         settings?.let {
             settingsScreenRobot {
@@ -54,33 +68,52 @@ class ListScreenRobot : BaseRobot() {
         }
     }
 
-    fun launchWithSuccessStub(testData: TestData, settings: (() -> Unit)? = null) {
-        launchActivityWithSuccessStub(testData.placement, testData.fileName, settings)
+    fun launchWithSuccessStub(
+        testData: TestData,
+        additionalOptions: Map<String, Any>? = null,
+        settings: (() -> Unit)? = null,
+    ) {
+        launchActivityWithSuccessStub(testData, additionalOptions, settings)
     }
 
     fun launchActivityWithFailureStub(testData: TestData) {
-        launchActivityWithFailureStub(testData.placement)
-    }
-
-    private fun launchActivityWithFailureStub(placement: String) {
         WireMockHelper.stubCommonPaths()
-        WireMockHelper.stubFailure(placement)
+        WireMockHelper.stubFailure(testData)
 
-        launchActivity<MainActivity>()
+        launchActivity<MainActivity>(
+            intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+                .apply {
+                    putExtra("environment", "UITesting")
+                }
+        )
 
         settingsScreenRobot {
             applyCommonSettings()
         }
     }
 
-    private fun clickPlacementById(placementId: String) {
+    private fun clickPlacementWithString(string: String) {
         onView(withId(R.id.recyclerView))
-            .perform(RecyclerViewActions.actionOnItem<ViewHolder>
-                (hasDescendant(withText(containsString(placementId))), click()))
+            .perform(
+                RecyclerViewActions.actionOnItem<ViewHolder>(
+                    hasDescendant(
+                        withText(
+                            containsString(string)
+                        )
+                    ),
+                    click()
+                )
+            )
     }
 
     fun tapOnPlacement(testData: TestData) {
-        clickPlacementById(testData.placement)
+        val matchString = if (testData.isMultiData) {
+            "${testData.placementId} - ${testData.lineItemId} - ${testData.creativeId}"
+        } else {
+            testData.placementId
+        }
+        scrollListToPlacementWithString(matchString)
+        clickPlacementWithString(matchString)
     }
 
     fun checkAdHasBeenLoadedShownClickedClosed(placement: TestData) {
@@ -93,15 +126,15 @@ class ListScreenRobot : BaseRobot() {
     fun checkForEvent(placement: TestData, event: SAEvent) {
         onView(withId(R.id.subtitleTextView))
             .perform(waitUntil(isDisplayed()))
-            .perform(waitUntil(withSubstring("${placement.placement} ${event.name}")))
+            .perform(waitUntil(withSubstring("${placement.placementId} ${event.name}")))
     }
 
     /**
-     * Checks if the event is not occurred
+     * Checks if the event has not occurred
      */
-    fun checkNotForEvent(placement: TestData, event: SAEvent) {
+    fun checkEventNotSent(placement: TestData, event: SAEvent) {
         onView(withId(R.id.subtitleTextView))
-            .check(matches(not(withSubstring("${placement.placement} ${event.name}"))))
+            .check(matches(not(withSubstring("${placement.placementId} ${event.name}"))))
     }
 
     fun checkForAnyEvent(placement: TestData, event: SAEvent, event2: SAEvent) {
@@ -110,8 +143,8 @@ class ListScreenRobot : BaseRobot() {
             .perform(
                 waitUntil(
                     anyOf(
-                        withSubstring("${placement.placement} ${event.name}"),
-                        withSubstring("${placement.placement} ${event2.name}")
+                        withSubstring("${placement.placementId} ${event.name}"),
+                        withSubstring("${placement.placementId} ${event2.name}")
                     )
                 )
             )
@@ -132,6 +165,19 @@ class ListScreenRobot : BaseRobot() {
                 color
             )
         )
+    }
+
+    private fun scrollListToPlacementWithString(string: String) {
+        onView(withId(R.id.recyclerView))
+            .perform(
+                RecyclerViewActions.scrollTo<ViewHolder>(
+                    hasDescendant(
+                        withText(
+                            containsString(string)
+                        )
+                    )
+                )
+            )
     }
 }
 

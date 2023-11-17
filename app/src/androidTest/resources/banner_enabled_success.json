@@ -13,9 +13,9 @@
     "impressionUrls": [],
     "freqCappingLimit": 0,
     "details": {
-      "url": "https://uploads-api-main-awesomeads.sacdn.net/images/0vJrnt2F5fipvsudXo6thUIAw3egbY5A.png",
-      "image": "file:///android_asset/banner_yellow.png",
-      "video": "https://uploads-api-main-awesomeads.sacdn.net/images/0vJrnt2F5fipvsudXo6thUIAw3egbY5A.png",
+      "url": "",
+      "image": "http://localhost:8080/banner_yellow.png",
+      "video": "",
       "placement_format": "mobile_display",
       "width": 320,
       "height": 50,
@@ -33,8 +33,9 @@
     "bumper": true,
     "attributionType": 1,
     "vpaid": false,
-    "click_url": "undefined"
+    "click_url": "http://localhost:8080/mock_website"
   },
+  "rnd": "1234",
   "is_fill": false,
   "is_fallback": false,
   "moat": 0.1,

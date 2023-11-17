@@ -34,12 +34,12 @@ interface IVideoPlayerController {
     /**
      * Gets the total duration, in seconds, of the media control.
      */
-    val iVideoDuration: Int
+    val iVideoDuration: Long
 
     /**
      * Gets the current position, in seconds, of the media control.
      */
-    val currentIVideoPosition: Int
+    val currentIVideoPosition: Long
 
     /**
      * Plays the media in a synchronously.
@@ -161,5 +161,18 @@ interface IVideoPlayerController {
          * @param duration total duration of the media
          */
         fun onError(control: IVideoPlayerController, error: Throwable, time: Int, duration: Int)
+
+        /**
+         * Called by the IVideoPlayerController when playback is paused.
+         *
+         * @param control current media control instance
+         */
+        fun onPlay(control: IVideoPlayerController)
+        /**
+         * Called by the IVideoPlayerController when playback starts.
+         *
+         * @param control current media control instance
+         */
+        fun onPause(control: IVideoPlayerController)
     }
 }

@@ -324,6 +324,7 @@ public class SABannerAd extends FrameLayout {
         session.setInstl(SARTBInstl.NOT_FULLSCREEN);
         session.setSkip(SARTBSkip.NO_SKIP);
         session.setStartDelay(SARTBStartDelay.PRE_ROLL);
+        session.setPublisherConfiguration(isParentalGateEnabled, isBumperPageEnabled);
 
         try {
             session.setWidth(getWidth());
@@ -352,7 +353,7 @@ public class SABannerAd extends FrameLayout {
                         SAAd adResponse = response.ads.get(0);
                         adResponse.openRtbPartnerId = openRtbPartnerId;
 
-                        performanceMetrics.trackLoadTime(ad);
+                        performanceMetrics.trackLoadTime(adResponse);
                         setAd(adResponse);
                     } else {
                         setAd(null);
@@ -518,8 +519,7 @@ public class SABannerAd extends FrameLayout {
 
                         if (destination != null) {
                             Runnable runner = () -> click(destination);
-                            runner.run();
-                            // showParentalGateIfNeededWithCompletion(context, runner);
+                            showParentalGateIfNeededWithCompletion(context, runner);
                         }
 
                         break;

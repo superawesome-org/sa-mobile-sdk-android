@@ -1,9 +1,11 @@
 package tv.superawesome.sdk.publisher.di
 
+import android.content.Context
 import android.content.res.Resources
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.ExperimentalSerializationApi
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -47,6 +49,8 @@ import tv.superawesome.sdk.publisher.components.UserAgentProvider
 import tv.superawesome.sdk.publisher.components.UserAgentProviderType
 import tv.superawesome.sdk.publisher.components.VastParser
 import tv.superawesome.sdk.publisher.components.VastParserType
+import tv.superawesome.sdk.publisher.components.VideoCache
+import tv.superawesome.sdk.publisher.components.VideoCacheImpl
 import tv.superawesome.sdk.publisher.components.XmlParser
 import tv.superawesome.sdk.publisher.components.XmlParserType
 import tv.superawesome.sdk.publisher.models.AdResponse
@@ -72,8 +76,6 @@ import tv.superawesome.sdk.publisher.ui.common.SingleShotViewableDetector
 import tv.superawesome.sdk.publisher.ui.common.ViewableDetector
 import tv.superawesome.sdk.publisher.ui.video.VideoComponentFactory
 import tv.superawesome.sdk.publisher.ui.video.VideoEvents
-import tv.superawesome.sdk.publisher.ui.video.player.IVideoPlayerController
-import tv.superawesome.sdk.publisher.ui.video.player.VideoPlayerController
 import java.util.Calendar
 import java.util.Locale
 
@@ -110,9 +112,8 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
 
     factory { ParentalGate(get()) }
     factory<BumperPage> { DefaultBumperPage() }
-    factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector(get()) }.bind<ViewableDetector>()
+    factory(named<SingleShotViewableDetector>()) { SingleShotViewableDetector() }.bind<ViewableDetector>()
     factory(named<ContinuousViewableDetector>()) { ContinuousViewableDetector() }.bind<ViewableDetector>()
-    factory<IVideoPlayerController> { VideoPlayerController() }
     factory { VideoComponentFactory() }
     factory { (adResponse: AdResponse) ->
         VideoEvents(
@@ -133,10 +134,14 @@ internal fun createCommonModule(environment: Environment, loggingEnabled: Boolea
     single<PerformanceRepositoryType> { PerformanceRepository(get(), get()) }
 
     single<AwesomeAdsApiDataSourceType> { AwesomeAdsApiDataSource(get(), get()) }
-
+    single<VideoCache> {
+        val preferences = androidContext().getSharedPreferences("VideoCache", Context.MODE_PRIVATE)
+        VideoCacheImpl(preferences, get(), get(), get())
+    }
     single<HtmlFormatterType> { HtmlFormatter(get(), get()) }
     single<AdProcessorType> {
         AdProcessor(
+            get(),
             get(),
             get(),
             get(),

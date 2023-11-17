@@ -274,6 +274,15 @@ public class SAVideoAd {
 
             // create a current session
             final SASession session = getNewSession(context);
+            session.setPublisherConfiguration(isParentalGateEnabled,
+                    isBumperPageEnabled,
+                    shouldShowCloseWarning,
+                    orientation,
+                    shouldAutomaticallyCloseAtEnd,
+                    shouldMuteOnStart,
+                    shouldShowSmallClickButton,
+                    playback,
+                    closeButtonState);
 
             session.prepareSession(() -> {
 
@@ -405,7 +414,8 @@ public class SAVideoAd {
                             shouldShowCloseWarning,
                             isBackButtonEnabled,
                             shouldAutomaticallyCloseAtEnd,
-                            closeButtonState);
+                            closeButtonState,
+                            configuration);
                     intent.putExtra(SAManagedAdActivity.CONFIG_KEY, config);
 
                     context.startActivity(intent);

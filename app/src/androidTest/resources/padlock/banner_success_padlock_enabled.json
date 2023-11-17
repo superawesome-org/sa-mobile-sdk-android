@@ -33,8 +33,9 @@
     "bumper": false,
     "attributionType": 1,
     "vpaid": false,
-    "click_url": "https://www.superawesome.com/"
+    "click_url": "http://localhost:8080/mock_website"
   },
+  "rnd": "1234",
   "is_fill": false,
   "is_fallback": false,
   "moat": 0.1,

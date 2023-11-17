@@ -1,6 +1,6 @@
 package tv.superawesome.demoapp.settings
 
-import tv.superawesome.demoapp.MyApplication
+import tv.superawesome.demoapp.HasEnvironment
 import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.sdk.publisher.models.CloseButtonState
 
@@ -140,7 +140,7 @@ data class SettingsData(
 
 object DataStore {
     var data = SettingsData(
-        environment = MyApplication.environment,
+        environment = HasEnvironment.environment,
     )
         private set
 
@@ -159,7 +159,7 @@ object DataStore {
 
     fun reset() {
         data = SettingsData(
-            environment = MyApplication.environment,
+            environment = HasEnvironment.environment,
         )
     }
 

@@ -23,6 +23,7 @@ class AdProcessor(
     private val htmlFormatter: HtmlFormatterType,
     private val vastParser: VastParserType,
     private val networkDataSource: NetworkDataSourceType,
+    private val videoCache: VideoCache,
     private val encoder: EncoderType,
 ) : AdProcessorType {
     @Suppress("NestedBlockDepth", "ReturnCount")
@@ -63,17 +64,9 @@ class AdProcessor(
                     ad.creative.details.vast?.let { url ->
                         response.vast = handleVast(url, null)
                         response.baseUrl = response.vast?.url?.baseUrl
-                        response.vast?.url?.let {
-                            networkDataSource.downloadFile(it).fold(
-                                onSuccess = { filePath ->
-                                    response.filePath = filePath
-                                },
-                                onFailure = { exception ->
-                                    throw exception
-                                }
-                            )
-                        } ?: throw NullPointerException("empty url")
-
+                        response.vast?.url?.let { vastUrl ->
+                            response.filePath = videoCache.get(vastUrl)
+                        } ?: throw NullPointerException("Empty url")
                     }
                 }
         }

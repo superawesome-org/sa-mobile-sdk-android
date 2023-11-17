@@ -8,7 +8,7 @@ android {
     namespace = "com.superawesome.ironsource.example"
 
     defaultConfig {
-        versionName = "9.2.2"
+        versionName = "9.2.3"
         applicationId = "com.superawesome.ironsource.example"
         minSdk = 21
         targetSdk = 33

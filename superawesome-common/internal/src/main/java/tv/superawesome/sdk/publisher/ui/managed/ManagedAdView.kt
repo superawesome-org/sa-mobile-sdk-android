@@ -3,7 +3,6 @@
 package tv.superawesome.sdk.publisher.ui.managed
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -21,8 +20,9 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ad.AdController
-import tv.superawesome.sdk.publisher.ad.AdManager
+import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
@@ -30,10 +30,8 @@ import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.CustomWebView
-import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
 import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
-import tv.superawesome.sdk.publisher.ui.fullscreen.FullScreenActivity
 
 /**
  * The view that displays the ad.
@@ -46,7 +44,7 @@ public class ManagedAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), KoinComponent {
 
-    private val adManager: AdManager by inject()
+    private val adManager: VideoAdManager by inject()
     private val imageProvider: ImageProviderType by inject()
     private val timeProvider: TimeProviderType by inject()
     private val logger: Logger by inject()
@@ -188,15 +186,7 @@ public class ManagedAdView @JvmOverloads constructor(
         webView.listener = object : CustomWebView.Listener {
             private val clickThrottler = ClickThrottler()
             override fun webViewOnStart() {
-                scope.launch {
-                    controller.triggerImpressionEvent()
-                }
-
-                // Disable close button failsafe since we've loaded the ad successfully.
-                val activity = context as? Activity
-                if (activity is FullScreenActivity) {
-                    activity.closeButtonFailsafeTimer.stop()
-                }
+                scope.launch { controller.triggerImpressionEvent() }
             }
             override fun webViewOnError() {
                 controller.listener?.onEvent(placementId, SAEvent.adFailedToShow)

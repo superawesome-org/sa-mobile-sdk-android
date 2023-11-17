@@ -2,7 +2,12 @@ package tv.superawesome.demoapp
 
 import androidx.multidex.MultiDexApplication
 import tv.superawesome.lib.sabumperpage.SABumperPage
+import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.lib.sasession.session.SASession
 import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.SABannerAd
+import tv.superawesome.sdk.publisher.SAInterstitialAd
+import tv.superawesome.sdk.publisher.SAVideoAd
 
 class MyApplication : MultiDexApplication() {
 
@@ -20,13 +25,12 @@ class MyApplication : MultiDexApplication() {
     }
 
     fun setupUITest() {
-        environment = SDKEnvironment.UITesting
+        HasEnvironment.environment = SDKEnvironment.UITesting
+        SAVideoAd.setConfiguration(SAConfiguration.UITESTING)
+        SAInterstitialAd.setConfiguration(SAConfiguration.UITESTING)
     }
 
     companion object {
-        var environment: SDKEnvironment = SDKEnvironment.Production
-            private set
-
         val flavor = SDKFlavor.BASE
     }
 }

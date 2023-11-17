@@ -23,6 +23,10 @@ android {
         }
 
         buildFeatures.viewBinding = true
+
+        testOptions {
+            execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        }
     }
 
     flavorDimensions += "sdk"
@@ -64,12 +68,14 @@ dependencies {
 
     androidTestImplementation(libs.androidx.test.ext.junit.ktx)
     androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.orchestrator)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.core.ktx)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.espresso.contrib)
     androidTestImplementation(libs.androidx.test.espresso.intents)
     androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestUtil(libs.androidx.test.orchestrator)
 
     // Mock Server
     androidTestImplementation(libs.wiremock) {

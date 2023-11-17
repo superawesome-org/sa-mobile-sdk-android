@@ -6,21 +6,19 @@ import android.content.Intent
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import org.hamcrest.CoreMatchers
+import tv.superawesome.demoapp.model.Endpoints
 
 object IntentsHelper {
 
-    private const val stubUrl = "https://www.superawesome.com/"
-    private const val stubUrlVastClickThrough = "http://localhost:8080/vast/clickthrough"
-
     fun stubIntentsForVast() {
-        stubIntentsForUrl(stubUrlVastClickThrough)
+        stubIntentsForUrl(Endpoints.stubUrlVastClickThrough)
     }
 
     fun checkIntentsForVast() {
-        checkIntentsForUrl(stubUrlVastClickThrough)
+        checkIntentsForUrl(Endpoints.stubUrlVastClickThrough)
     }
 
-    fun stubIntentsForUrl(url: String = stubUrl) {
+    fun stubIntentsForUrl(url: String = Endpoints.stubUrl) {
         val expectedIntent = CoreMatchers.allOf(
             IntentMatchers.hasAction(Intent.ACTION_VIEW),
             IntentMatchers.hasData(url)
@@ -30,7 +28,7 @@ object IntentsHelper {
             .respondWith(Instrumentation.ActivityResult(0, null))
     }
 
-    fun checkIntentsForUrl(url: String = stubUrl) {
+    fun checkIntentsForUrl(url: String = Endpoints.stubUrl) {
         val expectedIntent = CoreMatchers.allOf(
             IntentMatchers.hasAction(Intent.ACTION_VIEW),
             IntentMatchers.hasData(url)
