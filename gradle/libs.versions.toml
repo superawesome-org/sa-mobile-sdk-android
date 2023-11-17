@@ -55,7 +55,7 @@ google-play-services-ads-identifier = "18.0.1"
 
 # IronSource
 ironsource-adapters-superawesome = "4.1.7"
-ironsource-mediator = "7.5.1"
+ironsource-mediator = "7.5.2"
 
 # Test
 jUnit4 = "4.13.2"
