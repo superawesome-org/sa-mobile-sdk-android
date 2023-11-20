@@ -61,6 +61,8 @@ empty-blocks:
 
 exceptions:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
+  TooGenericExceptionCaught:
+    active: false
 
 coroutines:
   excludes: [ '**/test/**','**/androidTest/**','**/*.Test.kt' ]
