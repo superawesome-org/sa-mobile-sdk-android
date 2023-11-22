@@ -19,9 +19,9 @@ class FeatureFlagImpl(
     var flags: FeatureFlags = FeatureFlags()
         private set
 
-    override suspend fun fetch() {
+    override suspend fun fetch(query: FeatureFlagsQuery) {
         try {
-            flags = datasource.getFlags()
+            flags = datasource.getFlags(query)
         } catch (e: Exception) {
             logger.error("Failed to fetch feature flags", e)
         }
