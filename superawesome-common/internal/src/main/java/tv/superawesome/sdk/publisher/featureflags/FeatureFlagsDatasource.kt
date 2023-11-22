@@ -8,5 +8,5 @@ interface FeatureFlagsDatasource {
     /**
      * Gets the feature flags and returns it.
      */
-    suspend fun getFlags(): FeatureFlags
+    suspend fun getFlags(query: FeatureFlagsQuery): FeatureFlags
 }

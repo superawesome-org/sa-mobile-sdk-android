@@ -9,6 +9,7 @@ import okhttp3.mockwebserver.MockWebServer
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import tv.superawesome.sdk.publisher.components.FakeUserAgentProvider
+import tv.superawesome.sdk.publisher.featureflags.AdServerFeatureFlagsApi
 import tv.superawesome.sdk.publisher.network.AwesomeAdsApi
 import tv.superawesome.sdk.publisher.network.datasources.NetworkDataSourceType
 import tv.superawesome.sdk.publisher.network.datasources.OkHttpNetworkDataSource
@@ -40,13 +41,12 @@ fun networkModule(mockServer: MockWebServer) = module {
         }
     }
 
-    single {
+    single<Retrofit> {
         Retrofit.Builder()
             .baseUrl(mockServer.url("/"))
             .client(client)
             .addConverterFactory(get<Json>().asConverterFactory("application/json".toMediaType()))
             .build()
-            .create(AwesomeAdsApi::class.java)
     }
 
     single<NetworkDataSourceType> {
@@ -55,5 +55,13 @@ fun networkModule(mockServer: MockWebServer) = module {
             cacheDir = File.createTempFile("cacheDir", "test_file"),
             logger = TestLogger()
         )
+    }
+
+    single<AwesomeAdsApi> {
+        get<Retrofit>().create(AwesomeAdsApi::class.java)
+    }
+
+    single<AdServerFeatureFlagsApi> {
+        get<Retrofit>().create(AdServerFeatureFlagsApi::class.java)
     }
 }

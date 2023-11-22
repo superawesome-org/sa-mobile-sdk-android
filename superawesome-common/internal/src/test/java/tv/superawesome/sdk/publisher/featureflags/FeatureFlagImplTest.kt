@@ -5,6 +5,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import tv.superawesome.sdk.publisher.components.DeviceCategory
 import tv.superawesome.sdk.publisher.testutil.TestLogger
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -13,6 +14,7 @@ class FeatureFlagImplTest {
     private val fakeDatasource = FakeFeatureFlagDatasource()
 
     private val sut = FeatureFlagImpl(fakeDatasource, TestLogger())
+    private val query = FeatureFlagsQuery("1", "a", "b", DeviceCategory.PHONE)
 
     @Test
     fun `while not loaded, flags return default object`() {
@@ -26,7 +28,7 @@ class FeatureFlagImplTest {
     @Test
     fun `can load flags successfully`() = runTest {
         // Arrange
-        sut.fetch()
+        sut.fetch(query)
 
         // Act
         val value = sut.flags.isAdResponseVASTEnabled
@@ -39,7 +41,7 @@ class FeatureFlagImplTest {
     fun `failing fetch won't replace default flags`() = runTest {
         // Arrange
         val sut = FeatureFlagImpl(FailingFeatureFlagDatasource(), TestLogger())
-        sut.fetch()
+        sut.fetch(query)
 
         // Act
         val value = sut.flags.isAdResponseVASTEnabled
