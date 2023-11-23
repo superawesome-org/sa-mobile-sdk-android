@@ -250,12 +250,14 @@ class MainActivity : FragmentActivity() {
 
         SAInterstitialAd.setBumperPage(settings.bumperEnabled)
         SAInterstitialAd.setParentalGate(settings.parentalEnabled)
+        SAInterstitialAd.setOrientation(settings.orientation)
 
         SAVideoAd.setBumperPage(settings.bumperEnabled)
         SAVideoAd.setParentalGate(settings.parentalEnabled)
         SAVideoAd.setMuteOnStart(settings.muteOnStart)
         SAVideoAd.setCloseButtonWarning(settings.videoWarnOnClose)
         SAVideoAd.setCloseAtEnd(settings.closeAtEnd)
+        SAVideoAd.setOrientation(settings.orientation)
 
         when (settings.closeButtonState) {
             CloseButtonState.VisibleImmediately -> {
