@@ -1,6 +1,5 @@
 package tv.superawesome.demoapp
 
-import android.content.Context
 import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
@@ -39,9 +38,11 @@ abstract class BaseUITest {
         wireMockRule = WireMockRule(
             WireMockConfiguration.wireMockConfig()
                 .port(httpPortNumber)
+                .stubCorsEnabled(true)
                 .httpsPort(httpsPortNumber)
                 .bindAddress(httpsAddress)
                 .notifier(ConsoleNotifier(isVerboseLoggingEnabled))
+                .keystoreType("BKS")
                 .keystorePath(keyStoreFile.absolutePath)
                 .keystoreType(keyStoreFileType)
                 .keystorePassword(keyStorePassword),
@@ -65,7 +66,7 @@ abstract class BaseUITest {
     companion object {
         private const val keyStorePath = "/sdcard/Documents"
         private const val keyStoreName = "wiremock.bks"
-        private const val keyStorePassword = "127.0.0.1"
+        private const val keyStorePassword = ""
         private const val keyStoreFileType = "BKS"
         private const val httpsAddress = "127.0.0.1"
         private const val httpsPortNumber = 8443

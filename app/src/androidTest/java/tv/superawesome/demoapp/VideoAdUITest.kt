@@ -2,15 +2,11 @@ package tv.superawesome.demoapp
 
 import android.graphics.Color
 import android.view.KeyEvent
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.junit.WireMockRule
-import androidx.test.espresso.matcher.ViewMatchers.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -1092,6 +1088,25 @@ class VideoAdUITest: BaseUITest() {
                 checkForEvent(testData, SAEvent.adPaused)
                 checkForEvent(testData, SAEvent.adPlaying)
             }
+        }
+    }
+
+    @Test
+    fun test_VPAID() {
+        val testData = TestData.videoVpaidPJ
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
+            }
+            tapOnPlacement(testData)
+        }
+
+        videoScreenRobot {
+            waitForDisplay()
+            Thread.sleep(5000)
         }
     }
 
