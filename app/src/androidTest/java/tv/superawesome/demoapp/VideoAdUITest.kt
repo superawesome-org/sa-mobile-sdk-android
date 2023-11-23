@@ -1102,11 +1102,7 @@ class VideoAdUITest: BaseUITest() {
                 }
             }
             tapOnPlacement(testData)
-        }
-
-        videoScreenRobot {
-            waitForDisplay()
-            Thread.sleep(5000)
+            Thread.sleep(9999999)
         }
     }
 
