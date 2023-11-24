@@ -52,32 +52,32 @@ data class TestData(
             fileName = "video_vpaid_popjam_success.json",
             additionalPaths = listOf(
                 StubFile(
-                    route = "/ad.js",
+                    route = "/pj_ad.js",
                     filePath = "js/pj_ad.js",
                     mimeType = "text/javascript",
                     useReadFile = true,
                 ),
                 StubFile(
                     route = "/pj_vast",
-                    filePath = "vpaid/pj_vast.xml",
+                    filePath = "vpaid/pj/pj_vast.xml",
                     mimeType = "text/xml",
                     useReadFile = true,
                 ),
                 StubFile(
                     route = "/pj_celtra_vast",
-                    filePath = "vpaid/pj_celtra_vast.xml",
+                    filePath = "vpaid/pj/pj_celtra_vast.xml",
                     mimeType = "text/xml",
                     useReadFile = true,
                 ),
                 StubFile(
                     route = "/pj_celtra_js",
-                    filePath = "vpaid/pj_celtra.js",
+                    filePath = "vpaid/pj/pj_celtra.js",
                     mimeType = "text/javascript",
                     useReadFile = true,
                 ),
                 StubFile(
                     route = "/pj_celtra_payload",
-                    filePath = "vpaid/pj_celtra_payload.js",
+                    filePath = "vpaid/pj/pj_celtra_payload.js",
                     mimeType = "text/javascript",
                     useReadFile = true,
                 ),
@@ -86,6 +86,42 @@ data class TestData(
         val videoVpaidGreyBox = TestData(
             placementId = "96690",
             fileName = "video_vpaid_grey_box_success.json",
+        )
+        val videoVpaidYellowBox = TestData(
+            placementId = "89056",
+            fileName = "video_vpaid_yellow_box_success.json",
+            additionalPaths = listOf(
+                StubFile(
+                    route = "/yellow_box_ad.js",
+                    filePath = "js/yellow_box_ad.js",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                ),
+                StubFile(
+                    route = "/yellow_box_vast",
+                    filePath = "vpaid/yellowBox/yellow_box_vast.xml",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                ),
+                StubFile(
+                    route = "/yellow_box_celtra_vast",
+                    filePath = "vpaid/yellowBox/yellow_box_celtra_vast.xml",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                ),
+                StubFile(
+                    route = "/yellow_box_celtra.js",
+                    filePath = "vpaid/yellowBox/yellow_box_celtra.js",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                ),
+                StubFile(
+                    route = "/yellow_box_celtra_payload",
+                    filePath = "vpaid/yellowBox/yellow_box_celtra_payload.js",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                )
+            ),
         )
         val bannerSuccess = TestData(
             placementId = "88001",

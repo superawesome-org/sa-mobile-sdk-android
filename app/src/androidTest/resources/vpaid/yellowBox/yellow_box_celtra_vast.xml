@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<VAST version="2.0">
+    <Ad id="1da7c3ed">
+        <InLine>
+            <AdSystem> <![CDATA[Celtra]]> </AdSystem>
+            <AdTitle> <![CDATA[Celtra HTML5 Ad]]> </AdTitle>
+            <Description> <![CDATA[Celtra HTML5 Ad]]> </Description>
+            <Error><![CDATA[https://track.celtra.com/pixel.gif?sessionId=s1700833155xb962d05be6b8b4x22507583&accountId=fd236ef7&stream=adEvents&name=vastError&code=[ERRORCODE]]]></Error>
+            <Impression> <![CDATA[about:blank]]> </Impression>
+            <Creatives>
+                <Creative sequence="1" id="1da7c3ed" AdID="1da7c3ed">
+                    <Linear>
+                        <Duration>00:00:10</Duration>
+                        <TrackingEvents/>
+                        <AdParameters> </AdParameters>
+                        <MediaFiles>
+                            <MediaFile id="1da7c3ed" width="2048" height="1538" type="application/javascript" delivery="progressive" maintainAspectRatio="true" scalable="true" apiFramework="VPAID"> <![CDATA[http://localhost:8080/yellow_box_celtra.js]]> </MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+</VAST>
