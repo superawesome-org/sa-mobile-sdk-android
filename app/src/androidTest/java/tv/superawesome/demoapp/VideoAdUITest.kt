@@ -1091,21 +1091,6 @@ class VideoAdUITest: BaseUITest() {
         }
     }
 
-    @Test
-    fun test_VPAID() {
-        val testData = TestData.videoVpaidPJ
-
-        listScreenRobot {
-            launchWithSuccessStub(testData) {
-                settingsScreenRobot {
-                    tapOnCloseNoDelay()
-                }
-            }
-            tapOnPlacement(testData)
-            Thread.sleep(9999999)
-        }
-    }
-
     private fun openParentalGate() {
         val testData = TestData.videoDirect
 
