@@ -69,6 +69,18 @@ data class TestData(
                     mimeType = "text/xml",
                     useReadFile = true,
                 ),
+                StubFile(
+                    route = "/pj_celtra_js",
+                    filePath = "vpaid/pj_celtra.js",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                ),
+                StubFile(
+                    route = "/pj_celtra_payload",
+                    filePath = "vpaid/pj_celtra_payload.js",
+                    mimeType = "text/javascript",
+                    useReadFile = true,
+                ),
             )
         )
         val videoVpaidGreyBox = TestData(

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <VAST version="2.0">
     <Ad id="041f1fd0">
         <InLine>
@@ -24,7 +25,7 @@
                         <AdParameters> </AdParameters>
                         <MediaFiles>
                             <MediaFile id="041f1fd0" width="1920" height="1080" type="application/javascript" delivery="progressive" maintainAspectRatio="true" scalable="true" apiFramework="VPAID">
-                                <![CDATA[ https://ads.celtra.com/c1301823/vpaid.js?sessionId=s1700756671x6d58fbbbaabdbdx92729213&scriptId=blank-script-id&eventIndex=0&externalAdServer=Custom&tagVersion=url-standard-7 ]]>
+                                <![CDATA[ http://localhost:8080/pj_celtra_js ]]>
                             </MediaFile>
                         </MediaFiles>
                     </Linear>
