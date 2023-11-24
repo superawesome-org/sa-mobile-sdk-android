@@ -1,9 +1,11 @@
 package tv.superawesome.demoapp.settings
 
+import android.graphics.drawable.GradientDrawable.Orientation
 import tv.superawesome.demoapp.HasEnvironment
 import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.lib.sasession.defines.SAConfiguration
+import tv.superawesome.sdk.publisher.SAOrientation
 import tv.superawesome.sdk.publisher.state.CloseButtonState
 
 enum class Settings(val label: String) {
@@ -14,7 +16,8 @@ enum class Settings(val label: String) {
     Playback("Play ad Immediately"),
     MuteOnStart("Mute on start"),
     LeaveVideoWarning("Leave video warning"),
-    CloseAtEnd("Close at the end");
+    CloseAtEnd("Close at the end"),
+    AdOrientation("Orientation");
 
     fun options(): List<SettingsItemOption<Any>> = when (this) {
         Environment -> listOf(
@@ -33,52 +36,114 @@ enum class Settings(val label: String) {
             SettingsItemOption(
                 "No delay",
                 "SettingsItem.Buttons.CloseImmediately",
-                CloseButtonState.VisibleImmediately
+                CloseButtonState.VisibleImmediately,
             ),
             SettingsItemOption(
                 "Delay",
                 "SettingsItem.Buttons.CloseDelayed",
-                CloseButtonState.VisibleWithDelay
+                CloseButtonState.VisibleWithDelay,
             ),
             SettingsItemOption(
                 "Hidden",
                 "SettingsItem.Buttons.CloseHidden",
-                CloseButtonState.Hidden
+                CloseButtonState.Hidden,
             )
         )
 
         BumperPage -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.BumperEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.BumperDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.BumperEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.BumperDisable",
+                false,
+            ),
         )
 
         ParentalGate -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.ParentalGateEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.ParentalGateDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.ParentalGateEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.ParentalGateDisable",
+                false,
+            ),
         )
 
         Playback -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.PlaybackEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.PlaybackDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.PlaybackEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.PlaybackDisable",
+                false,
+            ),
         )
 
         MuteOnStart -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.MuteEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.MuteDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.MuteEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.MuteDisable",
+                false,
+            ),
         )
 
         LeaveVideoWarning -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.VideoCloseDialogEnable", true),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.VideoCloseDialogEnable",
+                true,
+            ),
             SettingsItemOption(
                 "Disable",
                 "SettingsItem.Buttons.VideoCloseDialogDisable",
-                false
+                false,
             ),
         )
 
         CloseAtEnd -> listOf(
-            SettingsItemOption("Enable", "SettingsItem.Buttons.VideoCloseAtEndEnable", true),
-            SettingsItemOption("Disable", "SettingsItem.Buttons.VideoCloseAtEndDisable", false),
+            SettingsItemOption(
+                "Enable",
+                "SettingsItem.Buttons.VideoCloseAtEndEnable",
+                true,
+            ),
+            SettingsItemOption(
+                "Disable",
+                "SettingsItem.Buttons.VideoCloseAtEndDisable",
+                false,
+            ),
+        )
+
+        AdOrientation -> listOf(
+            SettingsItemOption(
+                "Any",
+                "SettingsItem.Buttons.OrientationAny",
+                SAOrientation.ANY,
+            ),
+            SettingsItemOption(
+                "Landscape",
+                "SettingsItem.Buttons.OrientationLandscape",
+                SAOrientation.LANDSCAPE,
+            ),
+            SettingsItemOption(
+                "Portrait",
+                "SettingsItem.Buttons.OrientationPortrait",
+                SAOrientation.PORTRAIT,
+            ),
         )
 
     }
@@ -94,6 +159,7 @@ data class SettingsData(
     val muteOnStart: Boolean = false,
     val videoWarnOnClose: Boolean = false,
     val closeAtEnd: Boolean = true,
+    val orientation: SAOrientation = SAOrientation.ANY,
 )
 
 object DataStore {
@@ -116,6 +182,7 @@ object DataStore {
             Settings.MuteOnStart -> data.copy(muteOnStart = value as Boolean)
             Settings.LeaveVideoWarning -> data.copy(videoWarnOnClose = value as Boolean)
             Settings.CloseAtEnd -> data.copy(closeAtEnd = value as Boolean)
+            Settings.AdOrientation -> data.copy(orientation = value as SAOrientation)
         }
     }
 
@@ -138,6 +205,7 @@ object DataStore {
         SettingsItem(Settings.MuteOnStart, data.muteOnStart),
         SettingsItem(Settings.LeaveVideoWarning, data.videoWarnOnClose),
         SettingsItem(Settings.CloseAtEnd, data.closeAtEnd),
+        SettingsItem(Settings.AdOrientation, data.orientation),
     )
 }
 
