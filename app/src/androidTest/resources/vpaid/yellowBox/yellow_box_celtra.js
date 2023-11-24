@@ -2,7 +2,7 @@
 (function() {
     // Dynamic values from page request
 
-    var runtimeParams = {"tagVersion":"url-standard-7","deviceInfo":{"deviceType":"Desktop","primaryHardwareType":"desktop","mobileDevice":false,"osName":"OSX","osVersion":"10.15.7","platform":"DesktopPlatform","platformVersion":null,"browserName":"Chrome","browserVersion":"119.0.0.0","browserRenderingEngine":"WebKit","vendor":"Apple","model":null},"weather":{"windy":"0","currentCondition":"cloudy","apparentTemperature":2.0,"temperature":5.7,"windSpeed":8,"cloudCoverage":44,"conditions":[{"name":"cloudy","weight":0}]},"ipCountryCode":"GB","ipRegionCode":null,"ipPrincipalSubdivisionCode":"ENG","ipCityGeonameId":"2647428","ipCity":"Harrogate","ipPostalCode":"HG1","ipLat":54.0001,"ipLng":-1.5352,"accountId":"fd236ef7","folderId":"b691bb54","placementId":"e016c053","supplierId":null,"sessionId":"s1700833155xb962d05be6b8b4x22507583","purpose":"live","secure":1,"clientTimestamp":null,"clientTimeZoneOffsetInMinutes":null,"clientIp":"86.177.65.0","gpsLat":54.0001,"gpsLng":-1.5352,"language":"en","acceptLanguage":"en-GB,en-US;q=0.9,en;q=0.8","platformAdvId":null,"platformAdvIdTrackingLimited":null,"userIdentifiers":{},"variantChoices":{"EventMetadata":"newMeta"},"neustarSegment":null,"customAudiences":{},"derivedAudiences":{},"destinationDefinitions":[],"dynamicContent":[],"moatCustomAttributes":{},"admarvel_format":null,"overrides":{"placementId":"e016c053","customAudiences":{},"derivedAudiences":{},"deviceInfo":{"deviceType":"Desktop","primaryHardwareType":"desktop","mobileDevice":false,"osName":"OSX","osVersion":"10.15.7","platform":"DesktopPlatform","platformVersion":null,"browserName":"Chrome","browserVersion":"119.0.0.0","browserRenderingEngine":"WebKit","vendor":"Apple","model":null},"language":"en","ipCountryCode":"GB","ipRegionCode":null,"ipPrincipalSubdivisionCode":"ENG","ipCityGeonameId":"2647428","ipCity":"Harrogate","weather":{"windy":"0","currentCondition":"cloudy","apparentTemperature":2.0,"temperature":5.7,"windSpeed":8,"cloudCoverage":44,"conditions":[{"name":"cloudy","weight":0}]},"clientTimestamp":null,"clientTimeZoneOffsetInMinutes":null},"utSignals":null,"_mraidCheck":null,"fallbackSdk":null,"passthroughParameters":{},"googleMapsClientKey":null,"shouldShowMapsPrompt":false,"pageSkinsHost":null,"pageSkinsPath":null,"stickToPageHeader":null,"externalAdServer":"Custom","externalCreativeId":null,"externalCreativeName":null,"externalPlacementId":null,"externalPlacementName":null,"externalSiteId":null,"externalSiteName":null,"externalSupplierId":null,"externalSupplierName":null,"externalLineItemId":null,"externalSessionId":null,"externalBundleId":null,"externalCreativeWidth":null,"externalCreativeHeight":null,"externalCampaignId":null,"externalCampaignName":null,"externalAdvertiserId":null,"externalDestinationUrl":null,"clickUrl":null,"useClickAsDestination":null,"scriptId":"blank-script-id","firehoseUrl":null,"clickEvent":null,"clickUrlNeedsDest":null,"ncu":null,"firstPage":1,"dataURIsEnabled":0,"monotypeProjectId":"c46ed090-3671-4163-a85b-b06b4038ae38","iosAdvId":null,"iosAdvIdTrackingLimited":null,"androidAdvId":null,"androidAdvIdTrackingLimited":null,"moatRandom":{"first":1579609520,"second":1149722169},"skipOffset":null,"_enablePoliteLoading":null,"massProductionPreview":null,"fontSubsetterIsDisabled":null,"_politeImageUrl":null,"_politeClickThrough":null,"sticky":null,"_mopubExt":null,"enabledServices":[],"creativeVariantLockSize":null,"screenIdLock":null,"vastVersion":null,"standalonePreview":null,"campaignExplorer":null,"exportingFirstFrame":null,"exportingFrameRate":null,"exportingVideoAssetBlobHash":null,"country":"GB","productCategoryCode":null,"campaignName":"AA Test Creatives","agencyId":null,"customPartnerAttributeBrandId":null,"suppressCloseButton":null,"featureFlags":{"defaultVideo":true,"perAccountRateLimiting":false,"iOS17InlineVideoFix":true,"noConfigSkinPositioning":false},"eventIndex":"0"};
+    var runtimeParams = {"tagVersion":"url-standard-7","deviceInfo":{"deviceType":"Desktop","primaryHardwareType":"desktop","mobileDevice":false,"osName":"OSX","osVersion":"10.15.7","platform":"DesktopPlatform","platformVersion":null,"browserName":"Chrome","browserVersion":"119.0.0.0","browserRenderingEngine":"WebKit","vendor":"Apple","model":null},"weather":{"windy":"0","currentCondition":"sunny","apparentTemperature":1.0,"temperature":4.6,"windSpeed":9,"cloudCoverage":19,"conditions":[{"name":"sunny","weight":1}]},"ipCountryCode":"GB","ipRegionCode":null,"ipPrincipalSubdivisionCode":"ENG","ipCityGeonameId":"2647428","ipCity":"Harrogate","ipPostalCode":"HG1","ipLat":54.0001,"ipLng":-1.5352,"accountId":"fd236ef7","folderId":"84f6ae69","placementId":"4f6465f4","supplierId":null,"sessionId":"s1700840701x6bbbf0b8892890x90184564","purpose":"live","secure":1,"clientTimestamp":null,"clientTimeZoneOffsetInMinutes":null,"clientIp":"86.177.65.0","gpsLat":54.0001,"gpsLng":-1.5352,"language":"en","acceptLanguage":"en-GB,en-US;q=0.9,en;q=0.8","platformAdvId":null,"platformAdvIdTrackingLimited":null,"userIdentifiers":{},"variantChoices":{"EventMetadata":"newMeta"},"neustarSegment":null,"customAudiences":{},"derivedAudiences":{},"destinationDefinitions":[],"dynamicContent":[],"moatCustomAttributes":{},"admarvel_format":null,"overrides":{"placementId":"4f6465f4","customAudiences":{},"derivedAudiences":{},"deviceInfo":{"deviceType":"Desktop","primaryHardwareType":"desktop","mobileDevice":false,"osName":"OSX","osVersion":"10.15.7","platform":"DesktopPlatform","platformVersion":null,"browserName":"Chrome","browserVersion":"119.0.0.0","browserRenderingEngine":"WebKit","vendor":"Apple","model":null},"language":"en","ipCountryCode":"GB","ipRegionCode":null,"ipPrincipalSubdivisionCode":"ENG","ipCityGeonameId":"2647428","ipCity":"Harrogate","weather":{"windy":"0","currentCondition":"sunny","apparentTemperature":1.0,"temperature":4.6,"windSpeed":9,"cloudCoverage":19,"conditions":[{"name":"sunny","weight":1}]},"clientTimestamp":null,"clientTimeZoneOffsetInMinutes":null},"utSignals":null,"_mraidCheck":null,"fallbackSdk":null,"passthroughParameters":{},"googleMapsClientKey":null,"shouldShowMapsPrompt":false,"pageSkinsHost":null,"pageSkinsPath":null,"stickToPageHeader":null,"externalAdServer":"Custom","externalCreativeId":null,"externalCreativeName":null,"externalPlacementId":null,"externalPlacementName":null,"externalSiteId":null,"externalSiteName":null,"externalSupplierId":null,"externalSupplierName":null,"externalLineItemId":null,"externalSessionId":null,"externalBundleId":null,"externalCreativeWidth":null,"externalCreativeHeight":null,"externalCampaignId":null,"externalCampaignName":null,"externalAdvertiserId":null,"externalDestinationUrl":null,"clickUrl":null,"useClickAsDestination":null,"scriptId":"blank-script-id","firehoseUrl":null,"clickEvent":null,"clickUrlNeedsDest":null,"ncu":null,"firstPage":1,"dataURIsEnabled":0,"monotypeProjectId":"c46ed090-3671-4163-a85b-b06b4038ae38","iosAdvId":null,"iosAdvIdTrackingLimited":null,"androidAdvId":null,"androidAdvIdTrackingLimited":null,"moatRandom":{"first":804042727,"second":1180733071},"skipOffset":null,"_enablePoliteLoading":null,"massProductionPreview":null,"fontSubsetterIsDisabled":null,"_politeImageUrl":null,"_politeClickThrough":null,"sticky":null,"_mopubExt":null,"enabledServices":[],"creativeVariantLockSize":null,"screenIdLock":null,"vastVersion":null,"standalonePreview":null,"campaignExplorer":null,"exportingFirstFrame":null,"exportingFrameRate":null,"exportingVideoAssetBlobHash":null,"country":"GB","productCategoryCode":null,"campaignName":"SDK VPAID Test Auto","agencyId":null,"customPartnerAttributeBrandId":null,"suppressCloseButton":null,"featureFlags":{"defaultVideo":true,"perAccountRateLimiting":false,"iOS17InlineVideoFix":true,"noConfigSkinPositioning":false},"eventIndex":"0"};
     runtimeParams.overridableClickThroughDestinationUrl = false;
     runtimeParams.redirectJsClientTimestamp = new Date() / 1000;
 
@@ -22,12 +22,12 @@ var macros = function (x) {
 ,['\\{celtraAndroidAdvIdTrackingLimitedBoolStr\\}', ""]
 ,['\\{celtraAndroidAdvIdTrackingLimited\\}', ""]
 ,['\\{celtraAndroidAdvId\\}', ""]
-,['\\{celtraCampaignId:int\\}', "3063003988"]
-,['\\{celtraCampaignId\\}', "b691bb54"]
-,['\\{celtraCampaignName\\}', "AA%20Test%20Creatives"]
+,['\\{celtraCampaignId:int\\}', "2230759017"]
+,['\\{celtraCampaignId\\}', "84f6ae69"]
+,['\\{celtraCampaignName\\}', "SDK%20VPAID%20Test%20Auto"]
 ,['\\{celtraCountryCode\\}', "GB"]
-,['\\{celtraCreativeId:int\\}', "497533933"]
-,['\\{celtraCreativeId\\}', "1da7c3ed"]
+,['\\{celtraCreativeId:int\\}', "754413262"]
+,['\\{celtraCreativeId\\}', "2cf76ece"]
 ,['\\{celtraCreativeVariant:urlenc\\}', ""]
 ,['\\{celtraCreativeVariant\\}', ""]
 ,['\\{celtraCustomPartnerAttribute\\[code\\]\\}', ""]
@@ -51,14 +51,14 @@ var macros = function (x) {
 ,['\\{celtraIosAdvIdTrackingLimitedBoolStr\\}', ""]
 ,['\\{celtraIosAdvIdTrackingLimited\\}', ""]
 ,['\\{celtraIosAdvId\\}', ""]
-,['\\{celtraPlacementId:int\\}', "3759587411"]
-,['\\{celtraPlacementId\\}', "e016c053"]
+,['\\{celtraPlacementId:int\\}', "1331979764"]
+,['\\{celtraPlacementId\\}', "4f6465f4"]
 ,['\\{celtraPlatformAdvIdTrackingLimited\\}', ""]
 ,['\\{celtraPlatformAdvId\\}', ""]
 ,['\\{celtraProductCategoryCode\\}', ""]
 ,['\\{celtraProto\\}', "https"]
 ,['\\{celtraRandom\\}', (Math.random()+'').slice(2)]
-,['\\{celtraSessionId\\}', "s1700833155xb962d05be6b8b4x22507583"]
+,['\\{celtraSessionId\\}', "s1700840701x6bbbf0b8892890x90184564"]
 ,['\\{celtraSupplierId:int\\}', ""]
 ,['\\{celtraSupplierId\\}', ""]
 
@@ -77,8 +77,8 @@ var macros = function (x) {
     var clickThroughDestinationUrl = null;
 
     // Less dynamic values for payload request
-    var payloadBase = "https://cache-ssl.celtra.com/api/creatives/1da7c3ed/compiled/vpaid.js";
-    var cacheParams = {"v": "9-a289ee2c04", "secure": 1, "cachedVariantChoices": "W10-", "isPurposePreview": 0, "eventMetadataExperiment": 'newMeta', "inmobi": typeof imraid !== 'undefined' && typeof _im_imai !== 'undefined' ? '1' : '0'};
+    var payloadBase = "https://cache-ssl.celtra.com/api/creatives/2cf76ece/compiled/vpaid.js";
+    var cacheParams = {"v": "2-a289ee2c04", "secure": 1, "cachedVariantChoices": "W10-", "isPurposePreview": 0, "eventMetadataExperiment": 'newMeta', "inmobi": typeof imraid !== 'undefined' && typeof _im_imai !== 'undefined' ? '1' : '0'};
 
 
     var trackers = (function() {
@@ -163,7 +163,7 @@ function(event) {
 
 
 
-var adLoadingEvent = {"name":"adLoading","sessionId":"s1700833155xb962d05be6b8b4x22507583"};
+var adLoadingEvent = {"name":"adLoading","sessionId":"s1700840701x6bbbf0b8892890x90184564"};
 adLoadingEvent.clientTimestamp = new Date/1000;
 
 trackers.urlsAndEventsFor(adLoadingEvent).urls.forEach(function(url) {
@@ -236,13 +236,11 @@ trackers.urlsAndEventsFor(adLoadingEvent).urls.forEach(function(url) {
     }
 
     var payloadUrl = buildPayloadUrl(payloadBase);
-    console.log(payloadUrl);
-
 
 // Request and run payload
 var payload = document.createElement('script');
 var payloadWin = null;
-payload.src = "http://localhost:8080/yellow_box_celtra_payload" //payloadUrl;
+payload.src = "http://localhost:8080/yellow_box_celtra_payload"; //payloadUrl
 payload.onload = function() {
     runtimeParams.payloadJsClientTimestamp = new Date() / 1000;
     try {
