@@ -60,7 +60,7 @@
     },
     "neustarSegment": null,
     "authBasis": "1700762297931,041f1fd0,c1301823",
-    "authToken": "7c820ea7fdb82dad334110cb00b2090d",
+    "authToken": "0000000",
     "customAudiences": {},
     "derivedAudiences": {},
     "destinationDefinitions": [],
