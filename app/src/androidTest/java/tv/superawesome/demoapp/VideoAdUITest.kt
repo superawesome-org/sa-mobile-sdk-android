@@ -1093,22 +1093,26 @@ class VideoAdUITest: BaseUITest() {
 
     @Test
     fun test_vpaid_with_clickthrough_to_webpage_and_back() {
-        val testData = TestData.videoVpaid
+        val testData = TestData.videoVpaidYellowBox
 
         listScreenRobot {
             launchWithSuccessStub(testData)
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                // Wait for the ad to render
                 waitForDisplay(TestColors.vpaidYellow)
+                // Wait for the clickable white box to render
+                waitForDisplay(TestColors.white)
                 tapOnAd()
                 // Exiting the browser takes us back to the app with the ad still showing
                 UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
-                waitForDisplay(TestColors.vpaidYellow)
+                // Wait for the ad view to be visible
+                waitForDisplay()
                 waitAndTapOnClose()
             }
 
-            verifyUrlPathCalled("/vast/clickthrough")
+            verifyUrlPathCalled("/clickthrough")
             checkForEvent(testData, SAEvent.adClicked)
         }
     }
