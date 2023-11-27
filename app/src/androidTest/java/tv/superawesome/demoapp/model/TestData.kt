@@ -52,13 +52,13 @@ data class TestData(
             fileName = "video_vpaid_popjam_success.json",
             additionalPaths = listOf(
                 StubFile(
-                    route = "/pj_ad.js",
-                    filePath = "js/pj_ad.js",
+                    route = "/webSDK.js",
+                    filePath = "js/webSDK.js",
                     mimeType = "text/javascript",
                     useReadFile = true,
                 ),
                 StubFile(
-                    route = "/pj_vast",
+                    route = "/vpaid_vast",
                     filePath = "vpaid/pj/pj_vast.xml",
                     mimeType = "text/xml",
                     useReadFile = true,
@@ -92,13 +92,13 @@ data class TestData(
             fileName = "video_vpaid_yellow_box_success.json",
             additionalPaths = listOf(
                 StubFile(
-                    route = "/yellow_box_ad.js",
-                    filePath = "js/yellow_box_ad.js",
+                    route = "/webSDK.js",
+                    filePath = "js/webSDK.js",
                     mimeType = "text/javascript",
                     useReadFile = true,
                 ),
                 StubFile(
-                    route = "/yellow_box_vast",
+                    route = "/vpaid_vast",
                     filePath = "vpaid/yellowBox/yellow_box_vast.xml",
                     mimeType = "text/javascript",
                     useReadFile = true,

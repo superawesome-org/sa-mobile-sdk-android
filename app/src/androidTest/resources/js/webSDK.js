@@ -2378,7 +2378,7 @@ new AwesomeDisplay(90636, null, null, false, {
                 "duration": 0,
                 "tag": "",
                 "_tag": "tag",
-                "vast": "http://localhost:8080/yellow_box_vast"
+                "vast": "http://localhost:8080/vpaid_vast"
             },
             "isKSF": true
         },
