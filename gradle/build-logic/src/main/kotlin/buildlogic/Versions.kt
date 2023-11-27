@@ -9,7 +9,7 @@ object Versions {
     /**
      * Android app's minimum supported SDK version.
      */
-    internal const val minSdk = 26
+    internal const val minSdk = 19
 
     /**
      * Android app's version code.

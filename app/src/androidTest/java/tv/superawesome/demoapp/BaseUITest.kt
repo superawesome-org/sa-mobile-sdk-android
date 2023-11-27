@@ -22,7 +22,6 @@ abstract class BaseUITest {
     val wireMockRule: WireMockRule = WireMockRule(
         WireMockConfiguration.wireMockConfig()
             .port(httpPortNumber)
-            .stubCorsEnabled(true)
             .notifier(ConsoleNotifier(isVerboseLoggingEnabled)),
         false,
     )
