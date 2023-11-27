@@ -1,8 +1,8 @@
 var AwesomeAds = (function(window) {
-    window['awesomeads_host'] = "https://127.0.0.1:8443";
-    window['cdnUrl'] = "https://127.0.0.1:8443";
+    window['awesomeads_host'] = "http://localhost:8080";
+    window['cdnUrl'] = "http://localhost:8080";
     window['isHTTPS'] = "no";
-    window['aa_sdkVersion'] = "ios_9.1.0";
+    window['aa_sdkVersion'] = "android_9.2.3";
     window['awesomeads_interstitial'] = "true";
     window['awesomeads_skippable'] = "false";
     window['awesomeads_smallclick'] = "false";
@@ -2378,7 +2378,7 @@ new AwesomeDisplay(90636, null, null, false, {
                 "duration": 0,
                 "tag": "",
                 "_tag": "tag",
-                "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/90636/185516/514375/?sdkVersion=android_9.2.3_admob&rnd=59e5fc0e-4b74-4c7a-b739-ed127fc8b25f&dauid=28812812&bundle=com.superawesome.example&device=phone&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDEwKSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvODMuMC40MTAzLjk2IE1vYmlsZSBTYWZhcmkvNTM3LjM2.I_tn7-WYamd5_dlbbCVEZM0gj0A0s3akPbjkX2p2v6E&tip=eyJhbGciOiJIUzI1NiJ9.MzEuNTIuMjQ3LjA.4lsUemcECZfKK9cRSPTt7M3815ZOW6mMqQjNYllHrwQ&lang=en_GB&ct=2"
+                "vast": "http://localhost:8080/vpaid_vast"
             },
             "isKSF": true
         },
