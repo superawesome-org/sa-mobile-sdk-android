@@ -3,6 +3,7 @@ package tv.superawesome.demoapp.settings
 import tv.superawesome.demoapp.HasEnvironment
 import tv.superawesome.demoapp.SDKEnvironment
 import tv.superawesome.sdk.publisher.models.CloseButtonState
+import tv.superawesome.sdk.publisher.models.Orientation
 
 enum class Settings(val label: String) {
     Environment("Environment"),
@@ -12,7 +13,8 @@ enum class Settings(val label: String) {
     Playback("Play ad Immediately"),
     MuteOnStart("Mute on start"),
     LeaveVideoWarning("Leave video warning"),
-    CloseAtEnd("Close at the end");
+    CloseAtEnd("Close at the end"),
+    AdOrientation("Orientation");
 
     fun options(): List<SettingsItemOption<Any>> = when (this) {
         Environment -> listOf(
@@ -123,6 +125,23 @@ enum class Settings(val label: String) {
             ),
         )
 
+        AdOrientation -> listOf(
+            SettingsItemOption(
+                "Any",
+                "SettingsItem.Buttons.OrientationAny",
+                Orientation.Any,
+            ),
+            SettingsItemOption(
+                "Landscape",
+                "SettingsItem.Buttons.OrientationLandscape",
+                Orientation.Landscape,
+            ),
+            SettingsItemOption(
+                "Portrait",
+                "SettingsItem.Buttons.OrientationPortrait",
+                Orientation.Portrait,
+            ),
+        )
     }
 }
 
@@ -136,6 +155,7 @@ data class SettingsData(
     val muteOnStart: Boolean = false,
     val videoWarnOnClose: Boolean = false,
     val closeAtEnd: Boolean = true,
+    val orientation: Orientation = Orientation.Any,
 )
 
 object DataStore {
@@ -154,6 +174,7 @@ object DataStore {
             Settings.MuteOnStart -> data.copy(muteOnStart = value as Boolean)
             Settings.LeaveVideoWarning -> data.copy(videoWarnOnClose = value as Boolean)
             Settings.CloseAtEnd -> data.copy(closeAtEnd = value as Boolean)
+            Settings.AdOrientation -> data.copy(orientation = value as Orientation)
         }
     }
 
@@ -172,6 +193,7 @@ object DataStore {
         SettingsItem(Settings.MuteOnStart, data.muteOnStart),
         SettingsItem(Settings.LeaveVideoWarning, data.videoWarnOnClose),
         SettingsItem(Settings.CloseAtEnd, data.closeAtEnd),
+        SettingsItem(Settings.AdOrientation, data.orientation),
     )
 }
 

@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "tv.superawesome.demoapp"
         versionCode = 1
-        versionName = "9.1.2"
+        versionName = "9.2.3"
 
         testInstrumentationRunner = "tv.superawesome.demoapp.runner.UITestRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"

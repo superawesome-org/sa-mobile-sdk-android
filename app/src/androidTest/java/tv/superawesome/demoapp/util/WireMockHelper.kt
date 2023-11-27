@@ -84,6 +84,8 @@ object WireMockHelper {
 
     private fun stubAssets() {
         stubPathForFile("/video/video_yellow.mp4", "video_yellow.mp4")
+        stubPathForFile("/interstitial_yellow.png", "images/interstitial_yellow.png")
+        stubPathForFile("/banner_yellow.png", "images/banner_yellow.png")
     }
 
     private fun stubMockWebsite() {

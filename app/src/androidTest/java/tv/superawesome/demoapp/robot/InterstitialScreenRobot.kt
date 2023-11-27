@@ -44,11 +44,6 @@ class InterstitialScreenRobot : BaseRobot() {
             .perform(click())
     }
 
-    fun tapOnAd() {
-        onView(withContentDescription("Ad content"))
-            .perform(click())
-    }
-
     fun tapOnClose() {
         onView(withContentDescription("Close"))
             .perform(click())
