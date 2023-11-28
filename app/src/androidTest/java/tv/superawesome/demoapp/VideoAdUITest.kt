@@ -1103,7 +1103,7 @@ class VideoAdUITest: BaseUITest() {
                 // Wait for the ad to render
                 waitForDisplay(TestColors.vpaidYellow)
                 // Wait for the clickable white box to render
-                waitForDisplay(TestColors.white)
+                waitForDisplay(TestColors.vpaidClickBlue)
                 tapOnAd()
                 // Exiting the browser takes us back to the app with the ad still showing
                 UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
