@@ -100,10 +100,6 @@ data class TestData(
             creativeId = "499385",
             fileName = "video_vast_success_multi.json",
         )
-        val videoVpaid = TestData(
-            placementId = "89056",
-            fileName = "video_vpaid_success.json",
-        )
         val videoVpaidMulti = TestData(
             placementId = "84594",
             lineItemId = "213919",

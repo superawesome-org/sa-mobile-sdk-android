@@ -44,7 +44,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
     @Test
     fun test_vpaid_CloseButton() {
-        val testData = TestData.videoVpaid
+        val testData = TestData.videoVpaidYellowBox
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -83,7 +83,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
     @Test
     fun test_vpaid_adLoading_placementId() {
-        val testData = TestData.videoVpaid
+        val testData = TestData.videoVpaidYellowBox
         testAdLoading(testData, TestColors.vpaidYellow)
     }
 
@@ -117,7 +117,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
     @Test
     fun test_vpaid_adAlreadyLoaded_callback() {
-        val testData = TestData.videoVpaid
+        val testData = TestData.videoVpaidYellowBox
         testAdAlreadyLoaded(testData)
     }
 
