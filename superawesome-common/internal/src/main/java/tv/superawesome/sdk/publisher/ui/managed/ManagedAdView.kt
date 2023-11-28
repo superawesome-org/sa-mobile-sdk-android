@@ -155,6 +155,7 @@ public class ManagedAdView @JvmOverloads constructor(
         padlockButton.scaleType = ImageView.ScaleType.FIT_XY
         padlockButton.setPadding(0, 2.toPx, 0, 0)
         padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
+        padlockButton.contentDescription = "Safe Ad Logo"
 
         padlockButton.clickWithThrottling {
             controller.handleSafeAdClick(context)

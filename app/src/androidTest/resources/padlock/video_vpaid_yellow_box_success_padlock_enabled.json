@@ -1,0 +1,40 @@
+{
+  "programmaticUuid": null,
+  "creative": {
+    "id": 532609,
+    "format": "video",
+    "details": {
+      "transcodedVideos": [],
+      "url": "",
+      "image": "",
+      "video": "",
+      "placement_format": "video",
+      "width": 600,
+      "height": 480,
+      "duration": 0,
+      "tag": "<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n        <script>\n          function dispatchToAAJSBridge(eventType) {\n            if (window.SA_AD_JS_BRIDGE) {\n              try {\n                window.SA_AD_JS_BRIDGE[eventType]();\n              } catch (error) {\n                console.log('[AwesomeHtml]: dispatchToAAJSBridge error: ', error);\n              }\n            }\n          }\n        </script>\n    </header>\n    <body><script type=\"text/javascript\" onload=\"dispatchToAAJSBridge()\" onerror=\"dispatchToAAJSBridge('adFailedToLoad')\" src=\"http://localhost:8080/webSDK.js\"></script></body>\n    </html>",
+      "_tag": "tag",
+      "vast": ""
+    },
+    "isKSF": true
+  },
+  "advertiserId": 4,
+  "publisherId": 4,
+  "is_fill": false,
+  "is_fallback": false,
+  "campaign_type": 0,
+  "is_house": true,
+  "safe_ad_approved": false,
+  "show_padlock": true,
+  "line_item_id": 195197,
+  "moat": 0.1,
+  "test": false,
+  "campaign_id": 53075,
+  "app": 32937,
+  "device": "tablet",
+  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.ODYuMTkxLjIwMS4w.hcchmAKyBq8NVnAk7--X6zgD8T3iy9odX0xtxy4ReSs",
+  "is_vpaid": true,
+  "rnd": "1491311",
+  "show": ""
+}
