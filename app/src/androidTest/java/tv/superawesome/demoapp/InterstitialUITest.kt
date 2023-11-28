@@ -1,6 +1,7 @@
 package tv.superawesome.demoapp
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -612,6 +613,21 @@ class InterstitialUITest: BaseUITest() {
                     checkEventForOpen()
                 }
             }
+        }
+    }
+
+    private fun testAdLoading(testData: TestData, color: Color) {
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitForDisplay(color)
+                tapOnCloseDelayed()
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
         }
     }
 }

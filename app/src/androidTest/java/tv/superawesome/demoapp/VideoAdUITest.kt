@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp
 
+import android.graphics.Color
 import android.view.KeyEvent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -918,6 +919,35 @@ class VideoAdUITest: BaseUITest() {
             parentalGateRobot {
                 checkEventForOpen()
             }
+        }
+    }
+
+    fun testAdLoading(testData: TestData, color: Color) {
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(color)
+                waitAndTapOnClose()
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+        }
+    }
+
+    fun testAdAlreadyLoaded(testData: TestData) {
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnDisablePlay()
+                }
+            }
+            tapOnPlacement(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adAlreadyLoaded)
         }
     }
 }

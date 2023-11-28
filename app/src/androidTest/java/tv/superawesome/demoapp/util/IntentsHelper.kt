@@ -10,6 +10,14 @@ import tv.superawesome.demoapp.model.Endpoints
 
 object IntentsHelper {
 
+    fun stubIntentsForVpaid() {
+        stubIntentsForUrl(Endpoints.stubUrlVpaidClickThrough)
+    }
+
+    fun checkIntentsForVpaid() {
+        checkIntentsForUrl(Endpoints.stubUrlVpaidClickThrough)
+    }
+
     fun stubIntentsForVast() {
         stubIntentsForUrl(Endpoints.stubUrlVastClickThrough)
     }
