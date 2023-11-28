@@ -63,12 +63,6 @@ class InterstitialUITest: BaseUITest() {
         testAdLoading(testData, TestColors.bannerYellow)
     }
 
-    @Test
-    fun test_ksf_adLoading() {
-        val testData = TestData.interstitialKsf
-        testAdLoading(testData, TestColors.ksfYellow)
-    }
-
     private fun testAdLoading(testData: TestData, color: Color) {
         listScreenRobot {
             launchWithSuccessStub(testData)

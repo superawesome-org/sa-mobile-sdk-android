@@ -182,6 +182,7 @@ public class ManagedAdView @JvmOverloads constructor(
         webView.settings.mediaPlaybackRequiresUserGesture = false
         WebView.setWebContentsDebuggingEnabled(true)
         webView.settings.javaScriptEnabled = true
+        webView.contentDescription = "Ad content"
 
         webView.listener = object : CustomWebView.Listener {
             private val clickThrottler = ClickThrottler()
