@@ -2,6 +2,8 @@ package tv.superawesome.demoapp
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -222,6 +224,32 @@ class VpaidVideoAdUITest: BaseUITest() {
                 "option1",
                 "123"
             )
+        }
+    }
+
+    @Test
+    fun test_vpaid_with_clickthrough_to_webpage_and_back() {
+        val testData = TestData.videoVpaidYellowBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                // Wait for the ad to render
+                waitForDisplay(TestColors.vpaidYellow)
+                // Wait for the clickable white box to render
+                waitForDisplay(TestColors.vpaidClickBlue)
+                tapOnAd()
+                // Exiting the browser takes us back to the app with the ad still showing
+                UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
+                // Wait for the ad view to be visible
+                waitForDisplay()
+                waitAndTapOnClose()
+            }
+
+            WireMockHelper.verifyUrlPathCalled("/clickthrough")
+            checkForEvent(testData, SAEvent.adClicked)
         }
     }
 }

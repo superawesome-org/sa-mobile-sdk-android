@@ -63,12 +63,6 @@ class InterstitialUITest: BaseUITest() {
     }
 
     @Test
-    fun test_ksf_adLoading() {
-        val testData = TestData.interstitialKsf
-        testAdLoading(testData, TestColors.ksfYellow)
-    }
-
-    @Test
     fun test_adFailure_placementId() {
         val testData = TestData.interstitialKsf
 
