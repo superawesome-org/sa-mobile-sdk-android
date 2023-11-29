@@ -501,6 +501,42 @@ class VpaidVideoAdUITest: BaseUITest() {
         }
     }
 
+    @Test
+    fun test_vpaid_video_parental_gate_bumper_ad_click() {
+        IntentsHelper.stubIntentsForVpaid()
+        val testData = TestData.videoVpaidYellowBoxPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableParentalGate()
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vpaidYellow)
+                waitForDisplay(TestColors.vpaidClickBlue)
+
+                tapOnAd()
+
+                parentalGateRobot {
+                    checkVisible()
+                    solve()
+                }
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+
+                WireMockHelper.verifyUrlPathCalled("/video/click")
+                IntentsHelper.checkIntentsForVpaid()
+            }
+        }
+    }
+
     private fun testAdLoading(testData: TestData, color: Color) {
         listScreenRobot {
             launchWithSuccessStub(testData)
