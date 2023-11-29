@@ -63,21 +63,6 @@ class InterstitialUITest: BaseUITest() {
         testAdLoading(testData, TestColors.bannerYellow)
     }
 
-    private fun testAdLoading(testData: TestData, color: Color) {
-        listScreenRobot {
-            launchWithSuccessStub(testData)
-            tapOnPlacement(testData)
-
-            interstitialScreenRobot {
-                waitForDisplay(color)
-                tapOnCloseDelayed()
-            }
-
-            checkForEvent(testData, SAEvent.adLoaded)
-            checkForEvent(testData, SAEvent.adShown)
-        }
-    }
-
     @Test
     fun test_adFailure_placementId() {
         val testData = TestData.interstitialKsf
@@ -628,6 +613,21 @@ class InterstitialUITest: BaseUITest() {
                     checkEventForOpen()
                 }
             }
+        }
+    }
+
+    private fun testAdLoading(testData: TestData, color: Color) {
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                waitForDisplay(color)
+                tapOnCloseDelayed()
+            }
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
         }
     }
 }

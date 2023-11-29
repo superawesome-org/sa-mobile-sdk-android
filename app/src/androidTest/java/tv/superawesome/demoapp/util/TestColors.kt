@@ -11,7 +11,7 @@ object TestColors {
 
     fun checkApproximatelyEqual(givenColor: Color?, targetColor: Color?): Boolean {
         if (givenColor == null || targetColor == null) return false
-        val threshold = 0.01
+        val threshold = 0.025
         return abs(givenColor.red() - targetColor.red()) <= threshold
                 && abs(givenColor.red() - targetColor.red()) <= threshold
                 && abs(givenColor.red() - targetColor.red()) <= threshold

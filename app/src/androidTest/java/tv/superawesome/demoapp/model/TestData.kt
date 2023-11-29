@@ -11,6 +11,73 @@ data class TestData(
         get() = lineItemId != null && creativeId != null
 
     companion object {
+
+        private val videoVpaidPJStubs = listOf(
+            StubFile(
+                route = "/webSDK.js",
+                filePath = "js/webSDK.js",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/vpaid_vast",
+                filePath = "vpaid/pj/pj_vast.xml",
+                mimeType = "text/xml",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/pj_celtra_vast",
+                filePath = "vpaid/pj/pj_celtra_vast.xml",
+                mimeType = "text/xml",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/pj_celtra_js",
+                filePath = "vpaid/pj/pj_celtra.js",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/pj_celtra_payload",
+                filePath = "vpaid/pj/pj_celtra_payload.js",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
+        )
+
+        private val videoVpaidYellowBoxStubs = listOf(
+            StubFile(
+                route = "/webSDK.js",
+                filePath = "js/webSDK.js",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/vpaid_vast",
+                filePath = "vpaid/yellowBox/yellow_box_vast.xml",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/yellow_box_celtra_vast",
+                filePath = "vpaid/yellowBox/yellow_box_celtra_vast.xml",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/yellow_box_celtra.js",
+                filePath = "vpaid/yellowBox/yellow_box_celtra.js",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
+            StubFile(
+                route = "/yellow_box_celtra_payload",
+                filePath = "vpaid/yellowBox/yellow_box_celtra_payload.js",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            )
+        )
+
         val videoDirect = TestData(
             placementId = "87969",
             fileName = "video_direct_success.json",
@@ -33,10 +100,6 @@ data class TestData(
             creativeId = "499385",
             fileName = "video_vast_success_multi.json",
         )
-        val videoVpaid = TestData(
-            placementId = "89056",
-            fileName = "video_vpaid_success.json",
-        )
         val videoVpaidMulti = TestData(
             placementId = "84594",
             lineItemId = "213919",
@@ -50,38 +113,7 @@ data class TestData(
         val videoVpaidPJ = TestData(
             placementId = "90636",
             fileName = "video_vpaid_popjam_success.json",
-            additionalPaths = listOf(
-                StubFile(
-                    route = "/webSDK.js",
-                    filePath = "js/webSDK.js",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/vpaid_vast",
-                    filePath = "vpaid/pj/pj_vast.xml",
-                    mimeType = "text/xml",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/pj_celtra_vast",
-                    filePath = "vpaid/pj/pj_celtra_vast.xml",
-                    mimeType = "text/xml",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/pj_celtra_js",
-                    filePath = "vpaid/pj/pj_celtra.js",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/pj_celtra_payload",
-                    filePath = "vpaid/pj/pj_celtra_payload.js",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                ),
-            )
+            additionalPaths = videoVpaidPJStubs
         )
         val videoVpaidGreyBox = TestData(
             placementId = "96690",
@@ -90,38 +122,12 @@ data class TestData(
         val videoVpaidYellowBox = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success.json",
-            additionalPaths = listOf(
-                StubFile(
-                    route = "/webSDK.js",
-                    filePath = "js/webSDK.js",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/vpaid_vast",
-                    filePath = "vpaid/yellowBox/yellow_box_vast.xml",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/yellow_box_celtra_vast",
-                    filePath = "vpaid/yellowBox/yellow_box_celtra_vast.xml",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/yellow_box_celtra.js",
-                    filePath = "vpaid/yellowBox/yellow_box_celtra.js",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                ),
-                StubFile(
-                    route = "/yellow_box_celtra_payload",
-                    filePath = "vpaid/yellowBox/yellow_box_celtra_payload.js",
-                    mimeType = "text/javascript",
-                    useReadFile = true,
-                )
-            ),
+            additionalPaths = videoVpaidYellowBoxStubs
+        )
+        val videoVpaidYellowBoxPadlock = TestData(
+            placementId = "89056",
+            fileName = "padlock/video_vpaid_yellow_box_success_padlock_enabled.json",
+            additionalPaths = videoVpaidYellowBoxStubs
         )
         val bannerSuccess = TestData(
             placementId = "88001",
