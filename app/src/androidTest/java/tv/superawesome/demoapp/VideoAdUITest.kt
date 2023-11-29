@@ -838,12 +838,7 @@ class VideoAdUITest: BaseUITest() {
         val testData = TestData.videoDirect
 
         listScreenRobot {
-            launchWithSuccessStub(testData) {
-                settingsScreenRobot {
-                    tapOnEnableParentalGate()
-                    tapOnEnableBumperPage()
-                }
-            }
+            launchWithSuccessStub(testData)
             tapOnPlacement(testData)
 
             videoScreenRobot {

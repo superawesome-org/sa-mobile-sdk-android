@@ -11,6 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.Endpoints
 import tv.superawesome.demoapp.model.TestData
+import tv.superawesome.demoapp.robot.bumperPageRobot
 import tv.superawesome.demoapp.robot.interstitialScreenRobot
 import tv.superawesome.demoapp.robot.listScreenRobot
 import tv.superawesome.demoapp.robot.parentalGateRobot
@@ -209,6 +210,103 @@ class VpaidVideoAdUITest: BaseUITest() {
                 }
             }
             checkClickThrough(Endpoints.stubUrlVpaidClickThrough)
+        }
+    }
+
+    @Test
+    fun test_vpaid_bumper_enabled_from_settings() {
+        IntentsHelper.stubIntentsForVpaid()
+        val testData = TestData.videoVpaidYellowBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                    tapOnCloseNoDelay()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vpaidYellow)
+                waitForDisplay(TestColors.vpaidClickBlue)
+
+                tapOnAd()
+
+                bumperPageRobot {
+                    waitForDisplay()
+                    waitForFinish()
+
+                    IntentsHelper.checkIntentsForVpaid()
+                    WireMockHelper.verifyUrlPathCalled("/video/click")
+                }
+
+                tapOnClose()
+            }
+
+            checkAdHasBeenLoadedShownClickedClosed(testData)
+        }
+    }
+
+    @Test
+    fun test_vpaid_bumper_enabled_from_api() {
+        IntentsHelper.stubIntentsForVpaid()
+        val testData = TestData.videoVpaidYellowBoxBumper
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vpaidYellow)
+                waitForDisplay(TestColors.vpaidClickBlue)
+
+                tapOnAd()
+
+                bumperPageRobot {
+                    waitForDisplay()
+                    waitForFinish()
+
+                    IntentsHelper.checkIntentsForVpaid()
+                    WireMockHelper.verifyUrlPathCalled("/video/click")
+                }
+
+                tapOnClose()
+            }
+
+            checkAdHasBeenLoadedShownClickedClosed(testData)
+        }
+    }
+
+    @Test
+    fun test_vpaid_video_bumper_safe_ad_click() {
+        val testData = TestData.videoVpaidYellowBoxPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnEnableBumperPage()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vpaidYellow)
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+
+                bumperPageRobot {
+                    checkIsVisible()
+                    waitForFinish()
+                }
+                WireMockHelper.verifyUrlPathCalled("/video/click")
+            }
         }
     }
 
