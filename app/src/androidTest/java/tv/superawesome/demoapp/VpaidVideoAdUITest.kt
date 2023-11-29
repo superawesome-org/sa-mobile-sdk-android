@@ -98,6 +98,23 @@ class VpaidVideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_vpaid_video_safe_ad_click() {
+        val testData = TestData.videoVpaidYellowBoxPadlock
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vpaidYellow)
+                waitAndCheckSafeAdLogo()
+                tapOnSafeAdLogo()
+                TODO("We need to add the correct clickthrough link to the safe ad button")
+            }
+        }
+    }
+
+    @Test
     fun test_vpaid_parental_gate_for_safe_ad_click() {
         val testData = TestData.videoVpaidYellowBoxPadlock
 
