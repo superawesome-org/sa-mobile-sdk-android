@@ -238,7 +238,6 @@ class VpaidVideoAdUITest: BaseUITest() {
                     waitForDisplay()
                     waitForFinish()
 
-                    // Then view URL is redirected to browser
                     IntentsHelper.checkIntentsForVpaid()
                     WireMockHelper.verifyUrlPathCalled("/video/click")
                 }
