@@ -65,7 +65,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
     @Test
     fun test_vpaid_hidden_CloseButton_is_hidden_until_video_ends() {
-        val testData = TestData.videoVpaidPJ
+        val testData = TestData.videoVpaidYellowBox
 
         listScreenRobot {
             launchWithSuccessStub(testData) {

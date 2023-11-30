@@ -112,12 +112,6 @@ object WireMockHelper {
             true,
         )
         stubPathForFile(
-            "/vast/tag-grey-box",
-            "video_vpaid_grey_box_vast_tag.xml",
-            null,
-            true,
-        )
-        stubPathForFile(
             "/vast/video_vast_cpi_success_tag",
             "video_vast_cpi_success_tag.xml",
             null,

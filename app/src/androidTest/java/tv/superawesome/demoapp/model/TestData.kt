@@ -116,10 +116,6 @@ data class TestData(
             fileName = "video_vpaid_popjam_success.json",
             additionalPaths = videoVpaidPJStubs
         )
-        val videoVpaidGreyBox = TestData(
-            placementId = "96690",
-            fileName = "video_vpaid_grey_box_success.json",
-        )
         val videoVpaidYellowBox = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success.json",
