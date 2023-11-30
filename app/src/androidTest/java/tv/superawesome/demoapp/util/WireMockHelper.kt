@@ -247,15 +247,19 @@ object WireMockHelper {
         useReadFile: Boolean = false,
     ) {
 
-        var response = aResponse()
+        val response = aResponse()
             .withStatus(200)
-        if (useReadFile) {
-            response = response.withBody(FileUtils.readFile(filePath))
-        } else {
-            response = response.withBody(FileUtils.readBytes(filePath))
-        }
-
-        mimeType?.let { response = response.withHeader("Content-Type", mimeType) }
+            .apply {
+                if (useReadFile) {
+                    withBody(FileUtils.readFile(filePath))
+                } else {
+                    withBody(FileUtils.readBytes(filePath))
+                }
+            }.apply {
+                if (mimeType != null) {
+                    withHeader("Content-Type", mimeType)
+                }
+            }.withHeader("Access-Control-Allow-Origin", "*")
 
         stubFor(get(urlPathMatching(route)).willReturn(response))
     }
