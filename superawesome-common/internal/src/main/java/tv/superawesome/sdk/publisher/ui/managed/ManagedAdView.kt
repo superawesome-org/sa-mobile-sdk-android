@@ -11,8 +11,6 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.FrameLayout
-import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.MainScope
@@ -26,12 +24,10 @@ import tv.superawesome.sdk.publisher.ad.VideoAdManager
 import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
-import tv.superawesome.sdk.publisher.extensions.toPx
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.SAInterface
 import tv.superawesome.sdk.publisher.ui.banner.CustomWebView
 import tv.superawesome.sdk.publisher.ui.common.ClickThrottler
-import tv.superawesome.sdk.publisher.ui.common.clickWithThrottling
 
 /**
  * The view that displays the ad.
@@ -54,7 +50,6 @@ public class ManagedAdView @JvmOverloads constructor(
 
     private var placementId: Int = 0
     private var webView: CustomWebView? = null
-    private var padlockButton: ImageButton? = null
 
     private val clickThrottler = ClickThrottler()
     private val scope = if (context is AppCompatActivity) {
@@ -77,7 +72,6 @@ public class ManagedAdView @JvmOverloads constructor(
     ) {
         logger.info("load($placementId)")
         this.placementId = placementId
-        showPadlockIfNeeded()
 
         webView?.removeJavascriptInterface(JS_BRIDGE_NAME)
         webView?.addJavascriptInterface(AdViewJavaScriptBridge(listener, logger), JS_BRIDGE_NAME)
@@ -144,26 +138,6 @@ public class ManagedAdView @JvmOverloads constructor(
             "window.dispatchEvent(new Event('$JS_BRIDGE_NAME.appRequestedPause'));",
             null,
         )
-    }
-
-    private fun showPadlockIfNeeded() {
-        if (!controller.shouldShowPadlock || webView == null) return
-
-        val padlockButton = ImageButton(context)
-        padlockButton.setImageBitmap(imageProvider.padlockImage())
-        padlockButton.setBackgroundColor(Color.TRANSPARENT)
-        padlockButton.scaleType = ImageView.ScaleType.FIT_XY
-        padlockButton.setPadding(0, 2.toPx, 0, 0)
-        padlockButton.layoutParams = ViewGroup.LayoutParams(77.toPx, 31.toPx)
-        padlockButton.contentDescription = "Safe Ad Logo"
-
-        padlockButton.clickWithThrottling {
-            controller.handleSafeAdClick(context)
-        }
-
-        webView?.addView(padlockButton)
-
-        this.padlockButton = padlockButton
     }
 
     @SuppressLint("SetJavaScriptEnabled")
