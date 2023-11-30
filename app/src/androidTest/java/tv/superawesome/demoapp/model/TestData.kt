@@ -105,6 +105,7 @@ data class TestData(
             lineItemId = "213919",
             creativeId = "947123",
             fileName = "video_vpaid_multi_success.json",
+            additionalPaths = videoVpaidYellowBoxStubs,
         )
         val failingVideoVpaid = TestData(
             placementId = "89056",
