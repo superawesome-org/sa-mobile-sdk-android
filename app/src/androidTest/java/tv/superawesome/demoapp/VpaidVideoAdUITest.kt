@@ -98,45 +98,6 @@ class VpaidVideoAdUITest: BaseUITest() {
     }
 
     @Test
-    fun test_vpaid_video_safe_ad_click() {
-        val testData = TestData.videoVpaidYellowBoxPadlock
-
-        listScreenRobot {
-            launchWithSuccessStub(testData)
-            tapOnPlacement(testData)
-
-            videoScreenRobot {
-                waitForDisplay(TestColors.vpaidYellow)
-                waitAndCheckSafeAdLogo()
-                tapOnSafeAdLogo()
-                TODO("We need to add the correct clickthrough link to the safe ad button")
-            }
-        }
-    }
-
-    @Test
-    fun test_vpaid_parental_gate_for_safe_ad_click() {
-        val testData = TestData.videoVpaidYellowBoxPadlock
-
-        listScreenRobot {
-            launchWithSuccessStub(testData) {
-                settingsScreenRobot {
-                    tapOnEnableParentalGate()
-                }
-            }
-            tapOnPlacement(testData)
-
-            videoScreenRobot {
-                tapOnSafeAdLogo()
-
-                parentalGateRobot {
-                    checkVisible()
-                }
-            }
-        }
-    }
-
-    @Test
     fun test_vpaid_parental_gate_for_ad_click() {
         val testData = TestData.videoVpaidYellowBox
 
@@ -302,33 +263,6 @@ class VpaidVideoAdUITest: BaseUITest() {
     }
 
     @Test
-    fun test_vpaid_video_bumper_safe_ad_click() {
-        val testData = TestData.videoVpaidYellowBoxPadlock
-
-        listScreenRobot {
-            launchWithSuccessStub(testData) {
-                settingsScreenRobot {
-                    tapOnEnableBumperPage()
-                }
-            }
-            tapOnPlacement(testData)
-
-            videoScreenRobot {
-                waitForDisplay(TestColors.vpaidYellow)
-                waitAndCheckSafeAdLogo()
-                tapOnSafeAdLogo()
-
-                bumperPageRobot {
-                    checkIsVisible()
-                    waitForFinish()
-                }
-                WireMockHelper.verifyUrlPathCalled("/video/click")
-                TODO("We need to add the correct clickthrough link to the safe ad button")
-            }
-        }
-    }
-
-    @Test
     fun test_vpaid_adAlreadyLoaded_callback() {
         val testData = TestData.videoVpaidYellowBox
         testAdAlreadyLoaded(testData)
@@ -467,44 +401,9 @@ class VpaidVideoAdUITest: BaseUITest() {
     }
 
     @Test
-    fun test_vpaid_video_parental_gate_bumper_safe_ad_click() {
-        val testData = TestData.videoVpaidYellowBoxPadlock
-
-        listScreenRobot {
-            launchWithSuccessStub(testData) {
-                settingsScreenRobot {
-                    tapOnEnableParentalGate()
-                    tapOnEnableBumperPage()
-                }
-            }
-            tapOnPlacement(testData)
-
-            videoScreenRobot {
-                waitForDisplay(TestColors.vpaidYellow)
-
-                waitAndCheckSafeAdLogo()
-                tapOnSafeAdLogo()
-
-                parentalGateRobot {
-                    checkVisible()
-                    solve()
-                }
-
-                bumperPageRobot {
-                    checkIsVisible()
-                    waitForFinish()
-                }
-
-                WireMockHelper.verifyUrlPathCalled("/video/click")
-                TODO("We need to add the correct clickthrough link to the safe ad button")
-            }
-        }
-    }
-
-    @Test
     fun test_vpaid_video_parental_gate_bumper_ad_click() {
         IntentsHelper.stubIntentsForVpaid()
-        val testData = TestData.videoVpaidYellowBoxPadlock
+        val testData = TestData.videoVpaidYellowBox
 
         listScreenRobot {
             launchWithSuccessStub(testData) {

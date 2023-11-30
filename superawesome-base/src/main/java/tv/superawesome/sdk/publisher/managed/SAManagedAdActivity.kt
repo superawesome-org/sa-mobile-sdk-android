@@ -314,7 +314,10 @@ class SAManagedAdActivity : Activity(),
     override fun webViewOnError() = adFailedToShow()
 
     override fun webViewOnClick(view: SACustomWebView, url: String) {
-        videoClick?.handleAdClick(view, url)
+        videoClick?.let {
+            it.handleAdClick(view, url)
+            adClicked()
+        }
     }
 
     companion object {

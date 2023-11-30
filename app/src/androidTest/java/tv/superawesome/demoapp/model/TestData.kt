@@ -105,6 +105,7 @@ data class TestData(
             lineItemId = "213919",
             creativeId = "947123",
             fileName = "video_vpaid_multi_success.json",
+            additionalPaths = videoVpaidYellowBoxStubs,
         )
         val failingVideoVpaid = TestData(
             placementId = "89056",
@@ -127,11 +128,6 @@ data class TestData(
         val videoVpaidYellowBoxBumper = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success_bumper_enabled.json",
-            additionalPaths = videoVpaidYellowBoxStubs
-        )
-        val videoVpaidYellowBoxPadlock = TestData(
-            placementId = "89056",
-            fileName = "padlock/video_vpaid_yellow_box_success_padlock_enabled.json",
             additionalPaths = videoVpaidYellowBoxStubs
         )
         val bannerSuccess = TestData(
