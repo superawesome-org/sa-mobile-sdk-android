@@ -156,10 +156,6 @@ data class TestData(
             placementId = "88001",
             fileName = "padlock/banner_success_padlock_disabled.json",
         )
-        val interstitialKsf = TestData(
-            placementId = "87970",
-            fileName = "interstitial_ksf_success.json",
-        )
         val interstitialStandard = TestData(
             placementId = "87892",
             fileName = "interstitial_standard_success.json",

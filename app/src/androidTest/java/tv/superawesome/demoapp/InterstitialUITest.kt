@@ -64,18 +64,6 @@ class InterstitialUITest: BaseUITest() {
     }
 
     @Test
-    fun test_adFailure_placementId() {
-        val testData = TestData.interstitialKsf
-
-        listScreenRobot {
-            launchActivityWithFailureStub(testData)
-            tapOnPlacement(testData)
-
-            checkForEvent(testData, SAEvent.adFailedToLoad)
-        }
-    }
-
-    @Test
     fun test_adFailure_placementId_lineItemId_creativeId() {
         val testData = TestData.interstitialStandardMulti
 
@@ -117,22 +105,6 @@ class InterstitialUITest: BaseUITest() {
     @Test
     fun test_standard_CloseButton() {
         val testData = TestData(placementId = "87892", fileName = "interstitial_standard_success.json")
-
-        listScreenRobot {
-            launchWithSuccessStub(testData)
-            tapOnPlacement(testData)
-
-            interstitialScreenRobot {
-                tapOnCloseDelayed()
-            }
-
-            checkForEvent(testData, SAEvent.adClosed)
-        }
-    }
-
-    @Test
-    fun test_ksf_CloseButton() {
-        val testData = TestData.interstitialKsf
 
         listScreenRobot {
             launchWithSuccessStub(testData)
@@ -276,49 +248,10 @@ class InterstitialUITest: BaseUITest() {
         }
     }
 
-    @Test
-    fun test_ksf_adAlreadyLoaded_callback() {
-        val testData = TestData.interstitialKsf
-
-        listScreenRobot {
-            launchWithSuccessStub(testData) {
-                settingsScreenRobot {
-                    tapOnDisablePlay()
-                }
-            }
-
-            tapOnPlacement(testData)
-            tapOnPlacement(testData)
-
-            checkForEvent(testData, SAEvent.adAlreadyLoaded)
-        }
-    }
-
     // Events
     @Test
     fun test_standard_ad_impression_events() {
         val testData = TestData.interstitialStandard
-
-        listScreenRobot {
-            launchWithSuccessStub(testData)
-            tapOnPlacement(testData)
-
-            interstitialScreenRobot {
-                waitForImpression()
-
-                verifyUrlPathCalled("/impression")
-                verifyUrlPathCalledWithQueryParam(
-                    "/event",
-                    "data",
-                    ".*viewable_impression.*"
-                )
-            }
-        }
-    }
-
-    @Test
-    fun test_ksf_ad_impression_events() {
-        val testData = TestData.interstitialKsf
 
         listScreenRobot {
             launchWithSuccessStub(testData)
