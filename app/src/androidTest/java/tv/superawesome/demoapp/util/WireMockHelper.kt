@@ -1,7 +1,7 @@
 package tv.superawesome.demoapp.util
 
-import com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.containing
 import com.github.tomakehurst.wiremock.client.WireMock.exactly
 import com.github.tomakehurst.wiremock.client.WireMock.get
@@ -114,6 +114,12 @@ object WireMockHelper {
         stubPathForFile(
             "/vast/tag-grey-box",
             "video_vpaid_grey_box_vast_tag.xml",
+            null,
+            true,
+        )
+        stubPathForFile(
+            "/vast/video_vast_cpi_success_tag",
+            "video_vast_cpi_success_tag.xml",
             null,
             true,
         )

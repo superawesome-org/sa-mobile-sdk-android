@@ -14,7 +14,7 @@
       "duration": 0,
       "tag": "<html>\n    <header>\n        <meta name='viewport' content='width=device-width'/>\n        <style>html, body, div { margin: 0px; padding: 0px; } html, body { width: 100%; height: 100%; }</style>\n        <script>\n          function dispatchToAAJSBridge(eventType) {\n            if (window.SA_AD_JS_BRIDGE) {\n              try {\n                window.SA_AD_JS_BRIDGE[eventType]();\n              } catch (error) {\n                console.log('[AwesomeHtml]: dispatchToAAJSBridge error: ', error);\n              }\n            }\n          }\n        </script>\n    </header>\n    <body><script type=\"text/javascript\" onload=\"dispatchToAAJSBridge()\" onerror=\"dispatchToAAJSBridge('adFailedToLoad')\" src=\"http://localhost:8080/vpaid/failing_vpaid\"></script></body>\n    </html>",
       "_tag": "tag",
-      "vast": "https://eu-west-1-ads.superawesome.tv/v2/video/vast/89056/182932/510371/?sdkVersion=android_9.2.1_admob&rnd=c89e6c35-a872-42e8-9407-403d7b0a7a1a&dauid=864654151&bundle=tv.superawesome.demoapp&device=tablet&country=GB&flow=normal&aua=eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk&tip=eyJhbGciOiJIUzI1NiJ9.ODEuMTEwLjI0OS4w.JID_ookEWOeYqark_ZJ8RGhOQaLYYq2UodGzzmzy0oQ&lang=en_US&ct=2"
+      "vast": ""
     },
     "isKSF": true
   },
