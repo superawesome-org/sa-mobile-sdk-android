@@ -14,7 +14,7 @@
     "freqCappingLimit": 0,
     "details": {
       "url": "",
-      "image": "file:///android_asset/banner_yellow.png",
+      "image": "http://localhost:8080/banner_yellow.png",
       "video": "",
       "placement_format": "mobile_display",
       "width": 320,
