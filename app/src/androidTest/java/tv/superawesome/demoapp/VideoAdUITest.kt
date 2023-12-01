@@ -622,7 +622,7 @@ class VideoAdUITest: BaseUITest() {
         if (DataStore.data.useBaseModule) return
         // Given CPI Vast Ad
         val testData = TestData(placementId = "88406", fileName = "video_vast_cpi_success.json")
-        val url = "https://www.superawesome.com/&referrer=null"
+        val url = "http://localhost:8080/mock_website"
         IntentsHelper.stubIntentsForUrl(url)
 
         listScreenRobot {

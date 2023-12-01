@@ -4,10 +4,10 @@
             <AdSystem>DCM</AdSystem>
             <AdTitle>In-Stream Video</AdTitle>
             <Error>
-                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=200015;errorcode=[ERRORCODE] ]]>
+                <![CDATA[ http://localhost:8080/google/error ]]>
             </Error>
             <Impression>
-                <![CDATA[ https://googleads4.g.doubleclick.net/pcs/view?xai=AKAOjsuXbFKOBSgMBvaVxGYw9uYDE3Hk9HGoq5kJYQVl0USVI4Sq2JmIzsD8Az3z9iy7h1zxw0d0Z_p3Ga7dkHTXsbyaoKKyd6q-1thYZhHWA6G9utdx4zjNkPW0nVgmuW10gLYyXLxpDuleLUw6&sai=AMfl-YRtWtdBYW5W1Ls5yeCWYhUTPljICqLvUbW39iS7uZ47DHIg-76dDFrgicBLFVg4TP_ow5j4xBFr0ndHsat84tsh1EABc8-7uWUxwA&sig=Cg0ArKJSzKphNSp_SNmaEAE&uach_m=%5BUACH%5D&cry=1&fbs_aeid=%5Bgw_fbsaeid%5D&urlfix=1&adurl= ]]>
+                <![CDATA[ http://localhost:8080/google/impression ]]>
             </Impression>
             <Creatives>
                 <Creative id="173622685" AdID="173622685-1" sequence="1">
@@ -15,37 +15,37 @@
                         <Duration>00:00:15</Duration>
                         <TrackingEvents>
                             <Tracking event="start">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=11; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="firstQuartile">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=960584; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="midpoint">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=18; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="thirdQuartile">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=960585; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="complete">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=13; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="mute">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=16; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="unmute">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=149645; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="pause">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=15; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="fullscreen">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=19; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="acceptInvitation">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=10; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                             <Tracking event="close">
-                                <![CDATA[ https://ade.googlesyndication.com/ddm/activity/dc_oe=ChMI2ZX2uNzrggMVNkP2CB2tfwNsEAAYACCdi-VS;dc_eps=AHas8cDAsobZspFeOD4brX3a943WhRZv-tWppKaEgp17qN2M8I3Jl-wfYCRSjd0bmi5dGqCOdeLZ;met=1;ecn1=1;etm1=0;eid1=8; ]]>
+                                <![CDATA[ http://localhost:8080/google/tracking; ]]>
                             </Tracking>
                         </TrackingEvents>
                         <AdParameters>
@@ -53,7 +53,7 @@
                         </AdParameters>
                         <VideoClicks>
                             <ClickThrough>
-                                <![CDATA[ https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsuXbFKOBSgMBvaVxGYw9uYDE3Hk9HGoq5kJYQVl0USVI4Sq2JmIzsD8Az3z9iy7h1zxw0d0Z_p3Ga7dkHTXsbyaoKKyd6q-1thYZhHWA6G9utdx4zjNkPW0nVgmuW10gLYyXLxpDuleLUw6&sai=AMfl-YTAjry-o3hRkhQc1G2F67qp-PsYmpnLq_EznlxMmrb9b2DTfHXRfjnmgimzXyAhucp1wIHomyahag17HHx3I4JdQkLEXqrnjX1rmw&sig=Cg0ArKJSzDpiRUgSfE_bEAE&cry=1&fbs_aeid=%5Bgw_fbsaeid%5D&urlfix=1&adurl=https://www.popjam.com ]]>
+                                <![CDATA[ http://localhost:8080/vast/clickthrough ]]>
                             </ClickThrough>
                         </VideoClicks>
                         <MediaFiles>

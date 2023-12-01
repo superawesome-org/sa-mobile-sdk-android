@@ -68,6 +68,7 @@ object WireMockHelper {
         stubVPAIDJS()
         stubVPAIDJavaScript()
         stubMockWebsite()
+        stubGoogleCalls()
     }
 
     fun stubFailingVPAIDJavaScript() {
@@ -120,6 +121,12 @@ object WireMockHelper {
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
+    }
+
+    private fun stubGoogleCalls() {
+        stubPathForFile("/google/tracking", "generic_success_response.json")
+        stubPathForFile("/google/impression", "generic_success_response.json")
+        stubPathForFile("/google/error", "generic_success_response.json")
     }
 
     private fun stubVPAIDImages() {
