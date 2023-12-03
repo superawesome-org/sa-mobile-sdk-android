@@ -116,10 +116,6 @@ data class TestData(
             fileName = "video_vpaid_popjam_success.json",
             additionalPaths = videoVpaidPJStubs
         )
-        val videoVpaidGreyBox = TestData(
-            placementId = "96690",
-            fileName = "video_vpaid_grey_box_success.json",
-        )
         val videoVpaidYellowBox = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success.json",
@@ -151,10 +147,6 @@ data class TestData(
         val bannerPadlockHidden = TestData(
             placementId = "88001",
             fileName = "padlock/banner_success_padlock_disabled.json",
-        )
-        val interstitialKsf = TestData(
-            placementId = "87970",
-            fileName = "interstitial_ksf_success.json",
         )
         val interstitialStandard = TestData(
             placementId = "87892",

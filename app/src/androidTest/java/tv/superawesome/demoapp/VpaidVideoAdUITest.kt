@@ -65,7 +65,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
     @Test
     fun test_vpaid_hidden_CloseButton_is_hidden_until_video_ends() {
-        val testData = TestData.videoVpaidGreyBox
+        val testData = TestData.videoVpaidYellowBox
 
         listScreenRobot {
             launchWithSuccessStub(testData) {
@@ -358,7 +358,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
     @Test
     fun test_load_iv_with_additional_options() {
-        val testData = TestData.videoVpaidGreyBox
+        val testData = TestData.videoVpaidPJ
 
         listScreenRobot {
             launchWithSuccessStub(testData, additionalOptions = mapOf("option1" to 123))

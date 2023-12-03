@@ -4,27 +4,27 @@
     "id":512633,
     "format":"video",
     "details":{
-      "url":"/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
-      "image":"/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
-      "video":"/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
+      "url":"",
+      "image":"",
+      "video":"",
       "placement_format":"video",
       "width":600,
       "height":480,
       "transcodedVideos":[
         {
-          "url":"/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.mp4",
+          "url":"",
           "bitrate":720
         },
         {
-          "url":"/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE-med.mp4",
+          "url":"",
           "bitrate":540
         },
         {
-          "url":"/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE-low.mp4",
+          "url":"",
           "bitrate":360
         },
         {
-          "url":"/7yLPH7Lp5DWcQsN7NLwhEWxWmmcyB1DE.m3u8",
+          "url":"",
           "bitrate":1800
         }
       ],

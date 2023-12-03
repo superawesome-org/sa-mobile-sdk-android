@@ -5,7 +5,7 @@
     "format": "video",
     "details": {
       "placement_format": "video",
-      "tag": "https://ad.doubleclick.net/ddm/pfadx/N977474.3516915POPJAM/B28023562.339741090;sz=0x0;ord=1659365072607;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;dcmt=text/xml;dc_sdk_apis=[APIFRAMEWORKS];dc_omid_p=[OMIDPARTNER];dc_vast=3;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ltd=",
+      "tag": "",
       "width": 600,
       "height": 480,
       "duration": 0,

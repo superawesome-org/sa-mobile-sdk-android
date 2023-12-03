@@ -1,7 +1,7 @@
 package tv.superawesome.demoapp.util
 
-import com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.containing
 import com.github.tomakehurst.wiremock.client.WireMock.exactly
 import com.github.tomakehurst.wiremock.client.WireMock.get
@@ -68,6 +68,7 @@ object WireMockHelper {
         stubVPAIDJS()
         stubVPAIDJavaScript()
         stubMockWebsite()
+        stubGoogleCalls()
     }
 
     fun stubFailingVPAIDJavaScript() {
@@ -112,14 +113,20 @@ object WireMockHelper {
             true,
         )
         stubPathForFile(
-            "/vast/tag-grey-box",
-            "video_vpaid_grey_box_vast_tag.xml",
+            "/vast/video_vast_cpi_success_tag",
+            "video_vast_cpi_success_tag.xml",
             null,
             true,
         )
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
+    }
+
+    private fun stubGoogleCalls() {
+        stubPathForFile("/google/tracking", "generic_success_response.json")
+        stubPathForFile("/google/impression", "generic_success_response.json")
+        stubPathForFile("/google/error", "generic_success_response.json")
     }
 
     private fun stubVPAIDImages() {
