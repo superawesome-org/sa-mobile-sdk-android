@@ -42,10 +42,13 @@ public class SADefaults {
         return false;
     }
     public static CloseButtonState defaultCloseButtonState() {
-        return CloseButtonState.Hidden;
+        return CloseButtonState.Hidden.INSTANCE;
     }
     public static CloseButtonState defaultCloseButtonStateInterstitial() {
-        return CloseButtonState.VisibleWithDelay;
+        return CloseButtonState.VisibleWithDelay.INSTANCE;
+    }
+    public static long defaultCloseButtonDelayTimer() {
+        return 1L;
     }
     public static boolean defaultSmallClick () {
         return false;

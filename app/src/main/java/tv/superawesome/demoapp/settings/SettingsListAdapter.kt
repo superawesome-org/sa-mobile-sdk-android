@@ -35,12 +35,14 @@ class SettingsListAdapter :
         private val buttonOne: MaterialButton
         private val buttonTwo: MaterialButton
         private val buttonThree: MaterialButton
+        private val buttonFour: MaterialButton
 
         init {
             labelTextView = view.findViewById(R.id.labelTextView)
             buttonOne = view.findViewById(R.id.buttonOne)
             buttonTwo = view.findViewById(R.id.buttonTwo)
             buttonThree = view.findViewById(R.id.buttonThree)
+            buttonFour = view.findViewById(R.id.buttonFour)
         }
 
         fun update(item: SettingsItem<Any>) {
@@ -61,6 +63,15 @@ class SettingsListAdapter :
                 buttonThree.isVisible = true
             } else {
                 buttonThree.isVisible = false
+            }
+
+            if (options.size >= 4) {
+                updateButton(buttonFour, item, options[3]) {
+                    onItemSelected(item, options[3].value)
+                }
+                buttonFour.isVisible = true
+            } else {
+                buttonFour.isVisible = false
             }
         }
 

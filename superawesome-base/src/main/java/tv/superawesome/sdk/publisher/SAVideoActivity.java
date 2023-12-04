@@ -62,6 +62,7 @@ public class SAVideoActivity extends Activity implements
 
     private Boolean completed = false;
     private SACountDownTimer failSafeTimer = new SACountDownTimer();
+    private SACountDownTimer closeButtonDelayTimer;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -138,7 +139,7 @@ public class SAVideoActivity extends Activity implements
         closeButton.setPadding(0, 0, 0, 0);
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setScaleType(ImageView.ScaleType.FIT_XY);
-        closeButton.setVisibility(videoConfig.closeButtonState == CloseButtonState.VisibleImmediately ?
+        closeButton.setVisibility(videoConfig.closeButtonState == CloseButtonState.VisibleImmediately.INSTANCE ?
                 View.VISIBLE : View.GONE);
         float scale = SAUtils.getScaleFactor(this);
         RelativeLayout.LayoutParams buttonLayout = new RelativeLayout.LayoutParams((int) (30 * scale), (int) (30 * scale));
@@ -170,6 +171,13 @@ public class SAVideoActivity extends Activity implements
         } catch (Exception ignored) {
         }
 
+        if (videoConfig.closeButtonState instanceof CloseButtonState.Custom) {
+            closeButtonDelayTimer = new SACountDownTimer(videoConfig.closeButtonDelayTimer);
+            closeButtonDelayTimer.setListener(() -> {
+                closeButton.setVisibility(View.VISIBLE);
+            });
+        }
+
         failSafeTimer.setListener(() -> {
             // Override the close button click behaviour when showing the close button as
             // a fail safe
@@ -196,6 +204,9 @@ public class SAVideoActivity extends Activity implements
     protected void onStop() {
         super.onStop();
         failSafeTimer.pause();
+        if (closeButtonDelayTimer != null) {
+            closeButtonDelayTimer.pause();
+        }
     }
 
     @Override
@@ -203,6 +214,9 @@ public class SAVideoActivity extends Activity implements
         SAParentalGate.close();
         SACloseWarning.close();
         failSafeTimer.stop();
+        if (closeButtonDelayTimer != null) {
+            closeButtonDelayTimer.stop();
+        }
         super.onDestroy();
     }
 
@@ -249,6 +263,9 @@ public class SAVideoActivity extends Activity implements
             Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown);
         }
         failSafeTimer.stop();
+        if (closeButtonDelayTimer != null) {
+            closeButtonDelayTimer.start();
+        }
     }
 
     @Override
@@ -336,6 +353,9 @@ public class SAVideoActivity extends Activity implements
 
         videoEvents.listener = null;
         failSafeTimer.stop();
+        if (closeButtonDelayTimer != null) {
+            closeButtonDelayTimer.stop();
+        }
 
         // call listener
         if (listenerRef != null) {
@@ -390,6 +410,7 @@ class VideoConfig implements Parcelable {
     final boolean shouldCloseAtEnd;
     final boolean shouldMuteOnStart;
     final CloseButtonState closeButtonState;
+    final long closeButtonDelayTimer;
     final boolean shouldShowCloseWarning;
     final SAOrientation orientation;
 
@@ -401,6 +422,7 @@ class VideoConfig implements Parcelable {
                 boolean shouldCloseAtEnd,
                 boolean shouldMuteOnStart,
                 CloseButtonState closeButtonState,
+                long closeButtonDelayTimer,
                 boolean shouldShowCloseWarning,
                 SAOrientation orientation) {
         this.shouldShowPadlock = shouldShowPadlock;
@@ -411,6 +433,7 @@ class VideoConfig implements Parcelable {
         this.shouldCloseAtEnd = shouldCloseAtEnd;
         this.shouldMuteOnStart = shouldMuteOnStart;
         this.closeButtonState = closeButtonState;
+        this.closeButtonDelayTimer = closeButtonDelayTimer;
         this.shouldShowCloseWarning = shouldShowCloseWarning;
         this.orientation = orientation;
     }
@@ -423,7 +446,9 @@ class VideoConfig implements Parcelable {
         isBackButtonEnabled = in.readByte() != 0;
         shouldCloseAtEnd = in.readByte() != 0;
         shouldMuteOnStart = in.readByte() != 0;
-        closeButtonState = CloseButtonState.Companion.fromInt(in.readInt());
+        int closeState = in.readInt();
+        closeButtonDelayTimer = in.readLong();
+        closeButtonState = CloseButtonState.Companion.fromInt(closeState, closeButtonDelayTimer);
         shouldShowCloseWarning = in.readByte() != 0;
         orientation = SAOrientation.fromValue(in.readInt());
     }
@@ -455,6 +480,7 @@ class VideoConfig implements Parcelable {
         parcel.writeByte((byte) (shouldCloseAtEnd ? 1 : 0));
         parcel.writeByte((byte) (shouldMuteOnStart ? 1 : 0));
         parcel.writeInt(closeButtonState.getValue());
+        parcel.writeLong(closeButtonDelayTimer);
         parcel.writeByte((byte) (shouldShowCloseWarning ? 1 : 0));
         parcel.writeInt(orientation.ordinal());
     }

@@ -39,7 +39,7 @@ internal class ManagedAdConfig : Parcelable {
         shouldShowCloseWarning = input.readByte().toInt() != 0
         isBackButtonEnabled = input.readByte().toInt() != 0
         autoCloseAtEnd = input.readByte().toInt() != 0
-        closeButtonState = CloseButtonState.fromInt(input.readInt())
+        closeButtonState = CloseButtonState.fromInt(input.readInt(), input.readLong())
         environment = SAConfiguration.fromOrdinal(input.readInt())
     }
 
@@ -52,6 +52,7 @@ internal class ManagedAdConfig : Parcelable {
         parcel.writeByte((if (isBackButtonEnabled) 1 else 0).toByte())
         parcel.writeByte((if (autoCloseAtEnd) 1 else 0).toByte())
         parcel.writeInt(closeButtonState.value)
+        parcel.writeLong(closeButtonState.time)
         parcel.writeInt(environment.ordinal)
     }
 

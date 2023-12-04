@@ -1,9 +1,7 @@
 package tv.superawesome.demoapp.settings
 
-import android.graphics.drawable.GradientDrawable.Orientation
 import tv.superawesome.demoapp.HasEnvironment
 import tv.superawesome.demoapp.SDKEnvironment
-import tv.superawesome.demoapp.MyApplication
 import tv.superawesome.lib.sasession.defines.SAConfiguration
 import tv.superawesome.sdk.publisher.SAOrientation
 import tv.superawesome.sdk.publisher.state.CloseButtonState
@@ -11,6 +9,7 @@ import tv.superawesome.sdk.publisher.state.CloseButtonState
 enum class Settings(val label: String) {
     Environment("Environment"),
     CloseButton("Close button"),
+    CloseButtonDelay("Close delay"),
     BumperPage("Bumper page"),
     ParentalGate("Parental gate"),
     Playback("Play ad Immediately"),
@@ -47,9 +46,35 @@ enum class Settings(val label: String) {
                 "Hidden",
                 "SettingsItem.Buttons.CloseHidden",
                 CloseButtonState.Hidden,
-            )
+            ),
+            SettingsItemOption(
+                "Custom",
+                "SettingsItem.Buttons.CloseCustom",
+                CloseButtonState.Custom(0),
+            ),
         )
-
+        CloseButtonDelay -> listOf(
+            SettingsItemOption(
+                "5s",
+                "SettingsItem.Buttons.5s",
+                5_000L,
+            ),
+            SettingsItemOption(
+                "10s",
+                "SettingsItem.Buttons.10s",
+                10_000L,
+            ),
+            SettingsItemOption(
+                "15s",
+                "SettingsItem.Buttons.15s",
+                15_000L,
+            ),
+            SettingsItemOption(
+                "30s",
+                "SettingsItem.Buttons.30s",
+                30_000L,
+            ),
+        )
         BumperPage -> listOf(
             SettingsItemOption(
                 "Enable",
@@ -153,6 +178,7 @@ data class SettingsData(
     val environment: SAConfiguration = SAConfiguration.PRODUCTION,
     val useBaseModule: Boolean = true,
     val closeButtonState: CloseButtonState = CloseButtonState.VisibleWithDelay,
+    val closeButtonDelay: Long = 5_000L,
     val bumperEnabled: Boolean = false,
     val parentalEnabled: Boolean = false,
     val playEnabled: Boolean = true,
@@ -175,7 +201,22 @@ object DataStore {
     fun updateSettings(item: Settings, value: Any) {
         data = when (item) {
             Settings.Environment -> data.copy(environment = value as SAConfiguration)
-            Settings.CloseButton -> data.copy(closeButtonState = value as CloseButtonState)
+            Settings.CloseButton -> data.copy(
+                closeButtonState = if (value is CloseButtonState.Custom) {
+                    CloseButtonState.Custom(data.closeButtonDelay)
+                } else {
+                    value as CloseButtonState
+                }
+            )
+            Settings.CloseButtonDelay -> {
+                var newData = data.copy(closeButtonDelay = value as Long)
+                if (data.closeButtonState is CloseButtonState.Custom) {
+                    newData = newData.copy(
+                        closeButtonState = CloseButtonState.Custom(newData.closeButtonDelay)
+                    )
+                }
+                newData
+            }
             Settings.BumperPage -> data.copy(bumperEnabled = value as Boolean)
             Settings.ParentalGate -> data.copy(parentalEnabled = value as Boolean)
             Settings.Playback -> data.copy(playEnabled = value as Boolean)
@@ -199,6 +240,7 @@ object DataStore {
     fun toList(): List<SettingsItem<Any>> = listOf(
         SettingsItem(Settings.Environment, data.environment),
         SettingsItem(Settings.CloseButton, data.closeButtonState),
+        SettingsItem(Settings.CloseButtonDelay, data.closeButtonDelay),
         SettingsItem(Settings.BumperPage, data.bumperEnabled),
         SettingsItem(Settings.ParentalGate, data.parentalEnabled),
         SettingsItem(Settings.Playback, data.playEnabled),

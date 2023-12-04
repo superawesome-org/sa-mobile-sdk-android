@@ -46,6 +46,7 @@ public class SAVideoAd {
     private static boolean isParentalGateEnabled = SADefaults.defaultParentalGate();
     private static boolean isBumperPageEnabled = SADefaults.defaultBumperPage();
     private static CloseButtonState closeButtonState = SADefaults.defaultCloseButtonState();
+    private static long closeButtonDelayTimer;
     private static boolean shouldAutomaticallyCloseAtEnd = SADefaults.defaultCloseAtEnd();
     private static boolean shouldShowSmallClickButton = SADefaults.defaultSmallClick();
     private static boolean isTestingEnabled = SADefaults.defaultTestMode();
@@ -445,6 +446,7 @@ public class SAVideoAd {
                             shouldAutomaticallyCloseAtEnd,
                             shouldMuteOnStart,
                             closeButtonState,
+                            closeButtonDelayTimer,
                             shouldShowCloseWarning,
                             orientation);
 
@@ -570,7 +572,7 @@ public class SAVideoAd {
      * and should only be used if you explicitly want this behaviour over consistent tracking.
      */
     public static void enableCloseButtonNoDelay() {
-        closeButtonState = CloseButtonState.VisibleImmediately;
+        closeButtonState = CloseButtonState.VisibleImmediately.INSTANCE;
     }
 
     public static void enableCloseAtEnd() {
@@ -658,7 +660,17 @@ public class SAVideoAd {
     }
 
     public static void setCloseButton(boolean value) {
-        closeButtonState = value ? CloseButtonState.VisibleWithDelay : CloseButtonState.Hidden;
+        closeButtonState = value ? CloseButtonState.VisibleWithDelay.INSTANCE : CloseButtonState.Hidden.INSTANCE;
+    }
+
+    /**
+     * Enables showing the close button after a set delay. This overrides any close button configuration
+     * that have been called before.
+     * @param delay the amount of delay in milliseconds.
+     */
+    public static void setCloseButtonWithDelay(long delay) {
+        closeButtonDelayTimer = delay;
+        closeButtonState = new CloseButtonState.Custom(closeButtonDelayTimer);
     }
 
     public static void setCloseButtonWarning(boolean value) {

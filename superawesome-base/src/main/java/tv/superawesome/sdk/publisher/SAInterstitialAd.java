@@ -72,7 +72,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     private static SAOrientation    orientation = SADefaults.defaultOrientation();
     private static SAConfiguration  configuration = SADefaults.defaultConfiguration();
     private static final SAPerformanceMetrics performanceMetrics = new SAPerformanceMetrics();
-    private SACountDownTimer failSafeTimer = new SACountDownTimer();
+    private final SACountDownTimer failSafeTimer = new SACountDownTimer();
+    private SACountDownTimer closeButtonTimer;
+    private static long closeButtonDelayTimer;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -95,7 +97,8 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         ad = new SAAd(SAJsonParser.newObject(adStr));
 
         int closeButtonValue = bundle.getInt("closeButton", SADefaults.defaultCloseButtonStateInterstitial().getValue());
-        CloseButtonState closeButtonState = CloseButtonState.Companion.fromInt(closeButtonValue);
+        long closeButtonTimer = bundle.getLong("closeButtonTimer", SADefaults.defaultCloseButtonDelayTimer());
+        CloseButtonState closeButtonState = CloseButtonState.Companion.fromInt(closeButtonValue, closeButtonTimer);
 
         // make sure direction is locked
         switch (orientationL) {
@@ -133,7 +136,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         // create the close button
         float fp = SAUtils.getScaleFactor(this);
         closeButton = new ImageButton(this);
-        closeButton.setVisibility(closeButtonState == CloseButtonState.VisibleImmediately ? View.VISIBLE :View.GONE);
+        closeButton.setVisibility(closeButtonState == CloseButtonState.VisibleImmediately.INSTANCE ? View.VISIBLE :View.GONE);
         closeButton.setImageBitmap(SAImageUtils.createCloseButtonBitmap());
         closeButton.setBackgroundColor(Color.TRANSPARENT);
         closeButton.setPadding(0, 0, 0, 0);
@@ -157,6 +160,13 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
             closeButton.setVisibility(View.VISIBLE);
             performanceMetrics.trackCloseButtonFallbackShown(ad);
         });
+
+        if (closeButtonState instanceof CloseButtonState.Custom) {
+            this.closeButtonTimer = new SACountDownTimer(closeButtonState.getTime());
+            this.closeButtonTimer.setListener(() -> {
+                closeButton.setVisibility(View.VISIBLE);
+            });
+        }
 
         // finally play!
         interstitialBanner.play(this);
@@ -189,6 +199,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      */
     private void close() {
         failSafeTimer.stop();
+        if (closeButtonTimer != null) {
+            closeButtonTimer.stop();
+        }
         // close the banner as well
         interstitialBanner.close();
         interstitialBanner.setAd(null);
@@ -550,6 +563,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                 Intent intent = new Intent(context, SAInterstitialAd.class);
                 intent.putExtra("ad", adL.writeToJson().toString());
                 intent.putExtra("closeButton", closeButtonState.getValue());
+                intent.putExtra("closeButtonTimer", closeButtonDelayTimer);
 
                 // clear ad - meaning that it's been played
                 ads.remove(placementId);
@@ -591,14 +605,24 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * and should only be used if you explicitly want this behaviour over consistent tracking.
      */
     public static void enableCloseButtonNoDelay() {
-        closeButtonState = CloseButtonState.VisibleImmediately;
+        closeButtonState = CloseButtonState.VisibleImmediately.INSTANCE;
     }
 
     /**
      * Method that enables the close button to display with a delay.
      */
     public static void enableCloseButton() {
-        closeButtonState = CloseButtonState.VisibleWithDelay;
+        closeButtonState = CloseButtonState.VisibleWithDelay.INSTANCE;
+    }
+
+    /**
+     * Enables showing the close button after a set delay. This overrides any close button configuration
+     * that might have been called before.
+     * @param delay the amount of delay in milliseconds.
+     */
+    public static void setCloseButtonWithDelay(long delay) {
+        closeButtonDelayTimer = delay;
+        closeButtonState = new CloseButtonState.Custom(closeButtonDelayTimer);
     }
 
     /**********************************************************************************************
@@ -723,12 +747,18 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
     public void onStop() {
         super.onStop();
         failSafeTimer.pause();
+        if (closeButtonTimer != null) {
+            closeButtonTimer.pause();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         failSafeTimer.stop();
+        if (closeButtonTimer != null) {
+            closeButtonTimer.stop();
+        }
     }
 
     /**
@@ -737,12 +767,17 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
 
     @Override
     public void hasBeenVisible() {
-        closeButton.setVisibility(View.VISIBLE);
+        if (!(closeButtonState instanceof CloseButtonState.Custom)) {
+            closeButton.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void hasShown() {
         failSafeTimer.stop();
+        if (closeButtonTimer != null) {
+            closeButtonTimer.start();
+        }
     }
 
     @Override
