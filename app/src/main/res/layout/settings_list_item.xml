@@ -48,6 +48,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_close_hidden" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonFour"
+            style="@style/AppTheme.Button.Toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_close_custom" />
+
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

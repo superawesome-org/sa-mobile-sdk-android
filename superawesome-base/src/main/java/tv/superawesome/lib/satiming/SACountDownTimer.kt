@@ -1,3 +1,4 @@
+@file:Suppress("ClassOrdering", "MagicNumber")
 package tv.superawesome.lib.satiming
 
 import android.os.CountDownTimer
@@ -8,6 +9,11 @@ import java.lang.Long.max
  */
 class SACountDownTimer(private var timeout: Long = 15_000L,
                        private val interval: Long = 1_000L) {
+
+    /**
+     * Secondary constructor, with default interval of 1s between ticks.
+     */
+    constructor(timeout: Long = 15_000): this(timeout, 1_000)
 
     /**
      * The listener for the timer.

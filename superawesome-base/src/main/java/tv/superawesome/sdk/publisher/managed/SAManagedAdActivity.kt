@@ -83,6 +83,7 @@ class SAManagedAdActivity : Activity(),
     }
 
     private val failSafeTimer = SACountDownTimer()
+    private var closeButtonDelayTimer: SACountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,6 +138,15 @@ class SAManagedAdActivity : Activity(),
                 performanceMetrics.trackCloseButtonFallbackShown(ad)
             }
         }
+
+        if (config?.closeButtonState is CloseButtonState.Custom) {
+            closeButtonDelayTimer = SACountDownTimer(timeout = config!!.closeButtonState.time)
+            closeButtonDelayTimer?.listener = object : Listener {
+                override fun didTimeOut() {
+                    showCloseButton()
+                }
+            }
+        }
     }
 
     /**
@@ -158,6 +168,7 @@ class SAManagedAdActivity : Activity(),
         super.onStop()
         adView.pauseVideo()
         failSafeTimer.pause()
+        closeButtonDelayTimer?.pause()
         listener = null
     }
 
@@ -166,6 +177,7 @@ class SAManagedAdActivity : Activity(),
         cancelCloseButtonShownRunnable()
         viewableDetector.cancel()
         failSafeTimer.stop()
+        closeButtonDelayTimer?.stop()
         config = null
         videoClick = null
     }
@@ -212,6 +224,7 @@ class SAManagedAdActivity : Activity(),
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
         failSafeTimer.stop()
+        closeButtonDelayTimer?.start()
     }
 
     override fun adFailedToShow() = runOnUiThread {
