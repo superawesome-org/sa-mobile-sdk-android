@@ -382,6 +382,52 @@ class InterstitialUITest: BaseUITest() {
     }
 
     @Test
+    fun test_standard_testCloseButtonCustom5seconds() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseCustom()
+                    tapOnCustom5s()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(5_000)
+                tapOnClose()
+            }
+        }
+    }
+
+    @Test
+    fun test_standard_testCloseButtonCustom10seconds() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseCustom()
+                    tapOnCustom10s()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(8_000)
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(2_000)
+                tapOnClose()
+            }
+        }
+    }
+
+    @Test
     fun test_interstitial_with_no_clickthrough() {
         val testData = TestData.interstitialStandardNoClickthrough
         IntentsHelper.stubIntentsForUrl()

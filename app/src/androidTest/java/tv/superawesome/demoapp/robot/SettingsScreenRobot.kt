@@ -29,6 +29,31 @@ class SettingsScreenRobot {
             .perform(click())
     }
 
+    fun tapOnCloseCustom() {
+        onView(withContentDescription("SettingsItem.Buttons.CloseCustom"))
+            .perform(click())
+    }
+
+    fun tapOnCustom5s() {
+        onView(withContentDescription("SettingsItem.Buttons.5s"))
+            .perform(click())
+    }
+
+    fun tapOnCustom10s() {
+        onView(withContentDescription("SettingsItem.Buttons.10s"))
+            .perform(click())
+    }
+
+    fun tapOnCustom15s() {
+        onView(withContentDescription("SettingsItem.Buttons.15s"))
+            .perform(click())
+    }
+
+    fun tapOnCustom30s() {
+        onView(withContentDescription("SettingsItem.Buttons.30s"))
+            .perform(click())
+    }
+
     fun tapOnEnableParentalGate() {
         onView(withContentDescription("SettingsItem.Buttons.ParentalGateEnable"))
             .perform(click())

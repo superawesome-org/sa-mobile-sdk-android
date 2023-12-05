@@ -7,6 +7,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import org.hamcrest.core.IsNot.not
 import org.junit.Assert
 import tv.superawesome.demoapp.util.ScreenshotUtil
 import tv.superawesome.demoapp.util.TestColors
@@ -64,6 +65,15 @@ class InterstitialScreenRobot : BaseRobot() {
     fun checkCloseIsDisplayed() {
         onView(withContentDescription("Close"))
             .check(matches(isDisplayed()))
+    }
+
+    fun checkCloseIsNotDisplayed() {
+        onView(withContentDescription("Close"))
+            .check(matches(not(isDisplayed())))
+    }
+
+    fun waitForCloseAppear(delay: Long) {
+        Thread.sleep(delay)
     }
 }
 
