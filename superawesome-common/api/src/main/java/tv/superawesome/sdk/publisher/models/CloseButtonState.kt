@@ -1,19 +1,33 @@
+@file:Suppress("MagicNumber")
+
 package tv.superawesome.sdk.publisher.models
 
 /**
  * Represents the close button states.
- *
- * @property value integer value representing the state.
  */
-public enum class CloseButtonState(public val value: Int) {
+public sealed class CloseButtonState {
+    /** integer value representing the state. */
+    public abstract val value: Int
+
     /** Close button becomes visible after a delay. */
-    VisibleWithDelay(0),
+    public data object VisibleWithDelay : CloseButtonState() {
+        override val value: Int = 0
+    }
 
     /** Close button becomes visible immediately. */
-    VisibleImmediately(1),
+    public data object VisibleImmediately : CloseButtonState() {
+        override val value: Int = 1
+    }
 
     /** Close button is hidden until the ad ends. */
-    Hidden(2);
+    public data object Hidden : CloseButtonState() {
+        override val value: Int = 2
+    }
+
+    /** Close button shows after a set [delay], in ms. */
+    public data class Custom(val delay: Long) : CloseButtonState() {
+        override val value: Int = 3
+    }
 
     /**
      * Whether the button is visible or not.
@@ -28,7 +42,13 @@ public enum class CloseButtonState(public val value: Int) {
          * if not found.
          */
         @JvmStatic
-        public fun fromInt(value: Int): CloseButtonState =
-            entries.firstOrNull { it.value == value } ?: Hidden
+        public fun fromInt(value: Int, delay: Long): CloseButtonState =
+            when (value) {
+                0 -> VisibleWithDelay
+                1 -> VisibleImmediately
+                2 -> Hidden
+                3 -> Custom(delay)
+                else -> Hidden
+            }
     }
 }

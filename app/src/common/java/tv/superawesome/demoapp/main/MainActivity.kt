@@ -271,6 +271,10 @@ class MainActivity : FragmentActivity() {
             }
 
             CloseButtonState.Hidden -> SAVideoAd.disableCloseButton()
+            is CloseButtonState.Custom -> {
+                SAInterstitialAd.enableCloseButtonWithDelay(settings.closeButtonDelay)
+                SAVideoAd.enableCloseButtonWithDelay(settings.closeButtonDelay)
+            }
         }
     }
 

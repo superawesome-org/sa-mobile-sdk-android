@@ -81,12 +81,11 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
         control = VideoPlayerController(videoPlayer)
         videoPlayer.setController(control)
 
-        closeButton.visibility =
-            if (adConfig.closeButtonState == CloseButtonState.VisibleImmediately) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        when (adConfig.closeButtonState) {
+            is CloseButtonState.Custom -> setUpCloseButtonDelayTimer()
+            CloseButtonState.VisibleImmediately -> closeButton.visibility = View.VISIBLE
+            else -> closeButton.visibility = View.GONE
+        }
 
         closeButton.setOnClickListener { onCloseButtonPressed() }
         initVolumeButton()
@@ -96,6 +95,7 @@ class VideoActivity : FullScreenActivity(), VideoPlayerListener {
                 videoEvents?.prepare(player, time, duration)
                 controller.listener?.onEvent(placementId, SAEvent.adShown)
                 closeButtonFailsafeTimer.stop()
+                closeButtonDelayTimer?.start()
             }
 
             override fun onTimeUpdated(player: IVideoPlayer, time: Int, duration: Int) {

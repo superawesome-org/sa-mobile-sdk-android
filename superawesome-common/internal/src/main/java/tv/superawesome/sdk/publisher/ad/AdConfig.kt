@@ -31,7 +31,12 @@ interface AdConfig {
 
     /** Ad should be muted on start. */
     val shouldMuteOnStart: Boolean?
+
+    /** Close button option. **/
     val closeButtonState: CloseButtonState?
+
+    /** Optional delay timer for close button. **/
+    val closeButtonDelayTimer: Long
     val orientation: Orientation?
     val startDelay: AdRequest.StartDelay?
 }
@@ -45,6 +50,7 @@ class InterstitialAdConfig : Parcelable, AdConfig {
     override var isParentalGateEnabled: Boolean
     override var isBumperPageEnabled: Boolean
     override var closeButtonState: CloseButtonState
+    override var closeButtonDelayTimer: Long
     override var orientation: Orientation
     override val shouldShowSmallClick: Boolean? = null
     override val shouldShowCloseWarning: Boolean? = null
@@ -59,12 +65,14 @@ class InterstitialAdConfig : Parcelable, AdConfig {
         isParentalGateEnabled: Boolean = Constants.defaultParentalGate,
         isBumperPageEnabled: Boolean = Constants.defaultBumperPage,
         closeButtonState: CloseButtonState = Constants.defaultCloseButtonState,
+        closeButtonDelayTimer: Long = Constants.defaultCloseButtonDelayTimer,
         orientation: Orientation = Constants.defaultOrientation,
     ) {
         this.testEnabled = testEnabled
         this.isParentalGateEnabled = isParentalGateEnabled
         this.isBumperPageEnabled = isBumperPageEnabled
         this.closeButtonState = closeButtonState
+        this.closeButtonDelayTimer = closeButtonDelayTimer
         this.orientation = orientation
     }
 
@@ -72,7 +80,9 @@ class InterstitialAdConfig : Parcelable, AdConfig {
         testEnabled = parcel.readByte().toInt() != 0
         isParentalGateEnabled = parcel.readByte().toInt() != 0
         isBumperPageEnabled = parcel.readByte().toInt() != 0
-        closeButtonState = CloseButtonState.fromInt(parcel.readInt())
+        val state = parcel.readInt()
+        closeButtonDelayTimer = parcel.readLong()
+        closeButtonState = CloseButtonState.fromInt(state, closeButtonDelayTimer)
         orientation = Orientation.fromValue(parcel.readInt()) ?: Orientation.Any
     }
 
@@ -83,6 +93,7 @@ class InterstitialAdConfig : Parcelable, AdConfig {
         parcel.writeByte((if (isParentalGateEnabled) 1 else 0).toByte())
         parcel.writeByte((if (isBumperPageEnabled) 1 else 0).toByte())
         parcel.writeInt(closeButtonState.value)
+        parcel.writeLong(closeButtonDelayTimer)
         parcel.writeInt(orientation.ordinal)
     }
 
@@ -108,6 +119,7 @@ class VideoAdConfig : Parcelable, AdConfig {
     override var shouldCloseAtEnd: Boolean
     override var shouldMuteOnStart: Boolean
     override var closeButtonState: CloseButtonState
+    override var closeButtonDelayTimer: Long
     override var orientation: Orientation
     override var startDelay: AdRequest.StartDelay
 
@@ -121,6 +133,7 @@ class VideoAdConfig : Parcelable, AdConfig {
         isBackButtonEnabled: Boolean = Constants.defaultBackButtonEnabled,
         shouldCloseAtEnd: Boolean = Constants.defaultCloseAtEnd,
         closeButtonState: CloseButtonState = Constants.defaultCloseButtonState,
+        closeButtonDelayTimer: Long = Constants.defaultCloseButtonDelayTimer,
         orientation: Orientation = Constants.defaultOrientation,
         startDelay: AdRequest.StartDelay = Constants.defaultStartDelay,
         shouldMuteOnStart: Boolean = Constants.defaultMuteOnStart,
@@ -133,6 +146,7 @@ class VideoAdConfig : Parcelable, AdConfig {
         this.isBackButtonEnabled = isBackButtonEnabled
         this.shouldCloseAtEnd = shouldCloseAtEnd
         this.closeButtonState = closeButtonState
+        this.closeButtonDelayTimer = closeButtonDelayTimer
         this.orientation = orientation
         this.startDelay = startDelay
         this.shouldMuteOnStart = shouldMuteOnStart
@@ -146,7 +160,9 @@ class VideoAdConfig : Parcelable, AdConfig {
         shouldShowCloseWarning = parcel.readByte().toInt() != 0
         isBackButtonEnabled = parcel.readByte().toInt() != 0
         shouldCloseAtEnd = parcel.readByte().toInt() != 0
-        closeButtonState = CloseButtonState.fromInt(parcel.readInt())
+        val state = parcel.readInt()
+        closeButtonDelayTimer = parcel.readLong()
+        closeButtonState = CloseButtonState.fromInt(state, closeButtonDelayTimer)
         orientation = Orientation.fromValue(parcel.readInt()) ?: Orientation.Any
         startDelay = AdRequest.StartDelay.fromValue(parcel.readInt()) ?: Constants.defaultStartDelay
         shouldMuteOnStart = parcel.readByte().toInt() != 0
@@ -163,6 +179,7 @@ class VideoAdConfig : Parcelable, AdConfig {
         parcel.writeByte((if (isBackButtonEnabled) 1 else 0).toByte())
         parcel.writeByte((if (shouldCloseAtEnd) 1 else 0).toByte())
         parcel.writeInt(closeButtonState.value)
+        parcel.writeLong(closeButtonDelayTimer)
         parcel.writeInt(orientation.ordinal)
         parcel.writeInt(startDelay.value)
         parcel.writeByte((if (shouldMuteOnStart) 1 else 0).toByte())
@@ -195,6 +212,7 @@ class BannerAdConfig : Parcelable, AdConfig {
     override val closeButtonState: CloseButtonState? = null
     override val orientation: Orientation? = null
     override val startDelay: AdRequest.StartDelay? = null
+    override val closeButtonDelayTimer: Long = 0L
 
     @Suppress("LongParameterList")
     constructor(
