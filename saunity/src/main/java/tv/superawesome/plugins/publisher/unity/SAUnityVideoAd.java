@@ -14,6 +14,7 @@ import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
+import tv.superawesome.sdk.publisher.SAInterstitialAd;
 import tv.superawesome.sdk.publisher.SAOrientation;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -130,6 +131,7 @@ public class SAUnityVideoAd {
                                                       boolean isParentalGateEnabled,
                                                       boolean isBumperPageEnabled,
                                                       int closeButtonState,
+                                                      long closeButtonDelay,
                                                       boolean shouldShowSmallClickButton,
                                                       boolean shouldAutomaticallyCloseAtEnd,
                                                       int orientation,
@@ -143,7 +145,7 @@ public class SAUnityVideoAd {
         SAVideoAd.setBackButton(isBackButtonEnabled);
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
-        setCloseButtonState(closeButtonState);
+        setCloseButtonState(closeButtonState, closeButtonDelay);
         SAVideoAd.setMuteOnStart(muteOnStart);
 
         SAVideoAd.play(placementId, context);
@@ -156,6 +158,7 @@ public class SAUnityVideoAd {
             boolean isParentalGateEnabled,
             boolean isBumperPageEnabled,
             int closeButtonState,
+            long closeButtonDelay,
             boolean shouldShowSmallClickButton,
             boolean shouldAutomaticallyCloseAtEnd,
             int orientation,
@@ -171,21 +174,22 @@ public class SAUnityVideoAd {
         SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
         SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
         SAVideoAd.setTestMode(testModeEnabled);
-        setCloseButtonState(closeButtonState);
+        setCloseButtonState(closeButtonState, closeButtonDelay);
         SAVideoAd.setMuteOnStart(muteOnStart);
     }
 
-    private static void setCloseButtonState(int closeButtonState) {
-        switch (CloseButtonState.fromInt(closeButtonState)) {
-            case Hidden:
-                SAVideoAd.disableCloseButton();
-                break;
-            case VisibleImmediately:
-                SAVideoAd.enableCloseButtonNoDelay();
-                break;
-            case VisibleWithDelay:
-                SAVideoAd.enableCloseButton();
-                break;
+    private static void setCloseButtonState(int closeButtonState, long delay) {
+
+        CloseButtonState state = CloseButtonState.fromInt(closeButtonState, delay);
+
+        if(state instanceof CloseButtonState.VisibleImmediately) {
+            SAVideoAd.enableCloseButtonNoDelay();
+        } else if (state instanceof CloseButtonState.VisibleWithDelay) {
+            SAVideoAd.enableCloseButton();
+        } else if (state instanceof CloseButtonState.Custom) {
+            SAVideoAd.setCloseButtonWithDelay(delay);
+        } else if (state instanceof CloseButtonState.Hidden) {
+            // No action
         }
     }
 }

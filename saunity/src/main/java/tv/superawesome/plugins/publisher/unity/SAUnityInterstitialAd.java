@@ -141,26 +141,28 @@ public class SAUnityInterstitialAd {
             int orientation,
             boolean isBackButtonEnabled,
             boolean testModeEnabled,
-            int closeButtonState) {
+            int closeButtonState,
+            long closeButtonDelay) {
         SAInterstitialAd.setParentalGate(isParentalGateEnabled);
         SAInterstitialAd.setBumperPage(isBumperPageEnabled);
         SAInterstitialAd.setBackButton(isBackButtonEnabled);
         SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
         SAInterstitialAd.setTestMode(testModeEnabled);
-        setCloseButtonState(closeButtonState);
+        setCloseButtonState(closeButtonState, closeButtonDelay);
     }
 
-    private static void setCloseButtonState(int closeButtonState) {
-        switch (CloseButtonState.fromInt(closeButtonState)) {
-            case Hidden:
-                // Do nothing as Interstitial does not support hidden close button
-                break;
-            case VisibleImmediately:
-                SAInterstitialAd.enableCloseButtonNoDelay();
-                break;
-            case VisibleWithDelay:
-                SAInterstitialAd.enableCloseButton();
-                break;
+    private static void setCloseButtonState(int closeButtonState, long delay) {
+
+        CloseButtonState state = CloseButtonState.fromInt(closeButtonState, delay);
+
+        if(state instanceof CloseButtonState.VisibleImmediately) {
+            SAInterstitialAd.enableCloseButtonNoDelay();
+        } else if (state instanceof CloseButtonState.VisibleWithDelay) {
+            SAInterstitialAd.enableCloseButton();
+        } else if (state instanceof CloseButtonState.Custom) {
+            SAInterstitialAd.setCloseButtonWithDelay(delay);
+        } else if (state instanceof CloseButtonState.Hidden) {
+            // No action
         }
     }
 }
