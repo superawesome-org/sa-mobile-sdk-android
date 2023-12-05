@@ -55,6 +55,8 @@ abstract class FullScreenActivity : AppCompatActivity() {
         lifecycleScope.launch { controller.trackCloseButtonFallbackShown() }
     }
 
+    protected var closeButtonDelayTimer: CoroutineTimer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -76,16 +78,19 @@ abstract class FullScreenActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         closeButtonFailsafeTimer.pause()
+        closeButtonDelayTimer?.pause()
     }
 
     override fun onStart() {
         super.onStart()
         closeButtonFailsafeTimer.resume()
+        closeButtonDelayTimer?.resume()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         closeButtonFailsafeTimer.stop()
+        closeButtonDelayTimer?.stop()
     }
 
     /**
@@ -161,6 +166,13 @@ abstract class FullScreenActivity : AppCompatActivity() {
             finish()
         }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
+
+    protected fun setUpCloseButtonDelayTimer() {
+        val delay = adConfig.closeButtonDelayTimer
+        closeButtonDelayTimer = CoroutineTimer(delay, timeProvider, lifecycleScope) {
+            closeButton.visibility = View.VISIBLE
+        }
     }
 
     companion object {

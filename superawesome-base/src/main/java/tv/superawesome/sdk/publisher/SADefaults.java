@@ -48,7 +48,7 @@ public class SADefaults {
         return CloseButtonState.VisibleWithDelay.INSTANCE;
     }
     public static long defaultCloseButtonDelayTimer() {
-        return 1L;
+        return 1_000L;
     }
     public static boolean defaultSmallClick () {
         return false;

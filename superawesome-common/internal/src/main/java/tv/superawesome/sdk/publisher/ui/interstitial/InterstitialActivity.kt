@@ -40,13 +40,19 @@ public class InterstitialActivity : FullScreenActivity() {
 
         parentLayout.addView(interstitialBanner)
 
-        closeButton.visibility =
-            if (adConfig.closeButtonState == CloseButtonState.VisibleImmediately) View.VISIBLE else View.GONE
+        when (adConfig.closeButtonState) {
+            is CloseButtonState.Custom -> setUpCloseButtonDelayTimer()
+            CloseButtonState.VisibleImmediately -> closeButton.visibility = View.VISIBLE
+            else -> closeButton.visibility = View.GONE
+        }
     }
 
     override fun playContent() {
         interstitialBanner.configure(placementId) {
-            closeButton.visibility = View.VISIBLE
+            when (adConfig.closeButtonState) {
+                is CloseButtonState.Custom -> closeButtonDelayTimer?.start()
+                else -> closeButton.visibility = View.VISIBLE
+            }
         }
         interstitialBanner.play()
     }
