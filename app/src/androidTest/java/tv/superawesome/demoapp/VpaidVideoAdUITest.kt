@@ -86,6 +86,53 @@ class VpaidVideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_standard_testCloseButtonCustom5seconds() {
+        val testData = TestData.videoVpaidYellowBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseCustom()
+                    tapOnCustom5s()
+                    tapOnDisableCloseAtEnd()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(6_000)
+                tapOnClose()
+            }
+        }
+    }
+
+    @Test
+    fun test_standard_testCloseButtonCustom10seconds() {
+        val testData = TestData.videoVpaidYellowBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseCustom()
+                    tapOnCustom10s()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(8_000)
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(3_000)
+                tapOnClose()
+            }
+        }
+    }
+
+    @Test
     fun test_vpaid_adLoading_placementId() {
         val testData = TestData.videoVpaidYellowBox
         testAdLoading(testData, TestColors.vpaidYellow)
