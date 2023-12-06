@@ -27,7 +27,7 @@ public class SAUnityInterstitialAd {
     /**
      * Method that creates a new Interstitial Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAInterstitialAdCreate(Context context) {
+    public static void SuperAwesomeUnitySAInterstitialAdCreate() {
         SAInterstitialAd.setListener((SAInterface) (placementId, event) -> {
             switch (event) {
                 case adLoaded:
@@ -104,15 +104,15 @@ public class SAUnityInterstitialAd {
                 placementId,
                 configuration,
                 test,
-                encodedOptions,
-                null
+                null,
+                encodedOptions
         );
     }
 
     /**
      * Method that checks to see if an ad is available for an interstitial ad (from Unity)
      */
-    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable(Context context, int placementId) {
+    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable(int placementId) {
         return SAInterstitialAd.hasAdAvailable(placementId);
     }
 
@@ -120,15 +120,7 @@ public class SAUnityInterstitialAd {
      * Method that plays a new Interstitial Ad (from Unity)
      */
     public static void SuperAwesomeUnitySAInterstitialAdPlay(Context context,
-                                                             int placementId,
-                                                             boolean isParentalGateEnabled,
-                                                             boolean isBumperPageEnabled,
-                                                             int orientation,
-                                                             boolean isBackButtonEnabled) {
-        SAInterstitialAd.setParentalGate(isParentalGateEnabled);
-        SAInterstitialAd.setBumperPage(isBumperPageEnabled);
-        SAInterstitialAd.setOrientation(SAOrientation.fromValue(orientation));
-        SAInterstitialAd.setBackButton(isBackButtonEnabled);
+                                                             int placementId) {
         SAInterstitialAd.play(placementId, context);
     }
 

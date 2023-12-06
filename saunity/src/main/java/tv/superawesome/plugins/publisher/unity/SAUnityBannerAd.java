@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import tv.superawesome.lib.sasession.defines.SAConfiguration;
@@ -78,36 +79,30 @@ public class SAUnityBannerAd {
      * Method that loads a new Banner Ad (from Unity)
      */
 
-    public static void SuperAwesomeUnitySABannerAdLoad(
-            Context context,
-            String unityName,
-            int placementId,
-            int configuration,
-            boolean test,
-            String encodedOptions)
-    {
-        SuperAwesomeUnitySABannerAdLoad(context,
-                unityName,
-                placementId,
-                configuration,
-                test,
-                encodedOptions,
-                null
-        );
+    public static void SuperAwesomeUnitySABannerAdLoad(String unityName,
+                                                       int placementId,
+                                                       int configuration,
+                                                       boolean test,
+                                                       String encodedOptions) {
+        SuperAwesomeUnitySABannerAdLoad(
+            unityName,
+            placementId,
+            configuration,
+            test,
+            null,
+            encodedOptions);
     }
 
     /**
      * Method that loads a new Banner Ad (from Unity)
      */
 
-    public static void SuperAwesomeUnitySABannerAdLoad(Context context,
-                                                       String unityName,
+    public static void SuperAwesomeUnitySABannerAdLoad(String unityName,
                                                        int placementId,
                                                        int configuration,
                                                        boolean test,
                                                        String openRtbPartnerId,
-                                                       String encodedOptions)
-    {
+                                                       String encodedOptions) {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             bannerAd.setConfiguration(SAConfiguration.fromValue(configuration));
@@ -116,9 +111,9 @@ public class SAUnityBannerAd {
             if (encodedOptions != null && !encodedOptions.isEmpty()) {
                 try {
                     bannerAd.load(
-                            placementId,
-                            openRtbPartnerId,
-                            SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
+                        placementId,
+                        openRtbPartnerId,
+                        SAJsonUtil.JSONtoMap(new JSONObject(encodedOptions))
                     );
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -134,7 +129,7 @@ public class SAUnityBannerAd {
     /**
      * Method that checks to see if an ad is available for a banner ad (from Unity)
      */
-    public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable(Context context, String unityName) {
+    public static boolean SuperAwesomeUnitySABannerAdHasAdAvailable(String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);
             return bannerAd.hasAdAvailable();
@@ -145,7 +140,12 @@ public class SAUnityBannerAd {
     /**
      * Method that plays a new Banner ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdPlay(Context context, String unityName, boolean isParentalGateEnabled, boolean isBumperPageEnabled, int position, int width, int height, boolean color) {
+    public static void SuperAwesomeUnitySABannerAdPlay(Context context,
+                                                       String unityName,
+                                                       int position,
+                                                       int width,
+                                                       int height,
+                                                       boolean color) {
 
         if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
 
@@ -154,8 +154,6 @@ public class SAUnityBannerAd {
 
             // get banner ad
             final SABannerAd bannerAd = bannerAdHashMap.get(unityName);
-            bannerAd.setParentalGate(isParentalGateEnabled);
-            bannerAd.setBumperPage(isBumperPageEnabled);
             bannerAd.setColor(color);
 
             // get screen size
@@ -191,9 +189,22 @@ public class SAUnityBannerAd {
     }
 
     /**
+     * Method that applys settings (from Unity)
+     */
+    public static void SuperAwesomeUnitySABumperAdApplySettings(String unityName,
+                                                                boolean isParentalGateEnabled,
+                                                                boolean isBumperPageEnabled) {
+        if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
+            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
+            bannerAd.setParentalGate(isParentalGateEnabled);
+            bannerAd.setBumperPage(isBumperPageEnabled);
+        }
+    }
+
+    /**
      * Method that closes a banner ad (from Unity)
      */
-    public static void SuperAwesomeUnitySABannerAdClose(Context context, String unityName) {
+    public static void SuperAwesomeUnitySABannerAdClose(String unityName) {
         if (bannerAdHashMap.containsKey(unityName)) {
             // close the banner
             SABannerAd bannerAd = bannerAdHashMap.get(unityName);

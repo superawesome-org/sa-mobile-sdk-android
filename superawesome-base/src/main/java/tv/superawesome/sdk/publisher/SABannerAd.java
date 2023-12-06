@@ -154,7 +154,7 @@ public class SABannerAd extends FrameLayout {
      * @param placementId Awesome Ads ID for ad data to be loaded.
      * @param openRtbPartnerId OpenRTB Partner ID parameter to be sent with all requests.
      */
-    public void load(final int placementId, @NonNull final String openRtbPartnerId) {
+    public void load(final int placementId, @Nullable final String openRtbPartnerId) {
         load(placementId, openRtbPartnerId, Collections.emptyMap());
     }
 

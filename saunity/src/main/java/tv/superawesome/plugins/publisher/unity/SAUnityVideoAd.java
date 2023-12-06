@@ -14,7 +14,6 @@ import tv.superawesome.lib.sasession.defines.SARTBStartDelay;
 import tv.superawesome.plugins.publisher.unity.util.SAJsonUtil;
 import tv.superawesome.sdk.publisher.SAEvent;
 import tv.superawesome.sdk.publisher.SAInterface;
-import tv.superawesome.sdk.publisher.SAInterstitialAd;
 import tv.superawesome.sdk.publisher.SAOrientation;
 import tv.superawesome.sdk.publisher.SAVideoAd;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -29,7 +28,7 @@ public class SAUnityVideoAd {
     /**
      * Method that creates a new Video Ad (from Unity)
      */
-    public static void SuperAwesomeUnitySAVideoAdCreate(Context context) {
+    public static void SuperAwesomeUnitySAVideoAdCreate() {
         SAVideoAd.setListener((SAInterface) (placementId, event) -> {
             switch (event) {
                 case adLoaded:
@@ -78,8 +77,8 @@ public class SAUnityVideoAd {
                 configuration,
                 test,
                 playback,
-                encodedOptions,
-                null
+                null,
+                encodedOptions
         );
     }
 
@@ -118,8 +117,7 @@ public class SAUnityVideoAd {
     /**
      * Method that checks to see if an ad is available for a video ad (from Unity)
      */
-    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable(Context context,
-                                                                   int placementId) {
+    public static boolean SuperAwesomeUnitySAVideoAdHasAdAvailable(int placementId) {
         return SAVideoAd.hasAdAvailable(placementId);
     }
 
@@ -127,27 +125,7 @@ public class SAUnityVideoAd {
      * Method that plays a new video ad (from Unity)
      */
     public static void SuperAwesomeUnitySAVideoAdPlay(Context context,
-                                                      int placementId,
-                                                      boolean isParentalGateEnabled,
-                                                      boolean isBumperPageEnabled,
-                                                      int closeButtonState,
-                                                      long closeButtonDelay,
-                                                      boolean shouldShowSmallClickButton,
-                                                      boolean shouldAutomaticallyCloseAtEnd,
-                                                      int orientation,
-                                                      boolean isBackButtonEnabled,
-                                                      boolean shouldShowCloseWarning,
-                                                      boolean muteOnStart) {
-        SAVideoAd.setParentalGate(isParentalGateEnabled);
-        SAVideoAd.setBumperPage(isBumperPageEnabled);
-        SAVideoAd.setCloseAtEnd(shouldAutomaticallyCloseAtEnd);
-        SAVideoAd.setSmallClick(shouldShowSmallClickButton);
-        SAVideoAd.setBackButton(isBackButtonEnabled);
-        SAVideoAd.setOrientation(SAOrientation.fromValue(orientation));
-        SAVideoAd.setCloseButtonWarning(shouldShowCloseWarning);
-        setCloseButtonState(closeButtonState, closeButtonDelay);
-        SAVideoAd.setMuteOnStart(muteOnStart);
-
+                                                      int placementId) {
         SAVideoAd.play(placementId, context);
     }
 
