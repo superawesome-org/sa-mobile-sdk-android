@@ -183,6 +183,52 @@ class VideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_standard_testCloseButtonCustom5seconds() {
+        val testData = TestData.videoVast
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseCustom()
+                    tapOnCustom5s()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(5_000)
+                tapOnClose()
+            }
+        }
+    }
+
+    @Test
+    fun test_standard_testCloseButtonCustom10seconds() {
+        val testData = TestData.videoVast
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseCustom()
+                    tapOnCustom10s()
+                }
+            }
+
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(8_000)
+                checkCloseIsNotDisplayed()
+                waitForCloseAppear(2_000)
+                tapOnClose()
+            }
+        }
+    }
+
+    @Test
     fun test_auto_close_on_finish() {
         val testData = TestData.videoDirect
 
