@@ -253,6 +253,30 @@ class VideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_auto_close_on_finish_close_visible() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseNoDelay()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkCloseIsDisplayed()
+                waitForAdEnds()
+            }
+
+            listScreenRobot {
+                waitForDisplay()
+                checkForEvent(testData, SAEvent.adEnded)
+            }
+        }
+    }
+
+    @Test
     fun test_vast_adLoading_placementId() {
         val testData = TestData.videoVast
         testAdLoading(testData, TestColors.vastYellow)

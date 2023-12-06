@@ -68,15 +68,6 @@ class VideoScreenRobot : BaseRobot() {
                 matches(withTagValue(equalTo("UNMUTED")))
             )
     }
-
-    fun checkCloseIsNotDisplayed() {
-        onView(withContentDescription("Close"))
-            .check(matches(IsNot.not(isDisplayed())))
-    }
-
-    fun waitForCloseAppear(delay: Long) {
-        Thread.sleep(delay)
-    }
 }
 
 fun videoScreenRobot(func: VideoScreenRobot.() -> Unit) =

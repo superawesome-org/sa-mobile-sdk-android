@@ -61,20 +61,6 @@ class InterstitialScreenRobot : BaseRobot() {
         .waitForView(withContentDescription("Close"))
         .check(isGone())
         .perform(waitUntil(isDisplayed()))
-
-    fun checkCloseIsDisplayed() {
-        onView(withContentDescription("Close"))
-            .check(matches(isDisplayed()))
-    }
-
-    fun checkCloseIsNotDisplayed() {
-        onView(withContentDescription("Close"))
-            .check(matches(not(isDisplayed())))
-    }
-
-    fun waitForCloseAppear(delay: Long) {
-        Thread.sleep(delay)
-    }
 }
 
 fun interstitialScreenRobot(func: InterstitialScreenRobot.() -> Unit) =
