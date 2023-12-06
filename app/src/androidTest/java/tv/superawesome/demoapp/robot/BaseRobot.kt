@@ -62,6 +62,13 @@ open class BaseRobot {
             .check(matches(isDisplayed()))
     }
 
+    fun waitForCloseAppear() {
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
+    }
+
     fun waitForCloseAppear(delay: Long) {
         Thread.sleep(delay)
     }
