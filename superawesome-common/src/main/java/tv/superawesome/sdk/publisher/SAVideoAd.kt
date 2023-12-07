@@ -335,6 +335,17 @@ public object SAVideoAd {
     }
 
     /**
+     * Enables showing the close button after a set delay. This overrides any close button configuration
+     * that have been called before.
+     * @param delay the amount of delay in milliseconds.
+     */
+    @JvmStatic
+    public fun enableCloseButtonWithDelay(delay: Long) {
+        adManager.adConfig.closeButtonState = CloseButtonState.Custom(delay)
+        adManager.adConfig.closeButtonDelayTimer = delay
+    }
+
+    /**
      * Shows a warning dialog prior to closing the video via the close button or the
      * the back button.
      */

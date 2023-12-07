@@ -75,6 +75,7 @@ class ManagedAdActivity :
             CloseButtonState.VisibleImmediately -> showCloseButton()
             CloseButtonState.VisibleWithDelay -> setUpCloseButtonTimeoutRunnable()
             CloseButtonState.Hidden -> Unit // Hidden by default
+            is CloseButtonState.Custom -> setUpCloseButtonDelayTimer()
         }
     }
 
@@ -180,6 +181,7 @@ class ManagedAdActivity :
         }
         listener?.onEvent(this.placementId, SAEvent.adShown)
         closeButtonFailsafeTimer.stop()
+        closeButtonDelayTimer?.start()
     }
 
     override fun adFailedToShow() = runOnUiThread {

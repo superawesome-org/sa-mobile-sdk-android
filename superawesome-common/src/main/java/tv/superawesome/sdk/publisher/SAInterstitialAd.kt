@@ -269,6 +269,17 @@ public object SAInterstitialAd {
     }
 
     /**
+     * Enables showing the close button after a set delay. This overrides any close button configuration
+     * that have been called before.
+     * @param delay the amount of delay in milliseconds.
+     */
+    @JvmStatic
+    public fun enableCloseButtonWithDelay(delay: Long) {
+        adManager.adConfig.closeButtonState = CloseButtonState.Custom(delay)
+        adManager.adConfig.closeButtonDelayTimer = delay
+    }
+
+    /**
      * Method that enables the close button to display with a delay.
      */
     @JvmStatic

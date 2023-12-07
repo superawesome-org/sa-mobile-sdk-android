@@ -1,3 +1,4 @@
+@file:Suppress("MayBeConst")
 package tv.superawesome.sdk.publisher.models
 
 import android.graphics.Color
@@ -20,6 +21,9 @@ object Constants {
 
     @JvmField
     val defaultCloseButtonState = CloseButtonState.Hidden
+
+    @JvmField
+    val defaultCloseButtonDelayTimer = 1_000L
 
     @JvmField
     val defaultOrientation = Orientation.Any

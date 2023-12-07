@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
+import org.hamcrest.core.IsNot
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
@@ -49,5 +50,26 @@ open class BaseRobot {
     fun waitAndCheckSafeAdLogoInvisible() {
         onView(withContentDescription("Safe Ad Logo"))
             .check(matches(not(isDisplayed())))
+    }
+
+    fun checkCloseIsNotDisplayed() {
+        onView(withContentDescription("Close"))
+            .check(matches(not(isDisplayed())))
+    }
+
+    fun checkCloseIsDisplayed() {
+        onView(withContentDescription("Close"))
+            .check(matches(isDisplayed()))
+    }
+
+    fun waitForCloseAppear() {
+        ViewTester()
+            .waitForView(withContentDescription("Close"))
+            .perform(waitUntil(isDisplayed()))
+            .check(isVisible())
+    }
+
+    fun waitForCloseAppear(delay: Long) {
+        Thread.sleep(delay)
     }
 }
