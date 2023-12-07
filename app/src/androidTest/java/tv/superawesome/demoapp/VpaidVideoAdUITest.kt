@@ -529,6 +529,37 @@ class VpaidVideoAdUITest: BaseUITest() {
         }
     }
 
+    @Test
+    fun test_vpaid_all_websdk_events() {
+        val testData = TestData.videoVpaidYellowBox
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                // Wait for the ad to render
+                waitForDisplay(TestColors.vpaidYellow)
+                // Wait for the clickable white box to render
+                waitForDisplay(TestColors.vpaidClickBlue)
+                tapOnAd()
+                // Exiting the browser takes us back to the app with the ad still showing
+                UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack()
+                waitForAdEnds()
+            }
+
+            waitForDisplay()
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.webSDKReady)
+            checkForEvent(testData, SAEvent.adShown)
+            checkForEvent(testData, SAEvent.adClicked)
+            checkForEvent(testData, SAEvent.adPaused)
+            checkForEvent(testData, SAEvent.adPlaying)
+            checkForEvent(testData, SAEvent.adEnded)
+            checkForEvent(testData, SAEvent.adClosed)
+        }
+    }
+
     private fun testAdLoading(testData: TestData, color: Color) {
         listScreenRobot {
             launchWithSuccessStub(testData)
