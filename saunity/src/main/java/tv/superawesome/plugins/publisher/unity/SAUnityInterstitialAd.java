@@ -143,7 +143,7 @@ public class SAUnityInterstitialAd {
         setCloseButtonState(closeButtonState, closeButtonDelay);
     }
 
-    private static void setCloseButtonState(int closeButtonState, long delay) {
+    private static void setCloseButtonState(int closeButtonState, double delay) {
 
         CloseButtonState state = CloseButtonState.fromInt(closeButtonState, delay);
 
@@ -152,7 +152,7 @@ public class SAUnityInterstitialAd {
         } else if (state instanceof CloseButtonState.VisibleWithDelay) {
             SAInterstitialAd.enableCloseButton();
         } else if (state instanceof CloseButtonState.Custom) {
-            SAInterstitialAd.setCloseButtonWithDelay(delay);
+            SAInterstitialAd.enableCloseButtonWithDelay(delay);
         } else if (state instanceof CloseButtonState.Hidden) {
             // No action
         }

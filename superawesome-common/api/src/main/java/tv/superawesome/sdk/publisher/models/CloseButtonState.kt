@@ -42,12 +42,12 @@ public sealed class CloseButtonState {
          * if not found.
          */
         @JvmStatic
-        public fun fromInt(value: Int, delay: Long): CloseButtonState =
+        public fun fromInt(value: Int, delay: Double): CloseButtonState =
             when (value) {
                 0 -> VisibleWithDelay
                 1 -> VisibleImmediately
                 2 -> Hidden
-                3 -> Custom(delay)
+                3 -> Custom(delay.toLong() * 1000)
                 else -> Hidden
             }
     }

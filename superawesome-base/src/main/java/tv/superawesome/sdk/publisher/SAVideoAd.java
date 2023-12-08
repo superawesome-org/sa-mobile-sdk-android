@@ -668,8 +668,8 @@ public class SAVideoAd {
      * that have been called before.
      * @param delay the amount of delay in milliseconds.
      */
-    public static void setCloseButtonWithDelay(long delay) {
-        closeButtonDelayTimer = delay;
+    public static void setCloseButtonWithDelay(double delay) {
+        closeButtonDelayTimer = (long)delay * 1000;
         closeButtonState = new CloseButtonState.Custom(closeButtonDelayTimer);
     }
 

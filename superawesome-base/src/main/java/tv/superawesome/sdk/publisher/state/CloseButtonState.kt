@@ -56,16 +56,16 @@ sealed class CloseButtonState {
     companion object {
 
         /**
-         * Gets the [CloseButtonState] from the [value], [time] is used for [Custom].
+         * Gets the [CloseButtonState] from the [value], [time] (seconds) is used for [Custom].
          */
         @JvmStatic
         @Suppress("MagicNumber")
-        fun fromInt(value: Int, time: Long): CloseButtonState =
+        fun fromInt(value: Int, time: Double): CloseButtonState =
             when (value) {
                 0 -> VisibleWithDelay
                 1 -> VisibleImmediately
                 2 -> Hidden
-                3 -> Custom(time)
+                3 -> Custom(time.toLong() * 1000)
                 else -> Hidden
             }
     }
