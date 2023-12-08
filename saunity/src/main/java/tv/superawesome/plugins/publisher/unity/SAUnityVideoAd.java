@@ -136,7 +136,7 @@ public class SAUnityVideoAd {
             boolean isParentalGateEnabled,
             boolean isBumperPageEnabled,
             int closeButtonState,
-            long closeButtonDelay,
+            double closeButtonDelay,
             boolean shouldShowSmallClickButton,
             boolean shouldAutomaticallyCloseAtEnd,
             int orientation,
