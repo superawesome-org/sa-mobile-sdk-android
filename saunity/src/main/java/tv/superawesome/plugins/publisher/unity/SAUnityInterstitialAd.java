@@ -134,7 +134,7 @@ public class SAUnityInterstitialAd {
             boolean isBackButtonEnabled,
             boolean testModeEnabled,
             int closeButtonState,
-            long closeButtonDelay) {
+            double closeButtonDelay) {
         SAInterstitialAd.setParentalGate(isParentalGateEnabled);
         SAInterstitialAd.setBumperPage(isBumperPageEnabled);
         SAInterstitialAd.setBackButton(isBackButtonEnabled);
