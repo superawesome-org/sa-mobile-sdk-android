@@ -50,29 +50,29 @@ enum class Settings(val label: String) {
             SettingsItemOption(
                 "Custom",
                 "SettingsItem.Buttons.CloseCustom",
-                CloseButtonState.Custom(0),
+                CloseButtonState.Custom(0.0),
             ),
         )
         CloseButtonDelay -> listOf(
             SettingsItemOption(
                 "5s",
                 "SettingsItem.Buttons.5s",
-                5_000L,
+                5.0,
             ),
             SettingsItemOption(
                 "10s",
                 "SettingsItem.Buttons.10s",
-                10_000L,
+                10.0,
             ),
             SettingsItemOption(
                 "15s",
                 "SettingsItem.Buttons.15s",
-                15_000L,
+                15.0,
             ),
             SettingsItemOption(
                 "30s",
                 "SettingsItem.Buttons.30s",
-                30_000L,
+                30.0,
             ),
         )
         BumperPage -> listOf(
@@ -178,7 +178,7 @@ data class SettingsData(
     val environment: SAConfiguration = SAConfiguration.PRODUCTION,
     val useBaseModule: Boolean = true,
     val closeButtonState: CloseButtonState = CloseButtonState.VisibleWithDelay,
-    val closeButtonDelay: Long = 5_000L,
+    val closeButtonDelay: Double = 5.0,
     val bumperEnabled: Boolean = false,
     val parentalEnabled: Boolean = false,
     val playEnabled: Boolean = true,
@@ -209,7 +209,7 @@ object DataStore {
                 }
             )
             Settings.CloseButtonDelay -> {
-                var newData = data.copy(closeButtonDelay = value as Long)
+                var newData = data.copy(closeButtonDelay = value as Double)
                 if (data.closeButtonState is CloseButtonState.Custom) {
                     newData = newData.copy(
                         closeButtonState = CloseButtonState.Custom(newData.closeButtonDelay)

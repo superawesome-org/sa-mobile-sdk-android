@@ -53,6 +53,12 @@ public class SAUnityInterstitialAd {
                 case adClosed:
                     SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
                     break;
+                case adPaused:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPaused.toString());
+                    break;
+                case adPlaying:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPlaying.toString());
+                    break;
             }
         });
     }
@@ -70,8 +76,8 @@ public class SAUnityInterstitialAd {
                 placementId,
                 configuration,
                 test,
-                encodedOptions,
-                null
+                null,
+                encodedOptions
         );
     }
 
@@ -107,7 +113,7 @@ public class SAUnityInterstitialAd {
     /**
      * Method that checks to see if an ad is available for an interstitial ad (from Unity)
      */
-    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable(Context context, int placementId) {
+    public static boolean SuperAwesomeUnitySAInterstitialAdHasAdAvailable(int placementId) {
         return SAInterstitialAd.hasAdAvailable(placementId);
     }
 
@@ -115,15 +121,7 @@ public class SAUnityInterstitialAd {
      * Method that plays a new Interstitial Ad (from Unity)
      */
     public static void SuperAwesomeUnitySAInterstitialAdPlay(Context context,
-                                                             int placementId,
-                                                             boolean isParentalGateEnabled,
-                                                             boolean isBumperPageEnabled,
-                                                             int orientation,
-                                                             boolean isBackButtonEnabled) {
-        SAInterstitialAd.setParentalGate(isParentalGateEnabled);
-        SAInterstitialAd.setBumperPage(isBumperPageEnabled);
-        setOrientation(orientation);
-        SAInterstitialAd.setBackButton(isBackButtonEnabled);
+                                                             int placementId) {
         SAInterstitialAd.play(placementId, context);
     }
 

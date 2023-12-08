@@ -27,6 +27,7 @@ import tv.superawesome.sdk.publisher.ui.managed.ManagedAdActivity
 import tv.superawesome.sdk.publisher.ui.video.VideoActivity
 import java.io.File
 
+
 /**
  * Video ads are full-screen ads that cover the interface of their host app.
  * They are a full screen experience where users opt-in to view a video ad in exchange for something
@@ -340,7 +341,7 @@ public object SAVideoAd {
      * @param delay the amount of delay in milliseconds.
      */
     @JvmStatic
-    public fun enableCloseButtonWithDelay(delay: Long) {
+    public fun enableCloseButtonWithDelay(delay: Double) {
         adManager.adConfig.closeButtonState = CloseButtonState.Custom(delay)
         adManager.adConfig.closeButtonDelayTimer = delay
     }

@@ -275,9 +275,8 @@ public object SAInterstitialAd {
      */
     @JvmStatic
     public fun enableCloseButtonWithDelay(delay: Double) {
-        val delayInMillis = delay.toLong() * 1000
-        adManager.adConfig.closeButtonDelayTimer = delayInMillis
-        adManager.adConfig.closeButtonState = CloseButtonState.Custom(delayInMillis)
+        adManager.adConfig.closeButtonState = CloseButtonState.Custom(delay)
+        adManager.adConfig.closeButtonDelayTimer = delay
     }
 
     /**

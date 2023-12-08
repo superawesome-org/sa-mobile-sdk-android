@@ -162,7 +162,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         });
 
         if (closeButtonState instanceof CloseButtonState.Custom) {
-            this.closeButtonTimer = new SACountDownTimer(closeButtonState.getTime());
+            this.closeButtonTimer = new SACountDownTimer(closeButtonState.getTimeInMillis());
             this.closeButtonTimer.setListener(() -> {
                 closeButton.setVisibility(View.VISIBLE);
             });

@@ -165,7 +165,7 @@ public class SAUnityVideoAd {
         } else if (state instanceof CloseButtonState.VisibleWithDelay) {
             SAVideoAd.enableCloseButton();
         } else if (state instanceof CloseButtonState.Custom) {
-            SAVideoAd.setCloseButtonWithDelay(delay);
+            SAVideoAd.enableCloseButtonWithDelay(delay);
         } else if (state instanceof CloseButtonState.Hidden) {
             // No action
         }

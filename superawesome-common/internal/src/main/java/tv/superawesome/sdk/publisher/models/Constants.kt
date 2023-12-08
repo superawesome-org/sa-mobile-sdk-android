@@ -23,7 +23,7 @@ object Constants {
     val defaultCloseButtonState = CloseButtonState.Hidden
 
     @JvmField
-    val defaultCloseButtonDelayTimer = 1_000L
+    val defaultCloseButtonDelayTimer: Double = 1.0
 
     @JvmField
     val defaultOrientation = Orientation.Any

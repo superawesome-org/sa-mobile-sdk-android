@@ -666,11 +666,11 @@ public class SAVideoAd {
     /**
      * Enables showing the close button after a set delay. This overrides any close button configuration
      * that have been called before.
-     * @param delay the amount of delay in milliseconds.
+     * @param delay the amount of delay in seconds.
      */
-    public static void setCloseButtonWithDelay(double delay) {
-        closeButtonDelayTimer = (long)delay * 1000;
-        closeButtonState = new CloseButtonState.Custom(closeButtonDelayTimer);
+    public static void enableCloseButtonWithDelay(double delay) {
+        closeButtonState = new CloseButtonState.Custom(delay);
+        closeButtonDelayTimer = closeButtonState.getTimeInMillis();
     }
 
     public static void setCloseButtonWarning(boolean value) {
