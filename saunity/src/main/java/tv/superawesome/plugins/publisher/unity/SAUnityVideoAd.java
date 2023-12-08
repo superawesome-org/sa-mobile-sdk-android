@@ -156,7 +156,7 @@ public class SAUnityVideoAd {
         SAVideoAd.setMuteOnStart(muteOnStart);
     }
 
-    private static void setCloseButtonState(int closeButtonState, long delay) {
+    private static void setCloseButtonState(int closeButtonState, double delay) {
 
         CloseButtonState state = CloseButtonState.fromInt(closeButtonState, delay);
 
