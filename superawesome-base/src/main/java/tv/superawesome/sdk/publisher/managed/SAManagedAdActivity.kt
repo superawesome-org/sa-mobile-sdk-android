@@ -168,10 +168,16 @@ class SAManagedAdActivity : Activity(),
 
     override fun onStop() {
         super.onStop()
-        adView.pauseVideo()
+        // We only want to pause the video if the activity is being backgrounded instead of closed.
+        if (!isFinishing) {
+            adView.pauseVideo()
+        }
         failSafeTimer.pause()
         closeButtonDelayTimer?.pause()
-        listener = null
+        Handler(Looper.getMainLooper()).postDelayed({
+            listener = null
+        }, LISTENER_CLEAR_DELAY)
+
     }
 
     override fun onDestroy() {
@@ -342,6 +348,7 @@ class SAManagedAdActivity : Activity(),
         const val CONFIG_KEY = "CONFIG"
 
         private const val CLOSE_BUTTON_SHOWN_TIME_INTERVAL = 2000L
+        private const val LISTENER_CLEAR_DELAY = 200L
 
         @JvmStatic
         fun newInstance(context: Context, placementId: Int, ad: SAAd, html: String): Intent =
