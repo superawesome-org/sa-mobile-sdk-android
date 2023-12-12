@@ -97,8 +97,8 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
         ad = new SAAd(SAJsonParser.newObject(adStr));
 
         int closeButtonValue = bundle.getInt("closeButton", SADefaults.defaultCloseButtonStateInterstitial().getValue());
-        long closeButtonTimer = bundle.getLong("closeButtonTimer", SADefaults.defaultCloseButtonDelayTimer());
-        CloseButtonState closeButtonState = CloseButtonState.Companion.fromInt(closeButtonValue, closeButtonTimer);
+        long closeButtonTimer = bundle.getLong("closeButtonTimer", SADefaults.defaultCloseButtonDelayTimerInterstitial());
+        CloseButtonState closeButtonState = CloseButtonState.Companion.fromInt(closeButtonValue, (double)closeButtonTimer);
 
         // make sure direction is locked
         switch (orientationL) {
@@ -485,7 +485,6 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
                             ads.remove(placementId);
                         }
 
-
                         // call listener
                         if (listener != null) {
                             SAEvent eventToSend = response.isValid() ? SAEvent.adLoaded : SAEvent.adEmpty;
@@ -621,8 +620,9 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      * @param delay the amount of delay in seconds.
      */
     public static void enableCloseButtonWithDelay(double delay) {
-        closeButtonDelayTimer = (long)delay * 1000;
-        closeButtonState = new CloseButtonState.Custom(closeButtonDelayTimer);
+        closeButtonState = new CloseButtonState.Custom(delay);
+        // Set in seconds and converted to milliseconds before playback
+        closeButtonDelayTimer = (long) closeButtonState.getTime();
     }
 
     /**********************************************************************************************
