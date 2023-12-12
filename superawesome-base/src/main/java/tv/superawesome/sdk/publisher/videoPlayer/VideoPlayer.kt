@@ -4,8 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
 import android.util.AttributeSet
-import android.view.*
+import android.util.Log
+import android.view.MotionEvent
+import android.view.SurfaceHolder
+import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
+import android.view.ViewParent
 import android.widget.RelativeLayout
 import android.widget.VideoView
 import java.lang.ref.WeakReference
@@ -115,7 +120,6 @@ class VideoPlayer @JvmOverloads constructor(
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun destroy() {
         control?.apply {
-            setDisplay(null)
             reset()
             destroy()
         }
@@ -130,7 +134,8 @@ class VideoPlayer @JvmOverloads constructor(
         try {
             control?.setDisplay(surfaceHolder)
             control?.takeIf { chrome?.isPlaying == true }?.start()
-        } catch (ignored: Exception) { /* N/A */
+        } catch (e: Exception) {
+            Log.w("SuperAwesome", "Error trying to create surface ${e.message}")
         }
     }
 
@@ -141,7 +146,8 @@ class VideoPlayer @JvmOverloads constructor(
         try {
             control?.takeIf { it.isIVideoPlaying }?.pause()
             control?.setDisplay(null)
-        } catch (ignored: Exception) { /* N/A */
+        } catch (e: Exception) {
+            Log.w("SuperAwesome", "Error trying to destroy surface ${e.message}")
         }
     }
 
