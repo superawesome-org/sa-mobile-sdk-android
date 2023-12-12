@@ -34,6 +34,11 @@ interface IVideoPlayerController {
     fun pause()
 
     /**
+     * Stops the media playback.
+     */
+    fun stop()
+
+    /**
      * Method that resets the state of the IVideoPlayerController, but should
      * not release all resources so that it becomes unavailable
      */
