@@ -160,7 +160,7 @@ public class SAUnityVideoAd {
 
         CloseButtonState state = CloseButtonState.fromInt(closeButtonState, delay);
 
-        if(state instanceof CloseButtonState.VisibleImmediately) {
+        if (state instanceof CloseButtonState.VisibleImmediately) {
             SAVideoAd.enableCloseButtonNoDelay();
         } else if (state instanceof CloseButtonState.VisibleWithDelay) {
             SAVideoAd.enableCloseButton();
