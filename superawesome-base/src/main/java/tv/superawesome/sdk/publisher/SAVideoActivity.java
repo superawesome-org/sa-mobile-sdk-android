@@ -218,6 +218,9 @@ public class SAVideoActivity extends Activity implements
             closeButtonDelayTimer.stop();
         }
         super.onDestroy();
+
+        // close the video player
+        videoPlayer.destroy();
     }
 
     @Override
@@ -366,9 +369,6 @@ public class SAVideoActivity extends Activity implements
         // close
         SACloseWarning.close();
         SAParentalGate.close();
-
-        // close the video player
-        videoPlayer.destroy();
 
         if (videoClick != null) {
             videoClick.close();

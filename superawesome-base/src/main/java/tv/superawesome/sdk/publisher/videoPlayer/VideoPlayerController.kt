@@ -77,18 +77,22 @@ class VideoPlayerController :
         removeTimer()
     }
 
+    override fun stop() {
+        if (prepared) {
+            super.stop()
+        }
+        removeTimer()
+    }
+
     // //////////////////////////////////////////////////////////////////////////////////////////////
     // Safe Media Player overrides
     // //////////////////////////////////////////////////////////////////////////////////////////////
     override fun destroy() {
         try {
-            stop()
-            removeTimer()
-            setDisplay(null)
+            reset()
             release()
-
         } catch (exception: Exception) {
-            Log.e("SuperAwesome", "Error destroying Video Player ${exception.message}")
+            Log.e("SuperAwesome", "Error destroying mediaPlayer ${exception.message}")
         }
     }
 
