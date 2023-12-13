@@ -235,7 +235,7 @@ public class SAInterstitialAd extends Activity implements SABannerAd.SABannerAdL
      */
     public static void load(final int placementId,
                             Context context,
-                            @Nullable final String openRtbPartnerId) {
+                            @NonNull final String openRtbPartnerId) {
         load(placementId, context, openRtbPartnerId, Collections.emptyMap());
     }
 
