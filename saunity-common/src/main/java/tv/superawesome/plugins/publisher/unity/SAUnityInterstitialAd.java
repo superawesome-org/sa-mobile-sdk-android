@@ -155,7 +155,7 @@ public class SAUnityInterstitialAd {
 
         CloseButtonState state = CloseButtonState.fromInt(closeButtonState, delay);
 
-        if(state instanceof CloseButtonState.VisibleImmediately) {
+        if (state instanceof CloseButtonState.VisibleImmediately) {
             SAInterstitialAd.enableCloseButtonNoDelay();
         } else if (state instanceof CloseButtonState.VisibleWithDelay) {
             SAInterstitialAd.enableCloseButton();
