@@ -26,9 +26,9 @@ internal class CloseButtonStateTest {
     @Test
     fun test_closeButtonState_fromInt() = runTest {
         // Given
-        val hiddenState = CloseButtonState.fromInt(2, 1)
-        val visibleWithDelayState = CloseButtonState.fromInt(0, 1)
-        val visibleImmediatelyState = CloseButtonState.fromInt(1, 1)
+        val hiddenState = CloseButtonState.fromInt(2, 1.0)
+        val visibleWithDelayState = CloseButtonState.fromInt(0, 1.0)
+        val visibleImmediatelyState = CloseButtonState.fromInt(1, 1.0)
 
         // Then
         assertEquals(CloseButtonState.Hidden.value, hiddenState.value)

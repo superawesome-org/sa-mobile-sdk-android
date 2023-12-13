@@ -140,7 +140,9 @@ class SAManagedAdActivity : Activity(),
         }
 
         if (config?.closeButtonState is CloseButtonState.Custom) {
-            closeButtonDelayTimer = SACountDownTimer(timeout = config!!.closeButtonState.time)
+            closeButtonDelayTimer = SACountDownTimer(
+                timeout = config!!.closeButtonState.timeInMillis,
+            )
             closeButtonDelayTimer?.listener = object : Listener {
                 override fun didTimeOut() {
                     showCloseButton()

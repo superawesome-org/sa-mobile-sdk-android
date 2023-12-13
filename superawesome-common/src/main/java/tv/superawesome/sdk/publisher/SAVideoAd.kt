@@ -340,7 +340,7 @@ public object SAVideoAd {
      * @param delay the amount of delay in milliseconds.
      */
     @JvmStatic
-    public fun enableCloseButtonWithDelay(delay: Long) {
+    public fun enableCloseButtonWithDelay(delay: Double) {
         adManager.adConfig.closeButtonState = CloseButtonState.Custom(delay)
         adManager.adConfig.closeButtonDelayTimer = delay
     }

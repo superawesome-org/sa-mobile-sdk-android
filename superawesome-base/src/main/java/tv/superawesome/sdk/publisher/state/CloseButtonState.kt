@@ -10,9 +10,15 @@ sealed class CloseButtonState {
     abstract val value: Int
 
     /**
-     * Delay, for [Custom].
+     * Delay (seconds), for [Custom].
      */
-    abstract val time: Long
+    abstract val time: Double
+
+    /**
+     * TimeInMillis, for [Custom].
+     */
+    val timeInMillis: Long
+        get() = time.toLong() * 1000
 
     /**
      * Whether the close button should be visible.
@@ -25,7 +31,7 @@ sealed class CloseButtonState {
      */
     data object VisibleWithDelay : CloseButtonState() {
         override val value: Int = 0
-        override val time: Long = 0L
+        override val time: Double = 0.0
     }
 
     /**
@@ -33,7 +39,7 @@ sealed class CloseButtonState {
      */
     data object VisibleImmediately : CloseButtonState() {
         override val value: Int = 1
-        override val time: Long = 0L
+        override val time: Double = 0.0
     }
 
     /**
@@ -41,14 +47,14 @@ sealed class CloseButtonState {
      */
     data object Hidden : CloseButtonState() {
         override val value: Int = 2
-        override val time: Long = 0L
+        override val time: Double = 0.0
     }
 
     /**
      * Close button will show after a certain amount of time.
      * @property time amount of time until the close button shows, in millis.
      */
-    data class Custom(override val time: Long) : CloseButtonState() {
+    data class Custom(override val time: Double) : CloseButtonState() {
         @Suppress("MagicNumber")
         override val value: Int = 3
     }
@@ -56,11 +62,11 @@ sealed class CloseButtonState {
     companion object {
 
         /**
-         * Gets the [CloseButtonState] from the [value], [time] is used for [Custom].
+         * Gets the [CloseButtonState] from the [value], [time] (seconds) is used for [Custom].
          */
         @JvmStatic
         @Suppress("MagicNumber")
-        fun fromInt(value: Int, time: Long): CloseButtonState =
+        fun fromInt(value: Int, time: Double): CloseButtonState =
             when (value) {
                 0 -> VisibleWithDelay
                 1 -> VisibleImmediately

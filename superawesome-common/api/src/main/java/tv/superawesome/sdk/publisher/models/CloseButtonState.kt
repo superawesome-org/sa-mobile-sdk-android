@@ -24,9 +24,14 @@ public sealed class CloseButtonState {
         override val value: Int = 2
     }
 
-    /** Close button shows after a set [delay], in ms. */
-    public data class Custom(val delay: Long) : CloseButtonState() {
+    /** Close button shows after a set [delay], in seconds. */
+    public data class Custom(val delay: Double) : CloseButtonState() {
         override val value: Int = 3
+        /**
+         * TimeInMillis, for [Custom].
+         */
+        val timeInMillis: Long
+            get() = delay.toLong() * 1000
     }
 
     /**
@@ -42,7 +47,7 @@ public sealed class CloseButtonState {
          * if not found.
          */
         @JvmStatic
-        public fun fromInt(value: Int, delay: Long): CloseButtonState =
+        public fun fromInt(value: Int, delay: Double): CloseButtonState =
             when (value) {
                 0 -> VisibleWithDelay
                 1 -> VisibleImmediately

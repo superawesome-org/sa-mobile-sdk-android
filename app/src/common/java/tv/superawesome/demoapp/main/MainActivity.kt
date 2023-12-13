@@ -25,11 +25,11 @@ import tv.superawesome.demoapp.model.FeatureType
 import tv.superawesome.demoapp.model.PlacementItem
 import tv.superawesome.demoapp.settings.DataStore
 import tv.superawesome.demoapp.settings.SettingsDialogFragment
-import tv.superawesome.sdk.publisher.models.CloseButtonState
-import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.AwesomeAds
+import tv.superawesome.sdk.publisher.SAEvent
 import tv.superawesome.sdk.publisher.SAInterstitialAd
 import tv.superawesome.sdk.publisher.SAVideoAd
+import tv.superawesome.sdk.publisher.models.CloseButtonState
 
 @Suppress("TooManyFunctions")
 class MainActivity : FragmentActivity() {
@@ -279,7 +279,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val originalMessage =binding. subtitleTextView.text
+        val originalMessage = binding.subtitleTextView.text
         val message = "$originalMessage $placementId $event"
         binding.subtitleTextView.text = message
     }

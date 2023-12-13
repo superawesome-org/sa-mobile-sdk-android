@@ -22,6 +22,7 @@ import tv.superawesome.sdk.publisher.components.ImageProviderType
 import tv.superawesome.sdk.publisher.components.Logger
 import tv.superawesome.sdk.publisher.components.TimeProviderType
 import tv.superawesome.sdk.publisher.extensions.toPx
+import tv.superawesome.sdk.publisher.models.CloseButtonState
 import tv.superawesome.sdk.publisher.models.Constants
 import tv.superawesome.sdk.publisher.models.Orientation
 
@@ -169,9 +170,10 @@ abstract class FullScreenActivity : AppCompatActivity() {
     }
 
     protected fun setUpCloseButtonDelayTimer() {
-        val delay = adConfig.closeButtonDelayTimer
-        closeButtonDelayTimer = CoroutineTimer(delay, timeProvider, lifecycleScope) {
-            closeButton.visibility = View.VISIBLE
+        (adConfig.closeButtonState as? CloseButtonState.Custom)?.let {
+            closeButtonDelayTimer = CoroutineTimer(it.timeInMillis, timeProvider, lifecycleScope) {
+                closeButton.visibility = View.VISIBLE
+            }
         }
     }
 
