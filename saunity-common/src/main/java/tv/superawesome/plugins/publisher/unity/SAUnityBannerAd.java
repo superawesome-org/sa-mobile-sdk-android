@@ -58,6 +58,12 @@ public class SAUnityBannerAd {
                 case adClosed:
                     SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
                     break;
+                case adPaused:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPaused.toString());
+                    break;
+                case adPlaying:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPlaying.toString());
+                    break;
             }
         });
 
@@ -172,6 +178,19 @@ public class SAUnityBannerAd {
             } catch (Exception e) {
                 Log.e("SuperAwesome", "Failed to add banner to Unity activity! " + e.getMessage());
             }
+        }
+    }
+
+    /**
+     * Method that applies settings (from Unity)
+     */
+    public static void SuperAwesomeUnitySABumperAdApplySettings(String unityName,
+                                                                boolean isParentalGateEnabled,
+                                                                boolean isBumperPageEnabled) {
+        if (bannerAdHashMap.containsKey(unityName) && !bannerAdHashMap.get(unityName).isClosed()) {
+            SABannerAd bannerAd = bannerAdHashMap.get(unityName);
+            bannerAd.setParentalGate(isParentalGateEnabled);
+            bannerAd.setBumperPage(isBumperPageEnabled);
         }
     }
 

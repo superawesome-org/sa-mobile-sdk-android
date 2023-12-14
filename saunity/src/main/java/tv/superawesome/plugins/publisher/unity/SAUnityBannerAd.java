@@ -66,6 +66,12 @@ public class SAUnityBannerAd {
                 case adClosed:
                     SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
                     break;
+                case adPaused:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPaused.toString());
+                    break;
+                case adPlaying:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPlaying.toString());
+                    break;
             }
         });
 
@@ -186,7 +192,7 @@ public class SAUnityBannerAd {
     }
 
     /**
-     * Method that applys settings (from Unity)
+     * Method that applies settings (from Unity)
      */
     public static void SuperAwesomeUnitySABumperAdApplySettings(String unityName,
                                                                 boolean isParentalGateEnabled,

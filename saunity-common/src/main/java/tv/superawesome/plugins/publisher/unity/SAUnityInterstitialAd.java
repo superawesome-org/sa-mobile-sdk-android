@@ -162,7 +162,7 @@ public class SAUnityInterstitialAd {
         } else if (state instanceof CloseButtonState.Custom) {
             SAInterstitialAd.enableCloseButtonWithDelay(delay);
         } else if (state instanceof CloseButtonState.Hidden) {
-            // No action
+            SAInterstitialAd.enableCloseButton();
         }
     }
 }

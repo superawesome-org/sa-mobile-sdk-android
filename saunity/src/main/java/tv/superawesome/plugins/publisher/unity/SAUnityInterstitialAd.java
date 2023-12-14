@@ -57,6 +57,12 @@ public class SAUnityInterstitialAd {
                 case adClosed:
                     SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
                     break;
+                case adPaused:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPaused.toString());
+                    break;
+                case adPlaying:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPlaying.toString());
+                    break;
             }
         });
     }
@@ -154,7 +160,7 @@ public class SAUnityInterstitialAd {
         } else if (state instanceof CloseButtonState.Custom) {
             SAInterstitialAd.enableCloseButtonWithDelay(delay);
         } else if (state instanceof CloseButtonState.Hidden) {
-            // No action
+            SAInterstitialAd.enableCloseButton();
         }
     }
 }
