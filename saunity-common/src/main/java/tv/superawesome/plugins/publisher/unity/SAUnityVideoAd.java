@@ -180,7 +180,7 @@ public class SAUnityVideoAd {
         } else if (state instanceof CloseButtonState.Custom) {
             SAVideoAd.enableCloseButtonWithDelay(delay);
         } else if (state instanceof CloseButtonState.Hidden) {
-            // No action
+            SAVideoAd.disableCloseButton();
         }
     }
 }

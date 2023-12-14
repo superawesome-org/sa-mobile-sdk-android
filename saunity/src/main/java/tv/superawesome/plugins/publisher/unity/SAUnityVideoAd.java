@@ -58,6 +58,12 @@ public class SAUnityVideoAd {
                 case adClosed:
                     SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adClosed.toString());
                     break;
+                case adPaused:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPaused.toString());
+                    break;
+                case adPlaying:
+                    SAUnityCallback.sendAdCallback(unityName, placementId, SAEvent.adPlaying.toString());
+                    break;
             }
         });
     }
@@ -167,7 +173,7 @@ public class SAUnityVideoAd {
         } else if (state instanceof CloseButtonState.Custom) {
             SAVideoAd.enableCloseButtonWithDelay(delay);
         } else if (state instanceof CloseButtonState.Hidden) {
-            // No action
+            SAVideoAd.disableCloseButton();
         }
     }
 }
