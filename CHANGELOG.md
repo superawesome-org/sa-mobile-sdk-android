@@ -1,3 +1,16 @@
+# [9.3.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.3...v9.3.0) (2023-12-15)
+
+
+### Bug Fixes
+
+* **video:** possible crash when destroying the media player ([f7d0fdd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f7d0fddf09bd306a50739248abc3da31e4800751))
+* **vpaid:** adPaused not being received properly ([5f63a48](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/5f63a48bb4c86ed921ca8ea7d512d4350f92dd6d))
+
+
+### Features
+
+* **close-button:** add custom close button delay timer ([a1f61b7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/a1f61b72865464316a4426f5bc732b8234ce6442))
+
 ## [9.2.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.2...v9.2.3) (2023-11-03)
 
 
