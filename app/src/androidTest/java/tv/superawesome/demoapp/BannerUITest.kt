@@ -95,6 +95,18 @@ class BannerUITest: BaseUITest() {
     }
 
     @Test
+    fun test_network_failure() {
+        val testData = TestData.bannerSuccess
+
+        listScreenRobot {
+            launchActivityWithNetworkFailure(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_adNotFound() {
         val testData = TestData(placementId = "88001", fileName = "not_found.json")
 

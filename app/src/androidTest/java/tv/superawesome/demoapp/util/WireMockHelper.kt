@@ -9,6 +9,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.matching
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
 import com.github.tomakehurst.wiremock.client.WireMock.verify
+import com.github.tomakehurst.wiremock.http.Fault
 import tv.superawesome.demoapp.model.TestData
 
 object WireMockHelper {
@@ -45,6 +46,22 @@ object WireMockHelper {
                         .withStatus(400)
                         .withBody("")
                 )
+        )
+    }
+
+    fun stubNetworkFailure(testData: TestData) {
+        var path = "/ad/${testData.placementId}"
+
+        if (testData.isMultiData) {
+            path = "/ad/${testData.placementId}/${testData.lineItemId}/${testData.creativeId}"
+        }
+
+        stubFor(
+            get(urlPathMatching(path))
+                .willReturn(
+                    aResponse()
+                        .withFault(Fault.MALFORMED_RESPONSE_CHUNK)
+            )
         )
     }
 
