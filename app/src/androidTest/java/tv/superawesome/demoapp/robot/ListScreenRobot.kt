@@ -92,6 +92,22 @@ class ListScreenRobot : BaseRobot() {
         }
     }
 
+    fun launchActivityWithNetworkFailure(testData: TestData) {
+        WireMockHelper.stubCommonPaths()
+        WireMockHelper.stubNetworkFailure(testData)
+
+        launchActivity<MainActivity>(
+            intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+                .apply {
+                    putExtra("environment", "UITesting")
+                }
+        )
+
+        settingsScreenRobot {
+            applyCommonSettings()
+        }
+    }
+
     private fun clickPlacementWithString(string: String) {
         onView(withId(R.id.recyclerView))
             .perform(
