@@ -346,6 +346,30 @@ class VideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_direct_video_network_failure() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchActivityWithNetworkFailure(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
+    fun test_vpaid_video_network_failure() {
+        val testData = TestData.videoVpaidPJ
+
+        listScreenRobot {
+            launchActivityWithNetworkFailure(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_adNotFound() {
         val testData = TestData(placementId = "87969", fileName = "not_found.json")
 
