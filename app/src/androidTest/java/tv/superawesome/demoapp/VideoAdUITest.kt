@@ -370,6 +370,20 @@ class VideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_vpaid_video_poor_conection() {
+        val testData = TestData.videoVpaidPJ
+
+        listScreenRobot {
+            launchActivityWithPoorConnection(testData)
+            tapOnPlacement(testData)
+
+            waitForRequestTimeout()
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_adNotFound() {
         val testData = TestData(placementId = "87969", fileName = "not_found.json")
 
