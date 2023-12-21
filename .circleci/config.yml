@@ -544,6 +544,9 @@ workflows:
 
       - test_superawesome_base_ui_tests:
           context: MOBILE_ANDROID_SDKS
+          requires:
+            - checkout_code
+            - generate_github_token
           filters:
             branches:
               ignore: develop
