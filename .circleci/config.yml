@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   token-gen: superawesomeltd/sa-gha-token-generator@1.1.1
+  android: circleci/android@2.1.2
 
 references:
   sa_config: &sa_config
@@ -137,6 +138,29 @@ jobs:
           command: |
             find $PWD/superawesome-common/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
             find $PWD/superawesome-common/internal/build/test-results/testDebugUnitTest -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
+      - store_test_results:
+          path: temp_files/test-results
+
+  test_superawesome_base_ui_tests:
+    executor:
+      name: android/android-machine
+      tag: 2023.04.1
+      resource-class: large
+    steps:
+      - checkout
+      - *generate_github_token
+      - *configure_google_services
+      - *clone_scripts_repo
+      - *bootstrap_android
+      - android/accept-licenses
+      - android/start-emulator-and-run-tests:
+          system-image: system-images;android-29;google_apis;x86_64
+          post-emulator-launch-assemble-command: ./gradlew app:assembleBaseDebugAndroidTest
+          test-command: ./gradlew app:connectedBaseDebugAndroidTest
+          run-logcat: true
+      - run:
+          name: Copy test results to temp folder
+          command: find $PWD/app/build/outputs/androidTest-results/connected -name '*.xml' -exec cp {} ${PWD}/temp_files/test-results/debug \;
       - store_test_results:
           path: temp_files/test-results
   
@@ -511,6 +535,14 @@ workflows:
           context: MOBILE_ANDROID_SDKS
           requires:
             - lint_check
+          filters:
+            branches:
+              ignore: develop
+            tags:
+              ignore: /^v.*/
+
+      - test_superawesome_base_ui_tests:
+          context: MOBILE_ANDROID_SDKS
           filters:
             branches:
               ignore: develop
