@@ -147,11 +147,12 @@ jobs:
       tag: 2023.04.1
       resource-class: large
     steps:
-      - checkout
-      - *generate_github_token
+      - attach_workspace:
+          at: .
+      - *load_env_vars
       - *configure_google_services
       - *clone_scripts_repo
-      - *bootstrap_android
+      - *bootstrap_android_sdk
       - android/accept-licenses
       - android/start-emulator-and-run-tests:
           system-image: system-images;android-29;google_apis;x86_64
