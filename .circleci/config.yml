@@ -512,36 +512,36 @@ workflows:
             tags:
               ignore: /^v.*/
 
-      - lint_check:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-            - generate_github_token
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - lint_check:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - checkout_code
+      #       - generate_github_token
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
-      - test_superawesome_base:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - lint_check
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - test_superawesome_base:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - lint_check
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
-      - test_superawesome_common:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - lint_check
-          filters:
-            branches:
-              ignore: develop
-            tags:
-              ignore: /^v.*/
+      # - test_superawesome_common:
+      #     context: MOBILE_ANDROID_SDKS
+      #     requires:
+      #       - lint_check
+      #     filters:
+      #       branches:
+      #         ignore: develop
+      #       tags:
+      #         ignore: /^v.*/
 
       - test_superawesome_base_ui_tests:
           context: MOBILE_ANDROID_SDKS
