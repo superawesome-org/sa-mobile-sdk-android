@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   token-gen: superawesomeltd/sa-gha-token-generator@1.1.1
-  android: circleci/android@2.1.2
+  android: circleci/android@2.3.0
 
 references:
   sa_config: &sa_config
