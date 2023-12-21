@@ -142,7 +142,10 @@ jobs:
           path: temp_files/test-results
 
   test_superawesome_base_ui_tests:
-    <<: *android_config
+    executor:
+      name: android/android-machine
+      tag: 2022.07.1
+      resource-class: large
     steps:
       - attach_workspace:
           at: .
