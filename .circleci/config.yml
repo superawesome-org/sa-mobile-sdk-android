@@ -147,6 +147,8 @@ jobs:
       tag: 2023.04.1
       resource-class: large
     steps:
+      - attach_workspace:
+          at: .
       - checkout
       - *load_env_vars
       - *configure_google_services
