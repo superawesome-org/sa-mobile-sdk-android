@@ -156,7 +156,7 @@ jobs:
       # - *bootstrap_android_sdk
       - android/accept-licenses
       - android/start-emulator-and-run-tests:
-          system-image: system-images;android-29;google_apis;x86_64
+          system-image: system-images;android-31;google_apis;x86_64
           post-emulator-launch-assemble-command: ./gradlew app:assembleBaseDebugAndroidTest
           test-command: ./gradlew app:connectedBaseDebugAndroidTest
           run-logcat: true
