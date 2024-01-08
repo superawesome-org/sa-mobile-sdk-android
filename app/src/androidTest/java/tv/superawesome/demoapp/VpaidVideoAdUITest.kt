@@ -590,11 +590,7 @@ class VpaidVideoAdUITest: BaseUITest() {
         val testData = TestData.videoVpaidYellowBoxNoTag
 
         listScreenRobot {
-            launchWithSuccessStub(testData) {
-                settingsScreenRobot {
-                    tapOnCloseDelayed()
-                }
-            }
+            launchWithSuccessStub(testData)
 
             tapOnPlacement(testData)
 
