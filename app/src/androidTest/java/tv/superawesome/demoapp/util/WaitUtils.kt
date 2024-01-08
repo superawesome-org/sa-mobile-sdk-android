@@ -114,7 +114,7 @@ open class ViewTester {
     ) {
         val maxTries = waitMillis / waitMillisPerTry.toInt()
         var tries = 0
-        var lastColor:Color? = null
+        var lastColor: Color? = null
 
         for (i in 0..maxTries)
             try {

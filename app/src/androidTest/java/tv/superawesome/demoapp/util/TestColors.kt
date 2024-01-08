@@ -13,7 +13,7 @@ object TestColors {
         if (givenColor == null || targetColor == null) return false
         val threshold = 0.025
         return abs(givenColor.red() - targetColor.red()) <= threshold
-                && abs(givenColor.red() - targetColor.red()) <= threshold
-                && abs(givenColor.red() - targetColor.red()) <= threshold
+                && abs(givenColor.green() - targetColor.green()) <= threshold
+                && abs(givenColor.blue() - targetColor.blue()) <= threshold
     }
 }

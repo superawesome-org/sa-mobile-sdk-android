@@ -160,6 +160,7 @@ object WireMockHelper {
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
+        stubForSuccess("/clickthrough")
     }
 
     private fun stubGoogleCalls() {
