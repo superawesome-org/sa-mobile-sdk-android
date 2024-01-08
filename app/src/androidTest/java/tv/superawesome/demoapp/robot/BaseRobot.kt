@@ -11,7 +11,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
-import org.hamcrest.core.IsNot
 import tv.superawesome.demoapp.util.ViewTester
 import tv.superawesome.demoapp.util.isVisible
 import tv.superawesome.demoapp.util.waitUntil
