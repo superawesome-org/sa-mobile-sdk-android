@@ -1,5 +1,6 @@
 package tv.superawesome.demoapp.util
 
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.containing
@@ -56,12 +57,33 @@ object WireMockHelper {
             path = "/ad/${testData.placementId}/${testData.lineItemId}/${testData.creativeId}"
         }
 
+        val response = buildResponse(testData.fileName, null, true)
+
         stubFor(
             get(urlPathMatching(path))
                 .willReturn(
-                    aResponse()
+                    response
                         .withFault(Fault.MALFORMED_RESPONSE_CHUNK)
             )
+        )
+    }
+
+    fun stubPoorNetwork(testData: TestData) {
+        var path = "/ad/${testData.placementId}"
+
+        if (testData.isMultiData) {
+            path = "/ad/${testData.placementId}/${testData.lineItemId}/${testData.creativeId}"
+        }
+
+        val response = buildResponse(testData.fileName, null, true)
+
+        stubFor(
+            get(urlPathMatching(path))
+                .willReturn(
+                    response
+                        .withStatus(200)
+                        .withChunkedDribbleDelay(25, 30000)
+                )
         )
     }
 
@@ -138,6 +160,7 @@ object WireMockHelper {
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
+        stubForSuccess("/clickthrough")
     }
 
     private fun stubGoogleCalls() {
@@ -271,7 +294,16 @@ object WireMockHelper {
         useReadFile: Boolean = false,
     ) {
 
-        val response = aResponse()
+        val response = buildResponse(filePath, mimeType, useReadFile)
+
+        stubFor(get(urlPathMatching(route)).willReturn(response))
+    }
+
+    private fun buildResponse(filePath: String,
+                              mimeType: String? = null,
+                              useReadFile: Boolean = false): ResponseDefinitionBuilder {
+
+        return aResponse()
             .withStatus(200)
             .apply {
                 if (useReadFile) {
@@ -284,7 +316,5 @@ object WireMockHelper {
                     withHeader("Content-Type", mimeType)
                 }
             }.withHeader("Access-Control-Allow-Origin", "*")
-
-        stubFor(get(urlPathMatching(route)).willReturn(response))
     }
 }

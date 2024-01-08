@@ -108,6 +108,22 @@ class ListScreenRobot : BaseRobot() {
         }
     }
 
+    fun launchActivityWithPoorConnection(testData: TestData) {
+        WireMockHelper.stubCommonPaths()
+        WireMockHelper.stubPoorNetwork(testData)
+
+        launchActivity<MainActivity>(
+            intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+                .apply {
+                    putExtra("environment", "UITesting")
+                }
+        )
+
+        settingsScreenRobot {
+            applyCommonSettings()
+        }
+    }
+
     private fun clickPlacementWithString(string: String) {
         onView(withId(R.id.recyclerView))
             .perform(
@@ -194,6 +210,10 @@ class ListScreenRobot : BaseRobot() {
                     )
                 )
             )
+    }
+
+    fun waitForRequestTimeout() {
+        Thread.sleep(60000)
     }
 }
 
