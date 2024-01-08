@@ -181,6 +181,10 @@ data class TestData(
             placementId = "87892",
             fileName = "interstitial_standard_success_clickthrough.json",
         )
+        val interstitialBrokenClickThrough = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_success_broken_click_through.json",
+        )
         val interstitialStandardMulti = TestData(
             placementId = "82089",
             lineItemId = "176803",
