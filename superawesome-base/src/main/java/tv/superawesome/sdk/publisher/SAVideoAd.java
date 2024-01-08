@@ -406,7 +406,7 @@ public class SAVideoAd {
             if (adL.creative.format == SACreativeFormat.video && context != null) {
                 if (adL.isVpaid) {
 
-                    if (adL.creative.details.tag == null || adL.creative.details.tag.isEmpty()) {
+                    if (adL.creative.details.tag.isEmpty()) {
                         sendAdFailedToShow(placementId);
                         ads.remove(placementId);
                         return;

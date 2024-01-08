@@ -611,7 +611,7 @@ public class SABannerAd extends FrameLayout {
         try {
             getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(destination)));
         } catch (Exception e) {
-            // do nothing
+            Log.d("AwesomeAds", "Failed to load url: " + destination);
         }
     }
 

@@ -110,6 +110,10 @@ object WireMockHelper {
         stubGoogleCalls()
     }
 
+    fun stubVPAIDNoTag() {
+        stubPathForFile("/vpaid/failing_vpaid", "video_vpaid_javascript.js")
+    }
+
     fun stubFailingVPAIDJavaScript() {
         stubPathForFile("/vpaid/failing_vpaid", "video_vpaid_javascript.js")
     }
@@ -160,6 +164,7 @@ object WireMockHelper {
         stubForSuccess("/vast/impression")
         stubForSuccess("/vast/click")
         stubForSuccess("/vast/clickthrough")
+        stubForSuccess("/clickthrough")
     }
 
     private fun stubGoogleCalls() {

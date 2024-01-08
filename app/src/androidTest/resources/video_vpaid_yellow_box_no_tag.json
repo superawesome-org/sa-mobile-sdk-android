@@ -1,7 +1,7 @@
 {
   "programmaticUuid": null,
   "creative": {
-    "id": 532609,
+    "id": 510371,
     "format": "video",
     "details": {
       "transcodedVideos": [],
@@ -26,15 +26,15 @@
   "is_house": true,
   "safe_ad_approved": false,
   "show_padlock": false,
-  "line_item_id": 195197,
+  "line_item_id": 182932,
   "moat": 0.1,
   "test": false,
-  "campaign_id": 53075,
-  "app": 32937,
+  "campaign_id": 48202,
+  "app": 41037,
   "device": "tablet",
   "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk",
-  "tip": "eyJhbGciOiJIUzI1NiJ9.ODYuMTkxLjIwMS4w.hcchmAKyBq8NVnAk7--X6zgD8T3iy9odX0xtxy4ReSs",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.ODEuMTEwLjI0OS4w.JID_ookEWOeYqark_ZJ8RGhOQaLYYq2UodGzzmzy0oQ",
   "is_vpaid": true,
-  "rnd": "1491311",
+  "rnd": "1039923",
   "show": ""
 }

@@ -70,12 +70,24 @@ data class TestData(
                 mimeType = "text/javascript",
                 useReadFile = true,
             ),
+        )
+
+        private val videoVpaidYellowBoxPayload = listOf(
             StubFile(
                 route = "/yellow_box_celtra_payload",
                 filePath = "vpaid/yellowBox/yellow_box_celtra_payload.js",
                 mimeType = "text/javascript",
                 useReadFile = true,
-            )
+            ),
+        )
+
+        private val videoVpaidYellowBoxPayloadBrokenClickThrough = listOf(
+            StubFile(
+                route = "/yellow_box_celtra_payload",
+                filePath = "vpaid/yellowBox/yellow_box_celtra_payload_broken_click_through.js",
+                mimeType = "text/javascript",
+                useReadFile = true,
+            ),
         )
 
         val videoDirect = TestData(
@@ -105,7 +117,7 @@ data class TestData(
             lineItemId = "213919",
             creativeId = "947123",
             fileName = "video_vpaid_multi_success.json",
-            additionalPaths = videoVpaidYellowBoxStubs,
+            additionalPaths = videoVpaidYellowBoxStubs + videoVpaidYellowBoxPayload,
         )
         val failingVideoVpaid = TestData(
             placementId = "89056",
@@ -119,17 +131,21 @@ data class TestData(
         val videoVpaidYellowBox = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success.json",
-            additionalPaths = videoVpaidYellowBoxStubs
+            additionalPaths = videoVpaidYellowBoxStubs + videoVpaidYellowBoxPayload
         )
         val videoVpaidYellowBoxNoTag = TestData(
             placementId = "89056",
-            fileName = "video_vpaid_yellow_box_no_tag.json",
-            additionalPaths = videoVpaidYellowBoxStubs
+            fileName = "video_vpaid_yellow_box_no_tag.json"
         )
         val videoVpaidYellowBoxBumper = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success_bumper_enabled.json",
-            additionalPaths = videoVpaidYellowBoxStubs
+            additionalPaths = videoVpaidYellowBoxStubs + videoVpaidYellowBoxPayload
+        )
+        val videoVpaidYellowBoxBrokenClickThrough = TestData(
+            placementId = "89056",
+            fileName = "video_vpaid_yellow_box_success.json",
+            additionalPaths = videoVpaidYellowBoxStubs + videoVpaidYellowBoxPayloadBrokenClickThrough
         )
         val bannerSuccess = TestData(
             placementId = "88001",
@@ -168,6 +184,10 @@ data class TestData(
         val interstitialStandardClickthrough = TestData(
             placementId = "87892",
             fileName = "interstitial_standard_success_clickthrough.json",
+        )
+        val interstitialBrokenClickThrough = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_success_broken_click_through.json",
         )
         val interstitialStandardMulti = TestData(
             placementId = "82089",

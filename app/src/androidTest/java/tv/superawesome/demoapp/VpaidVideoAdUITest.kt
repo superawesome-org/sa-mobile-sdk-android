@@ -478,7 +478,7 @@ class VpaidVideoAdUITest: BaseUITest() {
             videoScreenRobot {
                 // Wait for the ad to render
                 waitForDisplay(TestColors.vpaidYellow)
-                // Wait for the clickable white box to render
+                // Wait for the clickable blue box to render
                 waitForDisplay(TestColors.vpaidClickBlue)
                 tapOnAd()
                 // Exiting the browser takes us back to the app with the ad still showing
@@ -489,6 +489,31 @@ class VpaidVideoAdUITest: BaseUITest() {
             }
 
             WireMockHelper.verifyUrlPathCalled("/clickthrough")
+            checkForEvent(testData, SAEvent.adClicked)
+        }
+    }
+
+    @Test
+    fun test_vpaid_with_clickthrough_broken_does_nothing() {
+        val testData = TestData.videoVpaidYellowBoxBrokenClickThrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                // Wait for the ad to render
+                waitForDisplay(TestColors.vpaidYellow)
+                // Wait for the clickable blue box to render
+                waitForDisplay(TestColors.vpaidClickBlue)
+                tapOnAd()
+
+                IntentsHelper.checkIntentsForUrl("h11p://localhost.com/clickthrough")
+
+                waitAndTapOnClose()
+            }
+
+            WireMockHelper.verifyUrlPathNotCalled("/clickthrough")
             checkForEvent(testData, SAEvent.adClicked)
         }
     }
@@ -573,10 +598,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
             tapOnPlacement(testData)
 
-            videoScreenRobot {
-                waitAndTapOnClose()
-            }
-
+            // expected event is dispatched
             checkForEvent(testData, SAEvent.adFailedToShow)
         }
     }
