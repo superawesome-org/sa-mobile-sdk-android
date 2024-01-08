@@ -881,7 +881,7 @@ class VideoAdUITest: BaseUITest() {
             videoScreenRobot {
                 waitAndCheckSafeAdLogo()
                 tapOnSafeAdLogo()
-                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
@@ -906,7 +906,7 @@ class VideoAdUITest: BaseUITest() {
                     checkVisible()
                     solve()
                 }
-                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
@@ -931,7 +931,7 @@ class VideoAdUITest: BaseUITest() {
                     checkIsVisible()
                     waitForFinish()
                 }
-                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
@@ -963,7 +963,7 @@ class VideoAdUITest: BaseUITest() {
                     waitForFinish()
                 }
 
-                checkClickThrough(Endpoints.stubUrlVastClickThrough)
+                checkClickThrough(Endpoints.safeAdClickthrough)
             }
         }
     }
@@ -1016,6 +1016,7 @@ class VideoAdUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             videoScreenRobot {
+                waitForDisplay(TestColors.vastYellow)
                 device.pressHome()
                 device.waitForIdle()
                 device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
