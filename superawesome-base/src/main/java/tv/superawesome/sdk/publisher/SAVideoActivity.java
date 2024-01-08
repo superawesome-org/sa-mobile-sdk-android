@@ -207,6 +207,9 @@ public class SAVideoActivity extends Activity implements
     @Override
     protected void onStart() {
         super.onStart();
+        if (closeButtonDelayTimer != null) {
+            closeButtonDelayTimer.start();
+        }
     }
 
     @Override
