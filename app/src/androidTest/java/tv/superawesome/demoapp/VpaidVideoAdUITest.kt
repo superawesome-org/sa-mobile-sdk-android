@@ -586,7 +586,7 @@ class VpaidVideoAdUITest: BaseUITest() {
     }
 
     @Test
-    fun test_vpaid_no_html_tag() {
+    fun test_vpaid_empty_html_tag() {
         val testData = TestData.videoVpaidYellowBoxNoTag
 
         listScreenRobot {
