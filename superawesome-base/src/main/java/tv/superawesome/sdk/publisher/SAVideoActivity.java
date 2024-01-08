@@ -44,7 +44,8 @@ import tv.superawesome.sdk.publisher.videoPlayer.VideoPlayerController;
 public class SAVideoActivity extends Activity implements
         IVideoPlayer.Listener,
         SAVideoEvents.Listener,
-        SAVideoClick.Listener {
+        SAVideoClick.Listener,
+        SACountDownTimer.Listener {
 
     // fed-in data
     private SAAd ad = null;
@@ -60,8 +61,10 @@ public class SAVideoActivity extends Activity implements
     private VideoPlayer videoPlayer = null;
 
     private Boolean completed = false;
-    private SACountDownTimer failSafeTimer = new SACountDownTimer();
     private SACountDownTimer closeButtonDelayTimer;
+    private SACountDownTimer freezeFailSafeTimer;
+    private final SACountDownTimer failSafeTimer = new SACountDownTimer();
+
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -113,7 +116,6 @@ public class SAVideoActivity extends Activity implements
         chrome.shouldShowPadlock(videoConfig.shouldShowPadlock);
         chrome.setShouldShowSmallClickButton(videoConfig.shouldShowSmallClick);
         chrome.setClickListener(view -> {
-            control.pause();
             videoClick.handleAdClick(view, null);
             sendEvent(SAEvent.adClicked);
         });
@@ -177,18 +179,10 @@ public class SAVideoActivity extends Activity implements
 
         if (videoConfig.closeButtonState instanceof CloseButtonState.Custom) {
             closeButtonDelayTimer = new SACountDownTimer(videoConfig.closeButtonDelayTimer);
-            closeButtonDelayTimer.setListener(() -> {
-                closeButton.setVisibility(View.VISIBLE);
-            });
+            closeButtonDelayTimer.setListener(() -> closeButton.setVisibility(View.VISIBLE));
         }
 
-        failSafeTimer.setListener(() -> {
-            // Override the close button click behaviour when showing the close button as
-            // a fail safe
-            closeButton.setOnClickListener(v -> failSafeCloseAction());
-            closeButton.setVisibility(View.VISIBLE);
-            SAVideoAd.getPerformanceMetrics().trackCloseButtonFallbackShown(ad);
-        });
+        failSafeTimer.setListener(this);
     }
 
     /**
@@ -196,18 +190,25 @@ public class SAVideoActivity extends Activity implements
      */
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         if (control != null && control.getCurrentIVideoPosition() > 0) {
             control.start();
+        }
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.start();
         }
         failSafeTimer.start();
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        failSafeTimer.pause();
         if (closeButtonDelayTimer != null) {
             closeButtonDelayTimer.pause();
         }
@@ -221,6 +222,10 @@ public class SAVideoActivity extends Activity implements
         if (closeButtonDelayTimer != null) {
             closeButtonDelayTimer.stop();
         }
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+            freezeFailSafeTimer = null;
+        }
         super.onDestroy();
 
         // close the video player
@@ -232,6 +237,9 @@ public class SAVideoActivity extends Activity implements
         super.onPause();
         if (control != null) {
             control.pause();
+        }
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.pause();
         }
     }
 
@@ -277,7 +285,15 @@ public class SAVideoActivity extends Activity implements
 
     @Override
     public void onTimeUpdated(@NonNull IVideoPlayer videoPlayer, int time, int duration) {
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+        }
         videoEvents.time(videoPlayer, time, duration);
+
+        // Stopping the previous timer and starting a new one until a new tick is received.
+        freezeFailSafeTimer = new SACountDownTimer(2_500, 1_000);
+        freezeFailSafeTimer.setListener(this);
+        freezeFailSafeTimer.start();
     }
 
     @Override
@@ -291,6 +307,11 @@ public class SAVideoActivity extends Activity implements
         if (videoConfig.shouldCloseAtEnd) {
             close();
         }
+
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+            freezeFailSafeTimer = null;
+        }
     }
 
     @Override
@@ -299,7 +320,24 @@ public class SAVideoActivity extends Activity implements
 
         sendEvent(SAEvent.adFailedToShow);
 
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+            freezeFailSafeTimer = null;
+        }
+
         close();
+    }
+
+    // Failsafe listener
+
+    @Override
+    public void didTimeOut() {
+        Log.d("SuperAwesome", "Detected frozen video, failsafe mechanism active");
+        // Override the close button click behaviour when showing the close button as
+        // a fail safe
+        closeButton.setOnClickListener(v -> failSafeCloseAction());
+        closeButton.setVisibility(View.VISIBLE);
+        SAVideoAd.getPerformanceMetrics().trackCloseButtonFallbackShown(ad);
     }
 
     @Override
@@ -323,6 +361,7 @@ public class SAVideoActivity extends Activity implements
         sendEvent(SAEvent.adEnded);
         close();
     }
+
     private void onCloseAction() {
         if (videoConfig.shouldShowCloseWarning && !completed) {
             if (control != null) {
