@@ -1,0 +1,40 @@
+{
+  "programmaticUuid": null,
+  "creative": {
+    "id": 532609,
+    "format": "video",
+    "details": {
+      "transcodedVideos": [],
+      "url": "",
+      "image": "",
+      "video": "",
+      "placement_format": "video",
+      "width": 600,
+      "height": 480,
+      "duration": 0,
+      "tag": null,
+      "_tag": "tag",
+      "vast": ""
+    },
+    "isKSF": true
+  },
+  "advertiserId": 4,
+  "publisherId": 4,
+  "is_fill": false,
+  "is_fallback": false,
+  "campaign_type": 0,
+  "is_house": true,
+  "safe_ad_approved": false,
+  "show_padlock": false,
+  "line_item_id": 195197,
+  "moat": 0.1,
+  "test": false,
+  "campaign_id": 53075,
+  "app": 32937,
+  "device": "tablet",
+  "aua": "eyJhbGciOiJIUzI1NiJ9.TW96aWxsYS81LjAgKExpbnV4OyBVOyBBbmRyb2lkIDQuNC4yOyBkZS1kZTsgR1QtUDUyMTAgQnVpbGQvS09UNDlIKSBBcHBsZVdlYktpdC81MzQuMzAgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzQuMCBTYWZhcmkvNTM0LjMw.VuXGS9beOuiwz3ph56wZCw2nSJvWdkek2vUfCW3JyLk",
+  "tip": "eyJhbGciOiJIUzI1NiJ9.ODYuMTkxLjIwMS4w.hcchmAKyBq8NVnAk7--X6zgD8T3iy9odX0xtxy4ReSs",
+  "is_vpaid": true,
+  "rnd": "1491311",
+  "show": ""
+}

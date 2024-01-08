@@ -405,6 +405,13 @@ public class SAVideoAd {
             // try to start the activity
             if (adL.creative.format == SACreativeFormat.video && context != null) {
                 if (adL.isVpaid) {
+
+                    if (adL.creative.details.tag == null || adL.creative.details.tag.isEmpty()) {
+                        sendAdFailedToShow(placementId);
+                        ads.remove(placementId);
+                        return;
+                    }
+
                     // Start the timer
                     performanceMetrics.startTimerForRenderTime();
                     ads.remove(placementId);
