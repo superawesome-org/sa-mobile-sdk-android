@@ -40,6 +40,10 @@ class VideoScreenRobot : BaseRobot() {
         Thread.sleep(15000)
     }
 
+    fun waitForFreezeFailsafeTime() {
+        Thread.sleep(2500)
+    }
+
     fun tapOnAd() {
         onView(withContentDescription("Ad content"))
             .perform(click())

@@ -1,11 +1,15 @@
 package tv.superawesome.demoapp
 
+import android.app.Activity
 import android.graphics.Color
 import android.view.KeyEvent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import androidx.test.uiautomator.UiDevice
 import org.junit.After
 import org.junit.Before
@@ -21,6 +25,7 @@ import tv.superawesome.demoapp.robot.settingsScreenRobot
 import tv.superawesome.demoapp.robot.videoScreenRobot
 import tv.superawesome.demoapp.robot.videoWarningRobot
 import tv.superawesome.demoapp.settings.DataStore
+import tv.superawesome.demoapp.util.EspressoUtils
 import tv.superawesome.demoapp.util.IntentsHelper
 import tv.superawesome.demoapp.util.TestColors
 import tv.superawesome.demoapp.util.WireMockHelper
@@ -28,8 +33,10 @@ import tv.superawesome.demoapp.util.WireMockHelper.verifyQueryParamContains
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalled
 import tv.superawesome.demoapp.util.WireMockHelper.verifyUrlPathCalledWithQueryParam
 import tv.superawesome.sdk.publisher.SAEvent
+import tv.superawesome.sdk.publisher.SAVideoActivity
 import tv.superawesome.sdk.publisher.SAVideoAd
 import java.lang.reflect.InvocationTargetException
+
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -1014,6 +1021,31 @@ class VideoAdUITest: BaseUITest() {
 
                 checkForEvent(testData, SAEvent.adPaused)
                 checkForEvent(testData, SAEvent.adPlaying)
+            }
+        }
+    }
+
+    @Test
+    fun test_video_frozen_failsafe_activates_when_video_freezes() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchWithSuccessStub(testData) {
+                settingsScreenRobot {
+                    tapOnCloseHidden()
+                    tapOnDisableCloseAtEnd()
+                }
+            }
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                checkCloseIsNotDisplayed()
+
+                val activity = EspressoUtils.getCurrentActivity<SAVideoActivity>()
+                activity?.forceVideoPause()
+
+                waitForFreezeFailsafeTime()
+                checkCloseIsDisplayed()
             }
         }
     }

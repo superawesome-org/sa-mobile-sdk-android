@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+
+import java.lang.annotation.Retention;
 
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
@@ -449,6 +452,11 @@ public class SAVideoActivity extends Activity implements
         if (control != null) {
             control.start();
         }
+    }
+
+    @VisibleForTesting
+    public void forceVideoPause() {
+        control.pause();
     }
 
     private void sendEvent(SAEvent event) {
