@@ -135,7 +135,7 @@ data class TestData(
         )
         val videoVpaidYellowBoxNoTag = TestData(
             placementId = "89056",
-            fileName = "video_vpaid_yellow_box_no_tag.json"
+            fileName = "video_vpaid_yellow_box_no_tag.json",
         )
         val videoVpaidYellowBoxNoIsVpaidFlag = TestData(
             placementId = "89056",
