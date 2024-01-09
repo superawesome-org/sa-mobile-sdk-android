@@ -82,7 +82,7 @@ object WireMockHelper {
                 .willReturn(
                     response
                         .withStatus(200)
-                        .withChunkedDribbleDelay(25, 30000)
+                        .withChunkedDribbleDelay(30, 30000)
                 )
         )
     }
