@@ -22,8 +22,6 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import java.lang.annotation.Retention;
-
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
@@ -47,8 +45,7 @@ import tv.superawesome.sdk.publisher.videoPlayer.VideoPlayerController;
 public class SAVideoActivity extends Activity implements
         IVideoPlayer.Listener,
         SAVideoEvents.Listener,
-        SAVideoClick.Listener,
-        SACountDownTimer.Listener {
+        SAVideoClick.Listener {
 
     // fed-in data
     private SAAd ad = null;
@@ -67,6 +64,16 @@ public class SAVideoActivity extends Activity implements
     private SACountDownTimer closeButtonDelayTimer;
     private SACountDownTimer freezeFailSafeTimer;
     private final SACountDownTimer failSafeTimer = new SACountDownTimer();
+
+    private final SACountDownTimer.Listener failSafeListener = () -> {
+        didFailSafeTimeOut();
+        SAVideoAd.getPerformanceMetrics().trackCloseButtonFallbackShown(ad);
+    };
+
+    private final SACountDownTimer.Listener freezeFailSafeListener = () -> {
+        didFailSafeTimeOut();
+        SAVideoAd.getPerformanceMetrics().trackFreezeFallbackShown(ad);
+    };
 
 
     /**
@@ -185,7 +192,7 @@ public class SAVideoActivity extends Activity implements
             closeButtonDelayTimer.setListener(() -> closeButton.setVisibility(View.VISIBLE));
         }
 
-        failSafeTimer.setListener(this);
+        failSafeTimer.setListener(failSafeListener);
     }
 
     /**
@@ -298,7 +305,7 @@ public class SAVideoActivity extends Activity implements
 
         // Stopping the previous timer and starting a new one until a new tick is received.
         freezeFailSafeTimer = new SACountDownTimer(2_500, 1_000);
-        freezeFailSafeTimer.setListener(this);
+        freezeFailSafeTimer.setListener(freezeFailSafeListener);
         freezeFailSafeTimer.start();
     }
 
@@ -336,14 +343,12 @@ public class SAVideoActivity extends Activity implements
 
     // Failsafe listener
 
-    @Override
-    public void didTimeOut() {
+    private void didFailSafeTimeOut() {
         Log.d("SuperAwesome", "Detected frozen video, failsafe mechanism active");
         // Override the close button click behaviour when showing the close button as
         // a fail safe
         closeButton.setOnClickListener(v -> failSafeCloseAction());
         closeButton.setVisibility(View.VISIBLE);
-        SAVideoAd.getPerformanceMetrics().trackCloseButtonFallbackShown(ad);
     }
 
     @Override

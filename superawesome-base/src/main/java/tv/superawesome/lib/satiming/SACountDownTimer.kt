@@ -66,6 +66,7 @@ class SACountDownTimer(private var timeout: Long = 15_000L,
     private fun clearTimer() {
         timer?.cancel()
         timer = null
+        listener = null
     }
 
     /**

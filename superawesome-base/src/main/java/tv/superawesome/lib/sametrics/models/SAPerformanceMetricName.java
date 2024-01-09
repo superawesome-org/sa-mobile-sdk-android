@@ -5,6 +5,8 @@ public enum SAPerformanceMetricName {
 
   CloseButtonFallback("sa.ad.sdk.performance.fallback.close.shown.android"),
 
+  FreezeCloseButtonFallback("sa.ad.sdk.performance.freeze.fallback.shown.android"),
+
   DwellTime("sa.ad.sdk.dwell.time.android"),
 
   LoadTime("sa.ad.sdk.performance.load.time.android"),
