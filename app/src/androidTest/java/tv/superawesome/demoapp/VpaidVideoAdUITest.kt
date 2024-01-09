@@ -599,6 +599,20 @@ class VpaidVideoAdUITest: BaseUITest() {
         }
     }
 
+    @Test
+    fun test_vpaid_no_vpaid_flag() {
+        val testData = TestData.videoVpaidYellowBoxNoVpaidFlag
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+
+            tapOnPlacement(testData)
+
+            // expected event is dispatched
+            checkForEvent(testData, SAEvent.adEmpty)
+        }
+    }
+
     private fun testAdLoading(testData: TestData, color: Color) {
         listScreenRobot {
             launchWithSuccessStub(testData)
