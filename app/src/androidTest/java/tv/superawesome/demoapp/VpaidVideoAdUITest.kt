@@ -601,7 +601,7 @@ class VpaidVideoAdUITest: BaseUITest() {
 
     @Test
     fun test_vpaid_no_is_vpaid_flag() {
-        val testData = TestData.videoVpaidYellowBoxNoVpaidFlag
+        val testData = TestData.videoVpaidYellowBoxNoIsVpaidFlag
 
         listScreenRobot {
             launchWithSuccessStub(testData)
