@@ -137,6 +137,11 @@ data class TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_no_tag.json"
         )
+        val videoVpaidYellowBoxNoIsVpaidFlag = TestData(
+            placementId = "89056",
+            fileName = "video_vpaid_yellow_box_success_no_vpaid_flag.json",
+            additionalPaths = videoVpaidYellowBoxStubs + videoVpaidYellowBoxPayload
+        )
         val videoVpaidYellowBoxBumper = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success_bumper_enabled.json",
