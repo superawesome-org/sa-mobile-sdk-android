@@ -84,9 +84,22 @@ interface IVideoPlayer : IVideoPlayerController.Listener, IVideoPlayerController
         /**
          * This method is called by the video player when it has encountered an error
          * @param player - the current videoPlayer instance
+         * @param error - the error thrown by the video player
          * @param time - the current time of the video player
          * @param duration - the current total duration of the video player
          */
         fun onError(player: IVideoPlayer, error: Throwable, time: Int, duration: Int)
+
+        /**
+         * This method is called by the video player when it has been paused
+         * @param player - the current videoPlayer instance
+         */
+        fun onPause(player: IVideoPlayer)
+
+        /**
+         * This method is called by the video player when it has started playing or has resumed
+         * @param player - the current videoPlayer instance
+         */
+        fun onPlay(player: IVideoPlayer)
     }
 }
