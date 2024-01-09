@@ -571,6 +571,27 @@ class InterstitialUITest: BaseUITest() {
         }
     }
 
+    @Test
+    fun test_broken_click_through_link() {
+        IntentsHelper.stubIntentsForUrl()
+        val testData = TestData.interstitialBrokenClickThrough
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            interstitialScreenRobot {
+                tapOnAdDelayed()
+
+                IntentsHelper.checkIntentsForUrl("h11p://sd222.cvo")
+                waitAndTapOnClose()
+            }
+
+            verifyUrlPathCalled("/click")
+            checkForEvent(testData, SAEvent.adClicked)
+        }
+    }
+
     private fun openParentalGate() {
         val testData = TestData(
             placementId = "87892",

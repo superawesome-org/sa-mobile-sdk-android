@@ -133,6 +133,10 @@ data class TestData(
             fileName = "video_vpaid_yellow_box_success.json",
             additionalPaths = videoVpaidYellowBoxStubs + videoVpaidYellowBoxPayload
         )
+        val videoVpaidYellowBoxNoTag = TestData(
+            placementId = "89056",
+            fileName = "video_vpaid_yellow_box_no_tag.json",
+        )
         val videoVpaidYellowBoxBumper = TestData(
             placementId = "89056",
             fileName = "video_vpaid_yellow_box_success_bumper_enabled.json",
@@ -180,6 +184,10 @@ data class TestData(
         val interstitialStandardClickthrough = TestData(
             placementId = "87892",
             fileName = "interstitial_standard_success_clickthrough.json",
+        )
+        val interstitialBrokenClickThrough = TestData(
+            placementId = "87892",
+            fileName = "interstitial_standard_success_broken_click_through.json",
         )
         val interstitialStandardMulti = TestData(
             placementId = "82089",
