@@ -409,65 +409,6 @@ jobs:
 
 
 workflows:
-  version: 2.1
-  thursday:
-    triggers:
-      - schedule:
-          cron: "0 23 * * 4"
-          filters:
-            branches:
-              only:
-                - develop
-
-    jobs:
-      - checkout_code:
-          context: MOBILE_ANDROID_SDKS
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
-
-      - generate_github_token:
-          context: Build
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
-
-      - build_test_app_for_smoke_tests:
-          context: MOBILE_ANDROID_SDKS
-          requires:
-            - checkout_code
-            - generate_github_token
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
-
-      - android_build_production:
-          context: MOBILE_ANDROID_APPS
-          requires:
-            - checkout_code
-            - generate_github_token
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
-
-      - android_prod_store:
-          context: MOBILE_ANDROID_APPS
-          requires:
-            - android_build_production
-          filters:
-            branches:
-              only: develop
-            tags:
-              ignore: /^v.*/
-
   pull_request:
     jobs:
       - checkout_code:
@@ -551,6 +492,46 @@ workflows:
           requires:
             - checkout_code
             - generate_github_token
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - approve_test_app_build_for_app_store_and_smoke_test:
+          type: approval
+          requires:
+            - semantic_release_dry_run
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - build_test_app_for_smoke_tests:
+          context: MOBILE_ANDROID_SDKS
+          requires:
+            - approve_test_app_build_for_app_store_and_smoke_test
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - android_build_production:
+          context: MOBILE_ANDROID_APPS
+          requires:
+            - approve_test_app_build_for_app_store_and_smoke_test
+          filters:
+            branches:
+              only: develop
+            tags:
+              ignore: /^v.*/
+
+      - android_prod_store:
+          context: MOBILE_ANDROID_APPS
+          requires:
+            - android_build_production
           filters:
             branches:
               only: develop
