@@ -600,6 +600,32 @@ class VpaidVideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_vpaid_video_poor_conection() {
+        val testData = TestData.videoVpaidPJ
+
+        listScreenRobot {
+            launchActivityWithPoorConnection(testData)
+            tapOnPlacement(testData)
+
+            waitForRequestTimeout()
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
+    fun test_vpaid_video_network_failure() {
+        val testData = TestData.videoVpaidPJ
+
+        listScreenRobot {
+            launchActivityWithNetworkFailure(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_vpaid_no_is_vpaid_flag() {
         val testData = TestData.videoVpaidYellowBoxNoIsVpaidFlag
 
