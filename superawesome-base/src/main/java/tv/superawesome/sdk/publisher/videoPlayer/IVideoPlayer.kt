@@ -8,47 +8,47 @@ import android.widget.VideoView
  * - media control
  * - chrome control
  * - video surfaces
- * to play local or remote videos
+ * to play local or remote videos.
  */
 interface IVideoPlayer : IVideoPlayerController.Listener, IVideoPlayerControllerView.Listener {
     /**
-     * Sets the media control for the video player
-     * @param control - an instance of an object that implements the IVideoPlayerController protocol
+     * Getter for the video view surface.
+     * @return a valid video view.
+     */
+    val surface: VideoView?
+
+    /**
+     * Sets the media control for the video player.
+     * @param control - an instance of an object that implements the IVideoPlayerController protocol.
      */
     fun setController(control: IVideoPlayerController)
 
     /**
-     * Sets the chrome control for the video player
-     * @param chrome - an instance of an object that implements the IVideoPlayerControllerView protocol
+     * Sets the chrome control for the video player.
+     * @param chrome - an instance of an object that implements the IVideoPlayerControllerView protocol.
      */
     fun setControllerView(chrome: IVideoPlayerControllerView)
     fun setFullscreenMode(mode: FullscreenMode?)
     fun setCanDismissOnRotateToPortrait(canDismissOnRotateToPortrait: Boolean)
 
     /**
-     * Sets the state of the video to maximised
+     * Sets the state of the video to maximised.
      */
     fun setMaximised()
 
     /**
-     * Sets the state of the video to minimised
+     * Sets the state of the video to minimised.
      */
     fun setMinimised()
 
     /**
-     * Destroy & release the whole video player
+     * Destroy & release the whole video player.
      */
     fun destroy()
 
     /**
-     * Getter for the video view surface
-     * @return a valid video view
-     */
-    val surface: VideoView?
-
-    /**
-     * Setter for the IVideoPlayer's listener
-     * @param listener an instance of an object that implements IVideoPlayer.Listener
+     * Setter for the IVideoPlayer's listener.
+     * @param listener an instance of an object that implements IVideoPlayer.Listener.
      */
     fun setListener(listener: Listener)
 
@@ -58,47 +58,47 @@ interface IVideoPlayer : IVideoPlayerController.Listener, IVideoPlayerController
     interface Listener {
         /**
          * This method is called by the video player when it is prepared and
-         * has started to play a video
-         * @param player - the current videoPlayer instance
-         * @param time - the current time of the video player
-         * @param duration - the current total duration of the video player
+         * has started to play a video.
+         * @param player - the current videoPlayer instance.
+         * @param time - the current time of the video player.
+         * @param duration - the current total duration of the video player.
          */
         fun onPrepared(player: IVideoPlayer, time: Int, duration: Int)
 
         /**
-         * This method is called by the video player when it has updated the time
-         * @param player - the current videoPlayer instance
-         * @param time - the current time of the video player
-         * @param duration - the current total duration of the video player
+         * This method is called by the video player when it has updated the time.
+         * @param player - the current videoPlayer instance.
+         * @param time - the current time of the video player.
+         * @param duration - the current total duration of the video player.
          */
         fun onTimeUpdated(player: IVideoPlayer, time: Int, duration: Int)
 
         /**
-         * This method is called by the video player when it has finished playing
-         * @param player - the current videoPlayer instance
-         * @param time - the current time of the video player
-         * @param duration - the current total duration of the video player
+         * This method is called by the video player when it has finished playing.
+         * @param player - the current videoPlayer instance.
+         * @param time - the current time of the video player.
+         * @param duration - the current total duration of the video player.
          */
         fun onComplete(player: IVideoPlayer, time: Int, duration: Int)
 
         /**
-         * This method is called by the video player when it has encountered an error
-         * @param player - the current videoPlayer instance
-         * @param error - the error thrown by the video player
-         * @param time - the current time of the video player
-         * @param duration - the current total duration of the video player
+         * This method is called by the video player when it has encountered an error.
+         * @param player - the current videoPlayer instance.
+         * @param error - the error thrown by the video player.
+         * @param time - the current time of the video player.
+         * @param duration - the current total duration of the video player.
          */
         fun onError(player: IVideoPlayer, error: Throwable, time: Int, duration: Int)
 
         /**
-         * This method is called by the video player when it has been paused
-         * @param player - the current videoPlayer instance
+         * This method is called by the video player when it has been paused.
+         * @param player - the current videoPlayer instance.
          */
         fun onPause(player: IVideoPlayer)
 
         /**
-         * This method is called by the video player when it has started playing or has resumed
-         * @param player - the current videoPlayer instance
+         * This method is called by the video player when it has started playing or has resumed.
+         * @param player - the current videoPlayer instance.
          */
         fun onPlay(player: IVideoPlayer)
     }
