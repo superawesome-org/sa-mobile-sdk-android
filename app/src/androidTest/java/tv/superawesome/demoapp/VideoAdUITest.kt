@@ -358,20 +358,8 @@ class VideoAdUITest: BaseUITest() {
     }
 
     @Test
-    fun test_vpaid_video_network_failure() {
-        val testData = TestData.videoVpaidPJ
-
-        listScreenRobot {
-            launchActivityWithNetworkFailure(testData)
-            tapOnPlacement(testData)
-
-            checkForEvent(testData, SAEvent.adFailedToLoad)
-        }
-    }
-
-    @Test
-    fun test_vpaid_video_poor_conection() {
-        val testData = TestData.videoVpaidPJ
+    fun test_direct_video_poor_conection() {
+        val testData = TestData.videoDirect
 
         listScreenRobot {
             launchActivityWithPoorConnection(testData)
