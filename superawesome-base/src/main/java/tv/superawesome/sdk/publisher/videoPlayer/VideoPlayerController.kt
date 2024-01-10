@@ -67,6 +67,7 @@ class VideoPlayerController :
             return
         }
         super.start()
+        listener?.onPlay(this)
         createTimer()
     }
 
@@ -74,6 +75,7 @@ class VideoPlayerController :
         if (prepared) {
             super.pause()
         }
+        listener?.onPause(this)
         removeTimer()
     }
 
