@@ -75,6 +75,9 @@ public class SAVideoActivity extends Activity implements
         SAVideoAd.getPerformanceMetrics().trackFreezeFallbackShown(ad);
     };
 
+    private static final Long FREEZE_TIMER_INTERVAL = 1_000L;
+    private static final Long FREEZE_TIMER_TIMEOUT = 2_500L;
+
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -303,8 +306,7 @@ public class SAVideoActivity extends Activity implements
         }
         videoEvents.time(videoPlayer, time, duration);
 
-        // Stopping the previous timer and starting a new one until a new tick is received.
-        freezeFailSafeTimer = new SACountDownTimer(2_500, 1_000);
+        freezeFailSafeTimer = new SACountDownTimer(FREEZE_TIMER_TIMEOUT, FREEZE_TIMER_INTERVAL);
         freezeFailSafeTimer.setListener(freezeFailSafeListener);
         freezeFailSafeTimer.start();
     }
