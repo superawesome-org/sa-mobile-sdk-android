@@ -592,6 +592,32 @@ class InterstitialUITest: BaseUITest() {
         }
     }
 
+    @Test
+    fun test_poor_connection() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchActivityWithPoorConnection(testData)
+            tapOnPlacement(testData)
+
+            waitForRequestTimeout()
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
+    fun test_network_failure() {
+        val testData = TestData.interstitialStandard
+
+        listScreenRobot {
+            launchActivityWithNetworkFailure(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
     private fun openParentalGate() {
         val testData = TestData(
             placementId = "87892",
