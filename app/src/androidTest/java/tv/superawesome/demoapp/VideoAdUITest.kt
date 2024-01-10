@@ -346,6 +346,18 @@ class VideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_direct_video_network_failure() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchActivityWithNetworkFailure(testData)
+            tapOnPlacement(testData)
+
+            checkForEvent(testData, SAEvent.adFailedToLoad)
+        }
+    }
+
+    @Test
     fun test_direct_video_poor_conection() {
         val testData = TestData.videoDirect
 
@@ -354,18 +366,6 @@ class VideoAdUITest: BaseUITest() {
             tapOnPlacement(testData)
 
             waitForRequestTimeout()
-
-            checkForEvent(testData, SAEvent.adFailedToLoad)
-        }
-    }
-
-    @Test
-    fun test_direct_video_network_failure() {
-        val testData = TestData.videoDirect
-
-        listScreenRobot {
-            launchActivityWithNetworkFailure(testData)
-            tapOnPlacement(testData)
 
             checkForEvent(testData, SAEvent.adFailedToLoad)
         }
