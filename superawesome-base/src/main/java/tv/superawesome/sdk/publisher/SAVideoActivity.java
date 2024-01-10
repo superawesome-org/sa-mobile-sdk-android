@@ -116,10 +116,7 @@ public class SAVideoActivity extends Activity implements
         chrome.setClickListener(view -> {
             control.pause();
             videoClick.handleAdClick(view, null);
-            if (listenerRef != null) {
-                listenerRef.onEvent(ad.placementId, SAEvent.adClicked);
-            }
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClicked);
+            sendEvent(SAEvent.adClicked);
         });
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
 
@@ -253,7 +250,7 @@ public class SAVideoActivity extends Activity implements
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // VideoPlayer.VisibilityListener
+    // IVideoPlayer.Listener
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -261,10 +258,8 @@ public class SAVideoActivity extends Activity implements
 
         videoEvents.prepare(videoPlayer, time, duration);
 
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adShown);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adShown);
-        }
+        sendEvent(SAEvent.adShown);
+
         failSafeTimer.stop();
         if (closeButtonDelayTimer != null) {
             closeButtonDelayTimer.start();
@@ -282,10 +277,7 @@ public class SAVideoActivity extends Activity implements
         videoEvents.complete(videoPlayer, time, duration);
         closeButton.setVisibility(View.VISIBLE);
 
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
-        }
+        sendEvent(SAEvent.adEnded);
 
         if (videoConfig.shouldCloseAtEnd) {
             close();
@@ -296,11 +288,19 @@ public class SAVideoActivity extends Activity implements
     public void onError(@NonNull IVideoPlayer videoPlayer, @NonNull Throwable throwable, int time, int duration) {
         videoEvents.error(videoPlayer, time, duration);
 
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adFailedToShow);
-        }
+        sendEvent(SAEvent.adFailedToShow);
 
         close();
+    }
+
+    @Override
+    public void onPlay(@NonNull IVideoPlayer player) {
+        sendEvent(SAEvent.adPlaying);
+    }
+
+    @Override
+    public void onPause(@NonNull IVideoPlayer player) {
+        sendEvent(SAEvent.adPaused);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -311,10 +311,7 @@ public class SAVideoActivity extends Activity implements
      * Method that closes the ad via the fail safe timer
      */
     private void failSafeCloseAction() {
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adEnded);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adEnded);
-        }
+        sendEvent(SAEvent.adEnded);
         close();
     }
     private void onCloseAction() {
@@ -361,10 +358,7 @@ public class SAVideoActivity extends Activity implements
         }
 
         // call listener
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, SAEvent.adClosed);
-            Log.d("SAVideoActivity", "Event callback: " + SAEvent.adClosed);
-        }
+        sendEvent(SAEvent.adClosed);
 
         // close
         SACloseWarning.close();
@@ -398,6 +392,14 @@ public class SAVideoActivity extends Activity implements
     public void didRequestPlaybackResume() {
         control.start();
     }
+
+    private void sendEvent(SAEvent event) {
+        if (listenerRef != null) {
+            listenerRef.onEvent(ad.placementId, event);
+            Log.d("SAVideoActivity", "Event callback: " + event);
+        }
+    }
+
 }
 
 class VideoConfig implements Parcelable {
