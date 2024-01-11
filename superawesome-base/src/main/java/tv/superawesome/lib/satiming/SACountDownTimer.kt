@@ -37,8 +37,8 @@ class SACountDownTimer(private var timeout: Long = 15_000L,
             override fun onTick(millisUntilFinished: Long) = Unit
 
             override fun onFinish() {
-                stop()
                 listener?.didTimeOut()
+                stop()
             }
         }.start()
     }
@@ -61,12 +61,12 @@ class SACountDownTimer(private var timeout: Long = 15_000L,
     fun stop() {
         timeout = 0
         clearTimer()
+        listener = null
     }
 
     private fun clearTimer() {
         timer?.cancel()
         timer = null
-        listener = null
     }
 
     /**
