@@ -27,6 +27,7 @@ android {
 dependencies {
     implementation (libs.androidx.annotation)
     implementation (libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.media3.exoplayer)
 
     // Tests
     testImplementation (libs.junit4)
