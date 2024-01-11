@@ -36,6 +36,8 @@ public class SASession implements ISASession {
     private final static String PRODUCTION_URL = "https://ads.superawesome.tv/v2";
     private final static String STAGING_URL = "https://ads.staging.superawesome.tv/v2";
     private final static String UITESTING_URL = "http://localhost:8080";
+    private final static String S3_URL = "https://aa-sdk.s3.eu-west-1.amazonaws.com";
+    private final static String S3_TESTING_URL = "http://localhost:8080";
     private final static String DEVICE_PHONE = "phone";
     private final static String DEVICE_TABLET = "tablet";
 
@@ -45,6 +47,7 @@ public class SASession implements ISASession {
     // private state members
     private final Context context;
     private String baseUrl;
+    private String s3Url;
     private boolean testEnabled;
     private int dauId;
     private String version;
@@ -123,6 +126,7 @@ public class SASession implements ISASession {
      * Setters
      */
     public void setConfiguration(SAConfiguration configuration) {
+        s3Url = S3_URL;
         if (configuration == SAConfiguration.PRODUCTION) {
             this.configuration = SAConfiguration.PRODUCTION;
             baseUrl = PRODUCTION_URL;
@@ -132,6 +136,7 @@ public class SASession implements ISASession {
         } else if (configuration == SAConfiguration.UITESTING) {
             this.configuration = SAConfiguration.UITESTING;
             baseUrl = UITESTING_URL;
+            s3Url = S3_TESTING_URL;
         } else {
             this.configuration = SAConfiguration.DEV;
             baseUrl = DEV_URL;
@@ -273,6 +278,9 @@ public class SASession implements ISASession {
     public String getBaseUrl () {
         return baseUrl;
     }
+
+    @Override
+    public String getS3Url() { return s3Url; }
 
     @Override
     public boolean getTestMode () {

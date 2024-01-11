@@ -14,6 +14,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 public abstract class MockAbstractWebServer {
 
     private final MockWebServer server;
+    public Boolean isErrorEnabled = false;
 
     public MockAbstractWebServer () {
         // Create a MockWebServer. These are lean enough that you can create a new

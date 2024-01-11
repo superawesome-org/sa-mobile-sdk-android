@@ -39,6 +39,11 @@ public class MockSession implements ISASession {
     }
 
     @Override
+    public String getS3Url() {
+        return serverUrl;
+    }
+
+    @Override
     public boolean getTestMode() {
         return true;
     }
