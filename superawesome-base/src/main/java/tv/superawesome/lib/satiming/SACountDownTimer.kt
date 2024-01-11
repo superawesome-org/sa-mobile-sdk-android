@@ -71,7 +71,7 @@ class SACountDownTimer(private var timeout: Long = 15_000L,
     /**
      * A listener interface for the timer.
      */
-    interface Listener {
+    fun interface Listener {
         /**
          * A method that is called when the timer has reached the end of the countdown.
          */
