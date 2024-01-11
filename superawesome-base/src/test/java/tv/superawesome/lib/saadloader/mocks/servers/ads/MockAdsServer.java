@@ -34,6 +34,12 @@ public class MockAdsServer extends MockAbstractWebServer {
             return ResponseFactory.adResponse("mock_ad_cpm_video_unreachable_video_resource.json");
         else if (line.contains("/vast/vast_unreachable_video"))
             return ResponseFactory.adResponse("mock_vast_unreachable_video_response.xml");
+        else if (line.contains("/featureFlags/featureFlags.json"))
+            if (isErrorEnabled) {
+                return ResponseFactory.fileResponse("feature_flags_error.json");
+            } else {
+                return ResponseFactory.fileResponse("feature_flags_success.json");
+            }
         else
             return ResponseFactory.timeoutResponse();
     }

@@ -1,7 +1,7 @@
 package tv.superawesome.lib.featureflags
 
 import android.util.Log
-import tv.superawesome.lib.sasession.session.SASession
+import tv.superawesome.lib.sasession.session.ISASession
 
 class FeatureFlagsManager(
     private val ffApi: GlobalFeatureFlagsApi = GlobalFeatureFlagsApi()
@@ -9,7 +9,7 @@ class FeatureFlagsManager(
 
     var featureFlags = FeatureFlags()
 
-    fun getFeatureFlags(session: SASession) =
+    fun getFeatureFlags(session: ISASession) =
         ffApi.getGlobalFlags(this, session)
 
     override fun didLoadFeatureFlags(featureFlags: FeatureFlags) {
