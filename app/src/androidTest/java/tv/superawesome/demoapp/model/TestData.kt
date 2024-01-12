@@ -119,6 +119,10 @@ data class TestData(
             fileName = "video_vpaid_multi_success.json",
             additionalPaths = videoVpaidYellowBoxStubs + videoVpaidYellowBoxPayload,
         )
+        val videoVastNoVastTag = TestData(
+            placementId = "88406",
+            fileName = "video_vast_no_tag.json",
+        )
         val failingVideoVpaid = TestData(
             placementId = "89056",
             fileName = "video_vpaid_failure.json",
