@@ -17,7 +17,7 @@ class GlobalFeatureFlagsApi(
     private val timeout: Int = 15_000,
 ) {
     private fun getAwesomeAdsEndpoint(session: ISASession): String =
-        session.s3Url + "/featureFlags/featureFlags.json"
+        session.s3Url + "/featureFlags/android/featureFlags.json"
 
 
     /**
