@@ -11,8 +11,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +31,7 @@ import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
 import tv.superawesome.sdk.publisher.video.AdVideoPlayerControllerView;
 import tv.superawesome.sdk.publisher.video.VideoUtils;
+import tv.superawesome.sdk.publisher.videoPlayer.ExoPlayerController;
 import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayer;
 import tv.superawesome.sdk.publisher.videoPlayer.IVideoPlayerController;
 import tv.superawesome.sdk.publisher.videoPlayer.VideoPlayer;
@@ -52,7 +51,7 @@ public class SAVideoActivity extends Activity implements
     private VideoConfig videoConfig = null;
     private SAInterface listenerRef = null;
     // derived objects
-    private final IVideoPlayerController control = new VideoPlayerController();
+    private IVideoPlayerController control = null;
     private SAVideoEvents videoEvents = null;
     private SAVideoClick videoClick = null;
 
@@ -121,6 +120,11 @@ public class SAVideoActivity extends Activity implements
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
 
         videoPlayer = new VideoPlayer(this);
+        if (isExoPlayerEnabled()) {
+            control = new ExoPlayerController(videoPlayer);
+        } else {
+            control = new VideoPlayerController();
+        }
         videoPlayer.setLayoutParams(params);
         videoPlayer.setController(control);
         videoPlayer.setControllerView(chrome);
@@ -165,7 +169,10 @@ public class SAVideoActivity extends Activity implements
         try {
             Uri fileUri = new VideoUtils().getUriFromFile(this, ad.creative.details.media.path);
             control.playAsync(this, fileUri);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            Log.e("SuperAwesome", "Unable to play video", e);
+            finish();
+            return;
         }
 
         if (videoConfig.closeButtonState instanceof CloseButtonState.Custom) {
@@ -191,7 +198,7 @@ public class SAVideoActivity extends Activity implements
     @Override
     protected void onStart() {
         super.onStart();
-        if (control.getCurrentIVideoPosition() > 0) {
+        if (control != null && control.getCurrentIVideoPosition() > 0) {
             control.start();
         }
         failSafeTimer.start();
@@ -223,7 +230,9 @@ public class SAVideoActivity extends Activity implements
     @Override
     protected void onPause() {
         super.onPause();
-        control.pause();
+        if (control != null) {
+            control.pause();
+        }
     }
 
     @Override
@@ -316,7 +325,9 @@ public class SAVideoActivity extends Activity implements
     }
     private void onCloseAction() {
         if (videoConfig.shouldShowCloseWarning && !completed) {
-            control.pause();
+            if (control != null) {
+                control.pause();
+            }
             SACloseWarning.setListener(new SACloseWarning.Interface() {
                 @Override
                 public void onResumeSelected() {
@@ -335,7 +346,9 @@ public class SAVideoActivity extends Activity implements
     }
 
     private void onVolumeAction() {
-        setMuted(!control.isMuted());
+        if (control != null) {
+            setMuted(!control.isMuted());
+        }
     }
 
     private void setMuted(Boolean muted) {
@@ -343,7 +356,9 @@ public class SAVideoActivity extends Activity implements
         volumeButton.setImageBitmap(
             muted ? SAImageUtils.createVolumeOffBitmap() : SAImageUtils.createVolumeOnBitmap()
         );
-        control.setMuted(muted);
+        if (control != null) {
+            control.setMuted(muted);
+        }
     }
 
     /**
@@ -385,12 +400,16 @@ public class SAVideoActivity extends Activity implements
 
     @Override
     public void didRequestPlaybackPause() {
-        control.pause();
+        if (control != null) {
+            control.pause();
+        }
     }
 
     @Override
     public void didRequestPlaybackResume() {
-        control.start();
+        if (control != null) {
+            control.start();
+        }
     }
 
     private void sendEvent(SAEvent event) {
@@ -400,90 +419,7 @@ public class SAVideoActivity extends Activity implements
         }
     }
 
-}
-
-class VideoConfig implements Parcelable {
-
-    final boolean shouldShowPadlock;
-    final boolean isParentalGateEnabled;
-    final boolean isBumperPageEnabled;
-    final boolean shouldShowSmallClick;
-    final boolean isBackButtonEnabled;
-    final boolean shouldCloseAtEnd;
-    final boolean shouldMuteOnStart;
-    final CloseButtonState closeButtonState;
-    final long closeButtonDelayTimer;
-    final boolean shouldShowCloseWarning;
-    final SAOrientation orientation;
-
-    VideoConfig(boolean shouldShowPadlock,
-                boolean isParentalGateEnabled,
-                boolean isBumperPageEnabled,
-                boolean shouldShowSmallClick,
-                boolean isBackButtonEnabled,
-                boolean shouldCloseAtEnd,
-                boolean shouldMuteOnStart,
-                CloseButtonState closeButtonState,
-                long closeButtonDelayTimer,
-                boolean shouldShowCloseWarning,
-                SAOrientation orientation) {
-        this.shouldShowPadlock = shouldShowPadlock;
-        this.isParentalGateEnabled = isParentalGateEnabled;
-        this.isBumperPageEnabled = isBumperPageEnabled;
-        this.shouldShowSmallClick = shouldShowSmallClick;
-        this.isBackButtonEnabled = isBackButtonEnabled;
-        this.shouldCloseAtEnd = shouldCloseAtEnd;
-        this.shouldMuteOnStart = shouldMuteOnStart;
-        this.closeButtonState = closeButtonState;
-        this.closeButtonDelayTimer = closeButtonDelayTimer;
-        this.shouldShowCloseWarning = shouldShowCloseWarning;
-        this.orientation = orientation;
-    }
-
-    protected VideoConfig(Parcel in) {
-        shouldShowPadlock = in.readByte() != 0;
-        isParentalGateEnabled = in.readByte() != 0;
-        isBumperPageEnabled = in.readByte() != 0;
-        shouldShowSmallClick = in.readByte() != 0;
-        isBackButtonEnabled = in.readByte() != 0;
-        shouldCloseAtEnd = in.readByte() != 0;
-        shouldMuteOnStart = in.readByte() != 0;
-        int closeState = in.readInt();
-        closeButtonDelayTimer = in.readLong();
-        closeButtonState = CloseButtonState.Companion.fromInt(closeState, closeButtonDelayTimer);
-        shouldShowCloseWarning = in.readByte() != 0;
-        orientation = SAOrientation.fromValue(in.readInt());
-    }
-
-    public static final Creator<VideoConfig> CREATOR = new Creator<VideoConfig>() {
-        @Override
-        public VideoConfig createFromParcel(Parcel in) {
-            return new VideoConfig(in);
-        }
-
-        @Override
-        public VideoConfig[] newArray(int size) {
-            return new VideoConfig[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeByte((byte) (shouldShowPadlock ? 1 : 0));
-        parcel.writeByte((byte) (isParentalGateEnabled ? 1 : 0));
-        parcel.writeByte((byte) (isBumperPageEnabled ? 1 : 0));
-        parcel.writeByte((byte) (shouldShowSmallClick ? 1 : 0));
-        parcel.writeByte((byte) (isBackButtonEnabled ? 1 : 0));
-        parcel.writeByte((byte) (shouldCloseAtEnd ? 1 : 0));
-        parcel.writeByte((byte) (shouldMuteOnStart ? 1 : 0));
-        parcel.writeInt(closeButtonState.getValue());
-        parcel.writeLong(closeButtonDelayTimer);
-        parcel.writeByte((byte) (shouldShowCloseWarning ? 1 : 0));
-        parcel.writeInt(orientation.ordinal());
+    private boolean isExoPlayerEnabled() {
+        return AwesomeAds.featureFlagsManager.getFeatureFlags().isExoPlayerEnabled();
     }
 }
