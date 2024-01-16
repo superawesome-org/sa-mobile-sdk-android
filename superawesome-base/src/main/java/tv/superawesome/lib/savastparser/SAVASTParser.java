@@ -152,6 +152,53 @@ public class SAVASTParser {
         });
     }
 
+    /**
+     * Method that parses the inlined VAST XML.
+     *
+     * @param vast      the initial VAST XML.
+     * @param listener  a copy of the SAVASTParserInterface listener that the class / method sends
+     *                  callbacks to the library user
+     */
+    public void parseVASTXML(String vast, final SAVASTParserInterface listener) {
+        final SAVASTParserInterface localListener = listener != null ? listener : ad -> {};
+
+        if (vast == null || vast.isEmpty()) {
+            localListener.saDidParseVAST(null);
+            return;
+        }
+
+        try {
+            Document document = SAXMLParser.parseXML(vast);
+
+            Element Ad = SAXMLParser.findFirstInstanceInSiblingsAndChildrenOf(document, "Ad");
+
+            if (Ad == null) {
+                localListener.saDidParseVAST(null);
+                return;
+            }
+
+            // use the internal "parseAdXML" method to form an SAVASTAd object
+            SAVASTAd ad = parseAdXML(Ad);
+
+            switch (ad.type) {
+                case Invalid: {
+                    localListener.saDidParseVAST(null);
+                    break;
+                }
+                case InLine: {
+                    localListener.saDidParseVAST(ad);
+                    break;
+                }
+                // if it's a wrapper, I sum up what I have and call the method recursively
+                case Wrapper: {
+                    recursiveParse(ad.redirect, ad, localListener);
+                    break;
+                }
+            }
+        } catch (ParserConfigurationException | IOException | SAXException | NullPointerException e) {
+            localListener.saDidParseVAST(null);
+        }
+    }
 
     /**
      * Recursive method that handles all the VAST parsing
