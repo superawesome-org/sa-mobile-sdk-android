@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
@@ -60,8 +61,24 @@ public class SAVideoActivity extends Activity implements
     private VideoPlayer videoPlayer = null;
 
     private Boolean completed = false;
-    private SACountDownTimer failSafeTimer = new SACountDownTimer();
     private SACountDownTimer closeButtonDelayTimer;
+    private SACountDownTimer freezeFailSafeTimer;
+    private final SACountDownTimer failSafeTimer = new SACountDownTimer();
+
+    private final SACountDownTimer.Listener failSafeListener = () -> {
+        didFailSafeTimeOut();
+        SAVideoAd.getPerformanceMetrics().trackCloseButtonFallbackShown(ad);
+    };
+
+    private final SACountDownTimer.Listener freezeFailSafeListener = () -> {
+        didFailSafeTimeOut();
+        SAVideoAd.getPerformanceMetrics().trackFreezeFallbackShown(ad);
+    };
+
+    private final Long freezeTimerTimeout =
+            AwesomeAds.featureFlagsManager.getFeatureFlags().getVideoStabilityFailsafeTimeout();
+
+    private static final Long FREEZE_TIMER_INTERVAL = 500L;
 
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
@@ -113,7 +130,6 @@ public class SAVideoActivity extends Activity implements
         chrome.shouldShowPadlock(videoConfig.shouldShowPadlock);
         chrome.setShouldShowSmallClickButton(videoConfig.shouldShowSmallClick);
         chrome.setClickListener(view -> {
-            control.pause();
             videoClick.handleAdClick(view, null);
             sendEvent(SAEvent.adClicked);
         });
@@ -177,18 +193,10 @@ public class SAVideoActivity extends Activity implements
 
         if (videoConfig.closeButtonState instanceof CloseButtonState.Custom) {
             closeButtonDelayTimer = new SACountDownTimer(videoConfig.closeButtonDelayTimer);
-            closeButtonDelayTimer.setListener(() -> {
-                closeButton.setVisibility(View.VISIBLE);
-            });
+            closeButtonDelayTimer.setListener(() -> closeButton.setVisibility(View.VISIBLE));
         }
 
-        failSafeTimer.setListener(() -> {
-            // Override the close button click behaviour when showing the close button as
-            // a fail safe
-            closeButton.setOnClickListener(v -> failSafeCloseAction());
-            closeButton.setVisibility(View.VISIBLE);
-            SAVideoAd.getPerformanceMetrics().trackCloseButtonFallbackShown(ad);
-        });
+        failSafeTimer.setListener(failSafeListener);
     }
 
     /**
@@ -196,18 +204,28 @@ public class SAVideoActivity extends Activity implements
      */
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         if (control != null && control.getCurrentIVideoPosition() > 0) {
             control.start();
+        }
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.start();
         }
         failSafeTimer.start();
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (closeButtonDelayTimer != null) {
+            closeButtonDelayTimer.start();
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        failSafeTimer.pause();
         if (closeButtonDelayTimer != null) {
             closeButtonDelayTimer.pause();
         }
@@ -221,6 +239,10 @@ public class SAVideoActivity extends Activity implements
         if (closeButtonDelayTimer != null) {
             closeButtonDelayTimer.stop();
         }
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+            freezeFailSafeTimer = null;
+        }
         super.onDestroy();
 
         // close the video player
@@ -232,6 +254,9 @@ public class SAVideoActivity extends Activity implements
         super.onPause();
         if (control != null) {
             control.pause();
+        }
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.pause();
         }
     }
 
@@ -277,7 +302,14 @@ public class SAVideoActivity extends Activity implements
 
     @Override
     public void onTimeUpdated(@NonNull IVideoPlayer videoPlayer, int time, int duration) {
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+        }
         videoEvents.time(videoPlayer, time, duration);
+
+        freezeFailSafeTimer = new SACountDownTimer(freezeTimerTimeout, FREEZE_TIMER_INTERVAL);
+        freezeFailSafeTimer.setListener(freezeFailSafeListener);
+        freezeFailSafeTimer.start();
     }
 
     @Override
@@ -291,6 +323,11 @@ public class SAVideoActivity extends Activity implements
         if (videoConfig.shouldCloseAtEnd) {
             close();
         }
+
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+            freezeFailSafeTimer = null;
+        }
     }
 
     @Override
@@ -299,7 +336,22 @@ public class SAVideoActivity extends Activity implements
 
         sendEvent(SAEvent.adFailedToShow);
 
+        if (freezeFailSafeTimer != null) {
+            freezeFailSafeTimer.stop();
+            freezeFailSafeTimer = null;
+        }
+
         close();
+    }
+
+    // Failsafe listener
+
+    private void didFailSafeTimeOut() {
+        Log.d("SuperAwesome", "Detected frozen video, failsafe mechanism active");
+        // Override the close button click behaviour when showing the close button as
+        // a fail safe
+        closeButton.setOnClickListener(v -> failSafeCloseAction());
+        closeButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -323,6 +375,7 @@ public class SAVideoActivity extends Activity implements
         sendEvent(SAEvent.adEnded);
         close();
     }
+
     private void onCloseAction() {
         if (videoConfig.shouldShowCloseWarning && !completed) {
             if (control != null) {
@@ -410,6 +463,11 @@ public class SAVideoActivity extends Activity implements
         if (control != null) {
             control.start();
         }
+    }
+
+    @VisibleForTesting
+    public void forceVideoPause() {
+        control.pause();
     }
 
     private void sendEvent(SAEvent event) {

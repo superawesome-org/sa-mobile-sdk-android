@@ -117,6 +117,17 @@ public class SAPerformanceMetrics {
     sendPerformanceMetric(model, session);
   }
 
+  public void trackFreezeFallbackShown(@NonNull SAAd ad) {
+    SAPerformanceMetricModel model = new SAPerformanceMetricModel(
+            1L,
+            SAPerformanceMetricName.FreezeCloseButtonFallback,
+            SAPerformanceMetricType.Increment,
+            getPerformanceMetricTags(ad, session)
+    );
+
+    sendPerformanceMetric(model, session);
+  }
+
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Conveniences
   ////////////////////////////////////////////////////////////////////////////////////////////////

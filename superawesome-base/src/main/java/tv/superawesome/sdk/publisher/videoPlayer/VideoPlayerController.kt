@@ -26,7 +26,8 @@ class VideoPlayerController :
 
     override val isIVideoPlaying: Boolean = false
     override val iVideoDuration: Int = 10
-    override val currentIVideoPosition: Int = 0
+    override val currentIVideoPosition: Int
+        get() = currentPosition
     override var videoIVideoWidth: Int = 100
         private set
     override var videoIVideoHeight: Int = 100
