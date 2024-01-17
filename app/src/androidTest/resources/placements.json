@@ -114,6 +114,11 @@
           "creativeId": 499385
         },
         {
+          "placementId": 10010,
+          "name": "VAST Video Flat Colour Inline XML",
+          "type": "video"
+        },
+        {
           "placementId": 58316,
           "name": "STAGING - VPAID PopJam Video With Sound",
           "type": "video"
