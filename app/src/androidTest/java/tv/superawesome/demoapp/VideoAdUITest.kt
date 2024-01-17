@@ -331,6 +331,16 @@ class VideoAdUITest: BaseUITest() {
     }
 
     @Test
+    fun test_vast_doesNotLoad_noVastTag() {
+        val testData = TestData.videoVastNoVastTag
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+            checkForEvent(testData, SAEvent.adEmpty)
+        }
+    }
+
+    @Test
     fun test_direct_adLoading() {
         val testData = TestData.videoDirect
         testAdLoading(testData, TestColors.vastYellow)
