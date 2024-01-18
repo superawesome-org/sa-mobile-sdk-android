@@ -1,18 +1,15 @@
 package tv.superawesome.demoapp
 
-import android.app.Activity
 import android.graphics.Color
 import android.view.KeyEvent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
-import androidx.test.runner.lifecycle.Stage
 import androidx.test.uiautomator.UiDevice
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import tv.superawesome.demoapp.model.Endpoints
@@ -39,7 +36,6 @@ import java.lang.reflect.InvocationTargetException
 
 
 @RunWith(AndroidJUnit4::class)
-@SmallTest
 class VideoAdUITest: BaseUITest() {
 
     @Before
@@ -1056,6 +1052,36 @@ class VideoAdUITest: BaseUITest() {
 
                 waitForFreezeFailsafeTime()
                 checkCloseIsDisplayed()
+            }
+        }
+    }
+
+    @Test
+    @Ignore("Won't work properly unless the isAdResponseVASTEnabled flag is enabled manually.")
+    fun test_video_inline_vast() {
+        val testData = TestData.vastInline
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vastYellow)
+            }
+        }
+    }
+
+    @Test
+    @Ignore("Won't work properly unless the isAdResponseVASTEnabled flag is enabled manually.")
+    fun test_video_inline_wrapper_vast() {
+        val testData = TestData.vastInlineWrapper
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay(TestColors.vastYellow)
             }
         }
     }

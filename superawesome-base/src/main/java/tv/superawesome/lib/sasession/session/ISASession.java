@@ -16,7 +16,6 @@ import tv.superawesome.lib.sautils.SAUtils;
 public interface ISASession {
     void prepareSession (SASessionInterface listener);
     String getBaseUrl ();
-    String getS3Url ();
     boolean getTestMode ();
     int getDauId ();
     String getVersion ();

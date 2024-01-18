@@ -30,6 +30,8 @@ import tv.superawesome.lib.sasession.session.ISASession;
 import tv.superawesome.lib.sautils.SAClock;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.lib.savastparser.SAVASTParser;
+import tv.superawesome.lib.savastparser.SAVASTParserInterface;
+import tv.superawesome.sdk.publisher.AwesomeAds;
 import tv.superawesome.sdk.publisher.QueryAdditionalOptions;
 import tv.superawesome.sdk.publisher.QueryBuilder;
 
@@ -376,37 +378,45 @@ public class SALoader {
                 // in this case process the VAST response, download the files and return
                 case video: {
                     Context con = isDebug ? null : context;
-                    SAVASTParser parser = new SAVASTParser(con, executor, timeout);
                     if (ad.isVpaid) {
                         ad.creative.details.media.html = SAProcessHTML.formatCreativeIntoTagHTML(ad);
                         localListener.saDidLoadAd(response);
                     } else {
-                        parser.parseVAST(
-                                ad.creative.details.vast,
-                                savastAd -> {
-
-                                    // copy the vast data
-                                    ad.creative.details.media.vastAd = savastAd;
-                                    // and the exact url to download
-                                    ad.creative.details.media.url = savastAd.url;
-                                    // download file
-                                    SAFileDownloader downloader =
-                                            new SAFileDownloader(context, executor, isDebug, timeout);
-                                    downloader.downloadFileFrom(
-                                            ad.creative.details.media.url,
-                                            (success, key, playableDiskUrl) -> {
-
-                                                ad.creative.details.media.path = playableDiskUrl;
-                                                ad.creative.details.media.isDownloaded = playableDiskUrl != null;
-
-                                                // finally respond with a response
-                                                localListener.saDidLoadAd(response);
-                                            });
-                                });
+                        SAVASTParser parser = new SAVASTParser(con, executor, timeout);
+                        parseVASTUrl(parser, ad, response, localListener);
                     }
                     break;
                 }
             }
+        }
+    }
+
+    private void parseVASTUrl(SAVASTParser parser, SAAd ad, SAResponse response, SALoaderInterface listener) {
+        SAVASTParserInterface vastListener = savastAd -> {
+                // copy the vast data
+                ad.creative.details.media.vastAd = savastAd;
+                // and the exact url to download
+                ad.creative.details.media.url = savastAd.url;
+                // download file
+                SAFileDownloader downloader =
+                        new SAFileDownloader(context, executor, isDebug, timeout);
+                downloader.downloadFileFrom(
+                        ad.creative.details.media.url,
+                        (success, key, playableDiskUrl) -> {
+
+                            ad.creative.details.media.path = playableDiskUrl;
+                            ad.creative.details.media.isDownloaded = playableDiskUrl != null;
+
+                            // finally respond with a response
+                            listener.saDidLoadAd(response);
+                        });
+            };
+
+        boolean isInlineVastEnabled = AwesomeAds.getFeatureFlags().isAdResponseVASTEnabled();
+        if (ad.creative.details.vastXml != null && isInlineVastEnabled) {
+            parser.parseVASTXML(ad.creative.details.vastXml, vastListener);
+        } else {
+            parser.parseVAST(ad.creative.details.vast, vastListener);
         }
     }
 }

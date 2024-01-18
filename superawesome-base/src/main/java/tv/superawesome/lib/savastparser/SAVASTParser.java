@@ -5,6 +5,7 @@
 package tv.superawesome.lib.savastparser;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -81,77 +82,58 @@ public class SAVASTParser {
         final SAVASTParserInterface localListener = listener != null ? listener : ad -> {};
 
         // start the recursive method
-        recursiveParse(url, new SAVASTAd(), new SAVASTParserInterface() {
-            /**
-             * Overridden SAVASTParserInterface implementation in which finally the whole parser
-             * has produced a SAVASTAd of sorts (might or might not be valid) and I have to get
-             * a valid media out of it
-             *
-             * @param ad the returned ad
-             */
-            @Override
-            public void saDidParseVAST(SAVASTAd ad) {
-
-                SAVASTMedia minMedia = null;
-                SAVASTMedia maxMedia = null;
-                SAVASTMedia medMedia = null;
-
-                // get the min media
-                for (SAVASTMedia media : ad.media) {
-                    if (minMedia == null || (media.bitrate < minMedia.bitrate)) {
-                        minMedia = media;
-                    }
-                }
-                // get the max media
-                for (SAVASTMedia media : ad.media) {
-                    if (maxMedia == null || (media.bitrate > maxMedia.bitrate)) {
-                        maxMedia = media;
-                    }
-                }
-                // get everything in between
-                for (SAVASTMedia media : ad.media) {
-                    if (media != minMedia && media != maxMedia) {
-                        medMedia = media;
-                    }
-                }
-
-                // get media Url based on connection type
-                SAUtils.SAConnectionType connectionType = SAUtils.getNetworkConnectivity(context);
-                switch (connectionType) {
-
-                    // try to get the lowest media possible
-                    case cellular_unknown:
-                    case cellular_2g: {
-                        ad.url = minMedia != null ? minMedia.url : null;
-                        break;
-                    }
-                    // try to get one of the medium media possible
-                    case cellular_3g: {
-                        ad.url = medMedia != null ? medMedia.url : null;
-                        break;
-                    }
-                    // try to get the best media possible
-                    case unknown:
-                    case ethernet:
-                    case wifi:
-                    case cellular_4g:
-                    case cellular_5g: {
-                        ad.url = maxMedia != null ? maxMedia.url : null;
-                        break;
-                    }
-                }
-
-                // if somehow all of that has failed, just get the last element of the list
-                if (ad.url == null && ad.media.size() >= 1) {
-                    ad.url = ad.media.get(ad.media.size() - 1).url;
-                }
-
-                // pass this forward
-                localListener.saDidParseVAST(ad);
-            }
-        });
+        recursiveParse(url, new SAVASTAd(), createParserInterface(localListener));
     }
 
+    /**
+     * Method that parses the inlined VAST XML.
+     *
+     * @param vast      the initial VAST XML.
+     * @param listener  a copy of the SAVASTParserInterface listener that the class / method sends
+     *                  callbacks to the library user
+     */
+    public void parseVASTXML(String vast, final SAVASTParserInterface listener) {
+        final SAVASTParserInterface localListener = listener != null ? listener : ad -> {};
+        final SAVASTParserInterface parserListener = createParserInterface(localListener);
+
+        if (vast == null || vast.isEmpty()) {
+            localListener.saDidParseVAST(new SAVASTAd());
+            return;
+        }
+
+        try {
+            Document document = SAXMLParser.parseXML(vast);
+
+            Element Ad = SAXMLParser.findFirstInstanceInSiblingsAndChildrenOf(document, "Ad");
+
+            if (Ad == null) {
+                localListener.saDidParseVAST(new SAVASTAd());
+                return;
+            }
+
+            // use the internal "parseAdXML" method to form an SAVASTAd object
+            SAVASTAd ad = parseAdXML(Ad);
+
+            switch (ad.type) {
+                case Invalid: {
+                    localListener.saDidParseVAST(new SAVASTAd());
+                    break;
+                }
+                case InLine: {
+                    parserListener.saDidParseVAST(ad);
+                    break;
+                }
+                // if it's a wrapper, I sum up what I have and call the method recursively
+                case Wrapper: {
+                    recursiveParse(ad.redirect, ad, parserListener);
+                    break;
+                }
+            }
+        } catch (ParserConfigurationException | IOException | SAXException | NullPointerException e) {
+            Log.e("SuperAwesome", "Error parsing VAST tag", e);
+            localListener.saDidParseVAST(new SAVASTAd());
+        }
+    }
 
     /**
      * Recursive method that handles all the VAST parsing
@@ -357,4 +339,75 @@ public class SAVASTParser {
         return media;
     }
 
+    private SAVASTParserInterface createParserInterface(SAVASTParserInterface localListener) {
+        return new SAVASTParserInterface() {
+            /**
+             * Overridden SAVASTParserInterface implementation in which finally the whole parser
+             * has produced a SAVASTAd of sorts (might or might not be valid) and I have to get
+             * a valid media out of it
+             *
+             * @param ad the returned ad
+             */
+            @Override
+            public void saDidParseVAST(SAVASTAd ad) {
+
+                SAVASTMedia minMedia = null;
+                SAVASTMedia maxMedia = null;
+                SAVASTMedia medMedia = null;
+
+                // get the min media
+                for (SAVASTMedia media : ad.media) {
+                    if (minMedia == null || (media.bitrate < minMedia.bitrate)) {
+                        minMedia = media;
+                    }
+                }
+                // get the max media
+                for (SAVASTMedia media : ad.media) {
+                    if (maxMedia == null || (media.bitrate > maxMedia.bitrate)) {
+                        maxMedia = media;
+                    }
+                }
+                // get everything in between
+                for (SAVASTMedia media : ad.media) {
+                    if (media != minMedia && media != maxMedia) {
+                        medMedia = media;
+                    }
+                }
+
+                // get media Url based on connection type
+                SAUtils.SAConnectionType connectionType = SAUtils.getNetworkConnectivity(context);
+                switch (connectionType) {
+
+                    // try to get the lowest media possible
+                    case cellular_unknown:
+                    case cellular_2g: {
+                        ad.url = minMedia != null ? minMedia.url : null;
+                        break;
+                    }
+                    // try to get one of the medium media possible
+                    case cellular_3g: {
+                        ad.url = medMedia != null ? medMedia.url : null;
+                        break;
+                    }
+                    // try to get the best media possible
+                    case unknown:
+                    case ethernet:
+                    case wifi:
+                    case cellular_4g:
+                    case cellular_5g: {
+                        ad.url = maxMedia != null ? maxMedia.url : null;
+                        break;
+                    }
+                }
+
+                // if somehow all of that has failed, just get the last element of the list
+                if (ad.url == null && ad.media.size() >= 1) {
+                    ad.url = ad.media.get(ad.media.size() - 1).url;
+                }
+
+                // pass this forward
+                localListener.saDidParseVAST(ad);
+            }
+        };
+    }
 }

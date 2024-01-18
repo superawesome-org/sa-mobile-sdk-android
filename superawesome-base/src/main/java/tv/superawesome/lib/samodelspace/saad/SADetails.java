@@ -43,6 +43,7 @@ public class SADetails extends SABaseObject implements Parcelable {
     public String  cdn             = null;
     public String  base            = null;
     public String  vast            = null;
+    public String  vastXml         = null;
     public SAMedia media           = new SAMedia();
 
     /**
@@ -125,6 +126,7 @@ public class SADetails extends SABaseObject implements Parcelable {
         zip = SAJsonParser.getString(jsonObject, "zipFile", zip);
         url = SAJsonParser.getString(jsonObject, "url", url);
         vast = SAJsonParser.getString(jsonObject, "vast", vast);
+        vastXml = SAJsonParser.getString(jsonObject, "vastXml", vastXml);
 
         cdn = SAJsonParser.getString(jsonObject, "cdn", cdn);
         if (cdn == null) cdn = SAUtils.findBaseURLFromResourceURL(image);
