@@ -1,7 +1,6 @@
 package tv.superawesome.lib.featureflags
 
 import android.util.Log
-import tv.superawesome.lib.sasession.session.ISASession
 
 /**
  * Manager for obtaining global feature flags.
@@ -14,12 +13,13 @@ class FeatureFlagsManager(
      * Global feature flags.
      */
     var featureFlags = FeatureFlags()
+        private set
 
     /**
      * Get the global feature flags from the API.
      */
-    fun getFeatureFlags(session: ISASession) =
-        ffApi.getGlobalFlags(this, session)
+    fun fetchFeatureFlags() =
+        ffApi.getGlobalFlags(this)
 
     override fun didLoadFeatureFlags(featureFlags: FeatureFlags) {
         this.featureFlags = featureFlags

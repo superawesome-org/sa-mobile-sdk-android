@@ -178,7 +178,7 @@ public class SAAd extends SABaseObject implements Parcelable {
                 return creative.details.url != null && creative.details.media.html != null;
             }
             case video: {
-                return (creative.details.vast != null &&
+                return ((creative.details.vast != null || creative.details.vastXml != null) &&
                         creative.details.media.url != null &&
                         creative.details.media.path != null &&
                         creative.details.media.isDownloaded)

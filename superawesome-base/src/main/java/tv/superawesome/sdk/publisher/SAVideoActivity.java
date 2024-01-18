@@ -76,7 +76,7 @@ public class SAVideoActivity extends Activity implements
     };
 
     private final Long freezeTimerTimeout =
-            AwesomeAds.featureFlagsManager.getFeatureFlags().getVideoStabilityFailsafeTimeout();
+            AwesomeAds.getFeatureFlags().getVideoStabilityFailsafeTimeout();
 
     private static final Long FREEZE_TIMER_INTERVAL = 500L;
 
@@ -478,6 +478,6 @@ public class SAVideoActivity extends Activity implements
     }
 
     private boolean isExoPlayerEnabled() {
-        return AwesomeAds.featureFlagsManager.getFeatureFlags().isExoPlayerEnabled();
+        return AwesomeAds.getFeatureFlags().isExoPlayerEnabled();
     }
 }

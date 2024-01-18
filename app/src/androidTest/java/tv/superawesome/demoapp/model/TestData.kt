@@ -205,8 +205,12 @@ data class TestData(
             fileName = "interstitial_standard_success.json",
         )
         val vastInline = TestData(
-            placementId = "10010",
+            placementId = "88406",
             fileName = "video_vast_inline.json"
+        )
+        val vastInlineWrapper = TestData(
+            placementId = "88406",
+            fileName = "video_vast_inline_wrapper.json"
         )
     }
 }

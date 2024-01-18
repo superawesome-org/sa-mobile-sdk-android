@@ -108,6 +108,7 @@ object WireMockHelper {
         stubVPAIDJavaScript()
         stubMockWebsite()
         stubGoogleCalls()
+        stubFeatureFlags()
     }
 
     fun stubFailingVPAIDJavaScript() {
@@ -247,6 +248,14 @@ object WireMockHelper {
             "/videojs/vpaid/VPAIDFlash.swf",
             "js/VPAIDFlash.swf",
             "text/x-shockwave-flash",
+        )
+    }
+
+    fun stubFeatureFlags() {
+        stubPathForFile(
+            "/featureFlags/android/featureFlags.json",
+            "featureFlags.json",
+            "application/json",
         )
     }
 

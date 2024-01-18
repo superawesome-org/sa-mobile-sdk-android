@@ -412,7 +412,7 @@ public class SALoader {
                         });
             };
 
-        boolean isInlineVastEnabled = AwesomeAds.featureFlagsManager.getFeatureFlags().isAdResponseVASTEnabled();
+        boolean isInlineVastEnabled = AwesomeAds.getFeatureFlags().isAdResponseVASTEnabled();
         if (ad.creative.details.vastXml != null && isInlineVastEnabled) {
             parser.parseVASTXML(ad.creative.details.vastXml, vastListener);
         } else {

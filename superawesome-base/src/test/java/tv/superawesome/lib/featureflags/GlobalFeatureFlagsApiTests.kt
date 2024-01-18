@@ -54,7 +54,7 @@ class GlobalFeatureFlagsApiTests {
             override fun didFailToLoadFeatureFlags(error: Throwable) {
                 /* N/A */
             }
-        }, session)
+        })
     }
 
     @Test
@@ -72,6 +72,6 @@ class GlobalFeatureFlagsApiTests {
             override fun didFailToLoadFeatureFlags(error: Throwable) {
                 assertTrue(error is JSONException)
             }
-        }, session)
+        })
     }
 }

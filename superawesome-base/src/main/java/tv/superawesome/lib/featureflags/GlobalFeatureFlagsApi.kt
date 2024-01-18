@@ -3,7 +3,6 @@ package tv.superawesome.lib.featureflags
 import org.json.JSONException
 import org.json.JSONObject
 import tv.superawesome.lib.sanetwork.request.SANetwork
-import tv.superawesome.lib.sasession.session.ISASession
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.util.concurrent.Executor
@@ -16,18 +15,17 @@ class GlobalFeatureFlagsApi(
     private val executor: Executor = Executors.newSingleThreadExecutor(),
     private val timeout: Int = 15_000,
 ) {
-    private fun getAwesomeAdsEndpoint(session: ISASession): String =
-        session.s3Url + "/featureFlags/android/featureFlags.json"
+    private fun getAwesomeAdsEndpoint(): String =
+        "$S3_URL/featureFlags/android/featureFlags.json"
 
 
     /**
      * Loads the feature flags from S3 and returns the results in the listener.
      *
      * @param listener the feature flags listener for success and error options.
-     * @param session the session for the current configuration of the SDK.
      */
-    fun getGlobalFlags(listener: SAFeatureFlagLoaderListener, session: ISASession) {
-        val endpoint = getAwesomeAdsEndpoint(session)
+    fun getGlobalFlags(listener: SAFeatureFlagLoaderListener) {
+        val endpoint = getAwesomeAdsEndpoint()
         val network = SANetwork(executor, timeout)
 
         network.sendGET(
@@ -52,5 +50,9 @@ class GlobalFeatureFlagsApi(
                 listener.didFailToLoadFeatureFlags(e)
             }
         } ?: listener.didLoadFeatureFlags(FeatureFlags())
+    }
+
+    private companion object {
+        private const val S3_URL = "https://aa-sdk.s3.eu-west-1.amazonaws.com"
     }
 }

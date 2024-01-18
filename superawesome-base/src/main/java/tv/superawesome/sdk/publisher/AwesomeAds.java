@@ -4,15 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.Map;
 
 import tv.superawesome.lib.featureflags.FeatureFlags;
 import tv.superawesome.lib.featureflags.FeatureFlagsManager;
-import tv.superawesome.lib.featureflags.GlobalFeatureFlagsApi;
-import tv.superawesome.lib.featureflags.SAFeatureFlagLoaderListener;
 import tv.superawesome.lib.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
@@ -26,7 +21,7 @@ public class AwesomeAds {
 
     private static boolean isInitialised = false;
 
-    public static FeatureFlagsManager featureFlagsManager;
+    private static FeatureFlagsManager featureFlagsManager;
 
     public static void init(Application application, boolean loggingEnabled, Map<String, Object> options) {
         QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(options));
@@ -38,7 +33,7 @@ public class AwesomeAds {
             Log.d("SuperAwesome", "Initialising AwesomeAds!");
             SAFileDownloader.cleanup(application);
             featureFlagsManager = new FeatureFlagsManager();
-            featureFlagsManager.getFeatureFlags(new SASession(application));
+            featureFlagsManager.fetchFeatureFlags();
             isInitialised = true;
         } else {
             Log.d("SuperAwesome", "Already initialised AwesomeAds!");
@@ -62,5 +57,9 @@ public class AwesomeAds {
 
     public static void triggerAgeCheck(Context context, String dateOfBirth, GetIsMinorInterface listener) {
         SAAgeCheck.sdk.getIsMinor(context, dateOfBirth, listener);
+    }
+
+    public static FeatureFlags getFeatureFlags() {
+        return featureFlagsManager.getFeatureFlags();
     }
 }

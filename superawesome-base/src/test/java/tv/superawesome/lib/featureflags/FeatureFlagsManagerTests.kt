@@ -16,14 +16,13 @@ class FeatureFlagsManagerTests {
         val featureFlags = FeatureFlags(isAdResponseVASTEnabled = true)
         val ffApi = mockk<GlobalFeatureFlagsApi>(relaxed = true)
         val sut = FeatureFlagsManager(ffApi)
-        val session = MockSession("http://localhost:8080")
 
-        every { ffApi.getGlobalFlags(sut, session) } answers {
+        every { ffApi.getGlobalFlags(sut) } answers {
             sut.didLoadFeatureFlags(featureFlags = featureFlags)
         }
 
         // when
-        sut.getFeatureFlags(session)
+        sut.fetchFeatureFlags()
 
         // then
         assertTrue(sut.featureFlags.isAdResponseVASTEnabled)
@@ -35,14 +34,13 @@ class FeatureFlagsManagerTests {
         val exception = Exception("error")
         val ffApi = mockk<GlobalFeatureFlagsApi>(relaxed = true)
         val sut = FeatureFlagsManager(ffApi)
-        val session = MockSession("http://localhost:8080")
 
-        every { ffApi.getGlobalFlags(sut, session) } answers {
+        every { ffApi.getGlobalFlags(sut) } answers {
             sut.didFailToLoadFeatureFlags(exception)
         }
 
         // when
-        sut.getFeatureFlags(session)
+        sut.fetchFeatureFlags()
 
         // then
         assertFalse(sut.featureFlags.isAdResponseVASTEnabled)
