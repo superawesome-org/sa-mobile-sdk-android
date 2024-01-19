@@ -1,3 +1,11 @@
+## [9.3.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.3.0...v9.3.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* **video:** added exoPlayer to android base ([13b4728](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/13b4728a576ad19e42c379dac196643599e31c77))
+* **VideoPlayer:** Added AdPlaying and AdPaused events to the Video player for VAST and Direct Video. ([#551](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/551)) ([f64b15d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f64b15d3ff07cb49e9e895d31f2bf8b3e862b1b5))
+
 # [9.3.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.3...v9.3.0) (2023-12-15)
 
 
