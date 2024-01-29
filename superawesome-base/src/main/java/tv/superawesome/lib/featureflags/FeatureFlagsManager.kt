@@ -18,8 +18,13 @@ class FeatureFlagsManager(
     /**
      * Get the global feature flags from the API.
      */
+    @Suppress("TooGenericExceptionCaught")
     fun fetchFeatureFlags() =
-        ffApi.getGlobalFlags(this)
+        try {
+            ffApi.getGlobalFlags(this)
+        } catch (e: Exception) {
+            Log.w("SuperAwesome", "Failed to fetch feature flags", e)
+        }
 
     override fun didLoadFeatureFlags(featureFlags: FeatureFlags) {
         this.featureFlags = featureFlags
@@ -29,3 +34,4 @@ class FeatureFlagsManager(
         Log.w("SuperAwesome", "Error loading feature flags ${error.message}")
     }
 }
+
