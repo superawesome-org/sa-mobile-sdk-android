@@ -1,3 +1,10 @@
+## [9.3.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.3.1...v9.3.2) (2024-01-29)
+
+
+### Bug Fixes
+
+* **video:** null pointer exception when parsing VAST ([ad6f9b9](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ad6f9b99aafe3c79400ebc2d9c115a2d4acfe552))
+
 ## [9.3.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.3.0...v9.3.1) (2024-01-19)
 
 
