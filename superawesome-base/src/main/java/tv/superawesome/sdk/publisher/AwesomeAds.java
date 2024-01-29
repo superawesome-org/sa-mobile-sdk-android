@@ -11,7 +11,6 @@ import tv.superawesome.lib.featureflags.FeatureFlagsManager;
 import tv.superawesome.lib.sagdprisminorsdk.minor.SAAgeCheck;
 import tv.superawesome.lib.sagdprisminorsdk.minor.process.GetIsMinorInterface;
 import tv.superawesome.lib.sanetwork.file.SAFileDownloader;
-import tv.superawesome.lib.sasession.session.SASession;
 
 /**
  * Created by gabriel.coman on 30/04/2018.
@@ -21,7 +20,7 @@ public class AwesomeAds {
 
     private static boolean isInitialised = false;
 
-    private static FeatureFlagsManager featureFlagsManager;
+    private static final FeatureFlagsManager featureFlagsManager = new FeatureFlagsManager();
 
     public static void init(Application application, boolean loggingEnabled, Map<String, Object> options) {
         QueryAdditionalOptions.Companion.setInstance(new QueryAdditionalOptions(options));
@@ -32,7 +31,6 @@ public class AwesomeAds {
         if (!isInitialised) {
             Log.d("SuperAwesome", "Initialising AwesomeAds!");
             SAFileDownloader.cleanup(application);
-            featureFlagsManager = new FeatureFlagsManager();
             featureFlagsManager.fetchFeatureFlags();
             isInitialised = true;
         } else {
@@ -49,6 +47,7 @@ public class AwesomeAds {
         if (!isInitialised) {
             Log.d("SuperAwesome", "Initialising AwesomeAds!");
             SAFileDownloader.cleanup(context);
+            featureFlagsManager.fetchFeatureFlags();
             isInitialised = true;
         } else {
             Log.d("SuperAwesome", "Already initialised AwesomeAds!");
@@ -60,6 +59,11 @@ public class AwesomeAds {
     }
 
     public static FeatureFlags getFeatureFlags() {
-        return featureFlagsManager.getFeatureFlags();
+        try {
+            return featureFlagsManager.getFeatureFlags();
+        } catch (NullPointerException e) {
+            Log.w("SuperAwesome", "Feature Flags not loaded, returning default values");
+            return new FeatureFlags();
+        }
     }
 }
