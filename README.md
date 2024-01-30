@@ -6,7 +6,7 @@ SuperAwesome Mobile SDK for Android
 [![Language](https://img.shields.io/badge/language-java-f48041.svg?style=flat)]() 
 [![Platform](https://img.shields.io/badge/platform-android-lightgrey.svg)]()
 
-An SDK provided by SuperAwesome for iOS app developers to load ads from AwesomeAds.
+An SDK provided by SuperAwesome for Android app developers to load ads from AwesomeAds.
 
 ## Documentation
 
