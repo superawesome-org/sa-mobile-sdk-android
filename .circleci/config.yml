@@ -2,15 +2,23 @@ version: 2.1
 orbs:
   token-gen: superawesome-org/sa-gha-token-generator@1.0.2
 
+executors:
+  machine:
+    machine:
+      image: ubuntu-2204:2023.10.1
+  machine-docker-build:
+    machine:
+      image: ubuntu-2204:2023.10.1
+      docker_layer_caching: true
+
 references:
   sa_config: &sa_config
-    machine: true
-    resource_class: superawesomeltd/machine-runner
+    executor: machine
 
   android_config: &android_config
     docker:
       - image: cimg/android:2023.10.2-browsers
-    resource_class: medium+
+    executor: machine-docker-build
     environment:
       FL_OUTPUT_DIR: output
       TERM: dumb
@@ -30,7 +38,7 @@ references:
     run:
       name: Clone scripts repo
       command: |-
-        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
+        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/superawesome-org/sa-mobile-continuous-integration.git "${SA_PATH_TO_CONTINUOUS_INTEGRATION_REPO}"
   
   bootstrap_android_sdk: &bootstrap_android_sdk
     run:
@@ -250,7 +258,7 @@ jobs:
             export LINKS="[SuperAwesome AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome/${CLEAN_CURRENT_VERSION}/superawesome-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome Base AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-base/${CLEAN_CURRENT_VERSION}/superawesome-base-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome Common AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/superawesome-common/${CLEAN_CURRENT_VERSION}/superawesome-common-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome AdMob AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saadmob/${CLEAN_CURRENT_VERSION}/saadmob-${CLEAN_CURRENT_VERSION}.aar)${NEW_LINE}[SuperAwesome Unity AAR](https://aa-sdk.s3.eu-west-1.amazonaws.com/android_repo/tv/superawesome/sdk/publisher/saunity/${CLEAN_CURRENT_VERSION}/saunity-${CLEAN_CURRENT_VERSION}.aar)"
 
             # checkout docs repo
-            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-publisher-docs.git
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/superawesome-org/sa-mobile-sdk-publisher-docs.git
 
             # Update releases
             export RELEASE_DOC_PATH="sa-mobile-sdk-publisher-docs/docs/_docs/android/releases.md"
@@ -333,7 +341,7 @@ jobs:
           command: |
             echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
             source $BASH_ENV
-            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-mobile-sdk-android-demo.git
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/superawesome-org/sa-mobile-sdk-android-demo.git
             cd sa-mobile-sdk-android-demo
 
             # update release number in demo app build gradle file for SuperAwesome
@@ -360,7 +368,7 @@ jobs:
             SA_ANDROID_APPS_BUILD_TASK=$SA_ANDROID_APPS_BUILD_TASK_DEBUG_APK bundle exec fastlane build_apk_for_device_farm path_to_project:'app' prefix_path_binaries:'app/build/outputs/bundle'
             echo "export RELEASE_NUMBER=`cat superawesome-base/src/main/resources/version.properties | cut -d '=' -f 2`" >> $BASH_ENV
             source $BASH_ENV
-            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/SuperAwesomeLTD/sa-ad-smoke-test-sdk.git
+            git clone https://x-access-token:${GITHUB_TOKEN}@github.com/superawesome-org/sa-ad-smoke-test-sdk.git
             cd sa-ad-smoke-test-sdk
             cp -a ~/project/app/build/outputs/apk/base/debug/app-base-debug.apk ~/project/sa-ad-smoke-test-sdk/apps/android/app-production-debug.apk
             git add apps/android/app-production-debug.apk
