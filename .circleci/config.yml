@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  token-gen: superawesomeltd/sa-gha-token-generator@1.1.1
+  token-gen: superawesome-org/sa-gha-token-generator@1.0.2
 
 references:
   sa_config: &sa_config
