@@ -6,10 +6,6 @@ executors:
   machine:
     machine:
       image: ubuntu-2204:2023.10.1
-  machine-docker-build:
-    machine:
-      image: ubuntu-2204:2023.10.1
-      docker_layer_caching: true
 
 references:
   sa_config: &sa_config
@@ -18,7 +14,7 @@ references:
   android_config: &android_config
     docker:
       - image: cimg/android:2023.10.2-browsers
-    executor: machine-docker-build
+    resource_class: medium+
     environment:
       FL_OUTPUT_DIR: output
       TERM: dumb
