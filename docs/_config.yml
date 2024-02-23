@@ -13,8 +13,8 @@ baseurl: "/"
 url: "https://sa-mobile-sdk-android.superawesome.tv"
 
 latest_version: RELEASE-VERSION-NAME
-changelog_url: https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/blob/develop/CHANGELOG.md
-repo: "https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android"
+changelog_url: https://github.com/superawesome-org/sa-mobile-sdk-android/blob/develop/CHANGELOG.md
+repo: "https://github.com/superawesome-org/sa-mobile-sdk-android"
 github_user: "SuperAwesomeLTD"
 github_repo: "sa-mobile-sdk-android"
 
