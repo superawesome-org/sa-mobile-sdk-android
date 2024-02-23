@@ -1,139 +1,139 @@
-## [9.3.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.3.1...v9.3.2) (2024-01-29)
+## [9.3.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.3.1...v9.3.2) (2024-01-29)
 
 
 ### Bug Fixes
 
-* **video:** null pointer exception when parsing VAST ([ad6f9b9](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ad6f9b99aafe3c79400ebc2d9c115a2d4acfe552))
+* **video:** null pointer exception when parsing VAST ([ad6f9b9](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/ad6f9b99aafe3c79400ebc2d9c115a2d4acfe552))
 
-## [9.3.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.3.0...v9.3.1) (2024-01-19)
-
-
-### Bug Fixes
-
-* **video:** added exoPlayer to android base ([13b4728](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/13b4728a576ad19e42c379dac196643599e31c77))
-* **VideoPlayer:** Added AdPlaying and AdPaused events to the Video player for VAST and Direct Video. ([#551](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/551)) ([f64b15d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f64b15d3ff07cb49e9e895d31f2bf8b3e862b1b5))
-
-# [9.3.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.3...v9.3.0) (2023-12-15)
+## [9.3.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.3.0...v9.3.1) (2024-01-19)
 
 
 ### Bug Fixes
 
-* **video:** possible crash when destroying the media player ([f7d0fdd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f7d0fddf09bd306a50739248abc3da31e4800751))
-* **vpaid:** adPaused not being received properly ([5f63a48](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/5f63a48bb4c86ed921ca8ea7d512d4350f92dd6d))
+* **video:** added exoPlayer to android base ([13b4728](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/13b4728a576ad19e42c379dac196643599e31c77))
+* **VideoPlayer:** Added AdPlaying and AdPaused events to the Video player for VAST and Direct Video. ([#551](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/551)) ([f64b15d](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/f64b15d3ff07cb49e9e895d31f2bf8b3e862b1b5))
+
+# [9.3.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.2.3...v9.3.0) (2023-12-15)
+
+
+### Bug Fixes
+
+* **video:** possible crash when destroying the media player ([f7d0fdd](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/f7d0fddf09bd306a50739248abc3da31e4800751))
+* **vpaid:** adPaused not being received properly ([5f63a48](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/5f63a48bb4c86ed921ca8ea7d512d4350f92dd6d))
 
 
 ### Features
 
-* **close-button:** add custom close button delay timer ([a1f61b7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/a1f61b72865464316a4426f5bc732b8234ce6442))
+* **close-button:** add custom close button delay timer ([a1f61b7](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/a1f61b72865464316a4426f5bc732b8234ce6442))
 
-## [9.2.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.2...v9.2.3) (2023-11-03)
-
-
-### Bug Fixes
-
-* **config:** app crash when loading banner with multi id ([620c6c6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/620c6c62081f7f9a7e1ee91f5f78c5d10de13bf2))
-* **config:** publisher configuration null when loading multi id ([b078e5d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b078e5de44156851c8f79ebe956fa9f9bade7c51))
-* **parental-gate:** parental gate not showing banner/interstitials ([3405bd8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3405bd8f1f828f68aadacd7d22573dd9841c0e9f))
-
-## [9.2.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.1...v9.2.2) (2023-10-31)
+## [9.2.3](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.2.2...v9.2.3) (2023-11-03)
 
 
 ### Bug Fixes
 
-* **banner:** crash when parent activity doesn't implement LifecycleOwner ([47e4f6e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/47e4f6e49fc9828e2003e2b0f719bd7c77c60ab0))
-* **ConnectionType:** Added 5g connection type to common. ([#450](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/450)) ([979a0f6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/979a0f68607195c9ad5a239ec3e7674e12f192b4))
-* **JSBridge:** Added webSDKReady event to the JS Bridge. ([#451](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/451)) ([03d45b1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/03d45b1ce0c017ae00e0406b954c774e24760bd0))
+* **config:** app crash when loading banner with multi id ([620c6c6](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/620c6c62081f7f9a7e1ee91f5f78c5d10de13bf2))
+* **config:** publisher configuration null when loading multi id ([b078e5d](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/b078e5de44156851c8f79ebe956fa9f9bade7c51))
+* **parental-gate:** parental gate not showing banner/interstitials ([3405bd8](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/3405bd8f1f828f68aadacd7d22573dd9841c0e9f))
 
-## [9.2.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.2.0...v9.2.1) (2023-09-29)
-
-
-### Bug Fixes
-
-* **unity:** missing library import causing build issues ([7a3d6a0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7a3d6a09b8aca1e74455b687ed01ac95c9117aa4))
-
-# [9.2.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.2...v9.2.0) (2023-09-29)
+## [9.2.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.2.1...v9.2.2) (2023-10-31)
 
 
 ### Bug Fixes
 
-* **ad:** adjust openRtbPartnerId param order in all ad load calls ([6ef3599](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/6ef35994d35eb4688f4d8fdfc40be2a7bf735756))
-* **events:** Add dwell time event to banners and interstitials ([de18b65](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/de18b6519616ad840762bb8f53f50ab16a5a5ec4))
-* **events:** Dwell time being sent twice at the 2 second mark ([fe1bec7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fe1bec7e18761612ce4ced127d48bce46dc1a4df))
-* **events:** Reduce dwell time event tick to every 5 seconds ([1454a4d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1454a4d9af474ddd84ccbfc07f3c1e056e31abf5))
-* **events:** Reduce dwell time event tick to every 5 seconds (common) ([d6ec827](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d6ec827dd01c2a778d6f3550fa05cad54dded0da))
-* **Google:** Updated Google Play Ad Services to 22.4.0 to add Kotlin 1.9.0 support ([#447](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/447)) ([385f1dd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/385f1dde7ec5a47be12e15ad6af9062666c12331))
-* **interstitial:** crash when opening interstitial ([e6d9883](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e6d98839a6b47b5c02a0c53a0632b8a5045c38ee))
-* **metrics:** add load time metric for banners and interstitials ([1e74057](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1e7405762bb5719a646197d7c6dab64aa846b8ab))
-* **metrics:** add metric tags to all performance metrics ([f545dbb](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f545dbbc6c8c4ac5e6a1349480d9a5afc9aea79b))
-* **metrics:** add render time for rich media interstitials ([da749f1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/da749f18d4cdba5b6bb8c08c141626f357ce90e5))
-* **metrics:** Add render time metrics to VPAID ([7368f17](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7368f172dc16fbbc9aeb13b0a6be6c64f3e8b0c5))
-* **metrics:** enable load metrics for all video types ([e22931c](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e22931c2ebaa98bdaa1c2f2b687353f077da8275))
-* **SafeAd:** Resized Safe ad to be smaller ([#408](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/408)) ([051b47d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/051b47d9a3e81389e6d78e631512ed5d9a2eb209))
+* **banner:** crash when parent activity doesn't implement LifecycleOwner ([47e4f6e](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/47e4f6e49fc9828e2003e2b0f719bd7c77c60ab0))
+* **ConnectionType:** Added 5g connection type to common. ([#450](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/450)) ([979a0f6](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/979a0f68607195c9ad5a239ec3e7674e12f192b4))
+* **JSBridge:** Added webSDKReady event to the JS Bridge. ([#451](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/451)) ([03d45b1](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/03d45b1ce0c017ae00e0406b954c774e24760bd0))
+
+## [9.2.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.2.0...v9.2.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* **unity:** missing library import causing build issues ([7a3d6a0](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/7a3d6a09b8aca1e74455b687ed01ac95c9117aa4))
+
+# [9.2.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.1.2...v9.2.0) (2023-09-29)
+
+
+### Bug Fixes
+
+* **ad:** adjust openRtbPartnerId param order in all ad load calls ([6ef3599](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/6ef35994d35eb4688f4d8fdfc40be2a7bf735756))
+* **events:** Add dwell time event to banners and interstitials ([de18b65](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/de18b6519616ad840762bb8f53f50ab16a5a5ec4))
+* **events:** Dwell time being sent twice at the 2 second mark ([fe1bec7](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/fe1bec7e18761612ce4ced127d48bce46dc1a4df))
+* **events:** Reduce dwell time event tick to every 5 seconds ([1454a4d](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/1454a4d9af474ddd84ccbfc07f3c1e056e31abf5))
+* **events:** Reduce dwell time event tick to every 5 seconds (common) ([d6ec827](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/d6ec827dd01c2a778d6f3550fa05cad54dded0da))
+* **Google:** Updated Google Play Ad Services to 22.4.0 to add Kotlin 1.9.0 support ([#447](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/447)) ([385f1dd](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/385f1dde7ec5a47be12e15ad6af9062666c12331))
+* **interstitial:** crash when opening interstitial ([e6d9883](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e6d98839a6b47b5c02a0c53a0632b8a5045c38ee))
+* **metrics:** add load time metric for banners and interstitials ([1e74057](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/1e7405762bb5719a646197d7c6dab64aa846b8ab))
+* **metrics:** add metric tags to all performance metrics ([f545dbb](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/f545dbbc6c8c4ac5e6a1349480d9a5afc9aea79b))
+* **metrics:** add render time for rich media interstitials ([da749f1](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/da749f18d4cdba5b6bb8c08c141626f357ce90e5))
+* **metrics:** Add render time metrics to VPAID ([7368f17](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/7368f172dc16fbbc9aeb13b0a6be6c64f3e8b0c5))
+* **metrics:** enable load metrics for all video types ([e22931c](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e22931c2ebaa98bdaa1c2f2b687353f077da8275))
+* **SafeAd:** Resized Safe ad to be smaller ([#408](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/408)) ([051b47d](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/051b47d9a3e81389e6d78e631512ed5d9a2eb209))
 
 
 ### Features
 
-* **ad:** Add optional openRTBPartnerId to ad load methods on the Unity SDK. ([ebaa02a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ebaa02a105a5cbebe0ca75c3e01cb5b9bdd82ed5))
-* **ad:** Add optional openRTBPartnerId to ad load methods. ([e9e2b05](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e9e2b05cc1930885ecec3314ed878c450e4b0bd8))
-* **analytics:** added the ad request id to event and impression requests ([#421](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/421)) ([e851c81](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e851c81731f829fc5fe24004520d814f5ef12d01))
+* **ad:** Add optional openRTBPartnerId to ad load methods on the Unity SDK. ([ebaa02a](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/ebaa02a105a5cbebe0ca75c3e01cb5b9bdd82ed5))
+* **ad:** Add optional openRTBPartnerId to ad load methods. ([e9e2b05](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e9e2b05cc1930885ecec3314ed878c450e4b0bd8))
+* **analytics:** added the ad request id to event and impression requests ([#421](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/421)) ([e851c81](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e851c81731f829fc5fe24004520d814f5ef12d01))
 
-## [9.1.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.1...v9.1.2) (2023-08-23)
-
-
-### Bug Fixes
-
-* **vpaid:** not loading VPAID ads when supplying creativeId and lineItemId ([3d5e495](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3d5e49552ed610e67ede40aa3e24f5fa03bff097))
-
-## [9.1.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.1.0...v9.1.1) (2023-08-17)
+## [9.1.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.1.1...v9.1.2) (2023-08-23)
 
 
 ### Bug Fixes
 
-* **Ads:** Use the random number returned from the ad response ([#362](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/362)) ([64eee68](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/64eee68e46295aa861200ecb1f79dfdecb1e75ed))
-* **Ads:** Use the random number returned from the ad response for the ad events ([#360](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/360)) ([42611fc](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/42611fcba7b0a5df64f2242f85560b2c408be5a3))
-* **ci:** gradle crashing on CI ([7c1e0b2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/7c1e0b2b124bc6877773c3177823fdcf665d89ba))
-* **Releases:** Added download links to release docs step of the CI ([#361](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/361)) ([10072cd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/10072cd9689aa64cbc68f8222b2f1bb1325f9698))
-* **rnd:** Reverted the rnd changes to allow a release in the base module. ([#390](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/390)) ([148404e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/148404e50997c87e869df3a5e401db31b2dcdc6d))
-* **video-player:** bufferQueue has been abandoned error message ([03c78cd](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/03c78cd681c616628aa7e50ce8a4d8e16bfe81fb))
-* **Video:** Added additional logs and rearranged destroy methods ([#393](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/393)) ([fde9712](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fde9712e27de809bc8849782b95044502ac93983))
+* **vpaid:** not loading VPAID ads when supplying creativeId and lineItemId ([3d5e495](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/3d5e49552ed610e67ede40aa3e24f5fa03bff097))
 
-# [9.1.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.2...v9.1.0) (2023-06-13)
+## [9.1.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.1.0...v9.1.1) (2023-08-17)
 
 
 ### Bug Fixes
 
-* **Common:** Added missing CI code to fix version incrementing when releasing. ([#350](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/350)) ([ec9b3bc](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ec9b3bcaa36abb9afebebe0b7a075409ff03d5af))
-* **Video:** Added additional safe guards against empty Ads ([#352](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/352)) ([2801515](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/28015155e0c8cd0f4c5881c6d3297dd169bd666c))
+* **Ads:** Use the random number returned from the ad response ([#362](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/362)) ([64eee68](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/64eee68e46295aa861200ecb1f79dfdecb1e75ed))
+* **Ads:** Use the random number returned from the ad response for the ad events ([#360](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/360)) ([42611fc](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/42611fcba7b0a5df64f2242f85560b2c408be5a3))
+* **ci:** gradle crashing on CI ([7c1e0b2](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/7c1e0b2b124bc6877773c3177823fdcf665d89ba))
+* **Releases:** Added download links to release docs step of the CI ([#361](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/361)) ([10072cd](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/10072cd9689aa64cbc68f8222b2f1bb1325f9698))
+* **rnd:** Reverted the rnd changes to allow a release in the base module. ([#390](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/390)) ([148404e](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/148404e50997c87e869df3a5e401db31b2dcdc6d))
+* **video-player:** bufferQueue has been abandoned error message ([03c78cd](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/03c78cd681c616628aa7e50ce8a4d8e16bfe81fb))
+* **Video:** Added additional logs and rearranged destroy methods ([#393](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/393)) ([fde9712](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/fde9712e27de809bc8849782b95044502ac93983))
+
+# [9.1.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.0.2...v9.1.0) (2023-06-13)
+
+
+### Bug Fixes
+
+* **Common:** Added missing CI code to fix version incrementing when releasing. ([#350](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/350)) ([ec9b3bc](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/ec9b3bcaa36abb9afebebe0b7a075409ff03d5af))
+* **Video:** Added additional safe guards against empty Ads ([#352](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/352)) ([2801515](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/28015155e0c8cd0f4c5881c6d3297dd169bd666c))
 
 
 ### Features
 
-* **CloseButton:** The close button is made visible when an ad ends if the ad is configured not to dismiss automatically ([#349](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/349)) ([318b260](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/318b260640eaee55cd55bde6578681baa3aa7975))
+* **CloseButton:** The close button is made visible when an ad ends if the ad is configured not to dismiss automatically ([#349](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/349)) ([318b260](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/318b260640eaee55cd55bde6578681baa3aa7975))
 
-## [9.0.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.1...v9.0.2) (2023-05-16)
-
-
-### Bug Fixes
-
-* **CI:** Tweaks to the CI to fix issues around publishing ([#342](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/342)) ([fdeedb4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fdeedb4d32e0f2ce05ee0edb42cc58fcddf61832))
-
-## [9.0.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v9.0.0...v9.0.1) (2023-05-15)
+## [9.0.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.0.1...v9.0.2) (2023-05-16)
 
 
 ### Bug Fixes
 
-* **CI:** Added release and unit test step for the common module ([#329](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/329)) ([e5be15a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e5be15a83bc9ed31b53db99c837a5087d377e334))
-* **ManagedAd:** Changed how adEnded behaves to bring it into line with iOS and Base ([#331](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/331)) ([8f5cd5a](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/8f5cd5adddec9bc9a16890fceb220a473eb70d41))
-* **ParentalGate:** added validation for an empty string to the parental gate ([#333](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/333)) ([cf4b11b](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/cf4b11b3240631635015f01de139975fab4b3495))
-* **UITesting:** Adding a test rule to retry the tests in order to reduce flakiness ([#318](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/318)) ([f03d712](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f03d712d09d2ee23083f084ac148da31dde07453))
-* **Video:** Added Play Pause for Videos in the Base module ([#320](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/320)) ([4cea1ad](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/4cea1adc8840c0443055354e3593f7f81390286d))
-* **Video:** Added Video Play and Pause functionality to Direct and managed videos in Common ([#321](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/321)) ([c37f163](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/c37f1632b59920d8b7ecbfb0aeb915b8382b8867))
-* **Video:** Remove the gradient from video ads and make the timer background darker ([#322](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/322)) ([fc3c583](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/fc3c58367d8a3d5276dc2af15f0899287e69a7d3))
+* **CI:** Tweaks to the CI to fix issues around publishing ([#342](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/342)) ([fdeedb4](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/fdeedb4d32e0f2ce05ee0edb42cc58fcddf61832))
 
-# [9.0.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.8...v9.0.0) (2023-04-19)
+## [9.0.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.0.0...v9.0.1) (2023-05-15)
 
 
-* Feat/ag 3023 play pause js bridge (#315) ([5760456](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/5760456014cfc73545eb76617eac5d307fe7eb38)), closes [#315](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/315)
+### Bug Fixes
+
+* **CI:** Added release and unit test step for the common module ([#329](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/329)) ([e5be15a](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e5be15a83bc9ed31b53db99c837a5087d377e334))
+* **ManagedAd:** Changed how adEnded behaves to bring it into line with iOS and Base ([#331](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/331)) ([8f5cd5a](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/8f5cd5adddec9bc9a16890fceb220a473eb70d41))
+* **ParentalGate:** added validation for an empty string to the parental gate ([#333](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/333)) ([cf4b11b](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/cf4b11b3240631635015f01de139975fab4b3495))
+* **UITesting:** Adding a test rule to retry the tests in order to reduce flakiness ([#318](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/318)) ([f03d712](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/f03d712d09d2ee23083f084ac148da31dde07453))
+* **Video:** Added Play Pause for Videos in the Base module ([#320](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/320)) ([4cea1ad](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/4cea1adc8840c0443055354e3593f7f81390286d))
+* **Video:** Added Video Play and Pause functionality to Direct and managed videos in Common ([#321](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/321)) ([c37f163](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/c37f1632b59920d8b7ecbfb0aeb915b8382b8867))
+* **Video:** Remove the gradient from video ads and make the timer background darker ([#322](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/322)) ([fc3c583](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/fc3c58367d8a3d5276dc2af15f0899287e69a7d3))
+
+# [9.0.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.8...v9.0.0) (2023-04-19)
+
+
+* Feat/ag 3023 play pause js bridge (#315) ([5760456](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/5760456014cfc73545eb76617eac5d307fe7eb38)), closes [#315](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/315)
 
 
 ### BREAKING CHANGES
@@ -142,195 +142,195 @@
 
 * chore(): formatting
 
-## [8.5.8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.7...v8.5.8) (2023-04-14)
+## [8.5.8](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.7...v8.5.8) (2023-04-14)
 
 
 ### Bug Fixes
 
-* **Bumper Page:** Prevent clicks from registering ([#314](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/314)) ([a10e6b7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/a10e6b73d5b4fed44e8f8bdfa96e9d2fae62291b))
-* **Unity plugin:** Adds missing settings to the unity plugin for Interstitial and Video ads ([#316](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/316)) ([bea0207](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/bea020703e422087fd2e61adfef624117fcf6014))
+* **Bumper Page:** Prevent clicks from registering ([#314](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/314)) ([a10e6b7](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/a10e6b73d5b4fed44e8f8bdfa96e9d2fae62291b))
+* **Unity plugin:** Adds missing settings to the unity plugin for Interstitial and Video ads ([#316](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/316)) ([bea0207](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/bea020703e422087fd2e61adfef624117fcf6014))
 
-## [8.5.6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.5...v8.5.6) (2023-03-23)
-
-
-### Bug Fixes
-
-* **admob:** Concurrency issue in `EventListener` is fixed ([#306](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/306)) ([2fb9d22](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2fb9d22bc6cd1843960426c7815b636a1f6fc9ff))
-
-## [8.5.5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.4...v8.5.5) (2023-03-21)
+## [8.5.6](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.5...v8.5.6) (2023-03-23)
 
 
 ### Bug Fixes
 
-* **admob:** Allow event listener to listen multiple ad loads ([#299](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/299)) ([706d239](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/706d2397cc03aa4498d1a3ca9a50b5626ad07bf7))
-* **Dependencies:** Removed dependencies that cause conflicts when consuming the jar files in Unity. ([#296](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/296)) ([308d4ea](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/308d4eaf120a493d02ea38fe88922a8a3ab44c71))
-* Handles the case where the device doesn't have any browser to open web URLs ([#295](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/295)) ([1cfcfa7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/1cfcfa7d3200fcaac3ce807e0f2930de22ced1f7))
-* **Unity:** Removed the Unity-Classes.jar from the SAUnity module ([#298](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/298)) ([968da70](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/968da708dcaf4820e8e3895640ce10d8f8209746))
+* **admob:** Concurrency issue in `EventListener` is fixed ([#306](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/306)) ([2fb9d22](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/2fb9d22bc6cd1843960426c7815b636a1f6fc9ff))
 
-## [8.5.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.3...v8.5.4) (2023-02-28)
+## [8.5.5](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.4...v8.5.5) (2023-03-21)
 
 
 ### Bug Fixes
 
-* **Syntax:** Improved the syntax of some of the video files ([#285](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/285)) ([b9961f0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b9961f05dc20279e704869877a584c3df92a6506))
+* **admob:** Allow event listener to listen multiple ad loads ([#299](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/299)) ([706d239](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/706d2397cc03aa4498d1a3ca9a50b5626ad07bf7))
+* **Dependencies:** Removed dependencies that cause conflicts when consuming the jar files in Unity. ([#296](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/296)) ([308d4ea](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/308d4eaf120a493d02ea38fe88922a8a3ab44c71))
+* Handles the case where the device doesn't have any browser to open web URLs ([#295](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/295)) ([1cfcfa7](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/1cfcfa7d3200fcaac3ce807e0f2930de22ced1f7))
+* **Unity:** Removed the Unity-Classes.jar from the SAUnity module ([#298](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/298)) ([968da70](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/968da708dcaf4820e8e3895640ce10d8f8209746))
 
-## [8.5.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.2...v8.5.3) (2023-02-23)
-
-
-### Bug Fixes
-
-* AdMob custom adapters so that the correct events are passed through the admob plugin from the awesome ads sdk ([#280](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/280)) ([3cfeee8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/3cfeee8865b2ba9b9a417b6a9c32a746b71f97c0))
-
-## [8.5.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.1...v8.5.2) (2023-02-16)
+## [8.5.4](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.3...v8.5.4) (2023-02-28)
 
 
 ### Bug Fixes
 
-* Added a new placement to support further VPAID testing ([#241](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/241)) ([d94440d](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d94440d6a5703d2e89e6487aad5a1bb03b9d918f))
-* **Bumper:** AAG-2795: Added missing theme to Bumper ([#255](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/255)) ([e2124bf](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e2124bf3b094ec4fd4a3b06c4b3c7d0bc1c549d0))
-* **Version:** Reverted version and corrected circle ci script to run release tag phase ([#274](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/274)) ([2c33a38](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2c33a3811a530e856fe6d5e9a3f4ef6975f2592b))
-* **Version:** Reverted version to 8.5.1 ([#275](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/275)) ([73efaa2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/73efaa2567dc17d6638710f2d37dcf0dd2efd709))
+* **Syntax:** Improved the syntax of some of the video files ([#285](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/285)) ([b9961f0](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/b9961f05dc20279e704869877a584c3df92a6506))
 
-## [8.5.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.5.0...v8.5.1) (2022-12-07)
+## [8.5.3](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.2...v8.5.3) (2023-02-23)
 
 
 ### Bug Fixes
 
-* CI semantic release fix ([#238](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/238)) ([8ebacd8](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/8ebacd893fd8f209218a59d895dcbcda40f7e38e))
-* This PR prevents the app from going to sleep when playing video ads ([#237](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/237)) ([d74c716](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d74c7167d5d685ed1ba371e4e3a57c92fb515d8d))
+* AdMob custom adapters so that the correct events are passed through the admob plugin from the awesome ads sdk ([#280](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/280)) ([3cfeee8](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/3cfeee8865b2ba9b9a417b6a9c32a746b71f97c0))
 
-# [8.5.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.3...v8.5.0) (2022-11-17)
+## [8.5.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.1...v8.5.2) (2023-02-16)
+
+
+### Bug Fixes
+
+* Added a new placement to support further VPAID testing ([#241](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/241)) ([d94440d](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/d94440d6a5703d2e89e6487aad5a1bb03b9d918f))
+* **Bumper:** AAG-2795: Added missing theme to Bumper ([#255](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/255)) ([e2124bf](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e2124bf3b094ec4fd4a3b06c4b3c7d0bc1c549d0))
+* **Version:** Reverted version and corrected circle ci script to run release tag phase ([#274](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/274)) ([2c33a38](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/2c33a3811a530e856fe6d5e9a3f4ef6975f2592b))
+* **Version:** Reverted version to 8.5.1 ([#275](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/275)) ([73efaa2](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/73efaa2567dc17d6638710f2d37dcf0dd2efd709))
+
+## [8.5.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.5.0...v8.5.1) (2022-12-07)
+
+
+### Bug Fixes
+
+* CI semantic release fix ([#238](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/238)) ([8ebacd8](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/8ebacd893fd8f209218a59d895dcbcda40f7e38e))
+* This PR prevents the app from going to sleep when playing video ads ([#237](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/237)) ([d74c716](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/d74c7167d5d685ed1ba371e4e3a57c92fb515d8d))
+
+# [8.5.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.4.3...v8.5.0) (2022-11-17)
 
 
 ### Features
 
-* adding a new button to the video controller to mute and unmute ([#228](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/228)) ([a998600](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/a998600f7b42b41d27f6312ba2aa788758f6c2f2))
+* adding a new button to the video controller to mute and unmute ([#228](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/228)) ([a998600](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/a998600f7b42b41d27f6312ba2aa788758f6c2f2))
 
-## [8.4.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.2...v8.4.3) (2022-10-26)
-
-
-### Bug Fixes
-
-* when the `WebView` fails to load ([#227](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/227)) ([b29f503](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b29f50366c7a768074901a828dd0e630946d9ef0))
-
-## [8.4.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.1...v8.4.2) (2022-10-17)
+## [8.4.3](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.4.2...v8.4.3) (2022-10-26)
 
 
 ### Bug Fixes
 
-* Update SDK version to 8.4.2 ([#226](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/226)) ([b910d59](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/b910d593b7b83be5e866b591690e239ee00ea8b0))
+* when the `WebView` fails to load ([#227](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/227)) ([b29f503](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/b29f50366c7a768074901a828dd0e630946d9ef0))
 
-## [8.4.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.4.0...v8.4.1) (2022-10-17)
+## [8.4.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.4.1...v8.4.2) (2022-10-17)
 
 
 ### Bug Fixes
 
-* crash when the video is completed ([#225](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/225)) ([ca545c1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/ca545c1d043a0a1a1a6752eced11a1c3cfcc40d6))
+* Update SDK version to 8.4.2 ([#226](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/226)) ([b910d59](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/b910d593b7b83be5e866b591690e239ee00ea8b0))
 
-# [8.4.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.7...v8.4.0) (2022-10-05)
+## [8.4.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.4.0...v8.4.1) (2022-10-17)
+
+
+### Bug Fixes
+
+* crash when the video is completed ([#225](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/225)) ([ca545c1](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/ca545c1d043a0a1a1a6752eced11a1c3cfcc40d6))
+
+# [8.4.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.7...v8.4.0) (2022-10-05)
 
 
 ### Features
 
-* add immediately close button functionality to the interstitial ads ([#222](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/222)) ([2842a03](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/2842a03a0ce1af0c7a661c3b4b35373b23dd3338))
+* add immediately close button functionality to the interstitial ads ([#222](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/222)) ([2842a03](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/2842a03a0ce1af0c7a661c3b4b35373b23dd3338))
 
-## [8.3.7](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.6...v8.3.7) (2022-09-06)
+## [8.3.7](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.6...v8.3.7) (2022-09-06)
 
 
 ### Bug Fixes
 
-* approval step in the circle ci ([#176](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/176)) ([d12b2c4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/d12b2c4c01e623ec3d24d58c408868e7876cecb1))
-* Remoe tags on semantic release and requires on prep_deploy ([#201](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/201)) ([037e13b](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/037e13b6ce5c73df25367953e5fda214d5cb3202))
-* swapping filter order ([#200](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/200)) ([79962a3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/79962a355ec1fdac1f2844ddc8cbd1480349954d))
-* triggering semantic release on dry run approval ([#199](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/199)) ([da1045e](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/da1045e5d56793c5309b8fc4da77de923440c86e))
-* Vast ads that are wrapped were not loading correctly. Fixed the recursive loading issue ([#179](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/179)) ([6d51f60](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/6d51f60cf8df41430ef9ad3b6fef9afc37f2a893))
+* approval step in the circle ci ([#176](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/176)) ([d12b2c4](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/d12b2c4c01e623ec3d24d58c408868e7876cecb1))
+* Remoe tags on semantic release and requires on prep_deploy ([#201](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/201)) ([037e13b](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/037e13b6ce5c73df25367953e5fda214d5cb3202))
+* swapping filter order ([#200](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/200)) ([79962a3](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/79962a355ec1fdac1f2844ddc8cbd1480349954d))
+* triggering semantic release on dry run approval ([#199](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/199)) ([da1045e](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/da1045e5d56793c5309b8fc4da77de923440c86e))
+* Vast ads that are wrapped were not loading correctly. Fixed the recursive loading issue ([#179](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/179)) ([6d51f60](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/6d51f60cf8df41430ef9ad3b6fef9afc37f2a893))
 * Fixed multiple adEnded and adClosed callbacks
 * Exposed the SDK version number via a public method
 
-## [8.3.6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.5...v8.3.6) (2022-06-24)
+## [8.3.6](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.5...v8.3.6) (2022-06-24)
 
 
 ### Bug Fixes
 
-* Version number store updates formatting ([75ac1df](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/75ac1df6fb1bf756ec3f0260021abc58afd82832))
+* Version number store updates formatting ([75ac1df](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/75ac1df6fb1bf756ec3f0260021abc58afd82832))
 
-## [8.3.5](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.4...v8.3.5) (2022-06-23)
-
-
-### Bug Fixes
-
-* Video Ad crashes when the Warning dialog is accessed even after the activity is closed ([#165](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/165)) ([146be04](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/146be04c369aaa6b3a6c28eb1e7800f7cc1b36ed))
-
-## [8.3.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.3...v8.3.4) (2022-06-17)
+## [8.3.5](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.4...v8.3.5) (2022-06-23)
 
 
 ### Bug Fixes
 
-* Close button to display immediately without a delay ([#163](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/163)) ([e41f4fa](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e41f4fa16232bab6aa4e22d6da912626af272e19))
+* Video Ad crashes when the Warning dialog is accessed even after the activity is closed ([#165](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/165)) ([146be04](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/146be04c369aaa6b3a6c28eb1e7800f7cc1b36ed))
 
-## [8.3.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.2...v8.3.3) (2022-05-25)
-
-
-### Bug Fixes
-
-* loading an ad with multiple parameters ([#157](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/157)) ([e83ee11](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e83ee117fd2071969bfec3eac7d7140ec8a6d82d))
-
-## [8.3.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.1...v8.3.2) (2022-04-26)
+## [8.3.4](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.3...v8.3.4) (2022-06-17)
 
 
 ### Bug Fixes
 
-* Fixed the video player not resizing dynamically ([f7c6f68](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/f7c6f684c294790d6823df13bc95eb43deaae7ba))
+* Close button to display immediately without a delay ([#163](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/163)) ([e41f4fa](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e41f4fa16232bab6aa4e22d6da912626af272e19))
 
-## [8.3.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.3.0...v8.3.1) (2022-04-20)
-
-
-### Bug Fixes
-
-* fix for missing ads on Unity Android ([6936809](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/6936809e7f6309d07584ec86128e4c9687c085fe))
-
-# [8.3.0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.4...v8.3.0) (2022-04-11)
+## [8.3.3](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.2...v8.3.3) (2022-05-25)
 
 
 ### Bug Fixes
 
-* ad sounds continue to play even after minimising the app. Now, it is paused/resumed after the minimising. ([#145](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/145)) ([281d669](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/281d669566eb4c123f494dee82f1528526c332dc))
-* safe af logo appearing multiple times when KSF ad is loaded ([#143](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/143)) ([9e55ef4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/9e55ef4cbe36598491df03b5484f6b25843a005d))
+* loading an ad with multiple parameters ([#157](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/157)) ([e83ee11](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e83ee117fd2071969bfec3eac7d7140ec8a6d82d))
+
+## [8.3.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.1...v8.3.2) (2022-04-26)
+
+
+### Bug Fixes
+
+* Fixed the video player not resizing dynamically ([f7c6f68](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/f7c6f684c294790d6823df13bc95eb43deaae7ba))
+
+## [8.3.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.3.0...v8.3.1) (2022-04-20)
+
+
+### Bug Fixes
+
+* fix for missing ads on Unity Android ([6936809](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/6936809e7f6309d07584ec86128e4c9687c085fe))
+
+# [8.3.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.2.4...v8.3.0) (2022-04-11)
+
+
+### Bug Fixes
+
+* ad sounds continue to play even after minimising the app. Now, it is paused/resumed after the minimising. ([#145](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/145)) ([281d669](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/281d669566eb4c123f494dee82f1528526c332dc))
+* safe af logo appearing multiple times when KSF ad is loaded ([#143](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/143)) ([9e55ef4](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/9e55ef4cbe36598491df03b5484f6b25843a005d))
 
 
 ### Features
 
-* add timestamp ([#144](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/issues/144)) ([e6d6ae1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/e6d6ae158d96d80b582cbbd5bc4ae64cc5c3bc1c))
-* Complete VPAID support with final features ([#146](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/pull/146)) ([c97948c](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/c97948c40490dfc08a583277b8a9883edb18b87f))
+* add timestamp ([#144](https://github.com/superawesome-org/sa-mobile-sdk-android/issues/144)) ([e6d6ae1](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/e6d6ae158d96d80b582cbbd5bc4ae64cc5c3bc1c))
+* Complete VPAID support with final features ([#146](https://github.com/superawesome-org/sa-mobile-sdk-android/pull/146)) ([c97948c](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/c97948c40490dfc08a583277b8a9883edb18b87f))
 
-## [8.2.4](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.3...v8.2.4) (2022-02-02)
-
-
-### Bug Fixes
-
-* generate token in semantic_release step ([16f8133](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/16f8133f1e5215a6cd97cbe76a3e228dc4055ea2))
-
-## [8.2.3](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.2...v8.2.3) (2022-02-02)
+## [8.2.4](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.2.3...v8.2.4) (2022-02-02)
 
 
 ### Bug Fixes
 
-* use gha-token-generator and set GITHUB_TOKEN env var ([0bb5353](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/0bb5353628f17b6d42a1d7dbe716f5f1c49a64b3))
+* generate token in semantic_release step ([16f8133](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/16f8133f1e5215a6cd97cbe76a3e228dc4055ea2))
 
-## [8.2.2](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.1...v8.2.2) (2022-02-02)
-
-
-### Bug Fixes
-
-* add KSF placements ([5536548](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/55365481f6d62a59e2d0e93e4d50c45bd522c5b1))
-* add working banner, video and interstitial placements. KSF placements TODO ([37574f6](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/37574f6fd19637c88ab3839417e9a1c6ff6b2134))
-
-## [8.2.1](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/compare/v8.2.0...v8.2.1) (2021-11-30)
+## [8.2.3](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.2.2...v8.2.3) (2022-02-02)
 
 
 ### Bug Fixes
 
-* **Manifest:** NOJIRA: Cleaned up Manifests and added exported property to activities. ([51c92a0](https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android/commit/51c92a0c1bfef184c494406a5a34b919690a91c2))
+* use gha-token-generator and set GITHUB_TOKEN env var ([0bb5353](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/0bb5353628f17b6d42a1d7dbe716f5f1c49a64b3))
+
+## [8.2.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.2.1...v8.2.2) (2022-02-02)
+
+
+### Bug Fixes
+
+* add KSF placements ([5536548](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/55365481f6d62a59e2d0e93e4d50c45bd522c5b1))
+* add working banner, video and interstitial placements. KSF placements TODO ([37574f6](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/37574f6fd19637c88ab3839417e9a1c6ff6b2134))
+
+## [8.2.1](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v8.2.0...v8.2.1) (2021-11-30)
+
+
+### Bug Fixes
+
+* **Manifest:** NOJIRA: Cleaned up Manifests and added exported property to activities. ([51c92a0](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/51c92a0c1bfef184c494406a5a34b919690a91c2))
 
 CHANGELOG
 =========

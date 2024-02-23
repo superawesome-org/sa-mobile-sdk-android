@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 version = System.properties.getProperty("versionName")
 group = System.properties.getProperty("groupProj")
 def artifactProj = System.properties.getProperty("artifactProj")
-def gitUrl = 'https://github.com/SuperAwesomeLTD/sa-mobile-sdk-android.git'
+def gitUrl = 'https://github.com/superawesome-org/sa-mobile-sdk-android.git'
 def libraryName = System.properties.getProperty("uploadName")
 def siteUrl = 'https://sa-mobile-sdk-android.superawesome.tv/'
 
