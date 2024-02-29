@@ -14,8 +14,8 @@ else
     import "#{saLocalRepoDirectory}/mobile/sdks/android/Fastfile"
   else
     import_from_git(
-      url: "git@github.com:SuperAwesomeLTD/sa-continuous-integration.git",
-      branch: "master",
+      url: "https://github.com/superawesome-org/sa-ci-docker.git",
+      branch: "main",
       path: "mobile/sdks/android/Fastfile",
     )
   end
