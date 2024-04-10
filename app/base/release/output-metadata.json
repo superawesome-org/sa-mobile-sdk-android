@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "tv.superawesome.demoapp",
+  "variantName": "baseRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 1,
+      "versionName": "9.2.3",
+      "outputFile": "app-base-release.apk"
+    }
+  ],
+  "elementType": "File"
+}
