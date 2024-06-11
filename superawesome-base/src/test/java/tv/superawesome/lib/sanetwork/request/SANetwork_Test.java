@@ -226,9 +226,6 @@ public class SANetwork_Test {
         // when
         server.enqueue(mockResponse);
         server.enqueue(mockResponse);
-        server.enqueue(mockResponse);
-        server.enqueue(mockResponse);
-        server.enqueue(mockResponse);
 
         network.sendGET(url, null, null, (status, payload, success) -> {
 
@@ -242,7 +239,7 @@ public class SANetwork_Test {
         RecordedRequest record = server.takeRequest();
         int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
-        assertEquals(5, numberOfRequests);
+        assertEquals(2, numberOfRequests);
     }
 
     @Test
@@ -255,9 +252,6 @@ public class SANetwork_Test {
                 .setBody(responseBody);
 
         // when
-        server.enqueue(mockResponse);
-        server.enqueue(mockResponse);
-        server.enqueue(mockResponse);
         server.enqueue(mockResponse);
         server.enqueue(mockResponse);
 
@@ -273,7 +267,7 @@ public class SANetwork_Test {
         RecordedRequest record = server.takeRequest();
         int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
-        assertEquals(5, numberOfRequests);
+        assertEquals(2, numberOfRequests);
     }
 
     @Test
@@ -309,7 +303,7 @@ public class SANetwork_Test {
 
         // then
         int numberOfRequests = server.getRequestCount();
-        assertEquals(5, numberOfRequests);
+        assertEquals(2, numberOfRequests);
     }
 
     @Test
@@ -333,7 +327,7 @@ public class SANetwork_Test {
 
         // then
         int numberOfRequests = server.getRequestCount();
-        assertEquals(6, numberOfRequests);
+        assertEquals(3, numberOfRequests);
     }
 
     @Test
@@ -362,7 +356,7 @@ public class SANetwork_Test {
 
         // then
         int numberOfRequests = server.getRequestCount();
-        assertEquals(6, numberOfRequests);
+        assertEquals(3, numberOfRequests);
     }
 
     @Test
@@ -386,11 +380,11 @@ public class SANetwork_Test {
 
         // then
         int numberOfRequests = server.getRequestCount();
-        assertEquals(6, numberOfRequests);
+        assertEquals(3, numberOfRequests);
     }
 
     @Test
-    public void test_SANetwork_SendGET_Retries_5_Times_On_Server_Error() {
+    public void test_SANetwork_SendGET_Retries_2_Times_On_Server_Error() {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockResponse = new MockResponse()
@@ -398,9 +392,6 @@ public class SANetwork_Test {
                 .setBody(responseBody);
 
         // when
-        server.enqueue(mockResponse);
-        server.enqueue(mockResponse);
-        server.enqueue(mockResponse);
         server.enqueue(mockResponse);
         server.enqueue(mockResponse);
 
@@ -413,11 +404,11 @@ public class SANetwork_Test {
 
         // then
         int numberOfRequests = server.getRequestCount();
-        assertEquals(5, numberOfRequests);
+        assertEquals(2, numberOfRequests);
     }
 
     @Test
-    public void test_SANetwork_SendGET_Retries_Twice_Before_Succeeding() {
+    public void test_SANetwork_SendGET_Retries_Once_Before_Succeeding() {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockSuccessResponse = new MockResponse()
@@ -429,9 +420,6 @@ public class SANetwork_Test {
 
         // when
         server.enqueue(mockErrorResponse);
-        server.enqueue(mockErrorResponse);
-        server.enqueue(mockSuccessResponse);
-        server.enqueue(mockSuccessResponse);
         server.enqueue(mockSuccessResponse);
 
         network.sendGET(url, null, null, (status, payload, success) -> {
@@ -445,11 +433,11 @@ public class SANetwork_Test {
 
         // then
         int numberOfRequests = server.getRequestCount();
-        assertEquals(3, numberOfRequests);
+        assertEquals(2, numberOfRequests);
     }
 
     @Test
-    public void test_SANetwork_SendGET_Retries_5_Times_And_Succeeds_On_Final_Retry() throws Exception {
+    public void test_SANetwork_SendGET_Retries_1_Times_And_Succeeds_On_Final_Retry() throws Exception {
         // given
         String url = server.url("/some/url").toString();
         MockResponse mockSuccessResponse = new MockResponse()
@@ -460,9 +448,6 @@ public class SANetwork_Test {
                 .setBody(responseBody);
 
         // when
-        server.enqueue(mockErrorResponse);
-        server.enqueue(mockErrorResponse);
-        server.enqueue(mockErrorResponse);
         server.enqueue(mockErrorResponse);
         server.enqueue(mockSuccessResponse);
 
@@ -479,7 +464,7 @@ public class SANetwork_Test {
         RecordedRequest record = server.takeRequest();
         int numberOfRequests = server.getRequestCount();
         assertEquals("GET /some/url HTTP/1.1", record.getRequestLine());
-        assertEquals(5, numberOfRequests);
+        assertEquals(2, numberOfRequests);
     }
 
     @Test

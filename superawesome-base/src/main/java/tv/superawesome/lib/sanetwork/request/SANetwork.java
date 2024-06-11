@@ -25,7 +25,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class SANetwork {
 
     private int timeout = 15000;
-    private static final int maxRetries = 5;
+    private static final int maxRetries = 1;
     private long retryDelay = 1000L;
 
     private final Executor executor;
@@ -124,7 +124,7 @@ public class SANetwork {
 
             do {
 
-                boolean isFinalRetry = retries == maxRetries -1;
+                boolean isFinalRetry = retries == maxRetries;
 
                 // Delay on a retried request
                 if (delayRequest) {
@@ -300,7 +300,7 @@ public class SANetwork {
                     delayRequest = true;
                     retries++;
                 }
-            } while (retries < maxRetries);
+            } while (retries <= maxRetries);
         });
     }
 
