@@ -1,5 +1,6 @@
 {
   "isAdResponseVASTEnabled": true,
   "isExoPlayerEnabled": true,
-  "videoStabilityFailsafeTimeout": 2500
+  "videoStabilityFailsafeTimeout": 2500,
+  "rewardGivenAfterErrorDelay": 3000
 }

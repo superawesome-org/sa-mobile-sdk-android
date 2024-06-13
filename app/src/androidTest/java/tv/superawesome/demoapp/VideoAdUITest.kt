@@ -1,10 +1,11 @@
 package tv.superawesome.demoapp
 
 import android.graphics.Color
+import android.os.Handler
 import android.view.KeyEvent
+import androidx.core.os.postDelayed
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import org.junit.After
@@ -1053,6 +1054,37 @@ class VideoAdUITest: BaseUITest() {
                 waitForFreezeFailsafeTime()
                 checkCloseIsDisplayed()
             }
+        }
+    }
+
+    @Test
+    fun test_video_gives_reward_if_errors_after_set_time() {
+        val testData = TestData.videoDirect
+
+        listScreenRobot {
+            launchWithSuccessStub(testData)
+            tapOnPlacement(testData)
+
+            videoScreenRobot {
+                waitForDisplay()
+
+                val activity = EspressoUtils.getCurrentActivity<SAVideoActivity>()
+                if (activity != null) {
+                    val handler = Handler(activity.mainLooper)
+                    handler.postDelayed(2500) {
+                        activity.forceVideoCrash()
+                    }
+                }
+            }
+
+            waitForDisplay()
+
+            checkForEvent(testData, SAEvent.adLoaded)
+            checkForEvent(testData, SAEvent.adShown)
+            checkForEvent(testData, SAEvent.adPlaying)
+            checkForEvent(testData, SAEvent.adFailedToShow)
+            checkForEvent(testData, SAEvent.adEnded)
+            checkForEvent(testData, SAEvent.adClosed)
         }
     }
 
