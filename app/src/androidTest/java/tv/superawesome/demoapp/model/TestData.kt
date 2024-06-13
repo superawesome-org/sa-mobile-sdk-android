@@ -123,6 +123,10 @@ data class TestData(
             placementId = "88406",
             fileName = "video_vast_no_tag.json",
         )
+        val failingVideoVast = TestData(
+            placementId = "10011",
+            fileName = "video_flat_success_to_failure.json",
+        )
         val failingVideoVpaid = TestData(
             placementId = "89056",
             fileName = "video_vpaid_failure.json",

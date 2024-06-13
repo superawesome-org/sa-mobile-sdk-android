@@ -161,6 +161,11 @@ class ExoPlayerController(private val playerView: IVideoPlayer) : IVideoPlayerCo
         removeTimer()
     }
 
+    override fun crash() {
+        player?.stop()
+        listener?.onError(this, PurposeCrashException(), currentIVideoPosition, iVideoDuration)
+    }
+
     override fun destroy() {
         try {
             player?.stop()

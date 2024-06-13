@@ -477,6 +477,11 @@ public class SAVideoActivity extends Activity implements
         control.pause();
     }
 
+    @VisibleForTesting
+    public void forceVideoCrash() {
+        control.crash();
+    }
+
     private void sendEvent(SAEvent event) {
         if (listenerRef != null) {
             listenerRef.onEvent(ad.placementId, event);

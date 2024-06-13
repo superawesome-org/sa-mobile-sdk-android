@@ -3,6 +3,7 @@ package tv.superawesome.sdk.publisher.videoPlayer
 import android.content.Context
 import android.net.Uri
 import android.view.SurfaceHolder
+import androidx.annotation.VisibleForTesting
 
 /**
  * This interface defines the public interface for any object that can be
@@ -64,6 +65,12 @@ interface IVideoPlayerController {
      * Method that pauses the media play.
      */
     fun pause()
+
+    /**
+     * Crashes the video player, only to be used for testing purposes.
+     */
+    @VisibleForTesting
+    fun crash()
 
     /**
      * Stops the media playback.
