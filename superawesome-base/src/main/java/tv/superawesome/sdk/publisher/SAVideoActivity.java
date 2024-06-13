@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import tv.superawesome.lib.featureflags.FeatureFlags;
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
@@ -334,6 +335,11 @@ public class SAVideoActivity extends Activity implements
     @Override
     public void onError(@NonNull IVideoPlayer videoPlayer, @NonNull Throwable throwable, int time, int duration) {
         videoEvents.error(videoPlayer, time, duration);
+
+        long rewardGivenDelay = AwesomeAds.getFeatureFlags().getRewardGivenAfterErrorDelay();
+        if ((long) time >= rewardGivenDelay) {
+            sendEvent(SAEvent.adEnded);
+        }
 
         sendEvent(SAEvent.adFailedToShow);
 

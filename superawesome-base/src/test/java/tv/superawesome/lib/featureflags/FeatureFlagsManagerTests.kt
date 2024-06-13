@@ -46,5 +46,6 @@ class FeatureFlagsManagerTests {
         assertFalse(sut.featureFlags.isAdResponseVASTEnabled)
         assertFalse(sut.featureFlags.isAdResponseVASTEnabled)
         assertEquals(2500, sut.featureFlags.videoStabilityFailsafeTimeout)
+        assertEquals(Long.MAX_VALUE, sut.featureFlags.rewardGivenAfterErrorDelay)
     }
 }
