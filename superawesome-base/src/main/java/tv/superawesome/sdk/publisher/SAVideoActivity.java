@@ -4,13 +4,13 @@
  */
 package tv.superawesome.sdk.publisher;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -23,12 +23,12 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import tv.superawesome.lib.featureflags.FeatureFlags;
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
 import tv.superawesome.lib.saparentalgate.SAParentalGate;
 import tv.superawesome.lib.satiming.SACountDownTimer;
+import tv.superawesome.lib.sautils.EventSender;
 import tv.superawesome.lib.sautils.SAImageUtils;
 import tv.superawesome.lib.sautils.SAUtils;
 import tv.superawesome.sdk.publisher.state.CloseButtonState;
@@ -82,6 +82,11 @@ public class SAVideoActivity extends Activity implements
 
     private static final Long FREEZE_TIMER_INTERVAL = 500L;
 
+    private EventSender eventSender;
+
+    private final boolean fireEventsOnceEnabled =
+            AwesomeAds.getFeatureFlags().getFireEventsOnceEnabled();
+
     /**
      * Overridden "onCreate" method, part of the Activity standard set of methods.
      * Here is the part where the activity / video ad gets configured
@@ -101,6 +106,22 @@ public class SAVideoActivity extends Activity implements
         // get listener & events from static ad context
         listenerRef = SAVideoAd.getListener();
         SAEvents events = SAVideoAd.getEvents();
+
+        // Setup EventSender
+        if (savedInstanceState != null) {
+            // Restore from parcel
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                eventSender = savedInstanceState.getParcelable("event-sender", EventSender.class);
+            } else {
+                eventSender = (EventSender) savedInstanceState.getParcelable("event-sender");
+            }
+        } else {
+            eventSender = new EventSender(ad.placementId);
+        }
+
+        if (eventSender != null) {
+            eventSender.setListener(listenerRef);
+        }
 
         // setup derived objects
         videoEvents = new SAVideoEvents(events, this);
@@ -451,6 +472,7 @@ public class SAVideoActivity extends Activity implements
 
     private void removeListenerRef() {
         listenerRef = null;
+        eventSender = null;
     }
 
     @Override
@@ -483,9 +505,35 @@ public class SAVideoActivity extends Activity implements
     }
 
     private void sendEvent(SAEvent event) {
-        if (listenerRef != null) {
-            listenerRef.onEvent(ad.placementId, event);
-            Log.d("SAVideoActivity", "Event callback: " + event);
+        if (fireEventsOnceEnabled) {
+            if (eventSender != null) {
+                switch (event) {
+                    case adShown:
+                        eventSender.adShown();
+                        break;
+                    case adFailedToShow:
+                        eventSender.adFailedToShow();
+                        break;
+                    case adEnded:
+                        eventSender.adEnded();
+                        break;
+                    case adClosed:
+                        eventSender.adClosed();
+                        break;
+                    case adPaused:
+                        eventSender.adPaused();
+                        break;
+                    case adPlaying:
+                        eventSender.adPlaying();
+                        break;
+                }
+                Log.d("SAVideoActivity", "Event callback: " + event);
+            }
+        } else {
+            if (listenerRef != null) {
+                listenerRef.onEvent(ad.placementId, event);
+                Log.d("SAVideoActivity", "Event callback: " + event);
+            }
         }
     }
 

@@ -12,6 +12,8 @@ import org.json.JSONObject
  * @property videoStabilityFailsafeTimeout the timeout for the video stability failsafe. Defaults to `2500`.
  * @property rewardGivenAfterErrorDelay after how many millis of video playback will the reward be given
  * if the video playback errors out. Defaults to max Long value (disabled).
+ * @property fireEventsOnceEnabled whether the flag to control if events are being fired just once is enabled.
+ * Only works for videos. Defaults to `false`.
  */
 
 data class FeatureFlags(
@@ -19,6 +21,7 @@ data class FeatureFlags(
     val isExoPlayerEnabled: Boolean = DEFAULT_IS_EXO_PLAYER_ENABLED,
     val videoStabilityFailsafeTimeout: Long = DEFAULT_VIDEO_STABILITY_FAILSAFE,
     val rewardGivenAfterErrorDelay: Long = DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY,
+    val fireEventsOnceEnabled: Boolean = DEFAULT_FIRE_EVENTS_ONCE_ENABLED,
 ) {
     companion object {
 
@@ -41,6 +44,11 @@ data class FeatureFlags(
          * Default value for rewardGivenAfterErrorDelay.
          */
         const val DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY = Long.MAX_VALUE
+
+        /**
+         * Default values for fireEventsOnceEnabled.
+         */
+        const val DEFAULT_FIRE_EVENTS_ONCE_ENABLED = false
 
         /**
          * Get the global feature flags from the json object.
@@ -74,12 +82,19 @@ data class FeatureFlags(
                 logException(e)
                 DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY
             }
+            val fireEventsOnceEnabled = try {
+                json.getBoolean("fireEventsOnceEnabled")
+            } catch (e: JSONException) {
+                logException(e)
+                DEFAULT_FIRE_EVENTS_ONCE_ENABLED
+            }
 
             return FeatureFlags(
                 isAdResponseVASTEnabled = isAdResponseVASTEnabled,
                 isExoPlayerEnabled = isExoPlayerEnabled,
                 videoStabilityFailsafeTimeout = videoStabilityFailsafeTimeout,
                 rewardGivenAfterErrorDelay = rewardGivenAfterErrorDelay,
+                fireEventsOnceEnabled = fireEventsOnceEnabled,
             )
         }
 
