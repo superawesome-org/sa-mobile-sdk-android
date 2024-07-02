@@ -10,8 +10,24 @@ data class FeatureFlag<T>(
     val conditions: List<FlagCondition> = emptyList(),
 ) {
 
-    fun isEnabled(placementId: Int, lineItemId: Int, creativeId: Int): Boolean {
-       TODO()
+    fun isEnabled(placementId: Int, lineItemId: Int, creativeId: Int, userValue: Int): Boolean {
+        for (condition in conditions) {
+            when (condition) {
+                is FlagCondition.PlacementIds -> {
+                    if (placementId !in condition.ids) return false
+                }
+                is FlagCondition.LineItemIds -> {
+                    if (lineItemId !in condition.ids) return false
+                }
+                is FlagCondition.CreativeIds -> {
+                    if (creativeId !in condition.ids) return false
+                }
+                is FlagCondition.Percentage -> {
+                    if (userValue > condition.value) return false
+                }
+            }
+        }
+        return true
     }
 
     companion object {
