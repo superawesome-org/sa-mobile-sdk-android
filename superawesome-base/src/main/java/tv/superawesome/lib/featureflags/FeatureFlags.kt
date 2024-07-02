@@ -15,8 +15,8 @@ import org.json.JSONObject
  */
 
 data class FeatureFlags(
-    val isAdResponseVASTEnabled: FeatureFlag<Unit> = DEFAULT_AD_RESPONSE_VAST_ENABLED,
-    val isExoPlayerEnabled: FeatureFlag<Unit> = DEFAULT_IS_EXO_PLAYER_ENABLED,
+    val isAdResponseVASTEnabled: FeatureFlag<Boolean> = DEFAULT_AD_RESPONSE_VAST_ENABLED,
+    val isExoPlayerEnabled: FeatureFlag<Boolean> = DEFAULT_IS_EXO_PLAYER_ENABLED,
     val videoStabilityFailsafeTimeout: FeatureFlag<Long> = DEFAULT_VIDEO_STABILITY_FAILSAFE,
     val rewardGivenAfterErrorDelay: FeatureFlag<Long> = DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY,
 ) {
@@ -25,18 +25,16 @@ data class FeatureFlags(
         /**
          * Default value for isAdResponseVASTEnabled.
          */
-        val DEFAULT_AD_RESPONSE_VAST_ENABLED = FeatureFlag<Unit>(
-            on = false,
-            value = null,
+        val DEFAULT_AD_RESPONSE_VAST_ENABLED = FeatureFlag(
+            value = false,
             conditions = emptyList(),
         )
 
         /**
          * Default value for isExoPlayerEnabled.
          */
-        val DEFAULT_IS_EXO_PLAYER_ENABLED = FeatureFlag<Unit>(
-            on = false,
-            value = null,
+        val DEFAULT_IS_EXO_PLAYER_ENABLED = FeatureFlag(
+            value = false,
             conditions = emptyList(),
         )
 
@@ -44,7 +42,6 @@ data class FeatureFlags(
          * Default value for videoStabilityFailsafeTimeout.
          */
         val DEFAULT_VIDEO_STABILITY_FAILSAFE = FeatureFlag(
-            on = true,
             value = 2_500L,
             conditions = emptyList(),
         )
@@ -53,7 +50,6 @@ data class FeatureFlags(
          * Default value for rewardGivenAfterErrorDelay.
          */
         val DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY = FeatureFlag(
-            on = true,
             value = Long.MAX_VALUE,
             conditions = emptyList(),
         )

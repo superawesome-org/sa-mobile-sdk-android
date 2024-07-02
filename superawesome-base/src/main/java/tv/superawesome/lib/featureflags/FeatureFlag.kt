@@ -5,8 +5,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 data class FeatureFlag<T>(
-    val on: Boolean,
-    val value: T? = null,
+    val value: T,
     val conditions: List<FlagCondition> = emptyList(),
 ) {
 
@@ -33,7 +32,6 @@ data class FeatureFlag<T>(
     companion object {
         inline fun <reified T> fromJson(json: JSONObject, name: String): FeatureFlag<T> {
             val keyObj = json.getJSONObject(name)
-            val isEnabled = keyObj.getBoolean("on")
 
             val conditions = keyObj.optJSONObject("conditions")?.let { c ->
                 listOf<FlagCondition>() +
@@ -61,15 +59,11 @@ data class FeatureFlag<T>(
                 }
 
                 FeatureFlag(
-                    on = isEnabled,
                     value = v as T,
                     conditions = conditions,
                 )
             } else {
-                FeatureFlag(
-                    on = isEnabled,
-                    conditions = conditions
-                )
+                throw JSONException("Missing value field for flag $name")
             }
         }
 
