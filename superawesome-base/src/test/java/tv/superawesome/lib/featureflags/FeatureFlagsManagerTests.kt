@@ -13,7 +13,7 @@ class FeatureFlagsManagerTests {
     fun `feature flag manager correctly loads flags`() {
         // given
         val featureFlags = FeatureFlags(isAdResponseVASTEnabled = FeatureFlag(
-            on = true,
+            value = true,
         ))
         val ffApi = mockk<GlobalFeatureFlagsApi>(relaxed = true)
         val sut = FeatureFlagsManager(ffApi)
@@ -26,7 +26,7 @@ class FeatureFlagsManagerTests {
         sut.fetchFeatureFlags()
 
         // then
-        assertTrue(sut.featureFlags.isAdResponseVASTEnabled.on)
+        assertTrue(sut.featureFlags.isAdResponseVASTEnabled.value)
     }
 
     @Test
@@ -44,8 +44,8 @@ class FeatureFlagsManagerTests {
         sut.fetchFeatureFlags()
 
         // then
-        assertFalse(sut.featureFlags.isAdResponseVASTEnabled.on)
-        assertFalse(sut.featureFlags.isAdResponseVASTEnabled.on)
+        assertFalse(sut.featureFlags.isAdResponseVASTEnabled.value)
+        assertFalse(sut.featureFlags.isAdResponseVASTEnabled.value)
         assertEquals(2_500L, sut.featureFlags.videoStabilityFailsafeTimeout.value)
         assertEquals(Long.MAX_VALUE, sut.featureFlags.rewardGivenAfterErrorDelay.value)
     }

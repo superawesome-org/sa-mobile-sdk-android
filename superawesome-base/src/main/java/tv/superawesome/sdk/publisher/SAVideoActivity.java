@@ -488,6 +488,6 @@ public class SAVideoActivity extends Activity implements
     }
 
     private boolean isExoPlayerEnabled() {
-        return AwesomeAds.getFeatureFlags().isExoPlayerEnabled().getOn();
+        return AwesomeAds.getFeatureFlags().isExoPlayerEnabled().getValue();
     }
 }

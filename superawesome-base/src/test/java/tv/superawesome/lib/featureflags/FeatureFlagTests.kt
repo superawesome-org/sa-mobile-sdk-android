@@ -20,7 +20,6 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(5, featureFlag.value)
-        assertEquals(true, featureFlag.on)
         assertEquals(4, featureFlag.conditions.size)
         assertTrue(featureFlag.conditions[0] is FlagCondition.PlacementIds)
         assertEquals(listOf(1,2,3), (featureFlag.conditions[0] as? FlagCondition.PlacementIds)?.ids)
@@ -40,7 +39,6 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(10, featureFlag.value)
-        assertEquals(true, featureFlag.on)
         assertEquals(0, featureFlag.conditions.size)
     }
 
@@ -52,7 +50,6 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(10, featureFlag.value)
-        assertEquals(true, featureFlag.on)
         assertEquals(0, featureFlag.conditions.size)
     }
 
@@ -60,11 +57,9 @@ class FeatureFlagTests {
     fun `can parse a JSONObject if the value is missing (on-off flag)`() {
         val json = JSONObject(JSON_STRING)
 
-        val featureFlag = FeatureFlag.fromJson<Unit>(json, "flag4")
+        val featureFlag = FeatureFlag.fromJson<Boolean>(json, "flag4")
 
         assertNotNull(featureFlag)
-        assertEquals(false, featureFlag.on)
-        assertNull(featureFlag.value)
         assertEquals(1, featureFlag.conditions.size)
         assertTrue(featureFlag.conditions[0] is FlagCondition.Percentage)
         assertEquals(60, (featureFlag.conditions[0] as? FlagCondition.Percentage)?.value)
@@ -77,7 +72,6 @@ class FeatureFlagTests {
         val featureFlag = FeatureFlag.fromJson<Double>(json, "flag5")
 
         assertNotNull(featureFlag)
-        assertEquals(true, featureFlag.on)
         assertEquals(3.9, featureFlag.value)
         assertEquals(0, featureFlag.conditions.size)
     }
@@ -89,7 +83,6 @@ class FeatureFlagTests {
         val featureFlag = FeatureFlag.fromJson<Boolean>(json, "flag6")
 
         assertNotNull(featureFlag)
-        assertEquals(true, featureFlag.on)
         assertEquals(true, featureFlag.value)
         assertEquals(0, featureFlag.conditions.size)
     }
@@ -161,7 +154,6 @@ class FeatureFlagTests {
         const val JSON_STRING = """
         {
             "flag1": {
-                "on": true,
                 "value": 5,
                 "conditions": {
                     "placementIds": [1,2,3],
@@ -171,26 +163,22 @@ class FeatureFlagTests {
                 }
             },
             "flag2": {
-                "on": true,
                 "value": 10,
                 "conditions": {}
             },
             "flag3": {
-                "on": true,
                 "value": 10
             },
             "flag4": {
-                "on": false,
+                "value": false,
                 "conditions": {
                     "percentage": 60
                 }
             },
             "flag5": {
-                "on": true,
                 "value": 3.9
             },
             "flag6": {
-                "on": true,
                 "value": true
             }
         }
