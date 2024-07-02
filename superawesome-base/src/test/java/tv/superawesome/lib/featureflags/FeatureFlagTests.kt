@@ -2,12 +2,10 @@ package tv.superawesome.lib.featureflags
 
 import org.json.JSONException
 import org.json.JSONObject
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class FeatureFlagTests {
@@ -16,7 +14,7 @@ class FeatureFlagTests {
     fun `can parse a full JSONObject successfully`() {
         val json = JSONObject(JSON_STRING)
 
-        val featureFlag = FeatureFlag.fromJson<Int>(json, "flag1")
+        val featureFlag = FeatureFlag.fromJson<Int>(json, "flag1", 0)
 
         assertNotNull(featureFlag)
         assertEquals(5, featureFlag.value)
@@ -35,7 +33,7 @@ class FeatureFlagTests {
     fun `can parse a JSONObject if any conditions are missing`() {
         val json = JSONObject(JSON_STRING)
 
-        val featureFlag = FeatureFlag.fromJson<Int>(json, "flag2")
+        val featureFlag = FeatureFlag.fromJson<Int>(json, "flag2", 0)
 
         assertNotNull(featureFlag)
         assertEquals(10, featureFlag.value)
@@ -46,7 +44,7 @@ class FeatureFlagTests {
     fun `can parse a JSONObject if the conditions obj is missing`() {
         val json = JSONObject(JSON_STRING)
 
-        val featureFlag = FeatureFlag.fromJson<Int>(json, "flag3")
+        val featureFlag = FeatureFlag.fromJson<Int>(json, "flag3", 0)
 
         assertNotNull(featureFlag)
         assertEquals(10, featureFlag.value)
@@ -54,22 +52,10 @@ class FeatureFlagTests {
     }
 
     @Test
-    fun `can parse a JSONObject if the value is missing (on-off flag)`() {
-        val json = JSONObject(JSON_STRING)
-
-        val featureFlag = FeatureFlag.fromJson<Boolean>(json, "flag4")
-
-        assertNotNull(featureFlag)
-        assertEquals(1, featureFlag.conditions.size)
-        assertTrue(featureFlag.conditions[0] is FlagCondition.Percentage)
-        assertEquals(60, (featureFlag.conditions[0] as? FlagCondition.Percentage)?.value)
-    }
-
-    @Test
     fun `can parse a JSONObject if the value is double`() {
         val json = JSONObject(JSON_STRING)
 
-        val featureFlag = FeatureFlag.fromJson<Double>(json, "flag5")
+        val featureFlag = FeatureFlag.fromJson<Double>(json, "flag5", 0.0)
 
         assertNotNull(featureFlag)
         assertEquals(3.9, featureFlag.value)
@@ -80,7 +66,7 @@ class FeatureFlagTests {
     fun `can parse a JSONObject if the value is boolean`() {
         val json = JSONObject(JSON_STRING)
 
-        val featureFlag = FeatureFlag.fromJson<Boolean>(json, "flag6")
+        val featureFlag = FeatureFlag.fromJson<Boolean>(json, "flag6", false)
 
         assertNotNull(featureFlag)
         assertEquals(true, featureFlag.value)
@@ -92,7 +78,7 @@ class FeatureFlagTests {
         val json = JSONObject(JSON_STRING)
 
         assertThrows(JSONException::class.java) {
-            FeatureFlag.fromJson<Boolean>(json, "flag5")
+            FeatureFlag.fromJson<Boolean>(json, "flag5", false)
         }
     }
 
@@ -101,7 +87,7 @@ class FeatureFlagTests {
         val json = JSONObject(JSON_STRING)
 
         assertThrows(JSONException::class.java) {
-            FeatureFlag.fromJson<Unit>(json, "flagNull")
+            FeatureFlag.fromJson<Unit>(json, "flagNull", Unit)
         }
     }
 
@@ -109,45 +95,46 @@ class FeatureFlagTests {
     fun `flag is enabled if conditions are met`() {
         val json = JSONObject(JSON_STRING)
 
-        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 1, 1, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 1, 1, 50)
 
-        assertTrue(isEnabled)
+        assertEquals(5, value)
     }
 
     @Test
-    fun `flag is not enabled if one of the conditions (placement) is not met`() {
+    fun `flag is not enabled (returns default value) if one of the conditions (placement) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(6, 1, 1, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(6, 1, 1, 50)
 
-        assertFalse(isEnabled)
+        // Default value
+        assertEquals(0, value)
     }
 
     @Test
-    fun `flag is not enabled if one of the conditions (lineitem) is not met`() {
+    fun `flag is not enabled (returns default value) if one of the conditions (lineitem) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 4, 1, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 4, 1, 50)
 
-        assertFalse(isEnabled)
+        assertEquals(0, value)
     }
 
     @Test
-    fun `flag is not enabled if one of the conditions (creative) is not met`() {
+    fun `flag is not enabled (returns default value) if one of the conditions (creative) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 1, 4, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 1, 4, 50)
 
-        assertFalse(isEnabled)
+        assertEquals(0, value)
     }
 
     @Test
-    fun `flag is not enabled if one of the conditions (percentage) is not met`() {
+    fun `flag is not enabled (returns default value) if one of the conditions (percentage) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 1, 1, 90)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 1, 1, 90)
 
-        assertFalse(isEnabled)
+        assertEquals(0, value)
     }
 
     companion object {
