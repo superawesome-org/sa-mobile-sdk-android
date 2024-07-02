@@ -15,32 +15,48 @@ import org.json.JSONObject
  */
 
 data class FeatureFlags(
-    val isAdResponseVASTEnabled: Boolean = DEFAULT_AD_RESPONSE_VAST_ENABLED,
-    val isExoPlayerEnabled: Boolean = DEFAULT_IS_EXO_PLAYER_ENABLED,
-    val videoStabilityFailsafeTimeout: Long = DEFAULT_VIDEO_STABILITY_FAILSAFE,
-    val rewardGivenAfterErrorDelay: Long = DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY,
+    val isAdResponseVASTEnabled: FeatureFlag<Unit> = DEFAULT_AD_RESPONSE_VAST_ENABLED,
+    val isExoPlayerEnabled: FeatureFlag<Unit> = DEFAULT_IS_EXO_PLAYER_ENABLED,
+    val videoStabilityFailsafeTimeout: FeatureFlag<Long> = DEFAULT_VIDEO_STABILITY_FAILSAFE,
+    val rewardGivenAfterErrorDelay: FeatureFlag<Long> = DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY,
 ) {
     companion object {
 
         /**
          * Default value for isAdResponseVASTEnabled.
          */
-        const val DEFAULT_AD_RESPONSE_VAST_ENABLED = false
+        val DEFAULT_AD_RESPONSE_VAST_ENABLED = FeatureFlag<Unit>(
+            on = false,
+            value = null,
+            conditions = emptyList(),
+        )
 
         /**
          * Default value for isExoPlayerEnabled.
          */
-        const val DEFAULT_IS_EXO_PLAYER_ENABLED = false
+        val DEFAULT_IS_EXO_PLAYER_ENABLED = FeatureFlag<Unit>(
+            on = false,
+            value = null,
+            conditions = emptyList(),
+        )
 
         /**
          * Default value for videoStabilityFailsafeTimeout.
          */
-        const val DEFAULT_VIDEO_STABILITY_FAILSAFE = 2_500L
+        val DEFAULT_VIDEO_STABILITY_FAILSAFE = FeatureFlag(
+            on = true,
+            value = 2_500L,
+            conditions = emptyList(),
+        )
 
         /**
          * Default value for rewardGivenAfterErrorDelay.
          */
-        const val DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY = Long.MAX_VALUE
+        val DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY = FeatureFlag(
+            on = true,
+            value = Long.MAX_VALUE,
+            conditions = emptyList(),
+        )
 
         /**
          * Get the global feature flags from the json object.
@@ -49,42 +65,37 @@ data class FeatureFlags(
          *
          * @return the FeatureFlags object.
          */
-        fun getFlagsFromJSON(json: JSONObject): FeatureFlags {
-            val isAdResponseVASTEnabled: Boolean = try {
-                json.getBoolean("isAdResponseVASTEnabled")
-            } catch(e: JSONException) {
-                logException(e)
-                DEFAULT_AD_RESPONSE_VAST_ENABLED
-            }
-            val isExoPlayerEnabled = try {
-                json.getBoolean("isExoPlayerEnabled")
-            } catch(e: JSONException) {
-                logException(e)
-                DEFAULT_IS_EXO_PLAYER_ENABLED
-            }
-            val videoStabilityFailsafeTimeout = try {
-                json.getLong("videoStabilityFailsafeTimeout")
-            } catch(e: JSONException) {
-                logException(e)
-                DEFAULT_VIDEO_STABILITY_FAILSAFE
-            }
-            val rewardGivenAfterErrorDelay = try {
-                json.getLong("rewardGivenAfterErrorDelay")
-            } catch (e: JSONException) {
-                logException(e)
-                DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY
-            }
-
-            return FeatureFlags(
-                isAdResponseVASTEnabled = isAdResponseVASTEnabled,
-                isExoPlayerEnabled = isExoPlayerEnabled,
-                videoStabilityFailsafeTimeout = videoStabilityFailsafeTimeout,
-                rewardGivenAfterErrorDelay = rewardGivenAfterErrorDelay,
+        fun getFlagsFromJSON(json: JSONObject): FeatureFlags =
+            FeatureFlags(
+                isAdResponseVASTEnabled = try {
+                    FeatureFlag.fromJson(json, "isAdResponseVASTEnabled")
+                } catch (e: JSONException) {
+                    logException(e)
+                    DEFAULT_AD_RESPONSE_VAST_ENABLED
+                },
+                isExoPlayerEnabled = try {
+                    FeatureFlag.fromJson(json, "isExoPlayerEnabled")
+                } catch (e: JSONException) {
+                    logException(e)
+                    DEFAULT_IS_EXO_PLAYER_ENABLED
+                },
+                videoStabilityFailsafeTimeout = try {
+                    FeatureFlag.fromJson(json, "videoStabilityFailsafeTimeout")
+                } catch (e: JSONException) {
+                    logException(e)
+                    DEFAULT_VIDEO_STABILITY_FAILSAFE
+                },
+                rewardGivenAfterErrorDelay = try {
+                    FeatureFlag.fromJson(json, "rewardGivenAfterErrorDelay")
+                } catch (e: JSONException) {
+                    logException(e)
+                    DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY
+                },
             )
-        }
 
         private fun logException(exception: Exception) {
             Log.w("SuperAwesome", "JSON Parsing error: ${exception.message}")
+            println("JSON Parsing error: ${exception.message}")
         }
     }
 }

@@ -6,14 +6,15 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
-import tv.superawesome.lib.saevents.mocks.session.MockSession
 
 class FeatureFlagsManagerTests {
 
     @Test
     fun `feature flag manager correctly loads flags`() {
         // given
-        val featureFlags = FeatureFlags(isAdResponseVASTEnabled = true)
+        val featureFlags = FeatureFlags(isAdResponseVASTEnabled = FeatureFlag(
+            on = true,
+        ))
         val ffApi = mockk<GlobalFeatureFlagsApi>(relaxed = true)
         val sut = FeatureFlagsManager(ffApi)
 
@@ -25,7 +26,7 @@ class FeatureFlagsManagerTests {
         sut.fetchFeatureFlags()
 
         // then
-        assertTrue(sut.featureFlags.isAdResponseVASTEnabled)
+        assertTrue(sut.featureFlags.isAdResponseVASTEnabled.on)
     }
 
     @Test
@@ -43,9 +44,9 @@ class FeatureFlagsManagerTests {
         sut.fetchFeatureFlags()
 
         // then
-        assertFalse(sut.featureFlags.isAdResponseVASTEnabled)
-        assertFalse(sut.featureFlags.isAdResponseVASTEnabled)
-        assertEquals(2500, sut.featureFlags.videoStabilityFailsafeTimeout)
-        assertEquals(Long.MAX_VALUE, sut.featureFlags.rewardGivenAfterErrorDelay)
+        assertFalse(sut.featureFlags.isAdResponseVASTEnabled.on)
+        assertFalse(sut.featureFlags.isAdResponseVASTEnabled.on)
+        assertEquals(2_500L, sut.featureFlags.videoStabilityFailsafeTimeout.value)
+        assertEquals(Long.MAX_VALUE, sut.featureFlags.rewardGivenAfterErrorDelay.value)
     }
 }
