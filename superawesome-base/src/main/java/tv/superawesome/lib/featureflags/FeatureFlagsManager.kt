@@ -1,6 +1,9 @@
 package tv.superawesome.lib.featureflags
 
 import android.util.Log
+import java.util.Date
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 /**
  * Manager for obtaining global feature flags.
@@ -32,6 +35,15 @@ class FeatureFlagsManager(
 
     override fun didFailToLoadFeatureFlags(error: Throwable) {
         Log.w("SuperAwesome", "Error loading feature flags ${error.message}")
+    }
+
+    companion object {
+        /**
+         * Upon initialization, rolls a number that will be used to determine if the flag will be
+         * enabled or not for this given user, depending on the "percentage" rollout value in the
+         * feature flag.
+         */
+        val userValue = Random(seed = Date().time).nextInt(0..100)
     }
 }
 

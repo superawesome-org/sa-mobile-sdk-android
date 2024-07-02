@@ -7,30 +7,31 @@ import org.json.JSONObject
 data class FeatureFlag<T>(
     val value: T,
     val conditions: List<FlagCondition> = emptyList(),
+    private val defaultValue: T,
 ) {
 
-    fun isEnabled(placementId: Int, lineItemId: Int, creativeId: Int, userValue: Int): Boolean {
+    fun getValue(placementId: Int, lineItemId: Int, creativeId: Int, userValue: Int): T {
         for (condition in conditions) {
             when (condition) {
                 is FlagCondition.PlacementIds -> {
-                    if (placementId !in condition.ids) return false
+                    if (placementId !in condition.ids) return defaultValue
                 }
                 is FlagCondition.LineItemIds -> {
-                    if (lineItemId !in condition.ids) return false
+                    if (lineItemId !in condition.ids) return defaultValue
                 }
                 is FlagCondition.CreativeIds -> {
-                    if (creativeId !in condition.ids) return false
+                    if (creativeId !in condition.ids) return defaultValue
                 }
                 is FlagCondition.Percentage -> {
-                    if (userValue > condition.value) return false
+                    if (userValue > condition.value) return defaultValue
                 }
             }
         }
-        return true
+        return value
     }
 
     companion object {
-        inline fun <reified T> fromJson(json: JSONObject, name: String): FeatureFlag<T> {
+        inline fun <reified T> fromJson(json: JSONObject, name: String, defaultValue: T): FeatureFlag<T> {
             val keyObj = json.getJSONObject(name)
 
             val conditions = keyObj.optJSONObject("conditions")?.let { c ->
@@ -61,6 +62,7 @@ data class FeatureFlag<T>(
                 FeatureFlag(
                     value = v as T,
                     conditions = conditions,
+                    defaultValue = defaultValue,
                 )
             } else {
                 throw JSONException("Missing value field for flag $name")

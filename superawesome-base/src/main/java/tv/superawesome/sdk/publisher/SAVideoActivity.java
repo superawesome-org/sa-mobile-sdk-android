@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import tv.superawesome.lib.featureflags.FeatureFlags;
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
@@ -75,9 +76,11 @@ public class SAVideoActivity extends Activity implements
         SAVideoAd.getPerformanceMetrics().trackFreezeFallbackShown(ad);
     };
 
-    private final Long freezeTimerTimeout =
-            AwesomeAds.getFeatureFlags().getVideoStabilityFailsafeTimeout().getValue();
+    private Long freezeTimerTimeout =
+            FeatureFlags.Companion.getDEFAULT_VIDEO_STABILITY_FAILSAFE().getValue();
 
+    private Long rewardGivenDelay =
+            FeatureFlags.Companion.getDEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY().getValue();
     private static final Long FREEZE_TIMER_INTERVAL = 500L;
 
     /**
@@ -99,6 +102,28 @@ public class SAVideoActivity extends Activity implements
         // get listener & events from static ad context
         listenerRef = SAVideoAd.getListener();
         SAEvents events = SAVideoAd.getEvents();
+
+        // Setup feature flags
+        freezeTimerTimeout = AwesomeAds.getFeatureFlags().getVideoStabilityFailsafeTimeout().getValue(
+                ad.placementId,
+                ad.lineItemId,
+                ad.creative.id,
+                AwesomeAds.getFeatureFlags().getUserValue()
+        );
+
+        rewardGivenDelay = AwesomeAds.getFeatureFlags().getRewardGivenAfterErrorDelay().getValue(
+                ad.placementId,
+                ad.lineItemId,
+                ad.creative.id,
+                AwesomeAds.getFeatureFlags().getUserValue()
+        );
+
+        Boolean isExoPlayerEnabled = AwesomeAds.getFeatureFlags().isExoPlayerEnabled().getValue(
+                ad.placementId,
+                ad.lineItemId,
+                ad.creative.id,
+                AwesomeAds.getFeatureFlags().getUserValue()
+        );
 
         // setup derived objects
         videoEvents = new SAVideoEvents(events, this);
@@ -136,7 +161,7 @@ public class SAVideoActivity extends Activity implements
         chrome.padlock.setOnClickListener(view -> videoClick.handleSafeAdClick(view));
 
         videoPlayer = new VideoPlayer(this);
-        if (isExoPlayerEnabled()) {
+        if (isExoPlayerEnabled) {
             control = new ExoPlayerController(videoPlayer);
         } else {
             control = new VideoPlayerController();
@@ -334,7 +359,6 @@ public class SAVideoActivity extends Activity implements
     public void onError(@NonNull IVideoPlayer videoPlayer, @NonNull Throwable throwable, int time, int duration) {
         videoEvents.error(videoPlayer, time, duration);
 
-        long rewardGivenDelay = AwesomeAds.getFeatureFlags().getRewardGivenAfterErrorDelay().getValue();
         if ((long) time >= rewardGivenDelay) {
             sendEvent(SAEvent.adEnded);
         }
@@ -485,9 +509,5 @@ public class SAVideoActivity extends Activity implements
             listenerRef.onEvent(ad.placementId, event);
             Log.d("SAVideoActivity", "Event callback: " + event);
         }
-    }
-
-    private boolean isExoPlayerEnabled() {
-        return AwesomeAds.getFeatureFlags().isExoPlayerEnabled().getValue();
     }
 }
