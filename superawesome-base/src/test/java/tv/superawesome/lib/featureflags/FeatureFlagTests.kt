@@ -112,6 +112,51 @@ class FeatureFlagTests {
         }
     }
 
+    @Test
+    fun `flag is enabled if conditions are met`() {
+        val json = JSONObject(JSON_STRING)
+
+        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 1, 1, 50)
+
+        assertTrue(isEnabled)
+    }
+
+    @Test
+    fun `flag is not enabled if one of the conditions (placement) is not met`() {
+        val json = JSONObject(JSON_STRING)
+
+        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(6, 1, 1, 50)
+
+        assertFalse(isEnabled)
+    }
+
+    @Test
+    fun `flag is not enabled if one of the conditions (lineitem) is not met`() {
+        val json = JSONObject(JSON_STRING)
+
+        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 4, 1, 50)
+
+        assertFalse(isEnabled)
+    }
+
+    @Test
+    fun `flag is not enabled if one of the conditions (creative) is not met`() {
+        val json = JSONObject(JSON_STRING)
+
+        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 1, 4, 50)
+
+        assertFalse(isEnabled)
+    }
+
+    @Test
+    fun `flag is not enabled if one of the conditions (percentage) is not met`() {
+        val json = JSONObject(JSON_STRING)
+
+        val isEnabled = FeatureFlag.fromJson<Int>(json, "flag1").isEnabled(1, 1, 1, 90)
+
+        assertFalse(isEnabled)
+    }
+
     companion object {
         const val JSON_STRING = """
         {
