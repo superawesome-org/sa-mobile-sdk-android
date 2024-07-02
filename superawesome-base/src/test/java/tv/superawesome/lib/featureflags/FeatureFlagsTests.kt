@@ -11,64 +11,74 @@ class FeatureFlagsTests {
     @Test
     fun `feature flags can be initialised with correct json object`() {
         // given
-        val jsonObject = JSONObject()
-        jsonObject.put("isAdResponseVASTEnabled", true)
-        jsonObject.put("isExoPlayerEnabled", true)
-        jsonObject.put("videoStabilityFailsafeTimeout", 5)
-
+        val jsonString = """{"isAdResponseVASTEnabled":{"on":true},"isExoPlayerEnabled":{"on":false},"videoStabilityFailsafeTimeout":{"on":true,"value":2500},"rewardGivenAfterErrorDelay":{"on":true,"value":2000}}"""
+        val jsonObj = JSONObject(jsonString)
         // when
-        val featureFlags = FeatureFlags.getFlagsFromJSON(jsonObject)
+        val featureFlags = FeatureFlags.getFlagsFromJSON(jsonObj)
 
         // then
-        assertTrue(featureFlags.isAdResponseVASTEnabled)
-        assertTrue(featureFlags.isExoPlayerEnabled)
-        assertEquals(5, featureFlags.videoStabilityFailsafeTimeout)
+        assertTrue(featureFlags.isAdResponseVASTEnabled.on)
+        assertFalse(featureFlags.isExoPlayerEnabled.on)
+        assertTrue(featureFlags.videoStabilityFailsafeTimeout.on)
+        assertEquals(2_500L, featureFlags.videoStabilityFailsafeTimeout.value)
+        assertTrue(featureFlags.rewardGivenAfterErrorDelay.on)
+        assertEquals(2_000L, featureFlags.rewardGivenAfterErrorDelay.value)
     }
 
     @Test
-    fun `feature flags can be initialised with correct json object but incorrect type`() {
+    fun `feature flags can be initialised with missing keys`() {
         // given
-        val jsonObject = JSONObject()
-        jsonObject.put("isAdResponseVASTEnabled", true)
-        jsonObject.put("isExoPlayerEnabled", true)
-        jsonObject.put("videoStabilityFailsafeTimeout", false)
+        val jsonString = """{"isAdResponseVASTEnabled":{"on":true},"isExoPlayerEnabled":{"on":false},"videoStabilityFailsafeTimeout":{"on":true,"value":2500}}"""
+        val jsonObj = JSONObject(jsonString)
 
         // when
-        val featureFlags = FeatureFlags.getFlagsFromJSON(jsonObject)
+        val featureFlags = FeatureFlags.getFlagsFromJSON(jsonObj)
 
         // then
-        assertTrue(featureFlags.isAdResponseVASTEnabled)
-        assertTrue(featureFlags.isExoPlayerEnabled)
-        assertEquals(2500, featureFlags.videoStabilityFailsafeTimeout)
+        assertTrue(featureFlags.isAdResponseVASTEnabled.on)
+        assertFalse(featureFlags.isExoPlayerEnabled.on)
+        assertTrue(featureFlags.videoStabilityFailsafeTimeout.on)
+        assertEquals(2_500L, featureFlags.videoStabilityFailsafeTimeout.value)
+        // Default value
+        assertTrue(featureFlags.rewardGivenAfterErrorDelay.on)
+        assertEquals(Long.MAX_VALUE, featureFlags.rewardGivenAfterErrorDelay.value)
     }
 
     @Test
-    fun `feature flags can be initialised with partially correct json object`() {
+    fun `feature flags are initialized with default values if json is invalid`() {
         // given
-        val jsonObject = JSONObject()
-        jsonObject.put("isAdResponseVASTEnabled", true)
-        jsonObject.put("isExoPlayerEnabled", true)
+        val jsonObj = JSONObject()
 
         // when
-        val featureFlags = FeatureFlags.getFlagsFromJSON(jsonObject)
+        val featureFlags = FeatureFlags.getFlagsFromJSON(jsonObj)
 
         // then
-        assertTrue(featureFlags.isAdResponseVASTEnabled)
-        assertTrue(featureFlags.isExoPlayerEnabled)
-        assertEquals(2500, featureFlags.videoStabilityFailsafeTimeout)
+        assertFalse(featureFlags.isAdResponseVASTEnabled.on)
+        assertFalse(featureFlags.isExoPlayerEnabled.on)
+        assertTrue(featureFlags.videoStabilityFailsafeTimeout.on)
+        assertEquals(2_500L, featureFlags.videoStabilityFailsafeTimeout.value)
+        assertTrue(featureFlags.rewardGivenAfterErrorDelay.on)
+        assertEquals(Long.MAX_VALUE, featureFlags.rewardGivenAfterErrorDelay.value)
     }
 
-    @Test
-    fun `feature flags can not be initialised with incorrect json object and return default`() {
-        // given
-        val jsonObject = JSONObject()
-
-        // when
-        val featureFlags = FeatureFlags.getFlagsFromJSON(jsonObject)
-
-        // then
-        assertFalse(featureFlags.isAdResponseVASTEnabled)
-        assertFalse(featureFlags.isExoPlayerEnabled)
-        assertEquals(2500, featureFlags.videoStabilityFailsafeTimeout)
+    companion object {
+        const val JSON_STRING = """
+        {
+            "isAdResponseVASTEnabled": {
+                "on": true,
+            },
+            "isExoPlayerEnabled": {
+                "on": false,
+            },
+            "videoStabilityFailsafeTimeout": {
+                "on": true,
+                "value": 2500
+            },
+            "rewardGivenAfterErrorDelay": {
+                "on": true,
+                "value": 2000 
+            }
+        }
+        """
     }
 }

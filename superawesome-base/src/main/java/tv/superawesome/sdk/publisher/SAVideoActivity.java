@@ -4,7 +4,6 @@
  */
 package tv.superawesome.sdk.publisher;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -23,7 +22,6 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import tv.superawesome.lib.featureflags.FeatureFlags;
 import tv.superawesome.lib.saclosewarning.SACloseWarning;
 import tv.superawesome.lib.saevents.SAEvents;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
@@ -78,7 +76,7 @@ public class SAVideoActivity extends Activity implements
     };
 
     private final Long freezeTimerTimeout =
-            AwesomeAds.getFeatureFlags().getVideoStabilityFailsafeTimeout();
+            AwesomeAds.getFeatureFlags().getVideoStabilityFailsafeTimeout().getValue();
 
     private static final Long FREEZE_TIMER_INTERVAL = 500L;
 
@@ -336,7 +334,7 @@ public class SAVideoActivity extends Activity implements
     public void onError(@NonNull IVideoPlayer videoPlayer, @NonNull Throwable throwable, int time, int duration) {
         videoEvents.error(videoPlayer, time, duration);
 
-        long rewardGivenDelay = AwesomeAds.getFeatureFlags().getRewardGivenAfterErrorDelay();
+        long rewardGivenDelay = AwesomeAds.getFeatureFlags().getRewardGivenAfterErrorDelay().getValue();
         if ((long) time >= rewardGivenDelay) {
             sendEvent(SAEvent.adEnded);
         }
@@ -490,6 +488,6 @@ public class SAVideoActivity extends Activity implements
     }
 
     private boolean isExoPlayerEnabled() {
-        return AwesomeAds.getFeatureFlags().isExoPlayerEnabled();
+        return AwesomeAds.getFeatureFlags().isExoPlayerEnabled().getOn();
     }
 }

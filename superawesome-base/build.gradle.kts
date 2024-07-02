@@ -37,6 +37,7 @@ dependencies {
     testImplementation (libs.mockwebserver)
     testImplementation (libs.jsonassert)
     testImplementation (libs.mockk)
+    testImplementation(kotlin("test"))
 
     androidTestImplementation (libs.androidx.test.ext.junit)
     androidTestImplementation (libs.androidx.test.rules)

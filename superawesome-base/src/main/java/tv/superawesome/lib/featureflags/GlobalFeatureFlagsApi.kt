@@ -16,8 +16,7 @@ class GlobalFeatureFlagsApi(
     private val timeout: Int = 15_000,
 ) {
     private fun getAwesomeAdsEndpoint(): String =
-        "$S3_URL/featureFlags/android/featureFlags.json"
-
+        "$S3_URL/featureFlags/v2/android/featureFlags.json"
 
     /**
      * Loads the feature flags from S3 and returns the results in the listener.
@@ -42,9 +41,9 @@ class GlobalFeatureFlagsApi(
             listener.didFailToLoadFeatureFlags(IOException("Response StatusCode: $status"))
         }
 
-        data?.let {
+        data?.let { jsonString ->
             try {
-                val jsonObject = JSONObject(it)
+                val jsonObject = JSONObject(jsonString)
                 listener.didLoadFeatureFlags(FeatureFlags.getFlagsFromJSON(jsonObject))
             } catch (e: JSONException) {
                 listener.didFailToLoadFeatureFlags(e)
