@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
+import tv.superawesome.lib.saevents.events.SAServerEvent;
 import tv.superawesome.lib.saevents.events.SAViewableImpressionEvent;
 import tv.superawesome.lib.saevents.mocks.models.ModelFactory;
 import tv.superawesome.lib.samodelspace.saad.SAAd;
@@ -52,10 +53,12 @@ public class ViewableImpressionEventTrigger_Test extends EventTrigger_Test {
         SAViewableImpressionEvent event = new SAViewableImpressionEvent(ad, super.session, super.executor, timeout, retryDelay, true);
 
         // When
-        event.triggerEvent(Assert::assertTrue);
+        SAServerEvent.Listener listener = success -> {
+            assertTrue(success);
+            assertTrue(server.getLine().contains("adRequestId=abc"));
+        };
 
-        // Then
-        assertTrue(server.getLine().contains("adRequestId=abc"));
+        event.triggerEvent(listener);
     }
 
     @Test

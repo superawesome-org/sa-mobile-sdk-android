@@ -3,6 +3,8 @@ package tv.superawesome.demoapp.main
 import CustomRecyclerViewAdapter
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
@@ -258,9 +260,11 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun updateMessage(placementId: Int, event: SAEvent) {
-        val originalMessage = binding.subtitleTextView.text
-        val message = "$originalMessage $placementId $event"
-        binding.subtitleTextView.text = message
+        Handler(Looper.getMainLooper()).post {
+            val originalMessage = binding.subtitleTextView.text
+            val message = "$originalMessage $placementId $event"
+            binding.subtitleTextView.text = message
+        }
     }
 
     private companion object {
