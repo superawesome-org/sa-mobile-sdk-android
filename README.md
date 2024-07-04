@@ -15,15 +15,54 @@ Full documantation for the AwesomeAds Android Publisher SDK can be found on our 
 There are global feature flags that are stored remotely in the AA-SDK S3 bucket here: 
 https://s3.console.aws.amazon.com/s3/object/aa-sdk?region=eu-west-1&bucketType=general&prefix=featureFlags/android/featureFlags.json
 
+> [!IMPORTANT]
+> There's a new schema for feature flags, explained below:
+
+- You can find schema v2 in the new path `featureFlags/v2/android/featureFlags.json`
+- The json looks like the following:
+```json
+{
+  "featureFlag1": {
+    "value": <number>/<boolean>,
+    "conditions": {
+      "placementIds": [...],
+      "lineItemIds": [...],
+      "creativeIds": [...],
+      "percentage": <integer 0-100>,
+    }
+  }
+}
+```
+
+The `conditions` is completely optional, as is any of the are properties inside it. Include as many
+or as few as you want. The conditions are all inclusive. Meaning that if you add a condition, the flag
+will only be enabled for those that match ALL the conditions at the same time.
+
+E.g.: 
+```json
+{
+  "isExoPlayerEnabled": {
+    "value": true,
+    "conditions": {
+      "placementIds": [82090],
+      "percentage": 50
+    }
+  }
+}
+```
+In this example, the flag `isExoPlayerEnabled` will only be active for the placement with ID `82090`
+and for roughly 50% of the users.
+
 The feature flags are loaded in the app init function only.
 
 At the time of writing the current feature flags are:
 
-| Flag                             | Type       | Value
-| -------------------------------- | ---------- | -----
-| `isAdResponseVASTEnabled`        | Boolean    | false
-| `isExoPlayerEnabled`             | Boolean    | false
-| `videoStabilityFailsafeTimeout`  | Integer    | 2500
+| Flag                             | Type    | Value
+| -------------------------------- |---------| -----
+| `isAdResponseVASTEnabled`        | Boolean | false
+| `isExoPlayerEnabled`             | Boolean | false
+| `videoStabilityFailsafeTimeout`  | Number  | 2500
+| `rewardGivenAfterErrorDelay`     | Number  | Long.MAX_VALUE 
 
 For more information check out the [SuperAwesome Developer Portal](https://superawesome-org.github.io/sa-mobile-sdk-android/).
 
