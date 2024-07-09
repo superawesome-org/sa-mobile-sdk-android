@@ -18,15 +18,10 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(5, featureFlag.value)
-        assertEquals(4, featureFlag.conditions.size)
-        assertTrue(featureFlag.conditions[0] is FlagCondition.PlacementIds)
-        assertEquals(listOf(1,2,3), (featureFlag.conditions[0] as? FlagCondition.PlacementIds)?.ids)
-        assertTrue(featureFlag.conditions[1] is FlagCondition.LineItemIds)
-        assertEquals(listOf(1,2,3), (featureFlag.conditions[1] as? FlagCondition.LineItemIds)?.ids)
-        assertTrue(featureFlag.conditions[2] is FlagCondition.CreativeIds)
-        assertEquals(listOf(1,2,3), (featureFlag.conditions[2] as? FlagCondition.CreativeIds)?.ids)
-        assertTrue(featureFlag.conditions[3] is FlagCondition.Percentage)
-        assertEquals(80, (featureFlag.conditions[3] as? FlagCondition.Percentage)?.value)
+        assertEquals(listOf(1,2,3), featureFlag.conditions.placementIds?.ids)
+        assertEquals(listOf(4,5,6), featureFlag.conditions.lineItemIds?.ids)
+        assertEquals(listOf(7,8,9), featureFlag.conditions.creativeIds?.ids)
+        assertEquals(80, featureFlag.conditions.percentage?.value)
     }
 
     @Test
@@ -37,7 +32,6 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(10, featureFlag.value)
-        assertEquals(0, featureFlag.conditions.size)
     }
 
     @Test
@@ -48,7 +42,6 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(10, featureFlag.value)
-        assertEquals(0, featureFlag.conditions.size)
     }
 
     @Test
@@ -59,7 +52,6 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(3.9, featureFlag.value)
-        assertEquals(0, featureFlag.conditions.size)
     }
 
     @Test
@@ -70,7 +62,6 @@ class FeatureFlagTests {
 
         assertNotNull(featureFlag)
         assertEquals(true, featureFlag.value)
-        assertEquals(0, featureFlag.conditions.size)
     }
 
     @Test
@@ -95,7 +86,7 @@ class FeatureFlagTests {
     fun `flag is enabled if conditions are met`() {
         val json = JSONObject(JSON_STRING)
 
-        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 1, 1, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 4, 7, 50)
 
         assertEquals(5, value)
     }
@@ -104,7 +95,7 @@ class FeatureFlagTests {
     fun `flag is not enabled (returns default value) if one of the conditions (placement) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(6, 1, 1, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(6, 4, 7, 50)
 
         // Default value
         assertEquals(0, value)
@@ -114,7 +105,7 @@ class FeatureFlagTests {
     fun `flag is not enabled (returns default value) if one of the conditions (lineitem) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 4, 1, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 9, 7, 50)
 
         assertEquals(0, value)
     }
@@ -123,7 +114,7 @@ class FeatureFlagTests {
     fun `flag is not enabled (returns default value) if one of the conditions (creative) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 1, 4, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 4, 0, 50)
 
         assertEquals(0, value)
     }
@@ -132,7 +123,7 @@ class FeatureFlagTests {
     fun `flag is not enabled (returns default value) if one of the conditions (percentage) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 1, 1, 90)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 4, 7, 90)
 
         assertEquals(0, value)
     }
@@ -144,8 +135,8 @@ class FeatureFlagTests {
                 "value": 5,
                 "conditions": {
                     "placementIds": [1,2,3],
-                    "lineItemIds": [1,2,3],
-                    "creativeIds": [1,2,3],
+                    "lineItemIds": [4,5,6],
+                    "creativeIds": [7,8,9],
                     "percentage": 80
                 }
             },

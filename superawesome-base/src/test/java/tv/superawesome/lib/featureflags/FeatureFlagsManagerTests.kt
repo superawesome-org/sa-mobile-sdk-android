@@ -14,7 +14,7 @@ class FeatureFlagsManagerTests {
         // given
         val featureFlags = FeatureFlags(isAdResponseVASTEnabled = FeatureFlag(
             value = true,
-            conditions = emptyList(),
+            conditions = FlagConditions(),
             defaultValue = false,
         ))
         val ffApi = mockk<GlobalFeatureFlagsApi>(relaxed = true)
