@@ -29,7 +29,7 @@ data class FeatureFlags(
          */
         val DEFAULT_AD_RESPONSE_VAST_ENABLED = FeatureFlag(
             value = false,
-            conditions = emptyList(),
+            conditions = FlagConditions(),
             defaultValue = false,
         )
 
@@ -38,7 +38,7 @@ data class FeatureFlags(
          */
         val DEFAULT_IS_EXO_PLAYER_ENABLED = FeatureFlag(
             value = false,
-            conditions = emptyList(),
+            conditions = FlagConditions(),
             defaultValue = false,
         )
 
@@ -47,7 +47,7 @@ data class FeatureFlags(
          */
         val DEFAULT_VIDEO_STABILITY_FAILSAFE = FeatureFlag(
             value = 2_500L,
-            conditions = emptyList(),
+            conditions = FlagConditions(),
             defaultValue = 2_500L,
         )
 
@@ -56,7 +56,7 @@ data class FeatureFlags(
          */
         val DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY = FeatureFlag(
             value = Long.MAX_VALUE,
-            conditions = emptyList(),
+            conditions = FlagConditions(),
             defaultValue = Long.MAX_VALUE,
         )
 
@@ -69,52 +69,43 @@ data class FeatureFlags(
          */
         fun getFlagsFromJSON(json: JSONObject): FeatureFlags =
             FeatureFlags(
-                isAdResponseVASTEnabled = try {
-                    FeatureFlag.fromJson(
-                        json,
-                        "isAdResponseVASTEnabled",
-                        DEFAULT_AD_RESPONSE_VAST_ENABLED.value
-                    )
-                } catch (e: JSONException) {
-                    logException(e)
-                    DEFAULT_AD_RESPONSE_VAST_ENABLED
-                },
-                isExoPlayerEnabled = try {
-                    FeatureFlag.fromJson(
-                        json,
-                        "isExoPlayerEnabled",
-                        DEFAULT_IS_EXO_PLAYER_ENABLED.value,
-                    )
-                } catch (e: JSONException) {
-                    logException(e)
-                    DEFAULT_IS_EXO_PLAYER_ENABLED
-                },
-                videoStabilityFailsafeTimeout = try {
-                    FeatureFlag.fromJson(
-                        json,
-                        "videoStabilityFailsafeTimeout",
-                        DEFAULT_VIDEO_STABILITY_FAILSAFE.value,
-                    )
-                } catch (e: JSONException) {
-                    logException(e)
-                    DEFAULT_VIDEO_STABILITY_FAILSAFE
-                },
-                rewardGivenAfterErrorDelay = try {
-                    FeatureFlag.fromJson(
-                        json,
-                        "rewardGivenAfterErrorDelay",
-                        DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY.value,
-                    )
-                } catch (e: JSONException) {
-                    logException(e)
-                    DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY
-                },
+                isAdResponseVASTEnabled = tryToGetFeatureFlag(
+                    json,
+                    "isAdResponseVASTEnabled",
+                    DEFAULT_AD_RESPONSE_VAST_ENABLED,
+                ),
+                isExoPlayerEnabled = tryToGetFeatureFlag(
+                    json,
+                    "isExoPlayerEnabled",
+                    DEFAULT_IS_EXO_PLAYER_ENABLED,
+                ),
+                videoStabilityFailsafeTimeout = tryToGetFeatureFlag(
+                    json,
+                    "videoStabilityFailsafeTimeout",
+                    DEFAULT_VIDEO_STABILITY_FAILSAFE,
+                ),
+                rewardGivenAfterErrorDelay = tryToGetFeatureFlag(
+                    json,
+                    "rewardGivenAfterErrorDelay",
+                    DEFAULT_REWARD_GIVEN_AFTER_ERROR_DELAY,
+                ),
                 userValue = FeatureFlagsManager.userValue,
             )
 
         private fun logException(exception: Exception) {
             Log.w("SuperAwesome", "JSON Parsing error: ${exception.message}")
-            println("JSON Parsing error: ${exception.message}")
         }
+
+        private inline fun <reified T> tryToGetFeatureFlag(
+            json: JSONObject,
+            key: String,
+            defaultValue: FeatureFlag<T>
+        ): FeatureFlag<T> =
+            try {
+                FeatureFlag.fromJson<T>(json, key, defaultValue.value)
+            } catch (e: JSONException) {
+                logException(e)
+                defaultValue
+            }
     }
 }

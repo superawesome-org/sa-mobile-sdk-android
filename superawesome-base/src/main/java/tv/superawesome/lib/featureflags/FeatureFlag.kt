@@ -24,7 +24,7 @@ import org.json.JSONObject
  */
 data class FeatureFlag<T>(
     val value: T,
-    val conditions: List<FlagCondition>,
+    val conditions: FlagConditions,
     private val defaultValue: T,
 ) {
 
@@ -34,25 +34,12 @@ data class FeatureFlag<T>(
      * whether or not the flag is enabled for the user based on the [FlagCondition.Percentage] rollout.
      */
     @Suppress("CognitiveComplexMethod", "ReturnCount")
-    fun getValue(placementId: Int, lineItemId: Int, creativeId: Int, userValue: Int): T {
-        for (condition in conditions) {
-            when (condition) {
-                is FlagCondition.PlacementIds ->
-                    if (placementId !in condition.ids) return defaultValue
-
-                is FlagCondition.LineItemIds ->
-                    if (lineItemId !in condition.ids) return defaultValue
-
-                is FlagCondition.CreativeIds ->
-                    if (creativeId !in condition.ids) return defaultValue
-
-                is FlagCondition.Percentage ->
-                    if (userValue > condition.value) return defaultValue
-
-            }
+    fun getValue(placementId: Int, lineItemId: Int, creativeId: Int, userValue: Int): T =
+        if (conditions.match(placementId, lineItemId, creativeId, userValue)) {
+            value
+        } else {
+            defaultValue
         }
-        return value
-    }
 
     companion object {
 
@@ -66,20 +53,21 @@ data class FeatureFlag<T>(
             val keyObj = json.getJSONObject(name)
 
             val conditions = keyObj.optJSONObject("conditions")?.let { c ->
-                listOf<FlagCondition>() +
-                        c.optJSONArray("placementIds")?.mapToInt()?.let { ids ->
-                          FlagCondition.PlacementIds(ids)
-                        } +
-                        c.optJSONArray("lineItemIds")?.mapToInt()?.let { ids ->
-                            FlagCondition.LineItemIds(ids)
-                        } +
-                        c.optJSONArray("creativeIds")?.mapToInt()?.let { ids ->
-                            FlagCondition.CreativeIds(ids)
-                        } +
-                        c.optInt("percentage").takeIf { it > 0 }?.let { pct ->
-                            FlagCondition.Percentage(pct)
-                        }
-            }?.filterNotNull() ?: emptyList()
+                FlagConditions(
+                    placementIds = c.optJSONArray("placementIds")?.mapToInt()?.let { ids ->
+                        FlagCondition.PlacementIds(ids)
+                    },
+                    lineItemIds = c.optJSONArray("lineItemIds")?.mapToInt()?.let { ids ->
+                        FlagCondition.LineItemIds(ids)
+                    },
+                    creativeIds = c.optJSONArray("creativeIds")?.mapToInt()?.let { ids ->
+                        FlagCondition.CreativeIds(ids)
+                    },
+                    percentage = c.optInt("percentage").takeIf { it > 0 }?.let { pct ->
+                        FlagCondition.Percentage(pct)
+                    }
+                )
+            } ?: FlagConditions()
 
             return if (keyObj.has("value")) {
                 val v = when (T::class) {
