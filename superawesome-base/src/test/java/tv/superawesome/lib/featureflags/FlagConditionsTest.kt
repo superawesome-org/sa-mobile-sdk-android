@@ -140,4 +140,64 @@ class FlagConditionsTest {
             "Creative Id 8 is not matching creativeIds[7]",
         )
     }
+
+    @Test
+    fun `if placementId is 0, then it should match`() {
+        val conditions = FlagConditions(
+           placementIds = FlagCondition.PlacementIds(listOf(1,2,3)),
+           lineItemIds = null,
+           creativeIds = null,
+           percentage = null,
+        )
+
+        assertTrue(
+            conditions.match(0, 4, 9, 80),
+            "As a safety measure, placement id 0 should always match",
+        )
+    }
+
+    @Test
+    fun `if lineItem is 0, then it should match`() {
+        val conditions = FlagConditions(
+            placementIds = null,
+            lineItemIds = FlagCondition.LineItemIds(listOf(4,5,6)),
+            creativeIds = null,
+            percentage = null,
+        )
+
+        assertTrue(
+            conditions.match(1, 0, 9, 80),
+            "As a safety measure, lineItem id 0 should always match",
+        )
+    }
+
+    @Test
+    fun `if creative id is 0, then it should match`() {
+        val conditions = FlagConditions(
+            placementIds = null,
+            lineItemIds = null,
+            creativeIds = FlagCondition.CreativeIds(listOf(7,8,9)),
+            percentage = null,
+        )
+
+        assertTrue(
+            conditions.match(1, 4, 0, 80),
+            "As a safety measure, creative id 0 should always match",
+        )
+    }
+
+    @Test
+    fun `if included value is provided for creative when others values provided, then it should match`() {
+        val conditions = FlagConditions(
+            placementIds = FlagCondition.PlacementIds(listOf(1,2,3)),
+            lineItemIds = FlagCondition.LineItemIds(listOf(1,2,3)),
+            creativeIds = FlagCondition.CreativeIds(listOf(1,2,3)),
+            percentage = null,
+        )
+
+        assertTrue(
+            conditions.match(0, 0, 1, 0),
+            "Creative Id should match and others with value 0 should be ignored",
+        )
+    }
 }

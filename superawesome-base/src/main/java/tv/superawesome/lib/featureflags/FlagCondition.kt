@@ -17,7 +17,7 @@ sealed interface FlagCondition {
      * @property ids a list of placement ids.
      */
     data class PlacementIds(val ids: List<Int>): FlagCondition {
-        override fun match(input: Int) = ids.isEmpty() || ids.contains(input)
+        override fun match(input: Int) = input == 0 || ids.isEmpty() || ids.contains(input)
     }
 
     /**
@@ -25,7 +25,7 @@ sealed interface FlagCondition {
      * @property ids a list of line item ids.
      */
     data class LineItemIds(val ids: List<Int>): FlagCondition {
-        override fun match(input: Int) = ids.isEmpty() || ids.contains(input)
+        override fun match(input: Int) = input == 0 || ids.isEmpty() || ids.contains(input)
     }
 
     /**
@@ -33,7 +33,7 @@ sealed interface FlagCondition {
      * @property ids a list of creative ids.
      */
     data class CreativeIds(val ids: List<Int>): FlagCondition {
-        override fun match(input : Int) = ids.isEmpty() || ids.contains(input)
+        override fun match(input : Int) = input == 0 || ids.isEmpty() || ids.contains(input)
     }
 
     /**
