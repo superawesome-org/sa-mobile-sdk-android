@@ -126,7 +126,7 @@ class FeatureFlagTests {
     fun `flag is not enabled (returns default value) if one of the conditions (creative) is not met`() {
         val json = JSONObject(JSON_STRING)
 
-        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 4, 0, 50)
+        val value = FeatureFlag.fromJson<Int>(json, "flag1", 0).getValue(1, 4, 10, 50)
 
         assertEquals(0, value)
     }
