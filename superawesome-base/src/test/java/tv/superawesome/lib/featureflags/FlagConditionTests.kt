@@ -23,6 +23,14 @@ class FlagConditionTests {
     }
 
     @Test
+    fun `if placementIds is empty, it should always match`() {
+        val id = 4
+        val condition = FlagCondition.PlacementIds(emptyList())
+
+        assertTrue(condition.match(id))
+    }
+
+    @Test
     fun `if id is in lineItemIds, it should match`() {
         val id = 1
         val condition = FlagCondition.LineItemIds(listOf(1,2,3))
@@ -39,6 +47,14 @@ class FlagConditionTests {
     }
 
     @Test
+    fun `if lineItemIds is empty, it should always match`() {
+        val id = 4
+        val condition = FlagCondition.LineItemIds(emptyList())
+
+        assertTrue(condition.match(id))
+    }
+
+    @Test
     fun `if id is in creativeIds, it should match`() {
         val id = 1
         val condition = FlagCondition.CreativeIds(listOf(1,2,3))
@@ -52,6 +68,14 @@ class FlagConditionTests {
         val condition = FlagCondition.CreativeIds(listOf(1,2,3))
 
         assertFalse(condition.match(id))
+    }
+
+    @Test
+    fun `if creativeIds is empty, it should always match`() {
+        val id = 4
+        val condition = FlagCondition.CreativeIds(emptyList())
+
+        assertTrue(condition.match(id))
     }
 
     @Test

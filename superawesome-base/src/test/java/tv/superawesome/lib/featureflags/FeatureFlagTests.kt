@@ -45,6 +45,18 @@ class FeatureFlagTests {
     }
 
     @Test
+    fun `can parse a JSONObject if the conditions are present but empty`() {
+        val json = JSONObject(JSON_STRING)
+
+        val featureFlag = FeatureFlag.fromJson<Boolean>(json, "flag7", false)
+
+        assertNotNull(featureFlag)
+        assertEquals(0, featureFlag.conditions.placementIds?.ids?.size)
+        assertEquals(0, featureFlag.conditions.lineItemIds?.ids?.size)
+        assertEquals(0, featureFlag.conditions.creativeIds?.ids?.size)
+    }
+
+    @Test
     fun `can parse a JSONObject if the value is double`() {
         val json = JSONObject(JSON_STRING)
 
@@ -158,6 +170,14 @@ class FeatureFlagTests {
             },
             "flag6": {
                 "value": true
+            },
+            "flag7": {
+                "value": true,
+                "conditions": {
+                    "placementIds": [],
+                    "lineItemIds": [],
+                    "creativeIds": []
+                }
             }
         }
         """

@@ -67,6 +67,21 @@ class FlagConditionsTest {
     }
 
     @Test
+    fun `if conditions are present, but empty, it should match`() {
+        val conditions = FlagConditions(
+            placementIds = FlagCondition.PlacementIds(emptyList()),
+            lineItemIds = FlagCondition.LineItemIds(emptyList()),
+            creativeIds = FlagCondition.CreativeIds(emptyList()),
+            percentage = null,
+        )
+
+        assertTrue(
+            conditions.match(1, 4, 7, 80),
+            "Conditions are empty, it should always match",
+        )
+    }
+
+    @Test
     fun `if ids are not present, match if user value is in range`() {
        val conditions = FlagConditions(
            placementIds = null,
