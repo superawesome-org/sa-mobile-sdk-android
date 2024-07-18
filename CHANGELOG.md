@@ -1,3 +1,17 @@
+# [9.4.0](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.3.2...v9.4.0) (2024-07-18)
+
+
+### Bug Fixes
+
+* **events:** reduce number of retries in case of network failure from 5 to 1 ([0fdd31e](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/0fdd31ed1e4540f74a95c784eff2c507b93abc25))
+* **video:** give reward if video errors after a set number of millis ([50a7413](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/50a74136cba7168cc4004cf9c65f8a906e975e65))
+* **video:** video flipping when orientation is set to landscape ([55bdaa2](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/55bdaa2bafef8962bae6823c4ddcd860f68be29d))
+
+
+### Features
+
+* new feature flag system implementation ([26f9e4e](https://github.com/superawesome-org/sa-mobile-sdk-android/commit/26f9e4ed9510c8f3153388cd631ba8054e916df9))
+
 ## [9.3.2](https://github.com/superawesome-org/sa-mobile-sdk-android/compare/v9.3.1...v9.3.2) (2024-01-29)
 
 
